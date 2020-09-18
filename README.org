@@ -2933,12 +2933,26 @@ start with =char-mode= because they both have keys that are important for their
 use (like =M-x=) which conflict with Emacs (the instance that's managing the
 windows).
 
+**** list of applications
+:PROPERTIES:
+:ID:       d1bf0601-a995-48f7-ab80-86755ba9269a
+:END:
+
+#+begin_src emacs-lisp
+(defvar exwm:char-mode-apps (list "emacs" "next" "nyxt")
+  "List of applications to exwm should start in char-mode.")
+#+end_src
+
+**** to start in char mode
+:PROPERTIES:
+:ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
+:END:
+
 #+begin_src emacs-lisp
 (defhook! exwm:start-in-char-mode-h ()
-  "Decide whether to start program in char mode."
+  "Start a program in char-mode if it's in `exwm:char-mode-apps'."
   :hook exwm-manage-finish-hook
-  (when (--any-p (string-prefix-p it exwm-instance-name)
-                 (list "emacs"))
+  (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
 #+end_src
 
