@@ -1,0 +1,16 @@
+VVVVVVVV           VVVVVVVV     OOOOOOOOO     IIIIIIIIIIDDDDDDDDDDDDD
+V::::::V           V::::::V   OO:::::::::OO   I::::::::ID::::::::::::DDD
+V::::::V           V::::::V OO:::::::::::::OO I::::::::ID:::::::::::::::DD
+V::::::V           V::::::VO:::::::OOO:::::::OII::::::IIDDD:::::DDDDD:::::D
+ V:::::V           V:::::V O::::::O   O::::::O  I::::I    D:::::D    D:::::D
+  V:::::V         V:::::V  O:::::O     O:::::O  I::::I    D:::::D     D:::::D
+   V:::::V       V:::::V   O:::::O     O:::::O  I::::I    D:::::D     D:::::D
+    V:::::V     V:::::V    O:::::O     O:::::O  I::::I    D:::::D     D:::::D
+     V:::::V   V:::::V     O:::::O     O:::::O  I::::I    D:::::D     D:::::D
+      V:::::V V:::::V      O:::::O     O:::::O  I::::I    D:::::D     D:::::D
+       V:::::V:::::V       O:::::O     O:::::O  I::::I    D:::::D     D:::::D
+        V:::::::::V        O::::::O   O::::::O  I::::I    D:::::D    D:::::D
+         V:::::::V         O:::::::OOO:::::::OII::::::IIDDD:::::DDDDD:::::D
+          V:::::V           OO:::::::::::::OO I::::::::ID:::::::::::::::DD
+           V:::V              OO:::::::::OO   I::::::::ID::::::::::::DDD
+            VVV                 OOOOOOOOO     IIIIIIIIIIDDDDDDDDDDDDD
