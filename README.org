@@ -3386,7 +3386,7 @@ This version lets you choose different variants.
 (defun void/set-font ()
   "Select xfont."
   (interactive)
-  (set-frame-font (completing-read "Choose font:" (x-list-fonts "*"))))
+  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*"))))
 #+end_src
 
 **** TODO swiper
