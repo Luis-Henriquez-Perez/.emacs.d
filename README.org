@@ -85,11 +85,6 @@ time.
 :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
 :END:
 
-There are a handful of files and directory that are necessary to doom. I try to
-keep the number of files to a minimum because I think that more files means more
-stuff to manage, and more potential errors. That's partly the reason why I use
-one large org file.
-
 **** core directories and files
 :PROPERTIES:
 :ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
