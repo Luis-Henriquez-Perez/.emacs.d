@@ -401,10 +401,10 @@ macro-writing.
 :END:
 
 #+begin_src emacs-lisp
-(defun void:keyword-name (key)
-  "Return the name of the key without the prepended :."
+(defun void:keyword-name (keyword)
+  "Return the name of the KEYWORD without the prepended `:'."
   (declare (pure t) (side-effect-free t))
-  (substring-no-properties (void:to-string key) 1))
+  (substring-no-properties (void:to-string keyword) 1))
 #+end_src
 
 ***** convert to string
