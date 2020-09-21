@@ -698,28 +698,6 @@ from pulling (or failing to pull) in autoloaded macros/features.
   nil)
 #+end_src
 
-**** destructuring
-:PROPERTIES:
-:ID:       ef1c0e0e-9a2f-4ae3-89ff-f404772ee1b8
-:END:
-
-Destructuring.
-
-***** dolist!
-:PROPERTIES:
-:ID:       4f92497f-bc72-49d0-874d-c0876dbc86f8
-:END:
-
-#+begin_src emacs-lisp
-(defmacro dolist! (specs &rest body)
-  "Same as `pcase-dolist' but with nicer syntax."
-  (declare (indent defun))
-  (-let* (((pattern list) specs))
-    `(cl-block nil
-       (pcase-dolist (,(void:pcase-pattern pattern) ,list)
-         ,@body))))
-#+end_src
-
 **** anaphoric macros
 :PROPERTIES:
 :ID:       001dde5a-bb43-4ce8-82ef-806e37ba7f6e
