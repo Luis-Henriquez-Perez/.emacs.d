@@ -723,6 +723,24 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
+****** TODO add advice interactively
+:PROPERTIES:
+:ID:       5a4c11b9-a0f9-4239-8d05-3157bd18dba8
+:END:
+
+#+begin_src emacs-lisp
+(defun void/add-advice ()
+  "Interactively add an advice."
+  (let ((functions))
+    (completing-read-multiple ))
+  )
+#+end_src
+
+****** TODO remove advice
+:PROPERTIES:
+:ID:       dcdcadb8-ac54-47f1-9349-acbc2496d8ed
+:END:
+
 ****** TODO get target
 :PROPERTIES:
 :ID:       f893fbe8-592b-409e-8de7-6060e936456f
