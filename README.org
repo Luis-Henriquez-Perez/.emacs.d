@@ -597,12 +597,12 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
-**** hooks
+**** TODO hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
 :END:
 
-***** hook name
+***** TODO hook name
 :PROPERTIES:
 :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
 :END:
@@ -615,7 +615,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern hook-var "%")))
 #+end_src
 
-***** add-hook
+***** TODO add-hook
 :PROPERTIES:
 :ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
 :END:
@@ -630,7 +630,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
       (void:add-expiring-advice hook-fn expire-fn))))
 #+end_src
 
-***** defhook!
+***** TODO defhook!
 :PROPERTIES:
 :ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
 :END:
@@ -647,12 +647,12 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                (-list hooks)))))
 #+end_src
 
-**** advice
+**** TODO advice
 :PROPERTIES:
 :ID:       01c00dd3-bbd5-45b7-8f3e-c8aba9091b18
 :END:
 
-***** advice name
+***** TODO advice name
 :PROPERTIES:
 :ID:       03416f82-ced7-42a0-843b-6975903f0b38
 :END:
@@ -665,7 +665,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
-***** void add advice
+***** TODO void add advice
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
 :END:
@@ -680,7 +680,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
       (void:add-expiring-advice advisor expire-fn :unbind))))
 #+end_src
 
-***** add expiring advice
+***** TODO add expiring advice
 :PROPERTIES:
 :ID:       8506fa78-c781-4ca8-bd58-169cce23a504
 :END:
@@ -693,7 +693,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   )
 #+end_src
 
-***** defadvice!
+***** TODO defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
 :END:
