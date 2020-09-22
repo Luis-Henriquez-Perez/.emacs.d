@@ -830,6 +830,18 @@ should expire."
        )))
 #+end_src
 
+***** TODO get target
+:PROPERTIES:
+:ID:       524c2a78-828b-4375-a3a6-44058b466393
+:END:
+
+#+begin_src emacs-lisp
+(defun void:get-target (function)
+  "Return the TARGET of FUNCTION."
+  (or (void:advice-target fn)
+      (void:hook-target fn)))
+#+end_src
+
 **** eval-after-load!
 :PROPERTIES:
 :ID:       8d831084-539b-4072-a86a-b55afb09bf02
