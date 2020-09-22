@@ -775,7 +775,7 @@ In emacs it's.
   (advice-mapc))
 #+end_src
 
-****** TODO void add advice
+****** TODO adding advice
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
 :END:
