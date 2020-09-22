@@ -650,6 +650,19 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
+***** void add advice
+:PROPERTIES:
+:ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
+:END:
+
+#+begin_src emacs-lisp
+(defun void:add-advice (advisor advisee)
+  "Add an advice."
+  (advice-add advisor :after advisee)
+  )
+#+end_src
+
+***** defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
 :END:
