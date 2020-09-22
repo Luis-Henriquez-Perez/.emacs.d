@@ -597,6 +597,16 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
+**** TODO void function regexp
+:PROPERTIES:
+:ID:       8b83a560-30ad-4ef3-89a6-4e50eecaab65
+:END:
+
+#+begin_src emacs-lisp
+(defvar void:function-name-regexp nil
+  "Regexp for a function name.")
+#+end_src
+
 **** TODO hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
@@ -620,7 +630,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:new-hook-name (hook-var hook-fn)
   "Return new hook name based on HOOK-VAR and HOOK-FN."
-  (->> (s-match (rx "void:" (+ anything)) hook-fn)
+  (->> (s-match hook-fn-regexp hook-fn)
        (nth 1)
        (void:symbol-intern hook-var "%")))
 #+end_src
