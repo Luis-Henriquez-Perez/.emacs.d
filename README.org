@@ -787,11 +787,11 @@ In emacs it's.
 #+begin_src emacs-lisp
 (defun void:add-advice (targets where advices &optional props expire-fn)
   "Advise TARGET with ADVICE."
-  (dolist (target targets)
-    (dolist (advice advices)
+  (dolist (target (-list targets))
+    (dolist (advice (-list advices))
       (advice-add target where advice)
       (when expire-fn
-        (void:add-expiring-advice advice expire-fn :unbind)))))
+        (void:add-expiring-advice advice expire-fn t)))))
 #+end_src
 
 ****** TODO add expiring advice
