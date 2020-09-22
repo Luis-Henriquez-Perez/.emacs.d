@@ -786,13 +786,13 @@ In emacs it's.
 :END:
 
 #+begin_src emacs-lisp
-(defun void:add-advice (target where advice &optional props expire-fn)
+(defun void:add-advice (targets where advices &optional props expire-fn)
   "Advise TARGET with ADVICE."
-  (let ((advice-name (void:new-advice-name target advice)))
-    (defalias advice-name target)
-    (advice-add target :after advice-name)
-    (when expire-fn
-      (void:add-expiring-advice advice-name expire-fn :unbind))))
+  (dolist (target targets)
+    (dolist (advice advices)
+      (advice-add target where advice)))
+  (when expire-fn
+    (void:add-expiring-advice advice expire-fn :unbind)))
 #+end_src
 
 ****** TODO add expiring advice
