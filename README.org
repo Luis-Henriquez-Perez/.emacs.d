@@ -758,8 +758,8 @@ TARGET is a function. EXPIRE-FN is a function"
     (fset expire-advice
           (lambda (orig-fn &rest args)
             (aprog1 (apply orig-fn args)
-              (when (funcall expire-fn it)
-                (advice-remove )
+              (when (funcall expire-fn)
+                (advice-remove (void:advice-target target) target)
                 (advice-remove target expire-advice)
                 (fmakunbound expire-advice)
                 (void:log "%s has expired." target)
