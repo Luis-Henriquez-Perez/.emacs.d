@@ -5,10 +5,10 @@
 
 #+begin_src emacs-lisp
 (ert-deftest void:test-hook-name ()
-  (let* ((target)
-         (hook)
+  (let* ((target 'after-something-hook)
+         (hook 'my-hook-fn)
          (hook-name (symbol-name (void:hook-name target hook))))
-    (should (string= hook-name ""))))
+    (should (string= hook-name (void:symbol-intern )))))
 #+end_src
 
 * advice name
