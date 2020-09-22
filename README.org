@@ -782,7 +782,7 @@ In emacs it's.
 
 #+begin_src emacs-lisp
 (defun void:add-advice (targets where advices &optional props expire-fn)
-  "Advise TARGET with ADVICE."
+  "Advise TARGETS with ADVICES."
   (dolist (target (-list targets))
     (dolist (advice (-list advices))
       (setq advice (void:advice-name target advice))
