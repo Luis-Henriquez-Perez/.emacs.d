@@ -692,6 +692,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:add-expiring-advice (advisee expire-fn &optional unbind)
   "Add an advice which causes ADVISEE."
+  ()
+  (advice-add expiring-advice :around advisee)
   )
 #+end_src
 
