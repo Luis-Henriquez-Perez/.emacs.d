@@ -829,8 +829,8 @@ should expire."
   (-let ((docstring (when (stringp (car body)) (pop body)))
          ((key advices . body) body))
     `(prog1 (defun ,name ,args ,docstring ,@body)
-       ,@(--map `(advice-add #',it ,key #',name)
-                (-list advices)))))
+       (void:add-advice target ,key it)
+       )))
 #+end_src
 
 **** eval-after-load!
