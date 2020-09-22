@@ -652,6 +652,15 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :ID:       01c00dd3-bbd5-45b7-8f3e-c8aba9091b18
 :END:
 
+***** unbind target of expiring advice
+:PROPERTIES:
+:ID:       8d8e1ef4-bb49-41ed-b798-55c6295707cd
+:END:
+
+#+begin_src emacs-lisp
+(defvar void:unbind-advice-target-p t "Whether to unbind target of expiring advice.")
+#+end_src
+
 ***** TODO advice name
 :PROPERTIES:
 :ID:       03416f82-ced7-42a0-843b-6975903f0b38
@@ -675,6 +684,8 @@ In emacs it's.
 #+begin_src emacs-lisp
 (defun void:get-advisee (advisor)
   "Return the advisee that ADVISOR advices."
+  (s-match (rx)
+           (symbol-name advisor))
   )
 #+end_src
 
