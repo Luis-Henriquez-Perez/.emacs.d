@@ -769,6 +769,17 @@ In emacs it's.
        (intern)))
 #+end_src
 
+****** TODO get advices
+:PROPERTIES:
+:ID:       15587752-6650-4312-94e2-86e484081ec7
+:END:
+
+#+begin_src emacs-lisp
+(defun void:get-advices (target)
+  "Return list functions advising TARGET."
+  (advice-mapc))
+#+end_src
+
 ****** TODO void add advice
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
