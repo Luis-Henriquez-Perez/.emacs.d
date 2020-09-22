@@ -3,6 +3,11 @@
 :ID:       7212d4d3-9ad5-42b2-8ddc-9028d79327e8
 :END:
 
-The purpose of this change is to provide Void with a consistent naming scheme
-for hook, and one for advices. Specifically, hooks. As a consequence of this
-naming scheme, each advice I define advises exactly one function.
+The primary purpose of this change is to provide Void with a consistent naming
+scheme for hook, and one for advices. Specifically, hooks. As a consequence of
+this naming scheme, each advice I define advises exactly one function. Moreover,
+having advise named in such a way makes getting the TARGET of an advice or hook
+easy.
+
+Also notable, this change added a system for adding advises and hooks that
+expire.
