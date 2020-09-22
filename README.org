@@ -665,6 +665,14 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
+***** TODO get advisee
+:PROPERTIES:
+:ID:       f893fbe8-592b-409e-8de7-6060e936456f
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ***** TODO void add advice
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
