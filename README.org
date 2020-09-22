@@ -716,7 +716,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:new-advice-name (target advice)
   "Return new advice name based on ADVISOR and ADVISEE."
-  (->> (s-match (rx "void:" (+ anything)) advisor)
+  (->> (s-match VOID:ADVICE-FN-REGEXP advisor)
        (nth 1)
        (void:symbol-intern advisee "@")))
 #+end_src
