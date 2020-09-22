@@ -607,12 +607,17 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Regexp for a function name.")
 #+end_src
 
-**** TODO hooks
+**** Hooks and Advices
+:PROPERTIES:
+:ID:       89c5152e-92f2-4282-a7c7-5a98f1edd4f6
+:END:
+
+***** TODO hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
 :END:
 
-***** TODO hook fn regexp
+****** TODO hook fn regexp
 :PROPERTIES:
 :ID:       0b1b992c-692d-406b-bf31-ead28bca5a19
 :END:
@@ -622,7 +627,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Regular expression that defines how hooks are named.")
 #+end_src
 
-***** TODO hook name
+****** TODO hook name
 :PROPERTIES:
 :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
 :END:
@@ -635,7 +640,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern hook-var "%")))
 #+end_src
 
-***** TODO hook target
+****** TODO hook target
 :PROPERTIES:
 :ID:       77f45347-3688-438d-8674-39e6d476a2d1
 :END:
@@ -647,7 +652,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (s-match VOID:)))
 #+end_src
 
-***** TODO add-hook
+****** TODO add-hook
 :PROPERTIES:
 :ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
 :END:
@@ -662,7 +667,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
       (void:add-expiring-advice hook-fn expire-fn))))
 #+end_src
 
-***** TODO defhook!
+****** TODO defhook!
 :PROPERTIES:
 :ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
 :END:
@@ -679,12 +684,12 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                (-list hooks)))))
 #+end_src
 
-**** TODO advice
+***** TODO advice
 :PROPERTIES:
 :ID:       01c00dd3-bbd5-45b7-8f3e-c8aba9091b18
 :END:
 
-***** TODO advice-fn regexp
+****** TODO advice-fn regexp
 :PROPERTIES:
 :ID:       4946ac50-69ea-49bb-b53e-25834962454d
 :END:
@@ -694,7 +699,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Regular expression that controls how advices are named.")
 #+end_src
 
-***** TODO unbind target of expiring advice
+****** TODO unbind target of expiring advice
 :PROPERTIES:
 :ID:       8d8e1ef4-bb49-41ed-b798-55c6295707cd
 :END:
@@ -703,7 +708,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 (defvar void:unbind-advice-target-p t "Whether to unbind target of expiring advice.")
 #+end_src
 
-***** TODO advice name
+****** TODO advice name
 :PROPERTIES:
 :ID:       03416f82-ced7-42a0-843b-6975903f0b38
 :END:
@@ -730,7 +735,7 @@ In emacs it's.
            (symbol-name advisor)))
 #+end_src
 
-***** TODO void add advice
+****** TODO void add advice
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
 :END:
@@ -745,7 +750,7 @@ In emacs it's.
       (void:add-expiring-advice advice-name expire-fn :unbind))))
 #+end_src
 
-***** TODO add expiring advice
+****** TODO add expiring advice
 :PROPERTIES:
 :ID:       8506fa78-c781-4ca8-bd58-169cce23a504
 :END:
@@ -767,7 +772,7 @@ TARGET is a function. EXPIRE-FN is a function"
                   (fmakunbound target))))))))
 #+end_src
 
-***** TODO defadvice!
+****** TODO defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
 :END:
