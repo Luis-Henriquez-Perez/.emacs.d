@@ -602,6 +602,15 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
 :END:
 
+***** TODO hook fn regexp
+:PROPERTIES:
+:ID:       0b1b992c-692d-406b-bf31-ead28bca5a19
+:END:
+
+#+begin_src emacs-lisp
+(defvar hook-fn-regexp nil "Regular expression that defines how hooks are named.")
+#+end_src
+
 ***** TODO hook name
 :PROPERTIES:
 :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
@@ -615,7 +624,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern hook-var "%")))
 #+end_src
 
-***** void get hook var
+***** TODO void get hook var
 :PROPERTIES:
 :ID:       77f45347-3688-438d-8674-39e6d476a2d1
 :END:
