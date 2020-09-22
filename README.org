@@ -661,7 +661,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 
 #+begin_src emacs-lisp
 (defun void:add-hook (targets hooks &optional depth local expire-fn)
-  "Add a VOID hook to add TARGET."
+  "Add a VOID hook to add TARGET.
+TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'."
   (dolist (target (-list targets))
     (dolist (hook (-list hooks))
       (add-hook target hook depth local)
