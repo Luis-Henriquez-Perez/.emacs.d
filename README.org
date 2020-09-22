@@ -758,7 +758,8 @@ In emacs it's.
 #+begin_src emacs-lisp
 (defun void:add-expiring-advice (target expire-fn &optional unbind)
   "Cause TARGET to expire when EXPIRE-FN returns true.
-TARGET is a function. EXPIRE-FN is a function"
+TARGET is a function. EXPIRE-FN is a function that returns true when TARGET
+should expire."
   (let ((expire-advice (void:new-advice-name target 'expire)))
     (fset expire-advice
           (lambda (orig-fn &rest args)
