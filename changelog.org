@@ -1,4 +1,4 @@
-* Add a hook and an advice naming system
+* add a hook and an advice naming system
 :PROPERTIES:
 :ID:       7212d4d3-9ad5-42b2-8ddc-9028d79327e8
 :END:
