@@ -664,7 +664,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Add a VOID hook to add TARGET."
   (dolist (target targets)
     (dolist (hook hooks)
-      (add-hook target where hook depth)
+      (add-hook target hook depth local)
       (when expire-fn
         (void:add-expiring-advice hook expire-fn t)))))
 #+end_src
