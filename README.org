@@ -760,11 +760,12 @@ In emacs it's.
 :END:
 
 #+begin_src emacs-lisp
-(defun void:add-expiring-advice (target expire-fn &optional unbind)
+(defun void:add-expiring-advice (target &optional expire-fn unbind)
   "Cause TARGET to expire when EXPIRE-FN returns true.
 TARGET is a function. EXPIRE-FN is a function that returns true when TARGET
 should expire."
-  (let ((expire-advice (void:new-advice-name target 'expire)))
+  (let ((expire-advice (void:new-advice-name target 'expire))
+        (expire-fn (or expire-fn (lambda () t))))
     (fset expire-advice
           (lambda (orig-fn &rest args)
             (aprog1 (apply orig-fn args)
