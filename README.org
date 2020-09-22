@@ -740,8 +740,7 @@ TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'."
 (defun void/add-advice ()
   "Interactively add an advice."
   (let ((functions))
-    (completing-read-multiple ""))
-  )
+    (completing-read-multiple "")))
 #+end_src
 
 ****** TODO remove advice
