@@ -5,4 +5,4 @@
 
 The purpose of this change is to provide Void with a consistent naming scheme
 for hook, and one for advices. Specifically, hooks. As a consequence of this
-naming scheme,
+naming scheme, each advice I define advises exactly one function.
