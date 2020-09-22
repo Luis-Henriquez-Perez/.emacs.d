@@ -603,7 +603,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defvar void:function-name-regexp nil
+(defconst void:function-name-regexp nil
   "Regexp for a function name.")
 #+end_src
 
@@ -618,7 +618,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defvar hook-fn-regexp (rx (group (1+ anything)) "%" (group (1+ anything)))
+(defconst VOID:HOOK-FN-REGEXP (rx (group (1+ anything)) "%" (group (1+ anything)))
   "Regular expression that defines how hooks are named.")
 #+end_src
 
@@ -635,16 +635,16 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern hook-var "%")))
 #+end_src
 
-***** TODO void get hook var
+***** TODO hook target
 :PROPERTIES:
 :ID:       77f45347-3688-438d-8674-39e6d476a2d1
 :END:
 
 #+begin_src emacs-lisp
-(defun void:hook-var (hook-fn)
-  "Return the variable that hook-fn is attached to."
-  (->> (symbol-name hook-fn)
-       ()))
+(defun void:hook-target (hook)
+  "Return the target of HOOK."
+  (->> (symbol-name hook)
+       (s-match VOID:)))
 #+end_src
 
 ***** TODO add-hook
@@ -690,7 +690,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defvar void:advice-fn-regexp (rx (group (1+ anything)) "@" (group (1+ anything)))
+(defconst VOID:ADVICE-FN-REGEXP (rx (group (1+ anything)) "@" (group (1+ anything)))
   "Regular expression that controls how advices are named.")
 #+end_src
 
@@ -716,7 +716,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
-***** TODO get advisee
+***** TODO get target
 :PROPERTIES:
 :ID:       f893fbe8-592b-409e-8de7-6060e936456f
 :END:
