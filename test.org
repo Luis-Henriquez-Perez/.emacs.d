@@ -29,7 +29,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest advice-p)
+(ert-deftest test:advice-p ()
+  (should (eq t (advice-p))))
 #+end_src
 
 * hook-p
