@@ -1,0 +1,21 @@
+* hook name
+:PROPERTIES:
+:ID:       a906f76d-e682-417e-9f28-80cd67fa2f7f
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:test-hook-name ()
+  (let* ((target)
+         (hook)
+         (hook-name (symbol-name (void:hook-name target hook))))
+    (should (string= hook-name ""))))
+#+end_src
+
+* advice name
+:PROPERTIES:
+:ID:       b9acfae3-d442-494a-a8fa-5ff774474831
+:END:
+
+#+begin_src emacs-lisp
+()
+#+end_src
