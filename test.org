@@ -18,6 +18,8 @@
 
 #+begin_src emacs-lisp
 (ert-deftest void:test-advice-name ()
+  (let* (())
+    (should (string= () "")))
   )
 #+end_src
 
@@ -27,6 +29,7 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest advice-p)
 #+end_src
 
 * hook-p
