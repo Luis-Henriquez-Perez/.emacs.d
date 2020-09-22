@@ -632,7 +632,24 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                (-list hooks)))))
 #+end_src
 
-**** defadvice!
+**** advice
+:PROPERTIES:
+:ID:       01c00dd3-bbd5-45b7-8f3e-c8aba9091b18
+:END:
+
+***** advice name
+:PROPERTIES:
+:ID:       03416f82-ced7-42a0-843b-6975903f0b38
+:END:
+
+#+begin_src emacs-lisp
+(defun void:new-advice-name (advisor advisee)
+  "Return new advice name based on ADVISOR and ADVISEE."
+  (->> (s-match (rx "void:" (+ anything)) advisor)
+       (nth 1)
+       (void:symbol-intern advisee "@")))
+#+end_src
+
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
 :END:
