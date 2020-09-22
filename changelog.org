@@ -10,4 +10,4 @@ having advise named in such a way makes getting the TARGET of an advice or hook
 easy.
 
 Also notable, this change added a system for adding advises and hooks that
-expire.
+expire. Specifically the functions for adding and.
