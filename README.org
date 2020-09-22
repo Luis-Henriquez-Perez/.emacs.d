@@ -677,11 +677,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     (defalias new-name advisor)
     (advice-add advisor :after new-name)
     (when expire-fn
-      (advice-add )
-      (fset )
-      (lambda () (when (funcall expire-fn)
-                   ()))
-      )))
+      (void:add-expiring-advice advisor expire-fn :unbind))))
 #+end_src
 
 ***** add expiring advice
