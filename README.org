@@ -837,7 +837,7 @@ should expire."
 
 #+begin_src emacs-lisp
 (defun void:get-target (function)
-  "Return the TARGET of FUNCTION."
+  "Return the target of FUNCTION."
   (or (void:advice-target fn)
       (void:hook-target fn)))
 #+end_src
