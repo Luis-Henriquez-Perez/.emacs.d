@@ -47,6 +47,9 @@
 :ID:       0d23a888-be8d-4b8f-9f53-696b86a3136f
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 * adding advice
 :PROPERTIES:
 :ID:       2cecb4e0-fd73-443b-9f61-86b2a0231be6
