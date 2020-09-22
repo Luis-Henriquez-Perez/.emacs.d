@@ -684,6 +684,17 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
       )))
 #+end_src
 
+***** add expiring advice
+:PROPERTIES:
+:ID:       8506fa78-c781-4ca8-bd58-169cce23a504
+:END:
+
+#+begin_src emacs-lisp
+(defun void:add-expiring-advice (advisee expire-fn &optional unbind)
+  "Add an advice which causes ADVISEE."
+  )
+#+end_src
+
 ***** defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
