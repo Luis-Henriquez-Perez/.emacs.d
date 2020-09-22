@@ -723,6 +723,18 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
+****** TODO advice-p
+:PROPERTIES:
+:ID:       0a84d983-39ad-48d1-af9d-b43589d63bcf
+:END:
+
+#+begin_src emacs-lisp
+(defun void:advice-p (fun)
+  "Return t if FUN is a void advice."
+  (->> (symbol-name fun)
+       (s-matches-p VOID:ADVICE-FN-REGEXP)))
+#+end_src
+
 ****** TODO add advice interactively
 :PROPERTIES:
 :ID:       5a4c11b9-a0f9-4239-8d05-3157bd18dba8
