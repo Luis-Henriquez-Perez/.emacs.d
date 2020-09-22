@@ -680,7 +680,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defvar void:advice-fn-regexp nil "Regular expression that controls how advices are named.")
+(defvar void:advice-fn-regexp (rx (group (1+ anything)) "@" (group (1+ anything)))
+  "Regular expression that controls how advices are named.")
 #+end_src
 
 ***** unbind target of expiring advice
