@@ -660,13 +660,13 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defun void:add-hook (hook-var hook-fn &optional depth local expire-fn)
-  "Add a VOID hook to add HOOK-VAR."
+(defun void:add-hook (target hook &optional depth local expire-fn)
+  "Add a VOID hook to add TARGET."
   (let ((new-name (void:new-advice-name advisor advisee)))
     (defalias new-name advisor)
     (advice-add advisor :after new-name)
     (when expire-fn
-      (void:add-expiring-advice hook-fn expire-fn))))
+      (void:add-expiring-advice hook expire-fn))))
 #+end_src
 
 ****** TODO defhook!
