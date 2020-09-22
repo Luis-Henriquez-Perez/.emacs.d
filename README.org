@@ -649,7 +649,9 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 (defun void:hook-target (hook)
   "Return the target of HOOK."
   (->> (symbol-name hook)
-       (s-match VOID:)))
+       (s-match VOID:)
+       (nth 1)
+       (intern)))
 #+end_src
 
 ****** TODO add-hook
