@@ -39,4 +39,19 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest )
+#+end_src
+
+* add-expiring-advice
+:PROPERTIES:
+:ID:       94adbd35-dc96-4476-a26b-dae44d02ffe8
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest add-expiring-advice ()
+  (let ((hook)
+        (advice))
+    (void:add-expiring-advice fn)
+    (run-hooks 'my-test-hook)
+    (should )))
 #+end_src
