@@ -732,8 +732,9 @@ In emacs it's.
 (defun void:advice-target (advice)
   "Return the TARGET for advice."
   (->> (symbol-name advice)
-       (s-match (rx))
-       ))
+       (s-match VOID:ADVICE-FN-REGEXP)
+       (nth 1)
+       (intern)))
 #+end_src
 
 ****** TODO void add advice
