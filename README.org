@@ -731,8 +731,9 @@ In emacs it's.
 #+begin_src emacs-lisp
 (defun void:advice-target (advice)
   "Return the TARGET for advice."
-  (s-match (rx)
-           (symbol-name advisor)))
+  (->> (symbol-name advice)
+       (s-match (rx))
+       ))
 #+end_src
 
 ****** TODO void add advice
