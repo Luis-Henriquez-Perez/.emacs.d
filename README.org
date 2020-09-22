@@ -709,7 +709,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defun void:new-advice-name (advisor advisee)
+(defun void:new-advice-name (target advice)
   "Return new advice name based on ADVISOR and ADVISEE."
   (->> (s-match (rx "void:" (+ anything)) advisor)
        (nth 1)
@@ -724,11 +724,10 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 In emacs it's.
 
 #+begin_src emacs-lisp
-(defun void:get-advisee (advisor)
-  "Return the advisee that ADVISOR advices."
+(defun void:advice-target (advice)
+  "Return the TARGET for advice."
   (s-match (rx)
-           (symbol-name advisor))
-  )
+           (symbol-name advisor)))
 #+end_src
 
 ***** TODO void add advice
@@ -737,13 +736,13 @@ In emacs it's.
 :END:
 
 #+begin_src emacs-lisp
-(defun void:add-advice (advisor where advisee &optional props expire-fn)
+(defun void:add-advice (target where advice &optional props expire-fn)
   "Add a VOID advice to add ADVISEE."
-  (let ((new-name (void:new-advice-name advisor advisee)))
-    (defalias new-name advisor)
-    (advice-add advisor :after new-name)
+  (let ((advice-name (void:new-advice-name target advice)))
+    (defalias advice-name target)
+    (advice-add target :after advice-name)
     (when expire-fn
-      (void:add-expiring-advice new-name expire-fn :unbind))))
+      (void:add-expiring-advice advice-name expire-fn :unbind))))
 #+end_src
 
 ***** TODO add expiring advice
