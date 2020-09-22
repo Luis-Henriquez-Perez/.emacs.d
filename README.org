@@ -608,7 +608,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defvar hook-fn-regexp nil "Regular expression that defines how hooks are named.")
+(defvar hook-fn-regexp (rx (group (1+ anything)) "%" (group (1+ anything)))
+  "Regular expression that defines how hooks are named.")
 #+end_src
 
 ***** TODO hook name
