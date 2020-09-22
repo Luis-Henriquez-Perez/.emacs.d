@@ -677,7 +677,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     (defalias new-name advisor)
     (advice-add advisor :after new-name)
     (when expire-fn
-      (void:add-expiring-advice advisor expire-fn :unbind))))
+      (void:add-expiring-advice new-name expire-fn :unbind))))
 #+end_src
 
 ***** TODO add expiring advice
@@ -688,9 +688,15 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:add-expiring-advice (advisee expire-fn &optional unbind)
   "Add an advice which causes ADVISEE."
-  ()
-  (advice-add expiring-advice :around advisee)
-  )
+  (let ((expire-advice (void:new-advice-name advisee 'expire)))
+    (fset expire-advice
+          (lambda (orig-fn &rest args)
+            (aprog1 (apply orig-fn args)
+              (when (funcall expire-fn it)
+                (advice-remove )
+                (advice-remove advisee expire-advice)
+                (fmakunbound expire-advice)
+                (when unbind (fmakunbound advisee))))))))
 #+end_src
 
 ***** TODO defadvice!
