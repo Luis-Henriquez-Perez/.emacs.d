@@ -597,7 +597,25 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
-**** defhook!
+**** hooks
+:PROPERTIES:
+:ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
+:END:
+
+***** hook name
+:PROPERTIES:
+:ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
+:END:
+
+#+begin_src emacs-lisp
+(defun void:new-hook-name (hook-var hook-fn)
+  "Return new hook name based on HOOK-VAR and HOOK-FN."
+  (->> (s-match (rx "void:" (+ anything)) hook-fn)
+       (nth 1)
+       (void:symbol-intern hook-var "%")))
+#+end_src
+
+***** defhook!
 :PROPERTIES:
 :ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
 :END:
