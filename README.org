@@ -785,6 +785,7 @@ In emacs it's.
   "Advise TARGET with ADVICE."
   (dolist (target (-list targets))
     (dolist (advice (-list advices))
+      (setq advice (void:advice-name target advice))
       (advice-add target where advice)
       (when expire-fn
         (void:add-expiring-advice advice expire-fn t)))))
