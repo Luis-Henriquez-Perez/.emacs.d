@@ -669,6 +669,11 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
         (void:add-expiring-advice hook expire-fn t)))))
 #+end_src
 
+****** add-hook interactively
+:PROPERTIES:
+:ID:       da6b44bc-9857-44ad-8063-ee48c22c55e0
+:END:
+
 ****** TODO defhook!
 :PROPERTIES:
 :ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
