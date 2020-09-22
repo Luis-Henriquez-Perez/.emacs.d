@@ -615,6 +615,18 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern hook-var "%")))
 #+end_src
 
+***** void get hook var
+:PROPERTIES:
+:ID:       77f45347-3688-438d-8674-39e6d476a2d1
+:END:
+
+#+begin_src emacs-lisp
+(defun void:hook-var (hook-fn)
+  "Return the variable that hook-fn is attached to."
+  (->> (symbol-name hook-fn)
+       ()))
+#+end_src
+
 ***** TODO add-hook
 :PROPERTIES:
 :ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
