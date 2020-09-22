@@ -633,7 +633,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :END:
 
 #+begin_src emacs-lisp
-(defun void:new-hook-name (target hook)
+(defun void:hook-name (target hook)
   "Return new hook name based on TARGET and HOOK."
   (->> (s-match VOID:HOOK-FN-REGEXP)
        (nth 1)
