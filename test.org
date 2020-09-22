@@ -17,5 +17,22 @@
 :END:
 
 #+begin_src emacs-lisp
-()
+(ert-deftest void:test-advice-name ()
+  )
+#+end_src
+
+* advice-p
+:PROPERTIES:
+:ID:       a0106e0f-ed02-452f-9919-5ffd7f28fb00
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+* hook-p
+:PROPERTIES:
+:ID:       95478c49-ef81-4ac5-a3c4-14541fbccb2a
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
