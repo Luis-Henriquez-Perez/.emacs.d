@@ -705,15 +705,6 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Regular expression that controls how advices are named.")
 #+end_src
 
-****** TODO unbind target of expiring advice
-:PROPERTIES:
-:ID:       8d8e1ef4-bb49-41ed-b798-55c6295707cd
-:END:
-
-#+begin_src emacs-lisp
-(defvar void:unbind-advice-target-p t "Whether to unbind target of expiring advice.")
-#+end_src
-
 ****** TODO advice name
 :PROPERTIES:
 :ID:       03416f82-ced7-42a0-843b-6975903f0b38
