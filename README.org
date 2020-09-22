@@ -673,6 +673,15 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :ID:       01c00dd3-bbd5-45b7-8f3e-c8aba9091b18
 :END:
 
+***** TODO advice-fn regexp
+:PROPERTIES:
+:ID:       4946ac50-69ea-49bb-b53e-25834962454d
+:END:
+
+#+begin_src emacs-lisp
+(defvar void:advice-fn-regexp nil "Regular expression that controls how advices are named.")
+#+end_src
+
 ***** unbind target of expiring advice
 :PROPERTIES:
 :ID:       8d8e1ef4-bb49-41ed-b798-55c6295707cd
