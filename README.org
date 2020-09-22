@@ -752,17 +752,19 @@ In emacs it's.
 :END:
 
 #+begin_src emacs-lisp
-(defun void:add-expiring-advice (advisee expire-fn &optional unbind)
-  "Add an advice which causes ADVISEE."
-  (let ((expire-advice (void:new-advice-name advisee 'expire)))
+(defun void:add-expiring-advice (target expire-fn &optional unbind)
+  "Add an advice which causes TARGET."
+  (let ((expire-advice (void:new-advice-name target 'expire)))
     (fset expire-advice
           (lambda (orig-fn &rest args)
             (aprog1 (apply orig-fn args)
               (when (funcall expire-fn it)
                 (advice-remove )
-                (advice-remove advisee expire-advice)
+                (advice-remove target expire-advice)
                 (fmakunbound expire-advice)
-                (when unbind (fmakunbound advisee))))))))
+                (void:log "%s has expired." target)
+                (when unbind
+                  (fmakunbound target))))))))
 #+end_src
 
 ***** TODO defadvice!
