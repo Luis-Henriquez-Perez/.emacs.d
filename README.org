@@ -721,7 +721,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
        (void:symbol-intern advisee "@")))
 #+end_src
 
-***** TODO get target
+****** TODO get target
 :PROPERTIES:
 :ID:       f893fbe8-592b-409e-8de7-6060e936456f
 :END:
