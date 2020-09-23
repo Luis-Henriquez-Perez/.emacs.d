@@ -693,10 +693,10 @@ itself from the hook it is in after it is called."
 
 #+begin_src emacs-lisp
 (defun void/add-hook (hook advice)
-  "Return."
+  "Interactively add hooks."
   (interactive)
-  (completing-read-multiple)
-  (void:add-hook))
+  (completing-read-multiple "Add a hook(s) to:" targets)
+  (void:add-hook target (void:hook-name target hook)))
 #+end_src
 
 ****** TODO defhook!
