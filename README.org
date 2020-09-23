@@ -3888,7 +3888,7 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! company:init-backends-h ()
+(defhook! company:init-backends-hook ()
   "Set `company-backends' for the current buffer."
   :hook company-mode-hook
   (require 'company)
@@ -3933,7 +3933,7 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! company:close-tooltip-h ()
+(defhook! company:close-tooltip-hook ()
   "Close company tooltip."
   :hook void:escape-hook
   (when (and (boundp 'company-mode)
@@ -4115,7 +4115,7 @@ it is definitely on my list of things to try out.
   :defer-config
   ;; Only render to html once. If the first send fails for whatever reason,
   ;; org-mu4e would do so each time you try again.
-  (defhook! org-mu4e-render-html-only-once-h ()
+  (defhook! org-mu4e-render-html-only-once-hook ()
     :hook message-send-hook
     (setq-local org-mu4e-convert-to-html nil)))
 #+end_src
@@ -4281,7 +4281,7 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defhook! mu4e:wrap-text-in-message ()
+(defhook! mu4e:wrap-text-in-message-hook ()
   :hook mu4e-view-mode-hook
   (setq-local truncate-lines nil))
 #+end_src
@@ -4723,7 +4723,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! emms:quit-h ()
+(defhook! emms:quit-hook ()
   "Shut down EMMS."
   :hook kill-emacs-hook
   (when emms-player-playing-p (emms-pause))
@@ -5296,7 +5296,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:disable-smartparens-navigate-skip-match-h ()
+(defhook! smartparens:disable-navigate-skip-match-hook ()
   "Disable smartparents skip match feature."
   :hook after-change-major-mode-hook
   (setq sp-navigate-skip-match nil)
@@ -5309,7 +5309,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:init-in-eval-expression-h ()
+(defhook! smartparens:init-in-eval-expression-hook ()
   "Enable `smartparens-mode' in the minibuffer, during `eval-expression' or
 `evil-ex'."
   :hook minibuffer-setup-hook
@@ -5323,7 +5323,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:init-in-minibuffer-h ()
+(defhook! smartparens:enable-smartparens-in-minibuffer-hook ()
   "Enable smartparens for `eval-expression' and `evil-ex'."
   :hook minibuffer-setup-hook
   (when (memq this-command '(eval-expression evil-ex))
@@ -5609,8 +5609,8 @@ form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 Evil differentiates what state you're in based on the cursor color.
 
 #+begin_src emacs-lisp
-(defhook! evil:init-cursors-h ()
-  "Initialize the default cursor shape and size."
+(defhook! evil:set-cursor-color-hook ()
+  "Set the default cursor shape and size."
   :hook evil-mode-hook
   (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
   (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
@@ -5631,7 +5631,7 @@ I add a hook in [[helpvar:void-after-load-theme-hook][void:after-load-theme-hook
 cursor color will update.
 
 #+begin_src emacs-lisp
-(defhook! evil:enable-cursor-refresh-h ()
+(defhook! evil:refresh-cursor-hook ()
   "Enable cursor refreshing after theme change."
   :hook evil-mode-hook
   (if (bound-and-true-p evil-mode)
@@ -5682,18 +5682,18 @@ the correct one.
   "Evil state before entering in the minibuffer.
 This variable will be nil when the minibuffer is closed.")
 
-(defhook! evil:enable-insert-state-in-minibuffer ()
+(defhook! evil:enable-insert-state-in-minibuffer-hook ()
   :hook evil-mode-hook
   (let ((fn (if (bound-and-true-p evil-mode) #'add-hook #'remove-hook)))
     (funcall fn 'minibuffer-enter-hook #'evil:save-state-before-minibuffer-h)
     (funcall fn 'minibuffer-exit-hook #'evil:restore-state-after-minibuffer-h)))
 
-(defun evil:save-state-before-minibuffer-h ()
+(defun evil:save-state-before-minibuffer-hook ()
   "Save state before minibuffer."
   (setq evil:state-before-minibuffer evil-state)
   (evil-insert-state))
 
-(defun evil:restore-state-after-minibuffer-h ()
+(defun evil:restore-state-after-minibuffer-hook ()
   "Restore state after minibuffer."
   (evil-change-state evil:state-before-minibuffer)
   (setq evil:state-before-minibuffer nil))
@@ -6480,7 +6480,7 @@ Each element of the list is an abbreviated.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! eshell:enable-text-wrapping-h ()
+(defhook! eshell:enable-text-wrapping-hook ()
   "Enable text wrapping."
   :hook eshell-mode-hook
   (visual-line-mode +1)
@@ -6493,7 +6493,7 @@ Each element of the list is an abbreviated.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! eshell:remove-fringes-h ()
+(defhook! eshell:remove-fringes-hook ()
   "Remove fringes for eshell."
   :hook eshell-mode-hook
   (set-window-fringes nil 0 0)
@@ -6548,7 +6548,7 @@ aliases.
 #+begin_src emacs-lisp
 (defvar eshell--default:aliases nil)
 
-(defhook! eshell:init-aliases-h ()
+(defhook! eshell:define-aliases-hook ()
   "Initialize eshell aliases."
   :hook eshell-alias-load-hook
   (setq eshell--default:aliases eshell-command-aliases-list
@@ -6675,12 +6675,12 @@ again, you are taken to the location you left off. This is very convenient.
   (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
   (savehist-file . (concat VOID:DATA-DIR "savehist")))
 
-(defhook! void:unpropertize-kill-ring-h ()
+(defhook! void:unpropertize-kill-ring-hook ()
   "Remove text properties from `kill-ring'."
   :append kill-emacs-hook
   (setq kill-ring
         (mapcar (lambda (it) (when (stringp it) (substring-no-properties it)))
-                 (-non-nil kill-ring))))
+                (-non-nil kill-ring))))
 #+end_src
 
 ** bookmarks
@@ -6807,7 +6807,7 @@ I might consider doing this asynchronously.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! dired:sort-directories-first-h ()
+(defhook! dired:sort-directories-first-hook ()
   "List directories first in dired buffers."
   :hook dired-after-readin-hook
   (save-excursion
@@ -7188,7 +7188,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
   (auto-revert-stop-on-user-input . nil)
   (revert-without-query . (list "."))
   :defer-config
-  (defhook! auto-revert:buffer-h ()
+  (defhook! auto-revert:revert-buffer-maybe-hook ()
     "Auto revert current buffer, if necessary."
     :hook void:after-switch-buffer-hook
     (unless (or (bound-and-true-p auto-revert-mode)
@@ -7199,7 +7199,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
     "Auto revert stale buffers in visible windows, if necessary."
     :hook (focus-in-hook after-save-hook)
     (--each (-uniq (mapcar #'window-buffer (window-list)))
-      (with-current-buffer it (auto-revert:buffer-h)))))
+      (with-current-buffer it (auto-revert:revert-buffer-maybe-hook)))))
 #+end_src
 
 ** security
@@ -8008,7 +8008,7 @@ predict and convenient (as opposed to a random location).
 It looks nice if when I'm on a heading when I first enter an org file.
 
 #+begin_src emacs-lisp
-(defhook! org:goto-first-heading-h ()
+(defhook! org:goto-first-heading-hook ()
   "Go to first heading when entering an org-mode file."
   :hook org-mode-hook
   (when (org-at-heading-p)
@@ -8439,7 +8439,7 @@ Unless I explicitly ask for properties I don't want to see them.
 Sometimes the heading inserted doesn't remain visible.
 
 #+begin_src emacs-lisp
-(defhook! org:ensure-heading-visible-h ()
+(defhook! org:ensure-heading-visible-hook ()
   "Ensure that heading remains visible."
   :hook org-insert-heading-hook
   (-when-let (o (cdr (get-char-property-and-overlay (point) 'invisible)))
@@ -8494,7 +8494,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 ~window-end~ because it doesn't require any math on my part.
 
 #+begin_src emacs-lisp
-(defadvice! org:ensure-children-visible-a ()
+(defadvice! org:ensure-children-visible-advice ()
   "Ensure children are visible after toggling."
   :after outline-toggle-children
   (unless (org:heading-folded-p)
