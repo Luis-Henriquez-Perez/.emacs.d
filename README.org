@@ -663,8 +663,10 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:add-hook (targets hooks &optional depth local expire-fn)
   "Add a VOID hook to add TARGET.
-TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'.
-EXPIRE-FN is a function that if true."
+TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in
+`add-hook'. Unlike `add-hook', TARGETS and HOOKS can be single
+items or lists. EXPIRE-FN is non-nil, each function will remove
+itself from the hook it is in after it is."
   (dolist (target (-list targets))
     (dolist (hook (-list hooks))
       (add-hook target hook depth local)
