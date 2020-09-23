@@ -17,7 +17,7 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:-advice-name ()
+(ert-deftest void:advice-name ()
   (let* ((advice))
     (should (string= () ""))))
 #+end_src
@@ -28,7 +28,7 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest test:advice-p ()
+(ert-deftest void:advice-p ()
   (should (eq t (advice-p))))
 #+end_src
 
@@ -38,7 +38,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest )
+(ert-deftest void:hook-p ()
+  )
 #+end_src
 
 * adding hook
@@ -68,10 +69,12 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest add-expiring-advice ()
-  (let ((hook)
-        (advice))
+(ert-deftest void:add-expiring-advice ()
+  (let ((some-hook nil)
+        (advice-target))
+    (void:add-hook 'some-hook #'some-fn)
     (void:add-expiring-advice fn)
     (run-hooks 'my-test-hook)
-    (should )))
+    (void:add-hook 'some-hook #'some-fn)
+    (should ())))
 #+end_src
