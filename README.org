@@ -663,7 +663,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:add-hook (targets hooks &optional depth local expire-fn)
   "Add a VOID hook to add TARGET.
-TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'."
+TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'.
+EXPIRE-FN is a function that if true."
   (dolist (target (-list targets))
     (dolist (hook (-list hooks))
       (add-hook target hook depth local)
@@ -806,6 +807,8 @@ In emacs it's.
 :PROPERTIES:
 :ID:       8506fa78-c781-4ca8-bd58-169cce23a504
 :END:
+
+Note that this function must be evaluated with lexical binding to work.
 
 #+begin_src emacs-lisp
 (defun void:add-expiring-advice (target &optional expire-fn unbind)
