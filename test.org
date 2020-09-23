@@ -81,3 +81,23 @@
     (should ())
     (should ())))
 #+end_src
+
+* defadvice!
+:PROPERTIES:
+:ID:       69caddec-2220-4910-80e7-9179b4b1a3ec
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defadvice! ()
+  )
+#+end_src
+
+* defhook!
+:PROPERTIES:
+:ID:       8bbc7916-eaf8-47bb-8ce6-c7eacfd0d8c9
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook! ()
+  )
+#+end_src
