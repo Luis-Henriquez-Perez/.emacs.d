@@ -28,7 +28,8 @@ function is called when the advice is called and when it returns true, the
 advise is removed from its target and unbound.
 
 This expiration functionality is useful in situations such as boostrapping
-packages at startup.
+packages at startup. For example, exwm when initialized at startup, adds a good
+amount of startup time to emacs. Therefore, I.
 
 *** interactive adding/removing advice
 :PROPERTIES:
@@ -38,7 +39,7 @@ packages at startup.
 I've had cases when I broke a function I would have a hard time removing the
 advice. If I remember correctly this is because I didn't know.
 
-*** notworthy properties
+*** noteworthy properties
 :PROPERTIES:
 :ID:       9dcdd663-b9f5-4347-9698-a94792418706
 :END:
