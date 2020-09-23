@@ -75,6 +75,9 @@
     (void:add-hook 'some-hook #'some-fn)
     (void:add-expiring-advice fn)
     (run-hooks 'my-test-hook)
+    (should (null some-hook))
+    (should (not (boundp #'some-fn)))
     (void:add-hook 'some-hook #'some-fn)
+    (should ())
     (should ())))
 #+end_src
