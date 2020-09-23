@@ -644,6 +644,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
 :END:
 
+This returns the alias that is created.
+
 #+begin_src emacs-lisp
 (defun void:hook-name (target hook)
   "Return hook name that follows Void conventions."
