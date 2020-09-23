@@ -17,10 +17,9 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:test-advice-name ()
-  (let* (())
-    (should (string= () "")))
-  )
+(ert-deftest void:-advice-name ()
+  (let* ((advice))
+    (should (string= () ""))))
 #+end_src
 
 * advice-p
