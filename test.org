@@ -104,13 +104,14 @@
 
 #+begin_src emacs-lisp
 (ert-deftest void:add-advice ()
-  (let ((some-hook nil))
+  (let (a-hook b-hook)
     ;; can add advice normally
     (void:add-hook 'some-hook #'a)
-    (should (eq some-hook '(#'a)))
+    (should (eq a-hook '(#'a)))
+    (setq some-hook)
     ;; can accept multiple targets
-    (void:add-hook '(one-hook two-hook) #'hi)
-    (should (-all-p (eq it ) (list one-hook two-hook)))
+    (void:add-hook '(a-hook b-hook) #'hi)
+    (should (-all-p (eq it '(#'hi)) (list one-hook two-hook)))
     ;; can accept multiple hooks
     (void:add-hook 'one-hook (list #'hi #'ho))
     (should (-all-p (eq it ) (list one-hook two-hook)))
