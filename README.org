@@ -676,11 +676,10 @@ This returns the alias that is created.
 
 #+begin_src emacs-lisp
 (defun void:add-hook (targets hooks &optional depth local expire-fn)
-  "Add a VOID hook to add TARGET.
+  "Add a HOOKS to TARGETS.
 TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in
 `add-hook'. Unlike `add-hook', TARGETS and HOOKS can be single
-items or lists. EXPIRE-FN must be a function, each function will remove
-itself from the hook it is in after it is called."
+items or lists. EXPIRE-FN should be function. If passed in, EXPIRE-FN will"
   (dolist (target (-list targets))
     (dolist (hook (-list hooks))
       (add-hook target hook depth local)
