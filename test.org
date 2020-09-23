@@ -59,8 +59,9 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest adding-advice ()
-  )
+(ert-deftest void:add-advice ()
+  (let ((some-hook))
+    (void:add-hook 'some-hook #'hello:world)))
 #+end_src
 
 * add-expiring-advice
