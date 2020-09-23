@@ -105,7 +105,7 @@
     ;; can accept multiple hooks
     (void:add-hook '(one-hook two-hook) #'hello:world)
     ;; can accept multiple of both
-    (void:add-hook)
+    (void:add-hook '(one-target two-target) '(hi ho um))
     ;; expiration works.
     (void:add-hook)
     ))
