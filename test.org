@@ -103,8 +103,10 @@
     (run-hooks 'my-test-hook)
     (should (null some-hook))
     (should (not (boundp #'some-fn)))
-    (void:add-hook 'some-hook #'some-fn)
+    (void:expiring-advice 'a-target (lambda () t))
+    (funcall #'a-target)
     (should ())
+    (void:add-advice 'a-target :after #'some-fn nil (lambda () t))
     (should ())))
 #+end_src
 
