@@ -108,13 +108,14 @@
     ;; can add advice normally
     (void:add-hook 'some-hook #'hello:world)
     ;; can accept multiple targets
-    (void:add-hook '(one-hook two-hook) #'hello:world)
+    (void:add-hook '(one-hook two-hook) #'hi)
     (should (-all-p (eq it ) (list one-hook two-hook)))
     ;; can accept multiple hooks
-    (void:add-hook '(one-hook two-hook) #'hello:world)
+    (void:add-hook 'one-hook (list #'hi #'ho))
     (should (-all-p (eq it ) (list one-hook two-hook)))
     ;; can accept multiple of both
     (void:add-hook '(one-target two-target) (list #'hi #'ho #'um))
+    (should (-all-p (eq it ) (list one-hook two-hook)))
     ;; expiration works.
     ;; (void:add-hook)
     ))
