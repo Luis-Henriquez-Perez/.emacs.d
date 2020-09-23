@@ -679,6 +679,9 @@ TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'."
 :ID:       da6b44bc-9857-44ad-8063-ee48c22c55e0
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 ****** TODO defhook!
 :PROPERTIES:
 :ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
