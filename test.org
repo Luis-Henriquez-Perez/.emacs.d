@@ -119,7 +119,8 @@
     (void:add-hook '(one-target two-target) (list #'hi #'ho #'um))
     (should (-all-p (eq it ) (list one-hook two-hook)))
     ;; expiration works.
-    ;; (void:add-hook)
+    (void:add-hook)
+    (should)
     ))
 #+end_src
 
@@ -151,6 +152,7 @@
 
 #+begin_src emacs-lisp
 (ert-deftest defadvice! ()
+  (should)
   )
 #+end_src
 
