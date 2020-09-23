@@ -636,7 +636,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 (defun void:hook-name (target hook)
   "Return new hook name based on TARGET and HOOK."
   (alet (->> (symbol-name hook)
-             (s-match VOID:HOOK-FN-REGEXP)
+             (s-match (rx (1+ anything) (1+ ":") (group (1+ anything)) "-hook"))
              (nth 1))
     (intern (format "%s%%%s" (symbol-name target) it))))
 #+end_src
