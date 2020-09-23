@@ -18,8 +18,8 @@
 
 #+begin_src emacs-lisp
 (ert-deftest void:hook-target ()
-  (let ((hook))
-    (should (eq (void:hook-target hook) 'hello))))
+  (let ((hook 'emacs-startup-hook%do-something-hook))
+    (should (eq (void:hook-target hook) 'emacs-startup-hook))))
 #+end_src
 
 * hook-p
