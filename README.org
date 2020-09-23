@@ -634,7 +634,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 
 #+begin_src emacs-lisp
 (defun void:hook-name (target hook)
-  "Return new hook name based on TARGET and HOOK."
+  "Return hook name that follows Void conventions."
   (alet (->> (symbol-name hook)
              (s-match (rx (1+ anything) (1+ ":") (group (1+ anything)) "-hook"))
              (nth 1))
@@ -650,7 +650,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 (defun void:hook-target (hook)
   "Return the target of HOOK."
   (->> (symbol-name hook)
-       (s-match VOID:)
+       (s-match (rx (1+ anything) "%"))
        (nth 1)
        (intern)))
 #+end_src

@@ -11,6 +11,17 @@
     (should (string= hook-name "some-hook%do-something"))))
 #+end_src
 
+* hook target
+:PROPERTIES:
+:ID:       012a7347-4c97-47e6-9679-69b2b4547736
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-target ()
+  (let ((hook))
+    (should (eq (void:hook-target hook) 'hello))))
+#+end_src
+
 * advice name
 :PROPERTIES:
 :ID:       b9acfae3-d442-494a-a8fa-5ff774474831
