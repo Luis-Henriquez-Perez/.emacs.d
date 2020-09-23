@@ -2744,7 +2744,7 @@ By default start emacs as fullscreen.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! void:run-switch-buffer-hooks-a (orig-fn buffer-or-name &rest args)
+(defadvice! void:run-switch-buffer-hooks-advice (orig-fn buffer-or-name &rest args)
   "Run `void:after-switch-buffer-hook'."
   :around (switch-to-buffer display-buffer)
   (let ((gc-cons-threshold most-positive-fixnum))
@@ -2767,7 +2767,7 @@ By default start emacs as fullscreen.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! void:run-prev-or-next-buffer-hooks-a (orig-fn &rest args)
+(defadvice! void:run-prev-or-next-buffer-hooks-advice (orig-fn &rest args)
   :around (switch-to-next-buffer switch-to-previous-buffer)
   (let ((gc-cons-threshold most-positive-fixnum))
     (if void:inhibit-switch-buffer-hooks
@@ -2826,7 +2826,7 @@ frame. So here I'm making the default font for all Emacs frames =void:font=.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! void:frame-notice-user-settings-a (orig-fn &rest args)
+(defadvice! void:frame-notice-user-settings-advice (orig-fn &rest args)
   "Try `void:font' followed each of `void:backup-fonts' until success.
 If none of the fonts work, just use the default system font."
   :around frame-notice-user-settings
