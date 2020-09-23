@@ -98,7 +98,17 @@
 #+begin_src emacs-lisp
 (ert-deftest void:add-advice ()
   (let ((some-hook))
-    (void:add-hook 'some-hook #'hello:world)))
+    ;; can add advice normally
+    (void:add-hook 'some-hook #'hello:world)
+    ;; can accept multiple targets
+    (void:add-hook '(one-hook two-hook) #'hello:world)
+    ;; can accept multiple hooks
+    (void:add-hook '(one-hook two-hook) #'hello:world)
+    ;; can accept multiple of both
+    (void:add-hook)
+    ;; expiration works.
+    (void:add-hook)
+    ))
 #+end_src
 
 * add-expiring-advice
