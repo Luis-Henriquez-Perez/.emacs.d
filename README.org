@@ -700,6 +700,8 @@ TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'."
 :ID:       01c00dd3-bbd5-45b7-8f3e-c8aba9091b18
 :END:
 
+The naming convention for advices is.
+
 ****** TODO advice-fn regexp
 :PROPERTIES:
 :ID:       4946ac50-69ea-49bb-b53e-25834962454d
