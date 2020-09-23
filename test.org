@@ -109,12 +109,14 @@
     (void:add-hook 'some-hook #'hello:world)
     ;; can accept multiple targets
     (void:add-hook '(one-hook two-hook) #'hello:world)
+    (should (-all-p (eq it ) (list one-hook two-hook)))
     ;; can accept multiple hooks
     (void:add-hook '(one-hook two-hook) #'hello:world)
+    (should (-all-p (eq it ) (list one-hook two-hook)))
     ;; can accept multiple of both
-    (void:add-hook '(one-target two-target) '(hi ho um))
+    (void:add-hook '(one-target two-target) (list #'hi #'ho #'um))
     ;; expiration works.
-    (void:add-hook)
+    ;; (void:add-hook)
     ))
 #+end_src
 
