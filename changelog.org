@@ -1,4 +1,9 @@
-* add a hook and an advice naming system
+* add a hook and advice naming system
+:PROPERTIES:
+:ID:       6afe717c-8dbb-4ca1-b72d-9a0c7a3ac490
+:END:
+
+*** consistent naming scheme
 :PROPERTIES:
 :ID:       7212d4d3-9ad5-42b2-8ddc-9028d79327e8
 :END:
@@ -9,6 +14,13 @@ this naming scheme, each advice I define advises exactly one function. Moreover,
 having advise named in such a way makes getting the TARGET of an advice or hook
 easy because the name of the target is a substring of the hook name.
 
+The way an advice works when it is defined.
+
+*** expiration
+:PROPERTIES:
+:ID:       434e982c-7262-4739-a28d-10ab2047aa49
+:END:
+
 Also notable, this change added a system for adding advises and hooks that
 expire. Specifically, the functions for adding hooks and advices [[][]] and
 [[][]] provide an argument, =expire-fn=. This argument requires a function. This
@@ -18,4 +30,12 @@ advise is removed from its target and unbound.
 This expiration functionality is useful in situations such as boostrapping
 packages at startup.
 
-The way an advice works when it is defined.
+*** interactive adding/removing advice
+:PROPERTIES:
+:ID:       7c76c1ee-4cdf-4800-844b-bde97d992ad9
+:END:
+
+*** notworthy properties
+:PROPERTIES:
+:ID:       9dcdd663-b9f5-4347-9698-a94792418706
+:END:
