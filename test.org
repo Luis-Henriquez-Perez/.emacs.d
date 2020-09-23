@@ -64,8 +64,8 @@
 
 #+begin_src emacs-lisp
 (ert-deftest void:advice-name ()
-  (let* ((advice))
-    (should (string= () ""))))
+  (let* ((advice 'recentf-mode@silence-output))
+    (should (string= (void:advice-name) ""))))
 #+end_src
 
 * advice-p
