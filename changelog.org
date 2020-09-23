@@ -7,7 +7,7 @@ The primary purpose of this change is to provide Void with a consistent naming
 scheme for hook, and one for advices. Specifically, hooks. As a consequence of
 this naming scheme, each advice I define advises exactly one function. Moreover,
 having advise named in such a way makes getting the TARGET of an advice or hook
-easy.
+easy because the name of the target is a substring of the hook name.
 
 Also notable, this change added a system for adding advises and hooks that
 expire. Specifically, the functions for adding hooks and advices [[][]] and
@@ -17,3 +17,5 @@ advise is removed from its target and unbound.
 
 This expiration functionality is useful in situations such as boostrapping
 packages at startup.
+
+The way an advice works when it is defined.
