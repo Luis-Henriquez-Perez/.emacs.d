@@ -701,6 +701,18 @@ itself from the hook it is in after it is called."
   (void:add-hook target (void:hook-name target hook)))
 #+end_src
 
+****** remove hooks interactively
+:PROPERTIES:
+:ID:       0e840929-5f1b-46e7-993d-e6d7ba424f15
+:END:
+
+#+begin_src emacs-lisp
+(defun void/remove-hook (hook advice)
+  "Remove hooks"
+  (interactive)
+  )
+#+end_src
+
 ****** TODO defhook!
 :PROPERTIES:
 :ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
