@@ -84,7 +84,7 @@
 #+begin_src emacs-lisp
 (ert-deftest void:advice-target ()
   (let* ((advice 'recentf-mode@silence-output))
-    (should (string= (void:advice-name) ""))))
+    (should (eq (void:advice-target advice) 'recentf-mode))))
 #+end_src
 
 * advice-p
@@ -108,7 +108,7 @@
     ;; can add advice normally
     (void:add-hook 'some-hook #'a)
     (should (eq a-hook '(#'a)))
-    (setq some-hook)
+    (setq a-hook nil)
     ;; can accept multiple targets
     (void:add-hook '(a-hook b-hook) #'hi)
     (should (-all-p (eq it '(#'hi)) (list one-hook two-hook)))
