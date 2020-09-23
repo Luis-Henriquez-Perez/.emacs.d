@@ -701,7 +701,7 @@ itself from the hook it is in after it is called."
   (void:add-hook target (void:hook-name target hook)))
 #+end_src
 
-****** remove hooks interactively
+****** TODO remove hooks interactively
 :PROPERTIES:
 :ID:       0e840929-5f1b-46e7-993d-e6d7ba424f15
 :END:
