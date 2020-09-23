@@ -650,7 +650,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 (defun void:hook-target (hook)
   "Return the target of HOOK."
   (->> (symbol-name hook)
-       (s-match (rx (1+ anything) "%"))
+       (s-match (rx (group (1+ anything)) "%"))
        (nth 1)
        (intern)))
 #+end_src
