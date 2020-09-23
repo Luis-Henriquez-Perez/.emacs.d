@@ -35,7 +35,20 @@ packages at startup.
 :ID:       7c76c1ee-4cdf-4800-844b-bde97d992ad9
 :END:
 
+I've had cases when I broke a function I would have a hard time removing the
+advice. If I remember correctly this is because I didn't know.
+
 *** notworthy properties
 :PROPERTIES:
 :ID:       9dcdd663-b9f5-4347-9698-a94792418706
+:END:
+
+**** each advice has one and only one target
+:PROPERTIES:
+:ID:       c1300559-6559-4b7d-80b0-179b8f63ff1e
+:END:
+
+**** the target of the advice can be derived from the advice name
+:PROPERTIES:
+:ID:       595e7d0f-d8cc-4e0a-96ce-a066ff4cf0c7
 :END:
