@@ -41,7 +41,8 @@
 (ert-deftest void:add-hook ()
   (let ((some-hook))
     ;; should be able to add multiple hooks.
-    (should)
+    (void:add-hook )
+    (should )
     ;; should be able to create a transient
     (should)
     (void:add-hook 'some-hook #'hello:world)))
