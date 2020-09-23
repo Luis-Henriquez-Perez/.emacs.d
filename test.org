@@ -48,6 +48,9 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest void:add-hook ()
+  (let ((some-hook))
+    (void:add-hook 'some-hook #'hello:world)))
 #+end_src
 
 * adding advice
