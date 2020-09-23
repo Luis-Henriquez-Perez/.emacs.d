@@ -10,4 +10,9 @@ having advise named in such a way makes getting the TARGET of an advice or hook
 easy.
 
 Also notable, this change added a system for adding advises and hooks that
-expire. Specifically the functions for adding and.
+expire. Specifically, the functions for adding hooks and advices [[][]] and
+[[][]] provide an argument, =expire-fn=. This argument requires a function. This
+function is called when the advice is called and when it returns true, the
+advise is removed from its target and unbound.
+
+This expiration functionality is useful in situations where you want to.
