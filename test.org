@@ -22,6 +22,41 @@
     (should (eq (void:hook-target hook) 'hello))))
 #+end_src
 
+* hook-p
+:PROPERTIES:
+:ID:       95478c49-ef81-4ac5-a3c4-14541fbccb2a
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-p ()
+  )
+#+end_src
+
+* add-hook
+:PROPERTIES:
+:ID:       0d23a888-be8d-4b8f-9f53-696b86a3136f
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:add-hook ()
+  (let ((some-hook))
+    ;; should be able to add multiple hooks.
+    (should)
+    ;; should be able to create a transient
+    (should)
+    (void:add-hook 'some-hook #'hello:world)))
+#+end_src
+
+* defhook!
+:PROPERTIES:
+:ID:       8bbc7916-eaf8-47bb-8ce6-c7eacfd0d8c9
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook! ()
+  )
+#+end_src
+
 * advice name
 :PROPERTIES:
 :ID:       b9acfae3-d442-494a-a8fa-5ff774474831
@@ -41,27 +76,6 @@
 #+begin_src emacs-lisp
 (ert-deftest void:advice-p ()
   (should (eq t (advice-p))))
-#+end_src
-
-* hook-p
-:PROPERTIES:
-:ID:       95478c49-ef81-4ac5-a3c4-14541fbccb2a
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest void:hook-p ()
-  )
-#+end_src
-
-* adding hook
-:PROPERTIES:
-:ID:       0d23a888-be8d-4b8f-9f53-696b86a3136f
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest void:add-hook ()
-  (let ((some-hook))
-    (void:add-hook 'some-hook #'hello:world)))
 #+end_src
 
 * adding advice
@@ -104,12 +118,3 @@
   )
 #+end_src
 
-* defhook!
-:PROPERTIES:
-:ID:       8bbc7916-eaf8-47bb-8ce6-c7eacfd0d8c9
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest defhook! ()
-  )
-#+end_src
