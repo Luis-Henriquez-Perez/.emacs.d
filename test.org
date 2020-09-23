@@ -69,6 +69,17 @@
     (should (string= (void:advice-name) ""))))
 #+end_src
 
+* advice target
+:PROPERTIES:
+:ID:       b8aa9227-8d57-46e8-a6ca-e94725caba1f
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:advice-target ()
+  (let* ((advice 'recentf-mode@silence-output))
+    (should (string= (void:advice-name) ""))))
+#+end_src
+
 * advice-p
 :PROPERTIES:
 :ID:       a0106e0f-ed02-452f-9919-5ffd7f28fb00

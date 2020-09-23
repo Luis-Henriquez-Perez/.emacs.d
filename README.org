@@ -677,8 +677,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Add a VOID hook to add TARGET.
 TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in
 `add-hook'. Unlike `add-hook', TARGETS and HOOKS can be single
-items or lists. EXPIRE-FN is non-nil, each function will remove
-itself from the hook it is in after it is."
+items or lists. EXPIRE-FN must be a function, each function will remove
+itself from the hook it is in after it is called."
   (dolist (target (-list targets))
     (dolist (hook (-list hooks))
       (add-hook target hook depth local)
