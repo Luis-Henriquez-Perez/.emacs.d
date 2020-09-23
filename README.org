@@ -855,6 +855,19 @@ should expire."
       (void:hook-target fn)))
 #+end_src
 
+***** function that return true
+:PROPERTIES:
+:ID:       d3c14607-2482-44d9-8881-b355434027e5
+:END:
+
+#+begin_src emacs-lisp
+(defun void:counter (count)
+  "Return t when count is zero, otherwise return nil."
+  (lambda ()
+    (cl-decf count)
+    (> count 0)))
+#+end_src
+
 **** eval-after-load!
 :PROPERTIES:
 :ID:       8d831084-539b-4072-a86a-b55afb09bf02
