@@ -15,4 +15,5 @@ expire. Specifically, the functions for adding hooks and advices [[][]] and
 function is called when the advice is called and when it returns true, the
 advise is removed from its target and unbound.
 
-This expiration functionality is useful in situations where you want to.
+This expiration functionality is useful in situations such as boostrapping
+packages at startup.
