@@ -683,6 +683,11 @@ TARGETS, HOOKS, DEPTH, and LOCAL correspond to the arguments in `add-hook'."
 :END:
 
 #+begin_src emacs-lisp
+(defun void/add-hook (hook advice)
+  "Return."
+  (interactive)
+  (completing-read-multiple)
+  (void:add-hook))
 #+end_src
 
 ****** TODO defhook!
