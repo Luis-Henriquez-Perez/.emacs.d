@@ -39,10 +39,17 @@
 
 #+begin_src emacs-lisp
 (ert-deftest void:add-hook ()
-  (let ((some-hook))
-    ;; should be able to add multiple hooks.
-    (void:add-hook )
-    (should )
+  (let ((a-hook)
+        (b-hook)
+        (c-hook)
+        (targets '(a-hook b-hook c-hook)))
+    ;; should be able to hooks to multiple targets.
+    (void:add-hook targets #'hello-world)
+    (should (-all-p ) targets)
+    ;; should be able to hooks to multiple targets.
+    (void:add-hook b-hook (list #'hello-world #'hello-sam))
+    (should (-all-p (-contains-p b-hook )) targets)
+    ;; should be able to hooks to multiple targets.
     ;; should be able to create a transient
     (should)
     (void:add-hook 'some-hook #'hello:world)))
