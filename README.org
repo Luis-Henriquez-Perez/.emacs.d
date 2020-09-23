@@ -358,6 +358,18 @@ packages.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** list symbols
+:PROPERTIES:
+:ID:       03c83098-da34-4a66-95d7-458555bc2a74
+:END:
+
+#+begin_src emacs-lisp
+(defun void:list-symbols ()
+  "List symbols."
+  (interactive)
+  )
+#+end_src
+
 *** macro writing tools
 :PROPERTIES:
 :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
