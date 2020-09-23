@@ -635,9 +635,10 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 #+begin_src emacs-lisp
 (defun void:hook-name (target hook)
   "Return new hook name based on TARGET and HOOK."
-  (let ((target-suffix (->> (symbol-name target)
-                            ()))
-        (hook-prefix (->>)))
+  (let* ((target-suffix (->> (symbol-name target)
+                             (s-match)
+                             (nth 1)))
+         (hook-prefix (->> (symbol-name ))))
     (->> (symbol-name hook)
          (s-match VOID:HOOK-FN-REGEXP)
          (nth 1)
