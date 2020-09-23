@@ -39,6 +39,13 @@ amount of startup time to emacs. Therefore, I.
 I've had cases when I broke a function I would have a hard time removing the
 advice. If I remember correctly this is because I didn't know.
 
+*** error handling for advices and hooks
+:PROPERTIES:
+:ID:       9c5a2285-e637-4a6a-9ebd-bc7b6707c4a8
+:END:
+
+To prevent the situation where a faulty advice.
+
 *** noteworthy properties
 :PROPERTIES:
 :ID:       9dcdd663-b9f5-4347-9698-a94792418706
