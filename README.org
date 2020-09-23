@@ -694,7 +694,7 @@ items or lists. EXPIRE-FN should be function. If passed in, EXPIRE-FN will"
 
 #+begin_src emacs-lisp
 (defun void/add-hook (hook advice)
-  "Interactively add hooks."
+  "Interactively add advice to HOOK."
   (interactive)
   (completing-read-multiple "Add a hook(s) to:" targets)
   (void:add-hook target (void:hook-name target hook)))
