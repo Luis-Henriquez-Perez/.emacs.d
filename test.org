@@ -1,0 +1,14 @@
+* defhook!
+:PROPERTIES:
+:ID:       130bc7cf-cfb9-43e0-91ba-2035d4b22012
+:END:
+
+** prints messages
+:PROPERTIES:
+:ID:       62a3fbcd-6182-432e-87bd-9a8a577132b9
+:END:
+
+** adds a hook
+:PROPERTIES:
+:ID:       b0c84ca1-2601-4579-a43a-a2b946e90e44
+:END:
