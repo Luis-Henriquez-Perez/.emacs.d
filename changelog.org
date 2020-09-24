@@ -54,6 +54,8 @@ we wanted, for example, to restore the gc-cons-threshold after
 :ID:       b4130374-2b99-475b-b369-831a53a9b2c6
 :END:
 
+If debug-p is non-nil, adding a hook via =defhook!= will produce output of what
+hook was added where. Futhermore, when the hook is run it will also produce output.
 The =defhook= package provides =defhook-executed= and =defhook-done=.
 
 *** my changes
