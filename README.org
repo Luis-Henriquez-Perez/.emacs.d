@@ -2326,8 +2326,7 @@ When running emacs in terminal tty is *tremendously* slow.
 #+begin_src emacs-lisp
 (unless (display-graphic-p)
   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-  (defhook init-tty ()
-    :hook window-setup-hook
+  (defhook init-tty (window-setup-hook)
     (advice-remove #'tty-run-terminal-initialization #'ignore)
     (tty-run-terminal-initialization (selected-frame) nil t)))
 #+end_src
@@ -4462,9 +4461,8 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! emms:quit-h ()
+(defhook quit-emms (kill-emacs-hook)
   "Shut down EMMS."
-  :hook kill-emacs-hook
   (when emms-player-playing-p (emms-pause))
   (emms-stop)
   ;; kill any existing mpd processes
@@ -5035,9 +5033,8 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:disable-smartparens-navigate-skip-match-h ()
+(defhook disable-smartparens-navigate-skip-match (after-change-major-mode-hook)
   "Disable smartparents skip match feature."
-  :hook after-change-major-mode-hook
   (setq sp-navigate-skip-match nil)
   (setq sp-navigate-consider-sgml-tags nil))
 #+end_src
@@ -5048,23 +5045,9 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:init-in-eval-expression-h ()
+(defhook enable-smartparens-maybe (minibuffer-setup-hook)
   "Enable `smartparens-mode' in the minibuffer, during `eval-expression' or
 `evil-ex'."
-  :hook minibuffer-setup-hook
-  (when (memq this-command '(eval-expression evil-ex))
-    (smartparens-mode)))
-#+end_src
-
-**** enable smartparens in eval-expression
-:PROPERTIES:
-:ID: f97f493c-33f5-4e59-8c66-14b98150604b
-:END:
-
-#+begin_src emacs-lisp
-(defhook! smartparens:init-in-minibuffer-h ()
-  "Enable smartparens for `eval-expression' and `evil-ex'."
-  :hook minibuffer-setup-hook
   (when (memq this-command '(eval-expression evil-ex))
     (smartparens-mode 1)))
 #+end_src
@@ -5348,9 +5331,8 @@ form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 Evil differentiates what state you're in based on the cursor color.
 
 #+begin_src emacs-lisp
-(defhook! evil:init-cursors-h ()
+(defhook setup-cursor (evil-mode-hook)
   "Initialize the default cursor shape and size."
-  :hook evil-mode-hook
   (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
   (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
   (setq evil-normal-state-cursor   '( box        "DarkGoldenrod2"))
@@ -5384,8 +5366,7 @@ cursor color will update.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! evil:make-normal-state-default-state-h ()
-  :hook evil-mode-hook
+(defhook make-normal-state-default (evil-mode-hook)
   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
   (setq evil-emacs-state-modes nil)
   (setq evil-motion-state-modes nil))
@@ -5417,25 +5398,17 @@ last state is normal state if the minibuffer is aborted. Using a
 the correct one.
 
 #+begin_src emacs-lisp
-(defvar evil:state-before-minibuffer nil
-  "Evil state before entering in the minibuffer.
-This variable will be nil when the minibuffer is closed.")
-
-(defhook! evil:enable-insert-state-in-minibuffer ()
-  :hook evil-mode-hook
-  (let ((fn (if (bound-and-true-p evil-mode) #'add-hook #'remove-hook)))
-    (funcall fn 'minibuffer-enter-hook #'evil:save-state-before-minibuffer-h)
-    (funcall fn 'minibuffer-exit-hook #'evil:restore-state-after-minibuffer-h)))
-
-(defun evil:save-state-before-minibuffer-h ()
+(defhook preserve-prior-evil-state (minibuffer-enter-hook :eval-after evil)
   "Save state before minibuffer."
-  (setq evil:state-before-minibuffer evil-state)
-  (evil-insert-state))
+  (when (bound-and-true-p evil-mode)
+    (setq evil:state-before-minibuffer evil-state)
+    (evil-insert-state)))
 
-(defun evil:restore-state-after-minibuffer-h ()
+(defhook restore-prior-evil-state (minibuffer-exit-hook :eval-after evil)
   "Restore state after minibuffer."
-  (evil-change-state evil:state-before-minibuffer)
-  (setq evil:state-before-minibuffer nil))
+  (when (bound-and-true-p evil-mode)
+    (evil-change-state evil:state-before-minibuffer)
+    (setq evil:state-before-minibuffer nil)))
 #+end_src
 
 **** escape
@@ -6219,9 +6192,8 @@ Each element of the list is an abbreviated.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! eshell:enable-text-wrapping-h ()
+(defhook enable-text-wrapping (eshell-mode-hook)
   "Enable text wrapping."
-  :hook eshell-mode-hook
   (visual-line-mode +1)
   (set-display-table-slot standard-display-table 0 ?\ ))
 #+end_src
@@ -6232,9 +6204,8 @@ Each element of the list is an abbreviated.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! eshell:remove-fringes-h ()
+(defhook remove-fringes (eshell-mode-hook)
   "Remove fringes for eshell."
-  :hook eshell-mode-hook
   (set-window-fringes nil 0 0)
   (set-window-margins nil 1 nil))
 #+end_src
@@ -6287,9 +6258,8 @@ aliases.
 #+begin_src emacs-lisp
 (defvar eshell--default:aliases nil)
 
-(defhook! eshell:init-aliases-h ()
+(defhook enable-aliases (eshell-alias-load-hook)
   "Initialize eshell aliases."
-  :hook eshell-alias-load-hook
   (setq eshell--default:aliases eshell-command-aliases-list
         eshell-command-aliases-list
         (append eshell-command-aliases-list
@@ -6414,12 +6384,11 @@ again, you are taken to the location you left off. This is very convenient.
   (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
   (savehist-file . (concat VOID:DATA-DIR "savehist")))
 
-(defhook! void:unpropertize-kill-ring-h ()
+(defhook unpropertize-kill-ring (kill-emacs-hook :append t)
   "Remove text properties from `kill-ring'."
-  :append kill-emacs-hook
   (setq kill-ring
         (mapcar (lambda (it) (when (stringp it) (substring-no-properties it)))
-                 (-non-nil kill-ring))))
+                (-non-nil kill-ring))))
 #+end_src
 
 ** bookmarks
@@ -6546,9 +6515,8 @@ I might consider doing this asynchronously.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! dired:sort-directories-first-h ()
+(defhook dired:sort-directories-first (dired-after-readin-hook)
   "List directories first in dired buffers."
-  :hook dired-after-readin-hook
   (save-excursion
     (let (buffer-read-only)
       (forward-line 2) ;; beyond dir. header
@@ -7747,9 +7715,8 @@ predict and convenient (as opposed to a random location).
 It looks nice if when I'm on a heading when I first enter an org file.
 
 #+begin_src emacs-lisp
-(defhook! org:goto-first-heading-h ()
+(defhook goto-first-heading (org-mode-hook)
   "Go to first heading when entering an org-mode file."
-  :hook org-mode-hook
   (when (org-at-heading-p)
     (beginning-of-line)
     (org:heading-goto-start)))
@@ -8408,9 +8375,8 @@ completing-read-using replacement for [[helpfn:org-capture][org-capture]] called
 This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I need to disable =org-capture's= header-line.
 
 #+begin_src emacs-lisp
-(defhook! org:capture-turn-off-header-line-h ()
+(defhook disable-header-line (org-capture-mode-hook)
   "Turn of the header line message."
-  :hook org-capture-mode-hook
   (setq-local header-line-format nil))
 #+end_src
 
