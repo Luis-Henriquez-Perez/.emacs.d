@@ -29,8 +29,8 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 
 Take, for example, the hook named =emacs-startup-hook= and the descriptor
 increase-gc-cons threshold. The a hook would look like
-=void:emacs-startup-hook&increase-garbage-collection=. So, in general, a hook name
-has the format =void:hook-variable-name&action-to-be-done=.
+=emacs-startup-hook&increase-garbage-collection=. So, in general, a hook name
+has the format =hook-variable-name&action-to-be-done=.
 
 *** built-in arguments
 :PROPERTIES:
