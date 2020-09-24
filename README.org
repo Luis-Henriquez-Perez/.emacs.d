@@ -1773,14 +1773,23 @@ while the user is working.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro defhook! ()
+(defmacro defhook! (name args &rest body)
   "Drop-in replacement for `defhook'.
 The same as `defhook', but allow multiple hooks in arguments.
 Also allow for arguments to be added bellow the docstring."
-  ;; if there is more than one hook,
+  ;; if there is more than one hook, separate it into a different `defhook' form.
   (progn
-    (defhook)
+    (defhook ,name )
     ))
+#+end_src
+
+***** customize informational messages
+:PROPERTIES:
+:ID:       26783153-3517-4079-89d8-4bd862c52909
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! )
 #+end_src
 
 ** Initialize
