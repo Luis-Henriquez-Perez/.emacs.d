@@ -1781,8 +1781,8 @@ Also allow for arguments to be added bellow the docstring."
   ;; if there is more than one hook, separate it into a different `defhook' form.
   (let ((hook (car args))
         (hooks (-take-while (-not #'keywordp) (cdr args)))
-        (docstring (if (stringp)))
-        (other-args ))
+        (docstring (if (stringp (car body)) (pop body) nil))
+        (other-args body))
     `(prog1
          (defhook ,name ,(cons hook args)
            ""
