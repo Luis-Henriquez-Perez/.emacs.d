@@ -17,6 +17,11 @@ of declaring hooks.
 To add this functionality I scrapped the =defhook!= macro I wrote in favor of the
 [[https://github.com/neil-smithline-elisp/defhook][defhook package]]. This package was created in 2012.
 
+*** syntax
+:PROPERTIES:
+:ID:       4a7e8e71-745a-4937-9611-86f72b9fa9b6
+:END:
+
 *** naming convention
 :PROPERTIES:
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
