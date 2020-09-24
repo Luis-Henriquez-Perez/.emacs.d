@@ -24,6 +24,14 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 
 The syntax of hooks.
 
+#+begin_src emacs-lisp
+(defhook boost-garbage-collection (emacs-startup-hook)
+  "Increase the frequency of garbage collection."
+  :eval-after simple
+  :append t
+  (setq gc-cons-threshold most-positive-fixnum))
+#+end_src
+
 *** naming convention
 :PROPERTIES:
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
