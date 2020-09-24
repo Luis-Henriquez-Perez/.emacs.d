@@ -1806,7 +1806,7 @@ considering that.
 
 #+begin_src emacs-lisp
 (defadvice! provide-concise-hook-message (fn hook &rest _)
-  ""
+  "Use a more concise message for `defhook'."
   :override defhook-executed
   (void:log "%s exected on %s" fn hook))
 #+end_src
