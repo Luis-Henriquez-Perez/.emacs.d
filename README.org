@@ -1791,6 +1791,9 @@ Also allow for arguments to be added bellow the docstring."
 :ID:       26783153-3517-4079-89d8-4bd862c52909
 :END:
 
+The messages `defhook' provides are informational but long and in complete
+sentence. I would rather have something quick and concise.
+
 #+begin_src emacs-lisp
 (defadvice! defhook-)
 'defhook-done
