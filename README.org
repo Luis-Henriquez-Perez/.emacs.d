@@ -597,23 +597,6 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
-**** defhook!
-:PROPERTIES:
-:ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
-:END:
-
-#+begin_src emacs-lisp
-(defmacro defhook! (name args &rest body)
-  "Define a hook function."
-  (-let* ((docstring (when (stringp (car body)) (pop body)))
-          ((key hooks . body) body)
-          (append (eq key :append))
-          (local (eq key :local)))
-    `(prog1 (defun ,name ,args ,docstring ,@body)
-       ,@(-map (lambda (hook) `(add-hook ',hook #',name ,append ,local))
-               (-list hooks)))))
-#+end_src
-
 **** defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
@@ -1762,6 +1745,136 @@ while the user is working.
 (use-package! keyfreq :hook emacs-startup-hook)
 #+end_src
 
+**** defhook
+:PROPERTIES:
+:ID:       f77b8dff-6ee8-4e2e-a442-b133bbac770c
+:END:
+
+=defhook!= provide a declarative way of setting hooks built on top of =defhook=.
+It's built on top of =defhook=.
+
+***** defhook
+:PROPERTIES:
+:ID:       0526239e-2790-4ee5-bd9b-15393c5536c6
+:END:
+
+[[https://github.com/emacsmirror/defhook][defhook]] provides an alternative, declarative mechanism for defining hooks.
+Additionally, it provides variables to customize percisely how the hooks are
+named, a useful "cl-esque" keyword arguments to further configure =defhook='s
+behavior, and a basic way of logging information about when a hook is created
+and when it is called. It would be a waste not to use such good and well
+thought-out code, so I use it as the backend for my =defhook!= macro.
+
+#+begin_src emacs-lisp
+(use-package! defhook
+  :require t
+  :setq
+  (defhook-user-prefix . "")
+  (defhook-user-separator . "")
+  (defhook-sym-desc-separator . "&")
+  (defhook-use-font-lock-mode . nil)
+  (defhook-display-informational-messages . (if void:debug-p t nil)))
+#+end_src
+
+***** wrapper around defhook
+:PROPERTIES:
+:ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
+:END:
+
+Sometimes, particularly when we want to add multiple keyword arguments, the
+argument list of =defhook= becomes so long that you have to split it up into a
+newline. I hate how this looks and have a strong preference for keeping argument
+lists on one line. To avoid this situation, I've added option for adding keyword
+arguments before the body of the macro is useful.
+
+Note the use of the argument name =ACTION=. I have diverged from =NAME= as used
+in =defun= because the corresponding =defhook!= argument will *not* be the name
+of the hook. It will be used in combination with the hook name to generate a
+name as specified in Void naming conventions.
+
+#+begin_src emacs-lisp
+(defmacro defhook! (action args &rest body)
+  "Drop-in replacement for `defhook'.
+ACTION should be a symbol that denotes what the created hook does.
+Unlike `defhook', this macro allows for multiple hooks to be passed in and it
+also allows keyword arguments to be passed in before the body (and after the
+docstring if there is one) of the function."
+  (declare (doc-string 3))
+  (let ((hook (car args))
+        (hooks (-take-while (-not #'keywordp) (cdr args)))
+        (specs (-drop-while (-not #'keywordp) args))
+        (docstring (if (stringp (car body)) (pop body) nil))
+        (keyword-args (->> body
+                           (--unfold (when (keywordp (car it))
+                                       (cons (-take 2 it) (cddr it))))
+                           (-flatten-n 2)))
+        (other-args body))
+    `(progn
+       ,(when hooks
+          `(defhook! ,action ,(append hooks specs keyword-args)
+             ,docstring
+             ,@body))
+       (defhook ,action ,(cons hook (append specs keyword-args))
+         ,docstring
+         ,@body))))
+#+end_src
+
+***** customize informational messages
+:PROPERTIES:
+:ID:       26783153-3517-4079-89d8-4bd862c52909
+:END:
+
+The messages =defhook= provides are informational but long and in complete
+sentences. I customize this message so that it is concise and to the point.
+
+#+begin_src emacs-lisp
+(defadvice! replace-hook-done-message (fn hook &rest _)
+  "Set `defhook-done' message to \"add FN to HOOK\"."
+  :override defhook-done
+  (void:log "add %s to %s" fn hook))
+#+end_src
+
+***** fix defhook-executed
+:PROPERTIES:
+:ID:       79b17411-b0d7-40c2-be6e-37d0e916baf9
+:END:
+
+Using my naming conventions for user-defined hooks, the hook function name will always
+include the name of the hook variable it's attached to. For that reason, it's
+redundant for me the full hook name. I'd prefer just the hook action and the
+hook variable.
+
+#+begin_src emacs-lisp
+(defadvice! replace-hook-executed-message (fn hook &rest _)
+  "Set `defhook-executed' message to \"HOOK -> FN-action\"."
+  :override defhook-executed
+  (alet (->> fn
+             (symbol-name)
+             (s-match (rx-to-string `(seq ,defhook-sym-desc-separator (group (1+ anything)))))
+             (nth 1))
+    (void:log "%s -> %s" hook it)))
+#+end_src
+
+***** font-lock
+:PROPERTIES:
+:ID:       2837b042-d93b-492e-8dd4-0e2c74f9a966
+:END:
+
+=defhook= was designed to resemble =defun= in syntax. To make the resemblance
+complete I add the same type of syntax coloring to =defhook!=.
+
+#+begin_src emacs-lisp
+(defconst VOID:DEFHOOK-FONT-LOCK-KEYWORDS
+  `((,(rx (group "defhook!") (1+ white) (group (1+ (not white))))
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face)))
+  "Font lock keywords for `defhook!'.")
+
+(defhook! add-defhook-keywords (emacs-lisp-mode-hook)
+  "Add `defhook!' keywords to `emacs-lisp-mode'."
+  (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
+#+end_src
+
 ** Initialize
 :PROPERTIES:
 :ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
@@ -2309,8 +2422,7 @@ When running emacs in terminal tty is *tremendously* slow.
 #+begin_src emacs-lisp
 (unless (display-graphic-p)
   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-  (defhook! void:init-tty-h ()
-    :hook window-setup-hook
+  (defhook! init-tty (window-setup-hook)
     (advice-remove #'tty-run-terminal-initialization #'ignore)
     (tty-run-terminal-initialization (selected-frame) nil t)))
 #+end_src
@@ -2341,14 +2453,12 @@ hook variables use action verbs in their names not nouns. So the =exit= in
 #+begin_src emacs-lisp
 (defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
 
-(defhook! void:boost-garbage-collection-h ()
+(defhook! boost-garbage-collection (minibuffer-enter-hook)
   "Boost garbage collection settings to `VOID:GC-CONS-THRESHOLD-MAX'."
-  :hook minibuffer-enter-hook
   (setq gc-cons-threshold VOID:GC-CONS-THRESHOLD-MAX))
 
-(defhook! void:defer-garbage-collection-h ()
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
   "Reset garbage collection settings to `void:gc-cons-threshold' after delay."
-  :append minibuffer-exit-hook
   (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID:GC-CONS-THRESHOLD))))
 #+end_src
 
@@ -2368,9 +2478,8 @@ preferable for quitting emacs to be slightly slower than for emacs startup to
 be.
 
 #+begin_src emacs-lisp
-(defhook! void:tangle-on-quit-maybe-h ()
+(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
   "Tangle if `void:needs-tangling-p' returns t."
-  :append kill-emacs-hook
   (when (void:needs-tangling-p)
     (void/tangle-org-file)))
 #+end_src
@@ -2387,9 +2496,8 @@ because ~VOID:INIT-FILE~ already contains all the code I need so I don't want it
 to waste time loading ~void:main-elisp-file~.
 
 #+begin_src emacs-lisp
-(defhook! void:tangle-on-save-h ()
+(defhook! tangle-maybe (after-save-hook)
   "Tangle `VOID:README-FILE' asynchronously when it is saved."
-  :hook after-save-hook
   (when (and (require 'async nil t)
              (string= (file-truename VOID:README-FILE)
                       (or (buffer-file-name (current-buffer)) ""))
@@ -2647,9 +2755,8 @@ is called.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! void:init-theme-h ()
+(defhook! set-theme (window-setup-hook)
   "Set the theme and load the font, in that order."
-  :hook window-setup-hook
   (when (and void:theme (not (memq void:theme custom-enabled-themes)))
     (condition-case nil
         (load-theme void:theme t)
@@ -2778,9 +2885,8 @@ makes emacs feel like a window manager with gaps.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! frame:update-window-divider-hook ()
+(defhook! update-window-divider (void:after-load-theme-hook)
   "Ensure window divider persists after theme change."
-  :hook void:after-load-theme-hook
   (unless (bound-and-true-p window-divider-mode)
     (window-divider-mode 1)))
 #+end_src
@@ -2878,8 +2984,7 @@ functions which open external linux applications.
   (require 'exwm-systemtray)
   (exwm-systemtray-enable))
 
-(defhook! exwm:setup-hide-mode-line-h ()
-  :hook exwm-mode-hook
+(defhook! setup-hide-mode-line (exwm-mode-hook)
   (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
   (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
 #+end_src
@@ -2890,9 +2995,8 @@ functions which open external linux applications.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! exwm:rename-buffer-to-title-h ()
+(defhook! rename-buffer-to-title (exwm-update-title-hook)
   "Rename buffer to title."
-  :hook exwm-update-title-hook
   (exwm-workspace-rename-buffer exwm-title))
 #+end_src
 
@@ -2922,9 +3026,8 @@ windows).
 :END:
 
 #+begin_src emacs-lisp
-(defhook! exwm:start-in-char-mode-h ()
+(defhook! start-in-char-mode (exwm-manage-finish-hook)
   "Start a program in char-mode if it's in `exwm:char-mode-apps'."
-  :hook exwm-manage-finish-hook
   (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
 #+end_src
@@ -3622,13 +3725,11 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! company:init-backends-h ()
+(defhook! setup-backends (after-change-major-mode-hook :eval-after company :local t)
   "Set `company-backends' for the current buffer."
-  :hook company-mode-hook
-  (require 'company)
-  (unless (eq major-mode 'fundamental-mode)
-    (set (make-local-variable 'company-backends) (company--backends+)))
-  (add-hook 'after-change-major-mode-hook #'company:init-backends-h nil 'local))
+  (when (and (bound-and-true-p company-mode)
+             (not (eq major-mode 'fundamental-mode)))
+    (set (make-local-variable 'company-backends) (company--backends+))))
 #+end_src
 
 **** get backends
@@ -3667,9 +3768,8 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! company:close-tooltip-h ()
+(defhook! close-tooltip (void:escape-hook)
   "Close company tooltip."
-  :hook void:escape-hook
   (when (and (boundp 'company-mode)
              (eq company-mode t))
     (company-abort)
@@ -3849,8 +3949,7 @@ it is definitely on my list of things to try out.
   :defer-config
   ;; Only render to html once. If the first send fails for whatever reason,
   ;; org-mu4e would do so each time you try again.
-  (defhook! org-mu4e-render-html-only-once-h ()
-    :hook message-send-hook
+  (defhook! org-mu4e-render-html-only-once (message-send-hook)
     (setq-local org-mu4e-convert-to-html nil)))
 #+end_src
 
@@ -4015,8 +4114,7 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defhook! mu4e:wrap-text-in-message ()
-  :hook mu4e-view-mode-hook
+(defhook! wrap-text-in-message (mu4e-view-mode-hook :eval-after mu4e)
   (setq-local truncate-lines nil))
 #+end_src
 
@@ -4457,9 +4555,8 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! emms:quit-h ()
+(defhook! quit-emms (kill-emacs-hook)
   "Shut down EMMS."
-  :hook kill-emacs-hook
   (when emms-player-playing-p (emms-pause))
   (emms-stop)
   ;; kill any existing mpd processes
@@ -5030,9 +5127,8 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:disable-smartparens-navigate-skip-match-h ()
+(defhook! disable-smartparens-navigate-skip-match (after-change-major-mode-hook)
   "Disable smartparents skip match feature."
-  :hook after-change-major-mode-hook
   (setq sp-navigate-skip-match nil)
   (setq sp-navigate-consider-sgml-tags nil))
 #+end_src
@@ -5043,23 +5139,9 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! smartparens:init-in-eval-expression-h ()
+(defhook! enable-smartparens-maybe (minibuffer-setup-hook)
   "Enable `smartparens-mode' in the minibuffer, during `eval-expression' or
 `evil-ex'."
-  :hook minibuffer-setup-hook
-  (when (memq this-command '(eval-expression evil-ex))
-    (smartparens-mode)))
-#+end_src
-
-**** enable smartparens in eval-expression
-:PROPERTIES:
-:ID: f97f493c-33f5-4e59-8c66-14b98150604b
-:END:
-
-#+begin_src emacs-lisp
-(defhook! smartparens:init-in-minibuffer-h ()
-  "Enable smartparens for `eval-expression' and `evil-ex'."
-  :hook minibuffer-setup-hook
   (when (memq this-command '(eval-expression evil-ex))
     (smartparens-mode 1)))
 #+end_src
@@ -5343,9 +5425,8 @@ form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 Evil differentiates what state you're in based on the cursor color.
 
 #+begin_src emacs-lisp
-(defhook! evil:init-cursors-h ()
+(defhook! setup-cursor (evil-mode-hook)
   "Initialize the default cursor shape and size."
-  :hook evil-mode-hook
   (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
   (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
   (setq evil-normal-state-cursor   '( box        "DarkGoldenrod2"))
@@ -5365,12 +5446,10 @@ I add a hook in [[helpvar:void-after-load-theme-hook][void:after-load-theme-hook
 cursor color will update.
 
 #+begin_src emacs-lisp
-(defhook! evil:enable-cursor-refresh-h ()
+(defhook! refresh-evil-cursor (void:after-load-theme-hook)
   "Enable cursor refreshing after theme change."
-  :hook evil-mode-hook
-  (if (bound-and-true-p evil-mode)
-      (add-hook 'void:after-load-theme-hook #'evil-refresh-cursor 100)
-    (remove-hook 'void:after-load-theme-hook #'evil-refresh-cursor)))
+  (when (bound-and-true-p evil-mode)
+    (evil-refresh-cursor)))
 #+end_src
 
 **** normal state everywhere
@@ -5379,8 +5458,8 @@ cursor color will update.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! evil:make-normal-state-default-state-h ()
-  :hook evil-mode-hook
+(defhook! make-normal-state-default (evil-mode-hook)
+  "Make normal state the default `evil-mode' state."
   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
   (setq evil-emacs-state-modes nil)
   (setq evil-motion-state-modes nil))
@@ -5412,25 +5491,17 @@ last state is normal state if the minibuffer is aborted. Using a
 the correct one.
 
 #+begin_src emacs-lisp
-(defvar evil:state-before-minibuffer nil
-  "Evil state before entering in the minibuffer.
-This variable will be nil when the minibuffer is closed.")
+(defhook! preserve-prior-evil-state (minibuffer-enter-hook :eval-after evil)
+  "Save state before entering the minibuffer and enter insert state."
+  (when (bound-and-true-p evil-mode)
+    (setq evil:state-before-minibuffer evil-state)
+    (evil-insert-state)))
 
-(defhook! evil:enable-insert-state-in-minibuffer ()
-  :hook evil-mode-hook
-  (let ((fn (if (bound-and-true-p evil-mode) #'add-hook #'remove-hook)))
-    (funcall fn 'minibuffer-enter-hook #'evil:save-state-before-minibuffer-h)
-    (funcall fn 'minibuffer-exit-hook #'evil:restore-state-after-minibuffer-h)))
-
-(defun evil:save-state-before-minibuffer-h ()
-  "Save state before minibuffer."
-  (setq evil:state-before-minibuffer evil-state)
-  (evil-insert-state))
-
-(defun evil:restore-state-after-minibuffer-h ()
+(defhook! restore-prior-evil-state (minibuffer-exit-hook :eval-after evil)
   "Restore state after minibuffer."
-  (evil-change-state evil:state-before-minibuffer)
-  (setq evil:state-before-minibuffer nil))
+  (when (bound-and-true-p evil-mode)
+    (evil-change-state evil:state-before-minibuffer)
+    (setq evil:state-before-minibuffer nil)))
 #+end_src
 
 **** escape
@@ -6214,9 +6285,8 @@ Each element of the list is an abbreviated.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! eshell:enable-text-wrapping-h ()
+(defhook! enable-text-wrapping (eshell-mode-hook)
   "Enable text wrapping."
-  :hook eshell-mode-hook
   (visual-line-mode +1)
   (set-display-table-slot standard-display-table 0 ?\ ))
 #+end_src
@@ -6227,9 +6297,8 @@ Each element of the list is an abbreviated.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! eshell:remove-fringes-h ()
+(defhook! remove-fringes (eshell-mode-hook)
   "Remove fringes for eshell."
-  :hook eshell-mode-hook
   (set-window-fringes nil 0 0)
   (set-window-margins nil 1 nil))
 #+end_src
@@ -6282,9 +6351,8 @@ aliases.
 #+begin_src emacs-lisp
 (defvar eshell--default:aliases nil)
 
-(defhook! eshell:init-aliases-h ()
+(defhook! enable-aliases (eshell-alias-load-hook)
   "Initialize eshell aliases."
-  :hook eshell-alias-load-hook
   (setq eshell--default:aliases eshell-command-aliases-list
         eshell-command-aliases-list
         (append eshell-command-aliases-list
@@ -6409,12 +6477,11 @@ again, you are taken to the location you left off. This is very convenient.
   (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
   (savehist-file . (concat VOID:DATA-DIR "savehist")))
 
-(defhook! void:unpropertize-kill-ring-h ()
+(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
   "Remove text properties from `kill-ring'."
-  :append kill-emacs-hook
   (setq kill-ring
         (mapcar (lambda (it) (when (stringp it) (substring-no-properties it)))
-                 (-non-nil kill-ring))))
+                (-non-nil kill-ring))))
 #+end_src
 
 ** bookmarks
@@ -6541,9 +6608,8 @@ I might consider doing this asynchronously.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! dired:sort-directories-first-h ()
+(defhook! dired:sort-directories-first (dired-after-readin-hook)
   "List directories first in dired buffers."
-  :hook dired-after-readin-hook
   (save-excursion
     (let (buffer-read-only)
       (forward-line 2) ;; beyond dir. header
@@ -6922,18 +6988,20 @@ that restarts emacs. I haven't tested this in EXWM mode.
   (auto-revert-stop-on-user-input . nil)
   (revert-without-query . (list "."))
   :defer-config
-  (defhook! auto-revert:buffer-h ()
-    "Auto revert current buffer, if necessary."
-    :hook void:after-switch-buffer-hook
+  (defun auto-revert-buffer-maybe ()
     (unless (or (bound-and-true-p auto-revert-mode)
                 (active-minibuffer-window))
       (auto-revert-handler)))
 
-  (defhook! auto-revert:visible-buffers-h ()
+  (defhook! auto-revert-buffer-maybe (void:after-switch-buffer-hook)
+    "Auto revert current buffer, if necessary."
+    (auto-revert-buffer-maybe))
+
+  (defhook! auto-revert-auto-revert-visible-buffers (focus-in-hook after-save-hook)
     "Auto revert stale buffers in visible windows, if necessary."
-    :hook (focus-in-hook after-save-hook)
     (--each (-uniq (mapcar #'window-buffer (window-list)))
-      (with-current-buffer it (auto-revert:buffer-h)))))
+      (with-current-buffer it
+        (auto-revert-buffer-maybe)))))
 #+end_src
 
 ** security
@@ -7742,9 +7810,8 @@ predict and convenient (as opposed to a random location).
 It looks nice if when I'm on a heading when I first enter an org file.
 
 #+begin_src emacs-lisp
-(defhook! org:goto-first-heading-h ()
+(defhook! goto-first-heading (org-mode-hook)
   "Go to first heading when entering an org-mode file."
-  :hook org-mode-hook
   (when (org-at-heading-p)
     (beginning-of-line)
     (org:heading-goto-start)))
@@ -8173,9 +8240,8 @@ Unless I explicitly ask for properties I don't want to see them.
 Sometimes the heading inserted doesn't remain visible.
 
 #+begin_src emacs-lisp
-(defhook! org:ensure-heading-visible-h ()
-  "Ensure that heading remains visible."
-  :hook org-insert-heading-hook
+(defhook! ensure-heading-are-visible (org-insert-heading-hook)
+  "Ensure that heading remains visible after insertion."
   (-when-let (o (cdr (get-char-property-and-overlay (point) 'invisible)))
     (move-overlay o (overlay-start o) (line-end-position 0))))
 #+end_src
@@ -8403,9 +8469,8 @@ completing-read-using replacement for [[helpfn:org-capture][org-capture]] called
 This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I need to disable =org-capture's= header-line.
 
 #+begin_src emacs-lisp
-(defhook! org:capture-turn-off-header-line-h ()
+(defhook! disable-header-line (org-capture-mode-hook)
   "Turn of the header line message."
-  :hook org-capture-mode-hook
   (setq-local header-line-format nil))
 #+end_src
 
@@ -9037,8 +9102,7 @@ you can "discover" the commands as you go along.
   (which-key-popup-type . 'minibuffer)
   :config
   (which-key-mode)
-  (defhook! which:key-set-line-spacing-h ()
-    :hook which-key-init-buffer-hook
+  (defhook! set-line-spacing (which-key-init-buffer-hook)
     (setq line-spacing 3))
   (which-key-add-key-based-replacements void:leader-key "<leader>")
   (which-key-add-key-based-replacements void:localleader-key "<localleader>"))
