@@ -90,7 +90,6 @@ The name of the advice(s) defined by defhook is determined by the specified name
 :PROPERTIES:
 :ID:       6a0c947c-660a-439f-aa14-4b103d8b7548
 :END:
-
 ** replace selectrum with ivy/counsel
 :PROPERTIES:
 :ID:       3ec4e606-653b-4d0a-af59-71b7518426c0
@@ -196,3 +195,10 @@ Advises output log messages when =void:debug= is non-nil.
 Since there is currently no package named =void= and it is more consistent with
 emacs naming conventions to use the "-", I've decided to just use the prefix
 =void-= for naming variables.
+
+** auto commit feature
+:PROPERTIES:
+:ID:       0bf2503e-daf6-4176-93f2-bb102fd221b2
+:END:
+
+The purpose of this change is to add auto-committing to my emacs config.
