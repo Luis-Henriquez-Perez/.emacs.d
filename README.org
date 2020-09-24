@@ -2400,7 +2400,7 @@ because ~VOID:INIT-FILE~ already contains all the code I need so I don't want it
 to waste time loading ~void:main-elisp-file~.
 
 #+begin_src emacs-lisp
-(defhook void:tangle-on-save (after-save-hook)
+(defhook tangle-maybe (after-save-hook)
   "Tangle `VOID:README-FILE' asynchronously when it is saved."
   (when (and (require 'async nil t)
              (string= (file-truename VOID:README-FILE)
@@ -2659,7 +2659,7 @@ is called.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook void:set-theme (window-setup-hook)
+(defhook set-theme (window-setup-hook)
   "Set the theme and load the font, in that order."
   (when (and void:theme (not (memq void:theme custom-enabled-themes)))
     (condition-case nil
@@ -3629,13 +3629,11 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! company:init-backends-h ()
+(defhook setup-backends (after-change-major-mode-hook :eval-after company :local t)
   "Set `company-backends' for the current buffer."
-  :hook company-mode-hook
-  (require 'company)
-  (unless (eq major-mode 'fundamental-mode)
-    (set (make-local-variable 'company-backends) (company--backends+)))
-  (add-hook 'after-change-major-mode-hook #'company:init-backends-h nil 'local))
+  (when (and (bound-and-true-p company-mode)
+             (not (eq major-mode 'fundamental-mode)))
+    (set (make-local-variable 'company-backends) (company--backends+))))
 #+end_src
 
 **** get backends
@@ -5352,12 +5350,10 @@ I add a hook in [[helpvar:void-after-load-theme-hook][void:after-load-theme-hook
 cursor color will update.
 
 #+begin_src emacs-lisp
-(defhook! evil:enable-cursor-refresh-h ()
+(defhook refresh-evil-cursor (void:after-load-theme-hook)
   "Enable cursor refreshing after theme change."
-  :hook evil-mode-hook
-  (if (bound-and-true-p evil-mode)
-      (add-hook 'void:after-load-theme-hook #'evil-refresh-cursor 100)
-    (remove-hook 'void:after-load-theme-hook #'evil-refresh-cursor)))
+  (when (bound-and-true-p evil-mode)
+    (evil-refresh-cursor)))
 #+end_src
 
 **** normal state everywhere
@@ -6895,14 +6891,13 @@ that restarts emacs. I haven't tested this in EXWM mode.
   (auto-revert-stop-on-user-input . nil)
   (revert-without-query . (list "."))
   :defer-config
-  (defhook! auto-revert:buffer-h ()
+  (defhook auto-revert-buffer-maybe (void:after-switch-buffer-hook)
     "Auto revert current buffer, if necessary."
-    :hook void:after-switch-buffer-hook
     (unless (or (bound-and-true-p auto-revert-mode)
                 (active-minibuffer-window))
       (auto-revert-handler)))
 
-  (defhook! auto-revert:visible-buffers-h ()
+  (defhook auto-revert-auto-revert-visible-buffers (focus-in-hook after-save-hook)
     "Auto revert stale buffers in visible windows, if necessary."
     :hook (focus-in-hook after-save-hook)
     (--each (-uniq (mapcar #'window-buffer (window-list)))
@@ -8145,9 +8140,8 @@ Unless I explicitly ask for properties I don't want to see them.
 Sometimes the heading inserted doesn't remain visible.
 
 #+begin_src emacs-lisp
-(defhook! org:ensure-heading-visible-h ()
-  "Ensure that heading remains visible."
-  :hook org-insert-heading-hook
+(defhook ensure-heading-are-visible (org-insert-heading-hook)
+  "Ensure that heading remains visible after insertion."
   (-when-let (o (cdr (get-char-property-and-overlay (point) 'invisible)))
     (move-overlay o (overlay-start o) (line-end-position 0))))
 #+end_src
@@ -9008,8 +9002,7 @@ you can "discover" the commands as you go along.
   (which-key-popup-type . 'minibuffer)
   :config
   (which-key-mode)
-  (defhook! which:key-set-line-spacing-h ()
-    :hook which-key-init-buffer-hook
+  (defhook set-line-spacing (which-key-init-buffer-hook)
     (setq line-spacing 3))
   (which-key-add-key-based-replacements void:leader-key "<leader>")
   (which-key-add-key-based-replacements void:localleader-key "<localleader>"))
