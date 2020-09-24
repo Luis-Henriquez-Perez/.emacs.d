@@ -1802,8 +1802,8 @@ Also allow for arguments to be added bellow the docstring."
 
 #+begin_src emacs-lisp
 (advice-add #'defhook-executed :override
-            (lambda (fn hook &rest args)
-              (message "%s exected on %s" fn hook)))
+            (lambda (fn hook &rest _)
+              (void:log "%s exected on %s" fn hook)))
 #+end_src
 
 ** Initialize
