@@ -1803,6 +1803,7 @@ Also allow for arguments to be added bellow the docstring."
 
 #+begin_src emacs-lisp
 (defadvice! provide-concise-hook-message (fn hook &rest _)
+  ""
   :override defhook-executed
   (void:log "%s exected on %s" fn hook))
 #+end_src
