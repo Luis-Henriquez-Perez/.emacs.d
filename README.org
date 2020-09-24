@@ -2326,7 +2326,7 @@ When running emacs in terminal tty is *tremendously* slow.
 #+begin_src emacs-lisp
 (unless (display-graphic-p)
   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-  (defhook! void:init-tty-h ()
+  (defhook init-tty ()
     :hook window-setup-hook
     (advice-remove #'tty-run-terminal-initialization #'ignore)
     (tty-run-terminal-initialization (selected-frame) nil t)))
@@ -2358,14 +2358,12 @@ hook variables use action verbs in their names not nouns. So the =exit= in
 #+begin_src emacs-lisp
 (defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
 
-(defhook! void:boost-garbage-collection-h ()
+(defhook boost-garbage-collection (minibuffer-enter-hook)
   "Boost garbage collection settings to `VOID:GC-CONS-THRESHOLD-MAX'."
-  :hook minibuffer-enter-hook
   (setq gc-cons-threshold VOID:GC-CONS-THRESHOLD-MAX))
 
-(defhook! void:defer-garbage-collection-h ()
+(defhook defer-garbage-collection (minibuffer-exit-hook :append t)
   "Reset garbage collection settings to `void:gc-cons-threshold' after delay."
-  :append minibuffer-exit-hook
   (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID:GC-CONS-THRESHOLD))))
 #+end_src
 
@@ -2385,9 +2383,8 @@ preferable for quitting emacs to be slightly slower than for emacs startup to
 be.
 
 #+begin_src emacs-lisp
-(defhook! void:tangle-on-quit-maybe-h ()
+(defhook tangle-on-quit-maybe (kill-emacs-hook :append t)
   "Tangle if `void:needs-tangling-p' returns t."
-  :append kill-emacs-hook
   (when (void:needs-tangling-p)
     (void/tangle-org-file)))
 #+end_src
@@ -2404,9 +2401,8 @@ because ~VOID:INIT-FILE~ already contains all the code I need so I don't want it
 to waste time loading ~void:main-elisp-file~.
 
 #+begin_src emacs-lisp
-(defhook! void:tangle-on-save-h ()
+(defhook void:tangle-on-save (after-save-hook)
   "Tangle `VOID:README-FILE' asynchronously when it is saved."
-  :hook after-save-hook
   (when (and (require 'async nil t)
              (string= (file-truename VOID:README-FILE)
                       (or (buffer-file-name (current-buffer)) ""))
@@ -2664,9 +2660,8 @@ is called.")
 :END:
 
 #+begin_src emacs-lisp
-(defhook! void:init-theme-h ()
+(defhook void:set-theme (window-setup-hook)
   "Set the theme and load the font, in that order."
-  :hook window-setup-hook
   (when (and void:theme (not (memq void:theme custom-enabled-themes)))
     (condition-case nil
         (load-theme void:theme t)
@@ -2795,9 +2790,8 @@ makes emacs feel like a window manager with gaps.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! frame:update-window-divider-hook ()
+(defhook update-window-divider (void:after-load-theme-hook)
   "Ensure window divider persists after theme change."
-  :hook void:after-load-theme-hook
   (unless (bound-and-true-p window-divider-mode)
     (window-divider-mode 1)))
 #+end_src
@@ -2895,8 +2889,7 @@ functions which open external linux applications.
   (require 'exwm-systemtray)
   (exwm-systemtray-enable))
 
-(defhook! exwm:setup-hide-mode-line-h ()
-  :hook exwm-mode-hook
+(defhook setup-hide-mode-line (exwm-mode-hook)
   (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
   (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
 #+end_src
@@ -2907,9 +2900,8 @@ functions which open external linux applications.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! exwm:rename-buffer-to-title-h ()
+(defhook rename-buffer-to-title (exwm-update-title-hook)
   "Rename buffer to title."
-  :hook exwm-update-title-hook
   (exwm-workspace-rename-buffer exwm-title))
 #+end_src
 
@@ -2939,9 +2931,8 @@ windows).
 :END:
 
 #+begin_src emacs-lisp
-(defhook! exwm:start-in-char-mode-h ()
+(defhook start-in-char-mode (exwm-manage-finish-hook)
   "Start a program in char-mode if it's in `exwm:char-mode-apps'."
-  :hook exwm-manage-finish-hook
   (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
 #+end_src
@@ -3684,9 +3675,8 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! company:close-tooltip-h ()
+(defhook close-tooltip (void:escape-hook)
   "Close company tooltip."
-  :hook void:escape-hook
   (when (and (boundp 'company-mode)
              (eq company-mode t))
     (company-abort)
@@ -3866,8 +3856,7 @@ it is definitely on my list of things to try out.
   :defer-config
   ;; Only render to html once. If the first send fails for whatever reason,
   ;; org-mu4e would do so each time you try again.
-  (defhook! org-mu4e-render-html-only-once-h ()
-    :hook message-send-hook
+  (defhook org-mu4e-render-html-only-once (message-send-hook)
     (setq-local org-mu4e-convert-to-html nil)))
 #+end_src
 
@@ -4032,8 +4021,7 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defhook! mu4e:wrap-text-in-message ()
-  :hook mu4e-view-mode-hook
+(defhook wrap-text-in-message (mu4eview-mode-hook)
   (setq-local truncate-lines nil))
 #+end_src
 
