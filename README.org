@@ -1756,6 +1756,7 @@ while the user is working.
 :END:
 
 #+begin_src emacs-lisp
+;; assert-rtn is a dependency of defhook.
 (use-package! assert-rtn :require t)
 (use-package! defhook
   :require t
