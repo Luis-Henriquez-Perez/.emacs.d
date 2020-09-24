@@ -1747,6 +1747,11 @@ while the user is working.
 
 **** defhook
 :PROPERTIES:
+:ID:       f77b8dff-6ee8-4e2e-a442-b133bbac770c
+:END:
+
+***** defhook
+:PROPERTIES:
 :ID:       0526239e-2790-4ee5-bd9b-15393c5536c6
 :END:
 
@@ -1760,6 +1765,22 @@ while the user is working.
   (defhook-sym-desc-separator . "&")
   (defhook-use-font-lock-mode . t)
   (defhook-display-informational-messages . (if void:debug-p t nil)))
+#+end_src
+
+***** wrapper around defhook
+:PROPERTIES:
+:ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defhook! ()
+  "Drop-in replacement for `defhook'.
+The same as `defhook', but allow multiple hooks in arguments.
+Also allow for arguments to be added bellow the docstring."
+  ;; if there is more than one hook,
+  (progn
+    (defhook)
+    ))
 #+end_src
 
 ** Initialize
