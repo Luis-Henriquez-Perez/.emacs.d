@@ -1767,7 +1767,7 @@ while the user is working.
   (defhook-display-informational-messages . (if void:debug-p t nil)))
 #+end_src
 
-***** wrapper around defhook
+***** wrapper around defhook                                          :disabled:
 :PROPERTIES:
 :ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
 :END:
@@ -1785,13 +1785,25 @@ Also allow for arguments to be added bellow the docstring."
      ))
 #+end_src
 
-***** customize informational messages
+***** customize informational messages                                :disabled:
 :PROPERTIES:
 :ID:       26783153-3517-4079-89d8-4bd862c52909
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! )
+(defadvice! defhook-)
+'defhook-done
+#+end_src
+
+***** fix defhook-executed
+:PROPERTIES:
+:ID:       79b17411-b0d7-40c2-be6e-37d0e916baf9
+:END:
+
+#+begin_src emacs-lisp
+(advice-add #'defhook-executed :override
+            (lambda (fn hook &rest args)
+              (message "%s exected on %s" fn hook)))
 #+end_src
 
 ** Initialize
