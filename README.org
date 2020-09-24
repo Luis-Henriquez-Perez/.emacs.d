@@ -1760,8 +1760,8 @@ while the user is working.
 (use-package! defhook
   :require t
   :setq
-  (defhook-user-prefix . "void")
-  (defhook-user-separator . ":")
+  (defhook-user-prefix . "")
+  (defhook-user-separator . "")
   (defhook-sym-desc-separator . "&")
   (defhook-use-font-lock-mode . t)
   (defhook-display-informational-messages . (if void:debug-p t nil)))
