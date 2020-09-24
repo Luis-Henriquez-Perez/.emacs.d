@@ -5,9 +5,11 @@
 
 The purpose of this change is to extend and improve the functionality of
 =defhook!= macro. Specifically, I introduce a consistent naming scheme for
-user-designed hooks (incidentally with very concise syntax), logging system so I
-can get output about when my custom hooks are called, and a rich set of keywords
-that increase the expressiveness of declaring hooks.
+user-designed hooks (incidentally with very concise syntax), a logging system so
+I can get output about when my custom hooks are called, and a rich set of
+keywords that increase the expressiveness of declaring hooks.
+
+To add this functionality
 
 ** ability to customize naming convention
 :PROPERTIES:
