@@ -3,6 +3,11 @@
 :ID:       cc995576-2322-45cd-82ed-4b083f94d618
 :END:
 
+The purpose of this change is to extend and improve the functionality of
+=defhook!= macro. Specifically, I introduce a consistent naming scheme for
+user-designed hooks (incidentally with very concise syntax), logging system so I
+can get output about when my custom hooks are called, and a rich.
+
 A principle I want to strive to follow as a programmer is to reuse existing code
 as much as possible. I had defined my own =defadvice!= macro. However, I found
 code from someone who did the same thing but more thoroughly than me and with
