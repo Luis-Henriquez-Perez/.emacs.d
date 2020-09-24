@@ -1781,6 +1781,7 @@ Also allow for arguments to be added bellow the docstring."
   `(progn
      (defhook ,name ()
        )
+     (defhook! )
      ))
 #+end_src
 
