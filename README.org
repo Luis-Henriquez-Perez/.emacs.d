@@ -1795,8 +1795,10 @@ The messages `defhook' provides are informational but long and in complete
 sentence. I would rather have something quick and concise.
 
 #+begin_src emacs-lisp
-(defadvice! defhook-)
-'defhook-done
+(defadvice!  ()
+  ""
+  :override 'defhook-done
+  (void:log ""))
 #+end_src
 
 ***** fix defhook-executed
