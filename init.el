@@ -65,7 +65,7 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 
 ;; ** tangle from and to files
 
-(defvar void:main-org-file (concat user-emacs-directory "README.org")
+(defvar void:main-org-file (concat user-emacs-directory "init.org")
   "Org file containing most of VOID's initialization code.")
 
 (defvar void:main-elisp-file (concat user-emacs-directory ".local/main.el")
