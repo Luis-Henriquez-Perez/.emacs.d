@@ -1762,6 +1762,23 @@ while the user is working.
 (use-package! keyfreq :hook emacs-startup-hook)
 #+end_src
 
+**** defhook
+:PROPERTIES:
+:ID:       0526239e-2790-4ee5-bd9b-15393c5536c6
+:END:
+
+#+begin_src emacs-lisp
+(use-package! assert-rtn :require t)
+(use-package! defhook
+  :require t
+  :setq
+  (defhook-user-prefix . "void")
+  (defhook-user-separator . ":")
+  (defhook-sym-desc-separator . "&")
+  (defhook-use-font-lock-mode . t)
+  (defhook-display-informational-messages . (if void:debug-p t nil)))
+#+end_src
+
 ** Initialize
 :PROPERTIES:
 :ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
