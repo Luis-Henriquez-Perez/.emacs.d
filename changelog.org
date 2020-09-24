@@ -6,24 +6,31 @@
 The purpose of this change is to extend and improve the functionality of
 =defhook!= macro. Specifically, I introduce a consistent naming scheme for
 user-designed hooks (incidentally with very concise syntax), logging system so I
-can get output about when my custom hooks are called, and a rich.
-
-A principle I want to strive to follow as a programmer is to reuse existing code
-as much as possible. I had defined my own =defadvice!= macro. However, I found
-code from someone who did the same thing but more thoroughly than me and with
-additional features.
+can get output about when my custom hooks are called, and a rich set of keywords
+that increase the expressiveness of declaring hooks.
 
 ** ability to customize naming convention
 :PROPERTIES:
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
 :END:
 
+I really like that =defhook=.
+
 ** built-in arguments
 :PROPERTIES:
 :ID:       feb0d3d2-04e1-4571-a9ab-0e8b2d92b0b9
 :END:
 
+=defhook= has additional arguments you can pass in to customize the behavior.
+
 ** debugging/documenting capabilities
 :PROPERTIES:
 :ID:       b4130374-2b99-475b-b369-831a53a9b2c6
+:END:
+
+=defhook= provides =defhook-executed=
+
+** my changes
+:PROPERTIES:
+:ID:       e15f555d-cd4a-4d21-8544-2a6042827cd7
 :END:
