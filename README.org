@@ -1778,9 +1778,10 @@ while the user is working.
 The same as `defhook', but allow multiple hooks in arguments.
 Also allow for arguments to be added bellow the docstring."
   ;; if there is more than one hook, separate it into a different `defhook' form.
-  (progn
-    (defhook ,name )
-    ))
+  `(progn
+     (defhook ,name ()
+       )
+     ))
 #+end_src
 
 ***** customize informational messages
