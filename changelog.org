@@ -22,15 +22,17 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 :ID:       4a7e8e71-745a-4937-9611-86f72b9fa9b6
 :END:
 
+The syntax of hooks.
+
 *** naming convention
 :PROPERTIES:
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
 :END:
 
-Take, for example, the hook named =emacs-startup-hook= and the descriptor
-increase-gc-cons threshold. The a hook would look like
-=emacs-startup-hook&increase-garbage-collection=. So, in general, a hook name
-has the format =hook-variable-name&action-to-be-done=.
+All user defined hooks have the format =hook-variable-name&action-to-be-done=. If
+we wanted, for example, to restore the gc-cons-threshold after
+=emacs-startup-hook=. The a hook would look like
+=emacs-startup-hook&increase-garbage-collection=.
 
 *** built-in arguments
 :PROPERTIES:
