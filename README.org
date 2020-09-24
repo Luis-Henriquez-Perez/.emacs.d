@@ -597,23 +597,6 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
-**** defhook!
-:PROPERTIES:
-:ID:       fb33eef6-d84e-4384-9241-73cde5e0e0d0
-:END:
-
-#+begin_src emacs-lisp
-(defmacro defhook! (name args &rest body)
-  "Define a hook function."
-  (-let* ((docstring (when (stringp (car body)) (pop body)))
-          ((key hooks . body) body)
-          (append (eq key :append))
-          (local (eq key :local)))
-    `(prog1 (defun ,name ,args ,docstring ,@body)
-       ,@(-map (lambda (hook) `(add-hook ',hook #',name ,append ,local))
-               (-list hooks)))))
-#+end_src
-
 **** defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
