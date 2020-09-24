@@ -1,0 +1,52 @@
+* defhook!
+:PROPERTIES:
+:ID:       130bc7cf-cfb9-43e0-91ba-2035d4b22012
+:END:
+
+** accepts multiple hooks
+:PROPERTIES:
+:ID:       ef5c4f7d-7a25-41cb-b75f-c1c73e8ec4db
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook-accepts-multiple-hooks ()
+  (let (a-hook b-hook)
+    (defhook! hello-world (a-hook b-hook)
+      (+ 1 1))
+    (should (equal a-hook '(a-hook&hello-world)))
+    (should (equal b-hook '(b-hook&hello-world)))
+    ;; cleanup
+    (fmakunbound 'a-hook&hello-world)
+    (fmakunbound 'b-hook&hello-world)))
+#+end_src
+
+** accepts arg after docstring
+:PROPERTIES:
+:ID:       9a758139-cd46-4408-b8ac-66d9ee3f7968
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook-accepts-args-after-docstring ()
+  ;; Check to see if all the defadvice forms contain.
+  (let* ((arguments '(:eval-after evil :interactive-spec t))
+         (macroexpansion (macroexpand-1
+                          `(defhook! hello-world (a-hook)
+                             ,@arguments
+                             (+ 1 1)))))
+    ;; the second item should be the args list.
+    (should (--all-p (-same-items-p arguments (cdr (-third-item it)))
+                     (-non-nil (cdr macroexpansion))))))
+#+end_src
+
+** font locking works
+:PROPERTIES:
+:ID:       29d5d7a4-2e07-4379-9964-b5912ab06ef3
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook-font-lock-keywords ()
+  (let* ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
+         (match (s-match regexp "(defhook! hello-world (emacs-lisp-mode-hook) nil)")))
+    (should (string= (nth 1 match) "defhook!"))
+    (should (string= (nth 2 match) "hello-world"))))
+#+end_src
