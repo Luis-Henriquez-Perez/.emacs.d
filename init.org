@@ -103,7 +103,7 @@ referenced alot.
 (defconst VOID:EMACS-DIR (file-truename user-emacs-directory)
   "Path to `user-emacs-directory'.")
 
-(defconst VOID:INIT-FILE (concat VOID:EMACS-DIR "init.el")
+(defconst VOID-INIT-EL-FILE (concat VOID:EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
 (defconst VOID:README-FILE (concat VOID:EMACS-DIR "README.org")
@@ -2262,7 +2262,7 @@ of the Emacs frame are recorded after they expire.
 (defun void/switch-to-init-org-file ()
   "Switch to Void's init.el file."
   (interactive)
-  (switch-to-buffer VOID:INIT-FILE))
+  (switch-to-buffer VOID-INIT-EL-FILE))
 #+end_src
 
 **** quit emacs no prompt
@@ -2383,7 +2383,7 @@ be.
 This is another attempt to keep my =main.el= file in sync as much as possible with
 [[helpvar:VOID-README-FILE][void:main-org-file]]. ~void:tangle-on-save-h~ is called whenever a buffer is being
 saved to a file. The reason why I use ~cl-letf~ to temporarily override [[helpfn:load][load]] is
-because ~VOID:INIT-FILE~ already contains all the code I need so I don't want it
+because ~VOID-INIT-EL-FILE~ already contains all the code I need so I don't want it
 to waste time loading ~void:main-elisp-file~.
 
 #+begin_src emacs-lisp
@@ -2391,7 +2391,7 @@ to waste time loading ~void:main-elisp-file~.
   "Tangle `VOID:README-FILE' asynchronously when it is saved."
   :hook after-save-hook
   (when (and (require 'async nil t)
-             (string= (file-truename VOID:README-FILE)
+             (string= (file-truename VOID:INIT-ORG-FILE)
                       (or (buffer-file-name (current-buffer)) ""))
              (void:needs-tangling-p))
     (async-start
