@@ -1,0 +1,24 @@
+* using the package defhook
+:PROPERTIES:
+:ID:       cc995576-2322-45cd-82ed-4b083f94d618
+:END:
+
+A principle I want to strive to follow as a programmer is to reuse existing code
+as much as possible. I had defined my own =defadvice!= macro. However, I found
+code from someone who did the same thing but more thoroughly than me and with
+additional features.
+
+** ability to customize naming convention
+:PROPERTIES:
+:ID:       a43264d4-f30a-4411-9443-4bdda08d4290
+:END:
+
+** built-in arguments
+:PROPERTIES:
+:ID:       feb0d3d2-04e1-4571-a9ab-0e8b2d92b0b9
+:END:
+
+** debugging/documenting capabilities
+:PROPERTIES:
+:ID:       b4130374-2b99-475b-b369-831a53a9b2c6
+:END:
