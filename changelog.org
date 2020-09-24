@@ -15,14 +15,17 @@ that facilitates , and a rich set of keywords that increase the expressiveness
 of declaring hooks.
 
 To add this functionality I scrapped the =defhook!= macro I wrote in favor of the
-[[https://github.com/neil-smithline-elisp/defhook][defhook package]].
+[[https://github.com/neil-smithline-elisp/defhook][defhook package]]. This package was created in 2012.
 
-*** ability to customize naming convention
+*** naming convention
 :PROPERTIES:
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
 :END:
 
-I really like that =defhook=.
+Take, for example, the hook named =emacs-startup-hook= and the descriptor
+increase-gc-cons threshold. The a hook would look like
+=void:emacs-startup-hook&increase-garbage-collection=. So, in general, a hook name
+has the format =void:hook-variable-name&action-to-be-done=.
 
 *** built-in arguments
 :PROPERTIES:
