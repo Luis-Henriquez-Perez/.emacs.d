@@ -45,7 +45,8 @@
 
 #+begin_src emacs-lisp
 (ert-deftest defhook-font-lock-keywords ()
-  (let ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS)))
-    (s-match regexp "(defhook! hello-world)")
-    ))
+  (let* ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
+         (match (s-match regexp "(defhook! hello-world (emacs-lisp-mode-hook) nil)")))
+    (should (string= (nth 1 match) "defhook!"))
+    (should (string= (nth 2 match) "hello-world"))))
 #+end_src
