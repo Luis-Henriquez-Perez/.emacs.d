@@ -37,12 +37,10 @@
 
 #+begin_src emacs-lisp
 (ert-deftest defhook-accepts-args-after-docstring ()
-  (let ()
-    (defhook! hello-world (a-hook)
-      :eval-after evil
-      :interactive-spec t
-      (+ 1 1))
-    ()))
+  (should (defhook! hello-world (a-hook)
+            :eval-after evil
+            :interactive-spec t
+            (+ 1 1))))
 #+end_src
 
 ** expands to the right thing
