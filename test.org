@@ -26,7 +26,8 @@
   (let (a-hook b-hook)
     (defhook! hello-world (a-hook b-hook)
       (+ 1 1))
-    (should (-all-p ))))
+    (should (-all-p (eq it '(hello-world))
+                    (list a-hook b-hook)))))
 #+end_src
 
 ** accepts arg after docstring
@@ -37,8 +38,11 @@
 #+begin_src emacs-lisp
 (ert-deftest defhook-accepts-args-after-docstring ()
   (let ()
-    (defhook! hello-world))
-  )
+    (defhook! hello-world (a-hook)
+      :eval-after evil
+      :interactive-spec t
+      (+ 1 1))
+    ()))
 #+end_src
 
 ** expands to the right thing
