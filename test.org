@@ -32,7 +32,6 @@
 
 #+begin_src emacs-lisp
 (ert-deftest defhook-accepts-args-after-docstring ()
-  ;; test indirectly by looking at messages.
   (should (macroexpand-1
            '(defhook! hello-world (a-hook)
               :eval-after evil

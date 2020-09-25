@@ -1750,12 +1750,14 @@ while the user is working.
 :ID:       f77b8dff-6ee8-4e2e-a442-b133bbac770c
 :END:
 
-=defhook= provides an alternative, declarative mechanism for defining hooks.
+I provide a declarative way of setting hooks built on top of =defhook=.
 
 ***** defhook
 :PROPERTIES:
 :ID:       0526239e-2790-4ee5-bd9b-15393c5536c6
 :END:
+
+=defhook= provides an alternative, declarative mechanism for defining hooks.
 
 #+begin_src emacs-lisp
 (use-package! defhook
