@@ -1831,7 +1831,7 @@ considering that.
     (void:log "%s -> %s" hook it)))
 #+end_src
 
-***** syntax highlighting
+***** font-lock
 :PROPERTIES:
 :ID:       2837b042-d93b-492e-8dd4-0e2c74f9a966
 :END:
