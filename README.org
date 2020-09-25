@@ -1776,6 +1776,9 @@ build on top of this already made functionality.
 :ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
 :END:
 
+Especially when we want to add multiple keyword arguments. The option for adding
+keyword arguments before the body of the macro is useful.
+
 #+begin_src emacs-lisp
 (defmacro defhook! (action args &rest body)
   "Drop-in replacement for `defhook'.
