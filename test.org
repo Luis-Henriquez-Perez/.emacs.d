@@ -34,7 +34,7 @@
                             ,@arguments
                             (+ 1 1)))))
     ;; the second item should be the args list.
-    (should (-all-p (-contains-p (-third-item))
+    (should (-all-p (-same-items-p (cdr (-third-item it)))
                     (-non-nil (cdr macroexpansion))))))
 #+end_src
 
