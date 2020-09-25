@@ -38,7 +38,8 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 :END:
 
 =defhook!= now takes in the the hook variable in it's argument list.
-Additionlly, it can use keywords as specified in [[helpfn:defhook][defhook]].
+Additionlly, it can use keywords as specified in [[helpfn:defhook][defhook]] in
+its argument list as well.
 
 #+begin_src emacs-lisp
 (defhook! do-something (some-hook :eval-after simple)
