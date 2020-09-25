@@ -48,7 +48,9 @@ The syntax of hooks.
 :END:
 
 #+begin_src emacs-lisp
-(defhook )
+(defhook! say-lalala (emacs-startup-hook emacs-lisp-mode-hook)
+  "Say \"lalala\"."
+  (message "lalala"))
 #+end_src
 
 **** establish a naming convention
