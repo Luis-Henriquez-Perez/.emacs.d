@@ -1850,7 +1850,8 @@ hook variable.
 :ID:       2837b042-d93b-492e-8dd4-0e2c74f9a966
 :END:
 
-=defhook= was designed to resemble =defun=.
+=defhook= was designed to resemble =defun= in syntax. To make the resemblance
+complete I add the same type of syntax coloring.
 
 #+begin_src emacs-lisp
 (defconst VOID:DEFHOOK-FONT-LOCK-KEYWORDS
