@@ -32,6 +32,10 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 :ID:       0d0c2108-8c15-44bb-a7c1-7fba27037543
 :END:
 
+#+begin_src emacs-lisp
+(defhook!)
+#+end_src
+
 ***** add the ability to specify keyword arguments below
 :PROPERTIES:
 :ID:       4a7e8e71-745a-4937-9611-86f72b9fa9b6
