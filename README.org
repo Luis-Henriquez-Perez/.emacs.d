@@ -1862,10 +1862,10 @@ complete I add the same type of syntax coloring to =defhook!=.
   `((,(rx (group "defhook!") (1+ white) (group (1+ (not white))))
      (1 font-lock-keyword-face)
      (2 font-lock-function-name-face)))
-  "`font-lock-mode' regexp for `defhook!' in `emacs-lisp-mode'.")
+  "Font lock keywords for `defhook!'.")
 
 (defhook! add-defhook-keywords (emacs-lisp-mode-hook)
-  "Add `defhook!' keywords to `emacs-lisp-mode's `font-lock-keywords'."
+  "Add `defhook!' keywords to `emacs-lisp-mode'."
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
 #+end_src
 
