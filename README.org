@@ -1823,7 +1823,7 @@ considering that.
 
 #+begin_src emacs-lisp
 (defadvice! overwrite-hook-executed-message (fn hook &rest _)
-  "Use a more concise message for `defhook'."
+  "Set `defhook-executed' message to \"HOOK -> FN-action\"."
   :override defhook-executed
   (alet (->> fn
              (symbol-name)
