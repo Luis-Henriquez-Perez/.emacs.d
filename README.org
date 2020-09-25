@@ -1790,7 +1790,7 @@ the macro is useful.
 #+begin_src emacs-lisp
 (defmacro defhook! (action args &rest body)
   "Drop-in replacement for `defhook'.
-ACTION should be a verbal phrase that describes what the hook does.
+ACTION should be a symbol that denotes what the created hook does.
 Unlike `defhook', this macro allows for multiple hooks to be passed in and it
 also allows keyword arguments to be passed in before the body (and after the
 docstring if there is one) of the function."
