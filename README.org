@@ -1784,8 +1784,8 @@ thought-out code, so I use it as the backend for my =defhook!= macro.
 Sometimes, particularly when we want to add multiple keyword arguments, the
 argument list of =defhook= becomes so long that you have to split it up into a
 newline. I hate how this looks and have a strong preference for keeping argument
-lists on one line. The option for adding keyword arguments before the body of
-the macro is useful.
+lists on one line. To avoid this situation, I've added option for adding keyword
+arguments before the body of the macro is useful.
 
 Note the use of the argument name =ACTION=. I have diverged from =NAME= as used
 in =defun= because the corresponding =defhook!= argument will *not* be the name
