@@ -1806,10 +1806,10 @@ docstring if there is one) of the function."
         (other-args body))
     `(progn
        ,(when hooks
-          `(defhook! ,name ,(append hooks specs keyword-args)
+          `(defhook! ,action ,(append hooks specs keyword-args)
              ,docstring
              ,@body))
-       (defhook ,name ,(cons hook (append specs keyword-args))
+       (defhook ,action ,(cons hook (append specs keyword-args))
          ,docstring
          ,@body))))
 #+end_src
