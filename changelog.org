@@ -35,7 +35,7 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 The syntax of hooks.
 
 #+begin_src emacs-lisp
-(defhook boost-garbage-collection (emacs-startup-hook)
+(defhook! boost-garbage-collection (emacs-startup-hook)
   "Increase the frequency of garbage collection."
   :eval-after simple
   :append t
