@@ -1808,7 +1808,7 @@ The messages `defhook' provides are informational but long and in complete
 sentence. I would rather have something quick and concise.
 
 #+begin_src emacs-lisp
-(defadvice! better-message (fn hook op began-in-hook hook-ending &rest hook-args)
+(defadvice! overwrite-hook-done-message (fn hook op began-in-hook hook-ending &rest hook-args)
   :override defhook-done
   (void:log "add %s to %s" fn hook))
 #+end_src
@@ -1822,7 +1822,7 @@ The default message provided by =defhook= is long and wordy especially
 considering that.
 
 #+begin_src emacs-lisp
-(defadvice! provide-concise-hook-message (fn hook &rest _)
+(defadvice! overwrite-hook-executed-message (fn hook &rest _)
   "Use a more concise message for `defhook'."
   :override defhook-executed
   (alet (->> fn
