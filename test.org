@@ -50,3 +50,14 @@
 
 #+begin_src emacs-lisp
 #+end_src
+
+** font locking works
+:PROPERTIES:
+:ID:       29d5d7a4-2e07-4379-9964-b5912ab06ef3
+:END:
+
+#+begin_src emacs-lisp
+(let ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS)))
+  (s-match regexp "(defhook! hello-world)")
+  )
+#+end_src
