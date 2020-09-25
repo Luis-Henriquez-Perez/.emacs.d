@@ -13,8 +13,8 @@
   (let (a-hook b-hook)
     (defhook! hello-world (a-hook b-hook)
       (+ 1 1))
-    (should (-all-p (eq it '(hello-world))
-                    (list a-hook b-hook)))
+    (should (--all-p (eq it '(hello-world))
+                     (list a-hook b-hook)))
     ;; cleanup
     (fmakunbound 'a-hook%hello-world)
     (fmakunbound 'b-hook%hello-world)))
