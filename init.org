@@ -2229,9 +2229,9 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/switch-to-main-org-file ()
+(defun void/switch-to-init-org-file ()
   (interactive)
-  (find-file (concat VOID:EMACS-DIR "README.org")))
+  (find-file (concat VOID:EMACS-DIR "init.org")))
 #+end_src
 
 **** main todo file
