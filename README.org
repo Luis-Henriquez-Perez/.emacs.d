@@ -1776,8 +1776,8 @@ while the user is working.
 #+begin_src emacs-lisp
 (defmacro defhook! (name args &rest body)
   "Drop-in replacement for `defhook'.
-The same as `defhook', but allow multiple hooks in arguments.
-Also allow for arguments to be added bellow the docstring."
+The same as `defhook', but allow multiple hooks and for keyword arguments to be
+added before the docstring."
   (declare (doc-string 3))
   (let ((hook (car args))
         (hooks (-take-while (-not #'keywordp) (cdr args)))
