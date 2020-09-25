@@ -3,6 +3,11 @@
 :ID:       8fd5fdb0-d8e1-4f7e-a6db-4d033a05371d
 :END:
 
+** hooks now follow a naming convention
+:PROPERTIES:
+:ID:       dbe3f98a-0cec-4d12-b0f5-9745330a350d
+:END:
+
 ** add improvements to defhook!
 :PROPERTIES:
 :ID:       cc995576-2322-45cd-82ed-4b083f94d618
