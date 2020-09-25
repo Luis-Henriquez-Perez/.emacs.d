@@ -1777,8 +1777,9 @@ build on top of this already made functionality.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro defhook! (name args &rest body)
+(defmacro defhook! (action args &rest body)
   "Drop-in replacement for `defhook'.
+ACTION is what
 The same as `defhook', but allow multiple hooks and for keyword arguments to be
 added before the docstring."
   (declare (doc-string 3))
