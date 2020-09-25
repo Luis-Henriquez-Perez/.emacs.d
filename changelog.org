@@ -8,6 +8,11 @@
 :ID:       dbe3f98a-0cec-4d12-b0f5-9745330a350d
 :END:
 
+All user defined hooks now have the format =hook-variable-name&action-to-be-done=. If
+we wanted, for example, to restore the gc-cons-threshold after
+=emacs-startup-hook=. The a hook would look like
+=emacs-startup-hook&increase-garbage-collection=.
+
 ** add improvements to defhook!
 :PROPERTIES:
 :ID:       cc995576-2322-45cd-82ed-4b083f94d618
@@ -64,15 +69,10 @@ The syntax of hooks.
   (message "lalala"))
 #+end_src
 
-**** establish a naming convention
+**** creates hook names that meets naming conventions
 :PROPERTIES:
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
 :END:
-
-All user defined hooks now have the format =hook-variable-name&action-to-be-done=. If
-we wanted, for example, to restore the gc-cons-threshold after
-=emacs-startup-hook=. The a hook would look like
-=emacs-startup-hook&increase-garbage-collection=.
 
 **** debugging/documenting capabilities
 :PROPERTIES:
