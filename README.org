@@ -6972,7 +6972,8 @@ that restarts emacs. I haven't tested this in EXWM mode.
   (defhook! auto-revert-auto-revert-visible-buffers (focus-in-hook after-save-hook)
     "Auto revert stale buffers in visible windows, if necessary."
     (--each (-uniq (mapcar #'window-buffer (window-list)))
-      (with-current-buffer it (auto-revert:buffer-h)))))
+      (with-current-buffer it
+        (void:after-switch-buffer-hook&auto-revert-buffer-maybe)))))
 #+end_src
 
 ** security
