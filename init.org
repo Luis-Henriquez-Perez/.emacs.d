@@ -107,7 +107,6 @@ referenced alot.
   "Path to the elisp file that bootstraps Void startup.")
 
 (defconst VOID-INIT-ORG-FILE (concat VOID:EMAIL-DIR "init.org")
-
   "Path to the org file.")
 
 (defconst VOID:README-FILE (concat VOID:EMACS-DIR "README.org")
