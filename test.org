@@ -22,7 +22,9 @@
     (defhook! hello-world (a-hook b-hook)
       (+ 1 1))
     (should (-all-p (eq it '(hello-world))
-                    (list a-hook b-hook)))))
+                    (list a-hook b-hook)))
+    ;; cleanup
+    (fmakunbound ')))
 #+end_src
 
 ** accepts arg after docstring
@@ -48,5 +50,6 @@
 (ert-deftest defhook-font-lock-keywords ()
   (let ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS)))
     (s-match regexp "(defhook! hello-world)")
+    (should)
     ))
 #+end_src
