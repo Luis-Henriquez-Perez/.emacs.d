@@ -1751,6 +1751,7 @@ while the user is working.
 :END:
 
 =defhook!= provide a declarative way of setting hooks built on top of =defhook=.
+It's built on top of =defhook=.
 
 ***** defhook
 :PROPERTIES:
