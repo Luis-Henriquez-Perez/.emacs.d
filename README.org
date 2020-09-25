@@ -1851,7 +1851,7 @@ hook variable.
 :END:
 
 =defhook= was designed to resemble =defun= in syntax. To make the resemblance
-complete I add the same type of syntax coloring.
+complete I add the same type of syntax coloring to =defhook!=.
 
 #+begin_src emacs-lisp
 (defconst VOID:DEFHOOK-FONT-LOCK-KEYWORDS
