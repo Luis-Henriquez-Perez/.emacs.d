@@ -8,5 +8,6 @@
 :ID:       99df489f-60aa-4344-95e3-b6e7c0f6f7aa
 :END:
 
-The org file I have is really long. People want a short summary of what my goals
-are and what this is.
+The org file I have is really long and goes into specific details of my
+configuration. I want a summary of my general goals, what makes my emacs config
+unique and screenshots of my setup.
