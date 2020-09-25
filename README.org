@@ -1810,7 +1810,7 @@ The messages =defhook= provides are informational but long and in complete
 sentences. I customize this message so that it is concise and to the point.
 
 #+begin_src emacs-lisp
-(defadvice! overwrite-hook-done-message (fn hook &rest _)
+(defadvice! replace-hook-done-message (fn hook &rest _)
   "Set `defhook-done' message to \"add FN to HOOK\"."
   :override defhook-done
   (void:log "add %s to %s" fn hook))
@@ -1824,7 +1824,7 @@ sentences. I customize this message so that it is concise and to the point.
 Since the hook name includes.
 
 #+begin_src emacs-lisp
-(defadvice! overwrite-hook-executed-message (fn hook &rest _)
+(defadvice! replace-hook-executed-message (fn hook &rest _)
   "Set `defhook-executed' message to \"HOOK -> FN-action\"."
   :override defhook-executed
   (alet (->> fn
