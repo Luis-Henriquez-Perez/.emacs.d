@@ -1799,7 +1799,7 @@ Also allow for arguments to be added bellow the docstring."
          ,@body))))
 #+end_src
 
-***** customize informational messages                                :disabled:
+***** customize informational messages
 :PROPERTIES:
 :ID:       26783153-3517-4079-89d8-4bd862c52909
 :END:
@@ -1809,9 +1809,8 @@ sentence. I would rather have something quick and concise.
 
 #+begin_src emacs-lisp
 (defadvice! better-message (fn hook op began-in-hook hook-ending &rest hook-args)
-  ""
-  :override 'defhook-done
-  (void:log ""))
+  :override defhook-done
+  (void:log "add %s to %s" fn hook))
 #+end_src
 
 ***** fix defhook-executed
