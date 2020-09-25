@@ -27,6 +27,11 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 :ID:       78554953-f62b-43ea-aade-a57eacb99655
 :END:
 
+***** typical syntax
+:PROPERTIES:
+:ID:       0d0c2108-8c15-44bb-a7c1-7fba27037543
+:END:
+
 ***** add the ability to specify keyword arguments below
 :PROPERTIES:
 :ID:       4a7e8e71-745a-4937-9611-86f72b9fa9b6
