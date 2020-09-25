@@ -33,7 +33,9 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 :END:
 
 #+begin_src emacs-lisp
-(defhook!)
+(defhook! do-something (some-hook :eval-after simple)
+  ""
+  ())
 #+end_src
 
 ***** add the ability to specify keyword arguments below
