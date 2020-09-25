@@ -29,6 +29,18 @@
     (should (-all-p ))))
 #+end_src
 
+** accepts arg after docstring
+:PROPERTIES:
+:ID:       9a758139-cd46-4408-b8ac-66d9ee3f7968
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook-accepts-args-after-docstring ()
+  (let ()
+    (defhook! hello-world))
+  )
+#+end_src
+
 ** expands to the right thing
 :PROPERTIES:
 :ID:       056bf349-9845-441b-8fdb-8a64f8e7895c
