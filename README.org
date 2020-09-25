@@ -1808,6 +1808,7 @@ sentences. I would rather have something quick, concise and to the point.
 
 #+begin_src emacs-lisp
 (defadvice! overwrite-hook-done-message (fn hook &rest _)
+  "Set `defhook-done' message to \"add FN to HOOK\"."
   :override defhook-done
   (void:log "add %s to %s" fn hook))
 #+end_src
