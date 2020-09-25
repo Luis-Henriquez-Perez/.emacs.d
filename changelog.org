@@ -37,7 +37,7 @@ To add this functionality I scrapped the =defhook!= macro I wrote in favor of th
 :ID:       0d0c2108-8c15-44bb-a7c1-7fba27037543
 :END:
 
-=defhook!= now takes in the hook.
+=defhook!= now takes in the the hook variable in it's argument list.
 
 #+begin_src emacs-lisp
 (defhook! do-something (some-hook :eval-after simple)
