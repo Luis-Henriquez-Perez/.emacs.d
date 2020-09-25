@@ -1764,7 +1764,7 @@ while the user is working.
   (defhook-user-prefix . "")
   (defhook-user-separator . "")
   (defhook-sym-desc-separator . "&")
-  (defhook-use-font-lock-mode . t)
+  (defhook-use-font-lock-mode . nil)
   (defhook-display-informational-messages . (if void:debug-p t nil)))
 #+end_src
 
