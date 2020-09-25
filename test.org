@@ -13,11 +13,11 @@
   (let (a-hook b-hook)
     (defhook! hello-world (a-hook b-hook)
       (+ 1 1))
-    (should (eq a-hook '(a-hook%hello-world)))
-    (should (eq b-hook '(b-hook%hello-world)))
+    (should (equal a-hook '(a-hook&hello-world)))
+    (should (equal b-hook '(b-hook&hello-world)))
     ;; cleanup
-    (fmakunbound 'a-hook%hello-world)
-    (fmakunbound 'b-hook%hello-world)))
+    (fmakunbound 'a-hook&hello-world)
+    (fmakunbound 'b-hook&hello-world)))
 #+end_src
 
 ** accepts arg after docstring
