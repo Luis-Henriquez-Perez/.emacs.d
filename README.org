@@ -4086,7 +4086,7 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defhook! wrap-text-in-message (mu4eview-mode-hook)
+(defhook! wrap-text-in-message (mu4e-view-mode-hook :eval-after mu4e)
   (setq-local truncate-lines nil))
 #+end_src
 
