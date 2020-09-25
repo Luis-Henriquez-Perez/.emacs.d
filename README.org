@@ -1781,9 +1781,8 @@ build on top of this already made functionality.
   "Drop-in replacement for `defhook'.
 ACTION should be a verbal phrase that describes what the hook does.
 Unlike `defhook', this macro allows for multiple hooks to be passed in and it
-also allows keyword arguments.
-The same as `defhook', but allow multiple hooks and for keyword arguments to be
-added before the docstring."
+also allows keyword arguments to be passed in before the body (and after the
+docstring if there is one) of the function. "
   (declare (doc-string 3))
   (let ((hook (car args))
         (hooks (-take-while (-not #'keywordp) (cdr args)))
