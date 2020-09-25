@@ -1829,7 +1829,10 @@ sentences. I customize this message so that it is concise and to the point.
 :ID:       79b17411-b0d7-40c2-be6e-37d0e916baf9
 :END:
 
-Since the hook name includes.
+Using my naming conventions for user-defined hooks, the hook function name will always
+include the name of the hook variable it's attached to. For that reason, it's
+redundant for me the full hook name. I'd prefer just the hook action and the
+hook variable.
 
 #+begin_src emacs-lisp
 (defadvice! replace-hook-executed-message (fn hook &rest _)
