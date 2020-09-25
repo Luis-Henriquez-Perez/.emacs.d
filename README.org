@@ -5434,6 +5434,7 @@ cursor color will update.
 
 #+begin_src emacs-lisp
 (defhook! make-normal-state-default (evil-mode-hook)
+  "Make normal state the default `evil-mode' state."
   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
   (setq evil-emacs-state-modes nil)
   (setq evil-motion-state-modes nil))
