@@ -13,6 +13,22 @@
 :ID:       b0c84ca1-2601-4579-a43a-a2b946e90e44
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
+** accepts multiple hooks
+:PROPERTIES:
+:ID:       ef5c4f7d-7a25-41cb-b75f-c1c73e8ec4db
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest defhook-accepts-multiple-hooks ()
+  (let (a-hook b-hook)
+    (defhook! hello-world (a-hook b-hook)
+      (+ 1 1))
+    (should (-all-p ))))
+#+end_src
+
 ** expands to the right thing
 :PROPERTIES:
 :ID:       056bf349-9845-441b-8fdb-8a64f8e7895c
