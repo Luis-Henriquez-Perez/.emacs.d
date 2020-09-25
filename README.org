@@ -1820,8 +1820,7 @@ sentences. I customize this message so that it is concise and to the point.
 :ID:       79b17411-b0d7-40c2-be6e-37d0e916baf9
 :END:
 
-The default message provided by =defhook= is long and wordy especially
-considering that.
+Since the hook name includes.
 
 #+begin_src emacs-lisp
 (defadvice! overwrite-hook-executed-message (fn hook &rest _)
