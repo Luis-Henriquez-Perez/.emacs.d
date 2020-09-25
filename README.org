@@ -1849,6 +1849,22 @@ considering that.
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
 #+end_src
 
+***** hook name
+:PROPERTIES:
+:ID:       b3dcd195-e64f-4055-850f-4cb159895888
+:END:
+
+***** add-hook
+:PROPERTIES:
+:ID:       fea86ba0-d836-4c58-97cc-97718918922f
+:END:
+
+#+begin_src emacs-lisp
+(defun void:add-hook (targets hooks &optional depth)
+  "Add a hook."
+  )
+#+end_src
+
 ** Initialize
 :PROPERTIES:
 :ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
