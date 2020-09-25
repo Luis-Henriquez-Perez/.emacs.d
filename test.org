@@ -27,6 +27,7 @@
 
 #+begin_src emacs-lisp
 (ert-deftest defhook-accepts-args-after-docstring ()
+  ;; Check to see if all the defadvice forms contain.
   (should (macroexpand-1
            '(defhook! hello-world (a-hook)
               :eval-after evil
