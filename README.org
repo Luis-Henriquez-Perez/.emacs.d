@@ -1750,7 +1750,7 @@ while the user is working.
 :ID:       f77b8dff-6ee8-4e2e-a442-b133bbac770c
 :END:
 
-I provide a declarative way of setting hooks built on top of =defhook=.
+=defhook!= provide a declarative way of setting hooks built on top of =defhook=.
 
 ***** defhook
 :PROPERTIES:
