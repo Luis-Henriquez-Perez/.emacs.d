@@ -16,7 +16,8 @@
     (should (-all-p (eq it '(hello-world))
                     (list a-hook b-hook)))
     ;; cleanup
-    (fmakunbound ')))
+    (fmakunbound 'a-hook%hello-world)
+    (fmakunbound 'b-hook%hello-world)))
 #+end_src
 
 ** accepts arg after docstring
