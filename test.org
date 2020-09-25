@@ -28,14 +28,14 @@
 #+begin_src emacs-lisp
 (ert-deftest defhook-accepts-args-after-docstring ()
   ;; Check to see if all the defadvice forms contain.
-  (alet (macroexpand-1
-         '(defhook! hello-world (a-hook)
-            :eval-after evil
-            :interactive-spec t
-            (+ 1 1)))
+  (let ((arguments '(:eval-after evil :interactive-spec t))
+        (macroexpansion (macroexpand-1
+                         `(defhook! hello-world (a-hook)
+                            ,@arguments
+                            (+ 1 1)))))
     ;; the second item should be the args list.
     (should (-all-p (-contains-p (-third-item))
-                    (-non-nil (cdr it))))))
+                    (-non-nil (cdr macroexpansion))))))
 #+end_src
 
 ** font locking works
