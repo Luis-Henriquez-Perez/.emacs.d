@@ -1804,7 +1804,7 @@ added before the docstring."
 :END:
 
 The messages =defhook= provides are informational but long and in complete
-sentences. I would rather have something quick and concise.
+sentences. I would rather have something quick, concise and to the point.
 
 #+begin_src emacs-lisp
 (defadvice! overwrite-hook-done-message (fn hook &rest _)
