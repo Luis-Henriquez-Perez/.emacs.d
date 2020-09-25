@@ -1784,12 +1784,13 @@ Also allow for arguments to be added bellow the docstring."
         (specs (-drop-while (-not #'keyword-p) args))
         (docstring (if (stringp (car body)) (pop body) nil))
         (other-args body))
-    `(prog1
-         (defhook ,name ,(cons hook specs)
-           ""
-           ())
-       (defhook! ,name ())
-       )))
+    `(progn
+       (defhook ,name ,(cons hook specs)
+         ,docstring
+         ,@body)
+       (defhook! ,name ,(append hooks specs)
+         ,docstring
+         ,@body))))
 #+end_src
 
 ***** customize informational messages                                :disabled:
