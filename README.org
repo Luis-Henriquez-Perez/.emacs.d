@@ -1847,7 +1847,7 @@ Since the hook name includes.
 :ID:       2837b042-d93b-492e-8dd4-0e2c74f9a966
 :END:
 
-This addition to be font-lock causes =defhook= to be colored like =defun=.
+=defhook= was designed to resemble =defun=.
 
 #+begin_src emacs-lisp
 (defconst VOID:DEFHOOK-FONT-LOCK-KEYWORDS
