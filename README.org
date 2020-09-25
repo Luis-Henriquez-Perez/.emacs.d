@@ -5467,7 +5467,7 @@ the correct one.
 
 #+begin_src emacs-lisp
 (defhook! preserve-prior-evil-state (minibuffer-enter-hook :eval-after evil)
-  "Save state before minibuffer."
+  "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
     (setq evil:state-before-minibuffer evil-state)
     (evil-insert-state)))
