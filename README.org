@@ -1822,7 +1822,11 @@ considering that.
 (defadvice! provide-concise-hook-message (fn hook &rest _)
   "Use a more concise message for `defhook'."
   :override defhook-executed
-  (void:log "%s exected on %s" fn hook))
+  (alet (->> fn
+             (symbol-name)
+             (s-match (rx-to-string `(seq ,defhook-sym-desc-separator (group (1+ anything)))))
+             (nth 1))
+    (void:log "%s -> %s" hook it)))
 #+end_src
 
 ***** syntax highlighting
