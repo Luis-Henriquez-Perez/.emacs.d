@@ -1787,6 +1787,11 @@ newline. I hate how this looks and have a strong preference for keeping argument
 lists on one line. The option for adding keyword arguments before the body of
 the macro is useful.
 
+Note the use of the argument name =ACTION=. I have diverged from =NAME= as used
+in =defun= because the corresponding =defhook!= argument will *not* be the name
+of the hook. It will be used in combination with the hook name to generate a
+name as specified in Void naming conventions.
+
 #+begin_src emacs-lisp
 (defmacro defhook! (action args &rest body)
   "Drop-in replacement for `defhook'.
