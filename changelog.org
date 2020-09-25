@@ -37,7 +37,7 @@ The syntax of hooks.
 :ID:       a43264d4-f30a-4411-9443-4bdda08d4290
 :END:
 
-All user defined hooks have the format =hook-variable-name&action-to-be-done=. If
+All user defined hooks now have the format =hook-variable-name&action-to-be-done=. If
 we wanted, for example, to restore the gc-cons-threshold after
 =emacs-startup-hook=. The a hook would look like
 =emacs-startup-hook&increase-garbage-collection=.
@@ -57,3 +57,5 @@ The =defhook= package provides =defhook-executed= and =defhook-done=.
 :END:
 
 The syntax of =defhook!= is designed to be similar to that of =defun=.
+Therefore, it makes sense to add font lock that allows =defhook= to be
+highlighted well.
