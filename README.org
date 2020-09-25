@@ -1784,13 +1784,17 @@ Also allow for arguments to be added bellow the docstring."
         (hooks (-take-while (-not #'keywordp) (cdr args)))
         (specs (-drop-while (-not #'keywordp) args))
         (docstring (if (stringp (car body)) (pop body) nil))
+        (keyword-args (->> body
+                           (--unfold (when (keywordp (car it))
+                                       (cons (-take 2 it) (cddr it))))
+                           (-flatten-n 2)))
         (other-args body))
     `(progn
        ,(when hooks
-          `(defhook! ,name ,(append hooks specs)
+          `(defhook! ,name ,(append hooks specs keyword-args)
              ,docstring
              ,@body))
-       (defhook ,name ,(cons hook specs)
+       (defhook ,name ,(cons hook (append specs keyword-args))
          ,docstring
          ,@body))))
 #+end_src
