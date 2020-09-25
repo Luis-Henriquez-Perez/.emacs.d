@@ -3,14 +3,6 @@
 :ID:       130bc7cf-cfb9-43e0-91ba-2035d4b22012
 :END:
 
-** prints messages
-:PROPERTIES:
-:ID:       62a3fbcd-6182-432e-87bd-9a8a577132b9
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 ** accepts multiple hooks
 :PROPERTIES:
 :ID:       ef5c4f7d-7a25-41cb-b75f-c1c73e8ec4db
