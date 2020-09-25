@@ -1757,7 +1757,8 @@ I provide a declarative way of setting hooks built on top of =defhook=.
 :ID:       0526239e-2790-4ee5-bd9b-15393c5536c6
 :END:
 
-=defhook= provides an alternative, declarative mechanism for defining hooks.
+=defhook= provides an alternative, declarative mechanism for defining hooks. I
+build on top of this already made functionality.
 
 #+begin_src emacs-lisp
 (use-package! defhook
