@@ -1831,7 +1831,7 @@ considering that.
 :END:
 
 #+begin_src emacs-lisp
-(defconst void:defhook-font-lock-keywords
+(defconst VOID:DEFHOOK-FONT-LOCK-KEYWORDS
   '(("(\\(defhook!\\)[[:space:]]+\\([-[:word:]]+\\)[[:space:]]+(\\([-[:word:]]+\\)"
      (1 font-lock-keyword-face)
      (2 font-lock-function-name-face)
@@ -1840,7 +1840,7 @@ considering that.
 
 (defhook! add-defhook-keywords (emacs-lisp-mode-hook)
   "Add `defhook' keywords to `emacs-lisp-mode's `font-lock-keywords'."
-  (font-lock-add-keywords nil defhook-font-lock-keywords))
+  (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
 #+end_src
 
 ** Initialize
