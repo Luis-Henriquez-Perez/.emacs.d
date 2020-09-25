@@ -8,11 +8,6 @@
 :ID:       62a3fbcd-6182-432e-87bd-9a8a577132b9
 :END:
 
-** adds a hook
-:PROPERTIES:
-:ID:       b0c84ca1-2601-4579-a43a-a2b946e90e44
-:END:
-
 #+begin_src emacs-lisp
 #+end_src
 
@@ -37,18 +32,12 @@
 
 #+begin_src emacs-lisp
 (ert-deftest defhook-accepts-args-after-docstring ()
-  (should (defhook! hello-world (a-hook)
-            :eval-after evil
-            :interactive-spec t
-            (+ 1 1))))
-#+end_src
-
-** expands to the right thing
-:PROPERTIES:
-:ID:       056bf349-9845-441b-8fdb-8a64f8e7895c
-:END:
-
-#+begin_src emacs-lisp
+  ;; test indirectly by looking at messages.
+  (should (macroexpand-1
+           '(defhook! hello-world (a-hook)
+              :eval-after evil
+              :interactive-spec t
+              (+ 1 1)))))
 #+end_src
 
 ** font locking works
@@ -57,7 +46,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(let ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS)))
-  (s-match regexp "(defhook! hello-world)")
-  )
+(ert-deftest defhook-font-lock-keywords ()
+  (let ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS)))
+    (s-match regexp "(defhook! hello-world)")
+    ))
 #+end_src
