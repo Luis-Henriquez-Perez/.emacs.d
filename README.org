@@ -1770,7 +1770,7 @@ while the user is working.
   (defhook-display-informational-messages . (if void:debug-p t nil)))
 #+end_src
 
-***** wrapper around defhook                                          :disabled:
+***** wrapper around defhook
 :PROPERTIES:
 :ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
 :END:
