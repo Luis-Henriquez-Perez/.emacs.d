@@ -12,3 +12,11 @@
 :PROPERTIES:
 :ID:       b0c84ca1-2601-4579-a43a-a2b946e90e44
 :END:
+
+** expands to the right thing
+:PROPERTIES:
+:ID:       056bf349-9845-441b-8fdb-8a64f8e7895c
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
