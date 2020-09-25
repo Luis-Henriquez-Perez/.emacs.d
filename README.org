@@ -1861,7 +1861,7 @@ complete I add the same type of syntax coloring to =defhook!=.
   "`font-lock-mode' regexp for `defhook!' in `emacs-lisp-mode'.")
 
 (defhook! add-defhook-keywords (emacs-lisp-mode-hook)
-  "Add `defhook' keywords to `emacs-lisp-mode's `font-lock-keywords'."
+  "Add `defhook!' keywords to `emacs-lisp-mode's `font-lock-keywords'."
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
 #+end_src
 
