@@ -1780,17 +1780,17 @@ while the user is working.
   "Drop-in replacement for `defhook'.
 The same as `defhook', but allow multiple hooks in arguments.
 Also allow for arguments to be added bellow the docstring."
-  ;; if there is more than one hook, separate it into a different `defhook' form.
   (let ((hook (car args))
         (hooks (-take-while (-not #'keywordp) (cdr args)))
-        (specs (-drop-while (-not #'keyword-p) args))
+        (specs (-drop-while (-not #'keywordp) args))
         (docstring (if (stringp (car body)) (pop body) nil))
         (other-args body))
     `(progn
+       ,(when hooks
+          `(defhook! ,name ,(append hooks specs)
+             ,docstring
+             ,@body))
        (defhook ,name ,(cons hook specs)
-         ,docstring
-         ,@body)
-       (defhook! ,name ,(append hooks specs)
          ,docstring
          ,@body))))
 #+end_src
