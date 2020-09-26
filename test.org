@@ -50,3 +50,29 @@
     (should (string= (nth 1 match) "defhook!"))
     (should (string= (nth 2 match) "hello-world"))))
 #+end_src
+
+* ivy tests
+:PROPERTIES:
+:ID:       35fb8af3-c160-4330-8195-b159d97700a0
+:END:
+
+** everything checks out
+:PROPERTIES:
+:ID:       d9402509-d00c-44d4-86aa-de6d8f006594
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest ivy-filtering-working-as-expected ()
+  ;; make sure `ivy-sort-max-size' is not too low.
+  (should (>= 30000 ivy-sort-max-size))
+  ;; prescient-save-file
+  (should (string= prescient-save-file (concat VOID:DATA-DIR "prescient-save.el")))
+  ;; orderless should be doing the filtering.
+  (should (null ivy-prescient-enable-filtering))
+  ;; ivy prescient can handle the sorting.
+  (should ivy-prescient-enable-sorting)
+  ;; these should be on.
+  (should (and ivy-prescient-mode prescient-persist-mode))
+  ;; orderless should be the default sorter.
+  (should (eq (alist-get t ivy-re-builders-alist) #'orderless-ivy-re-builder)))
+#+end_src
