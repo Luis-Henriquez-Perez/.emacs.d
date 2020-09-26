@@ -97,3 +97,8 @@ The =defhook= package provides =defhook-executed= and =defhook-done=.
 The syntax of =defhook!= is designed to be similar to that of =defun=.
 Therefore, it makes sense to add font lock that allows =defhook= to be
 highlighted well.
+
+** don't scale headlines in one-themes
+:PROPERTIES:
+:ID:       6a0c947c-660a-439f-aa14-4b103d8b7548
+:END:
