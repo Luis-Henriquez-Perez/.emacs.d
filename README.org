@@ -3,9 +3,9 @@
 :ID:       bf3947fc-4279-4359-871e-e4596a91ccaf
 :END:
 
-This is my emacs.
+This is my emacs configuration.
 
-* What are my Principles?
+* Summary
 :PROPERTIES:
 :ID:       1b1ee897-0c73-42e8-95a7-dd7dda181959
 :END:
