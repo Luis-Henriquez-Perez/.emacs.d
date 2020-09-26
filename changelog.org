@@ -3,7 +3,7 @@
 :ID:       761a03ed-59ca-4b46-b0dd-59e871f9065d
 :END:
 
-** add a separate readme and rename =readme.org= to init.org
+** separate README and init.org
 :PROPERTIES:
 :ID:       99df489f-60aa-4344-95e3-b6e7c0f6f7aa
 :END:
