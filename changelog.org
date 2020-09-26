@@ -99,6 +99,35 @@ Therefore, it makes sense to add font lock that allows =defhook= to be
 highlighted well.
 
 ** don't scale headlines in one-themes
+
 :PROPERTIES:
 :ID:       6a0c947c-660a-439f-aa14-4b103d8b7548
 :END:
+
+** replace selectrum with ivy/counsel
+:PROPERTIES:
+:ID:       3ec4e606-653b-4d0a-af59-71b7518426c0
+:END:
+
+The purpose of this change is to replace selecturm with ivy and counsel. In the
+following paragraphs I explain my reasoning.
+
+I think that selectrum is likely the future completion framework for emacs
+because its code is more maintainable and less buggy than ivy's. This will start
+to make a difference the more that users want to customize ivy in a way that the
+creator did not anticipate.
+
+Right now though, ivy has more features and it has a library of useful
+convenience functions (counsel). Selectrum has no such library, so you'd have to
+write your own version of =swiper=, =ivy-switch-buffer=, =counsel-org-goto=, etc
+that are not dependant on =ivy-read= yourself. This is a lot of work when
+counsel already has them working and tested.
+
+Note that it is true Selectrum has a wiki with these functions and there are
+plans of adding some to it's own version of counsel (selectrum-config), but
+still counsel has a much greater number of useful functions, and therefore more
+featureful and tested than the ones informally created for the selectrum wiki.
+
+All in all, ivy/counsel is currently the more complete, featureful and supported
+package and for this reason I move to use it as Void's main completion
+framework.
