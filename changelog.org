@@ -11,3 +11,8 @@
 The org file I have is really long and goes into specific details of my
 configuration. I want a summary of my general goals, what makes my emacs config
 unique and screenshots of my setup.
+
+*** provide
+:PROPERTIES:
+:ID:       03d5d897-764a-4e59-a788-ac5b772ab673
+:END:
