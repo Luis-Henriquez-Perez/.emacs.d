@@ -9333,7 +9333,9 @@ graphical interface but.
 (use-package! tao-theme)
 
 (use-package! one-themes
-  :setq (emacs-one-use-variable-pitch . nil))
+  :pre-setq
+  (emacs-one-scale-org-headlines . nil)
+  (emacs-one-use-variable-pitch . nil))
 
 (use-package! avk-emacs-themes)
 
