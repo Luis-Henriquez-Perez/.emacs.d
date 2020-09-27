@@ -3476,7 +3476,7 @@ This function allows you to toggle marking a candidate.
   "C-SPC" #'ivy/toggle-mark)
 #+end_src
 
-**** customize display
+**** customize display                                                :disabled:
 :PROPERTIES:
 :ID: 83df9e3a-d384-4b59-b3f2-7d57ee46b25e
 :END:
