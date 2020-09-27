@@ -4597,7 +4597,8 @@ about.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! escr :disabled t)
+(use-package! escr
+  :ensure (:host github :repo "atykhonov/escr"))
 #+end_src
 
 *** scrot
