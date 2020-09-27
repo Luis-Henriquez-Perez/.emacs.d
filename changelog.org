@@ -112,4 +112,4 @@ distracting.
 :END:
 
 The idea minimize the possibility of losing information. We autosave as
-frequently as possible without sacrificing pe
+frequently as possible without sacrificing performance
