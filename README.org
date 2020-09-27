@@ -3022,7 +3022,7 @@ functions which open external linux applications.
 
 #+begin_src emacs-lisp
 (defhook! rename-buffer-to-title (exwm-update-title-hook)
-  "Rename buffer to title."
+  "Rename buffer to title of the exwm window."
   (exwm-workspace-rename-buffer exwm-title))
 #+end_src
 
