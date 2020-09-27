@@ -7257,7 +7257,7 @@ on the buffer you'd like to edit.
 :ID:       32fe3a49-5cff-4bc5-9a62-ef4a5ac50b7d
 :END:
 
-[[][auto]] is a package that replaces and (as its name suggests) enhances Emacs's
+[[][auto-save-enhanced]] is a package that replaces and (as its name suggests) enhances Emacs's
 stock autosaving. Some of the differences that stuck out to me.
 
 #+begin_src emacs-lisp
