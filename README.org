@@ -7252,7 +7252,7 @@ on the buffer you'd like to edit.
   (org-plantuml-executable-path . (executable-find "plantuml")))
 #+end_src
 
-** autosave
+* autosave
 :PROPERTIES:
 :ID:       32fe3a49-5cff-4bc5-9a62-ef4a5ac50b7d
 :END:
