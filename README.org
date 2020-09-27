@@ -3380,13 +3380,13 @@ be inserted and interactively completed.
 :ID:       68d2ef19-dac6-407f-9220-8da816b873e8
 :END:
 
+[[github:abo-abo/swiper][ivy]] provides a user interface for choosing from a list of options by typing a
+query to narrow the list, and then selecting one of the remaining candidates.
+
 **** bootstrap
 :PROPERTIES:
 :ID: 4bf12e8b-7f71-45cc-bf48-c1aec795c9fe
 :END:
-
-[[github:abo-abo/swiper][ivy]] provides a user interface for choosing from a list of options by typing a
-query to narrow the list, and then selecting one of the remaining candidates.
 
 #+begin_src emacs-lisp
 (use-package! ivy
