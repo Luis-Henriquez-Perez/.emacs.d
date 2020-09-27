@@ -118,3 +118,8 @@ configure exwm. By "properly".
 :PROPERTIES:
 :ID:       50ce0db8-3a6a-4546-a379-1d318c1f20f1
 :END:
+
+*** making sure text is in the clipboard
+:PROPERTIES:
+:ID:       fa94f40f-7068-4656-b6d7-ec0e77aff2dc
+:END:
