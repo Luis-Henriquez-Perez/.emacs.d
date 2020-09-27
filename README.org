@@ -4587,8 +4587,8 @@ about.
 (use-package! screenshot
   :commands screenshot
   :setq
-  (screenshot-take-delay 0)
-  (screenshot-schemes `(("local" :dir ,VOID:SCREENSHOT-DIR))))
+  (screenshot-take-delay . 0)
+  (screenshot-schemes . `(("local" :dir ,VOID:SCREENSHOT-DIR))))
 #+end_src
 
 *** escr
