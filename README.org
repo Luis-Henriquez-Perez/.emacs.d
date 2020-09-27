@@ -3691,6 +3691,8 @@ convenience functions are just wrappers around existing emacs functions that pro
 :ID:       a9861cab-eded-413f-939d-92b66ed32961
 :END:
 
+There are certain commands that should.
+
 #+begin_src emacs-lisp
 (after! (counsel ivy-prescient)
   (setq ivy-prescient-sort-commands
