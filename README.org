@@ -4584,9 +4584,11 @@ about.
 [[][]] is another emacs screenshot package that.
 
 #+begin_src emacs-lisp
-(use-package! screenshot :commands screenshot)
-(setq screenshot-schemes nil)
-(push (list "local" :dir VOID:SCREENSHOT-DIR) screenshot-schemes)
+(use-package! screenshot
+  :commands screenshot
+  :setq
+  (screenshot-take-delay 0)
+  (screenshot-schemes `(("local" :dir ,VOID:SCREENSHOT-DIR))))
 #+end_src
 
 *** escr
