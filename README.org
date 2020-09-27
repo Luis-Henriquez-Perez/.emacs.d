@@ -7265,10 +7265,10 @@ save and not to save in [[helpvar:auto-save-buffers-enhanced-include-regexp][aut
 #+begin_src emacs-lisp
 (use-package! auto-save-buffers-enhanced
   :setq
-  (auto-save-buffers-enhanced-interval . 5.0)
+  (auto-save-buffers-enhanced-interval . 0.5)
   (auto-save-buffers-enhanced-quiet-save-p . t)
   (auto-save-buffers-enhanced-exclude-regexps . nil)
-  (auto-save-buffers-enhanced-include-regexps (rx (1+ anything)))
+  (auto-save-buffers-enhanced-include-regexps . (rx (1+ anything)))
   :config
   (auto-save-buffers-enhanced t))
 #+end_src
