@@ -3448,7 +3448,8 @@ next completion.
 :ID: ec8cd466-c6cf-4b25-9624-07e9d0e0fd0c
 :END:
 
-[[https://github.com/raxod502/prescient.el][ivy-prescient]]
+Candidates are sorted once before the first display, and if the user types input
+they are filtered in real time. [[https://github.com/raxod502/prescient.el][ivy-prescient]]
 
 #+begin_src emacs-lisp
 (use-package! ivy-prescient
