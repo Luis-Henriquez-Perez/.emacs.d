@@ -3411,9 +3411,7 @@ query to narrow the list, and then selecting one of the remaining candidates.
 :ID:       5a21af24-4383-40dc-8c53-562f2cf68961
 :END:
 
-These bindings are partly influenced by helm. I strongly prefer the names helm
-chose for their minibuffer commands. Things like "persistent" action make much
-more sense to me than this "dispatching" and "immediate" "done" stuff.
+These bindings are partially influenced by some of helm's minibuffer bindings.
 
 #+begin_src emacs-lisp
 (general-def '(emacs insert) ivy-minibuffer-map
