@@ -7263,7 +7263,7 @@ stock autosaving. Some of the differences that stuck out to me.
 #+begin_src emacs-lisp
 (use-package! auto-save-enhanced
   :setq
-  (auto-save-buffers-enhanced-interval)
+  (auto-save-buffers-enhanced-interval 0.5)
   (auto-save-buffers-enhanced-quiet-save-p t)
   (auto-save-buffers-enhanced-exclude-regexps)
   (auto-save-buffers-enhanced-include-regexps (rx (1+ anything)))
