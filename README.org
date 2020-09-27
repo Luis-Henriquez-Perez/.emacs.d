@@ -3406,6 +3406,17 @@ query to narrow the list, and then selecting one of the remaining candidates.
   (ivy-count-format             . ""))
 #+end_src
 
+**** ivy-avy
+:PROPERTIES:
+:ID:       a1224932-eb2b-4f6c-949b-de9383506ab8
+:END:
+
+Ivy integrates.
+
+#+begin_src emacs-lisp
+(use-package! ivy-avy)
+#+end_src
+
 **** minibuffer bindings
 :PROPERTIES:
 :ID:       5a21af24-4383-40dc-8c53-562f2cf68961
