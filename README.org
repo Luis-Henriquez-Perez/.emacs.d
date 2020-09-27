@@ -4581,7 +4581,7 @@ about.
 :ID: c0975eae-c03b-4d2a-a546-06c05197eded
 :END:
 
-[[][screenshot]] is another emacs screenshot package that. It doesn't have an
+[[https://github.com/emacsmirror/screenshot][screenshot]] is another emacs screenshot package that. It doesn't have an
 option for.
 
 #+begin_src emacs-lisp
