@@ -2989,6 +2989,32 @@ functions which open external linux applications.
   (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
 #+end_src
 
+*** gpaste
+:PROPERTIES:
+:ID:       03b39fa7-a3c1-4be4-adbd-5904846db1fa
+:END:
+
+#+begin_src emacs-lisp
+(use-package! gpastel
+  :after exwm
+  :hook (exwm-mode-hook . gpastel-mode))
+
+(exwm-input-set-key (kbd "M-y") #'my/exwm-counsel-yank-pop)
+
+(defun my/exwm-counsel-yank-pop ()
+  "Same as `counsel-yank-pop' and paste into exwm buffer."
+  (interactive)
+  (let ((inhibit-read-only t)
+        ;; Make sure we send selected yank-pop candidate to
+        ;; clipboard:
+        (yank-pop-change-selection t))
+    (call-interactively #'counsel-yank-pop))
+  (when (derived-mode-p 'exwm-mode)
+    ;; https://github.com/ch11ng/exwm/issues/413#issuecomment-386858496
+    (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+    (exwm-input--fake-key ?\C-v)))
+#+end_src
+
 *** appropriate name for exwm buffers
 :PROPERTIES:
 :ID: b9712cdc-2cf9-482f-8f62-b2e4f56b9c97
