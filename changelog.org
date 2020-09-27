@@ -105,3 +105,11 @@ highlighted well.
 
 I prefer headlines to be a consistent height to other text. It is less visually
 distracting.
+
+** exwm setup
+:PROPERTIES:
+:ID:       d57c01e8-0ecc-42eb-957d-59f3e8b8060b
+:END:
+
+The purpose of this is to change is to properly and thoroughly set up and
+configure exwm. By "properly".
