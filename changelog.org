@@ -113,3 +113,8 @@ distracting.
 
 The purpose of this is to change is to properly and thoroughly set up and
 configure exwm. By "properly".
+
+*** editing text area
+:PROPERTIES:
+:ID:       50ce0db8-3a6a-4546-a379-1d318c1f20f1
+:END:
