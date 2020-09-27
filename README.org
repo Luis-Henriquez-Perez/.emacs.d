@@ -4645,7 +4645,10 @@ After I use scrot exwm windows don't show anymore.
 This package allows for the creation of gifs from within emacs.
 
 #+begin_src emacs-lisp
-(use-package! gif-screencast)
+(use-package! gif-screencast
+  :setq
+  (gif-screencast-screenshot-directory . VOID:SCREENSHOT-DIR))
+
 (general-def "<f6>" #'gif-screencast-start-or-stop)
 #+end_src
 
