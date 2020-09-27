@@ -4598,7 +4598,10 @@ about.
 
 #+begin_src emacs-lisp
 (use-package! escr
-  :ensure (:host github :repo "atykhonov/escr"))
+  :require t
+  :ensure (:host github :repo "atykhonov/escr")
+  :setq
+  (escr-screenshot-directory . VOID:SCREENSHOT-DIR))
 #+end_src
 
 *** scrot
