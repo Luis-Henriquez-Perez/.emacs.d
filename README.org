@@ -4646,6 +4646,7 @@ This package allows for the creation of gifs from within emacs.
 
 #+begin_src emacs-lisp
 (use-package! gif-screencast)
+(general-def "<f6>" #'gif-screencast-start-or-stop)
 #+end_src
 
 ** keypression
