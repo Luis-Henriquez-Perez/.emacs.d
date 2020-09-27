@@ -7259,6 +7259,7 @@ on the buffer you'd like to edit.
 
 #+begin_src emacs-lisp
 (use-package! auto-save-enhanced
+  :
   )
 #+end_src
 
