@@ -7268,8 +7268,7 @@ stock autosaving. Some of the differences that stuck out to me.
   (setq auto-save-buffers-enhanced-exclude-regexps)
   (setq auto-save-buffers-enhanced-include-regexps)
   :config
-  (auto-save-buffers-enhanced t)
-  )
+  (auto-save-buffers-enhanced t))
 #+end_src
 
 * Languages
