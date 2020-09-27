@@ -4597,7 +4597,7 @@ option for.
 :ID:       06f23fc2-7f6b-4812-a14d-185b42a42976
 :END:
 
-This package doesn't see exwm application windows. You just get a black window
+This package doesn't see exwm application windows. You just get a [[image:./screenshots/black-window-on-top-should-be-iceweasel.png]][black window]]
 where the application should go.
 
 #+begin_src emacs-lisp
