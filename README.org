@@ -7271,7 +7271,6 @@ save and not to save in [[helpvar:auto-save-buffers-enhanced-include-regexp][aut
                #'void:after-switch-buffer-hook&enable-enhanced-auto-saving))
 
 (use-package! auto-save-buffers-enhanced
-  :hook void:after-switch-buffer-hook
   :setq
   (auto-save-buffers-enhanced-interval . 0.5)
   (auto-save-buffers-enhanced-quiet-save-p . t)
