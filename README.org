@@ -4623,7 +4623,7 @@ has a function that can capture a screenshot of a particular emacs window.
 (use-package! scrot
   :ensure (:host github :repo "dakra/scrot.el")
   :setq
-  (scrot-args . "-u")
+  (scrot-args . "--focused")
   (scrot-file-ext . "png")
   (scrot-local-path . VOID:SCREENSHOT-DIR))
 #+end_src
