@@ -4622,7 +4622,7 @@ has a function that can capture a screenshot of a particular emacs window.
 
 Scrot has this wierd quirk where it tries to upload the screenshots.
 
-When I use scrot exwm windows don't show anymore.
+After I use scrot exwm windows don't show anymore.
 
 #+begin_src emacs-lisp
 (use-package! scrot
