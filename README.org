@@ -7252,6 +7252,16 @@ on the buffer you'd like to edit.
   (org-plantuml-executable-path . (executable-find "plantuml")))
 #+end_src
 
+** autosave
+:PROPERTIES:
+:ID:       32fe3a49-5cff-4bc5-9a62-ef4a5ac50b7d
+:END:
+
+#+begin_src emacs-lisp
+(use-package! auto-save-enhanced
+  )
+#+end_src
+
 * Languages
 :PROPERTIES:
 :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
