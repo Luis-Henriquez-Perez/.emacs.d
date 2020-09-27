@@ -3406,6 +3406,29 @@ query to narrow the list, and then selecting one of the remaining candidates.
   (ivy-count-format             . ""))
 #+end_src
 
+**** minibuffer bindings
+:PROPERTIES:
+:ID:       5a21af24-4383-40dc-8c53-562f2cf68961
+:END:
+
+These bindings are partly influenced by helm. I strongly prefer the names helm
+chose for their minibuffer commands. Things like "persistent" action make much
+more sense to me than this "dispatching" and "immediate" "done" stuff.
+
+#+begin_src emacs-lisp
+(general-def '(emacs insert) ivy-minibuffer-map
+  "C-k"     #'ivy-previous-line
+  "C-j"     #'ivy-next-line
+  [backtab] #'ivy-previous-line
+  "TAB"     #'ivy-next-line
+  "C-a"     #'ivy-dispatching-done
+  "C-n"     #'ivy-toggle-marks
+  "C-l"     #'ivy-next-line-and-call
+  "C-o"     #'ivy-occur
+  "C-'"     #'ivy-avy
+  "RET"     #'ivy-done)
+#+end_src
+
 **** remembering used candidates
 :PROPERTIES:
 :ID:       203dd3f4-bec7-4e3f-b1cf-30089f2ccb32
@@ -3718,29 +3741,6 @@ Counsel web.
 (use-package! swiper
   :commands swiper swiper-isearch
   :setq (swiper-action-recenter . t))
-#+end_src
-
-*** minibuffer bindings
-:PROPERTIES:
-:ID:       5a21af24-4383-40dc-8c53-562f2cf68961
-:END:
-
-These bindings are partly influenced by helm. I strongly prefer the names helm
-chose for their minibuffer commands. Things like "persistent" action make much
-more sense to me than this "dispatching" and "immediate" "done" stuff.
-
-#+begin_src emacs-lisp
-(general-def '(emacs insert) ivy-minibuffer-map
-  "C-k"     #'ivy-previous-line
-  "C-j"     #'ivy-next-line
-  [backtab] #'ivy-previous-line
-  "TAB"     #'ivy-next-line
-  "C-a"     #'ivy-dispatching-done
-  "C-n"     #'ivy-toggle-marks
-  "C-l"     #'ivy-next-line-and-call
-  "C-o"     #'ivy-occur
-  "C-'"     #'ivy-avy
-  "RET"     #'ivy-done)
 #+end_src
 
 ** company
