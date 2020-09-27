@@ -105,3 +105,8 @@ highlighted well.
 
 I prefer headlines to be a consistent height to other text. It is less visually
 distracting.
+
+** screenshot capturing capability
+:PROPERTIES:
+:ID:       f25faf88-9e40-45f4-b292-3de004a8dc87
+:END:
