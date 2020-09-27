@@ -4596,6 +4596,8 @@ about.
 :ID:       06f23fc2-7f6b-4812-a14d-185b42a42976
 :END:
 
+This package doesn't see exwm application windows.
+
 #+begin_src emacs-lisp
 (use-package! escr
   :ensure (:host github :repo "atykhonov/escr")
