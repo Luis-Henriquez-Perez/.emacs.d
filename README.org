@@ -7259,7 +7259,7 @@ on the buffer you'd like to edit.
 
 [[https://github.com/kentaro/auto-save-buffers-enhanced][auto-save-enhanced]] is a package that replaces and (as its name suggests) enhances Emacs's
 stock autosaving. Notably it allows the specification of which files to try to
-save and not to save in [[][auto-save-buffers-enhanced]] and [[][]].
+save and not to save in [[][auto-save-buffers-enhance]] and [[][]].
 
 #+begin_src emacs-lisp
 (use-package! auto-save-buffers-enhanced
