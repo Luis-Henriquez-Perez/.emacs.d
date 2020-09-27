@@ -4619,6 +4619,8 @@ where the application should go.
 Like [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screenshot taking utility. Interestingly, scrot
 has a function that can capture a screenshot of a particular emacs window.
 
+Scrot has this wierd quirk where it tries to upload the screenshots.
+
 #+begin_src emacs-lisp
 (use-package! scrot
   :ensure (:host github :repo "dakra/scrot.el")
@@ -4626,6 +4628,9 @@ has a function that can capture a screenshot of a particular emacs window.
   (scrot-args . "--focused")
   (scrot-file-ext . "png")
   (scrot-local-path . VOID:SCREENSHOT-DIR))
+
+;; prevent scrot from uploading stuff
+(advice-add #'scrot-upload :override #'ignore)
 #+end_src
 
 ** gifs
