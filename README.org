@@ -3705,7 +3705,7 @@ convenience functions are just wrappers around existing emacs functions that pro
 :ID: 799ac569-85e8-43c0-93ae-a00cf982777f
 :END:
 
-The default Org capture templates use this ido-like popup for selecting capture
+The default org capture templates use a text popup for selecting capture
 templates. That's nice, but I'd rather be consistent and use my completing
 framework for this as I do for everything else. This package that provides a
 completing-read-using replacement for [[helpfn:org-capture][org-capture]] called
