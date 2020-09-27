@@ -112,6 +112,3 @@ distracting.
 :END:
 
 Previously the screenshot packages I had installed were untested.
-
-#+begin_src emacs-lisp
-#+end_src
