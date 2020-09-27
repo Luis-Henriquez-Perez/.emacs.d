@@ -4623,9 +4623,9 @@ has a function that can capture a screenshot of a particular emacs window.
 (use-package! scrot
   :ensure (:host github :repo "dakra/scrot.el")
   :setq
-  (scrot-args . "")
+  (scrot-args . "-u")
   (scrot-file-ext . "png")
-  (scrot-local-path . (concat VOID:EMACS-DIR "screenshots")))
+  (scrot-local-path . VOID:SCREENSHOT-DIR))
 #+end_src
 
 ** gifs
