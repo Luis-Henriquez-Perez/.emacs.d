@@ -3676,7 +3676,7 @@ Counsel web.
 :ID: 732421fb-2eb6-4701-be12-d4b03c726df8
 :END:
 
-[[https://github.com/abo-abo/swiper][Swiper]] is a package that interactively search text in a buffer.
+[[https://github.com/abo-abo/swiper][Swiper]] is a package that lets you interactively search text in a buffer.
 
 #+begin_src emacs-lisp
 (use-package! swiper
