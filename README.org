@@ -4589,7 +4589,7 @@ about.
 (push (list "local" :dir VOID:SCREENSHOT-DIR) screenshot-schemes)
 #+end_src
 
-*** escr                                                              :disabled:
+*** escr
 :PROPERTIES:
 :ID:       06f23fc2-7f6b-4812-a14d-185b42a42976
 :END:
