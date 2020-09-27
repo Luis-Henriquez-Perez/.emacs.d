@@ -4605,7 +4605,7 @@ where the application should go.
   :ensure (:host github :repo "atykhonov/escr")
   :commands (escr-window-screenshot escr-frame-screenshot)
   :setq
-  (escr-screenshot-directory . VOID:SCREENSHOT-DIR))
+  (escr-screenshot-directory . (concat VOID:EMACS-DIR "multimedia/screenshots")))
 
 (general-def
   "<f1>" #'escr-window-screenshot
@@ -4630,7 +4630,7 @@ After I use scrot exwm windows don't show anymore.
   :setq
   (scrot-args . "--focused")
   (scrot-file-ext . "png")
-  (scrot-local-path . VOID:SCREENSHOT-DIR))
+  (scrot-local-path . (concat VOID:EMACS-DIR "multimedia/screenshots")))
 
 (general-def "<f5>" #'scrot)
 ;; prevent scrot from uploading stuff
