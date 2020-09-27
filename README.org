@@ -4601,7 +4601,7 @@ about.
 :ID: 325935aa-b0f1-49b6-8c67-1173c5a1d42b
 :END:
 
-Like [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screenshot taking utility. Interestingly, scrot
+Like [[https://github.com/dakra/scrot.el][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screenshot taking utility. Interestingly, scrot
 has a function that can capture a screenshot of a particular emacs window.
 
 #+begin_src emacs-lisp
