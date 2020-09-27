@@ -7261,7 +7261,7 @@ on the buffer you'd like to edit.
 stock autosaving. Some of the differences that stuck out to me.
 
 #+begin_src emacs-lisp
-(use-package! auto-save-enhanced
+(use-package! auto-save-buffers-enhanced
   :setq
   (auto-save-buffers-enhanced-interval 0.5)
   (auto-save-buffers-enhanced-quiet-save-p t)
