@@ -4630,6 +4630,7 @@ Scrot has this wierd quirk where it tries to upload the screenshots.
   (scrot-file-ext . "png")
   (scrot-local-path . VOID:SCREENSHOT-DIR))
 
+(general-def "<f5>" #'scrot)
 ;; prevent scrot from uploading stuff
 (advice-add #'scrot-upload :override #'ignore)
 #+end_src
