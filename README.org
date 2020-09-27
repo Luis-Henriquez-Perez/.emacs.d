@@ -4604,6 +4604,10 @@ This package doesn't see exwm application windows.
   :commands (escr-window-screenshot escr-frame-screenshot)
   :setq
   (escr-screenshot-directory . VOID:SCREENSHOT-DIR))
+
+(general-def
+  "<f1>" #'escr-window-screenshot
+  "<f2>" #'escr-frame-screenshot)
 #+end_src
 
 *** scrot
