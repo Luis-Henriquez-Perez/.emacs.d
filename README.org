@@ -3442,7 +3442,7 @@ next completion.
 :ID: 2414a29d-e874-4174-8f90-b9d80c001026
 :END:
 
-This function allows you to toggle.
+This function allows you to toggle marking a candidate.
 
 #+begin_src emacs-lisp
 (defun ivy/toggle-mark ()
