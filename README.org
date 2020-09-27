@@ -4571,8 +4571,8 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
 cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or [[https://www.reddit.com/r/emacs/][emacs-reddit]] or
-even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or often not
-utilized at all). In Void, where documentation is *very* important, I supplement
+even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized or, more often, not
+utilized at all. In Void, where documentation is *very* important, I supplement
 my description of problems with pictures.
 
 *** screenshot
