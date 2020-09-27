@@ -111,4 +111,4 @@ distracting.
 :ID:       05722dc4-91d7-47e1-8ad2-3233ba06a442
 :END:
 
-The idea
+The idea minimize the
