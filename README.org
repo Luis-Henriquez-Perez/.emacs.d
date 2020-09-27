@@ -7258,7 +7258,7 @@ on the buffer you'd like to edit.
 :END:
 
 [[][]] is a package that replaces and (as its name suggests) enhances Emacs's
-stock autosaving. Some of the differences that stuck out tome
+stock autosaving. Some of the differences that stuck out to me.
 
 #+begin_src emacs-lisp
 (use-package! auto-save-enhanced
