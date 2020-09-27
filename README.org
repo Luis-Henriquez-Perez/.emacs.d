@@ -4585,7 +4585,7 @@ about.
 
 #+begin_src emacs-lisp
 (use-package! screenshot :commands screenshot)
-
+(setq screenshot-schemes nil)
 (push (list "local" :dir VOID:SCREENSHOT-DIR) screenshot-schemes)
 #+end_src
 
