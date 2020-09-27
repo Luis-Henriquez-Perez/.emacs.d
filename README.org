@@ -3567,6 +3567,42 @@ provide a more informative interface to ivy commands.
         (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face)))))))
 #+end_src
 
+**** customizing specific functions
+:PROPERTIES:
+:ID:       ee303d38-fb3a-4b31-a226-4c8e04a63d1a
+:END:
+
+***** don't include binding information
+:PROPERTIES:
+:ID:       50e3991d-8c46-4dcb-86d9-79c2bede4e50
+:END:
+
+#+begin_src emacs-lisp
+(after! ivy
+  (advice-add #'counsel-M-x-transformer :override #'identity))
+#+end_src
+
+***** make the default action setting the font
+:PROPERTIES:
+:ID:       17f2d06a-835c-4bba-960b-d0f8c028a91a
+:END:
+
+#+begin_src emacs-lisp
+(after! ivy
+  (ivy-set-actions #'counsel-fonts (list (list "o" #'void:set-font "set font")))
+  (defun void:set-font (font)
+    (set-face-attribute 'default nil :font font)))
+#+end_src
+
+***** no sort
+:PROPERTIES:
+:ID:       3c1f1892-d9cb-4767-82a5-aa157de739de
+:END:
+
+#+begin_src emacs-lisp
+(after! ivy (push '(counsel-org-goto . nil) ivy-sort-functions-alist))
+#+end_src
+
 *** counsel
 :PROPERTIES:
 :ID:       47e0919a-0852-4454-853d-7c7875760de8
@@ -3705,42 +3741,6 @@ more sense to me than this "dispatching" and "immediate" "done" stuff.
   "C-o"     #'ivy-occur
   "C-'"     #'ivy-avy
   "RET"     #'ivy-done)
-#+end_src
-
-*** customizing specific functions
-:PROPERTIES:
-:ID:       ee303d38-fb3a-4b31-a226-4c8e04a63d1a
-:END:
-
-**** no sort
-:PROPERTIES:
-:ID:       3c1f1892-d9cb-4767-82a5-aa157de739de
-:END:
-
-#+begin_src emacs-lisp
-(after! ivy (push '(counsel-org-goto . nil) ivy-sort-functions-alist))
-#+end_src
-
-**** make the default action setting the font
-:PROPERTIES:
-:ID:       17f2d06a-835c-4bba-960b-d0f8c028a91a
-:END:
-
-#+begin_src emacs-lisp
-(after! ivy
-  (ivy-set-actions #'counsel-fonts (list (list "o" #'void:set-font "set font")))
-  (defun void:set-font (font)
-    (set-face-attribute 'default nil :font font)))
-#+end_src
-
-**** don't include binding information
-:PROPERTIES:
-:ID:       50e3991d-8c46-4dcb-86d9-79c2bede4e50
-:END:
-
-#+begin_src emacs-lisp
-(after! ivy
-  (advice-add #'counsel-M-x-transformer :override #'identity))
 #+end_src
 
 ** company
