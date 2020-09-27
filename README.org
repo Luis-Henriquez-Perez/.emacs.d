@@ -9630,7 +9630,7 @@ These bindings are for generally working with code.
   "t" (list :def #'load-theme            :wk "load theme")
   "c" (list :def #'caps-lock-mode        :wk "caps lock")
   "d" (list :def #'toggle-debug-on-error :wk "debug")
-  "F" (list :def #'void/set-font         :wk "set font")
+  "F" (list :def #'counsel-fonts         :wk "set font")
   "f" (list :def #'void/set-font-size    :wk "font size"))
 
 (define-leader-key!
