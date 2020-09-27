@@ -4610,7 +4610,7 @@ has a function that can capture a screenshot of a particular emacs window.
   :setq
   (scrot-args . "-s")
   (scrot-file-ext . "png")
-  (scrot-local-path . (concat VOID:DATA-DIR "screenshots")))
+  (scrot-local-path . (concat VOID:EMACS-DIR "screenshots")))
 #+end_src
 
 ** gifs
