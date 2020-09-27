@@ -7258,7 +7258,7 @@ on the buffer you'd like to edit.
 :END:
 
 [[https://github.com/kentaro/auto-save-buffers-enhanced][auto-save-enhanced]] is a package that replaces and (as its name suggests) enhances Emacs's
-stock autosaving.
+stock autosaving. Un
 
 #+begin_src emacs-lisp
 (use-package! auto-save-buffers-enhanced
