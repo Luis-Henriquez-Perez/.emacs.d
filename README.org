@@ -6858,10 +6858,9 @@ which only some files are hidden. That's wierd, so I get rid of it.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! ranger:window-check-shutup-a (orig-fn &rest args)
+(defadvice! disable-output (:around ranger-window-check)
   "Silence `ranger-window-check'."
-  :around ranger-window-check
-  (quiet! (apply orig-fn args)))
+  (quiet! (apply <orig-fn> <args>)))
 #+end_src
 
 
