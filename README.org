@@ -1886,7 +1886,8 @@ The need arises to define hooks. The inspiration for this macro came from
 #+begin_src emacs-lisp
 (defmacro defhookvar! (hook-variable triggers &rest body)
   "Define a hook variable."
-  (let (())
+  (let ((hooks (-filter #'void:hook-p triggers))
+        (advices (-)))
     `(progn (defvar <hook-name> ,docstring)
             (put ,hook-var 'permanent-local t)
             (defhook! fun-<hook> ()
