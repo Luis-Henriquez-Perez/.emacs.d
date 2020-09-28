@@ -103,7 +103,6 @@ highlighted well.
 :PROPERTIES:
 :ID:       6a0c947c-660a-439f-aa14-4b103d8b7548
 :END:
-
 ** replace selectrum with ivy/counsel
 :PROPERTIES:
 :ID:       3ec4e606-653b-4d0a-af59-71b7518426c0
@@ -131,3 +130,11 @@ featureful and tested than the ones informally created for the selectrum wiki.
 All in all, ivy/counsel is currently the more complete, featureful and supported
 package and for this reason I move to use it as Void's main completion
 framework.
+
+** hook trigger definitions
+:PROPERTIES:
+:ID:       9f953be7-078f-4898-b047-db0309030e27
+:END:
+
+The purpose of this change is to create an consistent automated way of defining
+new hook triggers.
