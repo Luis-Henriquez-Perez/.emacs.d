@@ -1875,6 +1875,17 @@ complete I add the same type of syntax coloring to =defhook!=.
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
 #+end_src
 
+**** defhook-target!
+:PROPERTIES:
+:ID:       4b08a38a-2a7e-42c2-81f5-f6be600ab271
+:END:
+
+The need arises to define hooks.
+
+#+begin_src emacs-lisp
+
+#+end_src
+
 ** Initialize
 :PROPERTIES:
 :ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
