@@ -114,4 +114,5 @@ distracting.
 The purpose of this change is minimize the possibility of losing information
 without compromising user experience. Auto-saving, if done at fixed intervals,
 can cause lags and delays as the user is typing. I introduce the package
-[[][super-save]] to remedy this ussue (see [[][]])
+[[][super-save]] to remedy this ussue (see [[][this headline]] for more
+details).
