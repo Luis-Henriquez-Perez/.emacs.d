@@ -7262,8 +7262,8 @@ characters are typed (see [[helpvar:auto-save-interval][auto-save-interval]]). T
 the middle of typing and you've just hit the number of characters that trigger a
 save, you could experience a lag, particularly if you are dealing with a large
 file being saved. This package saves buffers during idle time and after certain
-commands (see [[helpvar:super-save-triggers][super-save-triggers]]). So we save only when its likely not to
-interfere with our workflow.
+commands like [[helpfn:switch-to-buffer][switch-to-buffer]] (see [[helpvar:super-save-triggers][super-save-triggers]]). So we save only when
+its likely not to interfere with our workflow.
 
 #+begin_src emacs-lisp
 (use-package! super-save
