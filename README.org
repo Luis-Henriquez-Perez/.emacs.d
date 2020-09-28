@@ -1885,9 +1885,12 @@ The need arises to define hooks.
 #+begin_src emacs-lisp
 (defmacro defhookvar! (hook-variable triggers &rest body)
   "Define a hook variable."
-  `(progn (defvar <hook-name> ,docstring)
-          (defadvice! run-<hook-name>
-            (run-hooks <hook-name>))))
+  (let (())
+    `(progn (defvar <hook-name> ,docstring)
+            (defhook! fun-<hook> ()
+              ())
+            (defadvice! run-<hook-name>
+              (run-hooks <hook-name>)))))
 #+end_src
 
 ** Initialize
