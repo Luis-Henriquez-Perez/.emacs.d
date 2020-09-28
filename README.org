@@ -7263,7 +7263,7 @@ the middle of typing and you've just hit the number of characters that trigger a
 save, you could experience a lag, particularly if you are dealing with a large
 file being saved. Instead of doing this, this package saves buffers during idle
 time and after certain commands like [[helpfn:switch-to-buffer][switch-to-buffer]] (see [[helpvar:super-save-triggers][super-save-triggers]]).
-Note that this is the same strategy employed by [[][idle-require]] to load packages.
+Note that this is the same strategy employed by [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]] to load packages.
 Saving files like this reduces the likelihood of user delays.
 
 #+begin_src emacs-lisp
