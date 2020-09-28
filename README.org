@@ -1887,12 +1887,12 @@ The need arises to define hooks. The inspiration for this macro came from
 (defmacro defhookvar! (name triggers &rest body)
   "Define a hook variable."
   (let ((hooks (-filter #'void:hook-p triggers))
-        (advices (-)))
+        (advices (-remove #'void:hook-p triggers)))
     `(progn (defvar ,name ,docstring)
             (put ,name 'permanent-local t)
-            (defhook! fun-<hook> ()
-              ())
-            (defadvice! run-<hook-name>
+            (defhook! run-<name> (,@hooks)
+              (run-hook <hook>))
+            (defadvice! run-<name> (:before ,@advices)
               (run-hooks <hook-name>)))))
 #+end_src
 
