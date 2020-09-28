@@ -1887,6 +1887,7 @@ The need arises to define hooks.
   "Define a hook variable."
   (let (())
     `(progn (defvar <hook-name> ,docstring)
+            (put ,hook-var 'permanent-local t)
             (defhook! fun-<hook> ()
               ())
             (defadvice! run-<hook-name>
