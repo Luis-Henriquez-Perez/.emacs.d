@@ -1883,10 +1883,11 @@ complete I add the same type of syntax coloring to =defhook!=.
 The need arises to define hooks.
 
 #+begin_src emacs-lisp
-(defmacro defhook-trigger! ()
-  "Define a trigger."
+(defmacro defhookvar! (hook-variable triggers &rest body)
+  "Define a hook variable."
   `(progn (defvar <hook-name> ,docstring)
-          (defadvice! run-<hook-name>)))
+          (defadvice! run-<hook-name>
+            (run-hooks <hook-name>))))
 #+end_src
 
 ** Initialize
