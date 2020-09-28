@@ -7257,13 +7257,12 @@ on the buffer you'd like to edit.
 :ID:       bd455e73-4035-49b9-bbdf-3d59d4906c97
 :END:
 
-The
-default auto-saving feature in emacs saves after a certain number of characters
-are typed (see [[helpvar:auto-save-interval][auto-save-interval]]). The problem is that if you're in the middle
-of typing and you've just hit the number of characters that trigger a save, you
-could experience a lag, particularly if you are dealing with a large file being
-saved. This package saves buffers during idle time and after certain commands.
-So we save only when its likely not to interfere with our workflow.
+The default auto-saving feature in emacs saves after a certain number of
+characters are typed (see [[helpvar:auto-save-interval][auto-save-interval]]). The problem is that if you're in
+the middle of typing and you've just hit the number of characters that trigger a
+save, you could experience a lag, particularly if you are dealing with a large
+file being saved. This package saves buffers during idle time and after certain
+commands. So we save only when its likely not to interfere with our workflow.
 
 #+begin_src emacs-lisp
 (use-package! super-save
