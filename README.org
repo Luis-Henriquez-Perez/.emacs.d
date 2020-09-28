@@ -7257,7 +7257,8 @@ on the buffer you'd like to edit.
 :ID:       bd455e73-4035-49b9-bbdf-3d59d4906c97
 :END:
 
-This package saves buffers during idle time and after certain commands.
+This package saves buffers during idle time and after certain commands. This is
+better than
 
 #+begin_src emacs-lisp
 (use-package! super-save
