@@ -99,12 +99,10 @@ Therefore, it makes sense to add font lock that allows =defhook= to be
 highlighted well.
 
 ** don't scale headlines in one-themes
+
 :PROPERTIES:
 :ID:       6a0c947c-660a-439f-aa14-4b103d8b7548
 :END:
-
-I prefer headlines to be a consistent height to other text. It is less visually
-distracting.
 
 ** replace selectrum with ivy/counsel
 :PROPERTIES:
@@ -133,13 +131,3 @@ featureful and tested than the ones informally created for the selectrum wiki.
 All in all, ivy/counsel is currently the more complete, featureful and supported
 package and for this reason I move to use it as Void's main completion
 framework.
-
-** saving at certain triggers and during idleness
-:PROPERTIES:
-:ID:       05722dc4-91d7-47e1-8ad2-3233ba06a442
-:END:
-
-The purpose of this change is minimize the possibility of losing information
-without compromising user experience. Auto-saving, if done at fixed intervals,
-can cause lags and delays as the user is typing. I introduce the package
-[[https://github.com/bbatsov/super-save][super-save]] to remedy this ussue (see [[id:bd455e73-4035-49b9-bbdf-3d59d4906c97][this headline]] for more details).
