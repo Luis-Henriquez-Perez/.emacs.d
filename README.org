@@ -7258,7 +7258,7 @@ on the buffer you'd like to edit.
 :END:
 
 This package saves buffers during idle time and after certain commands. The idea
-is that we want to avoid
+is that we want to avoid suffering a lag
 
 #+begin_src emacs-lisp
 (use-package! super-save
