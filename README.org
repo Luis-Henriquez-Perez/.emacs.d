@@ -7269,7 +7269,6 @@ user delays.
 
 #+begin_src emacs-lisp
 (use-package! super-save
-  :hook void:after-switch-buffer-hook
   :setq
   (super-save-idle-duration . 5)
   (super-save-auto-save-when-idle . t))
