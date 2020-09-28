@@ -1881,7 +1881,7 @@ complete I add the same type of syntax coloring to =defhook!=.
 :END:
 
 The need arises to define hooks. The inspiration for this macro came from
-[[][doom-emacs]].
+[[https://github.com/hlissner/doom-emacs/blob/develop/core/core-lib.el#L490][doom-emacs]].
 
 #+begin_src emacs-lisp
 (defmacro defhookvar! (name triggers &rest body)
