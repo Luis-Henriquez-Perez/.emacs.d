@@ -7264,7 +7264,7 @@ save, you could experience a lag, particularly if you are dealing with a large
 file being saved. Instead of doing this, this package saves buffers during idle
 time and after certain commands like [[helpfn:switch-to-buffer][switch-to-buffer]] (see [[helpvar:super-save-triggers][super-save-triggers]]).
 Note that this is the same strategy employed by [[][idle-require]] to load packages.
-So we save only when its likely not to interfere with our workflow.
+Saving files like this reduces the likelihood of
 
 #+begin_src emacs-lisp
 (use-package! super-save
