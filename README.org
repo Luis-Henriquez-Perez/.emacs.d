@@ -7252,32 +7252,6 @@ on the buffer you'd like to edit.
   (org-plantuml-executable-path . (executable-find "plantuml")))
 #+end_src
 
-** autosave
-:PROPERTIES:
-:ID:       32fe3a49-5cff-4bc5-9a62-ef4a5ac50b7d
-:END:
-
-[[https://github.com/kentaro/auto-save-buffers-enhanced][auto-save-enhanced]] is a package that replaces and (as its name suggests) enhances Emacs's
-stock autosaving. Notably it allows the specification of which files to try to
-save and not to save in [[helpvar:auto-save-buffers-enhanced-include-regexp][auto-save-buffers-enhanced-include-regexp]] and
-[[helpvar:auto-save-buffers-enhanced-exclude-regexp][auto-save-buffers-enhanced-exclude-regexp]].
-
-#+begin_src emacs-lisp
-(defhook! enable-enhanced-auto-saving (void:after-switch-buffer-hook)
-  "Enable enhanced auto-saving."
-  (require 'auto-save-buffers-enhancd)
-  (auto-save-buffers-enhanced t)
-  (remove-hook 'void:after-switch-buffer-hook
-               #'void:after-switch-buffer-hook&enable-enhanced-auto-saving))
-
-(use-package! auto-save-buffers-enhanced
-  :setq
-  (auto-save-buffers-enhanced-interval . 0.5)
-  (auto-save-buffers-enhanced-quiet-save-p . t)
-  (auto-save-buffers-enhanced-exclude-regexps . nil)
-  (auto-save-buffers-enhanced-include-regexps . (list (rx (1+ anything)))))
-#+end_src
-
 ** super save
 :PROPERTIES:
 :ID:       bd455e73-4035-49b9-bbdf-3d59d4906c97
