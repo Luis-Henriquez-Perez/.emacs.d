@@ -1880,7 +1880,8 @@ complete I add the same type of syntax coloring to =defhook!=.
 :ID:       4b08a38a-2a7e-42c2-81f5-f6be600ab271
 :END:
 
-The need arises to define hooks.
+The need arises to define hooks. The inspiration for this macro came from
+[[][doom-emacs]].
 
 #+begin_src emacs-lisp
 (defmacro defhookvar! (hook-variable triggers &rest body)
