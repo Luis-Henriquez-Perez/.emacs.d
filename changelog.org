@@ -137,4 +137,4 @@ framework.
 :END:
 
 The purpose of this change is to create an consistent automated way of defining
-new hook triggers.
+new hook variables.
