@@ -6033,7 +6033,6 @@ larger text objects. It's saves me keystrokes.
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
 :END:
 
-
 ** eshell
 :PROPERTIES:
 :ID: 5f04a252-2985-46b4-ab0b-eb4567de5dd9
