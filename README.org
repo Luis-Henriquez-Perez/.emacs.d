@@ -6591,10 +6591,9 @@ I might consider doing this asynchronously.
   (pomodoro-break-time        . 5)
   (pomodoro-long-break-time   . 15))
 
-(defadvice! pomodoro:play-sound-a (sound)
+(defadvice! play-sound (:override play-pomodoro-sound)
   "Play sound without using the call-process."
-  :override play-pomodoro-sound
-  (play-sound-file sound))
+  (play-sound-file <sound>))
 #+end_src
 
 ** file browsing
