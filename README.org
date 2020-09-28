@@ -7278,19 +7278,6 @@ save and not to save in [[helpvar:auto-save-buffers-enhanced-include-regexp][aut
   (auto-save-buffers-enhanced-include-regexps . (list (rx (1+ anything)))))
 #+end_src
 
-** autosave-focus
-:PROPERTIES:
-:ID:       30fda27e-dd3b-4d3d-98f0-658be6e94d09
-:END:
-
-[[][autosave-focus]] is a package that provides modes to save modified buffers
-when emacs loses focus.
-
-#+begin_src emacs-lisp
-(use-package! focus-autosave-mode
-  )
-#+end_src
-
 ** super save
 :PROPERTIES:
 :ID:       bd455e73-4035-49b9-bbdf-3d59d4906c97
