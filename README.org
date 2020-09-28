@@ -1848,7 +1848,7 @@ hook variable.
 (defadvice! replace-hook-executed-message (fn hook &rest _)
   "Set `defhook-executed' message to \"HOOK -> FN-action\"."
   :override defhook-executed
-  (alet (->> fn
+  (alet (->> <fn-sym>
              (symbol-name)
              (s-match (rx-to-string `(seq ,defhook-sym-desc-separator (group (1+ anything)))))
              (nth 1))
