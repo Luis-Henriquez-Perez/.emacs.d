@@ -827,25 +827,6 @@ If `void:debug-p' is non-nil, this function output the ACTION.
            ,@body)))))
 #+end_src
 
-****** font lock keywords                                             :disabled:
-:PROPERTIES:
-:ID:       6a8af0c0-dde6-4942-a528-cdde82fa540e
-:END:
-
-As with =defhook!= the syntax of =defadvice!= also resembles =defun= by design. It is
-meant to encourage a declarative way of defining advises.
-
-#+begin_src emacs-lisp
-(defconst VOID:ADVICE-KEYWORDS
-  '((,(rx "defadvice!" (1+ white) (group (1+ (not white))))
-     (1 font-lock-keyword-face)
-     (2 font-lock-function-name-face))))
-
-(defhook! add-defadvice-keywords (emacs-lisp-mode-hook)
-  "Add `defadvice' keywords to `emacs-lisp-mode'."
-  (font-lock-add-keywords nil VOID:ADVICE-KEYWORDS))
-#+end_src
-
 **** eval-after-load!
 :PROPERTIES:
 :ID:       8d831084-539b-4072-a86a-b55afb09bf02
@@ -2105,6 +2086,25 @@ complete I add the same type of syntax coloring to =defhook!=.
 (defhook! add-defhook-keywords (emacs-lisp-mode-hook)
   "Add `defhook!' keywords to `emacs-lisp-mode'."
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
+#+end_src
+
+***** font lock keywords
+:PROPERTIES:
+:ID:       6a8af0c0-dde6-4942-a528-cdde82fa540e
+:END:
+
+As with =defhook!= the syntax of =defadvice!= also resembles =defun= by design. It is
+meant to encourage a declarative way of defining advises.
+
+#+begin_src emacs-lisp
+(defconst VOID:ADVICE-KEYWORDS
+  '((,(rx "defadvice!" (1+ white) (group (1+ (not white))))
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face))))
+
+(defhook! add-defadvice-keywords (emacs-lisp-mode-hook)
+  "Add `defadvice' keywords to `emacs-lisp-mode'."
+  (font-lock-add-keywords nil VOID:ADVICE-KEYWORDS))
 #+end_src
 
 ** Initialize
