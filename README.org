@@ -639,7 +639,7 @@ naming system I provide, doing this is trivial.
 #+begin_src emacs-lisp
 (defun void:advice-target (advice)
   "Return the function ADVICE advises.
-ADVICE is an advice of the form \"advisee@advisor\""
+ADVICE is an advice of the form \"advisee@advisor\"."
   (->> (symbol-name advice)
        (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
        (nth 1)
