@@ -597,19 +597,237 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
-**** defadvice!
+**** advising
+:PROPERTIES:
+:ID:       19b9021d-f310-485b-9258-4df19423c082
+:END:
+
+[[info:elisp#Advising Functions][Advising]] is one of the most powerful ways to customize emacs's behavior. In this
+headline I provide a macro to concisely define functions that are specifically
+intended to advise other functions and to ensure that these functions are named
+properly. All user-defined advising functions should have the format
+=TARGET@ACTION=, where =TARGET= is the function being advised and =ACTION= is the
+action the advise is performing. This naming scheme is inspired and taken from
+the one introduced by [[helpfn:define-advice][define-advice]].
+
+***** advice-p
+:PROPERTIES:
+:ID:       0a84d983-39ad-48d1-af9d-b43589d63bcf
+:END:
+
+This function should be used to distinguish advices I add to functions over
+advices that have been added by Emacs or other packages.
+
+#+begin_src emacs-lisp
+(defun void:advice-p (fn)
+  "Return non-nil if FN is a void advice."
+  (s-matches-p (rx (1+ (not white)) "@" (1+ (not white)))
+               (symbol-name fn)))
+#+end_src
+
+***** target
+:PROPERTIES:
+:ID:       f893fbe8-592b-409e-8de7-6060e936456f
+:END:
+
+It's easy to find which functions are advising a given function using
+[[helpfn:advice-mapc][advice-mapc]]. However, it's not as easy to go the other way around--to
+determine what which function a given advice is advising. Another complicaiton
+is that it's possible for a given advice to advise multiple functions. With the
+naming system I provide, doing this is trivial.
+
+#+begin_src emacs-lisp
+(defun void:advice-target (advice)
+  "Return the function ADVICE advises.
+ADVICE is an advice of the form \"advisee@advisor\", where this function returns
+\"advisee\"."
+  (->> (symbol-name advice)
+       (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
+       (nth 1)
+       (intern)))
+#+end_src
+
+***** advice name
+:PROPERTIES:
+:ID:       03416f82-ced7-42a0-843b-6975903f0b38
+:END:
+
+The main question here was how should the arguments be ordered. The advice first
+or the target? In the end I choose to be consistent the order used with
+[[helpfn:advice-add][advice-add]].
+
+#+begin_src emacs-lisp
+(defun void:advice-name (target advice)
+  "Return advice name that meets Void naming conventions.
+Advice name is of the form \"target@advice\"."
+  (intern (format "%s@%s" target advice)))
+#+end_src
+
+***** adding advice
+:PROPERTIES:
+:ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
+:END:
+
+Often, I advise functions with other existing functions (such as =#'ignore=)
+instead of defining my own advices. To maintain consistency with the naming
+convention I created [[helpfn:void:add-advice][void:add-advice]]. It will create an advice with an
+appropriate name to target.
+
+#+begin_src emacs-lisp
+(defun void:add-advice (target where advice &optional props expire-fn)
+  "Advise TARGETS with Void ADVICES."
+  (let ((name (void:advice-name target advice)))
+    (defalias name advice)
+    (advice-add target where name props)
+    (when expire-fn
+      (advice-add it :around (void:expire-advice target name)))))
+#+end_src
+
+***** removing advice
+:PROPERTIES:
+:ID:       baf2dd59-b37b-47bc-a1d2-815ba925d1bd
+:END:
+
+This is counter part of [[id:4750f4dc-053b-4062-bd6c-aeeed6cdbcd9][adding advice]]. It provides convenience for removing an
+advice.
+
+#+begin_src emacs-lisp
+(defun void:remove-advice (target advice)
+  "Remove Void ADVICE from TARGET."
+  (advice-remove target (void:advice-name target advice)))
+#+end_src
+
+***** expire advice
+:PROPERTIES:
+:ID:       8506fa78-c781-4ca8-bd58-169cce23a504
+:END:
+
+Often there are functions you want to advise just once. For example, loading a
+feature just before a function that needs it is called. Although it's harmless,
+you don't want to keep reloading the feature everytime the function is called.
+
+The way I handle this situation is by creating a function that generates an
+=expire-advice=. An =expire-advice= is meant to be attached to a void advice and.
+
+Note that this function must be evaluated with lexical binding to work.
+
+#+begin_src emacs-lisp
+(defun void:expire-advice (target &optional expire-fn unbind)
+  "Return an advice that causes TARGET to expire when EXPIRE-FN returns true.
+TARGET is a function. EXPIRE-FN is a function that returns true when TARGET
+should expire."
+  (let ((expire-advice (void:advice-name target 'expire))
+        (expire-fn (or expire-fn (lambda () t))))
+    (fset expire-advice
+          (lambda (orig-fn &rest args)
+            (aprog1 (apply orig-fn args)
+              (when (funcall expire-fn)
+                (when (void:advice-p target)
+                  (advice-remove (void:advice-target target) target))
+                (advice-remove target expire-advice)
+                (fmakunbound expire-advice)
+                (void:log "%s has expired." target)
+                (when unbind
+                  (fmakunbound target))))))
+    expire-advice))
+#+end_src
+
+***** defadvice!
+:PROPERTIES:
+:ID:       1e0f3a27-a7d8-4e28-a359-f42ed7a16033
+:END:
+
+This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that provides a
+declarative way to define advices.
+
+****** helper
+:PROPERTIES:
+:ID:       9899e994-4594-451a-857e-ed12168e8b12
+:END:
+
+This helper function contains the logic for how the arglist and the body should
+look in =defadvice!=. I separated this out into a function so I could keep the
+body of =defadvice!= readable and neat.
+
+The most interesting case is what happens when the user doesn't specify
+arguments. In that case, you get the advised functions arguments using
+[[helpfn:help-function-arglist][help-function-arglist]] and bind them with [[helpfn:cl-progv][cl-progv]]--all this is done when the
+function is run.
+
+#+begin_src emacs-lisp
+(defun void::defadvice-info (where target args body)
+  "Return the appropriate body and arglist for `defadvice!'.
+If ARGS is non-nil, return (ARGS BODY). Otherwise, if WHERE is :around"
+  (cond ((not (eq 'none args))
+         (list args body))
+        ((eq where :around)
+         (list '(<orig-fn> &rest <args>) body))
+        (t
+         (let ((args '<args>))
+           `((&rest ,args)
+             ((cl-progv (->> (help-function-arglist #',target t)
+                             (--remove (s-starts-with-p "&" (symbol-name it)))
+                             (--map (intern (format "<%s>" (symbol-name it)))))
+                  ,args
+                ,@body)))))))
+#+end_src
+
+****** defadvice!
 :PROPERTIES:
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
 :END:
 
+The =defadvice!= macro is a wrapper around =define-advice= with some notable
+differences.
+
+First, unlike [[helpfn:define-advice][define-advice]], the symbol used for naming the advice (the
+ACTION argument in =defadvice!=) first instead of the name of the advised
+function. Since this symbol is what distinguishes this new advice, I feel that
+it should be the it should be the focus of this syntax.
+
+Second, I allow =defadvice!= to accept multiple advised functions since advising
+more than one function happens often. Note, however, in cases where you want to
+define an advise for more than two or three functions it is preferable not to
+use =defadvice!= so as not to deal with really long lines (this is the same reason
+for not having functions with too many arguments).
+
+Finally, you can omit the arguments of the advice. If you do, you can use the
+arguments of the original function you can do so with [[id:9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df][anaphoric symbols]]. For an
+around advice the arguments become =(<orig-fn &rest <args>)=. For any other advice
+the arguments are anaphoric versions of the advised function's arguments. For
+examples, see [[id:][the changelog]].
+
 #+begin_src emacs-lisp
-(defmacro defadvice! (name args &rest body)
-  "Add advice."
-  (-let ((docstring (when (stringp (car body)) (pop body)))
-         ((key advices . body) body))
-    `(prog1 (defun ,name ,args ,docstring ,@body)
-       ,@(--map `(advice-add #',it ,key #',name)
-                (-list advices)))))
+(defmacro defadvice! (action args &rest body)
+  "A replacement for `define-advice'.
+ACTION should be a symbol denoting what the advise is doing.
+WHERE is the advice keyword. If ADVICE-ARGS is the argument list for the advice.
+TARGET is the name of the function to advise. TARGETS are other functions to be
+advised.
+
+If ADVICE-ARGS is ommitted you can refer to the advised function's arguments via
+anaphoric symbols.
+
+If `void:debug-p' is non-nil, this function output the ACTION.
+
+\(fn ACTION (WHERE &optional ADVICE-ARGS TARGET &rest TARGETS) &rest BODY)"
+  (declare (indent 2) (doc-string 3) (debug (sexp sexp body)))
+  (unless (listp args) (signal 'wrong-type-argument (list 'listp args)))
+  (-let* ((args (if (not (listp (nth 1 args)))
+                    (-insert-at 1 'none args)
+                  args))
+          ((where advice-args target . targets) args)
+          (docstring (if (stringp (car body)) (pop body) nil))
+          ((arglist body) (void::defadvice-info where target advice-args body)))
+    (when target
+      `(progn
+         (define-advice ,target (,where ,arglist ,action)
+           ,docstring
+           (void:log "%s @ %s" #',target ',action)
+           ,@body)
+         (defadvice! ,action (,where ,@targets)
+           ,docstring
+           ,@body)))))
 #+end_src
 
 **** eval-after-load!
@@ -1824,14 +2042,10 @@ docstring if there is one) of the function."
 :ID:       26783153-3517-4079-89d8-4bd862c52909
 :END:
 
-The messages =defhook= provides are informational but long and in complete
-sentences. I customize this message so that it is concise and to the point.
+I don't need messages about the.
 
 #+begin_src emacs-lisp
-(defadvice! replace-hook-done-message (fn hook &rest _)
-  "Set `defhook-done' message to \"add FN to HOOK\"."
-  :override defhook-done
-  (void:log "add %s to %s" fn hook))
+(void:add-advice #'defhook-done :override #'ignore)
 #+end_src
 
 ***** fix defhook-executed
@@ -1845,14 +2059,13 @@ redundant for me the full hook name. I'd prefer just the hook action and the
 hook variable.
 
 #+begin_src emacs-lisp
-(defadvice! replace-hook-executed-message (fn hook &rest _)
+(defadvice! replace-hook-executed-message (:override defhook-executed)
   "Set `defhook-executed' message to \"HOOK -> FN-action\"."
-  :override defhook-executed
-  (alet (->> fn
+  (alet (->> <func-sym>
              (symbol-name)
              (s-match (rx-to-string `(seq ,defhook-sym-desc-separator (group (1+ anything)))))
              (nth 1))
-    (void:log "%s -> %s" hook it)))
+    (void:log "%s & %s" <hook-sym> it)))
 #+end_src
 
 ***** font-lock
@@ -1873,6 +2086,25 @@ complete I add the same type of syntax coloring to =defhook!=.
 (defhook! add-defhook-keywords (emacs-lisp-mode-hook)
   "Add `defhook!' keywords to `emacs-lisp-mode'."
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
+#+end_src
+
+***** font lock keywords                                              :disabled:
+:PROPERTIES:
+:ID:       6a8af0c0-dde6-4942-a528-cdde82fa540e
+:END:
+
+As with =defhook!= the syntax of =defadvice!= also resembles =defun= by design. It is
+meant to encourage a declarative way of defining advises.
+
+#+begin_src emacs-lisp
+(defconst VOID:ADVICE-KEYWORDS
+  '((,(rx "defadvice!" (1+ white) (group (1+ (not white))))
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face))))
+
+(defhook! add-defadvice-keywords (emacs-lisp-mode-hook)
+  "Add `defadvice' keywords to `emacs-lisp-mode'."
+  (font-lock-add-keywords nil VOID:ADVICE-KEYWORDS))
 #+end_src
 
 ** Initialize
@@ -2421,9 +2653,9 @@ When running emacs in terminal tty is *tremendously* slow.
 
 #+begin_src emacs-lisp
 (unless (display-graphic-p)
-  (advice-add #'tty-run-terminal-initialization :override #'ignore)
+  (void:add-advice #'tty-run-terminal-initialization :override #'ignore)
   (defhook! init-tty (window-setup-hook)
-    (advice-remove #'tty-run-terminal-initialization #'ignore)
+    (void:remove-advice #'tty-run-terminal-initialization #'ignore)
     (tty-run-terminal-initialization (selected-frame) nil t)))
 #+end_src
 
@@ -2580,22 +2812,23 @@ By default start emacs as fullscreen.
   "When non-nil, switch buffer hooks are inhibited.")
 #+end_src
 
-***** switching
+***** TODO switching
 :PROPERTIES:
 :ID: ae5ad47f-9efe-4609-85fb-009d8685edc7
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! void:run-switch-buffer-hooks-a (orig-fn buffer-or-name &rest args)
+(defadvice! run-after-switch-buffer-hook (:around switch-to-buffer display-buffer)
   "Run `void:after-switch-buffer-hook'."
-  :around (switch-to-buffer display-buffer)
-  (let ((gc-cons-threshold most-positive-fixnum))
+  (let ((gc-cons-threshold most-positive-fixnum)
+        (buffer-or-name (car <args>))
+        (args (cdr <args>)))
     (if (or void:inhibit-switch-buffer-hooks
             (eq (current-buffer) (get-buffer buffer-or-name))
-            (and (eq orig-fn #'switch-to-buffer) (car args)))
-        (apply orig-fn buffer-or-name args)
+            (and (eq <orig-fn> #'switch-to-buffer) (car args)))
+        (apply <orig-fn> buffer-or-name args)
       (let ((void:inhibit-switch-buffer-hooks t))
-        (when-let (buffer (apply orig-fn buffer-or-name args))
+        (when-let (buffer (apply <orig-fn> <args>))
           (with-current-buffer (if (windowp buffer)
                                    (window-buffer buffer)
                                  buffer)
@@ -2609,13 +2842,12 @@ By default start emacs as fullscreen.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! void:run-prev-or-next-buffer-hooks-a (orig-fn &rest args)
-  :around (switch-to-next-buffer switch-to-previous-buffer)
+(defadvice! run-prev-or-next-buffer-hook (:around switch-to-next-buffer switch-to-previous-buffer)
   (let ((gc-cons-threshold most-positive-fixnum))
     (if void:inhibit-switch-buffer-hooks
-        (apply orig-fn args)
+        (apply <orig-fn> <args>)
       (let ((void:inhibit-switch-buffer-hooks t))
-        (when-let (buffer (apply orig-fn args))
+        (when-let (buffer (apply <orig-fn> <args>))
           (with-current-buffer buffer
             (run-hooks 'void:after-switch-buffer-hook)))))))
 #+end_src
@@ -2668,12 +2900,11 @@ frame. So here I'm making the default font for all Emacs frames =void:font=.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! void:frame-notice-user-settings-a (orig-fn &rest args)
+(defadvice! set-font (:around frame-notice-user-settings)
   "Try `void:font' followed each of `void:backup-fonts' until success.
 If none of the fonts work, just use the default system font."
-  :around frame-notice-user-settings
   (condition-case nil
-      (progn (apply orig-fn args)
+      (progn (apply <orig-fn> <args>)
              (void:log "Font is: %s" (face-attribute 'default :font)))
     (error
      (if void:backup-fonts
@@ -2683,12 +2914,12 @@ If none of the fonts work, just use the default system font."
            (setq void:font (pop void:backup-fonts))
            (add-to-list 'default-frame-alist (cons 'font void:font))
            ;; I want to call the function with advice in it.
-           (apply #'frame-notice-user-settings args))
+           (apply <orig-fn> <args>))
        (setq void:font (face-attribute 'default :font))
        (void:log "None of the backup-fonts worked, defaulting to: %s"
                  void:font)
        (add-to-list 'default-frame-alist (cons 'font void:font))
-       (apply #'frame-notice-user-settings args)))))
+       (apply <orig-fn> <args>)))))
 #+end_src
 
 **** size
@@ -2775,10 +3006,9 @@ example, if I'm using evil I need to update the cursor color.
 (defvar void:after-load-theme-hook nil
   "Hook run after the theme is loaded with `load-theme'.")
 
-(defadvice! void:run-after-load-theme-hook-a (theme &rest _)
+(defadvice! run-after-load-theme-hook (:after load-theme)
   "Set up `void:load-theme-hook' to run after `load-theme' is called."
-  :after load-theme
-  (setq void:theme theme)
+  (setq void:theme <theme>)
   (run-hooks 'void:after-load-theme-hook))
 #+end_src
 
@@ -2792,11 +3022,10 @@ one. For this reason, I make sure to disable any enabled themes before applying
 a new theme.
 
 #+begin_src emacs-lisp
-(defadvice! void:disable-old-themes-first-a (orig-fn &rest args)
+(defadvice! disable-old-themes (:around load-theme)
   "Disable old themes before loading new ones."
-  :around load-theme
   (mapc #'disable-theme custom-enabled-themes)
-  (apply orig-fn args))
+  (apply <orig-fn> <args>))
 #+end_src
 
 * Window Management
@@ -3352,7 +3581,7 @@ be inserted and interactively completed.
   (delq #'yas-dropdown-prompt yas-prompt-functions)
   (after! smartparens
     ;; tell smartparens overlays not to interfere with yasnippet keybinds
-    (advice-add #'yas-expand :before #'sp-remove-active-pair-overlay)))
+    (void:add-advice #'yas-expand :before #'sp-remove-active-pair-overlay)))
 #+end_src
 
 *** snippet collection
@@ -3527,7 +3756,7 @@ visually distracting and not particularly useful for me, so I disable it.
 
 #+begin_src emacs-lisp
 (after! counsel
-  (advice-add #'counsel-M-x-transformer :override #'identity))
+  (void:add-advice #'counsel-M-x-transformer :override #'identity))
 #+end_src
 
 **** make the default action setting the font
@@ -4041,9 +4270,8 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! mu4e:initialize-all-contexts (&rest _)
+(defadvice! setup-contexts (:before mu4e)
   "Initiaize context for each email account."
-  :before mu4e
   (require 'password-store)
   (--each (-map #'mu4e::account-context (pass:email-list))
     (cl-pushnew it mu4e-contexts)))
@@ -5227,7 +5455,6 @@ Sometimes =evil-normal-state= enters visual state.
 
 #+begin_src emacs-lisp
 (general-def '(emacs insert) lispyville-mode-map [escape] #'lispyville-normal-state)
-(advice-add #'lispyville-normal-state :after #'evil:dwim-abort-after-escape-a)
 #+end_src
 
 **** additional
@@ -5462,18 +5689,16 @@ cursor color will update.
   (setq evil-emacs-state-modes nil)
   (setq evil-motion-state-modes nil))
 
-(defadvice! evil:treat-motion-as-normal-state (orig-fn &rest args)
+(defadvice! replace-motion-with-normal (:around evil-make-overriding-map)
   "Advice for `evil-make-overriding-map' that inhibits motion state."
-  :around evil-make-overriding-map
-  (-let (((keymap state copy) args))
-    (funcall orig-fn keymap (if (eq state 'motion) 'normal state) copy)))
+  (-let (((keymap state copy) <args>))
+    (funcall <orig-fn> keymap (if (eq state 'motion) 'normal state) copy)))
 
-(defadvice! evil:set-initial-state (orig-fn &rest args)
-  :around evil-set-initial-state
-  (-let (((mode state) args))
-    (funcall orig-fn mode (if (eq state 'motion) 'normal state))))
+(defadvice! replace-motion-with-normal (:around evil-set-initial-state)
+  (-let (((mode state) <args>))
+    (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
 
-(advice-add #'evil-motion-state :override #'evil-normal-state)
+(void:add-advice #'evil-motion-state :override #'evil-normal-state)
 #+end_src
 
 **** insert state in minibuffer
@@ -5517,9 +5742,8 @@ We want escape to be a general "quit everything".
 #+begin_src emacs-lisp
 (general-def :states '(emacs insert) [escape] #'evil-force-normal-state)
 
-(defadvice! evil:dwim-abort-after-escape-a ()
+(defadvice! exit-everything (:after evil-force-normal-state lispyville-normal-state)
   "Exits out of whatever is happening after escape."
-  :after evil-force-normal-state
   (cond ((minibuffer-window-active-p (minibuffer-window))
          (abort-recursive-edit))
         ((run-hook-with-args-until-success 'void:escape-hook))
@@ -5819,7 +6043,7 @@ Why not just go to the end of the ="= like any other around operator?
 
 #+begin_src emacs-lisp
 (use-package! auto-yasnippet
-  :defer-config (advice-add #'aya-expand :after #'evil-insert-state)
+  :defer-config (void:add-advice #'aya-expand :after #'evil-insert-state)
   :setq (aya-persist-snippets-dir . (concat VOID:LOCAL-DIR "auto-snippets/")))
 #+end_src
 
@@ -5911,9 +6135,8 @@ larger text objects. It's saves me keystrokes.
     "V" #'er/contract-region
     "v" #'er/expand-region)
   :defer-config
-  (defadvice! void:quit-expand-region-a ()
+  (defadvice! quit-expand-region (:before evil-escape)
     "Properly abort an expand-region region."
-    :before evil-escape evil:escape-a
     (when (memq last-command '(er/expand-region er/contract-region))
       (er/contract-region 0))))
 #+end_src
@@ -6184,10 +6407,9 @@ line--that's not what we want.
 https://emacs.stackexchange.com/questions/28819/eshell-goes-to-the-bottom-of-the-page-after-executing-a-command
 
 #+begin_src emacs-lisp
-(defadvice! eshell:scroll-buffer-to-top (&rest _)
+(defadvice! scroll-to-top (:override eshell/clear)
   "Scroll eshell buffer to top.
 The effect of this is to clear the contents of the eshell buffer."
-  :override eshell/clear
   (progn (call-interactively #'evil-scroll-line-to-top) nil))
 #+end_src
 
@@ -6356,7 +6578,7 @@ aliases.
         (append eshell-command-aliases-list
                 eshell:aliases)))
 
-(advice-add #'eshell-write-aliases-list :override #'ignore)
+(void:add-advice #'eshell-write-aliases-list :override #'ignore)
 #+end_src
 
 *** shrink-path
@@ -6408,7 +6630,7 @@ have to set out to look for a file with =dired=.
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
   :defer-config
-  (advice-add #'recentf-save-list :before #'recentf-cleanup)
+  (void:add-advice #'recentf-save-list :before #'recentf-cleanup)
   (recentf-mode 1)
   :setq
   (recentf-exclude . (list #'file-remote-p
@@ -6431,10 +6653,9 @@ have to set out to look for a file with =dired=.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! recentf:shut-up-a (orig-fn &rest args)
+(defadvice! silence-ouput (:around recentf-mode)
   "Shut up recentf."
-  :around recentf-mode
-  (shut-up! (apply orig-fn args)))
+  (shut-up! (apply <orig-fn> <args>)))
 #+end_src
 
 ** saveplace
@@ -6454,9 +6675,8 @@ again, you are taken to the location you left off. This is very convenient.
   (save-place-limit . nil)
   :config
   (save-place-mode)
-  (defadvice! save-place-recenter-on-load-saveplace-a (&rest _)
+  (defadvice! recenter-on-load (:after-while save-place-find-file-hook)
     "Recenter on cursor when loading a saved place."
-    :after-while save-place-find-file-hook
     (when buffer-file-name (ignore-errors (recenter)))))
 #+end_src
 
@@ -6571,10 +6791,9 @@ I might consider doing this asynchronously.
   (pomodoro-break-time        . 5)
   (pomodoro-long-break-time   . 15))
 
-(defadvice! pomodoro:play-sound-a (sound)
+(defadvice! dont-use-call-process (:override play-pomodoro-sound)
   "Play sound without using the call-process."
-  :override play-pomodoro-sound
-  (play-sound-file sound))
+  (play-sound-file <sound>))
 #+end_src
 
 ** file browsing
@@ -6822,9 +7041,8 @@ There's this wierd intermidiate stage between =hidden= and =format= called =pref
 which only some files are hidden. That's wierd, so I get rid of it.
 
 #+begin_src emacs-lisp
-(defadvice! ranger:toggle-dotfiles-a ()
+(defadvice! toggle-between-two-only (:override ranger-toggle-dotfiles)
   "Show/hide dot-files."
-  :override ranger-toggle-dotfiles
   (interactive)
   (setq ranger-show-hidden
         (cl-case ranger-show-hidden
@@ -6839,24 +7057,11 @@ which only some files are hidden. That's wierd, so I get rid of it.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! ranger:window-check-shutup-a (orig-fn &rest args)
+(defadvice! silence-output (:around ranger-window-check)
   "Silence `ranger-window-check'."
-  :around ranger-window-check
-  (quiet! (apply orig-fn args)))
+  (quiet! (apply <orig-fn> <args>)))
 #+end_src
 
-
-**** refresh
-:PROPERTIES:
-:ID:       14e0f5b0-2b6c-44eb-8214-80e20f168871
-:END:
-
-#+begin_src emacs-lisp
-(defadvice! ranger:refresh-after-new-dir (&rest _)
-  :after (mkdir dired-do-rename)
-  (when (eq major-mode 'ranger)
-    (ranger-refresh)))
-#+end_src
 
 *** dired icons
 :PROPERTIES:
@@ -7128,9 +7333,8 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! pdf-tools:build-pdf-info-program-a ()
+(defadvice! build-pdf-into-program (:before pdf-view-mode)
   "Build the pdf-info program if it hasn't already been built."
-  :before pdf-view-mode
   (unless (file-executable-p pdf-info-epdfinfo-program)
     (let ((wconf (current-window-configuration)))
       (pdf-tools-install)
@@ -7352,10 +7556,9 @@ of the problem. You can check out a more in-depth explanation looking at my
 [[https://www.reddit.com/r/emacs/comments/d7x7x8/finally_fixing_indentation_of_quoted_lists/][reddit-post]] or looking at an answer I gave to [[https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned][this question]].
 
 #+begin_src emacs-lisp
-(defadvice! void:calculate-lisp-indent-a (&optional parse-start)
+(defadvice! properly-calculate-indent (:override calculate-lisp-indent)
   "Add better indentation for quoted and backquoted lists.
 The change to this function."
-  :override calculate-lisp-indent
   (defvar calculate-lisp-indent-last-sexp)
   (save-excursion
     (beginning-of-line)
@@ -7365,10 +7568,10 @@ The change to this function."
           (desired-indent nil)
           (retry t)
           calculate-lisp-indent-last-sexp containing-sexp)
-      (cond ((or (markerp parse-start) (integerp parse-start))
-             (goto-char parse-start))
-            ((null parse-start) (beginning-of-defun))
-            (t (setq state parse-start)))
+      (cond ((or (markerp <parse-start>) (integerp <parse-start>))
+             (goto-char <parse-start>))
+            ((null <parse-start>) (beginning-of-defun))
+            (t (setq state <parse-start>)))
       (unless state
         ;; Find outermost containing sexp
         (while (< (point) indent-point)
@@ -7550,10 +7753,9 @@ these overlays.
   ;; TODO: should be changed to `:functions'
   :commands outorg-convert-back-to-code outorg-convert-to-org)
 
-(defadvice! outorg:do-not-add-overlays-a (orig-fn &rest args)
-  :around outorg-wrap-source-in-block
+(defadvice! dont-add-overlays (:around outorg-wrap-source-in-block)
   (cl-letf (((symbol-function #'overlay-put) #'ignore))
-    (apply orig-fn args)))
+    (apply <orig-fn> <args>)))
 #+end_src
 
 **** outshine
@@ -7848,10 +8050,9 @@ heading. It should just stop at the last visible heading. This advice checks to
 see if it's gone farther than it should have and in that case goes back.
 
 #+begin_src emacs-lisp
-(defadvice! outline:dont-end-at-eob-a (orig-fn &rest args)
+(defadvice! dont-end-at-eob (:around outline-next-visible-heading)
   "Fix bug where the next heading moves past last visible heading."
-  :around outline-next-visible-heading
-  (apply orig-fn args)
+  (apply <orig-fn> <args>)
   (when (eobp) (apply #'outline-previous-visible-heading args)))
 #+end_src
 
@@ -7861,9 +8062,8 @@ see if it's gone farther than it should have and in that case goes back.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! org:end-at-start-of-headline-a (&rest _)
+(defadvice! end-at-headline-start (:after org-refile org-cut-subtree org-copy-subtree)
   "After running body end at headline start."
-  :after org-refile org-cut-subtree org-copy-subtree org/jump-to-headline
   (when (org-at-heading-p) (org:heading-goto-start)))
 #+end_src
 
@@ -8174,11 +8374,10 @@ work with the argument =hl=. It works when you set it to =t= instead. Maybe =hl=
 depreciated.
 
 #+begin_src emacs-lisp
-(defadvice! hide:lines-fix-add-overlay-a (start end)
+(defadvice! fix-adding-overlay (:override hide-lines-add-overlay)
   "Add an overlay from `start' to `end' in the current buffer.
 Push the overlay into `hide-lines-invisible-areas'."
-  :override hide-lines-add-overlay
-  (let ((overlay (make-overlay start end)))
+  (let ((overlay (make-overlay <start> <end>)))
     (setq hide-lines-invisible-areas (cons overlay hide-lines-invisible-areas))
     (overlay-put overlay 'invisible t)))
 #+end_src
@@ -8192,14 +8391,13 @@ When I tried hiding property drawers [[hfn:hide-lines-matching][hide-lines-match
 lines. Only the property block body was hidden. This advice fixes this.
 
 #+begin_src emacs-lisp
-(defadvice! hide:lines-fix-hide-matching-a  (search-text)
-  :override hide-lines-matching
+(defadvice! fix-hide-matching-lines  (:override hide-lines-matching)
   "Hide lines matching the specified regexp."
   (interactive "MHide lines matching regexp: ")
   (set (make-local-variable 'line-move-ignore-invisible) t)
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward search-text nil t)
+    (while (re-search-forward <search-text> nil t)
       (hide-lines-add-overlay (match-beginning 0) (match-end 0)))))
 #+end_src
 
@@ -8245,9 +8443,8 @@ Unless I explicitly ask for properties I don't want to see them.
 #+begin_src emacs-lisp
 (setq-default org-startup-folded 'fold)
 
-(defadvice! org:set-startup-visibility-h ()
+(defadvice! hide-all-property-drawers (:override org-set-startup-visibility)
   "Completely hide all text properties."
-  :override org-set-startup-visibility
   ;; Hide property drawers on startup.
   (org/hide-property-drawers)
   (org-overview))
@@ -8315,9 +8512,8 @@ hindsight, using this function is even easier than using ~window-beg~ and
 ~window-end~ because it doesn't require any math on my part.
 
 #+begin_src emacs-lisp
-(defadvice! org:ensure-children-visible-a ()
+(defadvice! ensure-children-visible (:after outline-toggle-children)
   "Ensure children are visible after toggling."
-  :after outline-toggle-children
   (unless (org:heading-folded-p)
     (org:display-children-in-window)))
 #+end_src
@@ -8496,10 +8692,9 @@ template element as you're writing it.
   :config
   ;; (require 'doct)
   ;; doct just returns the new template.
-  (defadvice! doct:add-to-capture-templates (orig-fn &rest args)
+  (defadvice! add-to-capture-templates (:around doct)
     "Automatically add the template to capture templates."
-    :around doct
-    (alet (apply orig-fn args)
+    (alet (apply <orig-fn> <args>)
       (prepend! org-capture-templates it))))
 #+end_src
 
@@ -9150,8 +9345,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 [[helpvar:void-init-time][void:init-time]] is more accurate than dashboard's init time measure. So I use it instead.
 
 #+begin_src emacs-lisp
-(defadvice! dashboard:set-init-info-a (&rest _)
-  :before dashboard-insert-startupify-lists
+(defadvice! show-package-load-time (:before dashboard-insert-startupify-lists)
   (setq dashboard-init-info
         (format "%d packages loaded in %.2f seconds"
                 (cond ((featurep 'straight)
@@ -9167,9 +9361,8 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! dashboard:custom-banner-path-a (&rest _)
+(defadvice! set-custom-banner-path (:override dashboard-get-banner-path)
   "Use the Void text banner."
-  :override dashboard-get-banner-path
   (concat VOID:LOCAL-DIR "void-banner.txt"))
 #+end_src
 
@@ -9302,15 +9495,15 @@ In terminals these icons will not display correctly. I usually use emacs as a
 graphical interface but.
 
 #+begin_src emacs-lisp
-(defadvice! void:disable-all-the-icons-in-tty-a (orig-fn &rest args)
+(defadvice! disable-all-the-icons-in-tty (:around
+                                          all-the-icons-octicon
+                                          all-the-icons-material
+                                          all-the-icons-faicon
+                                          all-the-icons-fileicon
+                                          all-the-icons-wicon
+                                          all-the-icons-alltheicon)
   "Disable icons in tty."
-  :around (all-the-icons-octicon
-           all-the-icons-material
-           all-the-icons-faicon
-           all-the-icons-fileicon
-           all-the-icons-wicon
-           all-the-icons-alltheicon)
-  (if (display-graphic-p) (apply orig-fn args) ""))
+  (if (display-graphic-p) (apply <orig-fn> <args>) ""))
 #+end_src
 
 ** themes

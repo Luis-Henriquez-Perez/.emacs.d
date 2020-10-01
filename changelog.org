@@ -141,3 +141,62 @@ The purpose of this change is minimize the possibility of losing information
 without compromising user experience. Auto-saving, if done at fixed intervals,
 can cause lags and delays as the user is typing. I introduce the package
 [[https://github.com/bbatsov/super-save][super-save]] to remedy this ussue (see [[id:bd455e73-4035-49b9-bbdf-3d59d4906c97][this headline]] for more details).
+
+** updates to advising
+:PROPERTIES:
+:ID:       5abd6d61-919b-4f8c-a9e6-f9b6ea48b11a
+:END:
+
+This change has many purposes. One is to establish a concise and consistent standard for
+naming a user-added advice. Another is to provide debugging capabilities via
+[[id:][void:log]] I can use to find problems in my configuration.
+
+*** [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]]
+:PROPERTIES:
+:ID:       07a4f3ee-2593-4fda-b80b-71f33cbf52c6
+:END:
+
+This change introduces =expire advice=. These are advices that can remove their
+advisees (or targets) from any advice they are in and unbind them.
+
+*** defadvice!
+:PROPERTIES:
+:ID:       de153171-3126-41b2-855e-255bdf61d90b
+:END:
+
+**** anaphoric arguments
+:PROPERTIES:
+:ID:       55d471c5-26ef-4202-a151-506b0858b884
+:END:
+
+You can optionally omit advice arguments in =defadvice!=. If you need to reference
+those arguments you can use anaphoric variables.
+
+**** on redundant advice arguments
+:PROPERTIES:
+:ID:       93a02a02-b69f-44d0-b2e3-14f1f26f5f90
+:END:
+
+When defining an advice in Emacs the arguments of the advice function are often
+redundant. This is especially the case with [[info:elisp#Advice Combinators][around advice]] whose arguments
+are almost always =(orig-fn args)=. Often you need them to be the same as with the
+original function. Making them different would lead to an error. To avoid user
+(ie. me) mistakes. I base. Why should we need to specify the arguments of an
+advice if we already pass in the function to be advised? For all advices expect
+around advice, the arguments must be the same or more than the symbol being
+advised.
+
+*** define a consistent naming scheme
+:PROPERTIES:
+:ID:       70d49b15-1f0d-4c5c-a1b5-a333ed5adb31
+:END:
+
+Now advices have a consistent syntax. The functions [[id:4750f4dc-053b-4062-bd6c-aeeed6cdbcd9][void:add-advice]] and
+[[id:baf2dd59-b37b-47bc-a1d2-815ba925d1bd][void:remove-advice]] as well as the macro [[id:1e0f3a27-a7d8-4e28-a359-f42ed7a16033][defadvice!]].
+
+*** outputting messages on =void:debug=
+:PROPERTIES:
+:ID:       c8915acd-626e-429f-a8c3-1416f16bb00d
+:END:
+
+Advises output log messages when =void:debug= is non-nil.
