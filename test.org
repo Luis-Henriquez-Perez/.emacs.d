@@ -20,40 +20,6 @@
     (fmakunbound 'b-hook&hello-world)))
 #+end_src
 
-** accepts arg after docstring
-:PROPERTIES:
-:ID:       9a758139-cd46-4408-b8ac-66d9ee3f7968
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest defhook-accepts-args-after-docstring ()
-  ;; Check to see if all the defadvice forms contain.
-  (let* ((arguments '(:eval-after evil :interactive-spec t))
-         (macroexpansion (macroexpand-1
-                          `(defhook! hello-world (a-hook)
-                             ,@arguments
-                             (+ 1 1)))))
-    ;; the second item should be the args list.
-    (should (--all-p (-same-items-p arguments (cdr (-third-item it)))
-                     (-non-nil (cdr macroexpansion))))))
-#+end_src
-
-** font locking works
-:PROPERTIES:
-:ID:       29d5d7a4-2e07-4379-9964-b5912ab06ef3
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest defhook-font-lock-keywords ()
-  (let* ((regexp (caar VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
-         (match (s-match regexp "(defhook! hello-world (emacs-lisp-mode-hook) nil)")))
-    (should (string= (nth 1 match) "defhook!"))
-    (should (string= (nth 2 match) "hello-world"))))
-#+end_src
-
-#+begin_src emacs-lisp
-#+end_src
-
 * ivy tests
 :PROPERTIES:
 :ID:       35fb8af3-c160-4330-8195-b159d97700a0
@@ -255,3 +221,40 @@
   (when (fboundp #'faa@do-something-cool)
     (fmakunbound #'faa@do-something-cool)))
 #+end_src
+
+* hooks
+:PROPERTIES:
+:ID:       8b71ed59-bf00-48d2-a070-6e7d62f54770
+:END:
+
+** hook-p
+:PROPERTIES:
+:ID:       656dada6-ffb9-4cbc-8568-13b89b2fed14
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-p ())
+#+end_src
+
+** hook name
+:PROPERTIES:
+:ID:       fb4eaaf3-365d-4248-b95e-dc001c95d70b
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-name ()
+  (alet (void:hook-name 'emacs-lisp-mode-hook 'do-something)
+    (should (eq it 'emacs-lisp-mode-hook&do-something))))
+#+end_src
+
+** hook variable
+:PROPERTIES:
+:ID:       3d71878b-ceee-43b9-8a23-e31820418886
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-var ()
+  (alet (void:hook-var 'emacs-lisp-mode-hook&do-something)
+    (should (eq it 'emacs-lisp-mode-hook))))
+#+end_src
+

@@ -328,7 +328,7 @@ This code initializes straight if it's not already installed.
 :END:
 
 #+begin_src emacs-lisp
-(dolist (package '(leaf-keywords leaf dash anaphora))
+(dolist (package '(leaf-keywords leaf dash dash-functional anaphora))
   (funcall #'straight:install-package package)
   (require package))
 #+end_src
@@ -566,6 +566,272 @@ Bare symbols in BINDINGS are equivalent to:
                         body)))))
 #+end_src
 
+*** hooks
+:PROPERTIES:
+:ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
+:END:
+
+One of the most common ways to customize Emacs is via [[info:elisp#Hooks][hooks]]. Hooks are variables
+containing functions (also referred to as hooks). The functions in hooks are run
+after certain events, such as starting and quitting emacs. Their purpose is to
+fascillitate customization of what happens before or after particular events.
+
+In this headline, I strive to establish a common naming convention for
+Void-defined hooks, so I can clearly distinguish them from pre-defined hooks.
+
+**** hook-p
+:PROPERTIES:
+:ID:       1995a309-e1d3-40e5-b6b1-fbcd81dda0bb
+:END:
+
+#+begin_src emacs-lisp
+(defun void:hook-p (fn)
+  "Return non-nil if FN is a Void hook."
+  (s-matches-p "\\`[^[:space:]]+&[^[:space:]]+\\'"
+               (symbol-name fn)))
+#+end_src
+
+**** hook name
+:PROPERTIES:
+:ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
+:END:
+
+This function is to help produce names that abide by hook naming conventions.
+
+#+begin_src emacs-lisp
+(defun void:hook-name (var hook)
+  "Return a hook name that meets Void naming conventions."
+  (intern (format "%s&%s" var hook)))
+#+end_src
+
+**** hook variable
+:PROPERTIES:
+:ID:       77f45347-3688-438d-8674-39e6d476a2d1
+:END:
+
+A useful consequence of the hook naming convention is I can determine precisely
+which hook variable a function resides in based on looking at the name
+(=emacs-startup-hook&do-something= would be a hook in =emacs-starup-hook= for
+example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]].
+
+#+begin_src emacs-lisp
+(defun void:hook-var (hook-fn)
+  "Return the hook variable HOOK-FN is in.
+HOOK-FN is a function named with Void naming conventions."
+  (->> (symbol-name hook-fn)
+       (s-match (rx (group (1+ anything)) "&"))
+       (nth 1)
+       (intern)))
+#+end_src
+
+**** defhook!
+:PROPERTIES:
+:ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
+:END:
+
+=defhook= provides a declarative way declare hook functions. It uses a familiar
+defun-like syntax.
+
+#+begin_src emacs-lisp
+(defmacro defhook! (name args &rest body)
+  "Define a hook function and attatch it to HOOK and HOOKS.
+DEPTH and LOCAL are the same as in `add-hook'. BODY is the body of the hook
+function.
+
+\(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
+  (declare (doc-string 3))
+  (-let (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp) args))
+         (docstring (if (stringp (car body)) (pop body) nil)))
+    `(progn
+       ,@(-map (-lambda ((fn . hook))
+                 `(progn (add-hook ',hook #',fn ,depth ,local)
+                         (defun ,fn (&rest _) ,docstring
+                                (void:log "& %s -> %s" ',hook ',name)
+                                ,@body)))
+               (-annotate (-rpartial #'void:hook-name name) hooks)))))
+#+end_src
+
+*** advice
+:PROPERTIES:
+:ID:       19b9021d-f310-485b-9258-4df19423c082
+:END:
+
+[[info:elisp#Advising Functions][Advising]] is one of the most powerful ways to customize emacs's behavior. In this
+headline I provide a macro to concisely define functions that are specifically
+intended to advise other functions and to ensure that these functions are named
+properly. All user-defined advising functions should have the format
+=TARGET@ACTION=, where =TARGET= is the function being advised and =ACTION= is the
+action the advise is performing. This naming scheme is inspired and taken from
+the one introduced by [[helpfn:define-advice][define-advice]].
+
+**** advice-p
+:PROPERTIES:
+:ID:       0a84d983-39ad-48d1-af9d-b43589d63bcf
+:END:
+
+This function should be used to distinguish advices I add to functions over
+advices that have been added by Emacs or other packages.
+
+#+begin_src emacs-lisp
+(defun void:advice-p (fn)
+  "Return non-nil if FN is a void advice."
+  (s-matches-p (rx (1+ (not white)) "@" (1+ (not white)))
+               (symbol-name fn)))
+#+end_src
+
+**** advised function
+:PROPERTIES:
+:ID:       f893fbe8-592b-409e-8de7-6060e936456f
+:END:
+
+It's easy to find which functions are advising a given function using
+[[helpfn:advice-mapc][advice-mapc]]. However, it's not as easy to go the other way around--to
+determine what which function a given advice is advising. Another complicaiton
+is that it's possible for a given advice to advise multiple functions. With the
+naming system I provide, doing this is trivial.
+
+#+begin_src emacs-lisp
+(defun void:advised-fn (fn)
+  "Return the function advised by FN.
+ADVICE is an advice of the form \"advisee@advisor\", where this function returns
+\"advisee\"."
+  (->> (symbol-name advice)
+       (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
+       (nth 1)
+       (intern)))
+#+end_src
+
+**** advice name
+:PROPERTIES:
+:ID:       03416f82-ced7-42a0-843b-6975903f0b38
+:END:
+
+#+begin_src emacs-lisp
+(defun void:advice-name (fn advice)
+  "Return advice name that meets Void naming conventions.
+Advice name is of the form FN@ADVICE."
+  (intern (format "%s@%s" fn advice)))
+#+end_src
+
+**** expire advice
+:PROPERTIES:
+:ID:       8506fa78-c781-4ca8-bd58-169cce23a504
+:END:
+
+Often there are functions you want to advise just once. For example, loading a
+feature just before a function that needs it is called. Although it's harmless,
+you don't want to keep reloading the feature everytime the function is called.
+The way I handle this situation is by creating a function that generates an
+=expire-advice=. When an =expire-advice= it will.
+
+Note that this function returns must be evaluated with lexical binding to work.
+
+#+begin_src emacs-lisp
+(defun void:expire-advice (fn &optional expire-fn unbind)
+  "Return an advice that causes FN to expire when EXPIRE-FN returns true.
+FN is a function. EXPIRE-FN is a function that returns true when FN
+should expire."
+  (let ((expire-advice (void:advice-name fn 'expire))
+        (expire-fn (or expire-fn (lambda () t))))
+    (fset expire-advice
+          (lambda (orig-fn &rest args)
+            (aprog1 (apply orig-fn args)
+              (when (funcall expire-fn)
+                (when (void:advice-p fn)
+                  (advice-remove (void:advisee fn) fn))
+                (when (void:hook-p target)
+                  (remove-hook (void:hook-var FN)))
+                (advice-remove target expire-advice)
+                (fmakunbound expire-advice)
+                (void:log "%s has expired." target)
+                (when unbind
+                  (fmakunbound target))))))
+    expire-advice))
+#+end_src
+
+**** defadvice!
+:PROPERTIES:
+:ID:       1e0f3a27-a7d8-4e28-a359-f42ed7a16033
+:END:
+
+This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that provides a
+declarative way to define advices.
+
+***** define-advice!
+:PROPERTIES:
+:ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
+:END:
+
+The only difference between this and [[helpfn:define-advice][define-advice]] is that =NAME= and =SYMBOL= are
+switched. In my opinion, the unique part of the function name being first is
+more consistent with =defun=.
+
+#+begin_src emacs-lisp
+(defmacro define-advice! (name args &rest body)
+  "A wrapper around `define-advice'.
+The only difference is that this switches the order the arguments have to be passed in.
+
+\(fn ACTION (WHERE &optional ADVICE-ARGS TARGET &rest TARGETS) &rest BODY)"
+  (declare (indent 2) (doc-string 3) (debug (sexp sexp body)))
+  (unless (listp args)
+    (signal 'wrong-type-argument (list #'listp args)))
+  (-let [(where lambda-args fn depth) args]
+    `(define-advice ,fn (,where ,lambda-args ,name ,depth)
+       (void:log "@ %s -%s-> %s" ',fn ,(void:keyword-name where) ',name)
+       ,@body)))
+#+end_src
+
+***** anaphoric defadvice!
+:PROPERTIES:
+:ID:       98b2ce63-da31-4f7a-b776-1ee1747b5d57
+:END:
+
+=anaphoric-define-advice!= lets you omit the =lambda-args=. If you do omit the
+arguments and you want to use them, you can do so via [[id:9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df][anaphoric variables]].
+
+#+begin_src emacs-lisp
+(defmacro anaphoric-define-advice! (name args &rest body)
+  "A variant of `define-advice!'.
+Unlike `define-advice!', this macro does not take an arglist as an argument.
+Instead, arguments are accessed via anaphoric variables.
+
+\(fn ACTION (WHERE TARGET &rest TARGETS) &rest BODY)"
+  (-let* (((where target . other-args) args)
+          (advice-args (if (eq where :around)
+                           '(<orig-fn> &rest <args>)
+                         '(&rest <args>))))
+    `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
+       (ignore <args>)
+       (cl-progv (->> (help-function-arglist #',target t)
+                      (--remove (s-starts-with-p "@" (symbol-name it)))
+                      (--map (intern (format "<%s>" (symbol-name it)))))
+           <args>
+         ,@body))))
+#+end_src
+
+***** defadvice!
+:PROPERTIES:
+:ID:       d8773e00-1abe-4b03-82f0-07b47e93ccb4
+:END:
+
+This macro takes care of allowing multiple advices and deciding between whether
+to use =defadvice!= or =anaphoric-defadvice!=.
+
+#+begin_src emacs-lisp
+(defmacro defadvice! (name args &rest body)
+  "Define and advice.
+
+\(fn ACTION (WHERE &optional ARGS-LIST TARGET &rest TARGETS) &rest BODY)"
+  (-let* ((symbols-only (lambda (it) (and (symbolp it) (not (keywordp it)))))
+          ((before fns after) (-partition-by symbols-only args))
+          (advice-macro (if (listp (nth 1 args))
+                            'define-advice!
+                          'anaphoric-define-advice!)))
+    `(progn
+       ,@(--map `(,advice-macro ,name (,@before ,it ,@after) ,@body)
+                fns))))
+#+end_src
+
 *** deferred loading
 :PROPERTIES:
 :ID:       1d0746ea-ecb2-46ad-8afa-a54aca74a185
@@ -595,239 +861,6 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                    (_ nil))
                  os)
     `(progn ,@body)))
-#+end_src
-
-**** advising
-:PROPERTIES:
-:ID:       19b9021d-f310-485b-9258-4df19423c082
-:END:
-
-[[info:elisp#Advising Functions][Advising]] is one of the most powerful ways to customize emacs's behavior. In this
-headline I provide a macro to concisely define functions that are specifically
-intended to advise other functions and to ensure that these functions are named
-properly. All user-defined advising functions should have the format
-=TARGET@ACTION=, where =TARGET= is the function being advised and =ACTION= is the
-action the advise is performing. This naming scheme is inspired and taken from
-the one introduced by [[helpfn:define-advice][define-advice]].
-
-***** advice-p
-:PROPERTIES:
-:ID:       0a84d983-39ad-48d1-af9d-b43589d63bcf
-:END:
-
-This function should be used to distinguish advices I add to functions over
-advices that have been added by Emacs or other packages.
-
-#+begin_src emacs-lisp
-(defun void:advice-p (fn)
-  "Return non-nil if FN is a void advice."
-  (s-matches-p (rx (1+ (not white)) "@" (1+ (not white)))
-               (symbol-name fn)))
-#+end_src
-
-***** target
-:PROPERTIES:
-:ID:       f893fbe8-592b-409e-8de7-6060e936456f
-:END:
-
-It's easy to find which functions are advising a given function using
-[[helpfn:advice-mapc][advice-mapc]]. However, it's not as easy to go the other way around--to
-determine what which function a given advice is advising. Another complicaiton
-is that it's possible for a given advice to advise multiple functions. With the
-naming system I provide, doing this is trivial.
-
-#+begin_src emacs-lisp
-(defun void:advice-target (advice)
-  "Return the function ADVICE advises.
-ADVICE is an advice of the form \"advisee@advisor\", where this function returns
-\"advisee\"."
-  (->> (symbol-name advice)
-       (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
-       (nth 1)
-       (intern)))
-#+end_src
-
-***** advice name
-:PROPERTIES:
-:ID:       03416f82-ced7-42a0-843b-6975903f0b38
-:END:
-
-The main question here was how should the arguments be ordered. The advice first
-or the target? In the end I choose to be consistent the order used with
-[[helpfn:advice-add][advice-add]].
-
-#+begin_src emacs-lisp
-(defun void:advice-name (target advice)
-  "Return advice name that meets Void naming conventions.
-Advice name is of the form \"target@advice\"."
-  (intern (format "%s@%s" target advice)))
-#+end_src
-
-***** adding advice
-:PROPERTIES:
-:ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
-:END:
-
-Often, I advise functions with other existing functions (such as =#'ignore=)
-instead of defining my own advices. To maintain consistency with the naming
-convention I created [[helpfn:void:add-advice][void:add-advice]]. It will create an advice with an
-appropriate name to target.
-
-#+begin_src emacs-lisp
-(defun void:add-advice (target where advice &optional props expire-fn)
-  "Advise TARGETS with Void ADVICES."
-  (let ((name (void:advice-name target advice)))
-    (defalias name advice)
-    (advice-add target where name props)
-    (when expire-fn
-      (advice-add it :around (void:expire-advice target name)))))
-#+end_src
-
-***** removing advice
-:PROPERTIES:
-:ID:       baf2dd59-b37b-47bc-a1d2-815ba925d1bd
-:END:
-
-This is counter part of [[id:4750f4dc-053b-4062-bd6c-aeeed6cdbcd9][adding advice]]. It provides convenience for removing an
-advice.
-
-#+begin_src emacs-lisp
-(defun void:remove-advice (target advice)
-  "Remove Void ADVICE from TARGET."
-  (advice-remove target (void:advice-name target advice)))
-#+end_src
-
-***** expire advice
-:PROPERTIES:
-:ID:       8506fa78-c781-4ca8-bd58-169cce23a504
-:END:
-
-Often there are functions you want to advise just once. For example, loading a
-feature just before a function that needs it is called. Although it's harmless,
-you don't want to keep reloading the feature everytime the function is called.
-
-The way I handle this situation is by creating a function that generates an
-=expire-advice=. An =expire-advice= is meant to be attached to a void advice and.
-
-Note that this function must be evaluated with lexical binding to work.
-
-#+begin_src emacs-lisp
-(defun void:expire-advice (target &optional expire-fn unbind)
-  "Return an advice that causes TARGET to expire when EXPIRE-FN returns true.
-TARGET is a function. EXPIRE-FN is a function that returns true when TARGET
-should expire."
-  (let ((expire-advice (void:advice-name target 'expire))
-        (expire-fn (or expire-fn (lambda () t))))
-    (fset expire-advice
-          (lambda (orig-fn &rest args)
-            (aprog1 (apply orig-fn args)
-              (when (funcall expire-fn)
-                (when (void:advice-p target)
-                  (advice-remove (void:advice-target target) target))
-                (advice-remove target expire-advice)
-                (fmakunbound expire-advice)
-                (void:log "%s has expired." target)
-                (when unbind
-                  (fmakunbound target))))))
-    expire-advice))
-#+end_src
-
-***** defadvice!
-:PROPERTIES:
-:ID:       1e0f3a27-a7d8-4e28-a359-f42ed7a16033
-:END:
-
-This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that provides a
-declarative way to define advices.
-
-****** helper
-:PROPERTIES:
-:ID:       9899e994-4594-451a-857e-ed12168e8b12
-:END:
-
-This helper function contains the logic for how the arglist and the body should
-look in =defadvice!=. I separated this out into a function so I could keep the
-body of =defadvice!= readable and neat.
-
-The most interesting case is what happens when the user doesn't specify
-arguments. In that case, you get the advised functions arguments using
-[[helpfn:help-function-arglist][help-function-arglist]] and bind them with [[helpfn:cl-progv][cl-progv]]--all this is done when the
-function is run.
-
-#+begin_src emacs-lisp
-(defun void::defadvice-info (where target args body)
-  "Return the appropriate body and arglist for `defadvice!'.
-If ARGS is non-nil, return (ARGS BODY). Otherwise, if WHERE is :around"
-  (cond ((not (eq 'none args))
-         (list args body))
-        ((eq where :around)
-         (list '(<orig-fn> &rest <args>) body))
-        (t
-         (let ((args '<args>))
-           `((&rest ,args)
-             ((cl-progv (->> (help-function-arglist #',target t)
-                             (--remove (s-starts-with-p "&" (symbol-name it)))
-                             (--map (intern (format "<%s>" (symbol-name it)))))
-                  ,args
-                ,@body)))))))
-#+end_src
-
-****** defadvice!
-:PROPERTIES:
-:ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
-:END:
-
-The =defadvice!= macro is a wrapper around =define-advice= with some notable
-differences.
-
-First, unlike [[helpfn:define-advice][define-advice]], the symbol used for naming the advice (the
-ACTION argument in =defadvice!=) first instead of the name of the advised
-function. Since this symbol is what distinguishes this new advice, I feel that
-it should be the it should be the focus of this syntax.
-
-Second, I allow =defadvice!= to accept multiple advised functions since advising
-more than one function happens often. Note, however, in cases where you want to
-define an advise for more than two or three functions it is preferable not to
-use =defadvice!= so as not to deal with really long lines (this is the same reason
-for not having functions with too many arguments).
-
-Finally, you can omit the arguments of the advice. If you do, you can use the
-arguments of the original function you can do so with [[id:9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df][anaphoric symbols]]. For an
-around advice the arguments become =(<orig-fn &rest <args>)=. For any other advice
-the arguments are anaphoric versions of the advised function's arguments. For
-examples, see [[id:][the changelog]].
-
-#+begin_src emacs-lisp
-(defmacro defadvice! (action args &rest body)
-  "A replacement for `define-advice'.
-ACTION should be a symbol denoting what the advise is doing.
-WHERE is the advice keyword. If ADVICE-ARGS is the argument list for the advice.
-TARGET is the name of the function to advise. TARGETS are other functions to be
-advised.
-
-If ADVICE-ARGS is ommitted you can refer to the advised function's arguments via
-anaphoric symbols.
-
-If `void:debug-p' is non-nil, this function output the ACTION.
-
-\(fn ACTION (WHERE &optional ADVICE-ARGS TARGET &rest TARGETS) &rest BODY)"
-  (declare (indent 2) (doc-string 3) (debug (sexp sexp body)))
-  (unless (listp args) (signal 'wrong-type-argument (list 'listp args)))
-  (-let* ((args (if (not (listp (nth 1 args)))
-                    (-insert-at 1 'none args)
-                  args))
-          ((where advice-args target . targets) args)
-          (docstring (if (stringp (car body)) (pop body) nil))
-          ((arglist body) (void::defadvice-info where target advice-args body)))
-    (when target
-      `(progn
-         (define-advice ,target (,where ,arglist ,action)
-           ,docstring
-           (void:log "%s @ %s" #',target ',action)
-           ,@body)
-         (defadvice! ,action (,where ,@targets)
-           ,docstring
-           ,@body)))))
 #+end_src
 
 **** eval-after-load!
@@ -1002,7 +1035,6 @@ SYM is a symbol that stores a list."
 #+end_src
 
 ** Leaf
-
 :PROPERTIES:
 :ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
 :END:
@@ -1963,150 +1995,6 @@ while the user is working.
 (use-package! keyfreq :hook emacs-startup-hook)
 #+end_src
 
-**** defhook
-:PROPERTIES:
-:ID:       f77b8dff-6ee8-4e2e-a442-b133bbac770c
-:END:
-
-=defhook!= provide a declarative way of setting hooks built on top of =defhook=.
-It's built on top of =defhook=.
-
-***** defhook
-:PROPERTIES:
-:ID:       0526239e-2790-4ee5-bd9b-15393c5536c6
-:END:
-
-[[https://github.com/emacsmirror/defhook][defhook]] provides an alternative, declarative mechanism for defining hooks.
-Additionally, it provides variables to customize percisely how the hooks are
-named, a useful "cl-esque" keyword arguments to further configure =defhook='s
-behavior, and a basic way of logging information about when a hook is created
-and when it is called. It would be a waste not to use such good and well
-thought-out code, so I use it as the backend for my =defhook!= macro.
-
-#+begin_src emacs-lisp
-(use-package! defhook
-  :require t
-  :setq
-  (defhook-user-prefix . "")
-  (defhook-user-separator . "")
-  (defhook-sym-desc-separator . "&")
-  (defhook-use-font-lock-mode . nil)
-  (defhook-display-informational-messages . (if void:debug-p t nil)))
-#+end_src
-
-***** wrapper around defhook
-:PROPERTIES:
-:ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
-:END:
-
-Sometimes, particularly when we want to add multiple keyword arguments, the
-argument list of =defhook= becomes so long that you have to split it up into a
-newline. I hate how this looks and have a strong preference for keeping argument
-lists on one line. To avoid this situation, I've added option for adding keyword
-arguments before the body of the macro is useful.
-
-Note the use of the argument name =ACTION=. I have diverged from =NAME= as used
-in =defun= because the corresponding =defhook!= argument will *not* be the name
-of the hook. It will be used in combination with the hook name to generate a
-name as specified in Void naming conventions.
-
-#+begin_src emacs-lisp
-(defmacro defhook! (action args &rest body)
-  "Drop-in replacement for `defhook'.
-ACTION should be a symbol that denotes what the created hook does.
-Unlike `defhook', this macro allows for multiple hooks to be passed in and it
-also allows keyword arguments to be passed in before the body (and after the
-docstring if there is one) of the function."
-  (declare (doc-string 3))
-  (let ((hook (car args))
-        (hooks (-take-while (-not #'keywordp) (cdr args)))
-        (specs (-drop-while (-not #'keywordp) args))
-        (docstring (if (stringp (car body)) (pop body) nil))
-        (keyword-args (->> body
-                           (--unfold (when (keywordp (car it))
-                                       (cons (-take 2 it) (cddr it))))
-                           (-flatten-n 2)))
-        (other-args body))
-    `(progn
-       ,(when hooks
-          `(defhook! ,action ,(append hooks specs keyword-args)
-             ,docstring
-             ,@body))
-       (defhook ,action ,(cons hook (append specs keyword-args))
-         ,docstring
-         ,@body))))
-#+end_src
-
-***** customize informational messages
-:PROPERTIES:
-:ID:       26783153-3517-4079-89d8-4bd862c52909
-:END:
-
-I don't need messages about the.
-
-#+begin_src emacs-lisp
-(void:add-advice #'defhook-done :override #'ignore)
-#+end_src
-
-***** fix defhook-executed
-:PROPERTIES:
-:ID:       79b17411-b0d7-40c2-be6e-37d0e916baf9
-:END:
-
-Using my naming conventions for user-defined hooks, the hook function name will always
-include the name of the hook variable it's attached to. For that reason, it's
-redundant for me the full hook name. I'd prefer just the hook action and the
-hook variable.
-
-#+begin_src emacs-lisp
-(defadvice! replace-hook-executed-message (:override defhook-executed)
-  "Set `defhook-executed' message to \"HOOK -> FN-action\"."
-  (alet (->> <func-sym>
-             (symbol-name)
-             (s-match (rx-to-string `(seq ,defhook-sym-desc-separator (group (1+ anything)))))
-             (nth 1))
-    (void:log "%s & %s" <hook-sym> it)))
-#+end_src
-
-***** font-lock
-:PROPERTIES:
-:ID:       2837b042-d93b-492e-8dd4-0e2c74f9a966
-:END:
-
-=defhook= was designed to resemble =defun= in syntax. To make the resemblance
-complete I add the same type of syntax coloring to =defhook!=.
-
-#+begin_src emacs-lisp
-(defconst VOID:DEFHOOK-FONT-LOCK-KEYWORDS
-  `((,(rx (group "defhook!") (1+ white) (group (1+ (not white))))
-     (1 font-lock-keyword-face)
-     (2 font-lock-function-name-face)))
-  "Font lock keywords for `defhook!'.")
-
-(defhook! add-defhook-keywords (emacs-lisp-mode-hook)
-  "Add `defhook!' keywords to `emacs-lisp-mode'."
-  (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
-#+end_src
-
-***** font lock keywords                                              :disabled:
-:PROPERTIES:
-:ID:       6a8af0c0-dde6-4942-a528-cdde82fa540e
-:END:
-
-As with =defhook!= the syntax of =defadvice!= also resembles =defun= by design. It is
-meant to encourage a declarative way of defining advises.
-
-#+begin_src emacs-lisp
-(defconst VOID:ADVICE-KEYWORDS
-  '((,(rx "defadvice!" (1+ white) (group (1+ (not white))))
-     (1 font-lock-keyword-face)
-     (2 font-lock-function-name-face))))
-
-(defhook! add-defadvice-keywords (emacs-lisp-mode-hook)
-  "Add `defadvice' keywords to `emacs-lisp-mode'."
-  (font-lock-add-keywords nil VOID:ADVICE-KEYWORDS))
-#+end_src
-
 ** Initialize
 :PROPERTIES:
 :ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
@@ -2689,7 +2577,7 @@ hook variables use action verbs in their names not nouns. So the =exit= in
   "Boost garbage collection settings to `VOID:GC-CONS-THRESHOLD-MAX'."
   (setq gc-cons-threshold VOID:GC-CONS-THRESHOLD-MAX))
 
-(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
+(defhook! defer-garbage-collection (minibuffer-exit-hook t)
   "Reset garbage collection settings to `void:gc-cons-threshold' after delay."
   (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID:GC-CONS-THRESHOLD))))
 #+end_src
@@ -2710,7 +2598,7 @@ preferable for quitting emacs to be slightly slower than for emacs startup to
 be.
 
 #+begin_src emacs-lisp
-(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
+(defhook! tangle-on-quit-maybe (kill-emacs-hook t)
   "Tangle if `void:needs-tangling-p' returns t."
   (when (void:needs-tangling-p)
     (void/tangle-org-file)))
@@ -2786,71 +2674,6 @@ By default start emacs as fullscreen.
 :PROPERTIES:
 :ID: ede94ae4-1c73-4435-81ba-e28070225b99
 :END:
-
-**** switching buffers
-:PROPERTIES:
-:ID: 55b1e136-2271-42e8-bad6-9c13fff33c31
-:END:
-
-***** switch buffer hook
-:PROPERTIES:
-:ID: 3be5191d-8525-4d03-90db-fc61c628ff57
-:END:
-
-#+begin_src emacs-lisp
-(defvar void:after-switch-buffer-hook nil
-  "A list of hooks run after changing the current buffer.")
-#+end_src
-
-***** inhibit switch buffer hook
-:PROPERTIES:
-:ID: d21029d7-31ca-49ff-b4c6-07e4a4678901
-:END:
-
-#+begin_src emacs-lisp
-(defvar void:inhibit-switch-buffer-hooks nil
-  "When non-nil, switch buffer hooks are inhibited.")
-#+end_src
-
-***** TODO switching
-:PROPERTIES:
-:ID: ae5ad47f-9efe-4609-85fb-009d8685edc7
-:END:
-
-#+begin_src emacs-lisp
-(defadvice! run-after-switch-buffer-hook (:around switch-to-buffer display-buffer)
-  "Run `void:after-switch-buffer-hook'."
-  (let ((gc-cons-threshold most-positive-fixnum)
-        (buffer-or-name (car <args>))
-        (args (cdr <args>)))
-    (if (or void:inhibit-switch-buffer-hooks
-            (eq (current-buffer) (get-buffer buffer-or-name))
-            (and (eq <orig-fn> #'switch-to-buffer) (car args)))
-        (apply <orig-fn> buffer-or-name args)
-      (let ((void:inhibit-switch-buffer-hooks t))
-        (when-let (buffer (apply <orig-fn> <args>))
-          (with-current-buffer (if (windowp buffer)
-                                   (window-buffer buffer)
-                                 buffer)
-            (run-hooks 'void:after-switch-buffer-hook))
-          buffer)))))
-#+end_src
-
-***** next previous
-:PROPERTIES:
-:ID: f69fe190-f134-46dc-baff-dcf42f1ab331
-:END:
-
-#+begin_src emacs-lisp
-(defadvice! run-prev-or-next-buffer-hook (:around switch-to-next-buffer switch-to-previous-buffer)
-  (let ((gc-cons-threshold most-positive-fixnum))
-    (if void:inhibit-switch-buffer-hooks
-        (apply <orig-fn> <args>)
-      (let ((void:inhibit-switch-buffer-hooks t))
-        (when-let (buffer (apply <orig-fn> <args>))
-          (with-current-buffer buffer
-            (run-hooks 'void:after-switch-buffer-hook)))))))
-#+end_src
 
 *** font
 :PROPERTIES:
@@ -3956,7 +3779,7 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! setup-backends (after-change-major-mode-hook :eval-after company :local t)
+(defhook! setup-backends (after-change-major-mode-hook nil t)
   "Set `company-backends' for the current buffer."
   (when (and (bound-and-true-p company-mode)
              (not (eq major-mode 'fundamental-mode)))
@@ -4344,7 +4167,7 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defhook! wrap-text-in-message (mu4e-view-mode-hook :eval-after mu4e)
+(defhook! wrap-text-in-message (mu4e-view-mode-hook)
   (setq-local truncate-lines nil))
 #+end_src
 
@@ -5718,13 +5541,13 @@ last state is normal state if the minibuffer is aborted. Using a
 the correct one.
 
 #+begin_src emacs-lisp
-(defhook! preserve-prior-evil-state (minibuffer-enter-hook :eval-after evil)
+(defhook! preserve-prior-evil-state (minibuffer-enter-hook)
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
     (setq evil:state-before-minibuffer evil-state)
     (evil-insert-state)))
 
-(defhook! restore-prior-evil-state (minibuffer-exit-hook :eval-after evil)
+(defhook! restore-prior-evil-state (minibuffer-exit-hook)
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
     (evil-change-state evil:state-before-minibuffer)
@@ -6699,7 +6522,7 @@ again, you are taken to the location you left off. This is very convenient.
   (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
   (savehist-file . (concat VOID:DATA-DIR "savehist")))
 
-(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
+(defhook! unpropertize-kill-ring (kill-emacs-hook t)
   "Remove text properties from `kill-ring'."
   (setq kill-ring
         (mapcar (lambda (it) (when (stringp it) (substring-no-properties it)))
@@ -8787,7 +8610,7 @@ in the future. I use this template for this.
   :after org
   :setq
   (org-refile-targets . `((,VOID:README-FILE . (:maxlevel . 10))
-                          (,VOID:TODO-FILE . (:maxlevel . 1))))
+                          (,(concat VOID:ORG-DIR "code.org") . (:maxlevel . 10))))
   (org-refile-use-outline-path . 'file)
   (org-refile-allow-creating-parent-nodes . t)
   (org-reverse-note-order . t)
