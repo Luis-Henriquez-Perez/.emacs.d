@@ -2088,7 +2088,7 @@ complete I add the same type of syntax coloring to =defhook!=.
   (font-lock-add-keywords nil VOID:DEFHOOK-FONT-LOCK-KEYWORDS))
 #+end_src
 
-***** font lock keywords
+***** font lock keywords                                              :disabled:
 :PROPERTIES:
 :ID:       6a8af0c0-dde6-4942-a528-cdde82fa540e
 :END:
