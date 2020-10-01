@@ -175,8 +175,9 @@
     ;; Works with functions that return t at different times.
     (let ((counter 0))
       (advice-add #'test-fn :override #'test-fn@some-advice)
-      (advice-add #'test-fn@some-advice :around (void:expire-advice #'test-fn@some-advice
-                                                                    (lambda () (= 2 (cl-incf counter)))))
+      (->> (lambda () (= 2 (cl-incf counter)))
+           (void:expire-advice #'test-fn@some-advice)
+           (advice-add #'test-fn@some-advice :around ))
       (should (zerop (test-fn)))
       (should (zerop (test-fn)))
       (should-not (advice-member-p #'test-fn@some-advice #'test-fn))
