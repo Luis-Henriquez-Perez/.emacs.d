@@ -51,6 +51,9 @@
     (should (string= (nth 2 match) "hello-world"))))
 #+end_src
 
+#+begin_src emacs-lisp
+#+end_src
+
 * ivy tests
 :PROPERTIES:
 :ID:       35fb8af3-c160-4330-8195-b159d97700a0
@@ -75,4 +78,142 @@
   (should (and ivy-prescient-mode prescient-persist-mode))
   ;; orderless should be the default sorter.
   (should (eq (alist-get t ivy-re-builders-alist) #'orderless-ivy-re-builder)))
+#+end_src
+
+* defadvice
+:PROPERTIES:
+:ID:       f9dbab12-fa2d-4486-97b0-70b091d6527c
+:END:
+
+** advice-p
+:PROPERTIES:
+:ID:       2ca4de42-5280-45e3-97ee-ab423c3cb1ad
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:advice-p ()
+  (should-not (void:advice-p 'hello))
+  (should (void:advice-p 'hello@world)))
+#+end_src
+
+** advice-name
+:PROPERTIES:
+:ID:       2bd281c2-bb9a-4d1b-a926-94854cd1cf9b
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:advice-name ()
+  (should (eq (void:advice-name 'hello 'world) 'hello@world))
+  (should (void:advice-p (void:advice-name 'hello 'world))))
+#+end_src
+
+** advice-target
+:PROPERTIES:
+:ID:       e3a21c47-8293-49e1-876f-1dd0f054eec1
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:advice-target ()
+  (should (eq 'hello (void:advice-target 'hello@world))))
+#+end_src
+
+** add-advice
+:PROPERTIES:
+:ID:       ad260c52-0830-499a-8880-f5190ba89788
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:add-advice ()
+  (cl-letf (((symbol-function #'test-fn) (lambda () 1)))
+    ;; test function works.
+    (should (= 1 (test-fn)))
+    (void:add-advice #'test-fn :override #'ignore)
+    ;; successfully advised test function.
+    (should (null (test-fn)))
+    ;; added `test-fn@ignore' as advice.
+    (should (advice-member-p #'test-fn@ignore #'test-fn))))
+#+end_src
+
+** remove-advice
+:PROPERTIES:
+:ID:       80f507e8-053f-45a1-8609-ddf5972874f6
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:remove-advice ()
+  (cl-letf (((symbol-function #'test-fn) (lambda () 1)))
+    (void:add-advice #'test-fn :override #'ignore)
+    (should (advice-member-p #'test-fn@ignore #'test-fn))
+    (void:remove-advice #'test-fn #'ignore)
+    (should-not (advice-member-p #'test-fn@ignore #'test-fn))))
+#+end_src
+
+** expiring advice
+:PROPERTIES:
+:ID:       7a05e9cd-55d3-4c0d-970b-f2eb60f8a645
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:expire-advice ()
+  (cl-letf (((symbol-function #'test-fn) (lambda () 1))
+            ((symbol-function #'test-fn@some-advice) (lambda (&rest _) 0)))
+    (should (= 1 (test-fn)))
+    (advice-add #'test-fn :override #'test-fn@some-advice)
+    ;; `test-fn' was overriden successfully.
+    (should (zerop (test-fn)))
+    (advice-add #'test-fn@some-advice :around (void:expire-advice #'test-fn@some-advice))
+    ;; The expire advice is present.
+    (should (advice-member-p #'test-fn@some-advice@expire #'test-fn@some-advice))
+    ;; It shouldn't expire immediately.
+    (should (zerop (test-fn)))
+    ;; ;; Now it should expire.
+    (should-not (advice-member-p #'test-fn@some-advice #'test-fn))
+    (should (= 1 (test-fn)))
+    (should (= 1 (test-fn)))
+    ;; The expiring advise should be unbound
+    (should-not (boundp #'test-fn@some-advice@expire))
+    ;; Works with functions that return t at different times.
+    (let ((counter 0))
+      (advice-add #'test-fn :override #'test-fn@some-advice)
+      (advice-add #'test-fn@some-advice :around (void:expire-advice #'test-fn@some-advice
+                                                                    (lambda () (= 2 (cl-incf counter)))))
+      (should (zerop (test-fn)))
+      (should (zerop (test-fn)))
+      (should-not (advice-member-p #'test-fn@some-advice #'test-fn))
+      (should (= 1 (test-fn))))))
+#+end_src
+
+** does proper thing with around advice
+:PROPERTIES:
+:ID:       44b4aadc-a579-4b86-bdbc-df965e8d7c89
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest around-advice-works ()
+  ""
+  (should))
+#+end_src
+
+** binding works
+:PROPERTIES:
+:ID:       dc43c155-ae49-463c-9641-60bd15431d97
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest advice-binding-works ()
+  (cl-flet ((hello-world (one two) (* one two)))
+    (defadvice! do-something-cool (:override hello-world)
+      (+ <one> <two>))
+    (should (advice-member-p #'hello-world@do-something-cool #'hello-world))
+    (should (= (hello-world 1 2) 3))
+    (advice-remove 'hello-world #'hello-world@do-something-cool)
+    (should (= (hello-world 1 2) 2))))
+#+end_src
+
+** can add multiple advice
+:PROPERTIES:
+:ID:       1a706063-500e-4a12-8887-c757db215e29
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
