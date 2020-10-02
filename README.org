@@ -3610,6 +3610,7 @@ candidates sorted.
 (after! (counsel ivy-prescient)
   (setq ivy-prescient-sort-commands
         (-snoc ivy-prescient-sort-commands
+               #'counsel-org-link
                #'counsel-org-goto
                #'counsel-yank-pop
                #'counsel-recentf
