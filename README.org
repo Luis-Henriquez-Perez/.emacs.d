@@ -2961,6 +2961,18 @@ font is super small). Therefore, I check the code.
       (message "Font Size has been cancelled."))))
 #+end_src
 
+**** set x-font
+:PROPERTIES:
+:ID:       b7269613-d859-4d23-8a14-d8fb5f845ec8
+:END:
+
+#+begin_src emacs-lisp
+(defun void/set-x-font ()
+  "Set the x-font for the current frame."
+  (interactive)
+  (set-frame-font (completing-read "Select font: " (x-list-fonts "*"))))
+#+end_src
+
 *** theme
 :PROPERTIES:
 :ID: 2ac7c2fe-a2ba-4e55-a467-ff4af8850331
