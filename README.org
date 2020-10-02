@@ -7923,7 +7923,8 @@ I need this function for some org actions. Evil has this as
 :ID: 6168590a-db23-4f0b-bdd9-9d9666624af6
 :END:
 
-=counsel-org-goto= is lets you fuzzy search a term among org headings.
+=counsel-org-goto= is lets you fuzzy search a term among org headings. Note that I
+get an error when after advising [[][]].
 
 #+begin_src emacs-lisp
 (defadvice! org:prettify-nearby-headlines (:around counsel-org-goto-action)
