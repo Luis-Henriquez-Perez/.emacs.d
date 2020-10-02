@@ -255,3 +255,50 @@
   (when (fboundp #'faa@do-something-cool)
     (fmakunbound #'faa@do-something-cool)))
 #+end_src
+
+* hooks
+:PROPERTIES:
+:ID:       8b71ed59-bf00-48d2-a070-6e7d62f54770
+:END:
+
+** hook name
+:PROPERTIES:
+:ID:       fb4eaaf3-365d-4248-b95e-dc001c95d70b
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-name ()
+  (alet (void:hook-name 'emacs-lisp-mode-hook 'do-something)
+    (should (eq it 'emacs-lisp-mode-hook&do-something))))
+#+end_src
+
+** hook variable
+:PROPERTIES:
+:ID:       3d71878b-ceee-43b9-8a23-e31820418886
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:hook-var ()
+  (alet (void:hook-var 'emacs-lisp-mode-hook&do-something)
+    (should (eq it 'emacs-lisp-mode-hook))))
+#+end_src
+
+** add-hook
+:PROPERTIES:
+:ID:       c5cae0d1-4f4f-4242-a3ee-1c3168d019e2
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void:add-hook ()
+  (alet ()
+    )
+  )
+#+end_src
+
+** defhookvar
+:PROPERTIES:
+:ID:       69b7b0b2-1fc5-4d36-97f4-8884443b87bf
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
