@@ -3442,6 +3442,9 @@ These bindings are influenced by some of helm's minibuffer bindings (namely
 =C-l= and =C-a=). They are also influenced by evil bindings, hence using =C-j=
 and =C-k= instead of the emacs staple =C-p= and =C-n=.
 
+Note that [[helpfn:ivy-immediate-done][ivy-immediate-done]] selects uses the minibuffer input as the current
+candidate.
+
 #+begin_src emacs-lisp
 (general-def '(emacs insert) ivy-minibuffer-map
   "C-k"     #'ivy-previous-line
@@ -3453,6 +3456,7 @@ and =C-k= instead of the emacs staple =C-p= and =C-n=.
   "C-l"     #'ivy-next-line-and-call
   "C-o"     #'ivy-occur
   "C-'"     #'ivy-avy
+  "C-i"     #'ivy-immediate-done
   "RET"     #'ivy-done)
 #+end_src
 
