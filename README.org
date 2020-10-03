@@ -9318,31 +9318,81 @@ graphical interface but.
 :ID:       d21b01bd-b5fe-461e-bd3e-54bcde7a8244
 :END:
 
-*** themes
+*** humanoid themes
 :PROPERTIES:
-:ID: fb192344-8aef-4ab1-800d-6b5cd8c900b9
+:ID:       8f35bc4a-9455-4736-8339-fe2c2d16c398
 :END:
 
 #+begin_src emacs-lisp
 (use-package! humanoid-themes
   :pre-setq (humanoid-org-bold . nil))
+#+end_src
 
+*** solarized theme
+:PROPERTIES:
+:ID:       c651e4c0-e594-47e3-9ac9-b21933065d12
+:END:
+
+#+begin_src emacs-lisp
+(use-package! solarized-theme
+  :setq
+  (solarized-distinct-doc-face . t)
+  (solarized-use-variable-pitch . nil)
+  (solarized-scale-org-headlines . nil)
+  (solarized-emphasize-indicators . t)
+  (solarized-scale-outline-headlines . nil))
+#+end_src
+
+*** spacemacs theme
+:PROPERTIES:
+:ID:       55e83d40-ea71-473b-b7fc-5d06a2f175af
+:END:
+
+#+begin_src emacs-lisp
 (use-package! spacemacs-theme
   :pre-setq
   (spacemacs-theme-org-bold . nil)
   (spacemacs-theme-comment-italic . t)
   (spacemacs-theme-org-bold . nil)
   (spacemacs-theme-org-height . nil))
+#+end_src
 
-(use-package! tao-theme)
+*** one theme
+:PROPERTIES:
+:ID:       bf58d6cd-4745-4a02-a9f9-f59a44206116
+:END:
 
+#+begin_src emacs-lisp
 (use-package! one-themes
   :pre-setq
   (emacs-one-scale-org-headlines . nil)
   (emacs-one-use-variable-pitch . nil))
+#+end_src
 
+*** tao theme
+:PROPERTIES:
+:ID:       efecb8e6-3037-47d2-9e0b-3026936fedfa
+:END:
+
+#+begin_src emacs-lisp
+(use-package! tao-theme)
+#+end_src
+
+*** avk themes
+:PROPERTIES:
+:ID:       81715ee2-2a28-4344-8d4d-e438df956d82
+:END:
+
+#+begin_src emacs-lisp
 (use-package! avk-emacs-themes)
+#+end_src
 
+*** hemera theme
+:PROPERTIES:
+:ID: fb192344-8aef-4ab1-800d-6b5cd8c900b9
+:END:
+
+#+begin_src emacs-lisp
 (use-package! hemera-theme)
 #+end_src
 
