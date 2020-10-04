@@ -807,6 +807,7 @@ This headline is for advices that I will want to add to many different functions
 
 #+begin_src emacs-lisp
 (defun void::use-void-log-instead-of-message-advice ()
+  (cl-letf )
   )
 #+end_src
 
