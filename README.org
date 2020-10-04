@@ -795,6 +795,9 @@ This headline is for advices that I will want to add to many different functions
 :ID:       4e6463cc-c203-4193-bfff-eadc0331ed89
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 ***** use =void:log= instead of =message=
 :PROPERTIES:
 :ID:       271549f3-dcba-481a-87b4-ef01089664fc
