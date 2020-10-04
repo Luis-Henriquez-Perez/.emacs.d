@@ -911,6 +911,7 @@ This takes care of allowing multiple advices and deciding between whether to use
 #+begin_src emacs-lisp
 (defmacro defadvice! (name args &rest body)
   "Define and advice.
+
 \(fn ACTION (WHERE &optional ARGS-LIST TARGET &rest TARGETS) &rest BODY)
 "
   (-let* ((symbols-only (lambda (it) (and (symbolp it) (not (keywordp it)))))
