@@ -813,6 +813,8 @@ ORIG-FN."
 :ID:       271549f3-dcba-481a-87b4-ef01089664fc
 :END:
 
+Some packages such as [[][]] message output.
+
 #+begin_src emacs-lisp
 (defun void::use-void-log-advice (orig-fn &rest args)
   "Use `void:log' instead of `message' for ORIG-FN called with ARGS."
