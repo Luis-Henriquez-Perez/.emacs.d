@@ -779,7 +779,8 @@ appropriate name to target.
 :END:
 
 This headline is for generic advices that I will use all the time and for many
-different functions.
+different functions. These functions will not be used directly. Instead, they
+will be aliased to the correct.
 
 ***** boost gc
 :PROPERTIES:
