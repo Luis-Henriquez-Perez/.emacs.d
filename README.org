@@ -774,7 +774,7 @@ appropriate name to target.
 
 This headline is for generic advices that I will use all the time and for many
 different functions. These functions will not be used directly. Instead, they
-will be aliased to the correct.
+will be used via [[helpfn:void:advice-add][void:advice-add]].
 
 ***** boost gc
 :PROPERTIES:
