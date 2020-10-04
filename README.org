@@ -821,7 +821,7 @@ is non-nil.
 #+begin_src emacs-lisp
 (defun void::use-void-log-advice (orig-fn &rest args)
   "Use `void:log' instead of `message' for ORIG-FN called with ARGS."
-  (cl-letf (())
+  (cl-letf (((symbol-function #'message) #'void:log))
     (apply orig-fn args)))
 #+end_src
 
