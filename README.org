@@ -778,7 +778,8 @@ appropriate name to target.
 :ID:       b41b0bfa-83a7-4aa4-97ca-80e72b52cb08
 :END:
 
-This headline is for advices that I will want to add to many different functions.
+This headline is for generic advices that I will use all the time and for many
+different functions.
 
 ***** boost gc
 :PROPERTIES:
