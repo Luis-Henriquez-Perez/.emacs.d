@@ -785,6 +785,11 @@ This headline is for advices that I will want to add to many different functions
 :ID:       fd8d6c00-5f07-4c22-8268-7497d36534a6
 :END:
 
+#+begin_src emacs-lisp
+(defun void::boost-gc-threshold ()
+  )
+#+end_src
+
 ***** silence output
 :PROPERTIES:
 :ID:       4e6463cc-c203-4193-bfff-eadc0331ed89
