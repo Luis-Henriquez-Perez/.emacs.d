@@ -787,7 +787,7 @@ This headline is for advices that I will want to add to many different functions
 
 #+begin_src emacs-lisp
 (defun void::boost-gc-threshold-advice (orig-fn &rest args)
-  "Temporarily boost garbage collection rate for ORIG-FN.
+  "Boost garbage collection for the duration of ORIG-FN called with ARGS.
 Set the values of `gc-cons-threshold' to `VOID:GC-CONS-THRESHOLD-MAX' and
 `gc-cons-percentage' to `VOID:GC-CONS-PERCENTAGE-MAX' for the duration of
 ORIG-FN."
