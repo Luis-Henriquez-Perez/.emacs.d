@@ -627,12 +627,6 @@ Add a hook that follow naming conventions.
 :ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
 :END:
 
-Sometimes, particularly when we want to add multiple keyword arguments, the
-argument list of =defhook= becomes so long that you have to split it up into a
-newline. I hate how this looks and have a strong preference for keeping argument
-lists on one line. To avoid this situation, I've added option for adding keyword
-arguments before the body of the macro is useful.
-
 #+begin_src emacs-lisp
 (defmacro defhook! (name args &rest body)
   ""
