@@ -781,6 +781,8 @@ will be used via [[helpfn:void:advice-add][void:advice-add]].
 :ID:       fd8d6c00-5f07-4c22-8268-7497d36534a6
 :END:
 
+Boosting garbage collection for.
+
 #+begin_src emacs-lisp
 (defun void::boost-gc-threshold-advice (orig-fn &rest args)
   "Boost garbage collection for the duration of ORIG-FN called with ARGS.
