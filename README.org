@@ -674,7 +674,7 @@ This macro provides a way of defining a hook variable.
   "Define a hook variable."
   `(progn
      (defvar ,name nil ,docstring)
-     (--each triggers
+     (--each ,triggers
        (if (functionp it)
            (void:add-advice it :around run-hook)
          (void:add-hook it)))))
