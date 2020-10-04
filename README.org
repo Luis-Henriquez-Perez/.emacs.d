@@ -786,8 +786,10 @@ This headline is for advices that I will want to add to many different functions
 :END:
 
 #+begin_src emacs-lisp
-(defun void::boost-gc-threshold ()
-  )
+(defun void::boost-gc-threshold-advice (orig-fn &rest args)
+  (let (()
+        ())
+    (apply orig-fn args)))
 #+end_src
 
 ***** silence output
