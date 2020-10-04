@@ -803,7 +803,7 @@ ORIG-FN."
 
 #+begin_src emacs-lisp
 (defun void::silence-output-advice (orig-fn &rest args)
-  "Silence output for the duration of ORIG-FN."
+  "Silence output for the duration of ORIG-FN called with ARGS."
   (quiet! (apply orig-fn args)))
 #+end_src
 
