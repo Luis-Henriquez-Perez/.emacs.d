@@ -886,7 +886,8 @@ declarative way to define advices.
 :ID:       cc161eaf-a8fb-4e24-853f-a76a49c28dcf
 :END:
 
-The only difference between this and [[][]] is that =NAME= and =SYM= are switched.
+The only difference between this and [[][]] is that =NAME= and =SYM= are switched. I
+feel that having.
 
 #+begin_src emacs-lisp
 (defmacro define-advice! (name args &rest body)
