@@ -813,7 +813,8 @@ ORIG-FN."
 :END:
 
 #+begin_src emacs-lisp
-(defun void::use-void-log-instead-of-message-advice ()
+(defun void::use-void-log-instead-of-message-advice (orig-fn &rest args)
+  ""
   (cl-letf )
   )
 #+end_src
