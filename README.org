@@ -766,6 +766,7 @@ appropriate name to target.
 #+begin_src emacs-lisp
 (defun void:add-advice (target where advice &optional props expire-fn)
   "Advise TARGETS with Void ADVICES."
+  ;; (when (s-match))
   (let ((name (void:advice-name target advice)))
     (defalias name advice)
     (advice-add target where name props)
