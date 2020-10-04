@@ -798,6 +798,8 @@ This headline is for advices that I will want to add to many different functions
 :END:
 
 #+begin_src emacs-lisp
+(defun void::silence-output-advice ()
+  )
 #+end_src
 
 ***** use =void:log= instead of =message=
