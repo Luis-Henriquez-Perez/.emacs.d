@@ -918,15 +918,16 @@ Unlike `define-advice!', this macro does not take an arglist as an argument.
 Instead, arguments are accessed via anaphoric variables.
 
 \(fn ACTION (WHERE TARGET &rest TARGETS) &rest BODY)"
-  (-let* (((where target . other-args) args)
+  (-let* ((args (make-symbol "args"))
+          ((where target . other-args) args)
           (advice-args (if (eq where :around)
                            '(<orig-fn> &rest <args>)
-                         (with-symbols! (args) `(&rest args)))))
+                         `(&rest ,args))))
     `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
        (cl-progv (->> (help-function-arglist #',target t)
                       (--remove (s-starts-with-p "@" (symbol-name it)))
                       (--map (intern (format "<%s>" (symbol-name it)))))
-           args
+           ,args
          ,@body))))
 #+end_src
 
