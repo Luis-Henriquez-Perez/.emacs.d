@@ -803,6 +803,9 @@ This headline is for advices that I will want to add to many different functions
 :ID:       271549f3-dcba-481a-87b4-ef01089664fc
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 **** removing advice
 :PROPERTIES:
 :ID:       baf2dd59-b37b-47bc-a1d2-815ba925d1bd
