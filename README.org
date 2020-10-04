@@ -799,6 +799,8 @@ ORIG-FN."
 :ID:       4e6463cc-c203-4193-bfff-eadc0331ed89
 :END:
 
+Many emacs packages (both internal and external) print messages to output.
+
 #+begin_src emacs-lisp
 (defun void::silence-output-advice (orig-fn &rest args)
   "Silence output for the duration of ORIG-FN called with ARGS."
