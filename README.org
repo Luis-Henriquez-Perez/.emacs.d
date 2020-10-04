@@ -814,7 +814,8 @@ ORIG-FN."
 :ID:       271549f3-dcba-481a-87b4-ef01089664fc
 :END:
 
-Some packages such as [[][]] message output.
+Some packages such as [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]] message output that I'd like only when [[helpfn:void:debug-p][void:debug-p]]
+is non-nil.
 
 #+begin_src emacs-lisp
 (defun void::use-void-log-advice (orig-fn &rest args)
