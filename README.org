@@ -662,7 +662,7 @@ complete I add the same type of syntax coloring that =defun= has to =defhook!=.
     (font-lock-add-keywords nil it)))
 #+end_src
 
-**** defhookvar                                                       :disabled:
+**** defhookvar
 :PROPERTIES:
 :ID:       55f1a3fa-ca79-4a3d-8765-fa709897ff0b
 :END:
