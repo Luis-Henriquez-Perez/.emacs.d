@@ -804,7 +804,7 @@ ORIG-FN."
 #+begin_src emacs-lisp
 (defun void::silence-output-advice (orig-fn &rest args)
   "Silence output for the duration of ORIG-FN."
-  )
+  (quiet! (apply orig-fn args)))
 #+end_src
 
 ***** use =void:log= instead of =message=
