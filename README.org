@@ -620,8 +620,7 @@ Add a hook that follow naming conventions.
 :ID:       f77b8dff-6ee8-4e2e-a442-b133bbac770c
 :END:
 
-=defhook!= provide a declarative way of setting hooks built on top of =defhook=.
-It's built on top of =defhook=.
+=defhook!= provide a declarative way of setting hooks.
 
 ***** defhook!
 :PROPERTIES:
