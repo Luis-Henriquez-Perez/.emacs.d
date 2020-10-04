@@ -814,7 +814,7 @@ ORIG-FN."
 
 #+begin_src emacs-lisp
 (defun void::use-void-log-advice (orig-fn &rest args)
-  "Use `void:log' instead of `message'."
+  "Use `void:log' instead of `message' for ORIG-FN called with ARGS."
   (cl-letf (())
     (apply orig-fn args)))
 #+end_src
