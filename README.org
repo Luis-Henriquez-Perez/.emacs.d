@@ -806,6 +806,8 @@ This headline is for advices that I will want to add to many different functions
 :END:
 
 #+begin_src emacs-lisp
+(defun void::use-void-log-instead-of-message ()
+  )
 #+end_src
 
 **** removing advice
