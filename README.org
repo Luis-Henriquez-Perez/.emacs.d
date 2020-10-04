@@ -909,7 +909,7 @@ The only difference is that this switches the order the arguments have to be pas
 :ID:       98b2ce63-da31-4f7a-b776-1ee1747b5d57
 :END:
 
-=anaphoric-define-advice!= lets you.
+=anaphoric-define-advice!= lets you omit the =lambda-args= in favor of.
 
 #+begin_src emacs-lisp
 (defmacro anaphoric-define-advice! (name args &rest body)
