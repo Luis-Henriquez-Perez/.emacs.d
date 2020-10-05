@@ -1123,6 +1123,22 @@ WHERE can be the symbol `before' or `after'."
   (push (cons alias name) leaf-alias-keyword-alist))
 #+end_src
 
+**** defleaf
+:PROPERTIES:
+:ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defleaf! (name args &rest body)
+  ""
+  (declare (indent defun))
+  (-let (((where keyword alias defer normalizer) args))
+    `(progn
+       ,(when alias )
+       (leaf:insert-keyword)
+       (defun leaf:apply-function ()))))
+#+end_src
+
 **** define-leaf-keyword!
 :PROPERTIES:
 :ID:       db05b51b-bbe4-41a4-ae45-1e72aba57ae4
@@ -1202,11 +1218,11 @@ evaluated.
 #+begin_src emacs-lisp
 (leaf:set-alias :leaf-defer :void-leaf-defer)
 
-(define-leaf-keyword! void-leaf-defer (before :leaf-defer)
-  (if (and leaf--body (eval (car leaf--value))
-           (leaf-list-memq leaf-defer-keywords (leaf-plist-keys leaf--raw)))
-      `((after! ,leaf--name ,@leaf--body))
-    `(,@leaf--body)))
+(defleaf! void-defer (before leaf-defer :leaf-defer)
+  (if (and <body> (eval (car <value>))
+           (leaf-list-memq leaf-defer-keywords (leaf-plist-keys <raw>)))
+      `((after! ,<name> ,@<body>))
+    `(,@<body>)))
 #+end_src
 
 *** custom leaf keywords
@@ -1342,10 +1358,10 @@ VOID is compiled.
 
 (leaf:set-normalizer :void-straight #'leaf:void-straight-normalizer)
 
-(define-leaf-keyword! void-straight (before :straight)
-  `(,@(when (and leaf--value (car-safe leaf--value))
-        `((straight:install-package ',(car leaf--value))))
-    ,@leaf--body))
+(define-leaf-keyword! void-straight (replace straight ensure)
+  `(,@(when (and <value> (car-safe <value>))
+        `((straight:install-package ',(car <value>))))
+    ,@<body>))
 
 (defun leaf:void-straight-normalizer (leaf--value)
   (cond ((eq t (car leaf--value))
@@ -1365,7 +1381,7 @@ The point of this keyword is to let me configure the display of buffers for
 specific packages.
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! popup (before :mode)
+(defleaf! popup (before :mode)
   `(,@(--map `(push ',it display-buffer-alist) leaf--value)
     ,@leaf--body))
 #+end_src
@@ -1376,7 +1392,7 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! os (before :when)
+(defleaf! os (before :when)
   (when leaf--body `((with-os! ,leaf--value ,@leaf--body))))
 #+end_src
 
@@ -1404,26 +1420,11 @@ specific packages.
 #+begin_src emacs-lisp
 (leaf:set-normalizer :alias #'leaf:normalize-setq)
 
-(define-leaf-keyword! alias (before :init)
+(defleaf! alias (before :init)
   `((eval-and-compile
       ,@(-map (-lambda ((alias . def)) `(defalias ',alias ',def))
-              leaf--value))
-    ,@leaf--body))
-#+end_src
-
-**** ignore-buffers
-:PROPERTIES:
-:ID:       46e099c0-257b-4292-b5bc-acdf1bceaeea
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :ignore-buffers #'leaf:normalize-commands)
-
-(define-leaf-keyword! ignore-buffers (before :init)
-  `((after! midnight
-      (--each ',leaf--value
-        (push it clean-buffer-list-kill-regexps)))
-    ,@leaf--body))
+              <value>))
+    ,@<body>))
 #+end_src
 
 ** Packages
