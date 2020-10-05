@@ -28,19 +28,19 @@
 ;; *** check if tangling is needed
 
 ;; Laziness is a strength in programming. I only want to tangle
-;; =void:main-org-file= when actually need to. Tangling is done at the expense of
+;; =void-main-org-file= when actually need to. Tangling is done at the expense of
 ;; some (small) initialization time increase. If it can be avoided, all the better.
 
-(defun void:needs-tangling-p ()
-  "Whether `void:main-org-file' needs to be tangled.
-Tangling needs to occur when either `void:main-elisp-file' does not exist or
-`void:main-org-file' is newer than `void:main-elisp-file'."
-  (or (not (file-exists-p void:main-elisp-file))
-      (file-newer-than-file-p void:main-org-file void:main-elisp-file)))
+(defun void-needs-tangling-p ()
+  "Whether `void-main-org-file' needs to be tangled.
+Tangling needs to occur when either `void-main-elisp-file' does not exist or
+`void-main-org-file' is newer than `void-main-elisp-file'."
+  (or (not (file-exists-p void-main-elisp-file))
+      (file-newer-than-file-p void-main-org-file void-main-elisp-file)))
 
 ;; *** write to a file
 
-(defun void:write-file (file contents)
+(defun void-write-file (file contents)
   (let ((file-coding-system-alist nil)
         (coding-system-for-write 'binary))
     (with-temp-file file
@@ -50,7 +50,7 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 
 ;; *** update tags
 
-(defun void:update-tags (last-level curr-level curr-tags all-tags)
+(defun void-update-tags (last-level curr-level curr-tags all-tags)
   "Returns new tags."
   (let ((prev all-tags))
     (cond ((> last-level curr-level)
@@ -65,17 +65,17 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 
 ;; ** tangle from and to files
 
-(defvar void:main-org-file (concat user-emacs-directory "README.org")
+(defvar void-main-org-file (concat user-emacs-directory "README.org")
   "Org file containing most of VOID's initialization code.")
 
-(defvar void:main-elisp-file (concat user-emacs-directory ".local/main.el")
-  "The elisp file that `void:main-org-file' tangles to.")
+(defvar void-main-elisp-file (concat user-emacs-directory ".local/main.el")
+  "The elisp file that `void-main-org-file' tangles to.")
 
 ;; ** wrap-string
 
 ;; This function is for wrapping a string.
 
-(defun void:wrap-string-form (form body)
+(defun void-wrap-string-form (form body)
   (let* ((name (symbol-name (car form)))
          (args (string-join (mapcar #'(lambda (it)
                                         (format "%S" it))
@@ -91,11 +91,11 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 ;; ** wrap multiple forms around block
 
 
-(defun void:wrap-forms (forms block)
+(defun void-wrap-forms (forms block)
   "Wrap."
   (let (final)
     (dolist (form (reverse forms))
-      (setq final (void:wrap-string-form form block)))
+      (setq final (void-wrap-string-form form block)))
     final))
 
 ;; ** regexps
@@ -104,7 +104,7 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 
 ;; This regexp was stolen from =org-complex-heading-regexp=.
 
-(defvar void:headline-regexp
+(defvar void-headline-regexp
   (concat
    ;; (1) stars
    "^\\(\\*+\\)"
@@ -125,7 +125,7 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 ;; it. So here I make my own. I got this =rx= expression by calling
 ;; [[helpfn:rxt-convert-to-rx][rxt-convert-to-rx]] from [[github:joddie/pcre2el][pcre2el]] on the raw emacs regular expression.
 
-(defvar void:source-block-regexp
+(defvar void-source-block-regexp
   (concat
    ;; (1) indentation                 (2) lang
    "^\\([ \t]*\\)#\\+begin_src[ \t]+\\([^ \f\t\n\r\v]+\\)[ \t]*"
@@ -144,7 +144,7 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
   (declare (indent defun))
   `(let* ((case-fold-search nil)
           (heading-or-block-regexp
-           ,(concat void:headline-regexp "\\|" void:source-block-regexp))
+           ,(concat void-headline-regexp "\\|" void-source-block-regexp))
           (last-level nil)
           (stars) (level 1) (todo-keyword) (priority-cookie)
           (headline) (curr-tags) (all-tags) (indentation) (lang)
@@ -162,7 +162,7 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
            (setq headline (match-string-no-properties 4))
            (setq curr-tags (split-string (or (match-string-no-properties 5) "") ":" t))
            ;; Update tags
-           (setq all-tags (void:update-tags last-level level curr-tags all-tags)))
+           (setq all-tags (void-update-tags last-level level curr-tags all-tags)))
          (setq indentation (match-string-no-properties 6))
          (setq lang (match-string-no-properties 7))
          (setq switches (match-string-no-properties 8))
@@ -175,23 +175,23 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 (defun void/tangle-org-file ()
   (interactive)
   (let (code tags)
-    (while-tangling! void:main-org-file
+    (while-tangling! void-main-org-file
       (setq tags (apply #'append all-tags))
       (when (and body (not (member "omit" tags)))
         (setq code
               (concat code
                       (cond
                        ;; ((not (member "noblock" tags))
-                       ;;  (void:wrap-string-form `(elisp-block! ,tags) body))
+                       ;;  (void-wrap-string-form `(elisp-block! ,tags) body))
                        ((member "ewc" tags)
-                        (concat "\n" (void:wrap-string-form '(eval-when-compile) body)))
+                        (concat "\n" (void-wrap-string-form '(eval-when-compile) body)))
                        ((member "eac" tags)
-                        (concat "\n" (void:wrap-string-form '(eval-and-compile) body)))
+                        (concat "\n" (void-wrap-string-form '(eval-and-compile) body)))
                        ((member "disabled" tags) nil)
                        (t (concat "\n" body)))))))
-    (void:write-file void:main-elisp-file (concat ";; -*- lexical-binding: t; -*-\n" code))))
+    (void-write-file void-main-elisp-file (concat ";; -*- lexical-binding: t; -*-\n" code))))
 
-(when (void:needs-tangling-p)
+(when (void-needs-tangling-p)
   (void/tangle-org-file))
 
 ;; * Main
@@ -201,4 +201,4 @@ Tangling needs to occur when either `void:main-elisp-file' does not exist or
 ;; performance boost.
 
 (let (file-name-handler-alist)
-  (load void:main-elisp-file :noerror :nomessage))
+  (load void-main-elisp-file :noerror :nomessage))

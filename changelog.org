@@ -187,3 +187,12 @@ Now advices have a consistent syntax. The functions [[id:4750f4dc-053b-4062-bd6c
 :END:
 
 Advises output log messages when =void:debug= is non-nil.
+
+** *Breaking Change* change naming convention from =void:= to =void-=.
+:PROPERTIES:
+:ID:       71944cc7-898f-4679-9492-701d8e69e0dc
+:END:
+
+Since there is currently no package named =void= and it is more consistent with
+emacs naming conventions to use the "-", I've decided to just use the prefix
+=void-= for naming variables.
