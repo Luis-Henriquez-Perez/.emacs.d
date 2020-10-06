@@ -1082,7 +1082,7 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
 
 When I am writing leaf keywords I don't want to think in terms of lists. I want
 to write leaf customizations like ~(do-something <value>)~ as opposed to ~(-map
-#'do-something <value>)~.
+#'do-something <value>)~. With that idea in mind, this wrapper
 
 #+begin_src emacs-lisp
 (defmacro leaf! (package &rest args)
