@@ -1178,6 +1178,16 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
           (funcall it leaf-keywords place (list keyword form)))))
 #+end_src
 
+**** leaf~insert-form
+:PROPERTIES:
+:ID:       02313c96-46f1-45ae-97aa-2a9e66e8e572
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf~define-keyword (keyword &optional aliases)
+  "Define a leaf keyword.")
+#+end_src
+
 **** defleaf!
 :PROPERTIES:
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
