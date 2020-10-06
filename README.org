@@ -1218,14 +1218,11 @@ This macro is meant to make defining a leaf keyword easy.
     `(progn
        (leaf~insert-keyword ,keyword)
 
-       ,@(-map (-partial #'leaf~set-alias keyword)
-               (-list alias))
+       ,@(-map (-partial #'leaf~set-alias keyword) (-list alias))
 
-       ,@(whenlist! defer
-           `(leaf~set-defer ,keyword))
+       ,@(whenlist! defer `(leaf~set-defer ,keyword))
 
-       ,@(whenlist! normalizer
-           `(leaf~set-normalizer ,keyword ,normalizer))
+       ,@(whenlist! normalizer `(leaf~set-normalizer ,keyword ,normalizer))
 
        (defun ,fname ,args
          (-let [,args ,(--map)]
