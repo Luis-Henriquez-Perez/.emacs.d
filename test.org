@@ -258,3 +258,24 @@
     (should (eq it 'emacs-lisp-mode-hook))))
 #+end_src
 
+* leaf
+:PROPERTIES:
+:ID:       464e2084-d46c-47e7-8c54-817defb13b67
+:END:
+
+** leaf:insert-keyword
+:PROPERTIES:
+:ID:       63976e43-dcb9-4b06-9095-1e31b6c75a88
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest leaf:)
+#+end_src
+
+** leaf:flatten-keywords
+:PROPERTIES:
+:ID:       22800ae7-63f1-4d19-a82e-29bd90544fd6
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
