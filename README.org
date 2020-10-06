@@ -1157,7 +1157,7 @@ recall the underlying leaf data structure.
   (setf (plist-get lst alem) targetlst))
 #+end_src
 
-**** TODO leaf insert keyword
+**** TODO insert keyword
 :PROPERTIES:
 :ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
 :END:
@@ -1176,28 +1176,6 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
-#+end_src
-
-**** leaf~insert-form
-:PROPERTIES:
-:ID:       02313c96-46f1-45ae-97aa-2a9e66e8e572
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~define-keyword (keyword where place form &optional aliases defer normalizer)
-  "Define a leaf keyword."
-
-  (leaf~insert-keyword keyword where place form)
-
-  (when defer
-    ())
-
-  (when aliases
-    (--each (-list aliases)
-      (push it)))
-
-  (when normalizer
-    (leaf~set-normalizer normalizer)))
 #+end_src
 
 **** defleaf!
