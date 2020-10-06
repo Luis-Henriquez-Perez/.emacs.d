@@ -480,6 +480,17 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
        (string-match-p VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name obj))))
 #+end_src
 
+***** anaphoric symbol
+:PROPERTIES:
+:ID:       17e9712a-9793-45aa-81ac-6b75e1947883
+:END:
+
+#+begin_src emacs-lisp
+(defun void-anaphoric-symbol (symbol)
+  "Return anaphroic symbol for SYMBOL."
+  (intern (format "<%s>" symbol)))
+#+end_src
+
 ***** true anaphora name
 :PROPERTIES:
 :ID:       2833cd75-9c85-4c0e-9523-4489d387150a
