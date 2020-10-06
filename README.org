@@ -1184,9 +1184,20 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~define-keyword (keyword form &optional aliases defer normalizer)
+(defun leaf~define-keyword (keyword where place form &optional aliases defer normalizer)
   "Define a leaf keyword."
-  )
+
+  (leaf~insert-keyword keyword where place form)
+
+  (when defer
+    ())
+
+  (when aliases
+    (--each (-list aliases)
+      (push it)))
+
+  (when normalizer
+    (leaf~set-normalizer normalizer)))
 #+end_src
 
 **** defleaf!
