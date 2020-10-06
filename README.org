@@ -1086,9 +1086,10 @@ I don't want to keep dealing with list arguments.
 (defmacro leaf! (package &rest args)
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
-  (->> (-partition-before-pred #'keywordp args)
-       (--map (-flatten-n 1 it))
-       (--map )))
+  `(leaf ,package
+     ,@(->> (-partition-before-pred #'keywordp args)
+            (--map (-flatten-n 1 it))
+            (--map (-annotate (-const (car it)) (cdr it))))))
 #+end_src
 
 *** defining leaf keywords
