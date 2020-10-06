@@ -1224,7 +1224,7 @@ This macro is meant to make defining a leaf keyword easy.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf:set-normalizer (keyword normalizer)
+(defun leaf~set-normalizer (keyword normalizer)
   "Add KEYWORD."
   (push `((or (memq leaf--key '(,keyword))
               (eq (alist-get leaf--key leaf-alias-keyword-alist) ,keyword))
