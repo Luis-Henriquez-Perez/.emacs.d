@@ -1269,7 +1269,7 @@ provided by leaf. They are inspired from DOOM emacs.
 #+begin_src emacs-lisp
 (leaf:set-normalizer :before-call #'leaf:normalize-commands)
 
-(define-leaf-keyword! before-call (before :hook nil t)
+(defleaf! before-call (before :hook nil t)
   `(void:advice-add :before ,<value>))
 #+end_src
 
