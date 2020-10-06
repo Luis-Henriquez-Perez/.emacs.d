@@ -1224,7 +1224,7 @@ This macro is meant to make defining a leaf keyword easy.
               (--map `(push (cons ,it ,name) leaf-alias-keyword-alist)))
 
        ,@(whenlist! defer
-           `(push ,keyword leaf-defer-keywords))
+           `(leaf~set-defer ,keyword))
 
        ,@(whenlist! normalizer
            (leaf:set-normalizer ,keyword ,normalizer))
