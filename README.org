@@ -1240,8 +1240,7 @@ This macro is meant to make defining a leaf keyword easy.
 
        (defun ,fname ,anaphoric-vars
          (-let [,vars ,anaphoric-vars]
-           (ignore ,@vars)
-           (ignore ,@anaphoric-vars)
+           (ignore ,@vars ,@anaphoric-vars)
            ,@body)))))
 #+end_src
 
