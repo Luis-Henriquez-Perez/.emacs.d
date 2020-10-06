@@ -1335,8 +1335,7 @@ specific packages.
 
 #+begin_src emacs-lisp
 (defleaf! popup (before :mode)
-  `(progn
-     ,@(--map `(push ',it display-buffer-alist) leaf--value)))
+  `(push ',it display-buffer-alist) ,<value>)
 #+end_src
 
 **** os
