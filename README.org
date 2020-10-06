@@ -1320,7 +1320,11 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! before-call (before :hook nil t commands)
-  `(void-advice-add :before ,<value>))
+  (let ((advice (void-symbol-intern 'load- )))
+    `(progn (void-advice-add ,<value> :before )
+            (defadvice! ,advice ()
+              "Load package."
+              (require ',)))))
 #+end_src
 
 ***** after-call
