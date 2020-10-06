@@ -713,6 +713,26 @@ Advice name is of the form FN@ADVICE."
   (intern (format "%s@%s" fn advice)))
 #+end_src
 
+**** adding advice
+:PROPERTIES:
+:ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
+:END:
+
+Often, I advise functions with other existing functions (such as =#'ignore=)
+instead of defining my own advices. To maintain consistency with the naming
+convention I created [[helpfn:void-add-advice][void-add-advice]]. It will create an advice with an
+appropriate name to target.
+
+#+begin_src emacs-lisp
+(defun void-add-advice (target where advice &optional props expire-fn)
+  "Advise TARGETS with Void ADVICES."
+  (alet (void-advice-name target advice)
+    (defalias it advice)
+    (advice-add target where it props)
+    (when expire-fn
+      (advice-add it :around (void-expire-advice target it)))))
+#+end_src
+
 **** expire advice
 :PROPERTIES:
 :ID:       8506fa78-c781-4ca8-bd58-169cce23a504
@@ -2541,7 +2561,7 @@ When running emacs in terminal tty is *tremendously* slow.
 
 #+begin_src emacs-lisp
 (unless (display-graphic-p)
-  (void:add-advice #'tty-run-terminal-initialization :override #'ignore)
+  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
   (defhook! init-tty (window-setup-hook)
     (advice-remove #'tty-run-terminal-initialization #'ignore)
     (tty-run-terminal-initialization (selected-frame) nil t)))
@@ -3404,7 +3424,7 @@ be inserted and interactively completed.
   (delq #'yas-dropdown-prompt yas-prompt-functions)
   (after! smartparens
     ;; tell smartparens overlays not to interfere with yasnippet keybinds
-    (void:add-advice #'yas-expand :before #'sp-remove-active-pair-overlay)))
+    (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay)))
 #+end_src
 
 *** snippet collection
@@ -3583,7 +3603,7 @@ visually distracting and not particularly useful for me, so I disable it.
 
 #+begin_src emacs-lisp
 (after! counsel
-  (void:add-advice #'counsel-M-x-transformer :override #'identity))
+  (void-add-advice #'counsel-M-x-transformer :override #'identity))
 #+end_src
 
 **** make the default action setting the font
@@ -5525,7 +5545,7 @@ cursor color will update.
   (-let (((mode state) <args>))
     (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
 
-(void:add-advice #'evil-motion-state :override #'evil-normal-state)
+(void-add-advice #'evil-motion-state :override #'evil-normal-state)
 #+end_src
 
 **** insert state in minibuffer
@@ -6405,7 +6425,7 @@ aliases.
         (append eshell-command-aliases-list
                 eshell:aliases)))
 
-(void:add-advice #'eshell-write-aliases-list :override #'ignore)
+(void-add-advice #'eshell-write-aliases-list :override #'ignore)
 #+end_src
 
 *** shrink-path
@@ -6457,7 +6477,7 @@ have to set out to look for a file with =dired=.
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
   :defer-config
-  (void:add-advice #'recentf-save-list :before #'recentf-cleanup)
+  (void-add-advice #'recentf-save-list :before #'recentf-cleanup)
   (recentf-mode 1)
   :setq
   (recentf-exclude . (list #'file-remote-p
