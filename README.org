@@ -1192,6 +1192,22 @@ evaluated.
         (-uniq (delq nil (leaf-flatten leaf--value)))))
 #+end_src
 
+***** another normalizer
+:PROPERTIES:
+:ID:       c7fd7beb-b85a-4f60-abeb-794ed33988f6
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf:void-straight-normalizer (leaf--value)
+  (cond ((eq t (car leaf--value))
+         (list leaf--name))
+        ((eq nil (car leaf--value))
+         nil)
+        ((listp (car-safe leaf--value))
+         (list (cons leaf--name (car leaf--value))))))
+
+#+end_src
+
 *** use =after!= in leaf-defer
 :PROPERTIES:
 :ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
@@ -1280,7 +1296,7 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! after-call (before :hook nil t)
-  `(,(leaf:generate-load-form leaf--name nil :after leaf--value)))
+  `())
 #+end_src
 
 ***** idle-require
@@ -1309,14 +1325,6 @@ VOID is compiled.
   `(,@(when (and <value> (car-safe <value>))
         `((straight:install-package ',(car <value>))))
     ,@<body>))
-
-(defun leaf:void-straight-normalizer (leaf--value)
-  (cond ((eq t (car leaf--value))
-         (list leaf--name))
-        ((eq nil (car leaf--value))
-         nil)
-        ((listp (car-safe leaf--value))
-         (list (cons leaf--name (car leaf--value))))))
 #+end_src
 
 **** popup
@@ -1340,7 +1348,8 @@ specific packages.
 
 #+begin_src emacs-lisp
 (defleaf! os (before :when)
-  (when leaf--body `((with-os! ,leaf--value ,@leaf--body))))
+  (when <body>
+    `((with-os! ,leaf--value ,@leaf--body))))
 #+end_src
 
 **** straight
