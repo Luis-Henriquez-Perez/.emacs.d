@@ -1152,7 +1152,7 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf:insert-at ()
+(defun leaf:insert-at (keyword place form)
   (setf (plist-get ,place ,keyword) form))
 #+end_src
 
