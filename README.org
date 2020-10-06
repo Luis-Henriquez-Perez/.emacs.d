@@ -1191,7 +1191,6 @@ This macro is meant to make defining a leaf keyword easy.
   (declare (indent defun))
   (-let (((where place alias defer normalizer) args)
          (keyword (void-keyword-intern name))
-         (args )
          (fname)
          (normalizer-name))
     `(progn
