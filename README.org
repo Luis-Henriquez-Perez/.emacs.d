@@ -1091,9 +1091,7 @@ one value.
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
   `(leaf ,package
-     ,@(->> (-partition-before-pred #'keywordp args)
-            (--map (-flatten-n 1 it))
-            (--map (-annotate (-const (car it)) (cdr it))))))
+     ,@))
 #+end_src
 
 *** defining leaf keywords
