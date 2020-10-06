@@ -1141,7 +1141,7 @@ This macro is meant to make defining a leaf keyword easy.
        ,@(whenlist! normalizer
            (leaf:set-normalizer ,keyword ,normalizer))
 
-       (defun ,fname ()
+       (defun ,fname ,args
          (-let [,args ,(--map)]
            (ignore ,@args)
            ,@body)))))
