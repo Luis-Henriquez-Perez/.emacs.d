@@ -1333,7 +1333,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! before-call (before :hook nil t commands)
+(defleaf! after-call (before :hook nil t commands)
   (let ((advice (void-symbol-intern 'load- )))
     `(progn (void-advice-add ,<value> :before )
             (defadvice! ,advice (after)
