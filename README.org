@@ -1146,18 +1146,20 @@ This macro is meant to make defining a leaf keyword easy.
 (defmacro defleaf! (name args &rest body)
   ""
   (declare (indent defun))
-  (-let (((where keyword alias defer normalizer) args)
-         (args (leaf))
+  (-let (((where place alias defer normalizer) args)
+         (keyword (void-keyword-intern name))
+         (args )
          (fname))
     `(progn
-       (alet (,fname ,@args)
+       (alet '(,fname ,@args)
          (leaf:insert-keyword ,keyword ',where ,place ',it))
 
-       ,@(--map (lambda (alias) `(leaf:set-alias ,alias ,name))
+       ,@(--map (lambda (alias)
+                  `(push (cons ,alias ,name) leaf-alias-keyword-alist))
                 (-list alias))
 
        ,@(whenlist! defer
-           (leaf:set-defer))
+           `(push ,keyword leaf-defer-keywords))
 
        ,@(whenlist! normalizer
            (leaf:set-normalizer ,keyword ,normalizer))
