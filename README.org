@@ -1296,7 +1296,7 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! after-call (before :hook nil t)
-  `(void-advice-add :after <value>))
+  `(void-advice-add :after ,<value>))
 #+end_src
 
 ***** idle-require
