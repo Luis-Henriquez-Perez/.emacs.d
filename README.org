@@ -1225,7 +1225,7 @@ This macro is meant to make defining a leaf keyword easy.
        ,@(whenlist! normalizer `(leaf~set-normalizer ,keyword ,normalizer))
 
        (defun ,fname ,args
-         (-let (--annotate )
+         (-let (--map (list () ()) leaf~process-variables)
            (ignore ,@args)
            ,@body)))))
 #+end_src
