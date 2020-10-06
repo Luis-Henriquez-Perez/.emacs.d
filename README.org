@@ -1275,12 +1275,12 @@ evaluated.
 
 #+end_src
 
-*** custom leaf keywords
+**** custom leaf keywords
 :PROPERTIES:
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
 :END:
 
-**** use =after!= in leaf-defer
+***** use =after!= in leaf-defer
 :PROPERTIES:
 :ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
 :END:
@@ -1293,14 +1293,14 @@ evaluated.
     `(,@<body>)))
 #+end_src
 
-**** set keywords
+***** set keywords
 :PROPERTIES:
 :ID:       225cdf80-0770-47c0-8a94-6d69f4583374
 :END:
 
 Leaf keywords do not.
 
-***** setq
+****** setq
 :PROPERTIES:
 :ID:       6f38c45b-9382-4d72-a7ae-6d7a8748d07f
 :END:
@@ -1309,7 +1309,7 @@ Leaf keywords do not.
 (leaf:set-normalizer :setq #'leaf:normalize-setq)
 #+end_src
 
-***** pre-setq
+****** pre-setq
 :PROPERTIES:
 :ID:       aba01554-fa11-4120-9867-19e5e2025df4
 :END:
@@ -1318,7 +1318,7 @@ Leaf keywords do not.
 (leaf:set-normalizer :pre-setq #'leaf:normalize-setq)
 #+end_src
 
-***** custom
+****** custom
 :PROPERTIES:
 :ID:       bfa61a7a-1660-4000-a80e-15851a32ffd5
 :END:
@@ -1327,7 +1327,7 @@ Leaf keywords do not.
 (leaf:set-normalizer :custom #'leaf:normalize-setq)
 #+end_src
 
-***** setq-default
+****** setq-default
 :PROPERTIES:
 :ID:       b8ab2bf6-2b4e-41db-93f8-ed5c86392c84
 :END:
@@ -1336,7 +1336,7 @@ Leaf keywords do not.
 (leaf:set-normalizer :setq-default #'leaf:normalize-setq)
 #+end_src
 
-**** defer keywords
+***** defer keywords
 :PROPERTIES:
 :ID:       6a8189ab-9a7a-4670-aa7a-b6589c180011
 :END:
@@ -1344,7 +1344,7 @@ Leaf keywords do not.
 These keywords are meant to improve on the deferred loading options already
 provided by leaf. They are inspired from DOOM emacs.
 
-***** TODO before-call
+****** TODO before-call
 :PROPERTIES:
 :ID:       5378035c-206b-4479-8c60-4d57853e5754
 :END:
@@ -1358,7 +1358,7 @@ provided by leaf. They are inspired from DOOM emacs.
               (require ',)))))
 #+end_src
 
-***** TODO after-call
+****** TODO after-call
 :PROPERTIES:
 :ID:       36389857-c070-4221-8f76-b6b0da257b34
 :END:
@@ -1372,7 +1372,7 @@ provided by leaf. They are inspired from DOOM emacs.
               (require ',)))))
 #+end_src
 
-***** idle-require
+****** idle-require
 :PROPERTIES:
 :ID:       c7ab7604-6e7c-42d1-b956-c58854948e8f
 :END:
@@ -1382,7 +1382,7 @@ provided by leaf. They are inspired from DOOM emacs.
   `(idle-require ,<value>))
 #+end_src
 
-**** straight keyword
+***** straight keyword
 :PROPERTIES:
 :ID:       cba57988-21b2-456b-aed2-27254febf873
 :END:
@@ -1396,7 +1396,7 @@ VOID is compiled.
   `(straight:install-package ,<value>))
 #+end_src
 
-**** popup
+***** popup
 :PROPERTIES:
 :ID:       30845314-ac19-49bb-9065-591c13e55489
 :END:
@@ -1409,7 +1409,7 @@ specific packages.
   `(push ',it display-buffer-alist) ,<value>)
 #+end_src
 
-**** os
+***** os
 :PROPERTIES:
 :ID:       3335e409-b963-4504-b9fb-2faf4fb0be3d
 :END:
@@ -1420,7 +1420,7 @@ specific packages.
     `((with-os! ,leaf--value ,@leaf--body))))
 #+end_src
 
-**** alias
+***** alias
 :PROPERTIES:
 :ID:       9ce3a0f5-6b44-4c60-9599-b3b77199fa99
 :END:
