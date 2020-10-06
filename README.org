@@ -1146,6 +1146,16 @@ recall the underlying leaf data structure.
   "List of variables that leaf binds when processing a keyword.")
 #+end_src
 
+**** insert at
+:PROPERTIES:
+:ID:       c87aaf35-af3e-41d1-af07-07e77742ec97
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf:insert-at ()
+  (setf (plist-get ,place ,keyword) form))
+#+end_src
+
 **** TODO leaf insert keyword
 :PROPERTIES:
 :ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
@@ -1161,7 +1171,7 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
   (alet (pcase where
           ('after #'leaf-insert-list-after)
           ('before #'leaf-insert-list-before)
-          ('at )
+          ('at `)
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
