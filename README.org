@@ -1157,7 +1157,7 @@ recall the underlying leaf data structure.
   (setf (plist-get lst alem) targetlst))
 #+end_src
 
-**** TODO insert keyword
+**** insert keyword
 :PROPERTIES:
 :ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
 :END:
