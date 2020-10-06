@@ -1126,7 +1126,8 @@ This macro is meant to make defining a leaf keyword easy.
   (-let (((where place alias defer normalizer) args)
          (keyword (void-keyword-intern name))
          (args )
-         (fname))
+         (fname)
+         (normalizer-name))
     `(progn
        ,(alet '(,fname ,@args)
           `(leaf:insert-keyword))
@@ -1285,7 +1286,7 @@ provided by leaf. They are inspired from DOOM emacs.
 #+begin_src emacs-lisp
 (leaf:set-normalizer :before-call #'leaf:normalize-commands)
 
-(defleaf! before-call (before :hook nil t)
+(defleaf! before-call (before :hook nil t commands)
   `(void-advice-add :before ,<value>))
 #+end_src
 
