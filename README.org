@@ -1225,11 +1225,11 @@ This macro is meant to make defining a leaf keyword easy.
   (-let* (((where place alias defer normalizer) args)
           (keyword (void-keyword-intern name))
           (leaf-vars leaf~process-variables)
-          (fname (void-symbol-intern 'leaf~apply- keyword))
-          (leaf-vars (-map (-partial #'void-symbol-intern 'leaf--) leaf-vars))
+          (fname (void-symbol-intern 'leaf~apply- name))
+          (vars (-map (-partial #'void-symbol-intern 'leaf--) leaf-vars))
           (anaphoric-vars (-map #'void-anaphoric-symbol leaf-vars)))
     `(progn
-       (leaf~insert-keyword ,keyword)
+       (leaf~insert-keyword ,keyword ,where ,place ',body)
 
        ,@(-map (-partial #'leaf~set-alias keyword) (-list alias))
 
@@ -1237,9 +1237,10 @@ This macro is meant to make defining a leaf keyword easy.
 
        ,@(whenlist! normalizer `(leaf~set-normalizer ,keyword ,normalizer))
 
-       (defun ,fname ,args
-         (-let [,leaf-vars ,anaphoric-vars]
-           (ignore ,@args)
+       (defun ,fname ,anaphoric-vars
+         (-let [,vars ,anaphoric-vars]
+           (ignore ,@vars)
+           (ignore ,@anaphoric-vars)
            ,@body)))))
 #+end_src
 
