@@ -1106,7 +1106,8 @@ WHERE can be the symbol `before' or `after'."
   (alet (pcase where
           ('after #'leaf-insert-list-after)
           ('before #'leaf-insert-list-before)
-          ('replace (setf (plist-get)))
+          ('replace (setf `(plist-get leaf-keywords ,where)
+                          ()))
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
@@ -1284,8 +1285,6 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:set-normalizer :before-call #'leaf:normalize-commands)
-
 (defleaf! before-call (before :hook nil t commands)
   `(void-advice-add :before ,<value>))
 #+end_src
@@ -1320,9 +1319,7 @@ paths to the load-path. This is so that package installation isn't done after
 VOID is compiled.
 
 #+begin_src emacs-lisp
-(leaf:set-normalizer :void-straight #'leaf:void-straight-normalizer)
-
-(defleaf! void-straight (replace straight ensure)
+(defleaf! void-straight (replace straight ensure straight)
   `(,@(when (and <value> (car-safe <value>))
         `((straight:install-package ',(car <value>))))
     ,@<body>))
