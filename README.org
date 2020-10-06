@@ -1113,28 +1113,6 @@ WHERE can be the symbol `before' or `after'."
           (funcall it leaf-keywords place (list keyword form)))))
 #+end_src
 
-**** defer
-:PROPERTIES:
-:ID:       a965af35-804c-460c-8787-1cf8a849dba1
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:make-defer (keyword)
-  "Add KEYWORD to `leaf-defer-keywords'."
-  (add-to-list 'leaf-defer-keywords keyword))
-#+end_src
-
-**** alias
-:PROPERTIES:
-:ID:       7e515288-9071-44dd-b09d-bfddb58c1ea9
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:set-alias (alias name)
-  "Set ALIAS to NAME."
-  (push (cons alias name) leaf-alias-keyword-alist))
-#+end_src
-
 **** defleaf!
 :PROPERTIES:
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
@@ -1152,7 +1130,7 @@ This macro is meant to make defining a leaf keyword easy.
          (fname))
     `(progn
        (alet '(,fname ,@args)
-         (leaf:insert-keyword ,keyword ',where ,place ',it))
+         (leaf:insert-keyword))
 
        ,@(--map (lambda (alias)
                   `(push (cons ,alias ,name) leaf-alias-keyword-alist))
