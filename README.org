@@ -1316,7 +1316,7 @@ evaluated.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! defer (replace leaf-defer :leaf-defer)
+(defleaf! defer (before leaf-defer :leaf-defer)
   (if (and <body> (eval (car <value>))
            (leaf-list-memq leaf-defer-keywords (leaf-plist-keys <raw>)))
       `((after! ,<name> ,@<body>))
