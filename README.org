@@ -1226,6 +1226,7 @@ This macro is meant to make defining a leaf keyword easy.
 
        (defun ,fname ,args
          (-let ()
+           (-map )
            (-map #'void-anaphoric-symbol leaf~process-variables)
            (ignore ,@args)
            ,@body)))))
