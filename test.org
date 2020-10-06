@@ -279,3 +279,13 @@
 
 #+begin_src emacs-lisp
 #+end_src
+
+** insert at list
+:PROPERTIES:
+:ID:       1f0d8547-a381-4d35-a842-841920400772
+:END:
+
+#+begin_src emacs-lisp
+(let ((plist '(:a 1 :c 2 :b 3)))
+  (leaf:insert-at plist :c '(1 2)))
+#+end_src
