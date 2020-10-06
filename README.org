@@ -1267,13 +1267,10 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:make-defer :before-call)
-
 (leaf:set-normalizer :before-call #'leaf:normalize-commands)
 
-(define-leaf-keyword! before-call (before :hook)
-  `(,(leaf:generate-load-form leaf--name nil :before leaf--value)
-    ,@leaf--body))
+(define-leaf-keyword! before-call (before :hook nil t)
+  `(void:advice-add :before ,<value>))
 #+end_src
 
 ***** after-call
@@ -1282,9 +1279,8 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! after-call (before :hook nil t)
-  `(,(leaf:generate-load-form leaf--name nil :after leaf--value)
-    ,@leaf--body))
+(defleaf! after-call (before :hook nil t)
+  `(,(leaf:generate-load-form leaf--name nil :after leaf--value)))
 #+end_src
 
 ***** idle-require
@@ -1307,12 +1303,9 @@ paths to the load-path. This is so that package installation isn't done after
 VOID is compiled.
 
 #+begin_src emacs-lisp
-(leaf:set-alias :straight :void-straight)
-(leaf:set-alias :ensure :void-straight)
-
 (leaf:set-normalizer :void-straight #'leaf:void-straight-normalizer)
 
-(define-leaf-keyword! void-straight (replace straight ensure)
+(defleaf! void-straight (replace straight ensure)
   `(,@(when (and <value> (car-safe <value>))
         `((straight:install-package ',(car <value>))))
     ,@<body>))
