@@ -1142,7 +1142,7 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
-(defvar leaf:process-variables '(raw name key keyname value body)
+(defvar leaf~process-variables '(raw name key keyname value body)
   "List of variables that leaf binds when processing a keyword.")
 #+end_src
 
@@ -1195,7 +1195,7 @@ This macro is meant to make defining a leaf keyword easy.
          (normalizer-name))
     `(progn
        ,(alet '(,fname ,@args)
-          `(leaf:insert-keyword))
+          `(leaf~insert-keyword))
 
        ,@(->> (-list alias)
               (-map #'void-keyword-intern)
