@@ -1229,7 +1229,8 @@ This macro is meant to make defining a leaf keyword easy.
           (vars (-map (-partial #'void-symbol-intern 'leaf--) leaf-vars))
           (anaphoric-vars (-map #'void-anaphoric-symbol leaf-vars)))
     `(progn
-       (leaf~insert-keyword ,keyword ,where ,place ',body)
+       ,(alet `(,fname ,@vars)
+          (leaf~insert-keyword ,keyword ',where ,place it))
 
        ,@(--map `(leaf~set-alias ,keyword ,it) (-list alias))
 
