@@ -1228,7 +1228,7 @@ evaluated.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! void-defer (before leaf-defer :leaf-defer)
+(defleaf! defer (replace leaf-defer :leaf-defer)
   (if (and <body> (eval (car <value>))
            (leaf-list-memq leaf-defer-keywords (leaf-plist-keys <raw>)))
       `((after! ,<name> ,@<body>))
@@ -1332,9 +1332,7 @@ VOID is compiled.
 
 #+begin_src emacs-lisp
 (defleaf! void-straight (replace straight ensure straight)
-  `(,@(when (and <value> (car-safe <value>))
-        `((straight:install-package ',(car <value>))))
-    ,@<body>))
+  `(straight:install-package ,<value>))
 #+end_src
 
 **** popup
