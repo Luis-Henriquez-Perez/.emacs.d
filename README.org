@@ -1075,6 +1075,18 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
   :init (leaf-keywords-init))
 #+end_src
 
+*** leaf!
+:PROPERTIES:
+:ID:       08644318-e08f-4bc5-8147-90dc2939498b
+:END:
+
+#+begin_src emacs-lisp
+(defmacro leaf! (package &rest args)
+  "Wrapper around `leaf'.
+This wrapper splits arguments that are in lists."
+  ())
+#+end_src
+
 *** defining leaf keywords
 :PROPERTIES:
 :ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
