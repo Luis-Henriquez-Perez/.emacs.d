@@ -197,7 +197,7 @@ Since there is currently no package named =void= and it is more consistent with
 emacs naming conventions to use the "-", I've decided to just use the prefix
 =void-= for naming variables.
 
-** revam leaf setup
+** *Breaking Change* replace leaf with =def-package=
 :PROPERTIES:
 :ID:       83aa2d9a-5fdf-48bb-a182-cb7af487cf02
 :END:
