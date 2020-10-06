@@ -1080,11 +1080,15 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
 :ID:       08644318-e08f-4bc5-8147-90dc2939498b
 :END:
 
+I don't want to keep dealing with list arguments.
+
 #+begin_src emacs-lisp
 (defmacro leaf! (package &rest args)
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
-  ())
+  (->> (-partition-before-pred #'keywordp args)
+       (--map (-flatten-n 1 it))
+       (--map )))
 #+end_src
 
 *** defining leaf keywords
