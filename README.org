@@ -1075,6 +1075,17 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
   :init (leaf-keywords-init))
 #+end_src
 
+*** flatten keywords
+:PROPERTIES:
+:ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
+:END:
+
+#+begin_src emacs-lisp
+(->> (-partition-before-pred #'keywordp args)
+     (--map (-flatten-n 1 it))
+     (--map (-annotate (-const (car it)) (cdr it))))
+#+end_src
+
 *** leaf!
 :PROPERTIES:
 :ID:       08644318-e08f-4bc5-8147-90dc2939498b
