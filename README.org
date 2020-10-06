@@ -1185,7 +1185,7 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 
 #+begin_src emacs-lisp
 (defun leaf~set-alias (keyword alias)
-  "Set an alias for KEYWORD."
+  "Set an ALIAS for KEYWORD."
   (push (cons keyword alias) leaf-alias-keyword-alist))
 #+end_src
 
@@ -1195,9 +1195,9 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~set-defer ()
-  "Set keyword as defer keyword."
-  (add-to-list '))
+(defun leaf~set-defer (keyword)
+  "Set KEYWORD as defer keyword."
+  (add-to-list 'leaf-defer-keywords keyword))
 #+end_src
 
 **** defleaf!
@@ -1219,9 +1219,8 @@ This macro is meant to make defining a leaf keyword easy.
        ,(alet '(,fname ,@args)
           `(leaf~insert-keyword))
 
-       ,@(->> (-list alias)
-              (-map #'void-keyword-intern)
-              (--map `(push (cons ,it ,name) leaf-alias-keyword-alist)))
+       ,@(-map (-partial #'leaf~set-alias keyword)
+               (-list alias))
 
        ,@(whenlist! defer
            `(leaf~set-defer ,keyword))
