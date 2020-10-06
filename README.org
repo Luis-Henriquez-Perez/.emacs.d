@@ -1313,7 +1313,7 @@ Leaf keywords do not.
 These keywords are meant to improve on the deferred loading options already
 provided by leaf. They are inspired from DOOM emacs.
 
-***** before-call
+***** TODO before-call
 :PROPERTIES:
 :ID:       5378035c-206b-4479-8c60-4d57853e5754
 :END:
@@ -1327,7 +1327,7 @@ provided by leaf. They are inspired from DOOM emacs.
               (require ',)))))
 #+end_src
 
-***** after-call
+***** TODO after-call
 :PROPERTIES:
 :ID:       36389857-c070-4221-8f76-b6b0da257b34
 :END:
