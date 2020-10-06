@@ -1107,7 +1107,7 @@ WHERE can be the symbol `before' or `after'."
   (alet (pcase where
           ('after #'leaf-insert-list-after)
           ('before #'leaf-insert-list-before)
-          ('replace)
+          ('replace (setf (plist-get)))
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
@@ -1129,11 +1129,10 @@ This macro is meant to make defining a leaf keyword easy.
          (args )
          (fname))
     `(progn
-       (alet '(,fname ,@args)
-         (leaf:insert-keyword))
+       ,(alet '(,fname ,@args)
+          `(leaf:insert-keyword))
 
-       ,@(--map (lambda (alias)
-                  `(push (cons ,alias ,name) leaf-alias-keyword-alist))
+       ,@(--map `(push (cons ,it ,name) leaf-alias-keyword-alist)
                 (-list alias))
 
        ,@(whenlist! defer
@@ -1146,32 +1145,6 @@ This macro is meant to make defining a leaf keyword easy.
          (-let (())
            (ignore ,@leaf:process-variables)
            ,@body)))))
-#+end_src
-
-**** define-leaf-keyword!
-:PROPERTIES:
-:ID:       db05b51b-bbe4-41a4-ae45-1e72aba57ae4
-:END:
-
-#+begin_src emacs-lisp
-(defmacro define-leaf-keyword! (name args &rest body)
-  "Define a leaf keyword."
-  (declare (indent defun))
-  (-let* ((keyword (intern (concat ":" (symbol-name name))))
-          ((where place) args)
-          (docstring (when (stringp body) (pop body)))
-          (actions (--unfold (when (keywordp (car it))
-                               (cons (-take 2 it)
-                                     (setq body (-drop 2 it))))
-                             body))
-          (apply-fn (intern (concat "leaf::apply-" (symbol-name name))))
-          (form `(,apply-fn ,@leaf:process-variables)))
-    `(progn
-       (leaf:insert-keyword ,keyword ',where ,place ',form)
-       (defun ,apply-fn ,leaf:process-variables
-         ,docstring
-         (ignore ,@leaf:process-variables)
-         ,@body))))
 #+end_src
 
 **** normalizer
@@ -1225,8 +1198,6 @@ evaluated.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:set-alias :leaf-defer :void-leaf-defer)
-
 (defleaf! void-defer (before leaf-defer :leaf-defer)
   (if (and <body> (eval (car <value>))
            (leaf-list-memq leaf-defer-keywords (leaf-plist-keys <raw>)))
