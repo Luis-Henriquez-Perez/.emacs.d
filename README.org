@@ -566,6 +566,17 @@ Bare symbols in BINDINGS are equivalent to:
                         body)))))
 #+end_src
 
+**** when!
+:PROPERTIES:
+:ID:       60161d04-05f6-4772-ac9e-3d8c94a75b8f
+:END:
+
+#+begin_src emacs-lisp
+(defmacro whenlist! (condition &rest body)
+  (declare (indent 1))
+  `(when ,condition (list (progn ,@body))))
+#+end_src
+
 *** hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
@@ -1096,6 +1107,7 @@ WHERE can be the symbol `before' or `after'."
   (alet (pcase where
           ('after #'leaf-insert-list-after)
           ('before #'leaf-insert-list-before)
+          ('replace)
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
@@ -1123,20 +1135,37 @@ WHERE can be the symbol `before' or `after'."
   (push (cons alias name) leaf-alias-keyword-alist))
 #+end_src
 
-**** defleaf
+**** defleaf!
 :PROPERTIES:
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
 :END:
+
+This macro is meant to make defining a leaf keyword easy.
 
 #+begin_src emacs-lisp
 (defmacro defleaf! (name args &rest body)
   ""
   (declare (indent defun))
-  (-let (((where keyword alias defer normalizer) args))
+  (-let (((where keyword alias defer normalizer) args)
+         (args (leaf))
+         (fname))
     `(progn
-       ,(when alias )
-       (leaf:insert-keyword)
-       (defun leaf:apply-function ()))))
+       (alet (,fname ,@args)
+         (leaf:insert-keyword ,keyword ',where ,place ',it))
+
+       ,@(--map (lambda (alias) `(leaf:set-alias ,alias ,name))
+                (-list alias))
+
+       ,@(whenlist! defer
+           (leaf:set-defer))
+
+       ,@(whenlist! normalizer
+           (leaf:set-normalizer ,keyword ,normalizer))
+
+       (defun ,fname ()
+         (-let (())
+           (ignore ,@leaf:process-variables)
+           ,@body)))))
 #+end_src
 
 **** define-leaf-keyword!
