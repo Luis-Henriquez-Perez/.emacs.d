@@ -1081,9 +1081,11 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
 :END:
 
 #+begin_src emacs-lisp
-(->> (-partition-before-pred #'keywordp args)
-     (--map (-flatten-n 1 it))
-     (--map (-annotate (-const (car it)) (cdr it))))
+(defun leaf:flatten-keywords ()
+  "Flatten keywords."
+  (->> (-partition-before-pred #'keywordp args)
+       (--map (-flatten-n 1 it))
+       (--map (-annotate (-const (car it)) (cdr it)))))
 #+end_src
 
 *** leaf!
