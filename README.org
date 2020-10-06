@@ -1183,10 +1183,16 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 :ID:       28292e09-788f-41a4-a60c-ee7f3f84116c
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 **** set defer
 :PROPERTIES:
 :ID:       26724e79-f38f-4677-b412-5f5d0942af18
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 **** defleaf!
 :PROPERTIES:
