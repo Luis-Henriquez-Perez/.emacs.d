@@ -1261,27 +1261,6 @@ Leaf keywords do not.
 These keywords are meant to improve on the deferred loading options already
 provided by leaf. They are inspired from DOOM emacs.
 
-***** leaf-generate-load-fn
-:PROPERTIES:
-:ID:       41c05e4a-a0f1-45e7-bed6-7de7a439faa1
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:generate-load-form (package &optional hooks advice-place advices)
-  "Return form that evals into function that loads the package."
-  (let ((load-fn (intern (concat "leaf:load-" (symbol-name package)))))
-    `(progn
-       (defun ,load-fn (&rest _)
-         (void-log "Loading %S..." ',package)
-         (unless (require ',package nil t)
-           (message "Error loading %S" ',package))
-         ,@(mapcar (lambda (hook) `(remove-hook ',hook #',load-fn)) hooks)
-         ,@(mapcar (lambda (advice) `(advice-remove #',advice #',load-fn)) advices)
-         (fmakunbound #',load-fn))
-       ,@(mapcar (lambda (hook) `(add-hook ',hook #',load-fn)) hooks)
-       ,@(mapcar (lambda (advice) `(advice-add #',advice ,advice-place #',load-fn)) advices))))
-#+end_src
-
 ***** before-call
 :PROPERTIES:
 :ID:       5378035c-206b-4479-8c60-4d57853e5754
@@ -1312,13 +1291,13 @@ provided by leaf. They are inspired from DOOM emacs.
     ,@leaf--body))
 #+end_src
 
-***** defer-incrementally
+***** idle-require
 :PROPERTIES:
 :ID:       c7ab7604-6e7c-42d1-b956-c58854948e8f
 :END:
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! idle-require (before :before-call)
+(define-leaf-keyword! idle-require (before :before-call nil t)
   `((-each ',leaf--value #'idle-require)
     ,@leaf--body))
 #+end_src
