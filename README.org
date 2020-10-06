@@ -1282,11 +1282,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:make-defer :after-call)
-
-(leaf:set-normalizer :after-call #'leaf:normalize-commands)
-
-(define-leaf-keyword! after-call (before :hook)
+(define-leaf-keyword! after-call (before :hook nil t)
   `(,(leaf:generate-load-form leaf--name nil :after leaf--value)
     ,@leaf--body))
 #+end_src
@@ -1297,9 +1293,8 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! idle-require (before :before-call nil t)
-  `((-each ',leaf--value #'idle-require)
-    ,@leaf--body))
+(defleaf! idle-require (before before-call nil t)
+  `(-each ',<value> #'idle-require))
 #+end_src
 
 **** straight keyword
