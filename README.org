@@ -1244,7 +1244,12 @@ evaluated.
 
 #+end_src
 
-*** use =after!= in leaf-defer
+*** custom leaf keywords
+:PROPERTIES:
+:ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
+:END:
+
+**** use =after!= in leaf-defer
 :PROPERTIES:
 :ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
 :END:
@@ -1256,11 +1261,6 @@ evaluated.
       `((after! ,<name> ,@<body>))
     `(,@<body>)))
 #+end_src
-
-*** custom leaf keywords
-:PROPERTIES:
-:ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
-:END:
 
 **** set keywords
 :PROPERTIES:
