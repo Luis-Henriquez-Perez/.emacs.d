@@ -1211,10 +1211,10 @@ This macro is meant to make defining a leaf keyword easy.
 (defmacro defleaf! (name args &rest body)
   "Define a leaf keyword."
   (declare (indent defun))
-  (-let (((where place alias defer normalizer) args)
-         (keyword (void-keyword-intern name))
-         (fname)
-         (normalizer-name))
+  (-let* (((where place alias defer normalizer) args)
+          (keyword (void-keyword-intern name))
+          (fname (void-symbol-intern 'leaf~apply- keyword))
+          (normalizer-name))
     `(progn
        (leaf~insert-keyword ,keyword)
 
