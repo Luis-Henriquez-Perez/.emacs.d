@@ -1285,7 +1285,7 @@ provided by leaf. They are inspired from DOOM emacs.
 (leaf:set-normalizer :before-call #'leaf:normalize-commands)
 
 (defleaf! before-call (before :hook nil t)
-  `(void:advice-add :before ,<value>))
+  `(void-advice-add :before ,<value>))
 #+end_src
 
 ***** after-call
@@ -1295,7 +1295,7 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! after-call (before :hook nil t)
-  `())
+  `(void-advice-add ()))
 #+end_src
 
 ***** idle-require
