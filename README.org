@@ -1338,7 +1338,8 @@ provided by leaf. They are inspired from DOOM emacs.
     `(progn (void-advice-add ,<value> :before )
             (defadvice! ,advice (after)
               "Load package."
-              (require ',)))))#+end_src
+              (require ',)))))
+#+end_src
 
 ***** idle-require
 :PROPERTIES:
