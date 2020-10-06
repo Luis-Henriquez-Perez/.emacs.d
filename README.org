@@ -1153,7 +1153,7 @@ recall the underlying leaf data structure.
 
 #+begin_src emacs-lisp
 (defun leaf:insert-at (lst alem targetlst)
-  "Insert KEYWORD at PLACE."
+  "Insert TARGETLST at ALEM in LIST."
   (setf (plist-get alem list) targetlst))
 #+end_src
 
