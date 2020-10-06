@@ -1322,7 +1322,7 @@ provided by leaf. They are inspired from DOOM emacs.
 (defleaf! before-call (before :hook nil t commands)
   (let ((advice (void-symbol-intern 'load- )))
     `(progn (void-advice-add ,<value> :before )
-            (defadvice! ,advice ()
+            (defadvice! ,advice (before)
               "Load package."
               (require ',)))))
 #+end_src
