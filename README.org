@@ -1075,7 +1075,7 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
   :init (leaf-keywords-init))
 #+end_src
 
-*** flatten keywords
+*** TODO flatten keywords
 :PROPERTIES:
 :ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
 :END:
@@ -1126,7 +1126,7 @@ recall the underlying leaf data structure.
   "List of variables that leaf binds when processing a keyword.")
 #+end_src
 
-**** leaf insert keyword
+**** TODO leaf insert keyword
 :PROPERTIES:
 :ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
 :END:
