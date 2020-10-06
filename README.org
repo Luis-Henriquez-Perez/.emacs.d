@@ -1226,7 +1226,7 @@ This macro is meant to make defining a leaf keyword easy.
            `(leaf~set-defer ,keyword))
 
        ,@(whenlist! normalizer
-           (leaf:set-normalizer ,keyword ,normalizer))
+           `(leaf~set-normalizer ,keyword ,normalizer))
 
        (defun ,fname ,args
          (-let [,args ,(--map)]
