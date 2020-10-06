@@ -1111,6 +1111,8 @@ recall the underlying leaf data structure.
 :ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
 :END:
 
+This function handle inserting a leaf keyword.
+
 #+begin_src emacs-lisp
 (defun leaf:insert-keyword (keyword where place form)
   "Insert KEYWORD at PLACE.
