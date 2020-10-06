@@ -1306,7 +1306,7 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! idle-require (before before-call nil t)
-  `(idle-require <value>))
+  `(idle-require ,<value>))
 #+end_src
 
 **** straight keyword
