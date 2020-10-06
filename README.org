@@ -1161,8 +1161,7 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
   (alet (pcase where
           ('after #'leaf-insert-list-after)
           ('before #'leaf-insert-list-before)
-          ('at (setf `(plist-get leaf-keywords ,where)
-                     ()))
+          ('at )
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
