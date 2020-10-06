@@ -1216,8 +1216,8 @@ This macro is meant to make defining a leaf keyword easy.
          (fname)
          (normalizer-name))
     `(progn
-       ,(alet '(,fname ,@args)
-          `(leaf~insert-keyword))
+
+       (leaf~insert-keyword ,keyword)
 
        ,@(-map (-partial #'leaf~set-alias keyword)
                (-list alias))
