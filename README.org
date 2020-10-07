@@ -1138,48 +1138,10 @@ This wrapper splits arguments that are in lists."
      ,@))
 #+end_src
 
-*** defining leaf keywords
+*** inserting keywords
 :PROPERTIES:
-:ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
+:ID:       8cf37cd2-3a0f-4d43-a902-df6dc62ad1bb
 :END:
-
-Leaf is very low level. It does not provide a function or macro for fast new
-keyword creation. Whenever you want to create a new keyword you have to
-recall the underlying leaf data structure.
-
-**** leaf variables
-:PROPERTIES:
-:ID:       40d6a763-279b-4a18-9761-93754472b1a7
-:END:
-
-#+begin_src emacs-lisp
-(defvar leaf~process-variables '(raw name key keyname value body)
-  "List of variables that leaf binds when processing a keyword.")
-#+end_src
-
-**** insert at
-:PROPERTIES:
-:ID:       c87aaf35-af3e-41d1-af07-07e77742ec97
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~insert-at (lst alem targetlst)
-  "Insert TARGETLST at ALEM in LIST."
-  (setf (plist-get lst alem) targetlst))
-#+end_src
-
-**** insert after
-:PROPERTIES:
-:ID:       7ea788d9-83d0-4f44-80b4-f2cc0fd782d3
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~insert-after (list elem targetlist)
-  (let ((index (-elem-index elem list))
-        (placeholder (gensym "placeholder")))
-    (-insert-at (+ 2 index) placeholder)
-    (--splice-list (eq it placeholder) (list elem targetlist))))
-#+end_src
 
 **** insert keyword
 :PROPERTIES:
@@ -1200,6 +1162,49 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
           (_ (error "where is %S but expected `before' or `after'" where)))
     (setq leaf-keywords
           (funcall it leaf-keywords place (list keyword form)))))
+#+end_src
+
+**** insert after
+:PROPERTIES:
+:ID:       7ea788d9-83d0-4f44-80b4-f2cc0fd782d3
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf~insert-after (list elem targetlist)
+  (let ((index (-elem-index elem list))
+        (placeholder (gensym "placeholder")))
+    (-insert-at (+ 2 index) placeholder)
+    (--splice-list (eq it placeholder) (list elem targetlist))))
+#+end_src
+
+**** insert at
+:PROPERTIES:
+:ID:       c87aaf35-af3e-41d1-af07-07e77742ec97
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf~insert-at (lst alem targetlst)
+  "Insert TARGETLST at ALEM in LIST."
+  (setf (plist-get lst alem) targetlst))
+#+end_src
+
+*** defining leaf keywords
+:PROPERTIES:
+:ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
+:END:
+
+Leaf is very low level. It does not provide a function or macro for fast new
+keyword creation. Whenever you want to create a new keyword you have to
+recall the underlying leaf data structure.
+
+**** leaf variables
+:PROPERTIES:
+:ID:       40d6a763-279b-4a18-9761-93754472b1a7
+:END:
+
+#+begin_src emacs-lisp
+(defvar leaf~process-variables '(raw name key keyname value body)
+  "List of variables that leaf binds when processing a keyword.")
 #+end_src
 
 **** set alias
