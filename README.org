@@ -1213,24 +1213,6 @@ evaluated.
 :ID:       8cf37cd2-3a0f-4d43-a902-df6dc62ad1bb
 :END:
 
-**** insert keyword
-:PROPERTIES:
-:ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
-:END:
-
-This function handle inserting a leaf keyword.
-
-#+begin_src emacs-lisp
-(defun leaf~insert-keyword (where place key value)
-  "Insert KEYWORD at PLACE.
-WHERE can be the symbol `before', `after' or `at'. When WHERE is before KEYWORD
-is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE."
-  (cl-assert (member where '(at before after)))
-
-  (alet (void-symbol-intern 'leaf~insert- where)
-    (setq leaf-keywords (funcall it leaf-keywords key value))))
-#+end_src
-
 **** insert before
 :PROPERTIES:
 :ID:       a6eac0bc-6465-46c6-b4e0-b913348c9a77
@@ -1266,6 +1248,24 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
   (let ((a (-elem-index elem list))
         (b (+ a 1)))
     ))
+#+end_src
+
+**** insert keyword
+:PROPERTIES:
+:ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
+:END:
+
+This function handle inserting a leaf keyword.
+
+#+begin_src emacs-lisp
+(defun leaf~insert-keyword (where place key value)
+  "Insert KEYWORD at PLACE.
+WHERE can be the symbol `before', `after' or `at'. When WHERE is before KEYWORD
+is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE."
+  (cl-assert (member where '(at before after)))
+
+  (alet (void-symbol-intern 'leaf~insert- where)
+    (setq leaf-keywords (funcall it leaf-keywords key value))))
 #+end_src
 
 *** defining leaf keywords
