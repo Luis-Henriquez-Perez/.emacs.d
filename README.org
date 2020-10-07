@@ -1240,13 +1240,13 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~insert-after (list elem targetlist)
-  (let ((place (+ 2 (-elem-index elem list))))
-    ;; (cl-assert (not (keywordp (elt list (1- place)))))
-    (--each targetlist
-      (setq list (-insert-at place it list))
+(defun leaf~insert-after (plist key targetlist)
+  "Insert TARGETLIST."
+  (let ((place (+ 2 (-elem-index key plist))))
+    (--each targetplist
+      (setq plist (-insert-at place it plist))
       (++ place))
-    list))
+    plist))
 #+end_src
 
 **** insert at
