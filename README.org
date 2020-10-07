@@ -1193,7 +1193,7 @@ extremely easy to add key-value pairs to the plist in the right location.
 #+begin_src emacs-lisp
 (defun leaf~insert-at (plist place key value)
   "Insert TARGETLST at ALEM in LIST."
-  (let ((i (-elem-index elem list))
+  (let ((i (-elem-index place list))
         (j (+ i 1)))
     (->> (-replace-at i key plist)
          (-replace-at r value plist))))
