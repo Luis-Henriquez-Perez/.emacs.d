@@ -1339,6 +1339,7 @@ Leaf keywords do not.
 
 #+begin_src emacs-lisp
 (leaf:set-normalizer :setq #'leaf:normalize-setq)
+(defleaf! vsetq ())
 #+end_src
 
 ***** pre-setq
