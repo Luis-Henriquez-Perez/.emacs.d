@@ -1195,8 +1195,9 @@ extremely easy to add key-value pairs to the plist in the right location.
   "Insert TARGETLST at ALEM in LIST."
   (let* ((i (-elem-index place plist))
          (j (+ i 1)))
-    (->> (-replace-at i key plist)
-         (-replace-at j value plist))))
+    (->> plist
+         (-replace-at i key)
+         (-replace-at j value))))
 #+end_src
 
 **** insert keyword
