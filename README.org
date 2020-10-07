@@ -5237,6 +5237,10 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
+(defhook! enable-elisp-pair (emacs-lisp-mode)
+  "Enable pairing of `emacs-lisp-mode' delimiters."
+  (sp-local-pair 'emacs-lisp-mode "<" ">")
+  (sp-local-pair 'emacs-lisp-mode "`" "'"))
 #+end_src
 
 *** lispyville
