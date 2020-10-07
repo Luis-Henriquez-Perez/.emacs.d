@@ -1225,15 +1225,10 @@ This function handle inserting a leaf keyword.
   "Insert KEYWORD at PLACE.
 WHERE can be the symbol `before', `after' or `at'. When WHERE is before KEYWORD
 is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE."
+  (cl-assert (member where '(at before after)))
+
   (alet (void-symbol-intern 'leaf~insert- where)
-    (funcall it leaf-keywords it key form))
-  (alet (pcase where
-          ('after #'leaf~insert-after)
-          ('before #'leaf-insert-list-before)
-          ('at #'leaf:insert-list-at)
-          (_ (error "where is %S but expected `before' or `after'" where)))
-    (setq leaf-keywords
-          (funcall it leaf-keywords place (list keyword form)))))
+    (setq leaf-keywords (funcall it leaf-keywords key value))))
 #+end_src
 
 **** insert before
