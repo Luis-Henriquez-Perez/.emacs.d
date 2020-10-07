@@ -1168,7 +1168,7 @@ recall the underlying leaf data structure.
   (setf (plist-get lst alem) targetlst))
 #+end_src
 
-**** insert before
+**** insert after
 :PROPERTIES:
 :ID:       7ea788d9-83d0-4f44-80b4-f2cc0fd782d3
 :END:
@@ -1177,7 +1177,7 @@ recall the underlying leaf data structure.
 (defun leaf~insert-after (list elem targetlist)
   (let ((index (-elem-index elem list))
         (placeholder (gensym "placeholder")))
-    (-insert-at (+ 2 it) placeholder)
+    (-insert-at (+ 2 index) placeholder)
     (--splice-list (eq it placeholder) (list elem targetlist))))
 #+end_src
 
