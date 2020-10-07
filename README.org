@@ -1221,10 +1221,12 @@ evaluated.
 This function handle inserting a leaf keyword.
 
 #+begin_src emacs-lisp
-(defun leaf~insert-keyword (where key value)
+(defun leaf~insert-keyword (where place key value)
   "Insert KEYWORD at PLACE.
 WHERE can be the symbol `before', `after' or `at'. When WHERE is before KEYWORD
 is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE."
+  (alet (void-symbol-intern 'leaf~insert- where)
+    (funcall it leaf-keywords it key form))
   (alet (pcase where
           ('after #'leaf~insert-after)
           ('before #'leaf-insert-list-before)
