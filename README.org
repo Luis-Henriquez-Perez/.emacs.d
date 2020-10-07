@@ -5225,9 +5225,10 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :END:
 
 #+begin_src emacs-lisp
-(defhook! enable-markup-completion (org-mode)
+(defhook! enable-markup-delimiter-pairing (org-mode-hook)
   ""
-  (sp-local-pair 'org-mode))
+  (sp-local-pair 'org-mode "=" "=")
+  (sp-local-pair 'org-mode ))
 #+end_src
 
 *** lispyville
