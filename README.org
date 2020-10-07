@@ -1250,8 +1250,7 @@ one value.
 (defmacro leaf! (package &rest args)
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
-  `(leaf ,package
-     ,@))
+  `(leaf ,package ,@(leaf~flatten-keywords args)))
 #+end_src
 
 *** defining leaf keywords
