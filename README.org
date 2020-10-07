@@ -1196,7 +1196,7 @@ extremely easy to add key-value pairs to the plist in the right location.
   (let* ((i (-elem-index place plist))
          (j (+ i 1)))
     (->> (-replace-at i key plist)
-         (-replace-at r value plist))))
+         (-replace-at j value plist))))
 #+end_src
 
 **** insert keyword
