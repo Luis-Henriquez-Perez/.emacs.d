@@ -1083,6 +1083,15 @@ SYM is a symbol that stores a list."
 
 Like =use-package=, leaf is a macro that fascilitates package configuration.
 
+*** useful aliases
+:PROPERTIES:
+:ID:       e15e3361-32a5-460c-9da5-10512c7a89ff
+:END:
+
+#+begin_src emacs-lisp
+(defalias '++ 'cl-incf)
+#+end_src
+
 *** bootstrap
 :PROPERTIES:
 :ID:       74028d3c-9500-4b2c-8425-a36dd6979de4
