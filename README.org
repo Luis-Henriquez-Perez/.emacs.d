@@ -1290,7 +1290,7 @@ This macro is meant to make defining a leaf keyword easy.
           (vars (-map (-partial #'void-symbol-intern 'leaf--) leaf-vars))
           (anaphoric-vars (-map #'void-anaphoric-symbol leaf-vars)))
     `(progn
-       (leaf~insert-keyword )
+       (leaf~insert-keyword ,where)
 
        ,(alet `(,fname ,@vars)
           `(leaf~insert-keyword ,keyword ',where ,place ',it))
@@ -1298,8 +1298,6 @@ This macro is meant to make defining a leaf keyword easy.
        ,@(--map `(leaf~set-alias ,keyword ,it) (-list alias))
 
        ,@(whenlist! defer `(leaf~set-defer ,keyword))
-
-       ,@(whenlist! normalizer `(leaf~set-normalizer ,keyword ,normalizer))
 
        (defun ,fname ,anaphoric-vars
          (-let [,vars ,anaphoric-vars]
@@ -1338,8 +1336,8 @@ Leaf keywords do not.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:set-normalizer :setq #'leaf:normalize-setq)
-(defleaf! vsetq ())
+(defleaf! vsetq (before setq (var . value))
+  `(setq ,var ,value))
 #+end_src
 
 ***** pre-setq
