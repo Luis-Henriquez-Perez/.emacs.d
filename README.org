@@ -1217,7 +1217,7 @@ Unlike [[use-package]], leaf does not have a separate variable to specify the or
 in which keys should be processed. Rather, keys are processed in the order they
 are in [[helpvar:leaf-keywords][leaf-keywords]]. Therefore, it's important to be able to add keywords in
 the correct place in the list. The purpose of these functions is to make it
-extremely easy to add key value pairs to the plist in the right location.
+extremely easy to add key-value pairs to the plist in the right location.
 
 **** insert before
 :PROPERTIES:
