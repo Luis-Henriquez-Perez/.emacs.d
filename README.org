@@ -5222,6 +5222,8 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :ID:       c89cb9d1-b6ad-49dc-93ff-b70bc8511e87
 :END:
 
+[[info:org#Emphasis and Monospace][info:org#Emphasis and Monospace]]
+
 #+begin_src emacs-lisp
 (defhook! enable-auto-markup-pairing (org-mode-hook)
   "Enable auto-pairing with org mode markup delimiters."
