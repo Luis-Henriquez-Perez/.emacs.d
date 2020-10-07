@@ -1106,36 +1106,92 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
   :init (leaf-keywords-init))
 #+end_src
 
-*** TODO flatten keywords
+*** keyword properties
 :PROPERTIES:
-:ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
+:ID:       98341d17-2026-4364-807b-ab986595bd27
+:END:
+
+**** normalizer
+:PROPERTIES:
+:ID:       cc4b1777-9ee5-42bf-a268-c43afcd3fc20
+:END:
+
+***** add normalizer
+:PROPERTIES:
+:ID:       2abfe05c-010b-467f-aab8-2949af3f7b64
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf:flatten-keywords (keywords)
-  "Flatten keywords."
-  (->> (-partition-before-pred #'keywordp args)
-       (--map (-flatten-n 1 it))
-       (--map (-annotate (-const (car it)) (cdr it)))))
+(defun leaf~set-normalizer (keyword normalizer)
+  "Add KEYWORD."
+  (push `((or (memq leaf--key '(,keyword))
+              (eq (alist-get leaf--key leaf-alias-keyword-alist) ,keyword))
+          (funcall #',normalizer leaf--value))
+        leaf-normalize))
 #+end_src
 
-*** leaf!
+***** normalizers
 :PROPERTIES:
-:ID:       08644318-e08f-4bc5-8147-90dc2939498b
+:ID:       72c23168-98dd-4a74-85b8-c0e313aa96df
 :END:
 
-When I am writing leaf keywords I don't want to think in terms of lists. I want
-to write leaf customizations like ~(do-something <value>)~ as opposed to ~(-map
-#'do-something <value>)~. With that idea in mind, this wrapper expands leaf
-keywords that contain multiple values into multiple keywords that only contain
-one value.
+****** normalizers
+:PROPERTIES:
+:ID:       bcf96e13-f3bc-4b23-832f-f94b31dd48a5
+:END:
+
+leaf's setq does not correctly handle setting variables to forms that need to be
+evaluated.
 
 #+begin_src emacs-lisp
-(defmacro leaf! (package &rest args)
-  "Wrapper around `leaf'.
-This wrapper splits arguments that are in lists."
-  `(leaf ,package
-     ,@))
+(defun leaf:normalize-setq (leaf--value)
+  (-map (-lambda ((var . value)) (cons var value))
+        leaf--value))
+
+(defun leaf:normalize-commands (leaf--value)
+  (-map (lambda (elm)
+          (cond ((memq leaf--key '(:after))
+                 (if (eq elm t) leaf--name elm))
+                (t elm)))
+        (-uniq (delq nil (leaf-flatten leaf--value)))))
+#+end_src
+
+***** another normalizer
+:PROPERTIES:
+:ID:       c7fd7beb-b85a-4f60-abeb-794ed33988f6
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf:void-straight-normalizer (leaf--value)
+  (cond ((eq t (car leaf--value))
+         (list leaf--name))
+        ((eq nil (car leaf--value))
+         nil)
+        ((listp (car-safe leaf--value))
+         (list (cons leaf--name (car leaf--value))))))
+
+#+end_src
+
+**** set defer
+:PROPERTIES:
+:ID:       26724e79-f38f-4677-b412-5f5d0942af18
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf~set-defer (keyword)
+  "Set KEYWORD as defer keyword."
+  (add-to-list 'leaf-defer-keywords keyword))
+#+end_src
+
+**** set alias
+:PROPERTIES:
+:ID:       28292e09-788f-41a4-a60c-ee7f3f84116c
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf~set-alias (keyword alias)
+  "Set an ALIAS for KEYWORD."
+  (push (cons keyword alias) leaf-alias-keyword-alist))
 #+end_src
 
 *** inserting keywords
@@ -1197,6 +1253,38 @@ Leaf is very low level. It does not provide a function or macro for fast new
 keyword creation. Whenever you want to create a new keyword you have to
 recall the underlying leaf data structure.
 
+**** leaf!
+:PROPERTIES:
+:ID:       08644318-e08f-4bc5-8147-90dc2939498b
+:END:
+
+When I am writing leaf keywords I don't want to think in terms of lists. I want
+to write leaf customizations like ~(do-something <value>)~ as opposed to ~(-map
+#'do-something <value>)~. With that idea in mind, this wrapper expands leaf
+keywords that contain multiple values into multiple keywords that only contain
+one value.
+
+#+begin_src emacs-lisp
+(defmacro leaf! (package &rest args)
+  "Wrapper around `leaf'.
+This wrapper splits arguments that are in lists."
+  `(leaf ,package
+     ,@))
+#+end_src
+
+**** TODO flatten keywords
+:PROPERTIES:
+:ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf:flatten-keywords (keywords)
+  "Flatten keywords."
+  (->> (-partition-before-pred #'keywordp args)
+       (--map (-flatten-n 1 it))
+       (--map (-annotate (-const (car it)) (cdr it)))))
+#+end_src
+
 **** leaf variables
 :PROPERTIES:
 :ID:       40d6a763-279b-4a18-9761-93754472b1a7
@@ -1205,28 +1293,6 @@ recall the underlying leaf data structure.
 #+begin_src emacs-lisp
 (defvar leaf~process-variables '(raw name key keyname value body)
   "List of variables that leaf binds when processing a keyword.")
-#+end_src
-
-**** set alias
-:PROPERTIES:
-:ID:       28292e09-788f-41a4-a60c-ee7f3f84116c
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~set-alias (keyword alias)
-  "Set an ALIAS for KEYWORD."
-  (push (cons keyword alias) leaf-alias-keyword-alist))
-#+end_src
-
-**** set defer
-:PROPERTIES:
-:ID:       26724e79-f38f-4677-b412-5f5d0942af18
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~set-defer (keyword)
-  "Set KEYWORD as defer keyword."
-  (add-to-list 'leaf-defer-keywords keyword))
 #+end_src
 
 **** defleaf!
@@ -1260,67 +1326,6 @@ This macro is meant to make defining a leaf keyword easy.
          (-let [,vars ,anaphoric-vars]
            (ignore ,@vars ,@anaphoric-vars)
            ,@body)))))
-#+end_src
-
-**** normalizer
-:PROPERTIES:
-:ID:       cc4b1777-9ee5-42bf-a268-c43afcd3fc20
-:END:
-
-***** add normalizer
-:PROPERTIES:
-:ID:       2abfe05c-010b-467f-aab8-2949af3f7b64
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~set-normalizer (keyword normalizer)
-  "Add KEYWORD."
-  (push `((or (memq leaf--key '(,keyword))
-              (eq (alist-get leaf--key leaf-alias-keyword-alist) ,keyword))
-          (funcall #',normalizer leaf--value))
-        leaf-normalize))
-#+end_src
-
-***** normalizers
-:PROPERTIES:
-:ID:       72c23168-98dd-4a74-85b8-c0e313aa96df
-:END:
-
-****** normalizers
-:PROPERTIES:
-:ID:       bcf96e13-f3bc-4b23-832f-f94b31dd48a5
-:END:
-
-leaf's setq does not correctly handle setting variables to forms that need to be
-evaluated.
-
-#+begin_src emacs-lisp
-(defun leaf:normalize-setq (leaf--value)
-  (-map (-lambda ((var . value)) (cons var value))
-        leaf--value))
-
-(defun leaf:normalize-commands (leaf--value)
-  (-map (lambda (elm)
-          (cond ((memq leaf--key '(:after))
-                 (if (eq elm t) leaf--name elm))
-                (t elm)))
-        (-uniq (delq nil (leaf-flatten leaf--value)))))
-#+end_src
-
-***** another normalizer
-:PROPERTIES:
-:ID:       c7fd7beb-b85a-4f60-abeb-794ed33988f6
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:void-straight-normalizer (leaf--value)
-  (cond ((eq t (car leaf--value))
-         (list leaf--name))
-        ((eq nil (car leaf--value))
-         nil)
-        ((listp (car-safe leaf--value))
-         (list (cons leaf--name (car leaf--value))))))
-
 #+end_src
 
 **** custom leaf keywords
