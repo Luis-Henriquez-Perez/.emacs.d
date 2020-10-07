@@ -268,6 +268,12 @@
 :ID:       d38391a2-d1c5-4d73-993e-4058763cc3c3
 :END:
 
+#+begin_src emacs-lisp
+(ert-deftest leaf~insert-after ()
+  (let ((plist '(:a 1 :b 2)))
+    (leaf~insert-after plist :b '(4))))
+#+end_src
+
 ** leaf:insert-keyword
 :PROPERTIES:
 :ID:       63976e43-dcb9-4b06-9095-1e31b6c75a88
