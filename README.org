@@ -1181,8 +1181,8 @@ extremely easy to add key-value pairs to the plist in the right location.
   "Insert TARGETLIST."
   (alet (it (+ 2 (-elem-index place plist)))
     (->> plist
-         (-insert-at it key)
-         (-insert-at (1+ it) value))))
+         (-insert-at it value)
+         (-insert-at it key))))
 #+end_src
 
 **** insert at
