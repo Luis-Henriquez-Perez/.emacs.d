@@ -1130,57 +1130,6 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
 :ID:       cc4b1777-9ee5-42bf-a268-c43afcd3fc20
 :END:
 
-***** add normalizer
-:PROPERTIES:
-:ID:       2abfe05c-010b-467f-aab8-2949af3f7b64
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~set-normalizer (keyword normalizer)
-  "Add KEYWORD."
-  (push `((or (memq leaf--key '(,keyword))
-              (eq (alist-get leaf--key leaf-alias-keyword-alist) ,keyword))
-          (funcall #',normalizer leaf--value))
-        leaf-normalize))
-#+end_src
-
-***** normalizers
-:PROPERTIES:
-:ID:       bcf96e13-f3bc-4b23-832f-f94b31dd48a5
-:END:
-
-leaf's setq does not correctly handle setting variables to forms that need to be
-evaluated.
-
-#+begin_src emacs-lisp
-(defun leaf:normalize-setq (leaf--value)
-  (-map (-lambda ((var . value)) (cons var value))
-        leaf--value))
-
-(defun leaf:normalize-commands (leaf--value)
-  (-map (lambda (elm)
-          (cond ((memq leaf--key '(:after))
-                 (if (eq elm t) leaf--name elm))
-                (t elm)))
-        (-uniq (delq nil (leaf-flatten leaf--value)))))
-#+end_src
-
-***** another normalizer
-:PROPERTIES:
-:ID:       c7fd7beb-b85a-4f60-abeb-794ed33988f6
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:void-straight-normalizer (leaf--value)
-  (cond ((eq t (car leaf--value))
-         (list leaf--name))
-        ((eq nil (car leaf--value))
-         nil)
-        ((listp (car-safe leaf--value))
-         (list (cons leaf--name (car leaf--value))))))
-
-#+end_src
-
 **** set defer
 :PROPERTIES:
 :ID:       26724e79-f38f-4677-b412-5f5d0942af18
