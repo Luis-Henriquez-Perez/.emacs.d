@@ -1215,7 +1215,8 @@ evaluated.
 
 Unlike [[use-package]], leaf does not have a separate variable to specify the order
 in which keys should be processed. Rather, keys are processed in the order they
-are in [[helpvar:leaf-keywords][leaf-keywords]]. Therefore, it's important to be able to add keywordsThe purpose of these functions is to make it extremely easy to add key value
+are in [[helpvar:leaf-keywords][leaf-keywords]]. Therefore, it's important to be able to add keywords in
+the correct The purpose of these functions is to make it extremely easy to add key value
 pairs to the plist in the right location.
 
 **** insert before
