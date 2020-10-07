@@ -1174,7 +1174,11 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf)
+(defun leaf~insert-after (list elem targetlist)
+  (let ((index (-elem-index elem list))
+        (placeholder (gensym "placeholder")))
+    (-insert-at (+ 2 it) placeholder)
+    (--splice-list (eq it placeholder) (list elem targetlist))))
 #+end_src
 
 **** insert keyword
