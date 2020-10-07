@@ -1165,7 +1165,10 @@ extremely easy to add key-value pairs to the plist in the right location.
 
 #+begin_src emacs-lisp
 (defun leaf~insert-before (plist place key value)
-  (leaf-insert-list-before plist place (list key value)))
+  (alet (it (-1 (-elem-index place plist)))
+    (->> plist
+         (-insert-at it value)
+         (-insert-at it key))))
 #+end_src
 
 **** insert after
