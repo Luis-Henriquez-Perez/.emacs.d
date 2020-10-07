@@ -5213,8 +5213,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 
 #+begin_src emacs-lisp
 (defhook! enable-smartparens-maybe (minibuffer-setup-hook)
-  "Enable `smartparens-mode' in the minibuffer, during `eval-expression' or
-`evil-ex'."
+  "Enable `smartparens-mode' in the minibuffer."
   (when (memq this-command '(eval-expression evil-ex))
     (smartparens-mode 1)))
 #+end_src
