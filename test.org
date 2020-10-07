@@ -318,7 +318,7 @@
 #+begin_src emacs-lisp
 #+end_src
 
-** leaf:flatten-keywords
+** leaf~flatten-keywords
 :PROPERTIES:
 :ID:       22800ae7-63f1-4d19-a82e-29bd90544fd6
 :END:
