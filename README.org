@@ -1083,7 +1083,12 @@ SYM is a symbol that stores a list."
 
 Like =use-package=, leaf is a macro that fascilitates package configuration.
 
-*** leaf
+*** bootstrap
+:PROPERTIES:
+:ID:       74028d3c-9500-4b2c-8425-a36dd6979de4
+:END:
+
+**** leaf
 :PROPERTIES:
 :ID:       7d72aec8-5523-473d-860d-181ce3d484d7
 :END:
@@ -1095,7 +1100,7 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
   (leaf-expand-minimally . t))
 #+end_src
 
-*** leaf-keywords
+**** leaf-keywords
 :PROPERTIES:
 :ID:       e47cf69e-4ba8-45d8-bb62-fd0c1d785583
 :END:
