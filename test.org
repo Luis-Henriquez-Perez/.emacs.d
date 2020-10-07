@@ -271,7 +271,7 @@
 #+begin_src emacs-lisp
 (ert-deftest leaf~insert-after ()
   (let ((plist '(:a 1 :b 2)))
-    (leaf~insert-after plist :b '(4))))
+    (leaf~insert-after plist :b '(:x 4))))
 #+end_src
 
 ** leaf:insert-keyword
