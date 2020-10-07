@@ -326,5 +326,6 @@
 #+begin_src emacs-lisp
 (ert-deftest leaf~flatten-keywords ()
   (let ((keywords '(:commands (a b c) :hook a-h)))
-    (leaf~flatten-keywords keywords)))
+    (alet (leaf~flatten-keywords keywords)
+      (should (equal it '(:commands a :commands b :commands c :hook a-h))))))
 #+end_src
