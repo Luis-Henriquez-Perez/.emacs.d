@@ -1204,7 +1204,7 @@ extremely easy to add key-value pairs to the plist in the right location.
 :ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
 :END:
 
-This function is for convenience.
+This function is for convenience and side-effect.
 
 #+begin_src emacs-lisp
 (defun leaf~insert-keyword (where place key value)
