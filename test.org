@@ -287,7 +287,7 @@
       (should (equal it '(:a 1 :b 2 :x 4))))))
 #+end_src
 
-** leaf:insert-keyword
+** leaf~insert-keyword
 :PROPERTIES:
 :ID:       63976e43-dcb9-4b06-9095-1e31b6c75a88
 :END:
