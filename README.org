@@ -1238,7 +1238,8 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
       (++ place))
     list))
 
-(defalias '++ 'cl-incf)#+end_src
+(defalias '++ 'cl-incf)
+#+end_src
 
 **** insert at
 :PROPERTIES:
