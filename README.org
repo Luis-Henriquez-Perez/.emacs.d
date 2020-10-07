@@ -1146,11 +1146,6 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
 
 ***** normalizers
 :PROPERTIES:
-:ID:       72c23168-98dd-4a74-85b8-c0e313aa96df
-:END:
-
-****** normalizers
-:PROPERTIES:
 :ID:       bcf96e13-f3bc-4b23-832f-f94b31dd48a5
 :END:
 
