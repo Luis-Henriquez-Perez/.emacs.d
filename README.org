@@ -1190,7 +1190,7 @@ This function handle inserting a leaf keyword.
 WHERE can be the symbol `before', `after' or `at'. When WHERE is before KEYWORD
 is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE."
   (alet (pcase where
-          ('after #'leaf-insert-list-after)
+          ('after #'leaf~insert-after)
           ('before #'leaf-insert-list-before)
           ('at #'leaf:insert-list-at)
           (_ (error "where is %S but expected `before' or `after'" where)))
