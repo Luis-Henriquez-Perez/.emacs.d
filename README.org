@@ -1245,9 +1245,10 @@ evaluated.
 #+begin_src emacs-lisp
 (defun leaf~insert-at (plist place key value)
   "Insert TARGETLST at ALEM in LIST."
-  (let ((a (-elem-index elem list))
-        (b (+ a 1)))
-    ))
+  (let ((i (-elem-index elem list))
+        (j (+ i 1)))
+    (->> (-replace-at i key plist)
+         (-replace-at r value plist))))
 #+end_src
 
 **** insert keyword
