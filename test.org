@@ -271,7 +271,16 @@
 #+begin_src emacs-lisp
 (ert-deftest leaf~insert-after ()
   (let ((plist '(:a 1 :b 2)))
-    (leaf~insert-after plist :b '(:x 4))))
+    (alet (leaf~insert-after plist :b '(:x 4))
+      (should (equal it '(:a 1 :b 2 :x 4))))))
+#+end_src
+
+** leaf~insert-before
+:PROPERTIES:
+:ID:       efe9fabd-770c-47fa-b821-edc05f6758d5
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 ** leaf:insert-keyword
