@@ -1213,7 +1213,8 @@ evaluated.
 :ID:       8cf37cd2-3a0f-4d43-a902-df6dc62ad1bb
 :END:
 
-The purpose of these functions is to fascillitate
+Unlike  The purpose of these functions is to make it extremely easy to add key value
+pairs to the plist in the right location.
 
 **** insert before
 :PROPERTIES:
