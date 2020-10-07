@@ -5219,6 +5219,14 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
     (smartparens-mode 1)))
 #+end_src
 
+**** enable markup completion for org mode
+:PROPERTIES:
+:ID:       c89cb9d1-b6ad-49dc-93ff-b70bc8511e87
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 *** lispyville
 :PROPERTIES:
 :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
