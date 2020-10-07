@@ -324,4 +324,7 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest leaf~flatten-keywords ()
+  (let ((keywords '(:commands (a b c) :hook a-h)))
+    (leaf~flatten-keywords keywords)))
 #+end_src
