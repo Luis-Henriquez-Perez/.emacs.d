@@ -1165,7 +1165,7 @@ extremely easy to add key-value pairs to the plist in the right location.
 
 #+begin_src emacs-lisp
 (defun leaf~insert-before (plist place key value)
-  (alet (it (-1 (-elem-index place plist)))
+  (alet (-1 (-elem-index place plist))
     (->> plist
          (-insert-at it value)
          (-insert-at it key))))
@@ -1179,7 +1179,7 @@ extremely easy to add key-value pairs to the plist in the right location.
 #+begin_src emacs-lisp
 (defun leaf~insert-after (plist place key value)
   "Insert TARGETLIST."
-  (alet (it (+ 2 (-elem-index place plist)))
+  (alet (+ 2 (-elem-index place plist))
     (->> plist
          (-insert-at it value)
          (-insert-at it key))))
