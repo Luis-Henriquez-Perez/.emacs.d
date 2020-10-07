@@ -1275,14 +1275,23 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
     (setq leaf-keywords (funcall it leaf-keywords key value))))
 #+end_src
 
-*** defining leaf keywords
+*** pre-processing leaf
 :PROPERTIES:
-:ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
+:ID:       0b06091b-32a1-473d-a75b-57f5b3b5d031
 :END:
 
-Leaf is very low level. It does not provide a function or macro for fast new
-keyword creation. Whenever you want to create a new keyword you have to
-recall the underlying leaf data structure.
+**** TODO flatten keywords
+:PROPERTIES:
+:ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
+:END:
+
+#+begin_src emacs-lisp
+(defun leaf:flatten-keywords (keywords)
+  "Flatten keywords."
+  (->> (-partition-before-pred #'keywordp args)
+       (--map (-flatten-n 1 it))
+       (--map (-annotate (-const (car it)) (cdr it)))))
+#+end_src
 
 **** leaf!
 :PROPERTIES:
@@ -1303,18 +1312,14 @@ This wrapper splits arguments that are in lists."
      ,@))
 #+end_src
 
-**** TODO flatten keywords
+*** defining leaf keywords
 :PROPERTIES:
-:ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
+:ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
 :END:
 
-#+begin_src emacs-lisp
-(defun leaf:flatten-keywords (keywords)
-  "Flatten keywords."
-  (->> (-partition-before-pred #'keywordp args)
-       (--map (-flatten-n 1 it))
-       (--map (-annotate (-const (car it)) (cdr it)))))
-#+end_src
+Leaf is very low level. It does not provide a function or macro for fast new
+keyword creation. Whenever you want to create a new keyword you have to
+recall the underlying leaf data structure.
 
 **** leaf variables
 :PROPERTIES:
