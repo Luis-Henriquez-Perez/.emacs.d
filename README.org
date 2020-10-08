@@ -3522,7 +3522,6 @@ candidate.
   "C-k"     #'ivy-previous-line
   "C-j"     #'ivy-next-line
   [backtab] #'ivy-previous-line
-  "TAB"     #'ivy-next-line
   "C-a"     #'ivy-dispatching-done
   "C-n"     #'ivy-toggle-marks
   "C-l"     #'ivy-next-line-and-call
@@ -3530,6 +3529,8 @@ candidate.
   "C-'"     #'ivy-avy
   "C-i"     #'ivy-immediate-done
   "RET"     #'ivy-done)
+
+(general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
 #+end_src
 
 **** remembering used candidates
