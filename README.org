@@ -1233,7 +1233,8 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
   "Flatten keywords."
   (->> (-partition-by-header #'keywordp args)
        (--mapcat (-annotate (-const (car it)) (cdr it)))
-       ;; (--map (-flatten-n 1 it))
+       (-map #'-cons-to-list)
+       (-flatten-n 1)
        ;; (--map (-annotate (-const (car it)) (cdr it)))
        ))
 #+end_src
