@@ -1248,7 +1248,7 @@ keywords that contain multiple values into multiple keywords that only contain
 one value.
 
 #+begin_src emacs-lisp
-(defmacro leaf! (package &rest args)
+(defmacro use-package! (package &rest args)
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
   `(leaf ,package ,@(leaf~flatten-keywords args)))
