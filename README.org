@@ -1232,8 +1232,10 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 (defun leaf~flatten-keywords (args)
   "Flatten keywords."
   (->> (-partition-by-header #'keywordp args)
-       (--map (-flatten-n 1 it))
-       (--map (-annotate (-const (car it)) (cdr it)))))
+       (--mapcat (-annotate (-const (car it)) (cdr it)))
+       ;; (--map (-flatten-n 1 it))
+       ;; (--map (-annotate (-const (car it)) (cdr it)))
+       ))
 #+end_src
 
 **** leaf!
@@ -1251,6 +1253,7 @@ one value.
 (defmacro use-package! (package &rest args)
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
+  (declare (indent defun))
   `(leaf ,package ,@(leaf~flatten-keywords args)))
 #+end_src
 
@@ -2912,7 +2915,7 @@ is that the characters used for switching to a window are *really* easy to see,
 but you can't see the buffer contents. That's a no-go for me I need to see them.
 
 #+begin_src emacs-lisp
-(leaf ace-window
+(use-package! ace-window
   :commands ace-window ace-swap-window
   :bind ([remap other-window] . ace-window)
   :setq
