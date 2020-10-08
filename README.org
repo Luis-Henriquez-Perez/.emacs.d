@@ -2912,7 +2912,7 @@ is that the characters used for switching to a window are *really* easy to see,
 but you can't see the buffer contents. That's a no-go for me I need to see them.
 
 #+begin_src emacs-lisp
-(use-package! ace-window
+(leaf ace-window
   :commands ace-window ace-swap-window
   :bind ([remap other-window] . ace-window)
   :setq
