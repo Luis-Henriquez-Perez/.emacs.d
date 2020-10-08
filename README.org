@@ -1237,13 +1237,20 @@ the definition of leaf keywords by only considering one value for each keyword.
 #+begin_src emacs-lisp
 #+end_src
 
-**** general preprocessor
+**** preprocess fn
 :PROPERTIES:
 :ID:       fb3ada26-d3c8-427a-b449-3d851c9413f0
 :END:
 
 #+begin_src emacs-lisp
+(defun leaf~pre-process (key value)
+  "Return a cons cell with key as cdr")
 #+end_src
+
+**** e
+:PROPERTIES:
+:ID:       510ce24d-3401-458c-aab5-2f37eb13ba4f
+:END:
 
 **** TODO flatten keywords
 :PROPERTIES:
