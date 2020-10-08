@@ -1369,7 +1369,7 @@ Leaf keywords do not.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:set-normalizer :pre-setq #'leaf:normalize-setq)
+(defleaf!)
 #+end_src
 
 ***** custom
