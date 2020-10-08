@@ -1262,7 +1262,6 @@ the definition of leaf keywords by only considering one value for each keyword.
 (defun leaf~flatten-keywords (args)
   "Flatten keywords."
   (->> (-partition-by-header #'keywordp args)
-       (-map)
        (--mapcat (-annotate (-const (car it)) (cdr it)))
        (-map #'-cons-to-list)
        (-flatten-n 1)
