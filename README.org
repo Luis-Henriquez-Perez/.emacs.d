@@ -1223,7 +1223,8 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 :ID:       0b06091b-32a1-473d-a75b-57f5b3b5d031
 :END:
 
-The p
+The purpose of this section is to create tools for preprocessing leaf arguments
+into
 
 **** TODO flatten keywords
 :PROPERTIES:
