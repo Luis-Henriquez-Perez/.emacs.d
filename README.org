@@ -1229,10 +1229,13 @@ simplified functions which only need to consider the value. This is very similar
 to the built-in leaf normalizer functionality. The goal is to greatly simplify
 the definition of leaf keywords by only considering one value for each keyword.
 
-**** preprocessor alist
+**** bind preprecessor
 :PROPERTIES:
 :ID:       9b087a90-f8ca-425a-aec3-0d9a1c82cf2a
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 **** general preprocessor
 :PROPERTIES:
