@@ -1317,6 +1317,11 @@ recall the underlying leaf data structure.
 :ID:       a6f3a3bc-7e28-4d03-80dc-b3b53765d1aa
 :END:
 
+#+begin_src emacs-lisp
+(defun leaf~anaphoric-vars ()
+  (-map))
+#+end_src
+
 **** defleaf!
 :PROPERTIES:
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
