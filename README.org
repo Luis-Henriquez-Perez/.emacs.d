@@ -1328,7 +1328,7 @@ This macro is meant to make defining a leaf keyword easy.
 (defmacro defleaf! (name args &rest body)
   "Define a leaf keyword."
   (declare (indent defun))
-  (-let* (((where place alias defer normalizer) args)
+  (-let* (((where place) args)
           (keyword (void-keyword-intern name))
           (fname (void-symbol-intern 'leaf~apply- name)))
     `(progn
@@ -1336,7 +1336,7 @@ This macro is meant to make defining a leaf keyword easy.
           `(leaf~insert-keyword ,keyword ',where ,place ',it))
 
        (defun ,fname (leaf~anaphoric-vars)
-         (-let [,(leaf~vars) ,(leaf~anaphoric-vars)]
+         (-let ((,(leaf~vars) ,(leaf~anaphoric-vars)))
            (ignore ,@(leaf~vars) ,@(leaf~anaphoric-vars))
            ,@body)))))
 #+end_src
