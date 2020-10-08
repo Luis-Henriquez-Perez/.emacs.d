@@ -3070,7 +3070,6 @@ functions which open external linux applications.
 #+begin_src emacs-lisp
 (use-package! exwm
   :hook (exwm-mode-hook . hide-mode-line-mode)
-  :before-call (void/open-qutebrowser counsel-linux-app void/open-emacs-instance)
   :setq (exwm-replace . nil)
   :defer-config
   (exwm-init)
