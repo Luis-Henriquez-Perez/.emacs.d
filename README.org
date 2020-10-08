@@ -1228,6 +1228,7 @@ into lists of two elements of the form ~(keyword value)~. This is so we can writ
 simplified functions which only need to consider the value. This is very similar
 to the built-in leaf normalizer functionality. The goal is to greatly simplify
 the definition of leaf keywords by only considering one value for each keyword.
+However, normalizers only work once the value has been passed in to the macro.
 
 **** bind preprecessor
 :PROPERTIES:
