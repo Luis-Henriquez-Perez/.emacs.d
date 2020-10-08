@@ -1224,7 +1224,7 @@ is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE
 :END:
 
 The purpose of this section is to create tools for preprocessing leaf arguments
-into
+into lists of two elements of the form ~(keyword value)~.
 
 **** TODO flatten keywords
 :PROPERTIES:
