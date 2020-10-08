@@ -3041,11 +3041,8 @@ https://www.emacswiki.org/emacs/TransposeFrame
 
 #+begin_src emacs-lisp
 (use-package! transpose-frame
-  :commands (transpose-frame
-             flip-frame
-             flop-frame
-             rotate-frame
-             rotate-frame-clockwise))
+  :commands transpose-frame flip-frame flop-frame
+  :commands rotate-frame rotate-frame-clockwise)
 #+end_src
 
 ** exwm
