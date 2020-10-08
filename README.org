@@ -1244,7 +1244,8 @@ the definition of leaf keywords by only considering one value for each keyword.
 
 #+begin_src emacs-lisp
 (defun leaf~pre-process (key value)
-  "Return a cons cell with key as cdr")
+  "Return a cons cell with key as cdr."
+  (cons key (funcall (alist-get key ))))
 #+end_src
 
 **** e
