@@ -1330,7 +1330,7 @@ This macro is meant to make defining a leaf keyword easy.
   (declare (indent defun))
   (-let* (((where place) args)
           (keyword (void-keyword-intern name))
-          (fname (void-symbol-intern 'leaf~apply- name)))
+          (fname (intern (format "leaf~~apply-%s" name))))
     `(progn
        ,(alet `(,fname ,@vars)
           `(leaf~insert-keyword ,keyword ',where ,place ',it))
