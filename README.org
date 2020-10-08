@@ -1307,6 +1307,16 @@ recall the underlying leaf data structure.
   "List of variables that leaf binds when processing a keyword.")
 #+end_src
 
+**** variables
+:PROPERTIES:
+:ID:       8dff8582-d14e-4e5f-89e5-c0984dd86b2d
+:END:
+
+**** anaphoric variables
+:PROPERTIES:
+:ID:       a6f3a3bc-7e28-4d03-80dc-b3b53765d1aa
+:END:
+
 **** defleaf!
 :PROPERTIES:
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
