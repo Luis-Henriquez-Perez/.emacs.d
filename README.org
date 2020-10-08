@@ -1320,15 +1320,14 @@ This macro is meant to make defining a leaf keyword easy.
   (declare (indent defun))
   (-let* (((where place alias defer normalizer) args)
           (keyword (void-keyword-intern name))
-          (leaf-vars leaf~process-variables)
           (fname (void-symbol-intern 'leaf~apply- name)))
     `(progn
        ,(alet `(,fname ,@vars)
           `(leaf~insert-keyword ,keyword ',where ,place ',it))
 
        (defun ,fname (leaf~anaphoric-vars)
-         (-let [,vars ,(leaf~anaphoric-vars)]
-           (ignore ,@vars ,@anaphoric-vars)
+         (-let [,(leaf~vars) ,(leaf~anaphoric-vars)]
+           (ignore ,@(leaf~vars) ,@(leaf~anaphoric-vars))
            ,@body)))))
 #+end_src
 
