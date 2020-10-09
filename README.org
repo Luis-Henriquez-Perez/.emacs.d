@@ -1249,11 +1249,6 @@ However, normalizers only work once the value has been passed in to the macro.
   (cons key (funcall (alist-get key ))))
 #+end_src
 
-**** e
-:PROPERTIES:
-:ID:       510ce24d-3401-458c-aab5-2f37eb13ba4f
-:END:
-
 **** TODO flatten keywords
 :PROPERTIES:
 :ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
@@ -1265,9 +1260,7 @@ However, normalizers only work once the value has been passed in to the macro.
   (->> (-partition-by-header #'keywordp args)
        (--mapcat (-annotate (-const (car it)) (cdr it)))
        (-map #'-cons-to-list)
-       (-flatten-n 1)
-       ;; (--map (-annotate (-const (car it)) (cdr it)))
-       ))
+       (-flatten-n 1)))
 #+end_src
 
 **** leaf!
@@ -1320,7 +1313,7 @@ recall the underlying leaf data structure.
 
 #+begin_src emacs-lisp
 (defun leaf~anaphoric-vars ()
-  (-map))
+  (-map #'void-anaphoric-symbol leaf~preprocess-vars))
 #+end_src
 
 **** defleaf!
