@@ -1192,7 +1192,7 @@ return an alist of key value.
 (defun leaf~general-process (key value)
   "Return a cons cell with key as cdr."
   (if (atom value)
-      (list key value)
+      (cons key value)
     (-annotate (-const key) value)))
 #+end_src
 
