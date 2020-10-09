@@ -1336,13 +1336,13 @@ This macro is meant to make defining a leaf keyword easy.
           (keyword (void-keyword-intern name))
           (fname (intern (format "leaf~~apply-%s" name))))
     `(progn
-       ,(alet `((,fname ,@(leaf~vars)) ,',@leaf--body)
+       ,(alet (,fname ,@(leaf~vars))
           `(leaf~insert-keyword ,keyword ',where ,place ',it))
 
        (defun ,fname ,(leaf~anaphoric-vars)
          (-let ((,(leaf~vars) ,(leaf~anaphoric-vars)))
            (ignore ,@(leaf~vars) ,@(leaf~anaphoric-vars))
-           ,@body)))))
+           (list (progn ,@body) (macroexp-progn leaf--body)))))))
 #+end_src
 
 *** custom leaf keywords
