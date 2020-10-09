@@ -1189,9 +1189,10 @@ Processing functions should take in a key and other values and they should
 return an alist of key value.
 
 #+begin_src emacs-lisp
-(defun leaf~general-process (pair)
+(defun leaf~general-process (key value)
   "Return a cons cell with key as cdr."
-  (-let (((key value) pair))
+  (if (atom value)
+      (list key value)
     (-annotate (-const key) value)))
 #+end_src
 
