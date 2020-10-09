@@ -1251,7 +1251,7 @@ keywords that contain multiple values into multiple keywords that only contain
 one value.
 
 #+begin_src emacs-lisp
-(defmacro use-package! (package &rest args)
+(defmacro leaf! (package &rest args)
   "Wrapper around `leaf'.
 This wrapper splits arguments that are in lists."
   (declare (indent defun))
@@ -1417,10 +1417,6 @@ provided by leaf. They are inspired from DOOM emacs.
 :PROPERTIES:
 :ID:       cba57988-21b2-456b-aed2-27254febf873
 :END:
-
-This keyword is designed to be compiled away, leaving only forms adding package
-paths to the load-path. This is so that package installation isn't done after
-VOID is compiled.
 
 #+begin_src emacs-lisp
 (defleaf! straight (before ensure)
