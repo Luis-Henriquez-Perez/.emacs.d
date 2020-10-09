@@ -1203,7 +1203,7 @@ return an alist of key value.
   (if (atom value)
       (list (cons key value))
     (-annotate (-const key)
-               (if (= (length 1) value) (car value) value))))
+               (if (= (length value) 1) (car value) value))))
 
 (push (cons t #'leaf~general-process) leaf~process-alist)
 #+end_src
