@@ -1207,6 +1207,14 @@ return an alist of key value.
 (push (cons t #'leaf~general-process) leaf~process-alist)
 #+end_src
 
+**** preprocess fn
+:PROPERTIES:
+:ID:       16bf5a3b-4357-4c27-bd21-baebbb40ef2f
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** bind key preprocess
 :PROPERTIES:
 :ID:       25939414-7f07-4ea3-9354-c92ae3bff2a0
@@ -1224,7 +1232,7 @@ return an alist of key value.
 (defun leaf~flatten-keywords (args)
   "Flatten keywords."
   (->> (-partition-by-header #'keywordp args)
-       (--mapcat (-annotate (-const (car it)) (cdr it)))
+       (-mapcat #'leaf~pre-process-fn)
        (-map #'-cons-to-list)
        (-flatten-n 1)))
 #+end_src
