@@ -1200,7 +1200,7 @@ return an alist of key value.
 #+begin_src emacs-lisp
 (defun leaf~general-process (key value)
   "Return a cons cell with key as cdr."
-  (if (atom value)
+  (if (and (atom value) (not (-cons-pair-p value)))
       (list (cons key value))
     (-annotate (-const key)
                (if (= (length value) 1) (car value) value))))
