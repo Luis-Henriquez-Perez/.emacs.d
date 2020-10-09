@@ -1180,14 +1180,6 @@ to the built-in leaf normalizer functionality. The goal is to greatly simplify
 the definition of leaf keywords by only considering one value for each keyword.
 However, normalizers only work once the value has been passed in to the macro.
 
-**** bind preprecessor
-:PROPERTIES:
-:ID:       9b087a90-f8ca-425a-aec3-0d9a1c82cf2a
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 **** preprocess fn
 :PROPERTIES:
 :ID:       fb3ada26-d3c8-427a-b449-3d851c9413f0
