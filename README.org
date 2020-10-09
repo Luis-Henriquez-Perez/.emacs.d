@@ -1421,12 +1421,12 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! before-call (before :hook nil t commands)
+(defleaf! before-call (before :hook)
   (let ((advice (void-symbol-intern 'load- )))
     `(progn (void-advice-add ,<value> :before )
             (defadvice! ,advice (before)
               "Load package."
-              (require ',)))))
+              (require ',<name>)))))
 #+end_src
 
 ***** TODO after-call
