@@ -1213,10 +1213,10 @@ return an alist of key value.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~pre-process-fn (key value)
-  (alet (or (alist-get key leaf~process-alist)
+(defun leaf~pre-process-fn (pair)
+  (alet (or (alist-get (car pair) leaf~process-alist)
             (alist-get t leaf~process-alist))
-    (funcall it key value)))
+    (funcall it (car pair) (cdr pair))))
 #+end_src
 
 **** bind key preprocess
