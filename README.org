@@ -1213,6 +1213,10 @@ return an alist of key value.
 :END:
 
 #+begin_src emacs-lisp
+(defun leaf~pre-process-fn (key value)
+  (aif (--first (eq key (car it)) leaf~process-alist)
+      (funcall it key value)
+    (list (cons key value))))
 #+end_src
 
 **** bind key preprocess
