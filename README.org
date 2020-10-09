@@ -1186,8 +1186,7 @@ However, normalizers only work once the value has been passed in to the macro.
 :END:
 
 #+begin_src emacs-lisp
-(defvar leaf~process-alist '((t . leaf~general-process))
-  "")
+(defvar leaf~process-alist nil)
 #+end_src
 
 **** preprocess fn
