@@ -1168,24 +1168,6 @@ first. In other words, the first key value pair is the one that's considered.
          (-insert-at it key))))
 #+end_src
 
-**** insert keyword
-:PROPERTIES:
-:ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
-:END:
-
-This function is for convenience and side-effect.
-
-#+begin_src emacs-lisp
-(defun leaf~insert-keyword (where place key value)
-  "Insert KEYWORD at PLACE.
-WHERE can be the symbol `before', `after' or `at'. When WHERE is before KEYWORD
-is inserted before PLACE. When WHERE is `after', KEYWORD is inserted after PLACE."
-  (cl-assert (member where '(at before after)))
-
-  (alet (void-symbol-intern 'leaf~insert- where)
-    (setq leaf-keywords (funcall it leaf-keywords key value))))
-#+end_src
-
 *** pre-processing leaf arguments
 :PROPERTIES:
 :ID:       0b06091b-32a1-473d-a75b-57f5b3b5d031
