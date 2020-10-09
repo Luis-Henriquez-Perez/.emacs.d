@@ -1136,7 +1136,9 @@ are in [[helpvar:leaf-keywords][leaf-keywords]]. Therefore, it's important to be
 the correct place in the list. The purpose of these functions is to make it
 extremely easy to add key-value pairs to the plist in the right location.
 
-Note that to override a key-value pair in
+Note that to override a key-value pair in the alist you just need to add a
+key-value pair with the same key and the desired value somewhere before the
+first. In other words, the first key value pair is the one that's considered.
 
 **** insert before
 :PROPERTIES:
@@ -1158,9 +1160,9 @@ Note that to override a key-value pair in
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~insert-after (plist place key value)
-  "Insert TARGETLIST."
-  (alet (+ 2 (-elem-index place plist))
+(defun leaf~insert-after (place key value)
+  "Insert KEY and VALUE before place in `leaf-keywords'."
+  (alet (+ 2 (-elem-index place leaf-keywords))
     (->> plist
          (-insert-at it value)
          (-insert-at it key))))
