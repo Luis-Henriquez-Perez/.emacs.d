@@ -1276,7 +1276,8 @@ recall the underlying leaf data structure.
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
 :END:
 
-This macro is meant to make defining a leaf keyword easy.
+This macro is meant to make defining a leaf keyword easy. Like [[][]] and
+[[][]], the syntax is designed to resemble [[][]].
 
 #+begin_src emacs-lisp
 (defmacro defleaf! (name args &rest body)
