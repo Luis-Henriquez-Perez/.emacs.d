@@ -1185,7 +1185,7 @@ However, normalizers only work once the value has been passed in to the macro.
 :ID:       fb3ada26-d3c8-427a-b449-3d851c9413f0
 :END:
 
-Processing functions should take in a key and
+Processing functions should take in a key and other values (CAR and CDR),
 
 #+begin_src emacs-lisp
 (defun leaf~pre-process (key value)
