@@ -1054,6 +1054,52 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
+** keybindings
+:PROPERTIES:
+:ID:       5059b055-493f-4ba1-9738-3fa752308ddf
+:END:
+
+*** with-keymap!
+:PROPERTIES:
+:ID:       76351d85-1d89-4057-b82e-dc6cf539f124
+:END:
+
+#+begin_src emacs-lisp
+(defmacro with-keymap (keymap &rest body)
+  (if (keymapp keymap)
+      (progn ,@body)
+    (defhook! load-bindings ()
+      "Load"
+      (progn ,@body))))
+#+end_src
+
+*** kbd!
+:PROPERTIES:
+:ID:       8607e884-34f1-436b-9110-c2ad50571203
+:END:
+
+#+begin_src emacs-lisp
+(defmacro kbd! (key)
+  "Maybe add kbd."
+  (if (vectorp key) key `(kbd ,key)))
+#+end_src
+
+*** define-key!
+:PROPERTIES:
+:ID:       9729c413-84bd-44b9-8be3-959adb212498
+:END:
+
+#+begin_src emacs-lisp
+(defmacro define-key! (states keymaps &rest bindings)
+  "Define keybindings."
+  (let ((define-key (if states 'evil-define-key 'define-key)))
+    `(progn
+       ,@(->> (-partition 2 bindings)
+              (-table-flat #'list (-list states) (-list keymaps))
+              (-map (-lambda ((state map (key value)))
+                      `(,define-key ',state ,map (kbd! ,key) ,value)))))))
+#+end_src
+
 ** Leaf
 :PROPERTIES:
 :ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
@@ -3518,19 +3564,18 @@ Note that [[helpfn:ivy-immediate-done][ivy-immediate-done]] selects uses the min
 candidate.
 
 #+begin_src emacs-lisp
-(general-def '(emacs insert) ivy-minibuffer-map
+(define-key! (emacs insert) ivy-minibuffer-map
   "C-k"     #'ivy-previous-line
   "C-j"     #'ivy-next-line
+  "TAB"     #'ivy-next-line
   [backtab] #'ivy-previous-line
   "C-a"     #'ivy-dispatching-done
   "C-n"     #'ivy-toggle-marks
+  "C-m" #'ivy-immediate-done
   "C-l"     #'ivy-next-line-and-call
   "C-o"     #'ivy-occur
   "C-'"     #'ivy-avy
-  "C-i"     #'ivy-immediate-done
   "RET"     #'ivy-done)
-
-(general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
 #+end_src
 
 **** remembering used candidates
