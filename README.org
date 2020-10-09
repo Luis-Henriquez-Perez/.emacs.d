@@ -1309,6 +1309,7 @@ This macro is meant to make defining a leaf keyword easy.
   "Define a leaf keyword."
   (declare (indent defun))
   (-let* (((where place) args)
+          ((name asterix) (cdr (s-match "\\([^z-a]+\\)\\(\\*\\)")))
           (keyword (void-keyword-intern name))
           (fname (intern (format "leaf~~apply-%s" name))))
     `(progn
@@ -1326,7 +1327,7 @@ This macro is meant to make defining a leaf keyword easy.
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
 :END:
 
-**** use =after!= in leaf-defer
+**** use =after!= in leaf-defer                                         :disabled:
 :PROPERTIES:
 :ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
 :END:
@@ -1382,7 +1383,7 @@ provided by leaf. They are inspired from DOOM emacs.
 #+begin_src emacs-lisp
 (defleaf! before-call (before :hook)
   (let ((advice (void-symbol-intern 'load- )))
-    `(progn (void-advice-add ,<value> :before )
+    `(progn (void-advice-add ,<value> :before ,advice (-const t))
             (defadvice! ,advice (before)
               "Load package."
               (void:log "Loading")
