@@ -1487,7 +1487,7 @@ specific packages.
 
 #+begin_src emacs-lisp
 (defleaf! os* (before :when)
-  `(with-os! ,<value> ,@leaf--body))
+  `(with-os! ,<value> ,@<body>))
 #+end_src
 
 **** alias
