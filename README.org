@@ -1342,7 +1342,7 @@ This macro is meant to make defining a leaf keyword easy.
        (defun ,fname ,(leaf~anaphoric-vars)
          (-let ((,(leaf~vars) ,(leaf~anaphoric-vars)))
            (ignore ,@(leaf~vars) ,@(leaf~anaphoric-vars))
-           (list (progn ,@body) (macroexp-progn leaf--body)))))))
+           (list (progn ,@body) (macroexp-progn <body>)))))))
 #+end_src
 
 *** custom leaf keywords
