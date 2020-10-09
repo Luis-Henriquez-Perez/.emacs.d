@@ -1100,17 +1100,6 @@ Like =use-package=, leaf is a macro that fascilitates package configuration.
   (leaf-expand-minimally . t))
 #+end_src
 
-**** leaf-keywords
-:PROPERTIES:
-:ID:       e47cf69e-4ba8-45d8-bb62-fd0c1d785583
-:END:
-
-#+begin_src emacs-lisp
-(use-package! leaf-keywords
-  :ensure nil
-  :init (leaf-keywords-init))
-#+end_src
-
 *** keyword properties
 :PROPERTIES:
 :ID:       98341d17-2026-4364-807b-ab986595bd27
@@ -1454,7 +1443,7 @@ paths to the load-path. This is so that package installation isn't done after
 VOID is compiled.
 
 #+begin_src emacs-lisp
-(defleaf! void-straight (replace straight ensure straight)
+(defleaf! straight (before ensure)
   `(straight:install-package ,<value>))
 #+end_src
 
