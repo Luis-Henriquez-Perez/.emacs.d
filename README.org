@@ -1357,7 +1357,7 @@ This macro is meant to make defining a leaf keyword easy.
 
 #+begin_src emacs-lisp
 (defleaf! defer (before leaf-defer :leaf-defer)
-  (if (and <body> (eval (car <value>))
+  (if (and <body> (not (null (car <value>)))
            (leaf-list-memq leaf-defer-keywords (leaf-plist-keys <raw>)))
       `((after! ,<name> ,@<body>))
     `(,@<body>)))
@@ -1386,7 +1386,7 @@ Leaf keywords do not.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf!)
+(defleaf! )
 #+end_src
 
 ***** custom
@@ -1477,7 +1477,7 @@ specific packages.
 
 #+begin_src emacs-lisp
 (defleaf! popup (before :mode)
-  `(push ',it display-buffer-alist) ,<value>)
+  `(push ',<value> display-buffer-alist))
 #+end_src
 
 **** os
@@ -1487,8 +1487,7 @@ specific packages.
 
 #+begin_src emacs-lisp
 (defleaf! os* (before :when)
-  (when <body>
-    `((with-os! ,leaf--value ,@leaf--body))))
+  `(with-os! ,<value> ,@leaf--body))
 #+end_src
 
 **** alias
@@ -1497,13 +1496,8 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:set-normalizer :alias #'leaf:normalize-setq)
-
-(defleaf! alias (before :init)
-  `((eval-and-compile
-      ,@(-map (-lambda ((alias . def)) `(defalias ',alias ',def))
-              <value>))
-    ,@<body>))
+(defleaf! alias (before :init (alias . def))
+  `(eval-and-compile (defalias ',alias ',def)))
 #+end_src
 
 ** Packages
