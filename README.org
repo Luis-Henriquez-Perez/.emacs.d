@@ -1366,15 +1366,6 @@ Leaf keywords do not.
   `(setq ,var ,value))
 #+end_src
 
-***** custom
-:PROPERTIES:
-:ID:       bfa61a7a-1660-4000-a80e-15851a32ffd5
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :custom #'leaf:normalize-setq)
-#+end_src
-
 ***** setq-default
 :PROPERTIES:
 :ID:       b8ab2bf6-2b4e-41db-93f8-ed5c86392c84
