@@ -1207,6 +1207,14 @@ return an alist of key value.
 (push (cons t #'leaf~general-process) leaf~process-alist)
 #+end_src
 
+**** bind key preprocess
+:PROPERTIES:
+:ID:       25939414-7f07-4ea3-9354-c92ae3bff2a0
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** TODO flatten keywords
 :PROPERTIES:
 :ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
