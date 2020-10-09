@@ -1186,7 +1186,7 @@ However, normalizers only work once the value has been passed in to the macro.
 :END:
 
 Processing functions should take in a key and other values and they should
-return a list of
+return an alist of key value.
 
 #+begin_src emacs-lisp
 (defun leaf~pre-process (key value)
