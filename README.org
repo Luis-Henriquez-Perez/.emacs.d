@@ -1146,9 +1146,9 @@ first. In other words, the first key value pair is the one that's considered.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~insert-before (plist place key value)
+(defun leaf~insert-before (place key value)
   "Insert."
-  (alet (-elem-index place plist)
+  (alet (-elem-index place leaf-keywords)
     (->> plist
          (-insert-at it value)
          (-insert-at it key))))
