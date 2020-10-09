@@ -1084,7 +1084,7 @@ SYM is a symbol that stores a list."
 Like =use-package=, leaf is a macro that fascilitates package configuration. It's
 strength is its simplicity; it has less stuff you need to learn than
 [[][use-package]]. Here I try to simplify its system of adding leaf keywords by
-adding
+adding more expected
 
 *** setup leaf
 :PROPERTIES:
