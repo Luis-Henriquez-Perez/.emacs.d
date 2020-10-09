@@ -420,6 +420,17 @@ macro-writing.
     (dolist (a args) (princ a))))
 #+end_src
 
+**** real list
+:PROPERTIES:
+:ID:       9b30d27c-7082-4700-a3ce-e7f58777c753
+:END:
+
+#+begin_src emacs-lisp
+(defun void-true-listp (form)
+  "Return whether FORM is a list, but not a cons cell."
+  (and (listp form) (not (-cons-pair-p form))))
+#+end_src
+
 **** wrap-form
 :PROPERTIES:
 :ID:       48e48c0f-7bb3-45c9-b4af-2da0ce84b64e
