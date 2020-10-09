@@ -1362,7 +1362,8 @@ Leaf keywords do not.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! )
+(defleaf! setq (before setq (var . value))
+  `(setq ,var ,value))
 #+end_src
 
 ***** custom
