@@ -1189,9 +1189,10 @@ Processing functions should take in a key and other values and they should
 return an alist of key value.
 
 #+begin_src emacs-lisp
-(defun leaf~pre-process (key value)
+(defun leaf~general-process (pair)
   "Return a cons cell with key as cdr."
-  (cons key (funcall (alist-get key ))))
+  (-let (((key value) pair))
+    (-annotate (-const key) value)))
 #+end_src
 
 **** TODO flatten keywords
