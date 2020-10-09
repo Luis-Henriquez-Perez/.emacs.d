@@ -1204,6 +1204,8 @@ return an alist of key value.
   (if (atom value)
       (list (cons key value))
     (-annotate (-const key) value)))
+
+(push (cons t #'leaf~general-process) leaf~process-alist)
 #+end_src
 
 **** TODO flatten keywords
