@@ -1136,6 +1136,8 @@ are in [[helpvar:leaf-keywords][leaf-keywords]]. Therefore, it's important to be
 the correct place in the list. The purpose of these functions is to make it
 extremely easy to add key-value pairs to the plist in the right location.
 
+Note that to override a key-value pair in
+
 **** insert before
 :PROPERTIES:
 :ID:       a6eac0bc-6465-46c6-b4e0-b913348c9a77
