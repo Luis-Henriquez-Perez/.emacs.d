@@ -7252,7 +7252,8 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :ID: 07960fe7-7ef5-48db-bfd9-86c980a7599d
 :END:
 
-Notifications are very important. Messages from the =*Messages*= buffer are not enough.
+Notifications are very important. Messages from the =*Messages*= buffer are not
+enough.
 
 #+begin_src emacs-lisp
 (use-package! alert
@@ -8217,8 +8218,8 @@ can reveal them with [[helpfn:hide-lines-show-all][hide-lines-show-all]].
 
 Particularly in boilerplate heavy languages like Org, hiding certain lines can
 make reading documents much easier by reducing visual distraction. This package
-though is in need of an update. It didn't work out of the box (see [[id:b358f324-9b64-4e83-8168-231ff1ab115d][hide-lines]] and
-[[id:a3e62e0a-452b-429c-9558-139e7b83cf80][hl overlay fix]]).
+though is in need of an update. It didn't work out of the box (see [[id:b358f324-9b64-4e83-8168-231ff1ab115d][hide-lines]]
+and [[id:a3e62e0a-452b-429c-9558-139e7b83cf80][hl overlay fix]]).
 
 #+begin_src emacs-lisp
 (use-package! hide-lines
@@ -8248,8 +8249,9 @@ Push the overlay into `hide-lines-invisible-areas'."
 :ID: b358f324-9b64-4e83-8168-231ff1ab115d
 :END:
 
-When I tried hiding property drawers [[hfn:hide-lines-matching][hide-lines-matching]] left out the start and end property
-lines. Only the property block body was hidden. This advice fixes this.
+When I tried hiding property drawers [[hfn:hide-lines-matching][hide-lines-matching]] left out the start and
+end property lines. Only the property block body was hidden. This advice fixes
+this.
 
 #+begin_src emacs-lisp
 (defadvice! fix-hide-matching-lines  (:override hide-lines-matching)
@@ -8761,7 +8763,8 @@ diary/journal using =org-mode=.
 
 By default evil binds =za= to [[helpfn:evil-open-folds][evil-open-folds]] and =zb= to [[helpfn:evil-close-folds][evil-close-folds]]. They do
 work in =org-mode= but I'd rather use the folding commands provided by =outline.el.=
-The outline api actually seems pretty solid; better coded and simpler than the org api it seems.
+The outline api actually seems pretty solid; better coded and simpler than the
+org api it seems.
 
 #+begin_src emacs-lisp
 ;; (general-def
@@ -8894,194 +8897,6 @@ The outline api actually seems pretty solid; better coded and simpler than the o
 :ID: ee57f711-9a4f-421f-b831-ab4907402e52
 :END:
 
-** TODO hydra                                                         :disabled:
-:PROPERTIES:
-:ID:       503d301c-8452-4a85-be41-aa6e5ed701dd
-:END:
-
-Using emacs you'll enavitably encounter many keybindings. Muscle memory is good
-but often it can be useful to able to also see the keybindings.
-
-*** pretty hydra
-:PROPERTIES:
-:ID:       236961bf-5600-46d0-8468-51d6cb6e15d8
-:END:
-
-#+begin_src emacs-lisp
-(use-package! pretty-hydra)
-#+end_src
-
-*** pretty hydra title
-:PROPERTIES:
-:ID:       68af369e-fc84-41dc-8804-5a4ba785fb51
-:END:
-
-I got this from [[https://github.com/seagle0128/.emacs.d/blob/master/lisp/init-hydra.el][centaur emacs]].
-
-#+begin_src emacs-lisp
-(cl-defun pretty-hydra-title (title &optional icon-type icon-name
-                                    &key face height v-adjust)
-  "Add an icon in the hydra title."
-  (let ((face (or face `(:foreground ,(face-background 'highlight))))
-        (height (or height 1.0))
-        (v-adjust (or v-adjust 0.0)))
-    (concat
-     (when (and (icons-displayable-p) icon-type icon-name)
-       (let ((f (intern (format "all-the-icons-%s" icon-type))))
-         (when (fboundp f)
-           (concat
-            (apply f (list icon-name :face face :height height :v-adjust v-adjust))
-            " "))))
-     (propertize title 'face face))))
-#+end_src
-
-*** toggle
-:PROPERTIES:
-:ID: 10d6851b-6af6-4185-8976-0ad65b3d1d28
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:toggle (:title (pretty-hydra-title "Toggles" 'faicon "toggle-on")
-                                   :color amaranth :quit-key "q")
-  ("No Title"
-   (("l" display-line-numbers "line-numbers")
-    ("c" caps-lock "caps-lock")
-    ("d" debug-on-error "debug"))
-   "Other"
-   (("f" void/set-font "font face")
-    ("L" org-toggle-link-display "link display")
-    ("s" void/set-font-size "font size"))))
-#+end_src
-
-*** theme
-:PROPERTIES:
-:ID:       e3525bb4-8b8c-4a87-ac23-f9627c6e55bb
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:theme (:title (pretty-hydra-title "Themes" 'faicon "paint-brush")
-                                  :color amaranth :quit-key "q")
-  ("Traverse"
-   (("j" theme-looper-enable-next-theme "next")
-    ("k" theme-looper-enable-previous-theme "previous"))
-   "Favorites"
-   (("f" theme-looper/add-current-theme-to-favorites "favorites")
-    ("f" theme-looper/add-current-theme-to-ignored "ignore"))
-   "Random"
-   (;; ("d" theme-looper/enable-random-dark-theme "dark")
-    ;; ("l" theme-looper/enable-random-light-theme "light")
-    ("r" theme-looper-enable-random-theme "random")
-    ("I" theme-looper/enable-random-ignored-theme "ignored")
-    ("F" theme-looper/enable-random-favorite-theme "favorite"))
-   "circadian"
-   (("t" circadian/set-current-theme-for-time "display at particular time"))))
-#+end_src
-
-*** window
-:PROPERTIES:
-:ID:       71951e0f-fbb9-4458-be9f-ce439e1eedcd
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:window (:title (pretty-hydra-title "Windows" 'faicon "windows")
-                                   :color amaranth
-                                   :quit-key "q")
-  ("Traverse"
-   (("h" windmove-left "move left")
-    ("j" windmove-down "move down")
-    ("k" windmove-up "move up")
-    ("l" windmove-right "move right"))
-   "Resize"
-   (("M" maximize-window "maximize")
-    ("m" minimize-window "minimize")
-    ("b" balance-windows "balance"))
-   "Split"
-   (("s" split-window-horizontally "horizontally")
-    ("v" split-window-vertically "vertically"))
-   "Transpose"
-   (("t" transpose-frame "vertically")
-    ("v" transpose- "horizontally"))
-   "Actions"
-   (("a" ace-select-window "select")
-    ("w" ace-swap-window "swap")
-    ("d" delete-window "delete")
-    ("D" delete-other-windows "delete others"))
-   "Zoom"
-   (("z" zoom-in "zoom-in")
-    ("Z" zoom-out "zoom-out"))))
-#+end_src
-
-*** help
-:PROPERTIES:
-:ID:       0f7f0487-d554-4957-a834-6aef6ea89028
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:help (:title (pretty-hydra-title "Help" 'material "help")
-                                 :color amaranth :quit-key "q")
-  ("Describe"
-   (("v" describe-variable "variable")
-    ("f" describe-function "function")
-    ("k" describe-key "key"))
-   "Apropos"
-   (("a" apropos "apropos")
-    ("V" apropos-variable "variable"))))
-#+end_src
-
-*** packages
-:PROPERTIES:
-:ID:       4187c7f4-8b54-4ac3-bcec-cb84a63466e0
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:packages (:title (pretty-hydra-title "Packages" 'octicon "package")
-                                     :color pink :quit-key "q")
-  ("Installation"
-   (("i" package-install "install")
-    ("c" remove "remove")
-    ("l" paradox "debug"))
-   ""
-   (("f" #'paradox-list-packages "font face")
-    ("L" org-toggle-link-display "link display")
-    ("s" void/set-font-size "font size"))))
-#+end_src
-
-*** quit
-:PROPERTIES:
-:ID:       08725792-4030-4224-a678-e70f84495d51
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:quit (:title (pretty-hydra-title "quit" 'faicon "power-off")
-                                 :color amaranth :quit-key "q")
-  ("Emacs"
-   (("q" evil-quit-all "next")
-    ("s" void/quit-emacs-no-prompt "with no prompt")
-    ("Q" evil-save-and-quit "and save")
-    ("D" void/kill-emacs-no-hook "with no hook")
-    ("Q" void/kill-emacs-brutally "brutally"))
-   "Restart"
-   (("r" restart-emacs "and restart"))
-   "Processes"
-   (("p" void/kill-emacs-processes "favorites"))))
-#+end_src
-
-*** app
-:PROPERTIES:
-:ID:       ae7ffbcd-07f5-4b23-a134-262e51485be0
-:END:
-
-#+begin_src emacs-lisp
-(pretty-hydra-define hydra:app (:title (pretty-hydra-title "Apps" 'faicon "")
-                                :color amaranth :quit-key "q")
-  ("Browsers"
-   (("f" firefox "next")
-    ("q" qutebrowser "with no hook")
-    ("n" next "random"))
-   "Processes"
-   (("p" void/kill-emacs-processes "favorites"))))
-#+end_src
-
 ** help and documentation
 :PROPERTIES:
 :ID:       3c01c053-fe6f-4a7a-92a5-6d4de7caac0a
@@ -9207,7 +9022,8 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :ID: 92c199ad-5862-4fe3-be04-44c94d4286b6
 :END:
 
-[[helpvar:void-init-time][void-init-time]] is more accurate than dashboard's init time measure. So I use it instead.
+[[helpvar:void-init-time][void-init-time]] is more accurate than dashboard's init time measure. So I use it
+instead.
 
 #+begin_src emacs-lisp
 (defadvice! show-package-load-time (:before dashboard-insert-startupify-lists)
