@@ -3017,11 +3017,12 @@ https://www.emacswiki.org/emacs/TransposeFrame
 
 #+begin_src emacs-lisp
 (use-package! transpose-frame
-  :commands (transpose-frame
-             flip-frame
-             flop-frame
-             rotate-frame
-             rotate-frame-clockwise))
+  :commands
+  transpose-frame
+  flip-frame
+  flop-frame
+  rotate-frame
+  rotate-frame-clockwise)
 #+end_src
 
 ** exwm
@@ -3186,12 +3187,13 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (use-package! buffer-expose
-  :commands (buffer-expose
-             buffer-expose-no-stars
-             buffer-expose-major-mode
-             buffer-expose-dired-buffers
-             buffer-expose-stars
-             buffer-expose-current-mode)
+  :commands
+  buffer-expose
+  buffer-expose-no-stars
+  buffer-expose-major-mode
+  buffer-expose-dired-buffers
+  buffer-expose-stars
+  buffer-expose-current-mode
   :setq
   (buffer-expose-show-current-buffer . t)
   (buffer-expose-rescale-factor      . 0.5)
