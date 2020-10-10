@@ -247,6 +247,20 @@ Emacs/the OS decide what encoding to use.
   (set-charset-priority 'unicode))
 #+end_src
 
+*** initial buffer choice
+:PROPERTIES:
+:ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
+:END:
+
+#+begin_src emacs-lisp
+(defun void-initial-buffer ()
+  "Return the initial buffer to be displayed.
+This function is meant to be used as the value of `initial-buffer-choice'."
+  (if void-debug-p
+      (get-buffer "*Messages*")
+    (get-buffer "*scratch*")))
+#+end_src
+
 ** Package Manager Bootstrap
 :PROPERTIES:
 :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
@@ -1482,7 +1496,7 @@ specific packages.
 :ID: 9725b7e0-54b8-4ab4-aa00-d950345d0aea
 :END:
 
-Emacs starts up with a default screen setup. No, thanks.
+Emacs starts up with a default screen.
 
 #+begin_src emacs-lisp
 (use-feature! startup
@@ -1492,7 +1506,7 @@ Emacs starts up with a default screen setup. No, thanks.
   (inhibit-startup-buffer-menu . t)
   (initial-major-mode . 'fundamental-mode)
   (initial-scratch-message . nil)
-  (initial-buffer-choice . (if void-debug-p (lambda () (get-buffer "*Messages*")) t))
+  (initial-buffer-choice . #'void-initial-buffer)
   (inhibit-startup-echo-area-message . user-login-name))
 #+end_src
 
@@ -9007,9 +9021,9 @@ startup. If I start my emacs with =dashboard= I can avoid this.
   :require t
   :hook (window-setup-hook . dashboard-insert-startupify-lists)
   :init
-  (defun void-initial-buffer ()
-    "Return the initial buffer to be displayed."
-    (get-buffer-create dashboard-buffer-name))
+  (defadvice! open-dashboard-instead (:override void-initial-buffer)
+    (if void-debug-p (get-buffer "*Messages*")
+      (get-buffer-create "*dashboard*")))
   :setq
   (dashboard-items . nil)
   (dashboard-startup-banner . 2)
