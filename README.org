@@ -9191,11 +9191,15 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 (use-package! dashboard
   :require t
   :hook (window-setup-hook . dashboard-insert-startupify-lists)
+  :init
+  (defun void-initial-buffer ()
+    "Return the initial buffer to be displayed."
+    (get-buffer-create dashboard-buffer-name))
   :setq
   (dashboard-items . nil)
   (dashboard-startup-banner . 2)
   (dashboard-center-content . t)
-  (initial-buffer-choice . (lambda () (get-buffer-create dashboard-buffer-name))))
+  (initial-buffer-choice . #'void-initial-buffer))
 #+end_src
 
 *** dashboard-init-info
