@@ -5415,7 +5415,9 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 
 #+begin_src emacs-lisp
 (use-package! powerthesaurus
-  :commands (powerthesaurus-lookup-word-at-point power-thesaurus-lookup-word-dwim))
+  :commands
+  powerthesaurus-lookup-word-at-point
+  power-thesaurus-lookup-word-dwim)
 #+end_src
 
 *** dictionary
@@ -5963,7 +5965,9 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 
 #+begin_src emacs-lisp
 (use-package! evil-visualstar
-  :commands (evil-visualstar/begin-search-backward evil-visualstar/begin-search-forward)
+  :commands
+  evil-visualstar/begin-search-backward
+  evil-visualstar/begin-search-forward
   :bind (:evil-visual-state-map
          ("#" . evil-visualstar/begin-search-backward)
          ("*" . evil-visualstar/begin-search-forward)))
@@ -5979,7 +5983,11 @@ larger text objects. It's saves me keystrokes.
 
 #+begin_src emacs-lisp
 (use-package! expand-region
-  :commands (er/expand-region er/contract-region er/mark-symbol er/mark-word)
+  :commands
+  er/expand-region
+  er/contract-region
+  er/mark-symbol
+  er/mark-word
   :init
   (general-def 'visual
     "V" #'er/contract-region
@@ -7634,7 +7642,10 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 
 #+begin_src emacs-lisp
 (use-package! macrostep
-  :commands (macrostep-expand macrostep-collapse macrostep-collapse-all)
+  :commands
+  macrostep-expand
+  macrostep-collapse
+  macrostep-collapse-all
   :init (define-localleader-key!
           :infix "m"
           :keymaps 'emacs-lisp-mode-map
