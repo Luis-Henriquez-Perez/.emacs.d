@@ -1373,20 +1373,8 @@ VOID is compiled.
 (leaf:set-alias :straight :void-straight)
 (leaf:set-alias :ensure :void-straight)
 
-(leaf:set-normalizer :void-straight #'leaf:void-straight-normalizer)
-
-(define-leaf-keyword! void-straight (before :straight)
-  `(,@(when (and leaf--value (car-safe leaf--value))
-        `((straight:install-package ',(car leaf--value))))
-    ,@leaf--body))
-
-(defun leaf:void-straight-normalizer (leaf--value)
-  (cond ((eq t (car leaf--value))
-         (list leaf--name))
-        ((eq nil (car leaf--value))
-         nil)
-        ((listp (car-safe leaf--value))
-         (list (cons leaf--name (car leaf--value))))))
+(defleaf! straight (before (recipe) ensure)
+  `(straight:install-package ,recipe))
 #+end_src
 
 **** popup
