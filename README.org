@@ -1281,17 +1281,14 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
 :END:
 
-**** use =after!= in leaf-defer                                         :disabled:
+**** hook
 :PROPERTIES:
-:ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
+:ID:       466aa260-d4de-4e0b-8f77-f29b1157e916
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! defer (before leaf-defer :leaf-defer)
-  (if (and <body> (not (null (car <value>)))
-           (leaf-list-memq leaf-defer-keywords (leaf-plist-keys <raw>)))
-      `((after! ,<name> ,@<body>))
-    `(,@<body>)))
+(defleaf! void-hook (:before (var . hook) hook)
+  (void-add-hook ',var #',hook))
 #+end_src
 
 **** set keywords
