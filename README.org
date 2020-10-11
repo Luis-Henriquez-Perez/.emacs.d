@@ -1011,7 +1011,7 @@ from pulling (or failing to pull) in autoloaded macros/features.
      (macroexp-progn
       (mapcar (lambda (it) `(after! ,it ,@body)) (cdr features))))
     ('and
-     (void-wrap-form (--map `(after! ,it) (cdr features))
+     (void-wrap-form (mapcar (lambda (it) `(after! ,it)) (cdr features))
                      (macroexp-progn body)))
     ((guard (listp features))
      `(after! ,(cons 'and features) ,@body))
