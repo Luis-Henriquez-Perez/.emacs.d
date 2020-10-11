@@ -1287,16 +1287,16 @@ motivation for creating this is that while.
           ((where lambda-args place) args)
           (name (intern (s-chop-suffix "*" (symbol-name name))))
           (keyword (void-keyword-intern name))
-          (insert-fn (void-symbol-intern 'leaf~insert- where))
-          (fn (void-symbol-intern 'leaf~~apply- name)))
+          (leaf-insert (void-symbol-intern 'leaf~insert- where))
+          (leaf-apply (void-symbol-intern 'leaf~~apply- name)))
     `(progn
        (setq leaf-keywords (leaf~remove-existing ,keyword))
        (setq leaf-keywords
-             (funcall ,insert-fn
+             (funcall ,leaf-insert
                       ,(void-keyword-intern place)
                       ,keyword
-                      '(,fn ,@(leaf~vars))))
-       (defun ,fn (,@(leaf~anaphoric-vars))
+                      '(,leaf-apply ,@(leaf~vars))))
+       (defun ,leaf-apply (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (-list <value>)))
            ,(if wrap-p `(list (progn ,@body))
               `(cons (progn ,@body) <body>)))))))
