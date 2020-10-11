@@ -1191,68 +1191,6 @@ to the built-in leaf normalizer functionality. The goal is to greatly simplify
 the definition of leaf keywords by only considering one value for each keyword.
 However, normalizers only work once the value has been passed in to the macro.
 
-**** process alist
-:PROPERTIES:
-:ID:       40005257-0bd8-4e5a-b422-ae2df3931028
-:END:
-
-#+begin_src emacs-lisp
-(defvar leaf~process-alist nil)
-#+end_src
-
-**** preprocess fn
-:PROPERTIES:
-:ID:       fb3ada26-d3c8-427a-b449-3d851c9413f0
-:END:
-
-Processing functions should take in a key and other values and they should
-return an alist of key value.
-
-#+begin_src emacs-lisp
-(defun leaf~general-process (key value)
-  "Return a cons cell with key as cdr."
-  (if (or (atom value) (-cons-pair-p value))
-      (list (cons key value))
-    (-annotate (-const key)
-               (if (= (length value) 1) (car value) value))))
-
-(push (cons t #'leaf~general-process) leaf~process-alist)
-#+end_src
-
-**** preprocess fn
-:PROPERTIES:
-:ID:       16bf5a3b-4357-4c27-bd21-baebbb40ef2f
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~pre-process-fn (pair)
-  (alet (or (alist-get (car pair) leaf~process-alist)
-            (alist-get t leaf~process-alist))
-    (funcall it (car pair) (cdr pair))))
-#+end_src
-
-**** bind key preprocess
-:PROPERTIES:
-:ID:       25939414-7f07-4ea3-9354-c92ae3bff2a0
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-**** TODO flatten keywords
-:PROPERTIES:
-:ID:       fd75a615-9a74-4cbb-9ce9-7a9df3462066
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~flatten-keywords (args)
-  "Flatten keywords."
-  (->> (-partition-by-header #'keywordp args)
-       (-mapcat #'leaf~pre-process-fn)
-       (-map #'-cons-to-list)
-       (-flatten-n 1)))
-#+end_src
-
 **** leaf!
 :PROPERTIES:
 :ID:       08644318-e08f-4bc5-8147-90dc2939498b
