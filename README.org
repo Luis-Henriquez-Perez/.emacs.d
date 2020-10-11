@@ -635,7 +635,11 @@ This function is to help produce names that abide by hook naming conventions.
 #+begin_src emacs-lisp
 (defun void-hook-name (var hook)
   "Return a hook name that meets Void naming conventions."
-  (intern (format "%s&%s" var hook)))
+  (funcall (-partial #'void-symbol-intern var '&)
+           (or (->> (symbol-name hook)
+                    (s-match "void--\\([^[:space:]]+\\)-hook")
+                    (nth 1))
+               hook)))
 #+end_src
 
 **** adding hooks
@@ -675,9 +679,10 @@ function.
   (declare (doc-string 3))
   (-let (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp)
                                                args))
+         (fn (void-symbol-intern 'void-- name '-hook))
          (docstring (if (stringp (car body)) (pop body) nil)))
     `(progn
-       ,@(-map (-lambda ((fn . hook))
+       ,@(-map (lambda (hook)
                  `(progn (void-add-hook ',hook #',fn ,depth ,local)
                          (defun ,fn (&rest _) ,docstring
                                 (void-log "& %s -> %s" ',hook ',name)
@@ -744,7 +749,11 @@ ADVICE is an advice of the form \"advisee@advisor\", where this function returns
 (defun void-advice-name (fn advice)
   "Return advice name that meets Void naming conventions.
 Advice name is of the form FN@ADVICE."
-  (intern (format "%s@%s" fn advice)))
+  (funcall (-partial #'void-symbol-intern fn '@)
+           (or (->> (symbol-name advice)
+                    (s-match "void--\\([^[:space:]]+\\)-advice")
+                    (nth 1))
+               advice)))
 #+end_src
 
 **** adding advice
@@ -824,16 +833,20 @@ more consistent with =defun=.
 #+begin_src emacs-lisp
 (defmacro define-advice! (name args &rest body)
   "A wrapper around `define-advice'.
-The only difference is that this switches the order the arguments have to be passed in.
+The only difference is that this switches the order the arguments have to be
+passed in.
 
 \(fn ACTION (WHERE &optional ADVICE-ARGS TARGET &rest TARGETS) &rest BODY)"
   (declare (indent 2) (doc-string 3) (debug (sexp sexp body)))
   (unless (listp args)
     (signal 'wrong-type-argument (list #'listp args)))
-  (-let [(where lambda-args fn depth) args]
-    `(define-advice ,fn (,where ,lambda-args ,name ,depth)
-       (void-log "@ %s -%s-> %s" ',fn ,(void-keyword-name where) ',name)
-       ,@body)))
+  (-let (((where lambda-args fn props) args))
+    `(alet
+         (defun ,(void-symbol-intern 'void-- name '-advice) ,lambda-args
+           (void-log "@ %s -%s-> %s" ',fn ,(void-keyword-name where) ',name)
+           ,@body)
+       (void-add-advice #',fn ,where it ,props)
+       it)))
 #+end_src
 
 ***** anaphoric defadvice!
