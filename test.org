@@ -344,5 +344,4 @@
 #+begin_src emacs-lisp
 (ert-deftest leaf~anaphoric-vars ()
   (should (leaf~anaphoric-vars)))
-
 #+end_src
