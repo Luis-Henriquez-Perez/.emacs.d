@@ -1396,8 +1396,8 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! os (before :when)
-  (when leaf--body `((with-os! ,leaf--value ,@leaf--body))))
+(defleaf! os (before (os) :when)
+  `(with-os! ,os ,@<body>))
 #+end_src
 
 **** straight
