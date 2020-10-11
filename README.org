@@ -587,7 +587,7 @@ Bare symbols in BINDINGS are equivalent to:
 
 #+begin_src emacs-lisp
 (defmacro let! (bindings &rest body)
-  ())
+  (let))
 
 (defmacro let!! (bindings &rest body)
   ())
