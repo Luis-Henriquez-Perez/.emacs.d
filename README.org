@@ -515,7 +515,7 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 #+begin_src emacs-lisp
 (defun void-anaphoric-symbols (body)
   "Return all the anaphoric symbols in body."
-  (->> (-flatten body)
+  (thread-last (-flatten body)
     (-filter #'void-anaphoric-symbol-p)
     (-uniq)))
 #+end_src
@@ -540,7 +540,7 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 (defmacro with-symbols! (names &rest body)
   "Bind each variable in NAMES to a unique symbol and evaluate BODY."
   (declare (indent defun))
-  `(let ,(-map (lambda (symbol) `(,symbol (make-symbol ,(symbol-name symbol)))) names)
+  `(let ,(mapcar (lambda (symbol) `(,symbol (make-symbol ,(symbol-name symbol)))) names)
      ,@body))
 #+end_src
 
@@ -568,9 +568,9 @@ Bare symbols in BINDINGS are equivalent to:
                     (if (consp bind)
                         (cons (car bind) (cadr bind))
                       (cons bind bind))))
-         (names-and-forms (-map bind-fn bindings))
-         (names (-map #'car names-and-forms))
-         (forms (-map #'cdr names-and-forms))
+         (names-and-forms (mapcar bind-fn bindings))
+         (names (mapcar #'car names-and-forms))
+         (forms (mapcar #'cdr names-and-forms))
          (symbols (--map (make-symbol (symbol-name it)) names)))
     `(with-symbols! ,symbols
        (list 'let
@@ -619,7 +619,7 @@ example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504
 (defun void-hook-var (hook-fn)
   "Return the hook variable HOOK-FN is in.
 HOOK-FN is a function named with Void naming conventions."
-  (->> (symbol-name hook-fn)
+  (thread-last (symbol-name hook-fn)
        (s-match (rx (group (1+ anything)) "&"))
        (nth 1)
        (intern)))
@@ -636,7 +636,7 @@ This function is to help produce names that abide by hook naming conventions.
 (defun void-hook-name (var hook)
   "Return a hook name that meets Void naming conventions."
   (funcall (-partial #'void-symbol-intern var '&)
-           (or (->> (symbol-name hook)
+           (or (thread-last (symbol-name hook)
                     (s-match "void--\\([^[:space:]]+\\)-hook")
                     (nth 1))
                hook)))
@@ -650,7 +650,7 @@ This function is to help produce names that abide by hook naming conventions.
 #+begin_src emacs-lisp
 (defun void-hook-action (hook)
   "Return the action for hook."
-  (->> (symbol-name hook)
+  (thread-last (symbol-name hook)
        (s-match (rx "&" (group (1+ (not (any "&" white)))) eos))
        (nth 1)))
 #+end_src
@@ -676,7 +676,7 @@ function, change it to a hook.
                (void-log "& %s -> %s" ',var it))))
     (advice-add new-hook :before hook-log)
     (when expire-fn
-      (->> (void-expire-advice hook expire-fn t)
+      (thread-last (void-expire-advice hook expire-fn t)
            (advice-add new-hook :around)))))
 #+end_src
 
@@ -701,7 +701,7 @@ function.
          (fn (void-symbol-intern 'void-- name '-hook))
          (docstring (if (stringp (car body)) (pop body) nil)))
     `(progn
-       ,@(-map (lambda (hook)
+       ,@(mapcar (lambda (hook)
                  `(progn (void-add-hook ',hook #',fn ,depth ,local)
                          (defun ,fn (&rest _) ,docstring
                                 ,@body)))
@@ -752,7 +752,7 @@ system I provide, doing this is trivial.
   "Return the function advised by FN.
 ADVICE is an advice of the form \"advisee@advisor\", where this function returns
 \"advisee\"."
-  (->> (symbol-name advice)
+  (thread-last (symbol-name advice)
        (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
        (nth 1)
        (intern)))
@@ -768,7 +768,7 @@ ADVICE is an advice of the form \"advisee@advisor\", where this function returns
   "Return advice name that meets Void naming conventions.
 Advice name is of the form FN@ADVICE."
   (funcall (-partial #'void-symbol-intern fn '@)
-           (or (->> (symbol-name advice)
+           (or (thread-last (symbol-name advice)
                     (s-match "void--\\([^[:space:]]+\\)-advice")
                     (nth 1))
                advice)))
@@ -798,7 +798,7 @@ This function generates a new."
                (void-log "@ %s -%s-> %s" #',target ,where it))))
     (advice-add new-advice :before log-advice)
     (when expire-fn
-      (->> (void-expire-advice target expire-fn)
+      (thread-last (void-expire-advice target expire-fn)
            (advice-add new-advice :around)))))
 #+end_src
 
@@ -810,7 +810,7 @@ This function generates a new."
 #+begin_src emacs-lisp
 (defun void-advice-action (advice)
   "Return the action for advice."
-  (->> (symbol-name advice)
+  (thread-last (symbol-name advice)
        (s-match (rx "@" (group (1+ (not (any "@" white)))) eos))
        (nth 1)))
 #+end_src
@@ -907,7 +907,7 @@ Instead, arguments are accessed via anaphoric variables.
                          '(&rest <args>))))
     `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
        (ignore <args>)
-       (cl-progv (->> (help-function-arglist #',target t)
+       (cl-progv (thread-last (help-function-arglist #',target t)
                       (--remove (s-starts-with-p "@" (symbol-name it)))
                       (--map (intern (format "<%s>" (symbol-name it)))))
            <args>
@@ -1065,10 +1065,10 @@ FN is a function that accepts two arguments, the structure and a symbol name. FN
 should return the value of structure for that symbol.
 BODY contains any number of `<NAME>' where NAME refers to the name of the symbol."
   (declare (indent 2))
-  (let* ((symbols (->> (flatten-list body)
+  (let* ((symbols (thread-last (flatten-list body)
                        (-filter #'void-anaphoric-symbol-p)
                        (-uniq)))
-         (names (-map #'void-anaphoric-true-symbol symbols))
+         (names (mapcar #'void-anaphoric-true-symbol symbols))
          (structure-sym (make-symbol "structure")))
     `(let* ((,structure-sym ,structure)
             ,@(--map `(,it (funcall ,fn ,structure-sym ',it))
@@ -1288,11 +1288,11 @@ evaluated.
 
 #+begin_src emacs-lisp
 (defun leaf:normalize-setq (leaf--value)
-  (-map (-lambda ((var . value)) (cons var value))
+  (mapcar (-lambda ((var . value)) (cons var value))
         leaf--value))
 
 (defun leaf:normalize-commands (leaf--value)
-  (-map (lambda (elm)
+  (mapcar (lambda (elm)
           (cond ((memq leaf--key '(:after))
                  (if (eq elm t) leaf--name elm))
                 (t elm)))
@@ -1511,7 +1511,7 @@ specific packages.
 
 (define-leaf-keyword! alias (before :init)
   `((eval-and-compile
-      ,@(-map (-lambda ((alias . def)) `(defalias ',alias ',def))
+      ,@(mapcar (-lambda ((alias . def)) `(defalias ',alias ',def))
               leaf--value))
     ,@leaf--body))
 #+end_src
@@ -1691,7 +1691,7 @@ think you want to use =smtp=.
 :END:
 
 #+begin_src emacs-lisp
-;; This is where `->>' and `thread-first' come from.
+;; This is where `thread-last' and `thread-first' come from.
 (use-feature! subr-x
   :require t)
 #+end_src
@@ -3341,7 +3341,7 @@ This is the user-facing function to define yasnippets.
 
     (alet (append
            (list "# -*- mode: snippet -*-\n")
-           (->> keys
+           (thread-last keys
                 (--filter (plist-get plist it))
                 (--map (format "# %s: %s\n" (void-keyword-name it) (plist-get plist it))))
            (list "# --\n")
@@ -3359,7 +3359,7 @@ This is the user-facing function to define yasnippets.
 #+begin_src emacs-lisp
 (defun defsnippet:compute-body (body placeholders)
   "Return the result of PLACEHOLDERS applied to BODY."
-  (alet (-map (-lambda ((number name form))
+  (alet (mapcar (-lambda ((number name form))
                 (if (eq '_  name)
                     (format "${%d:$$%S}" number form)
                   (format "${%d:%s$%S}" number name form)))
@@ -3442,7 +3442,7 @@ For extremely good documentation.
   :mode 'org-mode
   :key "hvar"
   :body "[[helpvar:$1][%s]%s"
-  :placeholders '((1 variable (->> (defsnippet:list-symbols #'helpful--variable-p)
+  :placeholders '((1 variable (thread-last (defsnippet:list-symbols #'helpful--variable-p)
                                (yas-choose-value)
                                (yas-auto-next)))
                   (0 _ (insert "]"))))
@@ -3458,7 +3458,7 @@ For extremely good documentation.
   :mode 'org-mode
   :key "oid"
   :body "[[id:%s][#%s]$0"
-  :placeholders '((1 _ (->> (hash-table-keys org-id-locations)
+  :placeholders '((1 _ (thread-last (hash-table-keys org-id-locations)
                         (yas-choose-value)
                         (yas-auto-next)))
                   (2 _ (substring (yas-field-value 1) 0 5))
@@ -4135,7 +4135,7 @@ reason I spent so much time setting this up is because.
 #+begin_src emacs-lisp
 (defun pass:email-list ()
   "Return a list of emails."
-  (->> (password-store-list)
+  (thread-last (password-store-list)
        (--map (elt (s-match "email/\\(.*\\)" it) 1))
        (-non-nil)))
 #+end_src
@@ -4149,7 +4149,7 @@ reason I spent so much time setting this up is because.
 (defun pass:email-account-plist (email)
   "Return a plist of the relevant values of an email."
   (shut-up!
-    (->> (cdr (password-store-parse-entry email))
+    (thread-last (cdr (password-store-parse-entry email))
          (mapcar #'car)
          (--mapcat (list (intern it)
                          (password-store-get-field (concat "email/" email) it))))))
@@ -4208,7 +4208,7 @@ If there is no match, return POSSIBLE-NAME."
 (defadvice! setup-contexts (:before mu4e)
   "Initiaize context for each email account."
   (require 'password-store)
-  (--each (-map #'mu4e::account-context (pass:email-list))
+  (--each (mapcar #'mu4e::account-context (pass:email-list))
     (cl-pushnew it mu4e-contexts)))
 #+end_src
 
@@ -4966,7 +4966,7 @@ the time.
   "Return the bounds of the description at point.
 ELEMENTS is a list of headline elements (see `org:element-headline-elements')."
   (awhen (-find (-some-p (-partial #'org:element-contains-point-p point) it)
-                (->> (cdr elements)
+                (thread-last (cdr elements)
                      (-group-by #'org:element-paragraph-p)
                      (-filter (-compose #'org:element-paragraph-p #'car))))
     (cons (org-element-property :contents-begin (-first-item it))
@@ -5001,7 +5001,7 @@ If there is no description element, return a cons cell containing the the point
 where the point should go."
   ;; There are no paragraph elements.
   (acond ((-any-p #'org:element-paragraph-p elements)
-          (alet (->> elements
+          (alet (thread-last elements
                      (-partition-by #'org:element-paragraph-p)
                      (-filter (-compose #'org:element-paragraph-p #'-first-item))
                      (-first-item))
@@ -5756,7 +5756,7 @@ practice, this is rarely an issue.
   (evil-define-text-object evil:textobj-inner-form (count &rest _)
     "Inner sexp object."
     (-if-let ((beg . end)
-              (->> (list (lispy--bounds-list) (lispy--bounds-string))
+              (thread-last (list (lispy--bounds-list) (lispy--bounds-string))
                    (-non-nil)
                    (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
                    (car)))
@@ -5766,7 +5766,7 @@ practice, this is rarely an issue.
   (evil-define-text-object evil:textobj-outer-form (count &rest _)
     "Smartparens inner sexp object."
     (-if-let ((beg . end)
-              (->> (list (lispy--bounds-list) (lispy--bounds-string))
+              (thread-last (list (lispy--bounds-list) (lispy--bounds-string))
                    (-non-nil)
                    (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
                    (car)))
@@ -6404,7 +6404,7 @@ generate the body of the eshell prompt.
 This function generates the eshell prompt by concatenating `eshell:header' with
 valid `eshell:enabled-sections' and the `eshell-prompt-string'."
   (concat eshell:header
-          (->> eshell:enabled-sections
+          (thread-last eshell:enabled-sections
                (mapcar (lambda (it) (void-symbol-intern 'eshell-prompt-- it)))
                (-filter #'fboundp)
                (-reduce-from #'eshell:acc ""))
