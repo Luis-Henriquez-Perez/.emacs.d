@@ -1337,12 +1337,10 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! before-call (before :hook)
-  (let ((advice (void-symbol-intern 'load- )))
-    `(progn (void-advice-add ,<value> :before ,advice (-const t))
-            (defadvice! ,advice (before)
-              "Load package."
-              (void:log "Loading")
-              (require ',<name>)))))
+  `(defadvice! ,advice (before)
+     "Load package."
+     (void:log "Loading")
+     (require ',<name>)))
 #+end_src
 
 ***** TODO after-call
