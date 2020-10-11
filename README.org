@@ -1346,7 +1346,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! after-call (before (fn) commands)
+(defleaf! after-call (before (fn) hook)
   `(defadvice! ,(void-symbol-intern 'load- <package>) (:after ,fn)
      (require ',<package>)))
 #+end_src
