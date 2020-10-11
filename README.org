@@ -605,19 +605,6 @@ Void-defined hooks, so I can clearly distinguish them from pre-defined hooks.
                (symbol-name fn)))
 #+end_src
 
-**** hook name
-:PROPERTIES:
-:ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
-:END:
-
-This function is to help produce names that abide by hook naming conventions.
-
-#+begin_src emacs-lisp
-(defun void-hook-name (var hook)
-  "Return a hook name that meets Void naming conventions."
-  (intern (format "%s&%s" var hook)))
-#+end_src
-
 **** hook variable
 :PROPERTIES:
 :ID:       77f45347-3688-438d-8674-39e6d476a2d1
@@ -638,6 +625,38 @@ HOOK-FN is a function named with Void naming conventions."
        (intern)))
 #+end_src
 
+**** hook name
+:PROPERTIES:
+:ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
+:END:
+
+This function is to help produce names that abide by hook naming conventions.
+
+#+begin_src emacs-lisp
+(defun void-hook-name (var hook)
+  "Return a hook name that meets Void naming conventions."
+  (intern (format "%s&%s" var hook)))
+#+end_src
+
+**** adding hooks
+:PROPERTIES:
+:ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
+:END:
+
+Add a hook that follow naming conventions. When adding a hook, if it is a void
+function, change it to a hook.
+
+#+begin_src emacs-lisp
+(defun void-add-hook (var hook &optional depth local expire-fn)
+  "Alias HOOK to match Void naming conventions and add it to VAR."
+  (alet (void-hook-name var hook)
+    (defalias it hook)
+    (add-hook var it depth local)
+    (when expire-fn
+      (->> (void-expire-advice hook expire-fn t)
+           (advice-add it :around)))))
+#+end_src
+
 **** defhook!
 :PROPERTIES:
 :ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
@@ -654,15 +673,16 @@ function.
 
 \(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
   (declare (doc-string 3))
-  (-let (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp) args))
+  (-let (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp)
+                                               args))
          (docstring (if (stringp (car body)) (pop body) nil)))
     `(progn
        ,@(-map (-lambda ((fn . hook))
-                 `(progn (add-hook ',hook #',fn ,depth ,local)
+                 `(progn (void-add-hook ',hook #',fn ,depth ,local)
                          (defun ,fn (&rest _) ,docstring
                                 (void-log "& %s -> %s" ',hook ',name)
                                 ,@body)))
-               (-annotate (-rpartial #'void-hook-name name) hooks)))))
+               hooks))))
 #+end_src
 
 *** advice
@@ -744,7 +764,8 @@ appropriate name to target.
     (defalias it advice)
     (advice-add target where it props)
     (when expire-fn
-      (advice-add it :around (void-expire-advice target it)))))
+      (->> (void-expire-advice target expire-fn)
+           (advice-add it :around)))))
 #+end_src
 
 **** expire advice
