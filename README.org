@@ -1298,7 +1298,7 @@ motivation for creating this is that while.
                       '(,leaf-apply ,@(leaf~vars))))
        (defun ,leaf-apply (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (-list <value>)))
-           ,(if wrap-p `(list (progn ,@body))
+           ,(if wrap-p `(list (progn ,@body) )
               `(cons (progn ,@body) <body>)))))))
 #+end_src
 
