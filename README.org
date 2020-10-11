@@ -1246,7 +1246,7 @@ recall the underlying leaf data structure.
 
 #+begin_src emacs-lisp
 (defun leaf~anaphoric-vars ()
-  (-map #'void-anaphoric-symbol leaf~base-vars))
+  (--map (void-symbol-intern '< it '>) leaf~base-vars))
 #+end_src
 
 **** defleaf!
