@@ -1277,7 +1277,7 @@ motivation for creating this is that while.
           (insert-fn (void-symbol-intern 'leaf~insert- where))
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       (alet (,insert-fn ,where ,keyword '(,fn ,@(leaf~vars)))
+       (alet (,insert-fn ,place ,keyword '(,fn ,@(leaf~vars)))
          (setq leaf-keywords it))
        (defun ,fn (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (list <value>)))
