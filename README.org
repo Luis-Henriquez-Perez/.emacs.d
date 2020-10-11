@@ -1186,10 +1186,11 @@ first. In other words, the first key value pair is the one that's considered.
 
 #+begin_src emacs-lisp
 (defun leaf~remove-existing (key)
-  (awhen (->> (--find-indices (eq it key) leaf-keywords)
-              (-annotate #'1+)
-              (flatten-list))
-    (-remove-at-indices it leaf-keywords)))
+  (aif (->> (--find-indices (eq it key) leaf-keywords)
+            (-annotate #'1+)
+            (flatten-list))
+      (-remove-at-indices it leaf-keywords)
+    leaf-keywords))
 #+end_src
 
 *** pre-processing leaf arguments
