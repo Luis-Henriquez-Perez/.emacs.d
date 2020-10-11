@@ -587,10 +587,10 @@ Bare symbols in BINDINGS are equivalent to:
 
 #+begin_src emacs-lisp
 (defmacro let! (bindings &rest body)
-  (let))
+  `(pcase-let ,bindings ,@body))
 
 (defmacro let!! (bindings &rest body)
-  ())
+  `(pcase-let* ,bindings ,@body))
 #+end_src
 
 *** hooks
