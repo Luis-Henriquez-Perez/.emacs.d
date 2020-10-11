@@ -1290,6 +1290,16 @@ Leaf keywords do not.
 (leaf:set-normalizer :setq-default #'leaf:normalize-setq)
 #+end_src
 
+**** hook
+:PROPERTIES:
+:ID:       49918d60-23ef-4c74-bfbb-9a19c7c30092
+:END:
+
+#+begin_src emacs-lisp
+(defleaf! hook (hook . fn)
+  `(void-add-hook ',hook #',fn))
+#+end_src
+
 **** defer keywords
 :PROPERTIES:
 :ID:       6a8189ab-9a7a-4670-aa7a-b6589c180011
