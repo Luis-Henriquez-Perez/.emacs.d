@@ -1383,8 +1383,8 @@ The point of this keyword is to let me configure the display of buffers for
 specific packages.
 
 #+begin_src emacs-lisp
-(defleaf! popup (before :mode)
-  `(push ',<value> display-buffer-alist))
+(defleaf! popup (before (buffer-name) mode)
+  `(push ',buffer-name display-buffer-alist))
 #+end_src
 
 **** os
