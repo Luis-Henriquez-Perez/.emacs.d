@@ -1334,7 +1334,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(define-leaf-keyword! idle-require (before (package) :before-call)
+(defleaf! idle-require (before (package) :before-call)
   `(idle-require ',package))
 #+end_src
 
