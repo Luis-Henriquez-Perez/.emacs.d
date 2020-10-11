@@ -909,7 +909,7 @@ Instead, arguments are accessed via anaphoric variables.
        (ignore <args>)
        (cl-progv (thread-last (help-function-arglist #',target t)
                    (cl-remove-if (lambda (it) (s-starts-with-p "@" (symbol-name it))))
-                   (--map (intern (format "<%s>" (symbol-name it)))))
+                   (mapcar (lambda (it) (intern (format "<%s>" (symbol-name it))))))
            <args>
          ,@body))))
 #+end_src
