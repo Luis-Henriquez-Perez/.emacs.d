@@ -665,7 +665,8 @@ function, change it to a hook.
 
 #+begin_src emacs-lisp
 (defun void-add-hook (var hook &optional depth local expire-fn)
-  "Alias HOOK to match Void naming conventions and add it to VAR."
+  "Alias HOOK to match Void naming conventions and add it to VAR.
+If EXPIRE-FN"
   (let* ((new-hook (void-hook-name var hook))
          (hook-log (void-symbol-intern new-hook '@ 'log-on-debug)))
     (defalias new-hook hook)
