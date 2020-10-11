@@ -569,8 +569,8 @@ Bare symbols in BINDINGS are equivalent to:
                         (cons (car bind) (cadr bind))
                       (cons bind bind))))
          (names-and-forms (-map bind-fn bindings))
-         (names (mapcar #'car names-and-forms))
-         (forms (mapcar #'cdr names-and-forms))
+         (names (-map #'car names-and-forms))
+         (forms (-map #'cdr names-and-forms))
          (symbols (--map (make-symbol (symbol-name it)) names)))
     `(with-symbols! ,symbols
        (list 'let
