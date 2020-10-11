@@ -1066,13 +1066,13 @@ should return the value of structure for that symbol.
 BODY contains any number of `<NAME>' where NAME refers to the name of the symbol."
   (declare (indent 2))
   (let* ((symbols (thread-last (flatten-list body)
-                       (-filter #'void-anaphoric-symbol-p)
-                       (-uniq)))
+                    (seq-filter #'void-anaphoric-symbol-p)
+                    (seq-uniq)))
          (names (mapcar #'void-anaphoric-true-symbol symbols))
          (structure-sym (make-symbol "structure")))
     `(let* ((,structure-sym ,structure)
             ,@(--map `(,it (funcall ,fn ,structure-sym ',it))
-                     (-zip #'list symbols names)))
+                     (cl-mapcar #'list symbols names)))
        ,@body)))
 #+end_src
 
