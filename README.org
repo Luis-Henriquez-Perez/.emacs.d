@@ -1255,6 +1255,9 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
+(defun leaf~normalize-args (plist)
+  "Normalizes the keywords in plist form."
+  (-partition-by-header #'keywordp plist))
 #+end_src
 
 *** custom leaf keywords
