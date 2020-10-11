@@ -1294,7 +1294,7 @@ motivation for creating this is that while.
        (alet (,insert-fn ,(void-keyword-intern place) ,keyword '(,fn ,@(leaf~vars)))
          (setq leaf-keywords it))
        (defun ,fn (,@(leaf~anaphoric-vars))
-         (-let ((,lambda-args <value>))
+         (-let ((,lambda-args (-list <value>)))
            ,(if wrap-p `(list (progn ,@body))
               `(cons (progn ,@body) <body>)))))))
 #+end_src
