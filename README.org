@@ -1191,7 +1191,7 @@ to the built-in leaf normalizer functionality. The goal is to greatly simplify
 the definition of leaf keywords by only considering one value for each keyword.
 However, normalizers only work once the value has been passed in to the macro.
 
-**** use-package!
+*** use-package!
 :PROPERTIES:
 :ID:       08644318-e08f-4bc5-8147-90dc2939498b
 :END:
