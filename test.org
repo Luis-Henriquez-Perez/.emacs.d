@@ -35,7 +35,7 @@
   ;; make sure `ivy-sort-max-size' is not too low.
   (should (>= 30000 ivy-sort-max-size))
   ;; prescient-save-file
-  (should (string= prescient-save-file (concat VOID:DATA-DIR "prescient-save.el")))
+  (should (string= prescient-save-file (concat VOID-DATA-DIR "prescient-save.el")))
   ;; orderless should be doing the filtering.
   (should (null ivy-prescient-enable-filtering))
   ;; ivy prescient can handle the sorting.
@@ -57,9 +57,9 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:advice-p ()
-  (should-not (void:advice-p 'hello))
-  (should (void:advice-p 'hello@world)))
+(ert-deftest void-advice-p ()
+  (should-not (void-advice-p 'hello))
+  (should (void-advice-p 'hello@world)))
 #+end_src
 
 ** advice-name
@@ -68,9 +68,9 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:advice-name ()
-  (should (eq (void:advice-name 'hello 'world) 'hello@world))
-  (should (void:advice-p (void:advice-name 'hello 'world))))
+(ert-deftest void-advice-name ()
+  (should (eq (void-advice-name 'hello 'world) 'hello@world))
+  (should (void-advice-p (void:advice-name 'hello 'world))))
 #+end_src
 
 ** advice-target
@@ -79,8 +79,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:advice-target ()
-  (should (eq 'hello (void:advice-target 'hello@world))))
+(ert-deftest void-advice-target ()
+  (should (eq 'hello (void-advice-target 'hello@world))))
 #+end_src
 
 ** add-advice
@@ -89,11 +89,11 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:add-advice ()
+(ert-deftest void-add-advice ()
   (cl-letf (((symbol-function #'test-fn) (lambda () 1)))
     ;; test function works.
     (should (= 1 (test-fn)))
-    (void:add-advice #'test-fn :override #'ignore)
+    (void-add-advice #'test-fn :override #'ignore)
     ;; successfully advised test function.
     (should (null (test-fn)))
     ;; added `test-fn@ignore' as advice.
@@ -106,11 +106,11 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:remove-advice ()
+(ert-deftest void-remove-advice ()
   (cl-letf (((symbol-function #'test-fn) (lambda () 1)))
-    (void:add-advice #'test-fn :override #'ignore)
+    (void-add-advice #'test-fn :override #'ignore)
     (should (advice-member-p #'test-fn@ignore #'test-fn))
-    (void:remove-advice #'test-fn #'ignore)
+    (void-remove-advice #'test-fn #'ignore)
     (should-not (advice-member-p #'test-fn@ignore #'test-fn))))
 #+end_src
 
@@ -120,14 +120,14 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:expire-advice ()
+(ert-deftest void-expire-advice ()
   (cl-letf (((symbol-function #'test-fn) (lambda () 1))
             ((symbol-function #'test-fn@some-advice) (lambda (&rest _) 0)))
     (should (= 1 (test-fn)))
     (advice-add #'test-fn :override #'test-fn@some-advice)
     ;; `test-fn' was overriden successfully.
     (should (zerop (test-fn)))
-    (advice-add #'test-fn@some-advice :around (void:expire-advice #'test-fn@some-advice))
+    (advice-add #'test-fn@some-advice :around (void-expire-advice #'test-fn@some-advice))
     ;; The expire advice is present.
     (should (advice-member-p #'test-fn@some-advice@expire #'test-fn@some-advice))
     ;; It shouldn't expire immediately.
@@ -142,7 +142,7 @@
     (let ((counter 0))
       (advice-add #'test-fn :override #'test-fn@some-advice)
       (->> (lambda () (= 2 (cl-incf counter)))
-           (void:expire-advice #'test-fn@some-advice)
+           (void-expire-advice #'test-fn@some-advice)
            (advice-add #'test-fn@some-advice :around ))
       (should (zerop (test-fn)))
       (should (zerop (test-fn)))
@@ -233,7 +233,7 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:hook-p ())
+(ert-deftest void-hook-p ())
 #+end_src
 
 ** hook name
@@ -242,8 +242,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:hook-name ()
-  (alet (void:hook-name 'emacs-lisp-mode-hook 'do-something)
+(ert-deftest void-hook-name ()
+  (alet (void-hook-name 'emacs-lisp-mode-hook 'do-something)
     (should (eq it 'emacs-lisp-mode-hook&do-something))))
 #+end_src
 
@@ -253,8 +253,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void:hook-var ()
-  (alet (void:hook-var 'emacs-lisp-mode-hook&do-something)
+(ert-deftest void-hook-var ()
+  (alet (void-hook-var 'emacs-lisp-mode-hook&do-something)
     (should (eq it 'emacs-lisp-mode-hook))))
 #+end_src
 
