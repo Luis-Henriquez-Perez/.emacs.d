@@ -1339,7 +1339,6 @@ provided by leaf. They are inspired from DOOM emacs.
 (defleaf! before-call (before (fn) hook)
   `(defadvice! ,advice (before)
      "Load package."
-     (void:log "Loading")
      (require ',<name>)))
 #+end_src
 
