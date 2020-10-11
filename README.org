@@ -1300,7 +1300,7 @@ motivation for creating this is that while.
        (defun ,leaf-apply (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (-list <value>)))
            ,(if wrap-p `(list (progn ,@body) )
-              `(cons (progn ,@body) <body>)))))))
+              `(cons (progn ,@body) (macroexp-progn <body>))))))))
 #+end_src
 
 *** custom leaf keywords
