@@ -1370,8 +1370,8 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! straight (before ensure)
-  `(straight:install-package ,<value>))
+(defleaf! straight (before (package) ensure)
+  `(straight:install-package ,package))
 #+end_src
 
 **** popup
