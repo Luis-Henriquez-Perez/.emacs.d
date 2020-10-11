@@ -1352,9 +1352,9 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! after-call (before :hook nil t commands)
-  `(progn (defadvice! ,(void-symbol-intern 'load-) (after)
-            "Load package."
-            (require ',<package>))))
+  `(defadvice! ,(void-symbol-intern 'load-) (after)
+     "Load package."
+     (require ',<package>)))
 #+end_src
 
 ***** idle-require
