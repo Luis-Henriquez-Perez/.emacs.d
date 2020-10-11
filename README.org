@@ -9256,13 +9256,13 @@ VOID install. For writing this code I referenced the body of
                     "/fonts/"))
          (mac (concat (getenv "HOME") "/Library/Fonts/" ))
          (ns (concat (getenv "HOME") "/Library/Fonts/" )))))
-  (unless (--all-p (file-exists-p (concat font-dir it))
-                   '("all-the-icons.ttf"
-                     "file-icons.ttf"
-                     "fontawesome.ttf"
-                     "material-design-icons.ttf"
-                     "octicons.ttf"
-                     "weathericons.ttf"))
+  (unless (cl-every (lambda (it) (file-exists-p (concat font-dir it)))
+                    '("all-the-icons.ttf"
+                      "file-icons.ttf"
+                      "fontawesome.ttf"
+                      "material-design-icons.ttf"
+                      "octicons.ttf"
+                      "weathericons.ttf"))
     (void-log "No icons installed. Installing...")
     (all-the-icons-install-fonts :ignore-prompt)))
 #+end_src
