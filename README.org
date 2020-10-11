@@ -1323,18 +1323,16 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
 (defmacro defleaf! (name args &rest body)
   "Define a leaf keyword."
   (declare (indent defun))
-  (-let* (((where place) args)
-          ((name asterix) (cdr (s-match "\\([^z-a]+\\)\\(\\*\\)")))
+  (-let* ((wrap-p (s-suffix-p "*" (symbol-name name)))
+          (name (intern (s-chop-suffix "*" (symbol-name name))))
           (keyword (void-keyword-intern name))
-          (fname (intern (format "leaf~~apply-%s" name))))
+          (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       ,(alet (,fname ,@(leaf~vars))
-          `(leaf~insert-keyword ,keyword ',where ,place ',it))
-
-       (defun ,fname ,(leaf~anaphoric-vars)
-         (-let ((,(leaf~vars) ,(leaf~anaphoric-vars)))
-           (ignore ,@(leaf~vars) ,@(leaf~anaphoric-vars))
-           (list (progn ,@body) (macroexp-progn <body>)))))))
+       (leaf~insert-after ,keyword )
+       (defun ,fn (<package> <value> <body>)
+         (-let [,args (list <value>)]
+           ,(if wrap-p `(list (progn ,@body))
+              `(cons (progn ,@body) <body>)))))))
 #+end_src
 
 *** custom leaf keywords
