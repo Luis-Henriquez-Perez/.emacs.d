@@ -1242,6 +1242,7 @@ recall the underlying leaf data structure.
 
 #+begin_src emacs-lisp
 (defun leaf~vars ()
+  "Return the set of leaf variables."
   (-map (-partial #'void-symbol-intern 'leaf--) leaf~base-vars))
 #+end_src
 
