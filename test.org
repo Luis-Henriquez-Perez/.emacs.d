@@ -287,29 +287,6 @@
       (should (equal it '(:a 1 :x 4 :b 2))))))
 #+end_src
 
-** leaf~insert-keyword
-:PROPERTIES:
-:ID:       63976e43-dcb9-4b06-9095-1e31b6c75a88
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~insert-keyword ()
-  (let* ((leaf-keywords '(:a (1) :b (2)))
-         (orig-value leaf-keywords))
-    ;; can insert before.
-    (leaf~insert-keyword :c 'before :b '(3))
-    (should (equal leaf-keywords '(:a (1) :c (3) :b (2))))
-    (setq leaf-keywords orig-value)
-    ;; can insert after.
-    (leaf~insert-keyword :c 'after :b '(3))
-    (should (equal leaf-keywords '(:a (1) :b (2) :c (3))))
-    (setq leaf-keywords orig-value)
-    ;; can insert at (ie. replace).
-    ;; (leaf~insert-keyword :c 'at :b '(3))
-    ;; (should (equal leaf-keywords '(:a (1) :c (3) :b (2))))
-    ))
-#+end_src
-
 ** leaf~flatten-keywords
 :PROPERTIES:
 :ID:       22800ae7-63f1-4d19-a82e-29bd90544fd6
