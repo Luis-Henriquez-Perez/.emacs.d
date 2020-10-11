@@ -1194,7 +1194,7 @@ However, normalizers only work once the value has been passed in to the macro.
 #+begin_src emacs-lisp
 (defun leaf~normalize-args (args)
   "Normalize leaf args."
-  ())
+  (normalize))
 #+end_src
 
 *** use-package!
