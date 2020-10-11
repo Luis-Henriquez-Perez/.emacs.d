@@ -1323,9 +1323,8 @@ provided by leaf. They are inspired from DOOM emacs.
 
 (leaf:set-normalizer :after-call #'leaf:normalize-commands)
 
-(define-leaf-keyword! after-call (before :hook)
-  `(,(leaf:generate-load-form leaf--name nil :after leaf--value)
-    ,@leaf--body))
+(defleaf! after-call (before :hook)
+  `(defadvice!))
 #+end_src
 
 ***** defer-incrementally
