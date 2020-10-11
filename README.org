@@ -1319,9 +1319,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:make-defer :after-call)
-
-(leaf:set-normalizer :after-call #'leaf:normalize-commands)
+(leaf~make-defer :after-call)
 
 (defleaf! after-call (before :hook)
   `(defadvice!))
