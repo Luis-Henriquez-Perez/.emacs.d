@@ -1265,9 +1265,10 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
           ((where lambda-args place) args)
           (name (intern (s-chop-suffix "*" (symbol-name name))))
           (keyword (void-keyword-intern name))
+          (insert-fn (void-symbol-intern 'leaf~insert- where))
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       (funcall #',(void-symbol-intern 'leaf~insert where))
+       (,insert-fn ,where ,keyword '(,fn ,@leaf-vars))
        (defun ,fn (,@(leaf~vars))
          (-let ((,lambda-args (list <value>))
                 (,(leaf~anaphoric-vars) ,(leaf~vars)))
