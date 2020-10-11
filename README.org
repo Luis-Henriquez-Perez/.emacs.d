@@ -1260,8 +1260,8 @@ recall the underlying leaf data structure.
 :ID:       a4b5a71e-bd1d-4e78-89e9-70baca1ff061
 :END:
 
-This macro is meant to make defining a leaf keyword extremely easy. Like [[][defadvice!]]
-and [[][defhook!]], the syntax is designed to resemble [[][]].
+This macro is meant to make defining a leaf keyword extremely easy. Like
+[[id:1e0f3a27-a7d8-4e28-a359-f42ed7a16033][defadvice!]] and [[id:4daf2baf-ea7f-41f5-9f86-63168089149a][defhook!]], the syntax is designed to resemble [[helpfn:defun][defun]].
 
 #+begin_src emacs-lisp
 (defmacro defleaf! (name args &rest body)
