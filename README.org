@@ -589,13 +589,13 @@ Bare symbols in BINDINGS are equivalent to:
 (defmacro let! (bindings &rest body)
   `(pcase-let ,bindings ,@body))
 
-(\` )
-(_ _ uid gid) => `(,_ ,_ ,uid ,gid)
+;; (\` )
+;; (_ _ uid gid) => `(,_ ,_ ,uid ,gid)
 
-(pcase-let ((`(,_ ,_ (,a ,b)) (list 1 2 (list 3 4))))
-  (list a b))
+;; (pcase-let ((`(,_ ,_ (,a ,b)) (list 1 2 (list 3 4))))
+;;   (list a b))
 
-(3 4)
+;; (3 4)
 
 (defmacro let!* (bindings &rest body)
   `(pcase-let* ,bindings ,@body))
