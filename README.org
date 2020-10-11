@@ -1324,13 +1324,14 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
   "Define a leaf keyword."
   (declare (indent defun))
   (-let* ((wrap-p (s-suffix-p "*" (symbol-name name)))
+          ((where lambda-args place) args)
           (name (intern (s-chop-suffix "*" (symbol-name name))))
           (keyword (void-keyword-intern name))
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       (leaf~insert-after ,keyword )
+       (funcall #',(void-symbol-intern 'leaf~insert where))
        (defun ,fn (<package> <value> <body>)
-         (-let [,args (list <value>)]
+         (-let [,lambda-args (list <value>)]
            ,(if wrap-p `(list (progn ,@body))
               `(cons (progn ,@body) <body>)))))))
 #+end_src
