@@ -516,8 +516,8 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 (defun void-anaphoric-symbols (body)
   "Return all the anaphoric symbols in body."
   (thread-last (-flatten body)
-    (-filter #'void-anaphoric-symbol-p)
-    (-uniq)))
+    (seq-filter #'void-anaphoric-symbol-p)
+    (seq-uniq)))
 #+end_src
 
 ***** all anaphoric symbols in obj
