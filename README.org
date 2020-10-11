@@ -1220,15 +1220,7 @@ recall the underlying leaf data structure.
 (defmacro define-leaf-keyword! (name args &rest body)
   "Define a leaf keyword."
   (declare (indent defun))
-  (-let* ((keyword (intern (concat ":" (symbol-name name))))
-          ((where place) args)
-          (docstring (when (stringp body) (pop body)))
-          (actions (--unfold (when (keywordp (car it))
-                               (cons (-take 2 it)
-                                     (setq body (-drop 2 it))))
-                             body))
-          (apply-fn (intern (concat "leaf::apply-" (symbol-name name))))
-          (form `(,apply-fn ,@leaf:process-variables)))
+  (-let* ((keyword (intern (concat ":" (symbol-name name)))))
     `(progn
        (leaf:insert-keyword ,keyword ',where ,place ',form)
        (defun ,apply-fn ,leaf:process-variables
