@@ -1188,8 +1188,7 @@ first. In other words, the first key value pair is the one that's considered.
 (defun leaf~remove-existing (key)
   (alet (->> (--find-indices (eq it key) leaf-keywords)
              (-annotate #'1+)
-             (flatten-list)
-             (-remove-at-indices))
+             (flatten-list))
     (-remove-at-indices it leaf-keywords)))
 #+end_src
 
