@@ -699,10 +699,10 @@ advices that have been added by Emacs or other packages.
 :END:
 
 It's easy to find which functions are advising a given function using
-[[helpfn:advice-mapc][advice-mapc]]. However, it's not as easy to go the other way around--to
-determine what which function a given advice is advising. Another complicaiton
-is that it's possible for a given advice to advise multiple functions. With the
-naming system I provide, doing this is trivial.
+[[helpfn:advice-mapc][advice-mapc]]. However, it's not as easy to go the other way around--to determine
+what which function a given advice is advising. Another complicaiton is that
+it's possible for a given advice to advise multiple functions. With the naming
+system I provide, doing this is trivial.
 
 #+begin_src emacs-lisp
 (defun void-advised-fn (fn)
@@ -788,8 +788,8 @@ should expire."
 :ID:       1e0f3a27-a7d8-4e28-a359-f42ed7a16033
 :END:
 
-This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that provides a
-declarative way to define advices.
+This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that
+provides a declarative way to define advices.
 
 ***** define-advice!
 :PROPERTIES:
