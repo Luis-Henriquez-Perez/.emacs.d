@@ -1249,6 +1249,14 @@ recall the underlying leaf data structure.
               `(cons (progn ,@body) <body>)))))))
 #+end_src
 
+**** normalize
+:PROPERTIES:
+:ID:       9ef1bc5f-0491-45b9-8090-982c4ca92179
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 *** custom leaf keywords
 :PROPERTIES:
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
