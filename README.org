@@ -1268,7 +1268,7 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
           (insert-fn (void-symbol-intern 'leaf~insert- where))
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       (,insert-fn ,where ,keyword '(,fn ,@leaf-vars))
+       (setq leaf-keywords (,insert-fn ,where ,keyword '(,fn ,@leaf-vars)))
        (defun ,fn (,@(leaf~vars))
          (-let ((,lambda-args (list <value>))
                 (,(leaf~anaphoric-vars) ,(leaf~vars)))
