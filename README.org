@@ -1206,7 +1206,7 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf:set-alias (alias name)
+(defun leaf~set-alias (alias name)
   "Set ALIAS to NAME."
   (push (cons alias name) leaf-alias-keyword-alist))
 #+end_src
