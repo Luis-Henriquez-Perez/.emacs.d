@@ -1160,7 +1160,7 @@ first. In other words, the first key value pair is the one that's considered.
 (defun leaf~insert-before (place key value)
   "Insert KEY and VALUE before PLACE in `leaf-keywords'."
   (alet (-elem-index place leaf-keywords)
-    (->> plist
+    (->> leaf-keywords
          (-insert-at it value)
          (-insert-at it key))))
 #+end_src
@@ -1174,7 +1174,7 @@ first. In other words, the first key value pair is the one that's considered.
 (defun leaf~insert-after (place key value)
   "Insert KEY and VALUE before PLACE in `leaf-keywords'."
   (alet (+ 2 (-elem-index place leaf-keywords))
-    (->> plist
+    (->> leaf-keywords
          (-insert-at it value)
          (-insert-at it key))))
 #+end_src
@@ -1277,7 +1277,7 @@ motivation for creating this is that while.
           (insert-fn (void-symbol-intern 'leaf~insert- where))
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       (alet (,insert-fn ,place ,keyword '(,fn ,@(leaf~vars)))
+       (alet (,insert-fn ,(void-keyword-intern place) ,keyword '(,fn ,@(leaf~vars)))
          (setq leaf-keywords it))
        (defun ,fn (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (list <value>)))
