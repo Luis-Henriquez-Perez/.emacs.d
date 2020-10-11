@@ -1195,7 +1195,7 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf:make-defer (keyword)
+(defun leaf~set-defer (keyword)
   "Add KEYWORD to `leaf-defer-keywords'."
   (add-to-list 'leaf-defer-keywords keyword))
 #+end_src
