@@ -1336,7 +1336,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! before-call (before :hook)
+(defleaf! before-call (before (fn) hook)
   `(defadvice! ,advice (before)
      "Load package."
      (void:log "Loading")
@@ -1349,7 +1349,7 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! after-call (before :hook nil t commands)
+(defleaf! after-call (before (fn) commands)
   `(defadvice! ,(void-symbol-intern 'load-) (after)
      "Load package."
      (require ',<package>)))
