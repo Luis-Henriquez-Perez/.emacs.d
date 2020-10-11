@@ -1229,6 +1229,26 @@ recall the underlying leaf data structure.
          ,@body))))
 #+end_src
 
+**** defleaf!
+:PROPERTIES:
+:ID:       9dbefb72-ac4c-4f5b-aa3d-3a7562b773f3
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defleaf! (name args &rest body)
+  (declare (indent defun))
+  (-let* ((wrap-p (s-suffix-p "*" (symbol-name name)))
+          (name (intern (s-chop-suffix "*" (symbol-name name))))
+          (keyword (void-keyword-intern name))
+          (fn (void-symbol-intern 'leaf~~apply- name)))
+    `(progn
+       (leaf~insert )
+       (defun ,fn (<package> <value> <body>)
+         (-let [,args (list <value>)]
+           ,(if wrap-p `(list (progn ,@body))
+              `(cons (progn ,@body) <body>)))))))
+#+end_src
+
 *** custom leaf keywords
 :PROPERTIES:
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
