@@ -1394,9 +1394,7 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:set-normalizer :alias #'leaf:normalize-setq)
-
-(define-leaf-keyword! alias (before :init)
+(defleaf! alias (before :init)
   `((eval-and-compile
       ,@(-map (-lambda ((alias . def)) `(defalias ',alias ',def))
               leaf--value))
