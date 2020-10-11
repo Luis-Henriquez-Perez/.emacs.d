@@ -1401,21 +1401,6 @@ specific packages.
     ,@leaf--body))
 #+end_src
 
-**** ignore-buffers
-:PROPERTIES:
-:ID:       46e099c0-257b-4292-b5bc-acdf1bceaeea
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :ignore-buffers #'leaf:normalize-commands)
-
-(define-leaf-keyword! ignore-buffers (before :init)
-  `((after! midnight
-      (--each ',leaf--value
-        (push it clean-buffer-list-kill-regexps)))
-    ,@leaf--body))
-#+end_src
-
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
