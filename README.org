@@ -1297,7 +1297,7 @@ motivation for creating this is that while.
 
 #+begin_src emacs-lisp
 (defleaf! void-hook (before (var . hook) hook)
-  (void-add-hook ',var #',hook))
+  `(void-add-hook ',var #',hook))
 #+end_src
 
 **** set keywords
