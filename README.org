@@ -1291,8 +1291,11 @@ motivation for creating this is that while.
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
        (setq leaf-keywords (leaf~remove-existing ,keyword))
-       (alet (,insert-fn ,(void-keyword-intern place) ,keyword '(,fn ,@(leaf~vars)))
-         (setq leaf-keywords it))
+       (setq leaf-keywords
+             (funcall ,insert-fn
+                      ,(void-keyword-intern place)
+                      ,keyword
+                      '(,fn ,@(leaf~vars))))
        (defun ,fn (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (-list <value>)))
            ,(if wrap-p `(list (progn ,@body))
