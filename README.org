@@ -648,10 +648,10 @@ This function is to help produce names that abide by hook naming conventions.
 #+begin_src emacs-lisp
 (defun void-hook-name (var hook)
   "Return a hook name that meets Void naming conventions."
-  (funcall (-partial #'void-symbol-intern var '&)
+  (funcall (apply-partially #'void-symbol-intern var '&)
            (or (thread-last (symbol-name hook)
-                    (s-match "void--\\([^[:space:]]+\\)-hook")
-                    (nth 1))
+                 (s-match "void--\\([^[:space:]]+\\)-hook")
+                 (nth 1))
                hook)))
 #+end_src
 
@@ -780,10 +780,10 @@ ADVICE is an advice of the form \"advisee@advisor\", where this function returns
 (defun void-advice-name (fn advice)
   "Return advice name that meets Void naming conventions.
 Advice name is of the form FN@ADVICE."
-  (funcall (-partial #'void-symbol-intern fn '@)
+  (funcall (apply-partially #'void-symbol-intern fn '@)
            (or (thread-last (symbol-name advice)
-                    (s-match "void--\\([^[:space:]]+\\)-advice")
-                    (nth 1))
+                 (s-match "void--\\([^[:space:]]+\\)-advice")
+                 (nth 1))
                advice)))
 #+end_src
 
