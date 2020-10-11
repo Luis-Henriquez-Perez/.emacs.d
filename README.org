@@ -3605,8 +3605,9 @@ to select candidates quickly.
   :ensure nil
   :commands ivy-avy
   :init
-  (add-to-list 'load-path
-               (concat (--find (s-matches-p (rx "/ivy" eos) it) load-path) "-avy")))
+  (let ((path (cl-find (apply-partially #'s-matches-p (rx "/ivy" eos)) load-path)))
+    (concat path "-avy")
+    (add-to-list 'load-path path)))
 #+end_src
 
 **** minibuffer bindings
