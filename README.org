@@ -3354,13 +3354,13 @@ This is the user-facing function to define yasnippets.
   "Define a snippet."
   (-let (((&plist :name :mode :body :placeholders) plist)
          (keys '(:key :name :contributor :group :expand-env :binding :type :uuid)))
-    (cl-assert (-none-p #'null (list name mode body)))
+    (cl-assert (cl-notany #'null (list name mode body)))
 
     (alet (append
            (list "# -*- mode: snippet -*-\n")
            (thread-last keys
-                (--filter (plist-get plist it))
-                (--map (format "# %s: %s\n" (void-keyword-name it) (plist-get plist it))))
+             (--filter (plist-get plist it))
+             (--map (format "# %s: %s\n" (void-keyword-name it) (plist-get plist it))))
            (list "# --\n")
            (list (defsnippet:compute-body body placeholders)))
       (with-temp-buffer
