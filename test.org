@@ -335,3 +335,14 @@
          '(leaf evil :commands fee))
   )
 #+end_src
+
+** anaphoric variables
+:PROPERTIES:
+:ID:       613749c1-3513-4da4-b94c-65c618be673b
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest leaf~anaphoric-vars ()
+  (should (leaf~anaphoric-vars)))
+
+#+end_src
