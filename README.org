@@ -1268,7 +1268,7 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
           (fn (void-symbol-intern 'leaf~~apply- name)))
     `(progn
        (funcall #',(void-symbol-intern 'leaf~insert where))
-       (defun ,fn (,@(leaf-args))
+       (defun ,fn (,@(leaf-vars))
          (-let [,lambda-args (list <value>)]
            ,(if wrap-p `(list (progn ,@body))
               `(cons (progn ,@body) <body>)))))))
