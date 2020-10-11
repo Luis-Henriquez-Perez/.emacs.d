@@ -1403,7 +1403,7 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! alias (before :init (alias . def))
+(defleaf! alias (before (alias . def) :init)
   `(eval-and-compile (defalias ',alias ',def)))
 #+end_src
 
