@@ -642,6 +642,19 @@ This function is to help produce names that abide by hook naming conventions.
                hook)))
 #+end_src
 
+**** hook action
+:PROPERTIES:
+:ID:       fa705f26-31f0-43c3-80a6-6741e74ab0ea
+:END:
+
+#+begin_src emacs-lisp
+(defun void-hook-action (hook)
+  "Return the action for hook."
+  (->> (symbol-name hook)
+       (s-match (rx "&" (group (1+ (not (any "&" white)))) eos))
+       (nth 1)))
+#+end_src
+
 **** adding hooks
 :PROPERTIES:
 :ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
@@ -653,12 +666,18 @@ function, change it to a hook.
 #+begin_src emacs-lisp
 (defun void-add-hook (var hook &optional depth local expire-fn)
   "Alias HOOK to match Void naming conventions and add it to VAR."
-  (alet (void-hook-name var hook)
-    (defalias it hook)
-    (add-hook var it depth local)
+  (let* ((new-hook (void-hook-name var hook))
+         (hook-log (void-symbol-intern new-hook '@ 'log-on-debug)))
+    (defalias new-hook hook)
+    (add-hook var new-hook depth local)
+    (fset hook-log
+          `(lambda (&rest _)
+             (alet ,(void-hook-action new-hook)
+               (void-log "& %s -> %s" ',var it))))
+    (advice-add new-hook :before hook-log)
     (when expire-fn
       (->> (void-expire-advice hook expire-fn t)
-           (advice-add it :around)))))
+           (advice-add new-hook :around)))))
 #+end_src
 
 **** defhook!
@@ -685,7 +704,6 @@ function.
        ,@(-map (lambda (hook)
                  `(progn (void-add-hook ',hook #',fn ,depth ,local)
                          (defun ,fn (&rest _) ,docstring
-                                (void-log "& %s -> %s" ',hook ',name)
                                 ,@body)))
                hooks))))
 #+end_src
@@ -768,13 +786,33 @@ appropriate name to target.
 
 #+begin_src emacs-lisp
 (defun void-add-advice (target where advice &optional props expire-fn)
-  "Advise TARGETS with Void ADVICES."
-  (alet (void-advice-name target advice)
-    (defalias it advice)
-    (advice-add target where it props)
+  "Advise TARGETS with Void ADVICES.
+This function generates a new."
+  (let* ((new-advice (void-advice-name target advice))
+         (log-advice (void-symbol-intern new-advice '@ 'log-on-debug)))
+    (defalias new-advice advice)
+    (advice-add target where new-advice props)
+    (fset log-advice
+          `(lambda (&rest _)
+             (alet ,(void-advice-action new-advice)
+               (void-log "@ %s -%s-> %s" #',target ,where it))))
+    (advice-add new-advice :before log-advice)
     (when expire-fn
       (->> (void-expire-advice target expire-fn)
-           (advice-add it :around)))))
+           (advice-add new-advice :around)))))
+#+end_src
+
+**** advice action
+:PROPERTIES:
+:ID:       f15279e9-cd0c-4a74-bc74-389d14a4b82a
+:END:
+
+#+begin_src emacs-lisp
+(defun void-advice-action (advice)
+  "Return the action for advice."
+  (->> (symbol-name advice)
+       (s-match (rx "@" (group (1+ (not (any "@" white)))) eos))
+       (nth 1)))
 #+end_src
 
 **** expire advice
@@ -843,7 +881,6 @@ passed in.
   (-let (((where lambda-args fn props) args))
     `(alet
          (defun ,(void-symbol-intern 'void-- name '-advice) ,lambda-args
-           (void-log "@ %s -%s-> %s" ',fn ,(void-keyword-name where) ',name)
            ,@body)
        (void-add-advice #',fn ,where it ,props)
        it)))

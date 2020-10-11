@@ -258,3 +258,16 @@
     (should (eq it 'emacs-lisp-mode-hook))))
 #+end_src
 
+** advice action
+:PROPERTIES:
+:ID:       9b1fbd9d-fdbd-4622-9d3b-6e2b6ad64827
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest void-advice-action ()
+  (alet (void-advice-action 'emacs-lisp-mode-hook@hello)
+    (should (string= "hello" it)))
+
+  (alet (void-advice-action 'emacs-lisp-mode-hook@hello@do-this)
+    (should (string= "do-this" it))))
+#+end_src
