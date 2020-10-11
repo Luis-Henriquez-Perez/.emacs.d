@@ -1315,8 +1315,8 @@ Leaf keywords do not.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! setq (before setq (var . value))
-  `(setq ,var ,value))
+(defleaf! setq (before (var . value) setq-default)
+  `(setq-default ,var ,value))
 #+end_src
 
 **** defer keywords
