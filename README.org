@@ -597,7 +597,7 @@ Bare symbols in BINDINGS are equivalent to:
 
 (3 4)
 
-(defmacro let!! (bindings &rest body)
+(defmacro let!* (bindings &rest body)
   `(pcase-let* ,bindings ,@body))
 #+end_src
 
@@ -717,7 +717,7 @@ function.
 
 \(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
   (declare (doc-string 3))
-  (-let (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp)
+  (let! (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp)
                                                args))
          (fn (void-symbol-intern 'void-- name '-hook))
          (docstring (if (stringp (car body)) (pop body) nil)))
@@ -899,7 +899,7 @@ passed in.
   (declare (indent 2) (doc-string 3) (debug (sexp sexp body)))
   (unless (listp args)
     (signal 'wrong-type-argument (list #'listp args)))
-  (-let (((where lambda-args fn props) args))
+  (let! (((where lambda-args fn props) args))
     `(alet
          (defun ,(void-symbol-intern 'void-- name '-advice) ,lambda-args
            ,@body)
@@ -3360,7 +3360,7 @@ This is the user-facing function to define yasnippets.
 #+begin_src emacs-lisp
 (defun defsnippet:new-snippet (&rest plist)
   "Define a snippet."
-  (-let (((&plist :name :mode :body :placeholders) plist)
+  (let! (((&plist :name :mode :body :placeholders) plist)
          (keys '(:key :name :contributor :group :expand-env :binding :type :uuid)))
     (cl-assert (cl-notany #'null (list name mode body)))
 
@@ -5654,11 +5654,11 @@ cursor color will update.
 
 (defadvice! replace-motion-with-normal (:around evil-make-overriding-map)
   "Advice for `evil-make-overriding-map' that inhibits motion state."
-  (-let (((keymap state copy) <args>))
+  (let! (((keymap state copy) <args>))
     (funcall <orig-fn> keymap (if (eq state 'motion) 'normal state) copy)))
 
 (defadvice! replace-motion-with-normal (:around evil-set-initial-state)
-  (-let (((mode state) <args>))
+  (let! (((mode state) <args>))
     (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
 
 (void-add-advice #'evil-motion-state :override #'evil-normal-state)
