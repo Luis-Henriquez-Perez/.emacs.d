@@ -1237,21 +1237,6 @@ recall the underlying leaf data structure.
          ,@body))))
 #+end_src
 
-*** use =after!= in leaf-defer
-:PROPERTIES:
-:ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-alias :leaf-defer :void-leaf-defer)
-
-(define-leaf-keyword! void-leaf-defer (before :leaf-defer)
-  (if (and leaf--body (eval (car leaf--value))
-           (leaf-list-memq leaf-defer-keywords (leaf-plist-keys leaf--raw)))
-      `((after! ,leaf--name ,@leaf--body))
-    `(,@leaf--body)))
-#+end_src
-
 *** custom leaf keywords
 :PROPERTIES:
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
