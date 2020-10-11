@@ -587,15 +587,15 @@ Bare symbols in BINDINGS are equivalent to:
 
 #+begin_src emacs-lisp
 (defmacro let! (bindings &rest body)
-  `(pcase-let ,bindings ,@body))
+  (cl-labels ((add-commas (form) (if (atom it) (list '\, it) (add-commas it))))
+    `(pcase-let ,bindings ,@body)))
 
-;; (\` )
-;; (_ _ uid gid) => `(,_ ,_ ,uid ,gid)
+(cl-labels ((add-commas (it) (if (atom it) (list '\, it) (add-commas it))))
+  (add-commas '(a b c (d e f))))
 
-;; (pcase-let ((`(,_ ,_ (,a ,b)) (list 1 2 (list 3 4))))
-;;   (list a b))
+(--tree-map (if (atom it) (list '\, it) it) '(a b c (d e f)))
 
-;; (3 4)
+(mapcar (lambda (it) (if (symbolp it) (list '\, it) )) '(a b c))
 
 (defmacro let!* (bindings &rest body)
   `(pcase-let* ,bindings ,@body))
