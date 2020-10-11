@@ -287,18 +287,6 @@
       (should (equal it '(:a 1 :x 4 :b 2))))))
 #+end_src
 
-** leaf~insert-at
-:PROPERTIES:
-:ID:       a96fa3e8-85cb-4c5f-b862-2fe8340192c9
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~insert-at ()
-  (let ((plist (list :a 1 :b 2)))
-    (should (equal (leaf~insert-at plist :b :c 3)
-                   (list :a 1 :c 3)))))
-#+end_src
-
 ** leaf~insert-keyword
 :PROPERTIES:
 :ID:       63976e43-dcb9-4b06-9095-1e31b6c75a88
@@ -360,7 +348,7 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package! ()
-  (equal (macroexpand-1 '(leaf! evil :commands (fee fi fo fum)))
+  (equal (macroexpand-1 '(use-package! evil :commands fee fi fo fum))
          '(leaf evil :commands fee :commands fi :commands fo :commands fum))
 
   (equal (macroexpand-1 '(leaf! evil :commands fee fi fo fum))
