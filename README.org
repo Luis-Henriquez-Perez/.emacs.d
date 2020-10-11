@@ -4965,10 +4965,10 @@ the time.
 (defun org:edit-desc-bounds (point elements)
   "Return the bounds of the description at point.
 ELEMENTS is a list of headline elements (see `org:element-headline-elements')."
-  (awhen (-find (-some-p (-partial #'org:element-contains-point-p point) it)
-                (thread-last (cdr elements)
+  (awhen (seq-find (-some-p (-partial #'org:element-contains-point-p point) it)
+                   (thread-last (cdr elements)
                      (-group-by #'org:element-paragraph-p)
-                     (-filter (-compose #'org:element-paragraph-p #'car))))
+                     (seq-filter (-compose #'org:element-paragraph-p #'car))))
     (cons (org-element-property :contents-begin (-first-item it))
           (org-element-property :contents-end (-last-item it)))))
 #+end_src
