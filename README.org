@@ -1360,8 +1360,8 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! idle-require (before before-call nil t)
-  `(idle-require ,<value>))
+(defleaf! idle-require (before (package) before-call)
+  `(idle-require ,package))
 #+end_src
 
 **** straight keyword
