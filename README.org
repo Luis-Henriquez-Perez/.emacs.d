@@ -1225,7 +1225,7 @@ recall the underlying leaf data structure.
 :END:
 
 #+begin_src emacs-lisp
-(defvar leaf~process-vars '(raw name key keyname value body)
+(defvar leaf~base-vars '(raw name key keyname value body)
   "List of variables that leaf binds when processing a keyword.")
 #+end_src
 
