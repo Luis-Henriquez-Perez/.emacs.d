@@ -571,7 +571,7 @@ Bare symbols in BINDINGS are equivalent to:
          (names-and-forms (mapcar bind-fn bindings))
          (names (mapcar #'car names-and-forms))
          (forms (mapcar #'cdr names-and-forms))
-         (symbols (--map (make-symbol (symbol-name it)) names)))
+         (symbols (mapcar (lambda (it) (make-symbol (symbol-name it))) names)))
     `(with-symbols! ,symbols
        (list 'let
              (-zip-with #'list (list ,@symbols) (list ,@forms))
