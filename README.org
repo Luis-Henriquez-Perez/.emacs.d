@@ -1293,7 +1293,7 @@ motivation for creating this is that while.
     `(progn
        (setq leaf-keywords (leaf~remove-existing ,keyword))
        (setq leaf-keywords
-             (funcall ,leaf-insert
+             (funcall #',leaf-insert
                       ,(void-keyword-intern place)
                       ,keyword
                       '(,leaf-apply ,@(leaf~vars))))
