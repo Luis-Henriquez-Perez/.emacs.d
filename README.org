@@ -1092,7 +1092,7 @@ SYM is a symbol that stores a list."
 :ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
 :END:
 
-Like =use-package=, leaf is a macro that fascilitates package configuration. It's
+Like =use-package=, leaf is a macro that facilitates package configuration. It's
 strength is its simplicity; it has less stuff you need to learn than
 [[https://github.com/jwiegley/use-package][use-package]]. Here I try to simplify its system of adding leaf keywords by
 adding more intuitive leaf functions.
