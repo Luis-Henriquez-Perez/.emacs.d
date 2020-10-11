@@ -1304,13 +1304,10 @@ provided by leaf. They are inspired from DOOM emacs.
 :END:
 
 #+begin_src emacs-lisp
-(leaf:make-defer :before-call)
+(leaf~make-defer :before-call)
 
-(leaf:set-normalizer :before-call #'leaf:normalize-commands)
-
-(define-leaf-keyword! before-call (before :hook)
-  `(,(leaf:generate-load-form leaf--name nil :before leaf--value)
-    ,@leaf--body))
+(defleaf! before-call (before :hook)
+  `(defadvice!))
 #+end_src
 
 ***** after-call
