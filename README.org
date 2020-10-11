@@ -1294,7 +1294,7 @@ motivation for creating this is that while.
        (alet (,insert-fn ,(void-keyword-intern place) ,keyword '(,fn ,@(leaf~vars)))
          (setq leaf-keywords it))
        (defun ,fn (,@(leaf~anaphoric-vars))
-         (-let ((,lambda-args (list <value>)))
+         (-let ((,lambda-args <value>))
            ,(if wrap-p `(list (progn ,@body))
               `(cons (progn ,@body) <body>)))))))
 #+end_src
@@ -1327,7 +1327,7 @@ Leaf keywords do not.
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! setq (before (var . value) setq)
+(defleaf! void-setq (before (var . value) setq)
   `(setq ,var ,value))
 #+end_src
 
