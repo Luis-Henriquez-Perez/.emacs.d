@@ -908,8 +908,10 @@ Instead, arguments are accessed via anaphoric variables.
     `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
        (ignore <args>)
        (cl-progv (thread-last (help-function-arglist #',target t)
-                   (cl-remove-if (lambda (it) (s-starts-with-p "@" (symbol-name it))))
-                   (mapcar (lambda (it) (intern (format "<%s>" (symbol-name it))))))
+                   (cl-remove-if
+                    (lambda (it) (s-starts-with-p "@" (symbol-name it))))
+                   (mapcar
+                    (lambda (it) (intern (format "<%s>" (symbol-name it))))))
            <args>
          ,@body))))
 #+end_src
