@@ -1192,6 +1192,9 @@ the definition of leaf keywords by only considering one value for each keyword.
 However, normalizers only work once the value has been passed in to the macro.
 
 #+begin_src emacs-lisp
+(defun leaf~normalize-args (args)
+  "Normalize leaf args."
+  ())
 #+end_src
 
 *** use-package!
