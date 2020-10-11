@@ -3202,7 +3202,8 @@ windows).
 #+begin_src emacs-lisp
 (defhook! start-in-char-mode (exwm-manage-finish-hook)
   "Start a program in char-mode if it's in `exwm:char-mode-apps'."
-  (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
+  (when (cl-some (lambda (it) (string-prefix-p it exwm-instance-name))
+                 exwm:char-mode-apps)
     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
 #+end_src
 
