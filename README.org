@@ -580,6 +580,19 @@ Bare symbols in BINDINGS are equivalent to:
                         body)))))
 #+end_src
 
+*** let macro
+:PROPERTIES:
+:ID:       29860be2-6f3f-4f3d-aea7-21d3793183fc
+:END:
+
+#+begin_src emacs-lisp
+(defmacro let! (bindings &rest body)
+  ())
+
+(defmacro let!! (bindings &rest body)
+  ())
+#+end_src
+
 *** hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
