@@ -1211,24 +1211,6 @@ recall the underlying leaf data structure.
   (push (cons alias name) leaf-alias-keyword-alist))
 #+end_src
 
-**** define-leaf-keyword!
-:PROPERTIES:
-:ID:       db05b51b-bbe4-41a4-ae45-1e72aba57ae4
-:END:
-
-#+begin_src emacs-lisp
-(defmacro define-leaf-keyword! (name args &rest body)
-  "Define a leaf keyword."
-  (declare (indent defun))
-  (-let* ((keyword (intern (concat ":" (symbol-name name)))))
-    `(progn
-       (leaf:insert-keyword ,keyword ',where ,place ',form)
-       (defun ,apply-fn ,leaf:process-variables
-         ,docstring
-         (ignore ,@leaf:process-variables)
-         ,@body))))
-#+end_src
-
 **** defleaf!
 :PROPERTIES:
 :ID:       9dbefb72-ac4c-4f5b-aa3d-3a7562b773f3
