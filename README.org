@@ -1287,7 +1287,7 @@ This macro is meant to make defining a leaf keyword easy. Like [[][]] and
 :END:
 
 #+begin_src emacs-lisp
-(defleaf! void-hook (:before (var . hook) hook)
+(defleaf! void-hook (before (var . hook) hook)
   (void-add-hook ',var #',hook))
 #+end_src
 
