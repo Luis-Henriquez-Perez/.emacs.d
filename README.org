@@ -1157,12 +1157,12 @@ first. In other words, the first key value pair is the one that's considered.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~insert-before (place key value plist)
+(defun leaf~insert (plist place key value &optional after)
   "Return PLIST with KEY and VALUE inserted before PLACE."
-  (-let ((index (-elem-index place plist)))
+  (alet (+ (if after 2 0) (-elem-index place plist))
     (thread-last plist
-      (-insert-at index value)
-      (-insert-at index key))))
+      (-insert-at it value)
+      (-insert-at it key))))
 #+end_src
 
 **** insert after
@@ -1177,7 +1177,12 @@ first. In other words, the first key value pair is the one that's considered.
     (->> leaf-keywords
          (-insert-at it value)
          (-insert-at it key))))
-#+end_src
+(defun leaf~insert-after (place key value plist)
+  "Return PLIST with KEY and VALUE inserted before PLACE."
+  (-let ((index (+ 2 (-elem-index place plist))))
+    (thread-last plist
+      (-insert-at index value)
+      (-insert-at index key))))#+end_src
 
 **** remove elements
 :PROPERTIES:
