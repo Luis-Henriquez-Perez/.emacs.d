@@ -285,7 +285,8 @@
 #+begin_src emacs-lisp
 (ert-deftest leaf~remove ()
   (alet (list :a 1 :b 2 :c 3)
-    (leaf~remove :b)))
+    (should (equal (leaf~remove it :b) '(:a 1 :c 3)))
+    (should (equal (leaf~remove it :f) it))))
 #+end_src
 
 ** leaf~normalize
