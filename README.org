@@ -1167,8 +1167,9 @@ first. In other words, the first key value pair is the one that's considered.
 
 #+begin_src emacs-lisp
 (defun leaf~remove (plist key value)
-  (alet (-elem-index key plist)
-    (-remove-at-indices (list it (1+ it)) plist)))
+  (aif (-elem-index key plist)
+      (-remove-at-indices (list it (1+ it)) plist)
+    plist))
 #+end_src
 
 *** pre-processing leaf arguments
