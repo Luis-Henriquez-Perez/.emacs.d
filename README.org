@@ -7091,7 +7091,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   :bind (:magit-status-mode-map
          ([remap magit-mode-bury-buffer] . magit/quit))
   :setq
-  (magit-completing-read-function . #'magit-builtin-completing-read)
+  (magit-completing-read-function . #'ivy-completing-read)
   (magit-revision-show-gravatars . '("^Author:     " . "^Commit:     "))
   (magit-diff-refine-hunk . t)
   (magit-auto-revert-mode . nil)
