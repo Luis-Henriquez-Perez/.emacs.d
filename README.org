@@ -1165,20 +1165,6 @@ first. In other words, the first key value pair is the one that's considered.
       (-insert-at it key))))
 #+end_src
 
-**** remove elements
-:PROPERTIES:
-:ID:       3e941c3e-23c8-4f5d-bc53-467e87398cac
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~remove-existing (key)
-  (aif (->> (--find-indices (eq it key) leaf-keywords)
-            (-annotate #'1+)
-            (flatten-list))
-      (-remove-at-indices it leaf-keywords)
-    leaf-keywords))
-#+end_src
-
 *** pre-processing leaf arguments
 :PROPERTIES:
 :ID:       0b06091b-32a1-473d-a75b-57f5b3b5d031
