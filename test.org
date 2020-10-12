@@ -296,6 +296,7 @@
 
 #+begin_src emacs-lisp
 (ert-deftest leaf~normalize ()
+  (should it '(:))
   )
 #+end_src
 
