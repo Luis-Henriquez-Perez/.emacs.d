@@ -1160,16 +1160,6 @@ first. In other words, the first key value pair is the one that's considered.
       (-insert-at it key))))
 #+end_src
 
-*** final leaf form
-:PROPERTIES:
-:ID:       0922761f-a7cc-436a-bf80-8ed668bbf4b9
-:END:
-
-#+begin_src emacs-lisp
-(defun final-leaf-form (form &optional wrap)
-  (cons ))
-#+end_src
-
 *** pre-processing leaf arguments
 :PROPERTIES:
 :ID:       0b06091b-32a1-473d-a75b-57f5b3b5d031
