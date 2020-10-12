@@ -1341,6 +1341,7 @@ provided by leaf. They are inspired from DOOM emacs.
 
 #+begin_src emacs-lisp
 (defleaf! before-call (before (fn) hook)
+  (leaf-register-autoload fn <package>)
   `(defadvice! ,(void-symbol-intern 'load- <package>) (:before ,fn)
      (require ',<package>)))
 #+end_src
