@@ -1151,7 +1151,7 @@ Note that to override a key-value pair in the alist you just need to add a
 key-value pair with the same key and the desired value somewhere before the
 first. In other words, the first key value pair is the one that's considered.
 
-**** insert before
+**** insert
 :PROPERTIES:
 :ID:       a6eac0bc-6465-46c6-b4e0-b913348c9a77
 :END:
@@ -1164,25 +1164,6 @@ first. In other words, the first key value pair is the one that's considered.
       (-insert-at it value)
       (-insert-at it key))))
 #+end_src
-
-**** insert after
-:PROPERTIES:
-:ID:       7ea788d9-83d0-4f44-80b4-f2cc0fd782d3
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf~insert-after (place pair plist)
-  "Insert KEY and VALUE before PLACE in `leaf-keywords'."
-  (alet (+ 2 (-elem-index place leaf-keywords))
-    (->> leaf-keywords
-         (-insert-at it value)
-         (-insert-at it key))))
-(defun leaf~insert-after (place key value plist)
-  "Return PLIST with KEY and VALUE inserted before PLACE."
-  (-let ((index (+ 2 (-elem-index place plist))))
-    (thread-last plist
-      (-insert-at index value)
-      (-insert-at index key))))#+end_src
 
 **** remove elements
 :PROPERTIES:
