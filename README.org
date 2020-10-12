@@ -1295,7 +1295,7 @@ to allow for the re-evaluation of this macro form to update a leaf keyword.
 
 #+begin_src emacs-lisp
 (defleaf! void-hook (before (var . hook) hook)
-  ;; (leaf-register-autoload hook <package>)
+  (leaf-register-autoload hook <package>)
   `(void-add-hook ',var #',hook))
 #+end_src
 
