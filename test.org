@@ -263,28 +263,39 @@
 :ID:       464e2084-d46c-47e7-8c54-817defb13b67
 :END:
 
-** leaf~insert-after
+** leaf~insert
 :PROPERTIES:
-:ID:       d38391a2-d1c5-4d73-993e-4058763cc3c3
+:ID:       c1fb5cab-32df-4edb-8c3e-3ca6001c4fee
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest leaf~insert-after ()
+(ert-deftest leaf~insert ()
   (let ((plist (list :a 1 :b 2)))
-    (alet (leaf~insert-after plist :b :x 4)
+    (alet (leaf~insert plist :b :x 4)
+      (should (equal it '(:a 1 :x 4 :b 2))))
+    (alet (leaf~insert plist :b :x 4 t)
       (should (equal it '(:a 1 :b 2 :x 4))))))
 #+end_src
 
-** leaf~insert-before
+** leaf~remove
 :PROPERTIES:
-:ID:       efe9fabd-770c-47fa-b821-edc05f6758d5
+:ID:       0df9870a-4e78-440b-a960-57713aa1bb4f
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest leaf~insert-before ()
-  (let ((plist (list :a 1 :b 2)))
-    (alet (leaf~insert-before plist :b :x 4)
-      (should (equal it '(:a 1 :x 4 :b 2))))))
+(ert-deftest leaf~remove ()
+  (alet (list :a 1 :b 2 :c 3)
+    (leaf~remove :b)))
+#+end_src
+
+** leaf~normalize
+:PROPERTIES:
+:ID:       cc5d438f-24c4-4248-a4e1-c44821a77aba
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest leaf~normalize ()
+  )
 #+end_src
 
 ** leaf!
