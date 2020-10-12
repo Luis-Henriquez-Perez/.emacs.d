@@ -1158,12 +1158,11 @@ first. In other words, the first key value pair is the one that's considered.
 
 #+begin_src emacs-lisp
 (defun leaf~insert-before (place pair plist)
-  "Insert KEY and VALUE before PLACE in `leaf-keywords'."
-  (aif (-elem-index place leaf-keywords)
-      (->> leaf-keywords
-           (-insert-at it value)
-           (-insert-at it key))
-    leaf-keywords))
+  "Insert PAIR before PLACE in `leaf-keywords'."
+  (-let ((index (-elem-index place leaf-keywords))
+         ((key . value) pair))
+    (-insert-at index value plist)
+    (-insert-at index key plist)))
 #+end_src
 
 **** insert after
