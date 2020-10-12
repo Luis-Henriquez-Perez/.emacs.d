@@ -311,7 +311,7 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest leaf~~void-hook ()
+(ert-deftest void-hook ()
   (let ((leaf-keywords leaf-keywords)
         (leaf-defaults nil))
     (defleaf! void-hook (before (var . hook) hook)
