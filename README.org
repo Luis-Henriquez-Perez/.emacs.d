@@ -1279,7 +1279,7 @@ to allow for the re-evaluation of this macro form to update a leaf keyword.
                           ,(eq where 'after)))
        (defun ,leaf-apply (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (-list <value>)))
-           ,(if wrap-p `(list (progn ,@body) )
+           ,(if wrap-p `(list (progn ,@body))
               `(cons (progn ,@body) (macroexp-progn <body>))))))))
 #+end_src
 
