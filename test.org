@@ -300,7 +300,7 @@
   )
 #+end_src
 
-** leaf!
+** use-package!
 :PROPERTIES:
 :ID:       d053e1e5-5d35-4f61-84ac-db0828e764bc
 :END:
