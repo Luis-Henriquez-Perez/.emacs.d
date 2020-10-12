@@ -1165,6 +1165,12 @@ first. In other words, the first key value pair is the one that's considered.
 :ID:       1f00e14e-8e1f-425e-b245-f22d52af9f33
 :END:
 
+#+begin_src emacs-lisp
+(defun leaf~remove (plist key value)
+  (alet (-elem-index key plist)
+    (-remove-at-indices (list it (1+ it)) plist)))
+#+end_src
+
 *** pre-processing leaf arguments
 :PROPERTIES:
 :ID:       0b06091b-32a1-473d-a75b-57f5b3b5d031
