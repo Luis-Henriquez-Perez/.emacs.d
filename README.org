@@ -1138,7 +1138,7 @@ adding more intuitive leaf functions.
 
 *** inserting keywords
 :PROPERTIES:
-:ID:       8cf37cd2-3a0f-4d43-a902-df6dc62ad1bb
+:ID:       a6eac0bc-6465-46c6-b4e0-b913348c9a77
 :END:
 
 Unlike [[use-package]], leaf does not have a separate variable to specify the order
@@ -1150,11 +1150,6 @@ extremely easy to add key-value pairs to the plist in the right location.
 Note that to override a key-value pair in the alist you just need to add a
 key-value pair with the same key and the desired value somewhere before the
 first. In other words, the first key value pair is the one that's considered.
-
-**** insert
-:PROPERTIES:
-:ID:       a6eac0bc-6465-46c6-b4e0-b913348c9a77
-:END:
 
 #+begin_src emacs-lisp
 (defun leaf~insert (plist place key value &optional after)
