@@ -1257,13 +1257,12 @@ motivation for creating this is that while.
           (keyword (void-keyword-intern name))
           (leaf-apply (void-symbol-intern 'leaf~~apply- name)))
     `(progn
-       (setq leaf-keywords (leaf~remove-existing ,keyword))
        (setq leaf-keywords
              (leaf~insert leaf-keywords
                           ,(void-keyword-intern place)
                           ,keyword
                           '(,leaf-apply ,@(leaf~vars))
-                          '()))
+                          ,(eq where 'after)))
        (defun ,leaf-apply (,@(leaf~anaphoric-vars))
          (-let ((,lambda-args (-list <value>)))
            ,(if wrap-p `(list (progn ,@body) )
