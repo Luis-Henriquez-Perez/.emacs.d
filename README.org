@@ -1157,10 +1157,9 @@ first. In other words, the first key value pair is the one that's considered.
 :END:
 
 #+begin_src emacs-lisp
-(defun leaf~insert-before (place pair plist)
+(defun leaf~insert-before (place key value plist)
   "Return PLIST with PAIR before PLACE."
-  (-let ((index (-elem-index place leaf-keywords))
-         ((key . value) pair))
+  (-let ((index (-elem-index place leaf-keywords)))
     (thread-last plist
       (-insert-at index value)
       (-insert-at index key))))
