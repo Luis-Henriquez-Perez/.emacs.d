@@ -1269,6 +1269,7 @@ to allow for the re-evaluation of this macro form to update a leaf keyword.
           (keyword (void-keyword-intern name))
           (leaf-apply (void-symbol-intern 'leaf~~apply- name)))
     `(progn
+       (setq leaf-keywords (leaf~remove leaf-keywords ,keyword))
        (setq leaf-keywords
              (leaf~insert leaf-keywords
                           ,(void-keyword-intern place)
