@@ -300,17 +300,28 @@
   )
 #+end_src
 
-** test hook
+** leaf custom keywords test
+:PROPERTIES:
+:ID:       17e78395-53c0-445f-8441-fce3c5f24a6a
+:END:
+
+*** void-hook
 :PROPERTIES:
 :ID:       3cc40b21-1df6-4cff-86ef-7bbafa7a282c
 :END:
 
 #+begin_src emacs-lisp
 (ert-deftest leaf~~void-hook ()
-  (let ((leaf-keywords leaf-keywords))
+  (let ((leaf-keywords leaf-keywords)
+        (leaf-defaults nil))
     (defleaf! void-hook (before (var . hook) hook)
-      (leaf-register-autoload hook <package>)
-      `(void-add-hook ',var #',hook))))
+      (leaf-register-autoload hook <name>)
+      (alet (or hook (void-symbol-intern <name> '-mode))
+        `(void-add-hook ',var #',it)))
+    (alet (macroexpand-1 '(leaf hello :void-hook emacs-lisp-mode-hook))
+      (should
+       (equal '(prog1 'hello (void-add-hook 'emacs-lisp-mode-hook #'hello-mode))
+              it)))))
 #+end_src
 
 ** normalize
