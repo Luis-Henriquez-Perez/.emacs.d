@@ -90,6 +90,7 @@ The name of the advice(s) defined by defhook is determined by the specified name
 :PROPERTIES:
 :ID:       6a0c947c-660a-439f-aa14-4b103d8b7548
 :END:
+
 ** replace selectrum with ivy/counsel
 :PROPERTIES:
 :ID:       3ec4e606-653b-4d0a-af59-71b7518426c0
