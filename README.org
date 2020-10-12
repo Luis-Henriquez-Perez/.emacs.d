@@ -1161,8 +1161,9 @@ first. In other words, the first key value pair is the one that's considered.
   "Insert PAIR before PLACE in `leaf-keywords'."
   (-let ((index (-elem-index place leaf-keywords))
          ((key . value) pair))
-    (-insert-at index value plist)
-    (-insert-at index key plist)))
+    (thread-last plist
+      (-insert-at index value)
+      (-insert-at index key))))
 #+end_src
 
 **** insert after
