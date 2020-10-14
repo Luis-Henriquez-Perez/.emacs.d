@@ -231,3 +231,5 @@ each cond clause is a long list of forms. It is harder to determine what is done
 with a particular keyword because many of the clause predicates are of the form
 ~(memq leaf--key '(KEYS))~. If I wanted to access the form to be evaluated by
 set key. This should really be an alist.
+
+More difficult to debug. Elisp has many useful methods for debugging functions.
