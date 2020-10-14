@@ -209,7 +209,7 @@ The purpose of this change is to make it very easy to customize leaf keywords.
 :ID:       b79fe237-ea49-46cc-b43a-f93f687035d3
 :END:
 
-**** cumbersome
+*** cumbersome
 :PROPERTIES:
 :ID:       6593c1ad-84f0-410d-b110-dd550e533543
 :END:
@@ -228,4 +228,6 @@ A clear problem we see is with =leaf-normalize=. It is a variable contains
 condition case clauses that determine how the value of a particular key should
 be normalized. It is difficult to read the data structure at a glance because
 each cond clause is a long list of forms. It is harder to determine what is done
-with a particular keyword because many of the clause predicates are of the form.
+with a particular keyword because many of the clause predicates are of the form
+~(memq leaf--key '(KEYS))~. If I wanted to access the form to be evaluated by
+set key. This should really be an alist.
