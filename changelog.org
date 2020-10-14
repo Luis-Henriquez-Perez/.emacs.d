@@ -233,3 +233,4 @@ with a particular keyword because many of the clause predicates are of the form
 set key. This should really be an alist.
 
 More difficult to debug. Elisp has many useful methods for debugging functions.
+The flexibility of functions allso allows you to.
