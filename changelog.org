@@ -214,4 +214,5 @@ The purpose of this change is to make it very easy to customize leaf keywords.
 :ID:       6593c1ad-84f0-410d-b110-dd550e533543
 :END:
 
-While *much* easier and straight-forward than
+While *much* easier and straight-forward than =use-package=, leaf's mechanism for
+defining keywords is still cumbersome.
