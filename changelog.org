@@ -217,4 +217,6 @@ The purpose of this change is to make it very easy to customize leaf keywords.
 While *much* easier and straight-forward than =use-package=, leaf's mechanism for
 defining keywords is still cumbersome.
 
-This stems from the fact that leaf does not use functions
+This stems from the fact that leaf does not use functions to store
+transformations into forms. Instead, it uses raw lisp forms. For one thing, this
+makes reading
