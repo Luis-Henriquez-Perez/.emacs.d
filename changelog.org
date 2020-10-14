@@ -221,3 +221,7 @@ This stems from the fact that leaf does not use functions to store
 transformations into forms. Instead, it uses raw lisp forms. For one thing, this
 makes reading the data structure via just evaluating the variable in a buffer or
 via [[][]] really hard. This encourages the use of =eval= which should be avoided.
+It forces code to be much more indirect to deal with the fact that these are
+evaluated forms.
+
+A clear problem we see is with =leaf-normalize=. It is a variable that conta
