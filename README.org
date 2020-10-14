@@ -1372,18 +1372,20 @@ it is to make adding new keys as easy as possible.
 ARGS is a list of two arguments."
   (declare (indent defun))
   (-let ((key (void-keyword-intern name))
-         (fn (void-symbol-intern 'def-package--apply- name)))
-    (with-symbols! (value forms bindings)
-      `(progn
-         (setf (map-elt def-package-keywords ,key) #',fn)
-         (setf (alist-get ,key def-package-weight-alist)
-               def-package-default-weight)
-         (defun ,fn (,value ,forms ,bindings)
-           (cl-progv (map-keys ,bindings) (map-values ,bindings)
-             (-let [,args (list ,value ,forms)]
-               ,(if (= 1 (length args))
-                    `(cons (progn ,@body) ,forms)
-                  `(list (progn ,@body))))))))))
+         (fn (void-symbol-intern 'def-package--apply- name))
+         (value (make-symbol "value"))
+         (forms (make-symbol "forms"))
+         (bindings (make-symbol "bindings")))
+    `(progn
+       (setf (map-elt def-package-keywords ,key) #',fn)
+       (setf (alist-get ,key def-package-weight-alist)
+             def-package-default-weight)
+       (defun ,fn (,value ,forms ,bindings)
+         (cl-progv (map-keys ,bindings) (map-values ,bindings)
+           (-let [,args (list ,value ,forms)]
+             ,(if (= 1 (length args))
+                  `(cons (progn ,@body) ,forms)
+                `(list (progn ,@body)))))))))
 #+end_src
 
 *** custom keywords
