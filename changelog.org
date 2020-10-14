@@ -209,7 +209,9 @@ The purpose of this change is to make it very easy to customize leaf keywords.
 :ID:       b79fe237-ea49-46cc-b43a-f93f687035d3
 :END:
 
-**** leaf
+**** cumbersome
 :PROPERTIES:
 :ID:       6593c1ad-84f0-410d-b110-dd550e533543
 :END:
+
+While *much* easier and straight-forward than
