@@ -1074,7 +1074,8 @@ use-package but is much simpler. Some notable differences are that. I use
 [[id:2c2e4202-4530-4538-a8c9-ffb40239d6042c2e4202-4530-4538-a8c9-ffb40239d604][weighted sorting]] (similar to [[][depth]] in hooks added after Emacs 26) instead
 of explicit. Also I use. The goal of this =quasi= package is to make adding new
 keywords as easy and straightforward as possible. I also want the data
-structures and the mechanisms behind generating a form to be extremely
+structures and the mechanisms behind generating a form to be easy to test, read,
+and hack.
 
 *** keywords
 :PROPERTIES:
