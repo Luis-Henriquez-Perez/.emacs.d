@@ -1367,6 +1367,8 @@ A key theme of =defpackage= implementation is to allow.
 :ID:       e73b7f95-1082-4978-a501-f69f6d516cbb
 :END:
 
+Defining a keyword is as simple as writing a function.
+
 **** define a package key
 :PROPERTIES:
 :ID:       8c42eac6-a0ae-448a-af07-100d0c6a06ac
