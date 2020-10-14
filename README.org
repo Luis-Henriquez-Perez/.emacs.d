@@ -1362,7 +1362,12 @@ A key theme of =defpackage= implementation is to allow.
          `((<package> . ,package)))))
 #+end_src
 
-*** define a package key
+*** custom keywords
+:PROPERTIES:
+:ID:       e73b7f95-1082-4978-a501-f69f6d516cbb
+:END:
+
+**** define a package key
 :PROPERTIES:
 :ID:       8c42eac6-a0ae-448a-af07-100d0c6a06ac
 :END:
@@ -1392,7 +1397,7 @@ ARGS is a list of two arguments."
                 `(list (progn ,@body)))))))))
 #+end_src
 
-*** custom keywords
+**** custom keywords
 :PROPERTIES:
 :ID:       7f249971-adf4-488e-a18f-cbcb5937a7c4
 :END:
@@ -1400,12 +1405,12 @@ ARGS is a list of two arguments."
 This headline contains my long list of custom keywords. Most are based on those
 from =use-package= and =leaf=.
 
-**** wrappers
+***** wrappers
 :PROPERTIES:
 :ID:       7a61245e-fc90-4b11-9108-530b5067fdea
 :END:
 
-***** after
+****** after
 :PROPERTIES:
 :ID:       e1f74cf5-fe9d-414c-8a8a-64f012345f7f
 :END:
@@ -1419,7 +1424,7 @@ from =use-package= and =leaf=.
 (push (cons :after #'def-package-ensure-form-list) def-package~normalizer-alist)
 #+end_src
 
-***** os
+****** os
 :PROPERTIES:
 :ID:       e49b9086-a18e-4062-996b-0a0c77fb7447
 :END:
@@ -1429,7 +1434,7 @@ from =use-package= and =leaf=.
   `(with-os! ,os ,@body))
 #+end_src
 
-***** when
+****** when
 :PROPERTIES:
 :ID:       6c69b275-2381-4a3d-af3f-ae4fe1f79be5
 :END:
@@ -1439,7 +1444,7 @@ from =use-package= and =leaf=.
   `(when ,condition ,@body))
 #+end_src
 
-***** disable
+****** disable
 :PROPERTIES:
 :ID:       755e4c53-1a9a-4c7a-bdca-3e6e600c35b1
 :END:
@@ -1449,12 +1454,12 @@ from =use-package= and =leaf=.
   (if bool nil body))
 #+end_src
 
-**** package management keywords
+***** package management keywords
 :PROPERTIES:
 :ID:       d33d57d5-52d5-4f08-aea3-046edcae61a7
 :END:
 
-***** straight
+****** straight
 :PROPERTIES:
 :ID:       094f3c30-4dd9-426e-8e6d-54e80d672023
 :END:
@@ -1470,7 +1475,7 @@ from =use-package= and =leaf=.
         (void-log "✕ failed to install %s because of %s" ,<package> err)))))
 #+end_src
 
-***** package.el
+****** package.el
 :PROPERTIES:
 :ID:       e850e501-182d-4a99-9442-bab18c55934b
 :END:
@@ -1480,17 +1485,17 @@ from =use-package= and =leaf=.
   )
 #+end_src
 
-**** setting values
+***** setting values
 :PROPERTIES:
 :ID:       cc2442a3-766f-4b42-ae80-e618f140eac1
 :END:
 
-***** pre-setq
+****** pre-setq
 :PROPERTIES:
 :ID:       e9a238b4-884b-421d-bd89-d017bd818944
 :END:
 
-***** setq
+****** setq
 :PROPERTIES:
 :ID:       ab0115b9-8384-4a5e-8db5-754f2e0cdcc4
 :END:
@@ -1503,7 +1508,7 @@ from =use-package= and =leaf=.
 (push (cons :setq #'def-package-ensure-form-list))
 #+end_src
 
-***** setq-default
+****** setq-default
 :PROPERTIES:
 :ID:       33b9ec4c-d74d-40ed-bc4e-cf823f80b7ec
 :END:
@@ -1513,7 +1518,7 @@ from =use-package= and =leaf=.
   `(setq-default ,key ,value))
 #+end_src
 
-***** custom
+****** custom
 :PROPERTIES:
 :ID:       dfd32d6f-0175-4fdd-9300-a6541fa1df24
 :END:
@@ -1523,12 +1528,12 @@ from =use-package= and =leaf=.
   `(customize-set-variable ',var ,value))
 #+end_src
 
-**** deferred loading
+***** deferred loading
 :PROPERTIES:
 :ID:       b68a9a98-d584-4b6a-a936-005e7faeb6dc
 :END:
 
-***** require
+****** require
 :PROPERTIES:
 :ID:       36959112-ec34-467d-b46f-425cd5d06083
 :END:
@@ -1538,7 +1543,7 @@ from =use-package= and =leaf=.
   (when package `(require ',<package>)))
 #+end_src
 
-***** commands
+****** commands
 :PROPERTIES:
 :ID:       a30f2868-1498-451d-85b3-60469e7dc022
 :END:
@@ -1549,7 +1554,7 @@ from =use-package= and =leaf=.
      (autoload #',value ,(symbol-name package) nil t)))
 #+end_src
 
-***** before-call
+****** before-call
 :PROPERTIES:
 :ID:       4899152a-ff5f-4301-a839-2e873a407266
 :END:
@@ -1560,7 +1565,7 @@ from =use-package= and =leaf=.
      (require ',<package>)))
 #+end_src
 
-***** after-call
+****** after-call
 :PROPERTIES:
 :ID:       adc31b5a-76ed-42b8-835a-1fef901d3fdc
 :END:
@@ -1571,7 +1576,7 @@ from =use-package= and =leaf=.
      (require ',<package>)))
 #+end_src
 
-***** defer-config
+****** defer-config
 :PROPERTIES:
 :ID:       59c4bdad-ab90-432a-89e7-1ab901edac84
 :END:
@@ -1581,7 +1586,7 @@ from =use-package= and =leaf=.
   (after! ,<package> ,@body))
 #+end_src
 
-***** hook
+****** hook
 :PROPERTIES:
 :ID:       60af5e51-ca3b-4776-8cf7-d58f223180d3
 :END:
@@ -1594,12 +1599,12 @@ from =use-package= and =leaf=.
 (push (cons :hook #'def-package-ensure-cons-cells) def-package~normalizer-alist)
 #+end_src
 
-**** miscellaneous
+***** miscellaneous
 :PROPERTIES:
 :ID:       87bf82fd-5c71-43a5-8a8f-67f42697ff3d
 :END:
 
-***** init
+****** init
 :PROPERTIES:
 :ID:       a3273c87-ba59-4ed7-a08b-3bf6d80bca53
 :END:
@@ -1608,7 +1613,7 @@ from =use-package= and =leaf=.
 (def-package-key! init (form) form)
 #+end_src
 
-***** mode
+****** mode
 :PROPERTIES:
 :ID:       e4126fe1-3515-4d21-b178-137094d00ecb
 :END:
@@ -1618,7 +1623,7 @@ from =use-package= and =leaf=.
   `(add-to-list 'auto-mode-alist (cons ,regexp ',mode)))
 #+end_src
 
-***** config
+****** config
 :PROPERTIES:
 :ID:       09342213-5059-45eb-966f-255b3b2848ee
 :END:
@@ -1627,7 +1632,7 @@ from =use-package= and =leaf=.
 (def-package-key! config (form) form)
 #+end_src
 
-***** load-path
+****** load-path
 :PROPERTIES:
 :ID:       412683d3-325f-477e-9927-b9c0a7480481
 :END:
@@ -1637,7 +1642,7 @@ from =use-package= and =leaf=.
   `(add-to-list 'load-path ,path))
 #+end_src
 
-***** alias
+****** alias
 :PROPERTIES:
 :ID:       49135d18-70c6-4f5e-98ce-c01a8ecaf13b
 :END:
