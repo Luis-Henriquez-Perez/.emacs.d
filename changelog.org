@@ -226,4 +226,4 @@ evaluated forms.
 
 A clear problem we see is with =leaf-normalize=. It is a variable contains
 condition case clauses that determine how the value of a particular key should
-be normalized.
+be normalized. It is difficult to read the data structure at a glance because
