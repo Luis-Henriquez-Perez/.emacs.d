@@ -219,4 +219,4 @@ defining keywords is still cumbersome.
 
 This stems from the fact that leaf does not use functions to store
 transformations into forms. Instead, it uses raw lisp forms. For one thing, this
-makes reading the data structure
+makes reading the data structure via
