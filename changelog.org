@@ -251,3 +251,6 @@ the bare minimum information possible to add a new custom three words.
 (def-package-key! mode (regexp . mode)
   `(add-to-list 'auto-mode-alist (cons ,regexp ',mode)))
 #+end_src
+
+Yes, you can look up the documentation and play with it until you finally figure
+it out, but the point is you shouldn't have to do that.
