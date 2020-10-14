@@ -237,3 +237,12 @@ to normalizer functions.
 The benefit of using functions as opposed to forms. More difficult to debug.
 Elisp has many useful methods for debugging functions. The flexibility of
 functions allso allows you to.
+
+*** why not =use-package=
+:PROPERTIES:
+:ID:       773bf0d9-851d-4052-b6a9-38102f3adee5
+:END:
+
+The simple answer is it's too annoying to define new keywords. In =def-package=, I
+try to follow the least knowledge principle wherein the user should have to know
+the bare minimum information possible to add a new custom three words.
