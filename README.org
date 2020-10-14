@@ -1072,7 +1072,7 @@ SYM is a symbol that stores a list."
 This is my own simple macro that does essentially the same thing as leaf or
 use-package but is much simpler. Some notable differences are that. I use
 [[id:2c2e4202-4530-4538-a8c9-ffb40239d6042c2e4202-4530-4538-a8c9-ffb40239d604][weighted sorting]] (similar to [[][depth]] in hooks added after Emacs 26) instead
-of explicit. Also I use
+of explicit. Also I use. The goal of this macro is to
 
 *** keywords
 :PROPERTIES:
