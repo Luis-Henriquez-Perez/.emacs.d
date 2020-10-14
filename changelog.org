@@ -246,3 +246,6 @@ functions allso allows you to.
 The simple answer is it's too annoying to define new keywords. In =def-package=, I
 try to follow the least knowledge principle wherein the user should have to know
 the bare minimum information possible to add a new custom three words.
+
+#+begin_src emacs-lisp
+#+end_src
