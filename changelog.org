@@ -248,4 +248,6 @@ try to follow the least knowledge principle wherein the user should have to know
 the bare minimum information possible to add a new custom three words.
 
 #+begin_src emacs-lisp
+(def-package-key! mode (regexp . mode)
+  `(add-to-list 'auto-mode-alist (cons ,regexp ',mode)))
 #+end_src
