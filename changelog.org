@@ -220,4 +220,4 @@ defining keywords is still cumbersome.
 This stems from the fact that leaf does not use functions to store
 transformations into forms. Instead, it uses raw lisp forms. For one thing, this
 makes reading the data structure via just evaluating the variable in a buffer or
-via [[][]] really hard. This encourages the use of =eval=.
+via [[][]] really hard. This encourages the use of =eval= which should be avoided.
