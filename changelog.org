@@ -255,4 +255,5 @@ the bare minimum information possible to add a new custom three words.
 Yes, you can look up the documentation and play with it until you finally figure
 it out, but the point is you shouldn't have to do that. You shouldn't have to
 have knowledge of =use-package-concat= and =use-package-process-keywords= just. The
-situation arose where I know exactly what form I want to add
+situation arose where I know exactly what form I want to add. Something as
+simple as adding a lisp form to a list should not be this complicated.
