@@ -1073,9 +1073,9 @@ This is my own simple macro that does essentially the same thing as leaf or
 use-package but is much simpler. Some notable differences are that. I use
 [[id:2c2e4202-4530-4538-a8c9-ffb40239d6042c2e4202-4530-4538-a8c9-ffb40239d604][weighted sorting]] (similar to [[][depth]] in hooks added after Emacs 26) instead
 of explicit. Also I use. The goal of this =quasi= package is to make adding new
-keywords as easy and straightforward as possible (see [[8c42eac6-a0ae-448a-af07-100d0c6a06ac][def-package-key!]] and ). I also want
-the data structures and the mechanisms behind generating a form to be easy to
-test, read, and hack.
+keywords as easy and straightforward as possible (see [[8c42eac6-a0ae-448a-af07-100d0c6a06ac][def-package-key!]] and
+[[id:7f249971-adf4-488e-a18f-cbcb5937a7c4][custom keywords]]). I also want the data structures and the mechanisms behind
+generating a form to be easy to test, read, and hack.
 
 *** keywords
 :PROPERTIES:
