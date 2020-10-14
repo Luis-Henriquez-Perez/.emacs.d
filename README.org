@@ -1445,16 +1445,6 @@ from =use-package= and =leaf=.
   (if bool nil body))
 #+end_src
 
-**** require
-:PROPERTIES:
-:ID:       36959112-ec34-467d-b46f-425cd5d06083
-:END:
-
-#+begin_src emacs-lisp
-(def-package-key! require (package)
-  (when package `(require ',<package>)))
-#+end_src
-
 **** package management keywords
 :PROPERTIES:
 :ID:       d33d57d5-52d5-4f08-aea3-046edcae61a7
@@ -1534,6 +1524,16 @@ from =use-package= and =leaf=.
 :ID:       b68a9a98-d584-4b6a-a936-005e7faeb6dc
 :END:
 
+***** require
+:PROPERTIES:
+:ID:       36959112-ec34-467d-b46f-425cd5d06083
+:END:
+
+#+begin_src emacs-lisp
+(def-package-key! require (package)
+  (when package `(require ',<package>)))
+#+end_src
+
 ***** commands
 :PROPERTIES:
 :ID:       a30f2868-1498-451d-85b3-60469e7dc022
@@ -1590,7 +1590,12 @@ from =use-package= and =leaf=.
 (push (cons :hook #'def-package-ensure-cons-cells) def-package~normalizer-alist)
 #+end_src
 
-**** init
+**** miscellaneous
+:PROPERTIES:
+:ID:       87bf82fd-5c71-43a5-8a8f-67f42697ff3d
+:END:
+
+***** init
 :PROPERTIES:
 :ID:       a3273c87-ba59-4ed7-a08b-3bf6d80bca53
 :END:
@@ -1598,11 +1603,6 @@ from =use-package= and =leaf=.
 #+begin_src emacs-lisp
 (def-package-key! init (form) form)
 #+end_src
-
-**** miscellaneous
-:PROPERTIES:
-:ID:       87bf82fd-5c71-43a5-8a8f-67f42697ff3d
-:END:
 
 ***** mode
 :PROPERTIES:
