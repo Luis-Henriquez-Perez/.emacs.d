@@ -232,5 +232,6 @@ with a particular keyword because many of the clause predicates are of the form
 ~(memq leaf--key '(KEYS))~. If I wanted to access the form to be evaluated by
 said key, for example, how do I do that?. This should really be an alist.
 
-More difficult to debug. Elisp has many useful methods for debugging functions.
-The flexibility of functions allso allows you to.
+The benefit of using functions as opposed to forms. More difficult to debug.
+Elisp has many useful methods for debugging functions. The flexibility of
+functions allso allows you to.
