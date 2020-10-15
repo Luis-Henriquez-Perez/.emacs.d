@@ -381,7 +381,7 @@
 :ID:       a508a0ca-3cfa-4719-bf72-4f359358d4e6
 :END:
 
-*** dp setq
+*** setq
 :PROPERTIES:
 :ID:       dedd1dca-5caf-47ad-87e3-d43bcce02fa4
 :END:
@@ -392,7 +392,7 @@
     (should (equal it '((setq a 3))))))
 #+end_src
 
-*** dp forms
+*** forms
 :PROPERTIES:
 :ID:       23f2f158-75b3-47fe-9b45-c935be505fc4
 :END:
@@ -408,7 +408,7 @@
     (should (equal (def-package-forms 'hello alist) '((setq a 3))))))
 #+end_src
 
-*** dp normalize
+*** normalize
 :PROPERTIES:
 :ID:       d5f65879-d76f-40f5-930d-de8ca7469e84
 :END:
