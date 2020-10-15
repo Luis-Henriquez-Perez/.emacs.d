@@ -1461,7 +1461,8 @@ from =use-package= and =leaf=.
 #+begin_src emacs-lisp
 (def-package-key! when (condition body)
   `(when ,condition ,@body))
-#+end_src
+
+(def-package-set-weight :when 20)#+end_src
 
 ****** disable
 :PROPERTIES:
