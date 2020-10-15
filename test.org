@@ -276,8 +276,10 @@
 #+begin_src emacs-lisp
 (ert-deftest def-package-set-alias ()
   (let ((def-package-alias-alist '()))
+    ;; should add a alias and its key to `def-package-alias-alist'.
     (def-package-set-alias :foo :bar)
     (should (eq (alist-get :foo def-package-alias-alist) :bar))
+    ;; should find the true key of an alias.
     (def-package-set-alias :bar :ensure)
     (def-package-set-alias :ensure :zap)
     (should (eq (def-package-true-key :foo) :zap))))
