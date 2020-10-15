@@ -1099,8 +1099,8 @@ Key is a key for a keyword. APPLY-FN is a function that accepts two argments.")
 :ID:       168b8c06-703b-4b51-9df5-d9d3d729288e
 :END:
 
-It is useful to apply some keywords to all emacs packages. An example of this is
-ensure.
+It is useful to apply some keywords to all emacs packages. Perhaps the most
+common example of this is the =:ensure= keyword.
 
 #+begin_src emacs-lisp
 (defvar def-package-default-keyword-alist nil
