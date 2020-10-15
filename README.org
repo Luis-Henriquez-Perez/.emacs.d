@@ -1198,7 +1198,7 @@ KEY is a `def-package' key. WEIGHT is the number used to sort the key")
 #+begin_src emacs-lisp
 (defun def-package-weight (key)
   "Return the weight for the given key."
-  (alist-get key def-package-weight-alist alist-get))
+  (alist-get key def-package-weight-alist))
 #+end_src
 
 **** setter for weight
