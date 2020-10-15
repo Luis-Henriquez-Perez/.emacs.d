@@ -1511,6 +1511,8 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
+(def-package-key! setq ((var . value))
+  `(setq ,var ,val))
 #+end_src
 
 ****** setq
