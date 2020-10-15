@@ -1447,8 +1447,10 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! os (os body 20)
+(def-package-key! os (os body)
   `(with-os! ,os ,@body))
+
+(def-package-set-weight :os 20)
 #+end_src
 
 ****** when
