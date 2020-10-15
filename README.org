@@ -1521,6 +1521,8 @@ from =use-package= and =leaf=.
 #+begin_src emacs-lisp
 (def-package-key! pre-setq ((var . value))
   `(setq ,var ,val))
+
+(def-package-set-weight 15)
 #+end_src
 
 ****** setq
