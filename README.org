@@ -1244,6 +1244,18 @@ cons cell. Normalizers allow us to separate. The reason that the normalizers
 take a list instead of a value (and then use that to map through the list) is to
 deal with nested lists.
 
+***** normalizer alist
+:PROPERTIES:
+:ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
+:END:
+
+#+begin_src emacs-lisp
+(defvar def-package-normalizer-alist nil
+  "An alist of (KEY . NORMALIZER).
+NORMALIZER is with one argument, the list of values for keyword KEY. It should
+return a normalized list of values..")
+#+end_src
+
 ***** expand values
 :PROPERTIES:
 :ID:       1e44ea35-23c2-4143-8b68-1ac33e6c80a6
@@ -1275,18 +1287,6 @@ This function is what applyes the normallization to each of the values.
     (aif (alist-get key def-package-normalizer-alist)
         (cons key (funcall it values))
       pair)))
-#+end_src
-
-***** normalizer alist
-:PROPERTIES:
-:ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
-:END:
-
-#+begin_src emacs-lisp
-(defvar def-package-normalizer-alist nil
-  "An alist of (KEY . NORMALIZER).
-NORMALIZER is with one argument, the list of values for keyword KEY. It should
-return a normalized list of values..")
 #+end_src
 
 ***** def-package-normalize-args
