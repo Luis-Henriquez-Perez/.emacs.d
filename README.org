@@ -1239,7 +1239,8 @@ Each key can take values of a different form. For example, the [[id:60af5e51-ca3
 take a cons cell of the form ~(hook . value)~, or a just the hook variable, or a
 list of these. Functions created for customizing a keyword are easier to write
 and easier to read if they just assume one standard structure for their value.
-Thinking back on the hook keyword,
+Thinking back on the hook keyword, each individual value can be thought of as a
+cons cell.
 The reason that the normalizers take a list instead of a value (and then use
 that to map through the list) is to deal with nested lists.
 
