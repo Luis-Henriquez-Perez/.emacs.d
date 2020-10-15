@@ -1292,10 +1292,10 @@ return a normalized list of values..")
 :ID:       9d32f14a-61d0-4200-8797-4a7ed776f5f8
 :END:
 
-This function is meant to be used with [[helpfn:-reduce][-reduce]] to construct the body of the
-form. Often there is some metadata that is useful to know when executing these
-functions such as the package name (see [[][my definition of :hook]). This
-metadata will be included in BINDINGS.
+This function is meant to be used with [[helpfn:-reduce][-reduce]] to construct the body of the form
+constructed by the =defpackage!= macro. Often there is some metadata that is
+useful to know when executing these functions such as the package name (see
+[[][my definition of :hook]). This metadata will be included in BINDINGS.
 
 #+begin_src emacs-lisp
 (defun def-package-apply-fn (pair forms &optional bindings)
