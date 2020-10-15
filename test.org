@@ -273,6 +273,13 @@
 :ID:       d2ef7a1d-56f6-431a-8eb0-3f6d1438ba32
 :END:
 
+#+begin_src emacs-lisp
+(ert-deftest def-package-set-weight ()
+  (let ((def-package-weight-alist '((:foo 10))))
+    (def-package-set-weight :foo 15)
+    (should (= (alist-get :foo def-package-weight-alist) 15))))
+#+end_src
+
 ** weights
 :PROPERTIES:
 :ID:       596afc57-5aed-4ea3-9e6c-1605d472ca46
