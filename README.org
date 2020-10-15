@@ -1166,7 +1166,7 @@ Instead of having a fixed sort order for keys like =use-package= and =leaf=,
 26). A weight is a number assigned to a key. Keys with a higher number will be
 sorted closer to the beginning of the list than keys with a lower number. The
 reasoning behind this is that typically for many keywords the order does not
-matter.
+matter--at least as long as they're after a certain set of other keywords.
 
 **** weight
 :PROPERTIES:
