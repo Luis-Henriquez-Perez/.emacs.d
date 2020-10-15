@@ -330,6 +330,14 @@
     (should)))
 #+end_src
 
+*** normalize args
+:PROPERTIES:
+:ID:       76188892-3ded-4ca4-9c75-7a1b2605e3cd
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ** generating the result form
 :PROPERTIES:
 :ID:       46561f94-4e52-4cdd-9788-a5e9d18780ef
