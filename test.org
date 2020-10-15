@@ -284,8 +284,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest def-package-~apply-setq ()
-  (alet (def-package-~apply-setq 'hello (cons 'a 3) nil)
+(ert-deftest def-package-apply-setq ()
+  (alet (def-package-apply-setq 'hello (cons 'a 3) nil)
     (should (equal it '((setq a 3))))))
 #+end_src
 
