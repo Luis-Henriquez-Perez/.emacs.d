@@ -329,6 +329,8 @@
     (def-package-set-normalizer :foo args)
     (def-package-set-normalizer :lop args)
     (def-package-set-normalizer :bar args)
+    (should)
+    (should)
     (should)))
 #+end_src
 
