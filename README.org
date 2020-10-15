@@ -1679,7 +1679,7 @@ from =use-package= and =leaf=.
 (def-package-key! alias ((alias . definition))
   `(eval-and-compile (defalias #',alias #',definition)))
 
-(push (cons :alias #'def-package-ensure-cons-cells) def-package~normalizer-alist)
+(def-package-set-normalizer :alias #'def-package-ensure-cons-cells)
 #+end_src
 
 ** Packages
