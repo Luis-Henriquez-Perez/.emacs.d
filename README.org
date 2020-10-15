@@ -1335,12 +1335,7 @@ A key theme of =defpackage= implementation is to allow.
     (-annotate (-const key) values)))
 #+end_src
 
-**** stuff
-:PROPERTIES:
-:ID:       cd4d3638-a2d9-452e-888a-7934b001822f
-:END:
-
-***** normalize
+**** normalize
 :PROPERTIES:
 :ID:       b1c9696f-67a9-459b-9199-85dcc6fa96c1
 :END:
