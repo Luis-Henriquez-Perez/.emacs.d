@@ -284,8 +284,10 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest set-the-weights ()
-  )
+(ert-deftest def-package-set-weight ()
+  (let ((def-package-weight-alist '((:foo 10))))
+    (def-package-set-weight :foo 15)
+    (should (= (alist-get :foo def-package-weight-alist) 15))))
 #+end_src
 
 *** keys are sorted properly based on weights
