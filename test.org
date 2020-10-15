@@ -258,119 +258,6 @@
     (should (eq it 'emacs-lisp-mode-hook))))
 #+end_src
 
-* leaf
-:PROPERTIES:
-:ID:       464e2084-d46c-47e7-8c54-817defb13b67
-:END:
-
-** leaf~insert-after
-:PROPERTIES:
-:ID:       d38391a2-d1c5-4d73-993e-4058763cc3c3
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~insert-after ()
-  (let ((plist (list :a 1 :b 2)))
-    (alet (leaf~insert-after plist :b :x 4)
-      (should (equal it '(:a 1 :b 2 :x 4))))))
-#+end_src
-
-** leaf~insert-before
-:PROPERTIES:
-:ID:       efe9fabd-770c-47fa-b821-edc05f6758d5
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~insert-before ()
-  (let ((plist (list :a 1 :b 2)))
-    (alet (leaf~insert-before plist :b :x 4)
-      (should (equal it '(:a 1 :x 4 :b 2))))))
-#+end_src
-
-** leaf~insert-at
-:PROPERTIES:
-:ID:       a96fa3e8-85cb-4c5f-b862-2fe8340192c9
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~insert-at ()
-  (let ((plist (list :a 1 :b 2)))
-    (should (equal (leaf~insert-at plist :b :c 3)
-                   (list :a 1 :c 3)))))
-#+end_src
-
-** leaf~insert-keyword
-:PROPERTIES:
-:ID:       63976e43-dcb9-4b06-9095-1e31b6c75a88
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~insert-keyword ()
-  (let* ((leaf-keywords '(:a (1) :b (2)))
-         (orig-value leaf-keywords))
-    ;; can insert before.
-    (leaf~insert-keyword :c 'before :b '(3))
-    (should (equal leaf-keywords '(:a (1) :c (3) :b (2))))
-    (setq leaf-keywords orig-value)
-    ;; can insert after.
-    (leaf~insert-keyword :c 'after :b '(3))
-    (should (equal leaf-keywords '(:a (1) :b (2) :c (3))))
-    (setq leaf-keywords orig-value)
-    ;; can insert at (ie. replace).
-    ;; (leaf~insert-keyword :c 'at :b '(3))
-    ;; (should (equal leaf-keywords '(:a (1) :c (3) :b (2))))
-    ))
-#+end_src
-
-** leaf~flatten-keywords
-:PROPERTIES:
-:ID:       22800ae7-63f1-4d19-a82e-29bd90544fd6
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~flatten-keywords ()
-  (let ((keywords '(:c (a b c) :h d e f)))
-    (alet (leaf~flatten-keywords keywords)
-      it
-      ;; (should (equal it '(:c a :c b :c c :h d :h e :h f)))
-      )))
-#+end_src
-
-** leaf~general-process
-:PROPERTIES:
-:ID:       3b89a49a-30a7-4c3b-9f93-8c7b1056c2b9
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest leaf~general-process ()
-  (should (eq (leaf~general-process :a '(1 2 3 4))
-              (list :a 1 2 3 4)))
-  (should (eq (leaf~general-process :a '((1 2 3 4)))
-              (list :a 1 2 3 4)))
-  (should (eq (leaf~general-process :a (cons 1 2))
-              (cons :a (cons 1 2))))
-  (should (eq (leaf~general-process :a 1)
-              (cons :a 1))))
-#+end_src
-
-** leaf!
-:PROPERTIES:
-:ID:       d053e1e5-5d35-4f61-84ac-db0828e764bc
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package! ()
-  (equal (macroexpand-1 '(leaf! evil :commands (fee fi fo fum)))
-         '(leaf evil :commands fee :commands fi :commands fo :commands fum))
-
-  (equal (macroexpand-1 '(leaf! evil :commands fee fi fo fum))
-         '(leaf evil :commands fee :commands fi :commands fo :commands fum))
-
-  (equal (macroexpand-1 '(leaf! evil :commands fee))
-         '(leaf evil :commands fee))
-  )
-#+end_src
-
 * dp keywords
 :PROPERTIES:
 :ID:       83ea9898-ec4f-4783-9edd-e84296d43d8c
@@ -382,13 +269,13 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest dp~apply-fn ()
+(ert-deftest def-package-apply-fn ()
   (cl-letf* (((symbol-function 'apply-setq)
               (lambda (it &rest _) `(setq ,(car it) ,(cdr it))))
-             (dp~keywords (a-list :setq #'apply-setq)))
+             (def-package-keywords (a-list :setq #'apply-setq)))
     ;; sanity check.
     (should (equal '(setq var 3) (apply-setq (cons 'var 3))))
-    (should (equal '((setq var 3)) (dp~apply-fn (list :setq (cons 'var 3)))))
+    (should (equal '((setq var 3)) (def-package-apply-fn (list :setq (cons 'var 3)))))
     ))
 #+end_src
 
@@ -398,8 +285,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest dp~~apply-setq ()
-  (alet (dp~~apply-setq 'hello (cons 'a 3) nil)
+(ert-deftest def-package-~apply-setq ()
+  (alet (def-package-~apply-setq 'hello (cons 'a 3) nil)
     (should (equal it '((setq a 3))))))
 #+end_src
 
@@ -409,14 +296,14 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest dp~forms ()
-  (let ((dp~keywords (a-list :setq #'dp~~apply-setq))
+(ert-deftest def-package-forms ()
+  (let ((def-package-keywords (a-list :setq #'dp~~apply-setq))
         (alist (a-list :setq '(a . 3)))
         (package 'hello))
     (should (alist-get :setq alist))
-    (should (equal (dp~apply-fn package nil (-first-item alist)) '((setq a 3))))
-    ;; (-reduce-from (-partial #'dp~apply-fn package) nil alist)
-    (should (equal (dp~forms 'hello alist) '((setq a 3))))))
+    (should (equal (def-package-apply-fn package nil (-first-item alist)) '((setq a 3))))
+    ;; (-reduce-from (-partial #'def-package-apply-fn package) nil alist)
+    (should (equal (def-package-forms 'hello alist) '((setq a 3))))))
 #+end_src
 
 ** dp normalize
@@ -425,11 +312,11 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest dp~normalize ()
-  (alet (dp~normalize '(:foo a b c :fee b c :fii (hello)))
+(ert-deftest def-package-normalize ()
+  (alet (def-package-normalize '(:foo a b c :fee b c :fii (hello)))
     (should (eq it (a-list :foo 'a :foo 'b :foo 'c :fee 'b :fee 'c))))
 
-  (alet (dp~normalize '(:init (+ 1 1) (+ 2 2)))
+  (alet (def-package-normalize '(:init (+ 1 1) (+ 2 2)))
     (should (eq it (alist :init '(+ 1 1) :init '(+ 2 2))))))
 #+end_src
 
@@ -439,12 +326,12 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest dp~true-key ()
-  (let ((dp~alias-alist '((:ensure . :ho) (:ho . :laa) (:laa . :hee))))
+(ert-deftest def-package-true-key ()
+  (let ((def-package-alias-alist '((:ensure . :ho) (:ho . :laa) (:laa . :hee))))
     ;; return the real aliased key.
-    (should (eq (dp~true-key :ensure) :hee))
+    (should (eq (def-package-true-key :ensure) :hee))
     ;; return the original key when non aliases.
-    (should (eq (dp~true-key :when) :when))))
+    (should (eq (def-package-true-key :when) :when))))
 #+end_src
 
 ** defpackage!
@@ -453,8 +340,8 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest dp~forms ()
-  (alet (dp~forms 'horse (dp~normalize '(:os mac :require t)))
+(ert-deftest def-package-forms ()
+  (alet (def-package-forms 'horse (dp~normalize '(:os mac :require t)))
     (should (equal it '((with-os! mac (require 'horse))))))
-  (alet (dp~forms 'cow (dp~normalize ))))
+  (alet (def-package-forms 'cow (dp~normalize ))))
 #+end_src
