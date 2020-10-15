@@ -1318,7 +1318,7 @@ KEY is a `def-package' key. WEIGHT is the number used to sort the key")
      (def-package-weight (car pair2))))
 #+end_src
 
-*** defpackage! macro
+*** def-package macro
 :PROPERTIES:
 :ID:       b265f9e3-c50f-42c2-a29c-f734f168ea99
 :END:
@@ -1367,7 +1367,7 @@ BINDINGS are an alist of (VAR . VALUE)."
 :END:
 
 #+begin_src emacs-lisp
-(defmacro defpackage! (package &rest args)
+(defmacro def-package (package &rest args)
   "A replacement for `use-package' and `leaf'."
   `(progn
      ,@(def-package-forms (def-package~normalize-args args)
