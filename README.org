@@ -1293,6 +1293,7 @@ return a normalized list of values..")
 (defun def-package-normalize-args (args)
   "Convert args into an alist such that (KEY . VALUE)."
   (->> (-partition-by-header #'keywordp args)
+       (sort #'def-package-sort-by-weight)
        (mapcar #'def-package-apply-normalize)
        (mapcan #'def-package-expand-values)))
 #+end_src
