@@ -1462,7 +1462,8 @@ from =use-package= and =leaf=.
 (def-package-key! when (condition body)
   `(when ,condition ,@body))
 
-(def-package-set-weight :when 20)#+end_src
+(def-package-set-weight :when 20)
+#+end_src
 
 ****** disable
 :PROPERTIES:
@@ -1472,6 +1473,8 @@ from =use-package= and =leaf=.
 #+begin_src emacs-lisp
 (def-package-key! disabled (bool body)
   (if bool nil body))
+
+(def-package-set-weight :disabled 25)
 #+end_src
 
 ***** package management keywords
