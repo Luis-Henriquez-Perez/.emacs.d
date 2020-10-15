@@ -1436,9 +1436,7 @@ from =use-package= and =leaf=.
 
 (def-package-set-weight :after 20)
 
-(defpackage-set-normalizer :after #'def-package-ensure-form-list)
-
-(push (cons :after #'def-package-ensure-form-list) def-package~normalizer-alist)
+(def-package-set-normalizer :after #'def-package-ensure-form-list)
 #+end_src
 
 ****** os
