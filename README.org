@@ -1151,7 +1151,7 @@ This function recurses infinitely if key has a circular alias."
 #+begin_src emacs-lisp
 (defun def-package-set-alias (alias original)
   "Alias ORIGINAL to ALIAS."
-  (map-put! def-package-alias-alist alias original))
+  (setf (alist-get alias def-package-alias-alist) original))
 #+end_src
 
 *** weighted sorting
