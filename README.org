@@ -1299,7 +1299,7 @@ useful to know when executing these functions such as the package name (see
 
 #+begin_src emacs-lisp
 (defun def-package-apply-fn (pair forms &optional bindings)
-  "Return list of forms from applying VAR to VALUES.
+  "Return new forms from applying PAIR to FORMS.
 
 \((VAR . VALUE) &optional BINDINGS)"
   (-let* (((key . value) pair)
