@@ -284,6 +284,8 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest set-the-weights ()
+  )
 #+end_src
 
 *** keys are sorted properly based on weights
