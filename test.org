@@ -298,8 +298,10 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest def-package-expand-forms ()
-  )
+(ert-deftest def-package-expand-values ()
+  (let ((pair '(:foo 1 2 3)))
+    (alet (def-package-expand-values pair)
+      (should (= it '((:foo 1) (:foo 2) (:foo 3)))))))
 #+end_src
 
 ** generating the result form
