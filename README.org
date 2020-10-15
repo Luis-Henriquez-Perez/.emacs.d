@@ -1187,11 +1187,6 @@ KEY is a `def-package' key. WEIGHT is the number used to sort the key")
   "Default weight for a new `def-package' keyword.")
 #+end_src
 
-**** default sort function
-:PROPERTIES:
-:ID:       9824b092-61ff-4a55-a2e3-18745ca16f09
-:END:
-
 **** getter for weight
 :PROPERTIES:
 :ID:       a1df5773-2251-4b90-a65d-43f8c23ba4d8
