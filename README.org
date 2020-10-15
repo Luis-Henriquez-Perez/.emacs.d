@@ -1239,10 +1239,10 @@ the form we want to produce (initially nil) to get our desired form.
 :END:
 
 Each key can take values of a different form. For example, the [[][]] can take a
-cons cell of the form ~()~, or a just the hook variable, or a list of these. To accommidate different ways
-users can pass in values to. The reason that the normalizers take a list instead
-of a value (and then use that to map through the list) is to deal with nested
-lists.
+cons cell of the form ~(hook . value)~, or a just the hook variable, or a list of
+these. To accommidate different ways users can pass in values to. The reason
+that the normalizers take a list instead of a value (and then use that to map
+through the list) is to deal with nested lists.
 
 ***** normalizer alist
 :PROPERTIES:
