@@ -1367,7 +1367,8 @@ BINDINGS are an alist of (VAR . VALUE)."
 :ID:       e73b7f95-1082-4978-a501-f69f6d516cbb
 :END:
 
-Defining a keyword is as simple as writing a function.
+Defining a keyword is as simple as writing a function that returns the form you
+want in the resulting =defpackage!= form and adding it to an
 
 **** define a package key
 :PROPERTIES:
