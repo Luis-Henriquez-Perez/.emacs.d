@@ -1104,6 +1104,15 @@ NORMALIZER is with one argument, the list of values for keyword KEY. It should
 return a normalized list of values..")
 #+end_src
 
+**** set a normalizer
+:PROPERTIES:
+:ID:       69f983aa-1009-424a-adf2-c9c80947b42b
+:END:
+
+#+begin_src emacs-lisp
+(defun def-package-set-normalizer ())
+#+end_src
+
 **** expand values
 :PROPERTIES:
 :ID:       1e44ea35-23c2-4143-8b68-1ac33e6c80a6
