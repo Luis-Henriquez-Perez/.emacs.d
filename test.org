@@ -325,7 +325,8 @@
 
 #+begin_src emacs-lisp
 (ert-deftest def-package-normalize-values ()
-  (alet ()
+  (let ((def-package-normalizer-alist)
+        ())
     (should)))
 #+end_src
 
