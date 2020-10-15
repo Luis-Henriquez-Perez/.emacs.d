@@ -1468,13 +1468,11 @@ from =use-package= and =leaf=.
 :ID:       755e4c53-1a9a-4c7a-bdca-3e6e600c35b1
 :END:
 
-
-
 #+begin_src emacs-lisp
 (def-package-key! disabled (bool body)
   (if bool nil body))
 
-(def-package-set-weight :disabled 25)
+(def-package-set-weight :disable 25)
 #+end_src
 
 ***** package management keywords
@@ -2490,12 +2488,12 @@ Some command line options aren't necessary.
     (setenv "GIT_ASKPASS" "git-gui--askpass")))
 #+end_src
 
-**** mac                                                              :disabled:
+**** mac                                                              :disable:
 :PROPERTIES:
 :ID: e502d7e6-8b19-4300-a4fd-9a797df98402
 :END:
 
-***** defaults                                                        :disabled:
+***** defaults                                                        :disable:
 :PROPERTIES:
 :ID: 8e4e5a73-5616-4aca-b939-5bad62e6c657
 :END:
@@ -2516,7 +2514,7 @@ Some command line options aren't necessary.
   (setq ns-pop-up-frames nil))
 #+end_src
 
-***** TODO exec path from shell                                       :disabled:
+***** TODO exec path from shell                                       :disable:
 :PROPERTIES:
 :ID: 0cc48982-6a3e-40ee-9e95-3e21dae157b5
 :END:
@@ -3403,7 +3401,7 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (defpackage! exwm-firefox-evil
-  :disabled t
+  :disable t
   ;; :after exwm
   :hook (exwm-manage-finish-hook . exwm-firefox-evil-activate-if-firefox)
   :config
@@ -4125,7 +4123,7 @@ ways to read and send emails in Emacs.
 
 #+begin_src emacs-lisp
 (use-feature! smtpmail
-  :disabled t
+  :disable t
   :setq
   (smtp-default-mail-server . "mail.example.com")
   (smtp-smtp-server . "mail.example.com")
@@ -4248,7 +4246,7 @@ it is definitely on my list of things to try out.
 
 #+begin_src emacs-lisp
 (defpackage! org-mu4e
-  :disabled t
+  :disable t
   :hook (mu4e-compose-mode-hook . org-mu4e-compose-org-mode)
   :setq
   (org-mu4e-link-query-in-headers-mode . nil)
@@ -4499,7 +4497,7 @@ see my inbox, no questions asked.
 #+end_src
 
 
-** gnus                                                               :disabled:
+** gnus                                                               :disable:
 :PROPERTIES:
 :ID: d9ce252d-5f33-469b-a88c-84131f6f0eaa
 :END:
@@ -4751,12 +4749,12 @@ The optional argument NEW-WINDOW is not used."
            (append nil (list url)))))
 #+end_src
 
-** xwebkit                                                            :disabled:
+** xwebkit                                                            :disable:
 :PROPERTIES:
 :ID: b33151c3-e980-41d3-8656-350d514f9925
 :END:
 
-*** going to url                                                      :disabled:
+*** going to url                                                      :disable:
 :PROPERTIES:
 :ID: 1079a7c8-e596-40d4-b86e-e916944e9030
 :END:
@@ -4855,7 +4853,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
   (mpc-host . "127.0.0.1:6600"))
 #+end_src
 
-*** quitting                                                          :disabled:
+*** quitting                                                          :disable:
 :PROPERTIES:
 :ID: 545e6534-f289-4a89-838a-2a65ac74fe72
 :END:
@@ -4892,13 +4890,13 @@ my description of problems with pictures.
 (defpackage! screenshot :commands screenshot)
 #+end_src
 
-*** escr                                                              :disabled:
+*** escr                                                              :disable:
 :PROPERTIES:
 :ID:       06f23fc2-7f6b-4812-a14d-185b42a42976
 :END:
 
 #+begin_src emacs-lisp
-(defpackage! escr :disabled t)
+(defpackage! escr :disable t)
 #+end_src
 
 *** scrot
@@ -4956,7 +4954,7 @@ What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is 
   :setq (highlight-numbers-generic-regexp . "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>"))
 #+end_src
 
-** highlight-escape-sequences                                         :disabled:
+** highlight-escape-sequences                                         :disable:
 :PROPERTIES:
 :ID: 608d94c5-806f-4303-bb81-0b95a3dfcacc
 :END:
@@ -5613,7 +5611,7 @@ very useful to me.
 (defpackage! aggressive-fill-paragraph)
 #+end_src
 
-*** spell check                                                       :disabled:
+*** spell check                                                       :disable:
 :PROPERTIES:
 :ID: fc68d949-246f-43bf-85c2-7fbb947af7e9
 :END:
@@ -5638,7 +5636,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
   :setq (auto-capitalize-words . '("I" "English")))
 #+end_src
 
-*** thesaurus                                                         :disabled:
+*** thesaurus                                                         :disable:
 :PROPERTIES:
 :ID: 5578aaf2-796f-4006-af60-de87b215120a
 :END:
@@ -5948,7 +5946,7 @@ Why not just go to the end of the ="= like any other around operator?
     "\"" #'evil:textobj-a-string))
 #+end_src
 
-**** package specific setup                                           :disabled:
+**** package specific setup                                           :disable:
 :PROPERTIES:
 :ID: 5f9025e0-156c-4270-96ab-49011df83632
 :END:
@@ -5990,7 +5988,7 @@ Why not just go to the end of the ="= like any other around operator?
     (add-hook 'org-capture-mode-hook #'evil-insert-state)))
 #+end_src
 
-***** Info                                                            :disabled:
+***** Info                                                            :disable:
 :PROPERTIES:
 :ID: c6c401dc-a7cf-460d-9188-1ee8bb2dad24
 :END:
@@ -6308,7 +6306,7 @@ larger text objects. It's saves me keystrokes.
   "E" #'void/evil-end-of-WORD)
 #+end_src
 
-** undo                                                               :disabled:
+** undo                                                               :disable:
 :PROPERTIES:
 :ID: 87fde0b2-5db6-4b5f-8945-d469449f1207
 :END:
@@ -7260,7 +7258,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
       (server-start))))
 #+end_src
 
-** TODO autorevert                                                    :disabled:
+** TODO autorevert                                                    :disable:
 :PROPERTIES:
 :ID: 1d7c8bac-e523-4251-bb3c-b85f592fbfc3
 :END:
@@ -8708,7 +8706,7 @@ it's installed, otherwise it defaults to bringing up an regular emacs help buffe
   (org-link-set-parameters "helpfn" :face #'ol:helpfn-face :follow #'ol:helpfn-follow))
 #+end_src
 
-**** toggle link display                                              :disabled:
+**** toggle link display                                              :disable:
 :PROPERTIES:
 :ID: 06d2b812-5d76-4bc4-bdce-3b6fcf5a9070
 :END:
@@ -8960,7 +8958,7 @@ diary/journal using =org-mode=.
 :ID: ee444a86-1266-42dd-9fe8-40192db1fdde
 :END:
 
-**** narrowing and widening                                           :disabled:
+**** narrowing and widening                                           :disable:
 :PROPERTIES:
 :ID: 72bd1c81-bd60-472f-8166-20bb2a16093d
 :END:
@@ -9116,7 +9114,7 @@ The outline api actually seems pretty solid; better coded and simpler than the o
 :ID: ee57f711-9a4f-421f-b831-ab4907402e52
 :END:
 
-** TODO hydra                                                         :disabled:
+** TODO hydra                                                         :disable:
 :PROPERTIES:
 :ID:       503d301c-8452-4a85-be41-aa6e5ed701dd
 :END:
@@ -9449,7 +9447,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
   (concat VOID-LOCAL-DIR "void-banner.txt"))
 #+end_src
 
-*** navigator buttons                                                 :disabled:
+*** navigator buttons                                                 :disable:
 :PROPERTIES:
 :ID:       a4a9e0ae-ee44-4434-bcf6-b415ef348e45
 :END:
@@ -9524,7 +9522,7 @@ A little bit of decoration and spice can go a long way. As its name suggests,
 a few). In practice I use these icons to (1) make things look nicer and more
 colorful and (2) enhance readability of plain text.
 
-*** install all the icons if not installed                            :disabled:
+*** install all the icons if not installed                            :disable:
 :PROPERTIES:
 :ID: 1cda0692-8f42-4bb3-b11d-da52e2004a55
 :END:
@@ -9672,7 +9670,7 @@ graphical interface but.
 (defpackage! hemera-theme)
 #+end_src
 
-*** circadian                                                         :disabled:
+*** circadian                                                         :disable:
 :PROPERTIES:
 :ID:       1f8dfb73-9709-4b3b-b02f-0c81b04665f3
 :END:
