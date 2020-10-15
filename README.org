@@ -1266,6 +1266,8 @@ every element in the list.
 :ID:       b1c9696f-67a9-459b-9199-85dcc6fa96c1
 :END:
 
+This function is what applyes the normallization to each of the values.
+
 #+begin_src emacs-lisp
 (defun def-package-apply-normalize (pair)
   "Apply normalizations from `def-package-normalizer-alist' to values."
