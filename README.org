@@ -1167,7 +1167,7 @@ Instead of having a fixed sort order for keys like =use-package= and =leaf=,
 sorted closer to the beginning of the list than keys with a lower number. The
 reasoning behind this is that typically for many keywords the order does not
 matter--at least as long as they're after a certain set of other keywords. For
-example,.
+example.
 
 **** weight
 :PROPERTIES:
