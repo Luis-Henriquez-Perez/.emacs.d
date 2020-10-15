@@ -298,6 +298,8 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest def-package-expand-forms ()
+  )
 #+end_src
 
 ** generating the result form
