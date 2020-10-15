@@ -274,10 +274,13 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest def-package-set-weight ()
-  (let ((def-package-weight-alist '((:foo 10))))
-    (def-package-set-weight :foo 15)
-    (should (= (alist-get :foo def-package-weight-alist) 15))))
+(ert-deftest def-package-set-alias ()
+  (let ((def-package-alias-alist '()))
+    (def-package-set-alias :foo :bar)
+    (should (eq (alist-get :foo def-package-alias-alist) :bar))
+    (def-package-set-alias :bar :ensure)
+    (def-package-set-alias :ensure :zap)
+    (should (eq (def-package-true-key :foo) :zap))))
 #+end_src
 
 ** weights
