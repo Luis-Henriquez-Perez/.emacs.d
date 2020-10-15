@@ -422,16 +422,3 @@
     (should (eq it (alist :init '(+ 1 1) :init '(+ 2 2))))))
 #+end_src
 
-*** dp true-key
-:PROPERTIES:
-:ID:       8644ea28-5314-4c57-95a4-f19e3393f66b
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest def-package-true-key ()
-  (let ((def-package-alias-alist '((:ensure . :ho) (:ho . :laa) (:laa . :hee))))
-    ;; return the real aliased key.
-    (should (eq (def-package-true-key :ensure) :hee))
-    ;; return the original key when non aliases.
-    (should (eq (def-package-true-key :when) :when))))
-#+end_src
