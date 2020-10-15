@@ -263,6 +263,21 @@
 :ID:       83ea9898-ec4f-4783-9edd-e84296d43d8c
 :END:
 
+** aliases
+:PROPERTIES:
+:ID:       1f7369f7-514f-4bdd-83a3-8a2329c37966
+:END:
+
+*** doing something else to an alias
+:PROPERTIES:
+:ID:       44819e33-317b-4686-a0e8-2f4b836a29d8
+:END:
+
+*** setting an alias
+:PROPERTIES:
+:ID:       d2ef7a1d-56f6-431a-8eb0-3f6d1438ba32
+:END:
+
 ** apply function
 :PROPERTIES:
 :ID:       f4456a47-f88c-426b-a095-b1173224021d
