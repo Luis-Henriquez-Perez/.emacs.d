@@ -1245,6 +1245,20 @@ and easier to read if they just assume one standard structure for their value.
 The reason that the normalizers take a list instead of a value (and then use
 that to map through the list) is to deal with nested lists.
 
+***** normalize
+:PROPERTIES:
+:ID:       b1c9696f-67a9-459b-9199-85dcc6fa96c1
+:END:
+
+#+begin_src emacs-lisp
+(defun def-package-apply-normalize (pair)
+  "Apply normalizations from `def-package-normalizer-alist' to values."
+  (-let [(key . values) pair]
+    (aif (alist-get key def-package-normalizer-alist)
+        (cons key (funcall it values))
+      pair)))
+#+end_src
+
 ***** normalizer alist
 :PROPERTIES:
 :ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
@@ -1333,20 +1347,6 @@ A key theme of =defpackage= implementation is to allow.
   "Expand values pair."
   (-let (((key . values) pair))
     (-annotate (-const key) values)))
-#+end_src
-
-**** normalize
-:PROPERTIES:
-:ID:       b1c9696f-67a9-459b-9199-85dcc6fa96c1
-:END:
-
-#+begin_src emacs-lisp
-(defun def-package-apply-normalize (pair)
-  "Apply normalizations from `def-package-normalizer-alist' to values."
-  (-let [(key . values) pair]
-    (aif (alist-get key def-package-normalizer-alist)
-        (cons key (funcall it values))
-      pair)))
 #+end_src
 
 **** defpackage!
