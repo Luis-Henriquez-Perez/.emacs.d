@@ -340,6 +340,7 @@
 
 #+begin_src emacs-lisp
 (ert-deftest def-package-normalize-args ()
+  (def-package-normalize-args)
   )
 #+end_src
 
