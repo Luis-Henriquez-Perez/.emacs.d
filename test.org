@@ -296,7 +296,7 @@
 
 #+begin_src emacs-lisp
 (ert-deftest def-package-forms ()
-  (let ((def-package-keywords (a-list :setq #'dp~~apply-setq))
+  (let ((def-package-keywords (a-list :setq #'def-package-apply-setq))
         (alist (a-list :setq '(a . 3)))
         (package 'hello))
     (should (alist-get :setq alist))
