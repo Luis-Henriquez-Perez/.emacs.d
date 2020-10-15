@@ -1431,7 +1431,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! after (features body 10)
+(def-package-key! after (features body)
   `(after! ,features ,@body))
 
 (def-package-set-weight :after 20)
