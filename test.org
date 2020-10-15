@@ -322,6 +322,18 @@
     (should (equal '((setq var 3)) (def-package-apply-fn (list :setq (cons 'var 3)))))))
 #+end_src
 
+*** defpackage!
+:PROPERTIES:
+:ID:       5dbfb3a9-b671-4a90-9def-7b8267c05b07
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest def-package-forms ()
+  (alet (def-package-forms 'horse (dp~normalize '(:os mac :require t)))
+    (should (equal it '((with-os! mac (require 'horse))))))
+  (alet (def-package-forms 'cow (dp~normalize ))))
+#+end_src
+
 ** custom keywords
 :PROPERTIES:
 :ID:       a508a0ca-3cfa-4719-bf72-4f359358d4e6
@@ -380,16 +392,4 @@
     (should (eq (def-package-true-key :ensure) :hee))
     ;; return the original key when non aliases.
     (should (eq (def-package-true-key :when) :when))))
-#+end_src
-
-** defpackage!
-:PROPERTIES:
-:ID:       5dbfb3a9-b671-4a90-9def-7b8267c05b07
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest def-package-forms ()
-  (alet (def-package-forms 'horse (dp~normalize '(:os mac :require t)))
-    (should (equal it '((with-os! mac (require 'horse))))))
-  (alet (def-package-forms 'cow (dp~normalize ))))
 #+end_src
