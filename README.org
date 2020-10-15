@@ -1533,7 +1533,7 @@ from =use-package= and =leaf=.
   `(after! ,<package>
      ,@(-map (-lambda (var . val) `(setq ,var ,val)) pairs)))
 
-(push (cons :setq #'def-package-ensure-form-list))
+(def-package-set-normalizer :setq #'def-package-ensure-form-list)
 #+end_src
 
 ****** setq-default
