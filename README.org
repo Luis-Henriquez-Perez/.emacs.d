@@ -1101,7 +1101,8 @@ Key is a key for a keyword. APPLY-FN is a function that accepts two argments.")
 
 It is useful to apply some keywords to all emacs packages. Perhaps the most
 common example of this is the =:ensure= keyword. "ensuring" refers to making sure
-that a package is installed
+that a package is installed. Typically, its something you want to do to all your
+packages to avoid getting errors when you try to use them.
 
 #+begin_src emacs-lisp
 (defvar def-package-default-keyword-alist nil
