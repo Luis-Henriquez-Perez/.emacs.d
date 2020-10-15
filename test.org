@@ -288,7 +288,17 @@
 :ID:       4787c210-8e0f-4300-a648-b56edff1c411
 :END:
 
-** apply function
+*** keys are sorted properly based on weights
+:PROPERTIES:
+:ID:       240ea8bd-13e6-498c-a37b-4277a563b91b
+:END:
+
+** generating the result form
+:PROPERTIES:
+:ID:       46561f94-4e52-4cdd-9788-a5e9d18780ef
+:END:
+
+*** apply function
 :PROPERTIES:
 :ID:       f4456a47-f88c-426b-a095-b1173224021d
 :END:
