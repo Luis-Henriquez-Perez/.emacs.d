@@ -288,16 +288,17 @@
 #+begin_src emacs-lisp
 (ert-deftest def-package-set-weight ()
   (let ((def-package-weight-alist '((:foo 10)))
-        ;; (unsorted-keys (sort ))
-        )
+        (key-alist '((:foo nil) (:zap nil) (:fop nil) (:fap nil)))
+        (random-sort-fn (lambda (_ _) (seq-random-elt '(t nil)))))
     (def-package-set-weight :foo 15)
     (should (= (alist-get :foo def-package-weight-alist) 15))
     (def-package-set-weight :bar 20)
     (def-package-set-weight :zap 25)
     (def-package-set-weight :fop 10)
     (def-package-set-weight :fap 10)
-    ;; (should (sort ))
-    ))
+    (alet (thread-last (-sort random-sort-fn key-alist)
+            (-sort #'def-package-weight-sorter))
+      (should (equal (map-keys key-alist) '(:zap :bar :fop :fap))))))
 #+end_src
 
 ** normalizing
