@@ -358,8 +358,7 @@
 (ert-deftest def-package-apply-fn ()
   (cl-letf* (((symbol-function 'apply-setq)
               (lambda (it &rest _) `(setq ,(car it) ,(cdr it))))
-             (def-package-keywords (a-list :setq #'apply-setq)))
-    ;; sanity check.
+             (def-package-keywords (list (cons :setq #'apply-setq))))
     (should (equal '(setq var 3) (apply-setq (cons 'var 3))))
     (should (equal '((setq var 3)) (def-package-apply-fn (list :setq (cons 'var 3)))))))
 #+end_src
