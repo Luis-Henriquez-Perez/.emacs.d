@@ -258,7 +258,7 @@
     (should (eq it 'emacs-lisp-mode-hook))))
 #+end_src
 
-* dp keywords
+* defpackage
 :PROPERTIES:
 :ID:       83ea9898-ec4f-4783-9edd-e84296d43d8c
 :END:
@@ -275,8 +275,7 @@
              (def-package-keywords (a-list :setq #'apply-setq)))
     ;; sanity check.
     (should (equal '(setq var 3) (apply-setq (cons 'var 3))))
-    (should (equal '((setq var 3)) (def-package-apply-fn (list :setq (cons 'var 3)))))
-    ))
+    (should (equal '((setq var 3)) (def-package-apply-fn (list :setq (cons 'var 3)))))))
 #+end_src
 
 ** dp setq
