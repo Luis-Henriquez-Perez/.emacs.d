@@ -1242,6 +1242,18 @@ To accommidate different ways users can pass in values to. The reason that the
 normalizers take a list instead of a value (and then use that to map through the
 list) is to deal with nested lists.
 
+***** normalizer alist
+:PROPERTIES:
+:ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
+:END:
+
+#+begin_src emacs-lisp
+(defvar def-package-normalizer-alist nil
+  "An alist of (KEY . NORMALIZER).
+NORMALIZER is with one argument, the list of values for keyword KEY. It should
+return a normalized list of values..")
+#+end_src
+
 ***** def-package-normalize-args
 :PROPERTIES:
 :ID:       6331c2b7-c5e8-43d2-9bc1-05e6771ad613
@@ -1253,18 +1265,6 @@ list) is to deal with nested lists.
   (->> (-partition-by-header #'keywordp args)
        (mapcar #'def-package-apply-normalize)
        (mapcan #'def-package-expand-values)))
-#+end_src
-
-***** normalizer alist
-:PROPERTIES:
-:ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
-:END:
-
-#+begin_src emacs-lisp
-(defvar def-package-normalizer-alist nil
-  "An alist of (KEY . NORMALIZER).
-NORMALIZER is with one argument, the list of values for keyword KEY. It should
-return a normalized list of values..")
 #+end_src
 
 ***** normalizers
