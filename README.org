@@ -1290,7 +1290,8 @@ return a normalized list of values..")
 :END:
 
 Normalizing consists of four steps. First keys and their corresponding values
-are separated from one another
+are separated from one another. Then they are sorted by the weight of the keys.
+Then,
 
 #+begin_src emacs-lisp
 (defun def-package-normalize-args (args)
