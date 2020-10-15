@@ -1368,7 +1368,7 @@ BINDINGS are an alist of (VAR . VALUE)."
 :END:
 
 Defining a keyword is as simple as writing a function that returns the form you
-want in the resulting =defpackage!= form and adding it to to the
+want in the resulting =defpackage!= form and adding it to to the [[helpfn:][]].
 
 **** define a package key
 :PROPERTIES:
