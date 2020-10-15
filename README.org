@@ -1238,7 +1238,8 @@ the form we want to produce (initially nil) to get our desired form.
 :ID:       7c0cfad3-7913-4d25-a69d-ac1ac9219c29
 :END:
 
-Each key can take values of a different form. For example, the [[][]] can take  To accommidate different ways
+Each key can take values of a different form. For example, the [[][]] can take a
+cons cell To accommidate different ways
 users can pass in values to. The reason that the normalizers take a list instead
 of a value (and then use that to map through the list) is to deal with nested
 lists.
