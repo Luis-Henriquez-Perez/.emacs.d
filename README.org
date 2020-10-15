@@ -1187,7 +1187,7 @@ KEY is a `def-package' key. WEIGHT is the number used to sort the key")
 
 #+begin_src emacs-lisp
 (defvar def-package-default-weight 0
-  "Default weight for a new `def-package' keyword.")
+  "Default weight for a `def-package' keyword.")
 #+end_src
 
 **** getter for weight
