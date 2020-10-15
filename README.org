@@ -1434,6 +1434,8 @@ from =use-package= and =leaf=.
 (def-package-key! after (features body)
   `(after! ,features ,@body))
 
+(def-package-set-weight :after 20)
+
 (defpackage~set-normalizer :after #'def-package-ensure-form-list)
 
 (push (cons :after #'def-package-ensure-form-list) def-package~normalizer-alist)
