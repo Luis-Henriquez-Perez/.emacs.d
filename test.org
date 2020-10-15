@@ -278,6 +278,16 @@
 :ID:       d2ef7a1d-56f6-431a-8eb0-3f6d1438ba32
 :END:
 
+** weights
+:PROPERTIES:
+:ID:       596afc57-5aed-4ea3-9e6c-1605d472ca46
+:END:
+
+*** properly set weights
+:PROPERTIES:
+:ID:       4787c210-8e0f-4300-a648-b56edff1c411
+:END:
+
 ** apply function
 :PROPERTIES:
 :ID:       f4456a47-f88c-426b-a095-b1173224021d
