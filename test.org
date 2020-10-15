@@ -309,6 +309,14 @@
       (should (equal it '((:foo . 1) (:foo . 2) (:foo . 3)))))))
 #+end_src
 
+*** apply normalize
+:PROPERTIES:
+:ID:       9f238aa2-1044-4117-9284-5c4bb41cfc9c
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ** generating the result form
 :PROPERTIES:
 :ID:       46561f94-4e52-4cdd-9788-a5e9d18780ef
