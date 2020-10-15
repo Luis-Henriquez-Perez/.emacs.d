@@ -1289,7 +1289,8 @@ return a normalized list of values..")
 :ID:       6331c2b7-c5e8-43d2-9bc1-05e6771ad613
 :END:
 
-Normalizing consists of four steps. First
+Normalizing consists of four steps. First keys and their corresponding values
+are separated from one another
 
 #+begin_src emacs-lisp
 (defun def-package-normalize-args (args)
