@@ -1510,6 +1510,9 @@ from =use-package= and =leaf=.
 :ID:       e9a238b4-884b-421d-bd89-d017bd818944
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 ****** setq
 :PROPERTIES:
 :ID:       ab0115b9-8384-4a5e-8db5-754f2e0cdcc4
