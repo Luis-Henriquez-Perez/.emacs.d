@@ -1249,9 +1249,10 @@ that to map through the list) is to deal with nested lists.
 :ID:       1e44ea35-23c2-4143-8b68-1ac33e6c80a6
 :END:
 
-A key theme of =defpackage= implementation is to allow. The point of expanding the
-values is to make it so that each apply function can be applied to every element
-in the list.
+A key theme of =defpackage= implementation is for user-defined key functions only
+having to deal with one value as opposed to the list of values. The point of
+expanding the values is to make it so that each apply function can be applied to
+every element in the list.
 
 #+begin_src emacs-lisp
 (defun def-package-expand-values (pair)
