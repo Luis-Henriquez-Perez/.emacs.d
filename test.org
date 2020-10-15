@@ -336,6 +336,8 @@
 :END:
 
 #+begin_src emacs-lisp
+(ert-deftest def-package-normalize-args ()
+  )
 #+end_src
 
 ** generating the result form
