@@ -292,6 +292,11 @@
     (should (= (alist-get :foo def-package-weight-alist) 15))))
 #+end_src
 
+** normalizing
+:PROPERTIES:
+:ID:       302fca4a-2e24-4040-a2e0-f5a12005b347
+:END:
+
 ** generating the result form
 :PROPERTIES:
 :ID:       46561f94-4e52-4cdd-9788-a5e9d18780ef
