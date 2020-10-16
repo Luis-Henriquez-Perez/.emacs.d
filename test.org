@@ -378,9 +378,9 @@ Normalize argument.
 
 #+begin_src emacs-lisp
 (ert-deftest def-package-forms ()
-  (alet (def-package-forms 'horse (dp~normalize '(:os mac :require t)))
+  (alet (def-package-forms 'horse (def-package-normalize-args '(:os mac :require t)))
     (should (equal it '((with-os! mac (require 'horse))))))
-  (alet (def-package-forms 'cow (dp~normalize ))))
+  (alet (def-package-forms 'cow (def-package-normalize-args ))))
 #+end_src
 
 ** custom keywords
