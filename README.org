@@ -1660,7 +1660,7 @@ other keywords such as "hook" are named.
     `(progn (void-add-hook ',hook #',it)
             ,@(def-package-apply :command it))))
 
-(push (cons :hook #'def-package-ensure-cons-cells) def-package-normalizer-alist)
+(def-package-set-normalizer :hook #'def-package-ensure-cons-cells)
 #+end_src
 
 ***** miscellaneous
