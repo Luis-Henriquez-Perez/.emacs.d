@@ -1733,9 +1733,7 @@ other keywords such as "hook" are named.
 
 (defun def-package--normalize-bind (list)
   "Normalize."
-  (--splice (listp it))
-  ()
-  )
+  list)
 #+end_src
 
 ** Packages
