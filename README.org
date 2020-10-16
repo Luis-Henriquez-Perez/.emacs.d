@@ -3770,7 +3770,7 @@ candidate.
   "C-l"     #'ivy-next-line-and-call
   "C-o"     #'ivy-occur
   "C-'"     #'ivy-avy
-  "C-i"     #'ivy-immediate-done
+  ;; "C-i"     #'ivy-immediate-done
   "RET"     #'ivy-done)
 #+end_src
 
