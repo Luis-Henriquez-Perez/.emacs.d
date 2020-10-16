@@ -1078,109 +1078,6 @@ possible (see [[8c42eac6-a0ae-448a-af07-100d0c6a06ac][def-package-key!]] and [[i
 structures and the mechanisms behind generating a form to be easy to test, read,
 and hack.
 
-*** normalizing
-:PROPERTIES:
-:ID:       7c0cfad3-7913-4d25-a69d-ac1ac9219c29
-:END:
-
-Each key can take values of a different form. For example, the [[id:60af5e51-ca3b-4776-8cf7-d58f223180d3][hook keyword]] can
-take a cons cell of the form ~(hook . value)~, or a just the hook variable, or a
-list of these. Functions created for customizing a keyword are easier to write
-and easier to read if they just assume one standard structure for their value.
-Thinking back on the hook keyword, each individual value can be thought of as a
-cons cell. Normalizers allow us to separate. The reason that the normalizers
-take a list instead of a value (and then use that to map through the list) is to
-deal with nested lists.
-
-**** normalizer alist
-:PROPERTIES:
-:ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
-:END:
-
-#+begin_src emacs-lisp
-(defvar def-package-normalizer-alist nil
-  "An alist of (KEY . NORMALIZER).
-NORMALIZER is with one argument, the list of values for keyword KEY. It should
-return a normalized list of values..")
-#+end_src
-
-**** set a normalizer
-:PROPERTIES:
-:ID:       69f983aa-1009-424a-adf2-c9c80947b42b
-:END:
-
-#+begin_src emacs-lisp
-(defun def-package-set-normalizer ())
-#+end_src
-
-**** expand values
-:PROPERTIES:
-:ID:       1e44ea35-23c2-4143-8b68-1ac33e6c80a6
-:END:
-
-A key theme of =defpackage= implementation is for user-defined key functions only
-having to deal with one value as opposed to the list of values. The point of
-expanding the values is to make it so that each apply function can be applied to
-every element in the list.
-
-#+begin_src emacs-lisp
-(defun def-package-expand-values (pair)
-  "Expand values pair."
-  (-let (((key . values) pair))
-    (-annotate (-const key) values)))
-#+end_src
-
-**** normalize
-:PROPERTIES:
-:ID:       b1c9696f-67a9-459b-9199-85dcc6fa96c1
-:END:
-
-This function is what applies the normalization to each of the values.
-
-#+begin_src emacs-lisp
-(defun def-package-apply-normalize (pair)
-  "Apply normalizations from `def-package-normalizer-alist' to values."
-  (-let [(key . values) pair]
-    (aif (alist-get key def-package-normalizer-alist)
-        (cons key (funcall it values))
-      pair)))
-#+end_src
-
-**** def-package-normalize-args
-:PROPERTIES:
-:ID:       6331c2b7-c5e8-43d2-9bc1-05e6771ad613
-:END:
-
-Normalizing consists of four steps. First keys and their corresponding values
-are separated from one another. Then they are sorted by the weight of the keys.
-Then, values are normalized. And finally, values are expanded.
-
-#+begin_src emacs-lisp
-(defun def-package-normalize-args (args)
-  "Convert args into an alist such that (KEY . VALUE)."
-  (->> (-partition-by-header #'keywordp args)
-       (sort #'def-package-sort-by-weight)
-       (mapcar #'def-package-apply-normalize)
-       (mapcan #'def-package-expand-values)))
-#+end_src
-
-**** normalizers
-:PROPERTIES:
-:ID:       7009f29c-884e-4f3d-8a86-eb05b9ae2154
-:END:
-
-#+begin_src emacs-lisp
-;; For a value that tkes a list of forms.
-(defun def-package-ensure-form-list (values)
-  "Ensure that"
-  (list values))
-
-(defun def-package-ensure-cons-cells (values)
-  "Ensure that values are all cons cells."
-  (--splice (> (safe-length it) 1) (def-package-ensure-cons-cells it)
-            (mapcar #'-list values)))
-#+end_src
-
 *** keywords
 :PROPERTIES:
 :ID:       dc5dc74a-cd2f-4682-a76d-fe90b27c4fa1
@@ -1325,6 +1222,111 @@ KEY is a `def-package' key. WEIGHT is the number used to sort the key")
   "Return non-nil if PAIR1 should be sorted before PAIR2"
   (> (def-package-weight (car pair1))
      (def-package-weight (car pair2))))
+#+end_src
+
+*** normalizing
+:PROPERTIES:
+:ID:       7c0cfad3-7913-4d25-a69d-ac1ac9219c29
+:END:
+
+Each key can take values of a different form. For example, the [[id:60af5e51-ca3b-4776-8cf7-d58f223180d3][hook keyword]] can
+take a cons cell of the form ~(hook . value)~, or a just the hook variable, or a
+list of these. Functions created for customizing a keyword are easier to write
+and easier to read if they just assume one standard structure for their value.
+Thinking back on the hook keyword, each individual value can be thought of as a
+cons cell. Normalizers allow us to separate. The reason that the normalizers
+take a list instead of a value (and then use that to map through the list) is to
+deal with nested lists.
+
+**** normalizer alist
+:PROPERTIES:
+:ID:       69e9fbe3-d04d-45d6-a3d6-82ccaaca40a4
+:END:
+
+#+begin_src emacs-lisp
+(defvar def-package-normalizer-alist nil
+  "An alist of (KEY . NORMALIZER).
+NORMALIZER is with one argument, the list of values for keyword KEY. It should
+return a normalized list of values..")
+#+end_src
+
+**** set a normalizer
+:PROPERTIES:
+:ID:       69f983aa-1009-424a-adf2-c9c80947b42b
+:END:
+
+#+begin_src emacs-lisp
+(defun def-package-set-normalizer (key normalizer)
+  "Add (KEY . NORMALIZER) to `def-package-normalizer-alist'."
+  (setf (alist-get key def-package-normalizer-alist) normalizer))
+#+end_src
+
+**** expand values
+:PROPERTIES:
+:ID:       1e44ea35-23c2-4143-8b68-1ac33e6c80a6
+:END:
+
+A key theme of =defpackage= implementation is for user-defined key functions only
+having to deal with one value as opposed to the list of values. The point of
+expanding the values is to make it so that each apply function can be applied to
+every element in the list.
+
+#+begin_src emacs-lisp
+(defun def-package-expand-values (pair)
+  "Expand values pair."
+  (-let (((key . values) pair))
+    (-annotate (-const key) values)))
+#+end_src
+
+**** normalize
+:PROPERTIES:
+:ID:       b1c9696f-67a9-459b-9199-85dcc6fa96c1
+:END:
+
+This function is what applies the normalization to each of the values.
+
+#+begin_src emacs-lisp
+(defun def-package-apply-normalize (pair)
+  "Apply normalizations from `def-package-normalizer-alist' to values."
+  (-let [(key . values) pair]
+    (aif (alist-get key def-package-normalizer-alist)
+        (cons key (funcall it values))
+      pair)))
+#+end_src
+
+**** def-package-normalize-args
+:PROPERTIES:
+:ID:       6331c2b7-c5e8-43d2-9bc1-05e6771ad613
+:END:
+
+Normalizing consists of four steps. First keys and their corresponding values
+are separated from one another. Then they are sorted by the weight of the keys.
+Then, values are normalized. And finally, values are expanded.
+
+#+begin_src emacs-lisp
+(defun def-package-normalize-args (args)
+  "Convert args into an alist such that (KEY . VALUE)."
+  (->> (-partition-by-header #'keywordp args)
+       (sort #'def-package-sort-by-weight)
+       (mapcar #'def-package-apply-normalize)
+       (mapcan #'def-package-expand-values)))
+#+end_src
+
+**** normalizers
+:PROPERTIES:
+:ID:       7009f29c-884e-4f3d-8a86-eb05b9ae2154
+:END:
+
+#+begin_src emacs-lisp
+;; For a value that tkes a list of forms.
+(defun def-package-ensure-form-list (values)
+  "Ensure that"
+  (list values))
+
+(defun def-package-ensure-cons-cells (values)
+  "Ensure that values are all cons cells."
+  (--splice (> (safe-length it) 1) (def-package-ensure-cons-cells it)
+            (mapcar #'-list values)))
 #+end_src
 
 *** def-package macro
