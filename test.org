@@ -333,10 +333,7 @@
     (def-package-set-normalizer :foo #'flatten-list)
     (should (-contains-p def-package-normalizer-alist (cons :foo #'flatten-list)))
     (should (equal (def-package-apply-normalize pair)
-                   (:foo a b c d e f)))
-    ;; (def-package-set-normalizer :lop args)
-    ;; (def-package-set-normalizer :bar args)
-    (should (def-package-normalize-values normalizers))))
+                   '(:foo a b c d e f)))))
 #+end_src
 
 *** normalize args
