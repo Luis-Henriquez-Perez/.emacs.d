@@ -427,3 +427,12 @@ Normalize argument.
     (should (eq it (alist :init '(+ 1 1) :init '(+ 2 2))))))
 #+end_src
 
+*** bind
+:PROPERTIES:
+:ID:       404f22d8-a367-4b6b-8ee3-994e456a9646
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest def-package-bind-normalizer ()
+  ())
+#+end_src
