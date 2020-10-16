@@ -1713,7 +1713,10 @@ other keywords such as "hook" are named.
 
 #+begin_src emacs-lisp
 (def-package-key alias ((alias . definition))
-  `(eval-and-compile (defalias #',alias #',definition)))
+  `(progn
+     ,@(def-package-apply :command definition)
+     (eval-and-compile
+       (defalias #',alias #',definition))))
 
 (def-package-set-normalizer :alias #'def-package-ensure-cons-cells)
 #+end_src
