@@ -1724,8 +1724,8 @@ other keywords such as "hook" are named.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key bind ()
-  `(general-def ))
+(def-package-key bind ((state map key def))
+  `(general-def))
 #+end_src
 
 ** Packages
@@ -6206,7 +6206,8 @@ Why not just go to the end of the ="= like any other around operator?
 :END:
 
 #+begin_src emacs-lisp
-(def-package evil-surround :hook prog-mode-hook text-mode-hook)
+(def-package evil-surround
+  :hook prog-mode-hook text-mode-hook)
 #+end_src
 
 *** evil-matchit
@@ -6215,7 +6216,8 @@ Why not just go to the end of the ="= like any other around operator?
 :END:
 
 #+begin_src emacs-lisp
-(def-package evil-matchit :hook prog-mode)
+(def-package evil-matchit
+  :hook prog-mode)
 #+end_src
 
 *** evil-exchange
