@@ -1402,7 +1402,7 @@ This is a convenience macro used for defining new keywords. The whole point of
 it is to make adding new keys as easy as possible.
 
 #+begin_src emacs-lisp
-(defmacro def-package-key! (name args &rest body)
+(defmacro def-package-key (name args &rest body)
   "Define a `def-package' keyword named NAME.
 ARGS is a list of two arguments."
   (declare (indent defun))
@@ -1442,7 +1442,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! after (features body)
+(def-package-key after (features body)
   `(after! ,features ,@body))
 
 (def-package-set-weight :after 20)
