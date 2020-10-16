@@ -1726,14 +1726,15 @@ other keywords such as "hook" are named.
 #+begin_src emacs-lisp
 (def-package-key bind ((state map key def))
   `(after! general
+     ,@(def-package-apply :command ',def)
      (general-def ,state ,map ,key ,def)))
 
 (def-package-set-normalizer :bind #'def-packagee--normalize-bind)
 
-(defun def-package--normalize-bind ()
+(defun def-package--normalize-bind (list)
   "Normalize."
-  (--splice )
-  (mapcar )
+  (--splice (listp it))
+  ()
   )
 #+end_src
 
