@@ -5438,7 +5438,8 @@ it. It's pretty smart and very convenient.
 Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regular expressions to align text.
 
 #+begin_src emacs-lisp
-(def-package ialign :command ialign)
+(def-package ialign
+  :command ialign)
 #+end_src
 
 ** lisp editing
