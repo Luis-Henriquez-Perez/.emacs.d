@@ -1390,6 +1390,11 @@ BINDINGS are an alist of (VAR . VALUE)."
 :ID:       7d617f47-8bba-4380-b1c2-35d9b658500f
 :END:
 
+#+begin_src emacs-lisp
+(defalias 'def-feature! 'def-package)
+(defalias 'def-package! 'def-package)
+#+end_src
+
 *** custom keywords
 :PROPERTIES:
 :ID:       e73b7f95-1082-4978-a501-f69f6d516cbb
