@@ -1730,7 +1730,7 @@ other keywords such as "hook" are named.
 (def-package-key bind ((state map key def))
   `(after! general
      ,@(def-package-apply :command ',def)
-     (general-def ,state ,map ,key ,def)))
+     (general-def ',state ,map ,key ,def)))
 
 (def-package-set-normalizer :bind #'def-package--normalize-bind)
 
