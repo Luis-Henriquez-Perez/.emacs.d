@@ -1725,8 +1725,9 @@ other keywords such as "hook" are named.
 
 #+begin_src emacs-lisp
 (def-package-key bind ((state map key def))
-  `(general-def))
-#+end_src
+  `(general-def ,state ,map ,key ,def))
+
+(def-package-set-normalizer :bind #'def-packagee--normalize-bind)#+end_src
 
 ** Packages
 :PROPERTIES:
