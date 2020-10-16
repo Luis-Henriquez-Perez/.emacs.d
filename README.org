@@ -1552,7 +1552,7 @@ from =use-package= and =leaf=.
 #+begin_src emacs-lisp
 (def-package-key setq (pairs)
   `(after! ,<package>
-     ,@(-map (-lambda (var . val) `(setq ,var ,val)) pairs)))
+     ,@(-map (-lambda ((var . val)) `(setq ,var ,val)) pairs)))
 
 (def-package-set-normalizer :setq #'def-package-ensure-form-list)
 #+end_src
@@ -1672,7 +1672,7 @@ other keywords such as "hook" are named.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key mode (regexp . mode)
+(def-package-key mode ((regexp . mode))
   `(add-to-list 'auto-mode-alist (cons ,regexp ',mode)))
 #+end_src
 
@@ -1705,6 +1705,16 @@ other keywords such as "hook" are named.
   `(eval-and-compile (defalias #',alias #',definition)))
 
 (def-package-set-normalizer :alias #'def-package-ensure-cons-cells)
+#+end_src
+
+****** bind
+:PROPERTIES:
+:ID:       ed2e5151-003b-40cb-b3b3-9011de8716c7
+:END:
+
+#+begin_src emacs-lisp
+(def-package-key bind ()
+  `(general-def ))
 #+end_src
 
 ** Packages
