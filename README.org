@@ -1598,7 +1598,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key commands (command)
+(def-package-key command (command)
   `(unless (fboundp ',package)
      (autoload #',value ,(symbol-name package) nil t)))
 #+end_src
@@ -1643,7 +1643,8 @@ from =use-package= and =leaf=.
 #+begin_src emacs-lisp
 (def-package-key hook ((hook . fn))
   (alet (or fn (void-symbol-intern <package> '-mode))
-    `(void-add-hook ',hook #',it)))
+    `(progn (void-add-hook ',hook #',it)
+            ,@(def-package-apply :command it))))
 
 (push (cons :hook #'def-package-ensure-cons-cells) def-package-normalizer-alist)
 #+end_src
