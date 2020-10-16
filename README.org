@@ -1501,7 +1501,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key disabled (bool body)
+(def-package-key disable (bool body)
   (if bool nil body))
 
 (def-package-set-weight :disable 25)
@@ -2292,7 +2292,8 @@ while the user is working.
 :END:
 
 #+begin_src emacs-lisp
-(def-package keyfreq :hook emacs-startup-hook)
+(def-package keyfreq
+  :hook emacs-startup-hook)
 #+end_src
 
 ** Initialize
