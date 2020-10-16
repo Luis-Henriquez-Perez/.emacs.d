@@ -203,3 +203,15 @@ emacs naming conventions to use the "-", I've decided to just use the prefix
 :END:
 
 The purpose of this change is to add auto-committing to my emacs config.
+
+** *Breaking Change* migrate from leaf to use-package
+:PROPERTIES:
+:ID:       c4b49a99-6b18-40b5-91ab-5c7965849e05
+:END:
+
+=use-package= is [[https://lists.gnu.org/archive/html/emacs-devel/2020-10/msg00678.html][likely to be added]] to emacs. Almost a decade old, It is the more
+mature of the two packages and consequently has more community support (blog
+post, auxiliary packages, etc.). Additionally, =use-package= rightly uses
+higher-order functions (the normalizer and handler) to control the expansion of
+new keywords as opposed to raw forms like leaf. Therefore, I think it is best to
+switch from leaf to use-package.
