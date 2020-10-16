@@ -9249,7 +9249,7 @@ VOID install. For writing this code I referenced the body of
 [[helpfn:all-the-icons-install-fonts][all-the-icons-install-fonts]].
 
 #+begin_src emacs-lisp
-(defhook! install-icons-maybe ()
+(defhook! install-icons-maybe (window-setup-hook)
   "Install icons if not installed."
   (let ((font-dir
          (cl-case window-system
