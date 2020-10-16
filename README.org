@@ -1729,6 +1729,10 @@ other keywords such as "hook" are named.
      (general-def ,state ,map ,key ,def)))
 
 (def-package-set-normalizer :bind #'def-packagee--normalize-bind)
+
+(defun def-package--normalize-bind ()
+  ""
+  )
 #+end_src
 
 ** Packages
