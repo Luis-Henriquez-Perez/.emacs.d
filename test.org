@@ -329,7 +329,7 @@
 #+begin_src emacs-lisp
 (ert-deftest def-package-normalize-values ()
   (let ((def-package-normalizer-alist)
-        (args '()))
+        (args '(:commands a b c :ho)))
     (def-package-set-normalizer :foo #'def-package-ensure-list)
     (def-package-set-normalizer :lop args)
     (def-package-set-normalizer :bar args)
