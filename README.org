@@ -1731,8 +1731,9 @@ other keywords such as "hook" are named.
 (def-package-set-normalizer :bind #'def-packagee--normalize-bind)
 
 (defun def-package--normalize-bind ()
-  ""
+  "Normalize."
   (--splice )
+  (mapcar )
   )
 #+end_src
 
