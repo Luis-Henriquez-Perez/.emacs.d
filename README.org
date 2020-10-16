@@ -1732,6 +1732,7 @@ other keywords such as "hook" are named.
 
 (defun def-package--normalize-bind ()
   ""
+  (--splice )
   )
 #+end_src
 
