@@ -345,7 +345,10 @@ Normalize argument.
 
 #+begin_src emacs-lisp
 (ert-deftest def-package-normalize-args ()
-  (def-package-normalize-args '(:setq-default (var . 1))))
+  (let ((list '(:setq-default (var . 1))))
+    (def-package-normalize-args list)
+    (-par)
+    ))
 #+end_src
 
 ** generating the result form
