@@ -329,10 +329,13 @@
 #+begin_src emacs-lisp
 (ert-deftest def-package-normalize-values ()
   (let ((def-package-normalizer-alist)
-        (args '(:commands a b c :ho)))
-    (def-package-set-normalizer :foo #'def-package-ensure-list)
-    (def-package-set-normalizer :lop args)
-    (def-package-set-normalizer :bar args)
+        (pair '(:foo a (b c (d e f)))))
+    (def-package-set-normalizer :foo #'flatten-list)
+    (should (-contains-p def-package-normalizer-alist (cons :foo #'flatten-list)))
+    (should (equal (def-package-apply-normalize pair)
+                   (:foo a b c d e f)))
+    ;; (def-package-set-normalizer :lop args)
+    ;; (def-package-set-normalizer :bar args)
     (should (def-package-normalize-values normalizers))))
 #+end_src
 
