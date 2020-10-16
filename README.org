@@ -1719,7 +1719,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! vc-hooks
+(def-feature! vc-hooks
   :setq
   (vc-follow-link . t)
   (vc-follow-symlinks . t))
@@ -1731,7 +1731,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr-x :require t)
+(def-feature! subr-x :require t)
 #+end_src
 
 **** startup
@@ -1742,7 +1742,7 @@ from =use-package= and =leaf=.
 Emacs starts up with a default screen setup. No, thanks.
 
 #+begin_src emacs-lisp
-(use-feature! startup
+(def-feature! startup
   :setq
   (inhibit-startup-screen . t)
   (inhibit-default-init . t)
@@ -1759,7 +1759,7 @@ Emacs starts up with a default screen setup. No, thanks.
 :END:
 
 #+begin_src emacs-lisp
-(def-package paren
+(def-feature! paren
   :hook (prog-mode-hook . show-paren-mode)
   :setq-default
   (show-paren-delay . 0))
@@ -1772,7 +1772,7 @@ Emacs starts up with a default screen setup. No, thanks.
 
 #+begin_src emacs-lisp
 ;; Not windows.
-(use-feature! select
+(def-feature! select
   :setq
   (selection-coding-system . 'utf-8)
   (select-enable-clipboard . t)
@@ -1786,7 +1786,7 @@ Emacs starts up with a default screen setup. No, thanks.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! simple
+(def-feature! simple
   :popup ("\\*Messages"
           (display-buffer-at-bottom)
           (window-height . 0.5))
@@ -1808,7 +1808,7 @@ These are *extremely* important lines if you use an external program as I do
 think you want to use =smtp=.
 
 #+begin_src emacs-lisp
-(use-feature! loaddefs
+(def-feature! loaddefs
   :setq-default
   (disabled-command-function . nil)
   ;; very important if you're using msmtp
@@ -1821,7 +1821,7 @@ think you want to use =smtp=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! files
+(def-feature! files
   :setq-default
   ;; Disable second, case-insensitive pass over `auto-mode-alist'.
   (auto-mode-case-fold . nil)
@@ -1851,7 +1851,7 @@ think you want to use =smtp=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr
+(def-feature! subr
   :init
   (fset #'yes-or-no-p #'y-or-n-p)
   (fset #'display-startup-echo-area-message #'ignore))
@@ -1864,7 +1864,7 @@ think you want to use =smtp=.
 
 #+begin_src emacs-lisp
 ;; This is where `->>' and `thread-first' come from.
-(use-feature! subr-x
+(def-feature! subr-x
   :require t)
 #+end_src
 
@@ -1876,7 +1876,7 @@ think you want to use =smtp=.
 Don't ping things that look like domain names.
 
 #+begin_src emacs-lisp
-(use-feature! ffap
+(def-feature! ffap
   :setq
   (ffap-machine-p-known . 'reject))
 #+end_src
@@ -1887,7 +1887,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! server
+(def-feature! server
   :setq
   (server-auth-dir . (concat VOID-DATA-DIR "server/")))
 #+end_src
@@ -1898,7 +1898,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! tramp
+(def-feature! tramp
   :setq
   (tramp-backup-directory-alist . backup-directory-alist)
   (tramp-auto-save-directory . (concat VOID-DATA-DIR "tramp-auto-save/"))
@@ -1911,7 +1911,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! desktop
+(def-feature! desktop
   :setq
   (desktop-dirname . (concat VOID-DATA-DIR "desktop"))
   (desktop-base-file-name . "autosave")
@@ -1924,7 +1924,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! cus-edit
+(def-feature! cus-edit
   :setq
   (custom-file . (concat VOID-DATA-DIR "custom.el"))
   (custom-theme-directory . (concat VOID-LOCAL-DIR "themes/")))
@@ -1936,7 +1936,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! url
+(def-feature! url
   :setq
   (url-cache-directory . (concat VOID-DATA-DIR "url/cache/"))
   (url-configuration-directory . (concat VOID-DATA-DIR "url/configuration/")))
@@ -1948,7 +1948,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! bytecomp
+(def-feature! bytecomp
   :setq
   (byte-compile-verbose . void-debug-p)
   (byte-compile-warnings . '(not free-vars unresolved noruntime lexical make-local)))
@@ -1960,7 +1960,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! compile
+(def-feature! compile
   :setq-default
   (compilation-always-kill . t)
   (compilation-ask-about-save . nil)
@@ -1973,7 +1973,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! uniquify
+(def-feature! uniquify
   :setq-default
   (uniquify-buffer-name-style . 'forward))
 #+end_src
@@ -1984,7 +1984,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! ansi-color
+(def-feature! ansi-color
   :setq-default
   (ansi-color-for-comint-mode . t))
 #+end_src
@@ -1995,7 +1995,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! image-mode
+(def-feature! image-mode
   :setq
   ;; Non-nil means animated images loop forever, rather than playing once.
   (image-animate-loop . t))
@@ -2007,7 +2007,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! window
+(def-feature! window
   :setq-default
   (split-width-threshold . 160))
 #+end_src
@@ -2018,7 +2018,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! paragraphs)
+(def-feature! paragraphs)
 #+end_src
 
 **** indent
@@ -2027,7 +2027,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! indent
+(def-feature! indent
   :setq-default
   (tab-always-indent . t))
 #+end_src
@@ -2038,7 +2038,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! mouse
+(def-feature! mouse
   :setq-default
   (mouse-yank-at-point . t))
 #+end_src
@@ -2049,7 +2049,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! calendar
+(def-feature! calendar
   :setq (diary-file . (concat VOID-DATA-DIR "diary")))
 #+end_src
 
@@ -2059,7 +2059,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! mule-cmds
+(def-feature! mule-cmds
   :init (prefer-coding-system VOID-DEFAULT-CODING-SYSTEM))
 #+end_src
 
@@ -2072,7 +2072,7 @@ Don't ping things that look like domain names.
 https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-plist-get
 
 #+begin_src emacs-lisp
-(use-feature! gv
+(def-feature! gv
   :defer-config
   (gv-define-simple-setter plist-get plist-put))
 #+end_src
@@ -2083,7 +2083,7 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! nsm
+(def-feature! nsm
   :setq (nsm-settings-file . (concat VOID-DATA-DIR "network-settings.data")))
 #+end_src
 
@@ -4130,7 +4130,7 @@ ways to read and send emails in Emacs.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! sendmail
+(def-feature! sendmail
   :setq
   (send-mail-function . #'sendmail-send-it)
   (sendmail-program . (executable-find "msmtp"))
@@ -4143,7 +4143,7 @@ ways to read and send emails in Emacs.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! smtpmail
+(def-feature! smtpmail
   :disable t
   :setq
   (smtp-default-mail-server . "mail.example.com")
@@ -4158,7 +4158,7 @@ ways to read and send emails in Emacs.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! message
+(def-feature! message
   :setq
   (message-signature . user-full-name)
   (message-sendmail-envelope-from . 'header)
@@ -4540,7 +4540,7 @@ mean 2000 which is not a lot by today's standard).
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! gnus
+(def-feature! gnus
   :commands gnus
   :setq
   (gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
@@ -4565,7 +4565,7 @@ mean 2000 which is not a lot by today's standard).
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! gnus-start
+(def-feature! gnus-start
   :after gnus
   :setq
   (gnus-use-dribble-file . nil)
@@ -4652,7 +4652,7 @@ mean 2000 which is not a lot by today's standard).
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! gnus-group
+(def-feature! gnus-group
   :setq
   (gnus-group-line-format . "%M\ %S\ %p\ %P\ %5y:%B%(%g%)\n"))
 #+end_src
@@ -6373,7 +6373,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! eshell
+(def-feature! eshell
   :commands eshell
   :idle-require
   em-alias em-banner em-basic em-cmpl
@@ -6728,7 +6728,7 @@ have to set out to look for a file with =dired=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! recentf
+(def-feature! recentf
   :before-call find-file
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
@@ -6771,7 +6771,7 @@ location you left off at in a particular buffer. When you visit that buffer
 again, you are taken to the location you left off. This is very convenient.
 
 #+begin_src emacs-lisp
-(use-feature! saveplace
+(def-feature! saveplace
   :after-call after-find-file
   :setq
   (save-place-file . (concat VOID-DATA-DIR "saveplace"))
@@ -6789,7 +6789,7 @@ again, you are taken to the location you left off. This is very convenient.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! savehist
+(def-feature! savehist
   :idle-require custom
   :hook emacs-startup-hook
   :setq
@@ -6817,7 +6817,7 @@ of topics on his site, check out the [[http://ergoemacs.org/emacs/bookmark.html 
 read this [[https://emacs.stackexchange.com/questions/51853/retracing-steps-with-emacs-when-programming-exploring — search - Retracing steps with emacs (When programming /exploring) - Emacs Stack Exchange][question]].
 
 #+begin_src emacs-lisp
-(use-feature! bookmark
+(def-feature! bookmark
   :pre-setq
   (bookmark-default-file . (concat VOID-DATA-DIR "bookmarks"))
   (bookmark-save-flag . t))
@@ -6914,7 +6914,7 @@ I might consider doing this asynchronously.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! dired
+(def-feature! dired
   :setq
   (dired-recursive-copies . 'always)
   (dired-recursive-deletes . 'top)
@@ -7285,7 +7285,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! autorevert
+(def-feature! autorevert
   :after-call switch-to-buffer find-file
   :setq
   (auto-revert-verbose . t)
@@ -7368,7 +7368,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! epa
+(def-feature! epa
   :setq
   (epg-gpg-program . "gpg2")
   (epa-pinentry-mode . 'loopback))
@@ -8380,7 +8380,7 @@ use =edit-indirect= to edit source blocks.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! org-src
+(def-feature! org-src
   :setq
   (org-edit-src-persistent-message . nil)
   (org-src-window-setup . 'current-window)
@@ -8671,7 +8671,7 @@ powerful markup language?
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! ol
+(def-feature! ol
   :after org
   :custom
   (org-link-descriptive . t)
@@ -8758,7 +8758,7 @@ it.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! org-capture
+(def-feature! org-capture
   :after org
   :commands org-capture)
 #+end_src
@@ -8860,7 +8860,7 @@ in the future. I use this template for this.
 [[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the current week.
 
 #+begin_src emacs-lisp
-(use-feature! org-agenda
+(def-feature! org-agenda
   :after org
   :commands (org-agenda org-agenda-list)
   :setq
@@ -8881,7 +8881,7 @@ in the future. I use this template for this.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! org-refile
+(def-feature! org-refile
   :after org
   :setq
   (org-refile-targets . `((,VOID-README-FILE . (:maxlevel . 10))
@@ -8902,7 +8902,7 @@ storing universally unique IDs. This is primarily used to disguish and
 referenance org headlines.
 
 #+begin_src emacs-lisp
-(use-feature! org-id
+(def-feature! org-id
   :commands org-id-get-create
   :setq
   (org-id-locations-file . (concat VOID-DATA-DIR "org-id-locations"))
@@ -8921,7 +8921,7 @@ referenance org headlines.
 tracking the time you spend on a particular task.
 
 #+begin_src emacs-lisp
-(use-feature! org-clock
+(def-feature! org-clock
   :commands org-clock-in
   ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
   :hook (kill-emacs-hook . org-clock-save)
@@ -8943,7 +8943,7 @@ tracking the time you spend on a particular task.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! org-crypt
+(def-feature! org-crypt
   :commands org-encrypt-entries org-encrypt-entry org-decrypt-entries org-decrypt-entry
   :hook (org-reveal-start . org-decrypt-entry)
   ;; :preface
@@ -9084,7 +9084,7 @@ The outline api actually seems pretty solid; better coded and simpler than the o
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! tex
+(def-feature! tex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :hook (LaTex-mode-hook . visual-line-mode)
   :setq
