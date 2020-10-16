@@ -1756,7 +1756,8 @@ other keywords such as "hook" are named.
 :END:
 
 #+begin_src emacs-lisp
-(def-feature! subr-x :require t)
+(def-feature! subr-x
+  :require t)
 #+end_src
 
 **** startup
@@ -2123,7 +2124,8 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :END:
 
 #+begin_src emacs-lisp
-(def-package dash-functional :require t)
+(def-package dash-functional
+  :require t)
 #+end_src
 
 **** dash
@@ -2135,7 +2137,8 @@ as a dependency, I'd end up rewriting many of its functions.
 :END:
 
 #+begin_src emacs-lisp
-(def-package dash :require t)
+(def-package dash
+  :require t)
 #+end_src
 
 **** general
