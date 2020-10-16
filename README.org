@@ -9249,22 +9249,24 @@ VOID install. For writing this code I referenced the body of
 [[helpfn:all-the-icons-install-fonts][all-the-icons-install-fonts]].
 
 #+begin_src emacs-lisp
-(let ((font-dir
-       (cl-case window-system
-         (x (concat (or (getenv "XDG_DATA_HOME")
-                        (concat (getenv "HOME") "/.local/share"))
-                    "/fonts/"))
-         (mac (concat (getenv "HOME") "/Library/Fonts/" ))
-         (ns (concat (getenv "HOME") "/Library/Fonts/" )))))
-  (unless (--all-p (file-exists-p (concat font-dir it))
-                   '("all-the-icons.ttf"
-                     "file-icons.ttf"
-                     "fontawesome.ttf"
-                     "material-design-icons.ttf"
-                     "octicons.ttf"
-                     "weathericons.ttf"))
-    (void-log "No icons installed. Installing...")
-    (all-the-icons-install-fonts :ignore-prompt)))
+(defhook! install-icons-maybe (window-setup-hook)
+  "Install icons if not installed."
+  (let ((font-dir
+         (cl-case window-system
+           (x (concat (or (getenv "XDG_DATA_HOME")
+                          (concat (getenv "HOME") "/.local/share"))
+                      "/fonts/"))
+           (mac (concat (getenv "HOME") "/Library/Fonts/" ))
+           (ns (concat (getenv "HOME") "/Library/Fonts/" )))))
+    (unless (--all-p (file-exists-p (concat font-dir it))
+                     '("all-the-icons.ttf"
+                       "file-icons.ttf"
+                       "fontawesome.ttf"
+                       "material-design-icons.ttf"
+                       "octicons.ttf"
+                       "weathericons.ttf"))
+      (void-log "No icons installed. Installing...")
+      (all-the-icons-install-fonts :ignore-prompt))))
 #+end_src
 
 *** boostrap
