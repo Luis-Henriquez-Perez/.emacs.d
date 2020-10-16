@@ -1385,6 +1385,11 @@ BINDINGS are an alist of (VAR . VALUE)."
          `((<package> . ,package)))))
 #+end_src
 
+*** alias for built in
+:PROPERTIES:
+:ID:       7d617f47-8bba-4380-b1c2-35d9b658500f
+:END:
+
 *** custom keywords
 :PROPERTIES:
 :ID:       e73b7f95-1082-4978-a501-f69f6d516cbb
