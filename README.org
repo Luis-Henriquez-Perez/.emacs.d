@@ -1309,8 +1309,7 @@ Then, values are normalized. And finally, values are expanded.
   (->> (-partition-by-header #'keywordp args)
        (-sort #'def-package-weight-sorter)
        (mapcar #'def-package-apply-normalize)
-       (mapcan #'def-package-expand-values)
-       ))
+       (mapcan #'def-package-expand-values)))
 #+end_src
 
 **** normalizers
