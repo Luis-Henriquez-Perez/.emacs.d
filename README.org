@@ -1308,8 +1308,9 @@ Then, values are normalized. And finally, values are expanded.
   "Convert args into an alist such that (KEY . VALUE)."
   (->> (-partition-by-header #'keywordp args)
        (sort #'def-package-weight-sorter)
-       (mapcar #'def-package-apply-normalize)
-       (mapcan #'def-package-expand-values)))
+       ;; (mapcar #'def-package-apply-normalize)
+       ;; (mapcan #'def-package-expand-values)
+       ))
 #+end_src
 
 **** normalizers
