@@ -1733,6 +1733,8 @@ other keywords such as "hook" are named.
 
 (defun def-package--normalize-bind (list)
   "Normalize."
+  (if (keywordp (car list))
+      ())
   list)
 #+end_src
 
