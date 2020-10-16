@@ -1381,7 +1381,7 @@ BINDINGS are an alist of (VAR . VALUE)."
 (defmacro def-package (package &rest args)
   "A replacement for `use-package' and `leaf'."
   `(progn
-     ,@(def-package-forms (def-package~normalize-args args)
+     ,@(def-package-forms (def-package-normalize-args args)
          `((<package> . ,package)))))
 #+end_src
 
@@ -1635,7 +1635,7 @@ from =use-package= and =leaf=.
   (alet (or fn (void-symbol-intern <package> '-mode))
     `(void-add-hook ',hook #',it)))
 
-(push (cons :hook #'def-package-ensure-cons-cells) def-package~normalizer-alist)
+(push (cons :hook #'def-package-ensure-cons-cells) def-package-normalizer-alist)
 #+end_src
 
 ***** miscellaneous
