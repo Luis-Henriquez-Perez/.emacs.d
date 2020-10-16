@@ -1074,7 +1074,7 @@ use-package but has far less lines of code and is much simpler. Some notable
 differences are that I use [[id:2c2e4202-4530-4538-a8c9-ffb40239d6042c2e4202-4530-4538-a8c9-ffb40239d604][weighted sorting]] (similar to [[helpfn:add-hook][depth]] in hooks added
 after Emacs 26) instead of explicit; I use alists instead of plists. The goal of
 =def-package= is to make adding new keywords as easy and straightforward as
-possible (see [[8c42eac6-a0ae-448a-af07-100d0c6a06ac][def-package-key!]] and [[id:7f249971-adf4-488e-a18f-cbcb5937a7c4][custom keywords]]). I also want the data
+possible (see [[8c42eac6-a0ae-448a-af07-100d0c6a06ac][def-package-key]] and [[id:7f249971-adf4-488e-a18f-cbcb5937a7c4][custom keywords]]). I also want the data
 structures and the mechanisms behind generating a form to be easy to test, read,
 and hack.
 
@@ -1456,7 +1456,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! os (os body)
+(def-package-key os (os body)
   `(with-os! ,os ,@body))
 
 (def-package-set-weight :os 20)
@@ -1468,7 +1468,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! when (condition body)
+(def-package-key when (condition body)
   `(when ,condition ,@body))
 
 (def-package-set-weight :when 20)
@@ -1480,7 +1480,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! disabled (bool body)
+(def-package-key disabled (bool body)
   (if bool nil body))
 
 (def-package-set-weight :disable 25)
@@ -1497,7 +1497,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! straight (recipe)
+(def-package-key straight (recipe)
   `(progn
      (unless (featurep 'straight) (straight:init-fn))
      (condition-case err
@@ -1513,7 +1513,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! package (recipe)
+(def-package-key package (recipe)
   )
 #+end_src
 
@@ -1528,10 +1528,10 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! pre-setq ((var . value))
+(def-package-key pre-setq ((var . value))
   `(setq ,var ,val))
 
-(def-package-set-weight 15)
+(def-package-set-weight :pre-setq 15)
 #+end_src
 
 ****** setq
@@ -1540,7 +1540,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! setq (pairs)
+(def-package-key setq (pairs)
   `(after! ,<package>
      ,@(-map (-lambda (var . val) `(setq ,var ,val)) pairs)))
 
@@ -1553,7 +1553,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! setq-default ((key . value))
+(def-package-key setq-default ((key . value))
   `(setq-default ,key ,value))
 #+end_src
 
@@ -1563,7 +1563,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! custom ((var . value))
+(def-package-key custom ((var . value))
   `(customize-set-variable ',var ,value))
 #+end_src
 
@@ -1578,7 +1578,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! require (package)
+(def-package-key require (package)
   (when package `(require ',<package>)))
 #+end_src
 
@@ -1588,7 +1588,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! commands (command)
+(def-package-key commands (command)
   `(unless (fboundp ',package)
      (autoload #',value ,(symbol-name package) nil t)))
 #+end_src
@@ -1599,7 +1599,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! before-call (fn)
+(def-package-key before-call (fn)
   `(defadvice! ,(void-symbol-intern 'load- <package>) (:before ,fn)
      (require ',<package>)))
 #+end_src
@@ -1610,7 +1610,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! after-call (fn)
+(def-package-key after-call (fn)
   `(defadvice! ,(void-symbol-intern 'load- <package>) (:before ,fn)
      (require ',<package>)))
 #+end_src
@@ -1621,7 +1621,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! defer-config (body)
+(def-package-key defer-config (body)
   (after! ,<package> ,@body))
 #+end_src
 
@@ -1631,7 +1631,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! hook ((hook . fn))
+(def-package-key hook ((hook . fn))
   (alet (or fn (void-symbol-intern <package> '-mode))
     `(void-add-hook ',hook #',it)))
 
@@ -1649,7 +1649,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! init (form) form)
+(def-package-key init (form) form)
 #+end_src
 
 ****** mode
@@ -1658,7 +1658,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! mode (regexp . mode)
+(def-package-key mode (regexp . mode)
   `(add-to-list 'auto-mode-alist (cons ,regexp ',mode)))
 #+end_src
 
@@ -1668,7 +1668,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! config (form) form)
+(def-package-key config (form) form)
 #+end_src
 
 ****** load-path
@@ -1677,7 +1677,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! load-path (path)
+(def-package-key load-path (path)
   `(add-to-list 'load-path ,path))
 #+end_src
 
@@ -1687,7 +1687,7 @@ from =use-package= and =leaf=.
 :END:
 
 #+begin_src emacs-lisp
-(def-package-key! alias ((alias . definition))
+(def-package-key alias ((alias . definition))
   `(eval-and-compile (defalias #',alias #',definition)))
 
 (def-package-set-normalizer :alias #'def-package-ensure-cons-cells)
