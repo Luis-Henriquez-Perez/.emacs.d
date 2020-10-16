@@ -1592,10 +1592,13 @@ from =use-package= and =leaf=.
   (when package `(require ',<package>)))
 #+end_src
 
-****** commands
+****** command
 :PROPERTIES:
 :ID:       a30f2868-1498-451d-85b3-60469e7dc022
 :END:
+
+I choose to name this "command" instead of "commands" to be consistent with how
+other keywords such as "hook" are named.
 
 #+begin_src emacs-lisp
 (def-package-key command (command)
@@ -2258,7 +2261,7 @@ while the user is working.
 
 #+begin_src emacs-lisp
 (def-package shut-up
-  :commands shut-up
+  :command shut-up
   :alias ((shut-up! . shut-up) (quiet! . shut-up)))
 #+end_src
 
@@ -3148,7 +3151,7 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 
 #+begin_src emacs-lisp
 (def-package ace-window
-  :commands ace-window ace-swap-window
+  :command ace-window ace-swap-window
   :bind ([remap other-window] . ace-window)
   :setq
   (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
@@ -3171,7 +3174,7 @@ your previous workspace now with [[helpfn:eyebrowse-prev-window-config][eyebrows
 
 #+begin_src emacs-lisp
 (def-package eyebrowse
-  :commands eyebrowse-create-window-config
+  :command eyebrowse-create-window-config
   :setq (eyebrowse-wrap-around . t))
 #+end_src
 
@@ -3273,8 +3276,8 @@ https://www.emacswiki.org/emacs/TransposeFrame
 
 #+begin_src emacs-lisp
 (def-package transpose-frame
-  :commands transpose-frame flip-frame flop-frame
-  :commands rotate-frame rotate-frame-clockwise)
+  :command transpose-frame flip-frame flop-frame
+  :command rotate-frame rotate-frame-clockwise)
 #+end_src
 
 ** exwm
@@ -3438,7 +3441,7 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (def-package buffer-expose
-  :commands
+  :command
   buffer-expose
   buffer-expose-no-stars
   buffer-expose-major-mode
@@ -3752,7 +3755,7 @@ to select candidates quickly.
 #+begin_src emacs-lisp
 (def-package ivy-avy
   :ensure nil
-  :commands ivy-avy
+  :command ivy-avy
   :init
   (add-to-list 'load-path
                (concat (--find (s-matches-p (rx "/ivy" eos) it) load-path) "-avy")))
@@ -3960,7 +3963,7 @@ completing-read-using replacement for [[helpfn:org-capture][org-capture]] called
 #+begin_src emacs-lisp
 (def-package counsel-org-capture-string
   :after org ivy
-  :commands counsel-org-capture-string)
+  :command counsel-org-capture-string)
 #+end_src
 
 **** counsel-web
@@ -3972,7 +3975,7 @@ This package lets me search the web via ivy.
 
 #+begin_src emacs-lisp
 (def-package counsel-web
-  :commands counsel-web-suggest counsel-web-search
+  :command counsel-web-suggest counsel-web-search
   :setq (counsel-web-search-dynamic-update . t))
 #+end_src
 
@@ -3986,7 +3989,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (def-package swiper
-  :commands swiper swiper-isearch
+  :command swiper swiper-isearch
   :setq (swiper-action-recenter . t))
 #+end_src
 
@@ -4190,7 +4193,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 (def-package mu4e
   :ensure nil
   :load-path "/usr/share/emacs/site-lisp/mu4e/"
-  :commands mu4e
+  :command mu4e
   :setq
   (mu4e-completing-read-function . #'completing-read)
   (mu4e-view-show-addresses . t)
@@ -4465,7 +4468,7 @@ emails.
 
 #+begin_src emacs-lisp
 (def-package notmuch
-  :commands notmuch
+  :command notmuch
   :setq
   (notmuch-search-oldest-first . nil)
   ;; Don't show notmuch logo.
@@ -4542,7 +4545,7 @@ mean 2000 which is not a lot by today's standard).
 
 #+begin_src emacs-lisp
 (def-feature! gnus
-  :commands gnus
+  :command gnus
   :setq
   (gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
   (gnus-select-method . '(nnnil))
@@ -4718,7 +4721,7 @@ javascript code.
 
 #+begin_src emacs-lisp
 (def-package w3m
-  :commands w3m
+  :command w3m
   :setq (w3m-search-default-engine . "google"))
 #+end_src
 
@@ -4837,7 +4840,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 #+begin_src emacs-lisp
 (def-package ytel
   ;; depends on curl (executable-find "curl")
-  :commands ytel
+  :command ytel
   :defer-config
   (defun ytel/watch ()
     "Stream video at point in mpv."
@@ -4909,7 +4912,7 @@ my description of problems with pictures.
 [[][]] is another emacs screenshot package that.
 
 #+begin_src emacs-lisp
-(def-package screenshot :commands screenshot)
+(def-package screenshot :command screenshot)
 #+end_src
 
 *** escr                                                              :disable:
@@ -5000,7 +5003,7 @@ Org Mode. The feature responsible for doing this is [[][hideshow]].
 #+begin_src emacs-lisp
 (def-package hideshow
   :hook (prog-mode-hook . hs-minor-mode)
-  :commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
+  :command hs-minor-mode hs-toggle-hiding hs-already-hidden-p
   :setq (hs-hide-comments-when-hiding-all . nil))
 #+end_src
 
@@ -5239,7 +5242,7 @@ hooks.
 
 #+begin_src emacs-lisp
 (def-package org-link-minor-mode
-  :commands org-link-minor-mode)
+  :command org-link-minor-mode)
 #+end_src
 
 *** editing source blocks
@@ -5410,7 +5413,7 @@ it. It's pretty smart and very convenient.
 Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regular expressions to align text.
 
 #+begin_src emacs-lisp
-(def-package ialign :commands ialign)
+(def-package ialign :command ialign)
 #+end_src
 
 ** lisp editing
@@ -5487,7 +5490,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 
 #+begin_src emacs-lisp
 (def-package lispyville
-  :commands lispyville-comment-or-uncomment-line
+  :command lispyville-comment-or-uncomment-line
   :hook emacs-lisp-mode-hook
   :bind
   (:emacs-lisp-mode-map
@@ -5641,7 +5644,7 @@ very useful to me.
 #+begin_src emacs-lisp
 (def-package spell-fu
   :ensure (:host gitlab :repo "ideasman42/emacs-spell-fu")
-  :commands spell-fu-mode
+  :command spell-fu-mode
   :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
 #+end_src
 
@@ -5665,7 +5668,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 
 #+begin_src emacs-lisp
 (def-package powerthesaurus
-  :commands
+  :command
   powerthesaurus-lookup-word-at-point
   power-thesaurus-lookup-word-dwim)
 #+end_src
@@ -5677,7 +5680,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 
 #+begin_src emacs-lisp
 (def-package define-it
-  :commands define-it define-it-at-point
+  :command define-it define-it-at-point
   :setq
   (define-it-output-choice . 'view)
   (define-it-show-google-translate . nil))
@@ -6198,7 +6201,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 
 #+begin_src emacs-lisp
 (def-package evil-exchange
-  :commands evil-exchange
+  :command evil-exchange
   :init
   (general-def 'normal
     :prefix "g"
@@ -6215,7 +6218,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 
 #+begin_src emacs-lisp
 (def-package evil-visualstar
-  :commands
+  :command
   evil-visualstar/begin-search-backward
   evil-visualstar/begin-search-forward
   :bind (:evil-visual-state-map
@@ -6233,7 +6236,7 @@ larger text objects. It's saves me keystrokes.
 
 #+begin_src emacs-lisp
 (def-package expand-region
-  :commands er/expand-region er/contract-region er/mark-symbol er/mark-word
+  :command er/expand-region er/contract-region er/mark-symbol er/mark-word
   :init
   (general-def 'visual
     "V" #'er/contract-region
@@ -6259,7 +6262,7 @@ larger text objects. It's saves me keystrokes.
 
 #+begin_src emacs-lisp
 (def-package avy
-  :commands avy-jump
+  :command avy-jump
   :setq
   (avy-background . t)
   ;; Jump only on current window.
@@ -6375,7 +6378,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 
 #+begin_src emacs-lisp
 (def-feature! eshell
-  :commands eshell
+  :command eshell
   :idle-require
   em-alias em-banner em-basic em-cmpl
   em-dirs em-glob em-hist em-ls em-prompt
@@ -6469,7 +6472,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 #+begin_src emacs-lisp
 (def-package eshell-z
   :after eshell
-  :commands eshell/z
+  :command eshell/z
   :setq (eshell:z-file . (expand-file-name "z" eshell-directory-name))
   :defer-config
   (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name))
@@ -6486,7 +6489,7 @@ in ~eshell~ without having to repeatedly typing ~cd ..~.
 #+begin_src emacs-lisp
 (def-package eshell-up
   :after eshell
-  :commands eshell-up eshell-up-peek
+  :command eshell-up eshell-up-peek
   :init
   (defalias 'eshell/up 'eshell-up)
   (defalias 'eshell/pk 'eshell-up-peek)
@@ -6692,7 +6695,7 @@ aliases.
 
 #+begin_src emacs-lisp
 (def-package shrink-path
-  :commands shrink-path-file)
+  :command shrink-path-file)
 #+end_src
 
 ** command-log-mode
@@ -6705,7 +6708,7 @@ you on a side window.
 
 #+begin_src emacs-lisp
 (def-package command-log-mode
-  :commands command-log-mode global-command-log-mode
+  :command command-log-mode global-command-log-mode
   :setq
   (command-log-mode-auto-show . t)
   (command-log-mode-open-log-turns-on-mode . nil)
@@ -6732,7 +6735,7 @@ have to set out to look for a file with =dired=.
 (def-feature! recentf
   :before-call find-file
   :idle-require easymenu tree-widget timer
-  :commands recentf-open-files
+  :command recentf-open-files
   :defer-config
   (void-add-advice #'recentf-save-list :before #'recentf-cleanup)
   (recentf-mode 1)
@@ -6846,7 +6849,7 @@ in time to see older posts.
 
 #+begin_src emacs-lisp
 (def-package elfeed
-  :commands elfeed
+  :command elfeed
   :setq
   (elfeed-search-filter         . "@1-year-old")
   (elfeed-db-directory          . (concat VOID-DATA-DIR "elfeed/db/"))
@@ -6885,7 +6888,7 @@ I might consider doing this asynchronously.
 
 #+begin_src emacs-lisp
 (def-package pomodoro
-  :commands pomodoro-start
+  :command pomodoro-start
   :setq
   (pomodoro-play-sounds       . t)
   (pomodoro-work-start-sound  . (concat VOID-ALERT-SOUNDS "A-Tone-His_Self-1266414414.wav"))
@@ -7118,7 +7121,7 @@ inspired file manager]] of also called =ranger=.
 
 #+begin_src emacs-lisp
 (def-package ranger
-  :commands deer ranger
+  :command deer ranger
   :setq
   (ranger-override-dired-mode . t)
   (ranger-cleanup-eagerly . t)
@@ -7184,7 +7187,7 @@ As it's name suggests [[https://github.com/iqbalansari/restart-emacs][restart-em
 that restarts emacs. I haven't tested this in EXWM mode.
 
 #+begin_src emacs-lisp
-(def-package restart-emacs :commands restart-emacs)
+(def-package restart-emacs :command restart-emacs)
 #+end_src
 
 ** version control
@@ -7213,7 +7216,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 
 #+begin_src emacs-lisp
 (def-package magit
-  :commands magit-status magit-get-current-branch
+  :command magit-status magit-get-current-branch
   :idle-require f s with-editor git-commit package eieio lv transient
   :popup ("magit:"
           (display-buffer-at-bottom)
@@ -7263,7 +7266,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :END:
 
 #+begin_src emacs-lisp
-(def-package git-gutter :commands git-gutter-mode)
+(def-package git-gutter :command git-gutter-mode)
 #+end_src
 
 ** server                                                             :built-in:
@@ -7327,7 +7330,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 
 #+begin_src emacs-lisp
 (def-package pass
-  :commands pass
+  :command pass
   :setq
   (pass-username-field . "username"))
 #+end_src
@@ -7385,7 +7388,7 @@ I do not like dealing with the command line. I want real elisp code please.
 
 #+begin_src emacs-lisp
 (def-package password-generator
-  :commands password-generator-simple password-generator-paranoid)
+  :command password-generator-simple password-generator-paranoid)
 #+end_src
 
 ** uuidgen
@@ -7488,7 +7491,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 
 #+begin_src emacs-lisp
 (def-package persistent-scratch
-  :commands persistent-scratch-restore
+  :command persistent-scratch-restore
   :setq (persistent-scratch-save-file . (concat VOID-DATA-DIR "scratch")))
 #+end_src
 
@@ -7516,7 +7519,7 @@ a file from another user (=root= by default). To use it you just call [[helpfn:s
 on the buffer you'd like to edit.
 
 #+begin_src emacs-lisp
-(def-package sudo-edit :commands sudo-edit)
+(def-package sudo-edit :command sudo-edit)
 #+end_src
 
 ** yadm
@@ -7610,7 +7613,7 @@ user delays.
 [[https://github.com/clojure-emacs/cider][cider]] is a repl for clojure.
 
 #+begin_src emacs-lisp
-(def-package cider :commands cider)
+(def-package cider :command cider)
 #+end_src
 
 *** emacs lisp
@@ -7854,7 +7857,7 @@ these overlays.
 #+begin_src emacs-lisp
 (def-package outorg
   ;; TODO: should be changed to `:functions'
-  :commands outorg-convert-back-to-code outorg-convert-to-org)
+  :command outorg-convert-back-to-code outorg-convert-to-org)
 
 (defadvice! dont-add-overlays (:around outorg-wrap-source-in-block)
   (cl-letf (((symbol-function #'overlay-put) #'ignore))
@@ -7887,7 +7890,7 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 
 #+begin_src emacs-lisp
 (def-package macrostep
-  :commands (macrostep-expand macrostep-collapse macrostep-collapse-all)
+  :command (macrostep-expand macrostep-collapse macrostep-collapse-all)
   :init (define-localleader-key!
           :infix "m"
           :keymaps 'emacs-lisp-mode-map
@@ -8464,7 +8467,7 @@ though is in need of an update. It didn't work out of the box (see [[id:b358f324
 
 #+begin_src emacs-lisp
 (def-package hide-lines
-  :commands hide-lines hide-lines-matching)
+  :command hide-lines hide-lines-matching)
 #+end_src
 
 ****** =hl= overlay fix
@@ -8761,7 +8764,7 @@ it.
 #+begin_src emacs-lisp
 (def-feature! org-capture
   :after org
-  :commands org-capture)
+  :command org-capture)
 #+end_src
 
 **** remove capture headerline
@@ -8863,7 +8866,7 @@ in the future. I use this template for this.
 #+begin_src emacs-lisp
 (def-feature! org-agenda
   :after org
-  :commands (org-agenda org-agenda-list)
+  :command (org-agenda org-agenda-list)
   :setq
   (org-agenda-files . (mapcar (lambda (it) (concat org-directory it))
                                '("todo.org")))
@@ -8904,7 +8907,7 @@ referenance org headlines.
 
 #+begin_src emacs-lisp
 (def-feature! org-id
-  :commands org-id-get-create
+  :command org-id-get-create
   :setq
   (org-id-locations-file . (concat VOID-DATA-DIR "org-id-locations"))
   ;; Global ID state means we can have ID links anywhere. This is required for
@@ -8923,7 +8926,7 @@ tracking the time you spend on a particular task.
 
 #+begin_src emacs-lisp
 (def-feature! org-clock
-  :commands org-clock-in
+  :command org-clock-in
   ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
   :hook (kill-emacs-hook . org-clock-save)
   :setq
@@ -8945,7 +8948,7 @@ tracking the time you spend on a particular task.
 
 #+begin_src emacs-lisp
 (def-feature! org-crypt
-  :commands org-encrypt-entries org-encrypt-entry org-decrypt-entries org-decrypt-entry
+  :command org-encrypt-entries org-encrypt-entry org-decrypt-entries org-decrypt-entry
   :hook (org-reveal-start . org-decrypt-entry)
   ;; :preface
   ;; ;; org-crypt falls back to CRYPTKEY property then `epa-file-encrypt-to', which
@@ -8968,7 +8971,7 @@ diary/journal using =org-mode=.
 
 #+begin_src emacs-lisp
 (def-package org-journal
-  :commands org-journal-new-entry
+  :command org-journal-new-entry
   :setq
   (org-journal-file-type . 'yearly)
   (org-journal-dir . (concat VOID-ORG-DIR "journal/"))
@@ -9367,7 +9370,7 @@ understanding of a verbally terse and dry command description.
 (def-package elisp-demos
   ;; :functions elisp-demos-advice-helpful-update
   :advice (:after helpful-update elisp-demos-advice-helpful-update)
-  :commands elisp-demos-add-demo)
+  :command elisp-demos-add-demo)
 #+end_src
 
 * Asthetic
@@ -9581,7 +9584,7 @@ VOID install. For writing this code I referenced the body of
 
 #+begin_src emacs-lisp
 (def-package all-the-icons
-  :commands (all-the-icons-octicon
+  :command (all-the-icons-octicon
              all-the-icons-faicon
              all-the-icons-fileicon
              all-the-icons-wicon
