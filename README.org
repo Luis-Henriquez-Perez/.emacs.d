@@ -9267,7 +9267,6 @@ VOID install. For writing this code I referenced the body of
                        "weathericons.ttf"))
       (void-log "No icons installed. Installing...")
       (all-the-icons-install-fonts :ignore-prompt))))
-
 #+end_src
 
 *** boostrap
