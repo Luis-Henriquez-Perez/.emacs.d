@@ -1145,6 +1145,16 @@ SYM is a symbol that stores a list."
 :ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
+*** boostrap
+:PROPERTIES:
+:ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
+:END:
+
+#+begin_src emacs-lisp
+(setq use-package-verbose nil)
+(setq use-package-expand-minimally t)
+#+end_src
+
 *** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
@@ -1156,17 +1166,57 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
-(use-package-list-insert )
+(setq use-package-keywords
+      (--splice (eq :ensure it) (list :os it) use-package-keywords))
 
-(defun use-package-normalize/:os (features keyword args)
-  "Normalizer for os keyword."
-  (use-package-only-one () args
-    (lambda (a b) a)))
+(defun use-package-normalize/:os (name-symbol keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    (lambda (label arg)
+      (unless (member arg '(mac windows linux))
+        (use-package-error ":os wants one of the following symbols: mac, windows, or linx"))
+      arg)))
+
+(defun use-package-handler/:os (name _keyword features rest state)
+  (let ((body (use-package-process-keywords name rest state)))
+    `((with-os! ,features ,@body))))
 #+end_src
 
 **** setq
 :PROPERTIES:
 :ID:       790d9f48-b670-4325-9fe2-f36631d8f1a5
+:END:
+
+#+begin_src emacs-lisp
+(setq use-package-keywords
+      (--splice (eq ) (list :setq it) use-package-keywords))
+
+(defun use-package-normalize/:setq (name keyword args)
+  )
+
+(defun use-package-handler/:setq (name _keyword features rest state)
+  )
+#+end_src
+
+**** before-call
+:PROPERTIES:
+:ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
+:END:
+
+#+begin_src emacs-lisp
+(setq use-package-keywords
+      (--splice (eq ) (list :before-call it) use-package-keywords))
+
+(defun use-package-normalize/:before-call (name keyword args)
+  `()
+  )
+
+(defun use-package-handler/:before-call (name _keyword features rest state)
+  )
+#+end_src
+
+**** after-call
+:PROPERTIES:
+:ID:       03c442ed-f497-4206-8a09-d7203083b2f2
 :END:
 
 ** Leaf
@@ -2407,14 +2457,14 @@ environment, so envvars will be wrong. That includes the path
 Emacs picks up. [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] fixes this.
 
 #+begin_src emacs-lisp
-(leaf exec-path-from-shell
+(use-package exec-path-from-shell
   :os mac
   :when (or (daemonp) (display-graphic-p))
-  :require t
-  :setq
-  (exec-path-from-shell-check-startup-files . nil)
-  (exec-path-from-shell-arguments . (delete "-i" exec-path-from-shell-arguments))
-  (exec-path-from-shell-debug . void-debug-p)
+  ;; :require t
+  ;; :setq
+  ;; (exec-path-from-shell-check-startup-files . nil)
+  ;; (exec-path-from-shell-arguments . (delete "-i" exec-path-from-shell-arguments))
+  ;; (exec-path-from-shell-debug . void-debug-p)
   :init
   (nconc! exec-path-from-shell-variables
     '("LC_CTYPE" "LC_ALL" "LANG"))
