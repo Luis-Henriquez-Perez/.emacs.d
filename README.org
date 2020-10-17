@@ -1671,10 +1671,12 @@ Emacs starts up with a default screen.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! paren
-  :hook (prog-mode-hook . show-paren-mode)
-  :setq-default
-  (show-paren-delay . 0))
+(use-package paren
+  ;; :hook (1 . 2)
+  ;; :hook (prog-mode-hook . show-paren-mode)
+  ;; :setq-default
+  ;; (show-paren-delay . 0)
+  )
 #+end_src
 
 **** clipboard
