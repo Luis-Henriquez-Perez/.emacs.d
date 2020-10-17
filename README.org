@@ -1191,10 +1191,18 @@ SYM is a symbol that stores a list."
       (--splice (eq ) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
-  )
+  (use-package-as-one () args
+    (lambda (label arg)
+      (unless (consp arg)
+        (use-package-error
+         (concat label " a cons cell or a list of cons cells.")))
+      )))
 
 (defun use-package-handler/:setq (name _keyword features rest state)
-  )
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
+           (use-package-normalize-commands args))))
 #+end_src
 
 **** before-call
@@ -1222,6 +1230,9 @@ SYM is a symbol that stores a list."
 :PROPERTIES:
 :ID:       03c442ed-f497-4206-8a09-d7203083b2f2
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 ** Leaf
 :PROPERTIES:
