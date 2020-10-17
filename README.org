@@ -1239,6 +1239,9 @@ SYM is a symbol that stores a list."
 :ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 ** Leaf
 :PROPERTIES:
 :ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
