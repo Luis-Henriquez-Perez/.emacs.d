@@ -1240,6 +1240,7 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
+()
 #+end_src
 
 **** hook
