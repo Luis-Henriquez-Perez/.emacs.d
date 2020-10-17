@@ -1636,8 +1636,8 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! straight
-  :require t
+(use-package straight
+  ;; :require t
   :setq
   (straight-disable-autoloads . nil)
   (straight-cache-autoloads . t)
