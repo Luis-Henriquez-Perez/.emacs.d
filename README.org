@@ -1252,7 +1252,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
         (--map `(void-add-hook ',(intern (concat (symbol-name it) use-package-hook-name-suffix))
                                #',fun)
                (if (use-package-non-nil-symbolp syms) (list syms) syms))))
-    (use-package-normalize-commands args))))#+end_src
+    (use-package-normalize-commands args))))
+#+end_src
 
 ** Leaf
 :PROPERTIES:
