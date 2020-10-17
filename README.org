@@ -1156,7 +1156,12 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler)
+(use-package-list-insert )
+
+(defun use-package-normalize/:os (features keyword args)
+  "Normalizer for os keyword."
+  (use-package-only-one () args
+    (lambda (a b) a)))
 #+end_src
 
 **** setq
