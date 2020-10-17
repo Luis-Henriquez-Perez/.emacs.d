@@ -1256,11 +1256,23 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq ) (list :setq it) use-package-keywords))
+      (--splice (eq :init it)
+                (list :defer-incrementally it)
+                use-package-keywords))
 
-(defun use-package-normalize/:defer-incrementally ())
-(defun use-package-handler/:defer-incrementally ()
-  )
+(defun use-package-normalize/:defer-incrementally ()
+  (use-package-as-one () args
+    (lambda (label arg)
+      (unless (consp arg)
+        (use-package-error
+         (concat label " a cons cell or a list of cons cells.")))
+      arg)))
+
+(defun use-package-handler/:defer-incrementally (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (lambda (feature) `(idle-require ',feature))
+           (use-package-normalize-commands args))))
 #+end_src
 
 **** hook
