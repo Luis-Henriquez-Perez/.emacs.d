@@ -261,12 +261,23 @@ This function is meant to be used as the value of `initial-buffer-choice'."
     (get-buffer "*scratch*")))
 #+end_src
 
-** Package Manager Bootstrap
+** Package Management
 :PROPERTIES:
 :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
 :END:
 
-*** straight.el
+This headine contains code related to the initialization of packages.
+
+*** package managers
+:PROPERTIES:
+:ID:       8c5d69ee-cec5-4154-9d71-79168954574b
+:END:
+
+There are several package mangers possible to use with emacs. One of the nice
+things about abstracting package configuration with =use-package= is that you can
+change the package manager easily.
+
+**** straight.el
 :PROPERTIES:
 :ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
 :END:
@@ -274,7 +285,24 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 [[straight][straight.el]] is a package manager that strives to make emacs configurations
 completely reproducable.
 
-**** customize straight directory
+***** straight
+:PROPERTIES:
+:ID:       9dff9894-667c-4e74-9624-8aee533f8f70
+:END:
+
+#+begin_src emacs-lisp
+(progn
+  (setq straight-use-package-version 'straight)
+  (setq straight-use-package-by-default t)
+  (setq straight-enable-package-integration t)
+  (setq straight-disable-autoloads nil)
+  (setq straight-cache-autoloads t)
+  (setq straight-check-for-modifications nil)
+  (setq straight-enable-package-integration nil)
+  (setq straight-recipes-emacsmirror-use-mirror t))
+#+end_src
+
+***** customize straight directory
 :PROPERTIES:
 :ID: 843cc8b9-edff-42f7-a767-65a59aa38fbc
 :END:
@@ -294,7 +322,7 @@ this from Doom's straight branch.
 (advice-add #'straight--emacs-dir :around #'straight:use-packages-dir-a)
 #+end_src
 
-**** bootstrap code
+***** bootstrap code
 :PROPERTIES:
 :ID: 7816be80-4db8-4219-b7d1-9a6b1ea96035
 :END:
@@ -319,49 +347,428 @@ This code initializes straight if it's not already installed.
     (load bootstrap-file nil 'nomessage)))
 #+end_src
 
-**** straight-installer
-:PROPERTIES:
-:ID: 5b38a3da-d237-45f5-804f-5fd7e2f88d83
-:END:
-
-#+begin_src emacs-lisp
-(defun straight:install-package (package-or-recipe)
-  "Install PACKAGE with optional RECIPE."
-  (unless (featurep 'straight) (straight:init-fn))
-  (let ((package (or (car-safe package-or-recipe) package-or-recipe)))
-    (condition-case err
-        (progn (straight-use-package package-or-recipe)
-               (void-log "✓ installed %s" package))
-      (error
-       (void-log "✕ failed to install %s because of %s" package err)))))
-#+end_src
-
 *** required packages
 :PROPERTIES:
 :ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
 :END:
 
 #+begin_src emacs-lisp
-(dolist (package '(leaf-keywords leaf dash dash-functional anaphora))
-  (funcall #'straight:install-package package)
+(straight:init-fn)
+
+(progn
+  (setq straight-use-package-version 'straight)
+  (setq straight-use-package-by-default t)
+  (setq straight-enable-package-integration t)
+  (setq straight-disable-autoloads nil)
+  (setq straight-cache-autoloads t)
+  (setq straight-check-for-modifications nil)
+  (setq straight-enable-package-integration nil)
+  (setq straight-recipes-emacsmirror-use-mirror t))
+
+(dolist (package '(dash general dash-functional anaphora use-package s))
+  (straight-use-package package)
   (require package))
 #+end_src
 
-*** leaf aliases
+*** use-package
 :PROPERTIES:
-:ID:       1fc34b15-c6cc-450c-bcc9-61a9a8f5a39d
+:ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
-The name =leaf= is not very indicative of what the leaf macro does. Therefore, I
-alias it to =use-package!= for external packages, and =use-feature!= for built-in
-packages.
+Package configuration can be a monotonous and repetative process. Here, I
+configure =use-package=, a declaration macro designed to provide a concise
+syntax for configuring packages in a performance-oriented way.
+
+**** wrappers
+:PROPERTIES:
+:ID:       1e394ffd-597f-456c-9c56-ff9de5fae017
+:END:
+
+These are wrappers around =use-package=. They serve to be consistent
+with my macro naming conventions and to allow me means of customizing the
+use-package syntax and arguments (as I did with [[id:3bfe8efb-bd24-47ca-90af-dd55ee950442][use-feature!]]).
+
+***** use-package!
+:PROPERTIES:
+:ID:       1903deb5-bbbd-4479-81a1-c12c56d29be7
+:END:
 
 #+begin_src emacs-lisp
-(defalias 'use-package! 'leaf)
+(defalias 'use-package! 'use-package)
+#+end_src
 
+***** use-feature!
+:PROPERTIES:
+:ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
+:END:
+
+This wrapper around =use-package!= is meant to explicity distinguish between
+built-in packages and external packages. The idea was taken from [[https://github.com/raxod502/radian][Radian]]. The
+only difference from this and =use-package!= is that straight is always nil.
+
+#+begin_src emacs-lisp
 (defmacro use-feature! (feature &rest args)
+  "Wrapper around `use-package!'."
   (declare (indent defun))
-  `(leaf ,feature :ensure nil ,@args))
+  `(use-package! ,feature :straight nil ,@args))
+#+end_src
+
+**** helpers
+:PROPERTIES:
+:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
+:END:
+
+These are functions I use to help me with the configuration of =use-package=.
+
+***** normalizing arguments
+:PROPERTIES:
+:ID:       31f0a13d-2175-43fe-bbce-606bbfc22fd6
+:END:
+
+****** unfold args
+:PROPERTIES:
+:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
+:END:
+
+It's common in =use-package= to allow for arguments to be either
+keyword followed by a series of arguments or a keyword followed by a list
+containing the arguments. For example, =:foo 1 2 3 4= versus =:foo (1 2 3 4)=. This
+flexibility has its drawbacks because in lisp.
+
+#+begin_src emacs-lisp
+(defun use-package:unfold-args (args valid-item-p)
+  "Return a list of two items.
+If VA"
+  (cond ((-all-p valid-item-p args)
+         (list args nil))
+        ((alet (car args)
+           (and (= 1 (length args))
+                (not (-cons-pair-p it))
+                (listp it)))
+         (list (car args) (-find (-not valid-item-p) (car args))))
+        (t
+         (list args (-find (-not valid-item-p) args)))))
+#+end_src
+
+****** args or error
+:PROPERTIES:
+:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
+:END:
+
+This function strives to be more concise than [[][]] by automatically. Also,
+unlike the latter, it always returns a list.
+
+#+begin_src emacs-lisp
+(defun use-package:args-or-error (key args valid-p desc)
+  "Replacement for `use-package-as-one'.
+DESC is the description what an individual argument should be."
+  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
+    (if (not invalid-elt)
+        args
+      (thread-last (format "%s wants %s. Instead, %s was given" key desc invalid-elt)
+        (use-package-error)))))
+#+end_src
+
+***** inserting a keyword
+:PROPERTIES:
+:ID:       d81b2f05-4cc5-492a-8f90-18b2f6c7214e
+:END:
+
+While [[helpfn:use-package-list-insert][use-package-list-insert]] is written in a functional style; you need to pass
+in the list you want to insert into and it returns a new list with the insertion
+done. But really, when am I going to use this function to insert into something
+other than leaf-keywords? Using this wrapper makes adding keywords more concise.
+
+#+begin_src emacs-lisp
+(defun use-package:insert (key &optional anchor after)
+  "Convenience function for inserting items into `use-package-keywords'.
+This function has the side-effect of inserting KEY before ANCHOR. (or after
+ANCHOR if AFTER is non-nil.)"
+  (alet (use-package-list-insert key use-package-keywords anchor after)
+    (setq use-package-keywords it)))
+#+end_src
+
+***** mode
+:PROPERTIES:
+:ID:       efb56015-4466-460c-ac0e-bd11906cc054
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:ensure-mode (val package)
+  (or val
+      (alet (not (string-match-p "-mode\\'" (void-to-string package)))
+        (void-symbol-intern package (when it "-mode")))))
+#+end_src
+
+***** hook
+:PROPERTIES:
+:ID:       8c2516d2-b747-4724-a3a4-c3b737862263
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:ensure-hook (var)
+  (if (string-match-p "-hook\\'" (symbol-name var))
+      var
+    (void-symbol-intern var "-hook")))
+#+end_src
+
+**** custom keywords
+:PROPERTIES:
+:ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
+:END:
+
+In this headline I define custom use-package keywords. These reflect aspects
+that I feel are not covered by default =use-package= keywords. Note that, as it
+says in the [[][]], defining a keyword takes three parts.
+
+***** os
+:PROPERTIES:
+:ID:       e6a50f57-5f74-4d8c-8a88-17ee6b11d4c1
+:END:
+
+This keyword provides integration of [[id:1a645745-11ce-4cfb-8c5f-63470f0a61c3][with-os!]] with =use-package=. As some packages
+are operating system specific, it make sense to have such a keyword for the
+=use-package= declaration.
+
+#+begin_src emacs-lisp
+(use-package:insert :os :ensure)
+
+(defun use-package-normalize/:os (name-symbol keyword args)
+  (let ((message "one of the following symbols: mac, windows, linux")
+        (fn (-partial #'-contains-p '(mac windows linux))))
+    (use-package:args-or-error keyword args fn message)))
+
+(defun use-package-handler/:os (name _keyword features rest state)
+  (let ((body (use-package-process-keywords name rest state)))
+    `((with-os! ,features ,@body))))
+#+end_src
+
+***** setting
+:PROPERTIES:
+:ID:       e727f35b-470b-4374-9276-3a42cce6ff28
+:END:
+
+These keywords are based on keywords in [[https://github.com/conao3/leaf.el][leaf]], an alternative to =use-package=.
+They make an (I would argue) useful distinction between setting variables and
+doing some non-trivial configuration in =:config= and =:init=.
+
+****** pre-setq
+:PROPERTIES:
+:ID:       a4f5754e-e2f4-4d60-b675-64e92fcbe0e7
+:END:
+
+=:pre-setq= is made to set variables before a package is loaded.
+
+#+begin_src emacs-lisp
+(use-package:insert :pre-setq :init)
+
+(defalias 'use-package-normalize/:pre-setq 'use-package-normalize/:setq)
+
+(defun use-package-handler/:pre-setq (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
+           args)))
+#+end_src
+
+****** setq
+:PROPERTIES:
+:ID:       790d9f48-b670-4325-9fe2-f36631d8f1a5
+:END:
+
+=:setq= sets variables after a package is loaded.
+
+#+begin_src emacs-lisp
+(use-package:insert :setq :init)
+
+(defun use-package-normalize/:setq (name keyword args)
+  (let ((message "a cons cell whose CAR is a symbol label")
+        (fn (lambda (it) (and (consp it) (symbolp (car it))))))
+    (use-package:args-or-error keyword args fn message)))
+
+(defun use-package-handler/:setq (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   `((after! ,name
+       ,@(mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
+                 args)))))
+#+end_src
+
+****** setq-default
+:PROPERTIES:
+:ID:       82dc8306-b3e7-4205-8472-39333a9112fd
+:END:
+
+#+begin_src emacs-lisp
+(use-package:insert :setq-default :init)
+
+(defalias 'use-package-normalize/:setq-default 'use-package-normalize/:setq)
+
+(defun use-package-handler/:setq-default (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (lambda (pair) `(setq-default ,(car pair) ,(cdr pair)))
+           args)))
+#+end_src
+
+***** defer keywords
+:PROPERTIES:
+:ID:       f35c631b-05e6-4c6d-bd12-40023be8efce
+:END:
+
+These keywords help improve Void startup time by deferring the loading of
+packages to a later time--a time when the package is actually needed.
+
+****** before-call
+:PROPERTIES:
+:ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
+:END:
+
+=:before-call= and its counterpart [[id:03c442ed-f497-4206-8a09-d7203083b2f2][:after-call]] let me put off package loading
+until the last minute--by which I mean just before a function that needs the
+package is called.
+
+#+begin_src emacs-lisp
+(use-package:insert :before-call :disabled)
+
+(push :before-call use-package-deferring-keywords)
+
+(defun use-package-normalize/:before-call (name keyword args)
+  (use-package:args-or-error keyword args #'symbolp "a symbol"))
+
+(defun use-package-handler/:before-call (name _keyword features rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   `((defadvice! ,(intern (format "load-%s" name)) (:before ,@features)
+       (require ',name)))))
+#+end_src
+
+****** after-call
+:PROPERTIES:
+:ID:       03c442ed-f497-4206-8a09-d7203083b2f2
+:END:
+
+#+begin_src emacs-lisp
+(use-package:insert :after-call :disabled)
+
+(push :after-call use-package-deferring-keywords)
+
+(defun use-package-normalize/:after-call (name keyword args)
+  args)
+
+(defun use-package-handler/:after-call (name _keyword features rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   `((defadvice! ,(intern (format "load-%s" name)) (:after ,@features)
+       (require ',name)))))
+#+end_src
+
+****** idle-require
+:PROPERTIES:
+:ID:       7e915205-cbfc-4171-b473-4ffe2baddcc3
+:END:
+
+This keyword depends on [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]]. It allows me to specify a list of packages
+to be loaded during idle time. The idea is to load dependencies of a big package
+(like Org for example) so that when the time comes to load it, it will load
+faster.
+
+#+begin_src emacs-lisp
+(use-package:insert :idle-require :init)
+
+(defun use-package-normalize/:idle-require (name keyword args)
+  (use-package:args-or-error keyword args #'symbolp "a symbol"))
+
+(defun use-package-handler/:idle-require (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (lambda (feature) `(idle-require ',feature))
+           (use-package-normalize-commands args))))
+#+end_src
+
+****** hook
+:PROPERTIES:
+:ID:       82823374-1604-4a4c-8e72-638c430df38f
+:END:
+
+Notably I overwrite the built-in definitions for the hook normalizer and
+handler. I should be using overriding advice. However, when I tried to do this I
+would get unusual problems.
+
+#+begin_src emacs-lisp
+(defun use-package-normalize/:hook (name keyword args)
+  (thread-last "a symbol or cons cell"
+    (use-package:args-or-error keyword args (-orfn #'symbolp #'-cons-pair-p))
+    (--map-when (not (-cons-pair-p it)) (cons it nil))
+    (--map (cons (use-package:ensure-hook (car it))
+                 (use-package:ensure-mode (cdr it) name)))))
+
+(defun use-package-handler/:hook (name keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
+           (use-package-normalize-commands args))))
+#+end_src
+
+***** alias
+:PROPERTIES:
+:ID:       3168a5c8-0534-42e7-82b7-ed33bcb99ff6
+:END:
+
+Many times I need to define aliases.
+
+#+begin_src emacs-lisp
+(use-package:insert :alias :init)
+
+;; should be a cons cell.
+(defun use-package-normalize/:alias (name keyword args)
+  (let ((message "a cons cell"))
+    (use-package:args-or-error keyword args #'-cons-pair-p message)))
+
+(defun use-package-handler/:alias (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (-lambda ((alias . def)) `(defalias ',alias ',def))
+           (use-package-normalize-commands args))))
+#+end_src
+
+***** popup
+:PROPERTIES:
+:ID:       bdd0f442-4351-4ac8-874b-33991b6c2806
+:END:
+
+Many packages have their own buffers they like to open.
+
+#+begin_src emacs-lisp
+(use-package:insert :popup :init)
+
+(defun use-package-normalize/:popup (name keyword args)
+  (let ((message "a list"))
+    (use-package:args-or-error keyword args #'list message)))
+
+(defun use-package-handler/:popup (name _keyword args rest state)
+  (--map `(push ',it display-buffer-alist) args))
+#+end_src
+
+**** boostrap
+:PROPERTIES:
+:ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
+:END:
+
+What better way to start =use-package= than by using it to configure itself?! I
+set [[helpvar:use-package-always-ensure][use-package-always-ensure]] to nil because straight handles that. =:demand t=
+isn't necessary here because =use-package= is a required package. However, having
+it drives the point home that this package is loaded during initialization.
+
+#+begin_src emacs-lisp
+(use-package! use-package
+  :demand t
+  :pre-setq
+  (use-package-ignore-unknown-keywords . t)
+  (use-package-always-defer . t)
+  (use-package-always-ensure . nil)
+  (use-package-verbose . nil)
+  (use-package-expand-minimally . t))
 #+end_src
 
 ** Library
@@ -1140,417 +1547,28 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
-** use-package
-:PROPERTIES:
-:ID:       b1ab4488-5793-4675-8404-b1719f804c25
-:END:
-
-*** custom keywords
-:PROPERTIES:
-:ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
-:END:
-
-****
-:PROPERTIES:
-:ID:       790d9f48-b670-4325-9fe2-f36631d8f1a5
-:END:
-
-** Leaf
-:PROPERTIES:
-:ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
-:END:
-
-Like =use-package=, leaf is a macro that fascilitates package configuration.
-
-*** leaf
-:PROPERTIES:
-:ID:       7d72aec8-5523-473d-860d-181ce3d484d7
-:END:
-
-#+begin_src emacs-lisp
-(use-package! leaf
-  :setq
-  (leaf-defaults . '(:ensure t))
-  (leaf-expand-minimally . t))
-#+end_src
-
-*** leaf-keywords
-:PROPERTIES:
-:ID:       e47cf69e-4ba8-45d8-bb62-fd0c1d785583
-:END:
-
-#+begin_src emacs-lisp
-(use-package! leaf-keywords
-  :ensure nil
-  :init (leaf-keywords-init))
-#+end_src
-
-*** defining leaf keywords
-:PROPERTIES:
-:ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
-:END:
-
-Leaf is very low level. It does not provide a function or macro for fast new
-keyword creation. Whenever you want to create a new keyword you have to
-recall the underlying leaf data structure.
-
-**** leaf variables
-:PROPERTIES:
-:ID:       40d6a763-279b-4a18-9761-93754472b1a7
-:END:
-
-#+begin_src emacs-lisp
-(defvar leaf:process-variables
-  '(leaf--raw leaf--name leaf--key leaf--keyname leaf--value leaf--body)
-  "List of variables that leaf binds when processing a keyword.")
-#+end_src
-
-**** leaf insert keyword
-:PROPERTIES:
-:ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:insert-keyword (keyword where place form)
-  "Insert KEYWORD at PLACE.
-WHERE can be the symbol `before' or `after'."
-  (alet (pcase where
-          ('after #'leaf-insert-list-after)
-          ('before #'leaf-insert-list-before)
-          (_ (error "where is %S but expected `before' or `after'" where)))
-    (setq leaf-keywords
-          (funcall it leaf-keywords place (list keyword form)))))
-#+end_src
-
-**** defer
-:PROPERTIES:
-:ID:       a965af35-804c-460c-8787-1cf8a849dba1
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:make-defer (keyword)
-  "Add KEYWORD to `leaf-defer-keywords'."
-  (add-to-list 'leaf-defer-keywords keyword))
-#+end_src
-
-**** alias
-:PROPERTIES:
-:ID:       7e515288-9071-44dd-b09d-bfddb58c1ea9
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:set-alias (alias name)
-  "Set ALIAS to NAME."
-  (push (cons alias name) leaf-alias-keyword-alist))
-#+end_src
-
-**** define-leaf-keyword!
-:PROPERTIES:
-:ID:       db05b51b-bbe4-41a4-ae45-1e72aba57ae4
-:END:
-
-#+begin_src emacs-lisp
-(defmacro define-leaf-keyword! (name args &rest body)
-  "Define a leaf keyword."
-  (declare (indent defun))
-  (-let* ((keyword (intern (concat ":" (symbol-name name))))
-          ((where place) args)
-          (docstring (when (stringp body) (pop body)))
-          (actions (--unfold (when (keywordp (car it))
-                               (cons (-take 2 it)
-                                     (setq body (-drop 2 it))))
-                             body))
-          (apply-fn (intern (concat "leaf::apply-" (symbol-name name))))
-          (form `(,apply-fn ,@leaf:process-variables)))
-    `(progn
-       (leaf:insert-keyword ,keyword ',where ,place ',form)
-       (defun ,apply-fn ,leaf:process-variables
-         ,docstring
-         (ignore ,@leaf:process-variables)
-         ,@body))))
-#+end_src
-
-**** normalizer
-:PROPERTIES:
-:ID:       cc4b1777-9ee5-42bf-a268-c43afcd3fc20
-:END:
-
-***** add normalizer
-:PROPERTIES:
-:ID:       2abfe05c-010b-467f-aab8-2949af3f7b64
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:set-normalizer (keyword normalizer)
-  "Add KEYWORD."
-  (push `((or (memq leaf--key '(,keyword))
-              (eq (alist-get leaf--key leaf-alias-keyword-alist) ,keyword))
-          (funcall #',normalizer leaf--value))
-        leaf-normalize))
-#+end_src
-
-***** normalizers
-:PROPERTIES:
-:ID:       72c23168-98dd-4a74-85b8-c0e313aa96df
-:END:
-
-****** normalizers
-:PROPERTIES:
-:ID:       bcf96e13-f3bc-4b23-832f-f94b31dd48a5
-:END:
-
-leaf's setq does not correctly handle setting variables to forms that need to be
-evaluated.
-
-#+begin_src emacs-lisp
-(defun leaf:normalize-setq (leaf--value)
-  (-map (-lambda ((var . value)) (cons var value))
-        leaf--value))
-
-(defun leaf:normalize-commands (leaf--value)
-  (-map (lambda (elm)
-          (cond ((memq leaf--key '(:after))
-                 (if (eq elm t) leaf--name elm))
-                (t elm)))
-        (-uniq (delq nil (leaf-flatten leaf--value)))))
-#+end_src
-
-*** use =after!= in leaf-defer
-:PROPERTIES:
-:ID:       3d3cf50c-20eb-4276-a81e-33a6c368d55f
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-alias :leaf-defer :void-leaf-defer)
-
-(define-leaf-keyword! void-leaf-defer (before :leaf-defer)
-  (if (and leaf--body (eval (car leaf--value))
-           (leaf-list-memq leaf-defer-keywords (leaf-plist-keys leaf--raw)))
-      `((after! ,leaf--name ,@leaf--body))
-    `(,@leaf--body)))
-#+end_src
-
-*** custom leaf keywords
-:PROPERTIES:
-:ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
-:END:
-
-**** set keywords
-:PROPERTIES:
-:ID:       225cdf80-0770-47c0-8a94-6d69f4583374
-:END:
-
-Leaf keywords do not.
-
-***** setq
-:PROPERTIES:
-:ID:       6f38c45b-9382-4d72-a7ae-6d7a8748d07f
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :setq #'leaf:normalize-setq)
-#+end_src
-
-***** pre-setq
-:PROPERTIES:
-:ID:       aba01554-fa11-4120-9867-19e5e2025df4
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :pre-setq #'leaf:normalize-setq)
-#+end_src
-
-***** custom
-:PROPERTIES:
-:ID:       bfa61a7a-1660-4000-a80e-15851a32ffd5
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :custom #'leaf:normalize-setq)
-#+end_src
-
-***** setq-default
-:PROPERTIES:
-:ID:       b8ab2bf6-2b4e-41db-93f8-ed5c86392c84
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :setq-default #'leaf:normalize-setq)
-#+end_src
-
-**** defer keywords
-:PROPERTIES:
-:ID:       6a8189ab-9a7a-4670-aa7a-b6589c180011
-:END:
-
-These keywords are meant to improve on the deferred loading options already
-provided by leaf. They are inspired from DOOM emacs.
-
-***** leaf-generate-load-fn
-:PROPERTIES:
-:ID:       41c05e4a-a0f1-45e7-bed6-7de7a439faa1
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:generate-load-form (package &optional hooks advice-place advices)
-  "Return form that evals into function that loads the package."
-  (let ((load-fn (intern (concat "leaf:load-" (symbol-name package)))))
-    `(progn
-       (defun ,load-fn (&rest _)
-         (void-log "Loading %S..." ',package)
-         (unless (require ',package nil t)
-           (message "Error loading %S" ',package))
-         ,@(mapcar (lambda (hook) `(remove-hook ',hook #',load-fn)) hooks)
-         ,@(mapcar (lambda (advice) `(advice-remove #',advice #',load-fn)) advices)
-         (fmakunbound #',load-fn))
-       ,@(mapcar (lambda (hook) `(add-hook ',hook #',load-fn)) hooks)
-       ,@(mapcar (lambda (advice) `(advice-add #',advice ,advice-place #',load-fn)) advices))))
-#+end_src
-
-***** before-call
-:PROPERTIES:
-:ID:       5378035c-206b-4479-8c60-4d57853e5754
-:END:
-
-#+begin_src emacs-lisp
-(leaf:make-defer :before-call)
-
-(leaf:set-normalizer :before-call #'leaf:normalize-commands)
-
-(define-leaf-keyword! before-call (before :hook)
-  `(,(leaf:generate-load-form leaf--name nil :before leaf--value)
-    ,@leaf--body))
-#+end_src
-
-***** after-call
-:PROPERTIES:
-:ID:       36389857-c070-4221-8f76-b6b0da257b34
-:END:
-
-#+begin_src emacs-lisp
-(leaf:make-defer :after-call)
-
-(leaf:set-normalizer :after-call #'leaf:normalize-commands)
-
-(define-leaf-keyword! after-call (before :hook)
-  `(,(leaf:generate-load-form leaf--name nil :after leaf--value)
-    ,@leaf--body))
-#+end_src
-
-***** defer-incrementally
-:PROPERTIES:
-:ID:       c7ab7604-6e7c-42d1-b956-c58854948e8f
-:END:
-
-#+begin_src emacs-lisp
-(define-leaf-keyword! idle-require (before :before-call)
-  `((-each ',leaf--value #'idle-require)
-    ,@leaf--body))
-#+end_src
-
-**** straight keyword
-:PROPERTIES:
-:ID:       cba57988-21b2-456b-aed2-27254febf873
-:END:
-
-This keyword is designed to be compiled away, leaving only forms adding package
-paths to the load-path. This is so that package installation isn't done after
-VOID is compiled.
-
-#+begin_src emacs-lisp
-(leaf:set-alias :straight :void-straight)
-(leaf:set-alias :ensure :void-straight)
-
-(leaf:set-normalizer :void-straight #'leaf:void-straight-normalizer)
-
-(define-leaf-keyword! void-straight (before :straight)
-  `(,@(when (and leaf--value (car-safe leaf--value))
-        `((straight:install-package ',(car leaf--value))))
-    ,@leaf--body))
-
-(defun leaf:void-straight-normalizer (leaf--value)
-  (cond ((eq t (car leaf--value))
-         (list leaf--name))
-        ((eq nil (car leaf--value))
-         nil)
-        ((listp (car-safe leaf--value))
-         (list (cons leaf--name (car leaf--value))))))
-#+end_src
-
-**** popup
-:PROPERTIES:
-:ID:       30845314-ac19-49bb-9065-591c13e55489
-:END:
-
-The point of this keyword is to let me configure the display of buffers for
-specific packages.
-
-#+begin_src emacs-lisp
-(define-leaf-keyword! popup (before :mode)
-  `(,@(--map `(push ',it display-buffer-alist) leaf--value)
-    ,@leaf--body))
-#+end_src
-
-**** os
-:PROPERTIES:
-:ID:       3335e409-b963-4504-b9fb-2faf4fb0be3d
-:END:
-
-#+begin_src emacs-lisp
-(define-leaf-keyword! os (before :when)
-  (when leaf--body `((with-os! ,leaf--value ,@leaf--body))))
-#+end_src
-
-**** straight
-:PROPERTIES:
-:ID:       9dff9894-667c-4e74-9624-8aee533f8f70
-:END:
-
-#+begin_src emacs-lisp
-(use-package! straight
-  :require t
-  :setq
-  (straight-disable-autoloads . nil)
-  (straight-cache-autoloads . t)
-  (straight-check-for-modifications . nil)
-  (straight-enable-package-integration . nil)
-  (straight-recipes-emacsmirror-use-mirror . t))
-#+end_src
-
-**** alias
-:PROPERTIES:
-:ID:       9ce3a0f5-6b44-4c60-9599-b3b77199fa99
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :alias #'leaf:normalize-setq)
-
-(define-leaf-keyword! alias (before :init)
-  `((eval-and-compile
-      ,@(-map (-lambda ((alias . def)) `(defalias ',alias ',def))
-              leaf--value))
-    ,@leaf--body))
-#+end_src
-
-**** ignore-buffers
-:PROPERTIES:
-:ID:       46e099c0-257b-4292-b5bc-acdf1bceaeea
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :ignore-buffers #'leaf:normalize-commands)
-
-(define-leaf-keyword! ignore-buffers (before :init)
-  `((after! midnight
-      (--each ',leaf--value
-        (push it clean-buffer-list-kill-regexps)))
-    ,@leaf--body))
-#+end_src
-
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
 :END:
+
+*** print output when installing a package
+:PROPERTIES:
+:ID:       428aa579-bbd6-4169-9bca-8da581e0b81d
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! print-output-on-debug (:around straight-use-package)
+  (let ((package (or (car-safe (car <args>))
+                     (car <args>))))
+    (if (called-interactively-p)
+        (apply <orig-fn> <args>)
+      (condition-case err
+          (progn (apply <orig-fn> <args>)
+                 (void-log "✓ installed %s" package))
+        (error
+         (void-log "✕ failed to install %s because of %s" package err))))))
+#+end_src
 
 *** built-in
 :PROPERTIES:
@@ -1575,7 +1593,8 @@ specific packages.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr-x :require t)
+(use-feature! subr-x
+  :demand t)
 #+end_src
 
 **** startup
@@ -1603,7 +1622,7 @@ Emacs starts up with a default screen.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! paren
+(use-package! paren
   :hook (prog-mode-hook . show-paren-mode)
   :setq-default
   (show-paren-delay . 0))
@@ -1709,7 +1728,7 @@ think you want to use =smtp=.
 #+begin_src emacs-lisp
 ;; This is where `->>' and `thread-first' come from.
 (use-feature! subr-x
-  :require t)
+  :demand t)
 #+end_src
 
 **** ffap
@@ -1917,7 +1936,7 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 
 #+begin_src emacs-lisp
 (use-feature! gv
-  :defer-config
+  :config
   (gv-define-simple-setter plist-get plist-put))
 #+end_src
 
@@ -1936,33 +1955,34 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :ID: 6e4be80e-8149-424d-a801-d7871bfe8fc8
 :END:
 
+**** dash
+
+Dash is an excellent functional list manipulation library. If I did not use it
+as a dependency, I'd end up rewriting many of its functions.
+
+:PROPERTIES:
+:ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
+:END:
+
+#+begin_src emacs-lisp
+(use-package! dash
+  :demand t)
+#+end_src
+
 **** dash-functional
 :PROPERTIES:
 :ID:       4be107b5-b756-4372-9f74-655bda941b75
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash-functional :require t)
-#+end_src
-
-**** dash
-
-Dash is an excellent functional list manipulation library. If I did not use it
-as a dependency, I'd end up rewriting many of its functions.
-:PROPERTIES:
-:ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
-:END:
-
-#+begin_src emacs-lisp
-(use-package! dash :require t)
+(use-package! dash-functional
+  :demand t)
 #+end_src
 
 **** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
 :END:
-
-Keybindings are a key part of emacs (pun intended).
 
 ***** general
 :PROPERTIES:
@@ -1977,7 +1997,7 @@ handle all bindings. [[][general]] provides such a function ([[helpfn:general-de
 
 #+begin_src emacs-lisp
 (use-package! general
-  :require t
+  :demand t
   :config
   (general-auto-unbind-keys))
 #+end_src
@@ -2074,7 +2094,8 @@ make a difference. That's why.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! s :require t)
+(use-package! s
+  :demand t)
 #+end_src
 
 **** gc
@@ -2087,7 +2108,7 @@ while the user is working.
 
 #+begin_src emacs-lisp
 (use-package! gcmh
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (gcmh-idle-delay . 10)
   (gcmh-verbose . void-debug-p)
@@ -2113,7 +2134,8 @@ while the user is working.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! keyfreq :hook emacs-startup-hook)
+(use-package! keyfreq
+  :hook emacs-startup)
 #+end_src
 
 ** Initialize
@@ -2393,10 +2415,10 @@ environment, so envvars will be wrong. That includes the path
 Emacs picks up. [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] fixes this.
 
 #+begin_src emacs-lisp
-(leaf exec-path-from-shell
+(use-package! exec-path-from-shell
   :os mac
   :when (or (daemonp) (display-graphic-p))
-  :require t
+  :demand t
   :setq
   (exec-path-from-shell-check-startup-files . nil)
   (exec-path-from-shell-arguments . (delete "-i" exec-path-from-shell-arguments))
@@ -2419,7 +2441,7 @@ color in the frame title.
 (use-package! ns-auto-titlebar
   :os mac
   :when (or (daemonp) (display-graphic-p))
-  :require t)
+  :demand t)
 #+end_src
 
 ***** osx-clipboard
@@ -2431,7 +2453,7 @@ color in the frame title.
 (use-package! osx-clipboard
   :os mac
   :when (or (daemonp) (not (display-graphic-p)))
-  :hook emacs-startup-hook)
+  :hook emacs-startup)
 #+end_src
 
 **** linux
@@ -2646,8 +2668,8 @@ This package.
 
 #+begin_src emacs-lisp
 (use-package! idle-require
-  :require t
-  :hook emacs-startup-hook
+  :demand t
+  :hook emacs-startup
   :setq
   (idle-require-idle-delay . 7)
   (idle-require-load-break . 2))
@@ -3042,11 +3064,11 @@ makes emacs feel like a window manager with gaps.
 
 #+begin_src emacs-lisp
 (use-feature! frame
-  :hook (window-setup-hook . window-divider-mode)
+  :hook (window-setup . window-divider-mode)
   :custom
-  (window-divider-default-places       . t)
-  (window-divider-default-bottom-width . 10)
-  (window-divider-default-right-width  . 10)
+  (window-divider-default-places  t)
+  (window-divider-default-bottom-width 10)
+  (window-divider-default-right-width  10)
   :config
   (set-face-foreground 'window-divider "black")
   (blink-cursor-mode -1))
@@ -3149,10 +3171,10 @@ functions which open external linux applications.
 
 #+begin_src emacs-lisp
 (use-package! exwm
-  :hook (exwm-mode-hook . hide-mode-line-mode)
+  :hook (exwm-mode . hide-mode-line-mode)
   :before-call (void/open-qutebrowser counsel-linux-app void/open-emacs-instance)
   :setq (exwm-replace . nil)
-  :defer-config
+  :config
   (exwm-init)
   ;; Enable the clipboard.
   (require 'exwm-systemtray)
@@ -3275,7 +3297,7 @@ Emacs's text editing capabilities on it.
 (use-package! exwm-firefox-evil
   :disabled t
   :after exwm
-  :hook (exwm-manage-finish-hook . exwm-firefox-evil-activate-if-firefox)
+  :hook (exwm-manage-finish . exwm-firefox-evil-activate-if-firefox)
   :config
   (dolist (k `(escape))
     (cl-pushnew k exwm-input-prefix-keys)))
@@ -3288,6 +3310,7 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (use-package! buffer-expose
+  :disabled t
   :commands
   buffer-expose
   buffer-expose-no-stars
@@ -3326,7 +3349,7 @@ through on our own. It's not much different in Emacs. We're constantly sifting
 though files, buffers, commands, words--all to try to get through to the subset
 of things that we actually want at this moment.
 
-** snippets
+** snippets                                                           :disabled:
 :PROPERTIES:
 :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
 :END:
@@ -3514,7 +3537,7 @@ be inserted and interactively completed.
 
 #+begin_src emacs-lisp
 (use-package! yasnippet
-  :hook (prog-mode-hook . yas-minor-mode-on)
+  :hook (prog-mode . yas-minor-mode-on)
   :setq
   (yas-snippet-dirs . (list (concat VOID-DATA-DIR "snippets/")))
   (yas-verbosity . (if void-debug-p 3 0))
@@ -3522,7 +3545,7 @@ be inserted and interactively completed.
   (yas-prompt-functions . '(yas-completing-prompt yas-ido-prompt))
   (yas-use-menu . nil)
   (yas-triggers-in-field . t)
-  :defer-config
+  :config
   (--each yas-snippet-dirs (mkdir it t))
   (delq #'yas-dropdown-prompt yas-prompt-functions)
   (after! smartparens
@@ -3574,7 +3597,7 @@ been recently opened buffers (this list is managed by [[f26bedb3-a172-4543-afd0-
 
 #+begin_src emacs-lisp
 (use-package! ivy
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :custom
   (ivy-initial-inputs-alist . nil)
   :setq
@@ -3591,7 +3614,7 @@ been recently opened buffers (this list is managed by [[f26bedb3-a172-4543-afd0-
   (ivy-count-format . "%-4d "))
 #+end_src
 
-**** TODO ivy-avy
+**** ivy-avy
 :PROPERTIES:
 :ID:       a1224932-eb2b-4f6c-949b-de9383506ab8
 :END:
@@ -3601,11 +3624,8 @@ to select candidates quickly.
 
 #+begin_src emacs-lisp
 (use-package! ivy-avy
-  :ensure nil
-  :commands ivy-avy
-  :init
-  (add-to-list 'load-path
-               (concat (--find (s-matches-p (rx "/ivy" eos) it) load-path) "-avy")))
+  :bind (:map ivy-minibuffer-map
+         ("C-'" . ivy-avy)))
 #+end_src
 
 **** minibuffer bindings
@@ -3630,7 +3650,7 @@ candidate.
   "C-l"     #'ivy-next-line-and-call
   "C-o"     #'ivy-occur
   "C-'"     #'ivy-avy
-  "C-i"     #'ivy-immediate-done
+  "C-d"     #'ivy-immediate-done
   "RET"     #'ivy-done)
 
 (general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
@@ -3649,7 +3669,7 @@ next completion.
 #+begin_src emacs-lisp
 (use-package! prescient
   :pre-setq (prescient-save-file . (concat VOID-DATA-DIR "prescient-save.el"))
-  :hook (ivy-mode-hook . prescient-persist-mode))
+  :hook (ivy-mode . prescient-persist-mode))
 #+end_src
 
 **** sorting and filtering
@@ -3663,7 +3683,7 @@ filtering algorithm that I find preferrable to ivy's defaults.
 
 #+begin_src emacs-lisp
 (use-package! ivy-prescient
-  :hook ivy-mode-hook
+  :hook ivy-mode
   :setq
   (ivy-prescient-sort-commands . '(:not swiper swiper-isearch ivy-switch-buffer))
   (ivy-prescient-retain-classic-highlighting . t))
@@ -3734,7 +3754,7 @@ that using =ivy= for completion.
 
 #+begin_src emacs-lisp
 (use-package! counsel
-  :hook ivy-mode-hook
+  :hook ivy-mode
   :setq
   (counsel-find-file-ignore-regexp . "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)")
   (counsel-describe-function-function . #'helpful-callable)
@@ -3855,8 +3875,8 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (use-package! company
-  :hook prog-mode-hook
-  :bind (:company-active-map
+  :hook prog-mode
+  :bind (:map company-active-map
          ([tab] . company-select-next)
          ([backtab] . company-select-previous)
          ("C-k"     . company-select-previous)
@@ -3962,7 +3982,7 @@ worth quoting here:
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
 
 #+begin_src emacs-lisp
-(use-package! company-prescient :hook company-mode-hook)
+(use-package! company-prescient :hook company-mode)
 #+end_src
 
 * Email
@@ -4039,7 +4059,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 
 #+begin_src emacs-lisp
 (use-package! mu4e
-  :ensure nil
+  :straight nil
   :load-path "/usr/share/emacs/site-lisp/mu4e/"
   :commands mu4e
   :setq
@@ -4091,7 +4111,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 
 #+begin_src emacs-lisp
 (use-package! mu4e-headers
-  :ensure nil
+  :straight nil
   :after mu4e
   :setq
   (mu4e-use-fancy-chars . t)
@@ -4120,11 +4140,11 @@ it is definitely on my list of things to try out.
 #+begin_src emacs-lisp
 (use-package! org-mu4e
   :disabled t
-  :hook (mu4e-compose-mode-hook . org-mu4e-compose-org-mode)
+  :hook (mu4e-compose-mode . org-mu4e-compose-org-mode)
   :setq
   (org-mu4e-link-query-in-headers-mode . nil)
   (org-mu4e-convert-to-html . t)
-  :defer-config
+  :config
   ;; Only render to html once. If the first send fails for whatever reason,
   ;; org-mu4e would do so each time you try again.
   (defhook! org-mu4e-render-html-only-once (message-send-hook)
@@ -4627,15 +4647,16 @@ The optional argument NEW-WINDOW is not used."
 :ID: b33151c3-e980-41d3-8656-350d514f9925
 :END:
 
-*** going to url                                                      :disabled:
+*** going to url
 :PROPERTIES:
 :ID: 1079a7c8-e596-40d4-b86e-e916944e9030
 :END:
 
 #+begin_src emacs-lisp
 (use-package! xwwp-follow-link
-  :straight (:host github :repo "canatella/xwwp")
-  :bind (:xwidget-webkit-mode-map
+  :disabled t
+  :ensure (:host github :repo "canatella/xwwp")
+  :bind (:map xwidget-webkit-mode-map
          ("v" . #'xwwp-follow-link))
   :setq (xwwp-follow-link-completion-system . 'ivy))
 #+end_src
@@ -4670,7 +4691,7 @@ Youtube contains a *huge* library of videos.
   (ytdl-video-folder . (expand-file-name VOID-VIDEO-DIR))
   (ytdl-always-query-default-filename . nil)
   (ytdl-always-ask-delete-confirmation . t)
-  (ytdl-always-query-default-filename . nil)  ;; :defer-config
+  (ytdl-always-query-default-filename . nil)  ;; :config
   (ytdl-media-player . "mpv")
   (ytdl-max-mini-buffer-download-type-entries . 0)
   ;; (ytdl-add-field-in-download-type-list "Music" "p" (expand-file-name "~/podcasts") nil)
@@ -4689,7 +4710,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 (use-package! ytel
   ;; depends on curl (executable-find "curl")
   :commands ytel
-  :defer-config
+  :config
   (defun ytel/watch ()
     "Stream video at point in mpv."
     (interactive)
@@ -4741,7 +4762,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
     (call-process "killall" nil nil nil "mpd")))
 #+end_src
 
-** screenshot
+** screenshot                                                         :disabled:
 :PROPERTIES:
 :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
 :END:
@@ -4781,7 +4802,7 @@ Like [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screensho
 has a function that can capture a screenshot of a particular emacs window.
 
 #+begin_src emacs-lisp
-(use-package! scrot :ensure (:host github :repo "dakra/scrot.el"))
+(use-package! scrot :straight (:host github :repo "dakra/scrot.el"))
 #+end_src
 
 ** gifs
@@ -4795,7 +4816,7 @@ This package allows for the creation of gifs from within emacs.
 (use-package! gif-screencast)
 #+end_src
 
-** keypression
+** keypression                                                        :disabled:
 :PROPERTIES:
 :ID: 1943c432-4d47-43a5-ba92-2f17205bbae0
 :END:
@@ -4805,7 +4826,7 @@ necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypressio
 
 #+begin_src emacs-lisp
 (use-package! keypression
-  :ensure (:host github :repo "chuntaro/emacs-keypression")
+  :straight (:host github :repo "chuntaro/emacs-keypression")
   :setq (keypression-frame-justify . 'keypression-right-justified))
 #+end_src
 
@@ -4823,7 +4844,7 @@ What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is 
 
 #+begin_src emacs-lisp
 (use-package! highlight-numbers
-  :hook (prog-mode-hook conf-mode-hook)
+  :hook (prog-mode conf-mode)
   :setq (highlight-numbers-generic-regexp . "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>"))
 #+end_src
 
@@ -4837,7 +4858,7 @@ Also pretty self explanatory is [[https://github.com/dgutov/highlight-escape-seq
 #+begin_src emacs-lisp
 (use-package! highlight-escape-sequences
   :ensure (:host github :repo "hlissner/highlight-escape-sequences")
-  :hook (prog-mode-hook conf-mode-hook))
+  :hook (prog-mode conf-mode))
 #+end_src
 
 ** hideshow
@@ -4850,7 +4871,7 @@ Org Mode. The feature responsible for doing this is [[][hideshow]].
 
 #+begin_src emacs-lisp
 (use-package! hideshow
-  :hook (prog-mode-hook . hs-minor-mode)
+  :hook (prog-mode . hs-minor-mode)
   :commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
   :setq (hs-hide-comments-when-hiding-all . nil))
 #+end_src
@@ -4865,7 +4886,7 @@ great idea! It makes it really easy to see which parentheses go together.
 
 #+begin_src emacs-lisp
 (use-package! rainbow-delimiters
-  :hook (prog-mode-hook reb-mode-hook)
+  :hook (prog-mode reb-mode-hook)
   :setq (rainbow-delimiters-max-face-count . 9))
 #+end_src
 
@@ -5083,7 +5104,7 @@ hooks.
     (edit-indirect-region beg end t)))
 #+end_src
 
-**** org link minor mode
+**** org link minor mode                                              :disabled:
 :PROPERTIES:
 :ID: 7af9c8bb-f3ad-43a1-8c9b-aeac6a4fdb36
 :END:
@@ -5224,7 +5245,8 @@ file, see [[helpfn:edit-indirect-commit][edit-indirect-commit]].
 it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
-(use-package! aggressive-indent :hook emacs-lisp-mode-hook)
+(use-package! aggressive-indent
+  :hook emacs-lisp-mode)
 #+end_src
 
 *** electric indent
@@ -5247,8 +5269,8 @@ it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
 (use-package! ws-butler
-  :hook (prog-mode-hook org-mode-hook)
-  :defer-config
+  :hook (prog-mode org-mode)
+  :config
   (append! ws-butler-global-exempt-modes
     '(special-mode comint-mode term-mode eshell-mode)))
 #+end_src
@@ -5281,7 +5303,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 
 #+begin_src emacs-lisp
 (use-package! smartparens
-  :hook (prog-mode-hook eshell-mode-hook ielm-mode-hook)
+  :hook (prog-mode eshell-mode ielm-mode)
   :setq
   (sp-highlight-pair-overlay . nil)
   (sp-highlight-wrap-overlay . nil)
@@ -5292,7 +5314,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
   (sp-max-pair-length . 4)
   (sp-max-prefix-length . 50)
   (sp-escape-quotes-after-insert . nil)
-  :defer-config
+  :config
   (sp-local-pair 'emacs-lisp-mode "<" ">")
   (require 'smartparens-config)
   (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
@@ -5339,9 +5361,9 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 #+begin_src emacs-lisp
 (use-package! lispyville
   :commands lispyville-comment-or-uncomment-line
-  :hook emacs-lisp-mode-hook
+  :hook emacs-lisp-mode
   :bind
-  (:emacs-lisp-mode-map
+  (:map emacs-lisp-mode-map
    ([remap evil-yank]                 . lispyville-yank)
    ([remap evil-delete]               . lispyville-delete)
    ([remap evil-change]               . lispyville-change)
@@ -5435,7 +5457,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 (use-package! lispy
-  :hook emacs-lisp-mode-hook
+  :hook emacs-lisp-mode
   :setq
   (lispy-avy-style-paren . 'at-full)
   (lispy-eval-display-style . 'overlay)
@@ -5451,7 +5473,7 @@ very useful to me.
   ;; allow space before asterisk for headings (e.g. ";; *")
   (lispy-outline . "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
   (lispy-key-theme . nil)
-  :defer-config
+  :config
   ;; You'll get void variable if you don't do this.
   (after! avy (setq lispy-avy-keys avy-keys)))
 #+end_src
@@ -5461,7 +5483,7 @@ very useful to me.
 :ID: 27e382d7-5735-4f33-87c8-3dec2d2ca082
 :END:
 
-*** spell-number
+*** spell-number                                                      :disabled:
 :PROPERTIES:
 :ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
 :END:
@@ -5496,7 +5518,7 @@ very useful to me.
   :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
 #+end_src
 
-*** autocapitalize
+*** autocapitalize                                                    :disabled:
 :PROPERTIES:
 :ID: 35c7c4c0-5009-43d6-8c34-43d6111ceb28
 :END:
@@ -5555,15 +5577,15 @@ and provides facilities for writing custom extensions. Also see our page on
 
 #+begin_src emacs-lisp
 (use-package! evil
-  :require t
-  :hook window-setup-hook
-  :custom
-  (evil-want-C-u-scroll    . t)
-  (evil-want-C-d-scroll    . t)
-  (evil-want-C-w-delete    . t)
-  (evil-want-Y-yank-to-eol . t)
-  (evil-overriding-maps    . nil)
-  (evil-want-minibuffer    . t)
+  :demand t
+  :hook window-setup
+  ;; :custom
+  ;; (evil-want-C-u-scroll    . t)
+  ;; (evil-want-C-d-scroll    . t)
+  ;; (evil-want-C-w-delete    . t)
+  ;; (evil-want-Y-yank-to-eol . t)
+  ;; (evil-overriding-maps    . nil)
+  ;; (evil-want-minibuffer    . t)
   :pre-setq
   (evil-want-keybinding                 . nil)
   :setq
@@ -5718,7 +5740,7 @@ This is better than evil escape as it only binds in insert.
 #+begin_src emacs-lisp
 (use-package! key-chord
   :after-call (evil-insert-state evil-emacs-state)
-  :defer-config
+  :config
   (quiet! (key-chord-mode 1))
   (general-def :states '(visual insert)
     (general-chord "jk") 'evil-force-normal-state
@@ -5996,7 +6018,7 @@ Why not just go to the end of the ="= like any other around operator?
 
 #+begin_src emacs-lisp
 (use-package! auto-yasnippet
-  :defer-config (advice-add #'aya-expand :after #'evil-insert-state)
+  :config (advice-add #'aya-expand :after #'evil-insert-state)
   :setq (aya-persist-snippets-dir . (concat VOID-LOCAL-DIR "auto-snippets/")))
 #+end_src
 
@@ -6069,7 +6091,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
   :commands
   evil-visualstar/begin-search-backward
   evil-visualstar/begin-search-forward
-  :bind (:evil-visual-state-map
+  :bind (:map evil-visual-state-map
          ("#" . evil-visualstar/begin-search-backward)
          ("*" . evil-visualstar/begin-search-forward)))
 #+end_src
@@ -6093,7 +6115,7 @@ larger text objects. It's saves me keystrokes.
   (general-def 'visual
     "V" #'er/contract-region
     "v" #'er/expand-region)
-  :defer-config
+  :config
   (defadvice! quit-expand-region (:before evil-escape)
     "Properly abort an expand-region region."
     (when (memq last-command '(er/expand-region er/contract-region))
@@ -6204,7 +6226,7 @@ larger text objects. It's saves me keystrokes.
   :bind
   ([remap undo] . undo-fu-only-undo)
   ([remap redo] . undo-fu-only-redo)
-  :defer-config
+  :config
   (global-undo-tree-mode -1))
 #+end_src
 
@@ -6257,7 +6279,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
                               'face 'mode-line-highlight)
                              (propertize (current-time-string)
                               'face 'font-lock-keyword-face)))
-  :defer-config
+  :config
   (remove-hook 'eshell-output-filter-functions
                'eshell-postoutput-scroll-to-bottom))
 #+end_src
@@ -6326,7 +6348,7 @@ This replaces the default popup window at the bottom of eshell. By using the
   :after eshell
   :commands eshell/z
   :setq (eshell:z-file . (expand-file-name "z" eshell-directory-name))
-  :defer-config
+  :config
   (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name))
 #+end_src
 
@@ -6588,22 +6610,22 @@ have to set out to look for a file with =dired=.
   :before-call find-file
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
-  :defer-config
+  :config
   (void-add-advice #'recentf-save-list :before #'recentf-cleanup)
   (recentf-mode 1)
   :setq
-  (recentf-exclude . (list #'file-remote-p
-                           "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
-                           ;; ignore private Void temp files (but not all of them)
-                           #'(lambda (file)
-                               (-some-p (apply-partially #'file-in-directory-p file)
-                                (list VOID-DATA-DIR)))))
+  ;; (recentf-exclude . (list #'file-remote-p
+  ;;                          "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
+  ;;                          ;; ignore private Void temp files (but not all of them)
+  ;;                          #'(lambda (file)
+  ;;                              (-some-p (apply-partially #'file-in-directory-p file)
+  ;;                               (list VOID-DATA-DIR)))))
   (recentf-max-menu-items . 0)
   (recentf-max-saved-items . 700)
   :custom
-  (recentf-save-file . (concat VOID-DATA-DIR "recentf"))
-  (recentf-auto-cleanup . 'never)
-  (recentf-filename-handlers . '(file-truename abbreviate-file-name)))
+  (recentf-save-file (concat VOID-DATA-DIR "recentf"))
+  (recentf-auto-cleanup 'never)
+  (recentf-filename-handlers '(file-truename abbreviate-file-name)))
 #+end_src
 
 *** silence recentf
@@ -6647,7 +6669,7 @@ again, you are taken to the location you left off. This is very convenient.
 #+begin_src emacs-lisp
 (use-feature! savehist
   :idle-require custom
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (savehist-save-minibuffer-history . t)
   (savehist-autosave-interval . nil)
@@ -6701,7 +6723,6 @@ in time to see older posts.
 
 #+begin_src emacs-lisp
 (use-package! elfeed
-  :ignore-buffers ("\\*elfeed")
   :commands elfeed
   :setq
   (elfeed-search-filter         . "@1-year-old")
@@ -6720,7 +6741,7 @@ in time to see older posts.
 #+begin_src emacs-lisp
 (use-package! elfeed-org
   :after elfeed
-  :require t
+  :demand t
   :setq
   (rmh-elfeed-org-files      . (list (concat VOID-ORG-DIR "elfeed.org")))
   (rmh-elfeed-org-tree-id    . "ELFEED")
@@ -7103,14 +7124,14 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   :popup ("magit:"
           (display-buffer-at-bottom)
           (window-height . 0.5))
-  :bind (:magit-status-mode-map
+  :bind (:map magit-status-mode-map
          ([remap magit-mode-bury-buffer] . magit/quit))
   :setq
   (magit-completing-read-function . #'ivy-completing-read)
   (magit-revision-show-gravatars . '("^Author:     " . "^Commit:     "))
   (magit-diff-refine-hunk . t)
   (magit-auto-revert-mode . nil)
-  :defer-config
+  :config
   (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode))
 #+end_src
 
@@ -7136,7 +7157,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
 #+begin_src emacs-lisp
 (use-package! evil-magit
   :before-call magit-status
-  :defer-config
+  :config
   (shut-up! (evil-magit-init))
   (setq evil-magit-state 'normal)
   (require 'evil-magit nil :no-error))
@@ -7178,7 +7199,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   (auto-revert-use-notify . nil)
   (auto-revert-stop-on-user-input . nil)
   (revert-without-query . (list "."))
-  :defer-config
+  :config
   (defun auto-revert-buffer-maybe ()
     (unless (or (bound-and-true-p auto-revert-mode)
                 (active-minibuffer-window))
@@ -7245,7 +7266,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   :setq
   (auth-source-pass-filename . "~/.password-store")
   (auth-source-pass-port-separator . ":")
-  :defer-config (auth-source-pass-enable))
+  :config (auth-source-pass-enable))
 #+end_src
 
 **** epa
@@ -7310,7 +7331,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 (use-package! pdf-tools
   :magic ("%PDF" . pdf-view-mode)
   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
-  :bind (:pdf-view-mode-map
+  :bind (:map pdf-view-mode-map
          ("j" . pdf-view-next-line-or-next-page)
          ("k" . pdf-view-previous-line-or-previous-page)))
 #+end_src
@@ -7460,10 +7481,20 @@ user delays.
 
 #+begin_src emacs-lisp
 (use-package! super-save
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (super-save-idle-duration . 5)
   (super-save-auto-save-when-idle . t))
+#+end_src
+
+** pinentry
+:PROPERTIES:
+:ID:       b52e958b-02a5-4ca3-84f4-b39c824f4fc1
+:END:
+
+#+begin_src emacs-lisp
+(use-package! pinentry
+  :commands pinentry-start)
 #+end_src
 
 * Languages
@@ -7715,7 +7746,7 @@ The change to this function."
 
 #+begin_src emacs-lisp
 (use-package! highlight-quoted
-  :hook emacs-lisp-mode-hook)
+  :hook emacs-lisp-mode)
 #+end_src
 
 **** buttercup
@@ -7758,8 +7789,8 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 
 #+begin_src emacs-lisp
 (use-package! outshine
-  :hook emacs-lisp-mode-hook
-  :defer-config
+  :hook emacs-lisp-mode
+  :config
   (general-def '(normal) emacs-lisp-mode-map
     "TAB" #'outline-toggle-children))
 #+end_src
@@ -8520,12 +8551,13 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package! org-fancy-priorities
-  :hook org-mode-hook
-  :setq
-  (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
-                                     (all-the-icons-octicon "arrow-up")
-                                     (all-the-icons-octicon "arrow-down")
-                                     (all-the-icons-material "low_priority"))))
+  :hook org-mode
+  ;; :setq
+  ;; (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
+  ;;                                    (all-the-icons-octicon "arrow-up")
+  ;;                                    (all-the-icons-octicon "arrow-down")
+  ;;                                    (all-the-icons-material "low_priority")))
+  )
 #+end_src
 
 **** org superstar
@@ -8537,7 +8569,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package! org-superstar
-  :hook org-mode-hook
+  :hook org-mode
   :pre-setq
   (org-superstar-headline-bullets-list . (list "◉" "○" "▷"))
   :setq
@@ -8564,9 +8596,10 @@ powerful markup language?
 #+begin_src emacs-lisp
 (use-feature! ol
   :after org
-  :custom
-  (org-link-descriptive . t)
-  (org-link-use-indirect-buffer-for-internals . t))
+  ;; :custom
+  ;; (org-link-descriptive . t)
+  ;; (org-link-use-indirect-buffer-for-internals . t)
+  )
 #+end_src
 
 **** custom link types
@@ -8681,7 +8714,7 @@ template element as you're writing it.
 #+begin_src emacs-lisp
 (use-package! doct
   :after org-capture
-  :require t
+  :demand t
   :config
   ;; (require 'doct)
   ;; doct just returns the new template.
@@ -8774,7 +8807,7 @@ in the future. I use this template for this.
 #+begin_src emacs-lisp
 (use-feature! org-refile
   :after org
-  :setq
+  :pre-setq
   (org-refile-targets . `((,VOID-README-FILE . (:maxlevel . 10))
                           (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
   (org-refile-use-outline-path . 'file)
@@ -8800,7 +8833,7 @@ referenance org headlines.
   ;; Global ID state means we can have ID links anywhere. This is required for
   ;; `org-brain', however.
   (org-id-locations-file-relative . t)
-  :hook (org-insert-heading-hook . org-id-get-create))
+  :hook (org-insert-heading . org-id-get-create))
 #+end_src
 
 *** org clock
@@ -8815,7 +8848,7 @@ tracking the time you spend on a particular task.
 (use-feature! org-clock
   :commands org-clock-in
   ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
-  :hook (kill-emacs-hook . org-clock-save)
+  :hook (kill-emacs . org-clock-save)
   :setq
   ;; org-clock-sound
   ;; org-show-notification-handler
@@ -8952,7 +8985,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package! modern-cpp-font-lock
-  :hook (c++-mode-hook . modern-c++-font-lock-mode))
+  :hook (c++-mode . modern-c++-font-lock-mode))
 #+end_src
 
 *** demangle
@@ -8962,7 +8995,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package! demangle-mode
-  :hook llvm-mode-hook)
+  :hook llvm-mode)
 #+end_src
 
 ** TODO latex
@@ -8978,7 +9011,7 @@ org api it seems.
 #+begin_src emacs-lisp
 (use-feature! tex
   :mode ("\\.tex\\'" . LaTeX-mode)
-  :hook (LaTex-mode-hook . visual-line-mode)
+  :hook (LaTex-mode . visual-line-mode)
   :setq
   (TeX-parse-self . t)
   (TeX-auto-save . t)
@@ -9043,7 +9076,6 @@ in a better format.
 
 #+begin_src emacs-lisp
 (use-package! helpful
-  :ignore-buffers ("\\*Help.*")
   :popup
   ("\\*Help.*"
    (display-buffer-at-bottom)
@@ -9069,7 +9101,7 @@ understanding of a verbally terse and dry command description.
 #+begin_src emacs-lisp
 (use-package! elisp-demos
   ;; :functions elisp-demos-advice-helpful-update
-  :advice (:after helpful-update elisp-demos-advice-helpful-update)
+  ;; :advice (:after helpful-update elisp-demos-advice-helpful-update)
   :commands elisp-demos-add-demo)
 #+end_src
 
@@ -9096,7 +9128,7 @@ you can "discover" the commands as you go along.
 
 #+begin_src emacs-lisp
 (use-package! which-key
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (which-key-sort-uppercase-first . nil)
   (which-key-max-display-columns . nil)
@@ -9106,7 +9138,6 @@ you can "discover" the commands as you go along.
   (which-key-sort-order . #'which-key-prefix-then-key-order)
   (which-key-popup-type . 'minibuffer)
   :config
-  (which-key-mode)
   (defhook! set-line-spacing (which-key-init-buffer-hook)
     (setq line-spacing 3))
   (which-key-add-key-based-replacements void-leader-key "<leader>")
@@ -9134,8 +9165,8 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 
 #+begin_src emacs-lisp
 (use-package! dashboard
-  :require t
-  :hook (window-setup-hook . dashboard-insert-startupify-lists)
+  :demand t
+  :hook (window-setup . dashboard-insert-startupify-lists)
   :init
   (defadvice! open-dashboard-instead (:override void-initial-buffer)
     (if void-debug-p (get-buffer "*Messages*")
