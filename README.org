@@ -1263,9 +1263,9 @@ SYM is a symbol that stores a list."
 (defun use-package-normalize/:defer-incrementally ()
   (use-package-as-one () args
     (lambda (label arg)
-      (unless (consp arg)
+      (unless (symbolp arg)
         (use-package-error
-         (concat label " a cons cell or a list of cons cells.")))
+         (concat label " must be a symbol")))
       arg)))
 
 (defun use-package-handler/:defer-incrementally (name _keyword args rest state)
