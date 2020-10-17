@@ -1257,10 +1257,10 @@ SYM is a symbol that stores a list."
 #+begin_src emacs-lisp
 (setq use-package-keywords
       (--splice (eq :init it)
-                (list :defer-incrementally it)
+                (list :idle-require it)
                 use-package-keywords))
 
-(defun use-package-normalize/:defer-incrementally ()
+(defun use-package-normalize/:idle-require (name keyword args)
   (use-package-as-one () args
     (lambda (label arg)
       (unless (symbolp arg)
@@ -1268,7 +1268,7 @@ SYM is a symbol that stores a list."
          (concat label " must be a symbol")))
       arg)))
 
-(defun use-package-handler/:defer-incrementally (name _keyword args rest state)
+(defun use-package-handler/:idle-require (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (mapcar (lambda (feature) `(idle-require ',feature))
@@ -6727,7 +6727,7 @@ have to set out to look for a file with =dired=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! recentf
+(use-package recentf
   :before-call find-file
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
