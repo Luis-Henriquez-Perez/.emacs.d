@@ -1672,7 +1672,7 @@ Emacs starts up with a default screen.
 
 #+begin_src emacs-lisp
 (use-package paren
-  ;; :hook (1 . 2)
+  ;; :hook (a-hook . doo) (b-hook . do)
   ;; :hook (prog-mode-hook . show-paren-mode)
   ;; :setq-default
   ;; (show-paren-delay . 0)
