@@ -1239,6 +1239,8 @@ SYM is a symbol that stores a list."
 :ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
 :END:
 
+Use [[][void-add-hook]] instead of [[][add-hook]].
+
 #+begin_src emacs-lisp
 (defun use-package-handler/:hook (name _keyword args rest state)
   "Generate use-package custom keyword code."
