@@ -1140,6 +1140,21 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
+** use-package
+:PROPERTIES:
+:ID:       b1ab4488-5793-4675-8404-b1719f804c25
+:END:
+
+*** custom keywords
+:PROPERTIES:
+:ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
+:END:
+
+****
+:PROPERTIES:
+:ID:       790d9f48-b670-4325-9fe2-f36631d8f1a5
+:END:
+
 ** Leaf
 :PROPERTIES:
 :ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
