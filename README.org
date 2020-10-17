@@ -1198,9 +1198,9 @@ SYM is a symbol that stores a list."
       (unless (consp arg)
         (use-package-error
          (concat label " a cons cell or a list of cons cells.")))
-      args)))
+      arg)))
 
-(defun use-package-handler/:setq (name _keyword features rest state)
+(defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
