@@ -1234,6 +1234,14 @@ SYM is a symbol that stores a list."
 #+begin_src emacs-lisp
 #+end_src
 
+**** defer incrementally
+:PROPERTIES:
+:ID:       7e915205-cbfc-4171-b473-4ffe2baddcc3
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** hook
 :PROPERTIES:
 :ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
