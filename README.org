@@ -1357,6 +1357,9 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (setq use-package-expand-minimally t))
 
 (setq use-package-keywords (-remove-item :bind use-package-keywords))
+(setq use-package-keywords (-remove-item :bind* use-package-keywords))
+(setq use-package-keywords (-remove-item :bind-keymap use-package-keywords))
+(setq use-package-keywords (-remove-item :bind-keymap& use-package-keywords))
 #+end_src
 
 *** convenience wrappers
