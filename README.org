@@ -281,8 +281,8 @@ completely reproducable.
 
 #+begin_src emacs-lisp
 (progn
-  (setq straight-use-package-by-default t)
-  (setq straight-enable-package-integration t)
+  ;; (setq straight-use-package-by-default t)
+  ;; (setq straight-enable-package-integration t)
   (setq straight-disable-autoloads nil)
   (setq straight-cache-autoloads t)
   (setq straight-check-for-modifications nil)
