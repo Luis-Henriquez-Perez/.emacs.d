@@ -321,22 +321,22 @@
 #+begin_src emacs-lisp
 (ert-deftest use-package-idle-require ()
 
-  (should (equal (macroexpand-1 '(use-package foo :idle-require flop))
-                 '(progn
-                    (require 'foo nil nil)
-                    (idle-require 'flop))))
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t))
 
-  (should (equal (macroexpand-1 '(use-package foo :idle-require flop flap))
-                 '(progn
-                    (require 'foo nil nil)
-                    (idle-require 'flop)
-                    (idle-require 'flap))))
+    (should (equal (macroexpand-1 '(use-package foo :idle-require flop))
+                   '(progn
+                      (idle-require 'flop))))
 
-  (should (equal (macroexpand-1 '(use-package foo :idle-require (flop flap)))
-                 '(progn
-                    (require 'foo nil nil)
-                    (idle-require 'flop)
-                    (idle-require 'flap)))))
+    (should (equal (macroexpand-1 '(use-package foo :idle-require flop flap))
+                   '(progn
+                      (idle-require 'flop)
+                      (idle-require 'flap))))
+
+    (should (equal (macroexpand-1 '(use-package foo :idle-require (flop flap)))
+                   '(progn
+                      (idle-require 'flop)
+                      (idle-require 'flap))))))
 #+end_src
 
 ** alias
