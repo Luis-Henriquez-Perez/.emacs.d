@@ -1236,7 +1236,7 @@ SYM is a symbol that stores a list."
            <args>)))
 #+end_src
 
-**** before-call                                                      :disabled:
+**** before-call
 :PROPERTIES:
 :ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
 :END:
