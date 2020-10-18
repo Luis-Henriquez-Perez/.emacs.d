@@ -338,3 +338,29 @@
                     (idle-require 'flop)
                     (idle-require 'flap)))))
 #+end_src
+
+** alias
+:PROPERTIES:
+:ID:       342c65b5-082c-4fc0-9b0b-aef6ab194a48
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-alias ()
+
+  (should (equal (macroexpand-1 '(use-package foo :alias (one . two)))
+                 '(progn
+                    (require 'foo nil nil)
+                    (idle-require 'flop))))
+
+  (should (equal (macroexpand-1 '(use-package foo :idle-require flop flap))
+                 '(progn
+                    (require 'foo nil nil)
+                    (idle-require 'flop)
+                    (idle-require 'flap))))
+
+  (should (equal (macroexpand-1 '(use-package foo :idle-require (flop flap)))
+                 '(progn
+                    (require 'foo nil nil)
+                    (idle-require 'flop)
+                    (idle-require 'flap)))))
+#+end_src
