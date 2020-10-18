@@ -1206,9 +1206,8 @@ SYM is a symbol that stores a list."
 (defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   `((after! ,name
-       (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
-               (use-package-normalize-commands args))))))
+   (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
+           (use-package-normalize-commands args))))
 #+end_src
 
 **** before-call
