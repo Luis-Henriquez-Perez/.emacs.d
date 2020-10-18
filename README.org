@@ -1749,7 +1749,8 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash-functional :demand t)
+(use-package! dash-functional
+  :demand t)
 #+end_src
 
 **** dash
