@@ -1361,7 +1361,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
-  (let ((args (--map-when (not (-cons-pair-p it))
+  (let ((args (--map-when (symbolp it)
                           (cons it nil)
                           <args>)))
     (-zip-with #'cons
