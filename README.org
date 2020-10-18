@@ -1235,7 +1235,7 @@ SYM is a symbol that stores a list."
            (use-package-normalize-commands args))))
 #+end_src
 
-**** before-call
+**** before-call                                                      :disabled:
 :PROPERTIES:
 :ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
 :END:
@@ -1255,7 +1255,7 @@ SYM is a symbol that stores a list."
        (require ',name)))))
 #+end_src
 
-**** after-call
+**** after-call                                                       :disabled:
 :PROPERTIES:
 :ID:       03c442ed-f497-4206-8a09-d7203083b2f2
 :END:
