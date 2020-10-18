@@ -271,3 +271,49 @@
   (alet (void-advice-action 'emacs-lisp-mode-hook@hello@do-this)
     (should (string= "do-this" it))))
 #+end_src
+
+* custom use-package keywords
+:PROPERTIES:
+:ID:       724890eb-4760-400a-9943-3ba25a4772cd
+:END:
+
+** os
+:PROPERTIES:
+:ID:       63f24710-2c4b-45e6-a293-83ca4aeb9730
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-os ()
+  (should (equal (macroexpand-1 '(use-package dummy :os mac))
+                 '(with-os! mac (require 'dummy nil nil)))))
+#+end_src
+
+** setq
+:PROPERTIES:
+:ID:       fe536281-6f1e-4096-99ff-da25b63f82c7
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-setq ()
+  (should (equal (macroexpand-1 '(use-package foo :setq (one . 1)))
+                 '(progn (require 'foo nil nil) (setq one 1))))
+
+  (should (equal (macroexpand-1 '(use-package foo :setq (one . 1) (two . 2)))
+                 '(progn (require 'foo nil nil) (setq one 1) (setq two 2))))
+
+  (should (equal (macroexpand-1 '(use-package foo :setq ((one . 1) (two . 2))))
+                 '(progn (require 'foo nil nil) (setq one 1) (setq two 2))))
+
+  ;; TODO: add errors that this should produce with incorrect arguments.
+  )
+#+end_src
+
+** before-call
+:PROPERTIES:
+:ID:       0a38dd5c-28b9-4132-9d13-8c89d474b029
+:END:
+
+** idle-require
+:PROPERTIES:
+:ID:       c5374e5c-1c21-4e1b-b34b-3e8d37c51d5b
+:END:
