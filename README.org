@@ -1206,7 +1206,6 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (setq use-package-keywords (-remove-item :custom use-package-keywords))
-(setq use-package-keywords (-remove-item :bind use-package-keywords))
 
 (defadvice! return-args-as-is (:override use-package-normalize/:custom)
   <args>)
@@ -1356,7 +1355,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (setq use-package-always-ensure nil)
   (setq use-package-verbose nil)
   (setq use-package-expand-minimally t))
-#+end_src
+
+(setq use-package-keywords (-remove-item :bind use-package-keywords))#+end_src
 
 *** convenience wrappers
 :PROPERTIES:
