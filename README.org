@@ -373,23 +373,6 @@ This code initializes straight if it's not already installed.
   (require package))
 #+end_src
 
-*** leaf aliases
-:PROPERTIES:
-:ID:       1fc34b15-c6cc-450c-bcc9-61a9a8f5a39d
-:END:
-
-The name =leaf= is not very indicative of what the leaf macro does. Therefore, I
-alias it to =use-package= for external packages, and =use-feature!= for built-in
-packages.
-
-#+begin_src emacs-lisp
-(defalias 'use-package 'leaf)
-
-(defmacro use-feature! (feature &rest args)
-  (declare (indent defun))
-  `(leaf ,feature :ensure nil ,@args))
-#+end_src
-
 ** Library
 :PROPERTIES:
 :ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
