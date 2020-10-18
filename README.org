@@ -1316,6 +1316,7 @@ SYM is a symbol that stores a list."
                 use-package-keywords))
 
 (defun use-package-normalize/:idle-require (name keyword args)
+  (cl-assert (-all-p #'symbolp args))
   args)
 
 (defun use-package-handler/:idle-require (name _keyword args rest state)
