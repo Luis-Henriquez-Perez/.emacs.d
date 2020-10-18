@@ -1311,29 +1311,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 Like =use-package=, leaf is a macro that fascilitates package configuration.
 
-*** leaf
-:PROPERTIES:
-:ID:       7d72aec8-5523-473d-860d-181ce3d484d7
-:END:
-
-#+begin_src emacs-lisp
-(use-package! leaf
-  :setq
-  (leaf-defaults . '(:ensure t))
-  (leaf-expand-minimally . t))
-#+end_src
-
-*** leaf-keywords
-:PROPERTIES:
-:ID:       e47cf69e-4ba8-45d8-bb62-fd0c1d785583
-:END:
-
-#+begin_src emacs-lisp
-(use-package! leaf-keywords
-  :ensure nil
-  :init (leaf-keywords-init))
-#+end_src
-
 *** defining leaf keywords
 :PROPERTIES:
 :ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
