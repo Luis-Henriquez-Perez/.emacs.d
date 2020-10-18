@@ -8356,11 +8356,12 @@ hindsight, using this function is even easier than using ~window-beg~ and
 #+begin_src emacs-lisp
 (use-package org-fancy-priorities
   :hook org-mode-hook
-  :setq
-  (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
-                                     (all-the-icons-octicon "arrow-up")
-                                     (all-the-icons-octicon "arrow-down")
-                                     (all-the-icons-material "low_priority"))))
+  ;; :setq
+  ;; (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
+  ;;                                    (all-the-icons-octicon "arrow-up")
+  ;;                                    (all-the-icons-octicon "arrow-down")
+  ;;                                    (all-the-icons-material "low_priority")))
+  )
 #+end_src
 
 **** org superstar
