@@ -1348,6 +1348,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
+(defun use-package-normalize/:popup ()
+  `(push (cons ) display-buffer-alist))
 #+end_src
 
 ** Packages
