@@ -320,5 +320,21 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-idle-require ()
-  (should (equal (macroexpand-1 '(use-package foo :idle-require flop)) nil)))
+
+  (should (equal (macroexpand-1 '(use-package foo :idle-require flop))
+                 '(progn
+                    (require 'foo nil nil)
+                    (idle-require 'flop))))
+
+  (should (equal (macroexpand-1 '(use-package foo :idle-require flop flap))
+                 '(progn
+                    (require 'foo nil nil)
+                    (idle-require 'flop)
+                    (idle-require 'flap))))
+
+  (should (equal (macroexpand-1 '(use-package foo :idle-require (flop flap)))
+                 '(progn
+                    (require 'foo nil nil)
+                    (idle-require 'flop)
+                    (idle-require 'flap)))))
 #+end_src
