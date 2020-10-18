@@ -1250,9 +1250,8 @@ SYM is a symbol that stores a list."
 (defun use-package-handler/:before-call (name _keyword features rest state)
   (use-package-concat
    body
-   `((defadvice! ,(intern (format "load-%s" name)) ()
-       (require ',name)
-       (advice-remove)))))
+   `((defadvice! ,(intern (format "load-%s" name)) (:before ,features)
+       (require ',name)))))
 #+end_src
 
 **** after-call
