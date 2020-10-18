@@ -1351,7 +1351,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-(defmacro use-feature! (feature &rest args)
+(defmacro use-feature (feature &rest args)
   (declare (indent defun))
   `(use-package ,feature :ensure nil ,@args))
 #+end_src
