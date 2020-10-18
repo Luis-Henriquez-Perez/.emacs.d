@@ -1321,7 +1321,7 @@ SYM is a symbol that stores a list."
            (use-package-normalize-commands args))))
 #+end_src
 
-**** hook
+**** hook                                                             :disabled:
 :PROPERTIES:
 :ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
 :END:
@@ -1342,7 +1342,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
     (use-package-normalize-commands args))))
 #+end_src
 
-**** popup
+**** popup                                                            :disabled:
 :PROPERTIES:
 :ID:       bdd0f442-4351-4ac8-874b-33991b6c2806
 :END:
