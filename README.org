@@ -3116,6 +3116,7 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (use-package buffer-expose
+  :disabled t
   :commands
   buffer-expose
   buffer-expose-no-stars
