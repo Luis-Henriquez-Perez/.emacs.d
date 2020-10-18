@@ -1379,6 +1379,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! use-void-add-hook (:override use-package-handler/:hook)
+  (message "HANDLE ARGS: %S" <args>)
   (use-package-concat
    (use-package-process-keywords <name> <rest> <state>)
    (mapcar (-lambda ((sym . fun)) `(void-add-hook ',sym #',fun))
