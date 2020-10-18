@@ -1349,6 +1349,11 @@ SYM is a symbol that stores a list."
 
 **** hook
 :PROPERTIES:
+:ID:       cd344df8-3345-4870-be25-df0003916ca8
+:END:
+
+***** normalize
+:PROPERTIES:
 :ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
 :END:
 
@@ -1366,8 +1371,14 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
                (--map-when (null it)
                            (void-symbol-intern <name> "-mode")
                            (-map #'cdr args)))))
+#+end_src
 
+***** handler
+:PROPERTIES:
+:ID:       f5148b34-4d64-4dbd-af0f-2d5429e16f37
+:END:
 
+#+begin_src emacs-lisp
 (defadvice! use-void-add-hook (:override use-package-handler/:hook)
   (use-package-concat
    (use-package-process-keywords <name> <rest> <state>)
