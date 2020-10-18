@@ -1357,7 +1357,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (setq use-package-always-defer t)
   (setq use-package-always-ensure nil)
   (setq use-package-verbose nil)
-  (setq use-package-expand-minimally t))#+end_src
+  (setq use-package-expand-minimally t))
+#+end_src
 
 *** convenience wrappers
 :PROPERTIES:
