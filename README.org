@@ -5436,13 +5436,13 @@ and provides facilities for writing custom extensions. Also see our page on
 (use-package evil
   :demand t
   :hook window-setup
-  :custom
-  (evil-want-C-u-scroll    . t)
-  (evil-want-C-d-scroll    . t)
-  (evil-want-C-w-delete    . t)
-  (evil-want-Y-yank-to-eol . t)
-  (evil-overriding-maps    . nil)
-  (evil-want-minibuffer    . t)
+  ;; :custom
+  ;; (evil-want-C-u-scroll    . t)
+  ;; (evil-want-C-d-scroll    . t)
+  ;; (evil-want-C-w-delete    . t)
+  ;; (evil-want-Y-yank-to-eol . t)
+  ;; (evil-overriding-maps    . nil)
+  ;; (evil-want-minibuffer    . t)
   :pre-setq
   (evil-want-keybinding                 . nil)
   :setq
