@@ -1182,6 +1182,9 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
+(defmacro use-feature! (feature &rest args)
+  (declare (indent defun))
+  `(use-package ,feature :ensure nil ,@args))
 #+end_src
 
 *** custom keywords
