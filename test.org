@@ -317,3 +317,6 @@
 :PROPERTIES:
 :ID:       c5374e5c-1c21-4e1b-b34b-3e8d37c51d5b
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
