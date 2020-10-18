@@ -1360,7 +1360,6 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (defun use-package-normalize/:thook ()
-
   )
 #+end_src
 
