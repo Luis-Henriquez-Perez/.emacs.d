@@ -281,7 +281,7 @@ completely reproducable.
 
 #+begin_src emacs-lisp
 (progn
-  ;; (setq straight-use-package-by-default t)
+  (setq straight-use-package-by-default t)
   ;; (setq straight-enable-package-integration t)
   (setq straight-disable-autoloads nil)
   (setq straight-cache-autoloads t)
@@ -1353,7 +1353,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 #+begin_src emacs-lisp
 (defmacro use-feature (feature &rest args)
   (declare (indent defun))
-  `(use-package ,feature :ensure nil ,@args))
+  `(use-package ,feature :straight nil ,@args))
 #+end_src
 
 ** Packages
