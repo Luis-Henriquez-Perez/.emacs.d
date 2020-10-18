@@ -1381,7 +1381,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (use-package-concat
    (use-package-process-keywords <name> <rest> <state>)
    (mapcar (-lambda ((sym . fun)) `(void-add-hook ',sym #',fun))
-           (use-package-normalize-commands <args>))))
+           <args>)))
 #+end_src
 
 **** popup                                                            :disabled:
