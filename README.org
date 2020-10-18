@@ -6439,7 +6439,7 @@ have to set out to look for a file with =dired=.
 :END:
 
 #+begin_src emacs-lisp
-(use-package recentf
+(use-feature recentf
   :before-call find-file
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
