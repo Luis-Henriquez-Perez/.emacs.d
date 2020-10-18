@@ -3926,7 +3926,6 @@ therefore, has the most support (in the form of setup blogs and packages).
 
 #+begin_src emacs-lisp
 (use-package mu4e-headers
-  :ensure nil
   :after mu4e
   :setq
   (mu4e-use-fancy-chars . t)
