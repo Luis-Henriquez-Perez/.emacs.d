@@ -1749,7 +1749,7 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 
 #+begin_src emacs-lisp
 (use-feature gv
-  :defer-config
+  :config
   (gv-define-simple-setter plist-get plist-put))
 #+end_src
 
@@ -2986,7 +2986,7 @@ functions which open external linux applications.
   :hook (exwm-mode-hook . hide-mode-line-mode)
   :before-call (void/open-qutebrowser counsel-linux-app void/open-emacs-instance)
   :setq (exwm-replace . nil)
-  :defer-config
+  :config
   (exwm-init)
   ;; Enable the clipboard.
   (require 'exwm-systemtray)
@@ -3357,7 +3357,7 @@ be inserted and interactively completed.
   (yas-prompt-functions . '(yas-completing-prompt yas-ido-prompt))
   (yas-use-menu . nil)
   (yas-triggers-in-field . t)
-  :defer-config
+  :config
   (--each yas-snippet-dirs (mkdir it t))
   (delq #'yas-dropdown-prompt yas-prompt-functions)
   (after! smartparens
@@ -3959,7 +3959,7 @@ it is definitely on my list of things to try out.
   :setq
   (org-mu4e-link-query-in-headers-mode . nil)
   (org-mu4e-convert-to-html . t)
-  :defer-config
+  :config
   ;; Only render to html once. If the first send fails for whatever reason,
   ;; org-mu4e would do so each time you try again.
   (defhook! org-mu4e-render-html-only-once (message-send-hook)
@@ -4505,7 +4505,7 @@ Youtube contains a *huge* library of videos.
   (ytdl-video-folder . (expand-file-name VOID-VIDEO-DIR))
   (ytdl-always-query-default-filename . nil)
   (ytdl-always-ask-delete-confirmation . t)
-  (ytdl-always-query-default-filename . nil)  ;; :defer-config
+  (ytdl-always-query-default-filename . nil)  ;; :config
   (ytdl-media-player . "mpv")
   (ytdl-max-mini-buffer-download-type-entries . 0)
   ;; (ytdl-add-field-in-download-type-list "Music" "p" (expand-file-name "~/podcasts") nil)
@@ -4524,7 +4524,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 (use-package ytel
   ;; depends on curl (executable-find "curl")
   :commands ytel
-  :defer-config
+  :config
   (defun ytel/watch ()
     "Stream video at point in mpv."
     (interactive)
@@ -5083,7 +5083,7 @@ it. It's pretty smart and very convenient.
 #+begin_src emacs-lisp
 (use-package ws-butler
   :hook (prog-mode-hook org-mode-hook)
-  :defer-config
+  :config
   (append! ws-butler-global-exempt-modes
     '(special-mode comint-mode term-mode eshell-mode)))
 #+end_src
@@ -5127,7 +5127,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
   (sp-max-pair-length . 4)
   (sp-max-prefix-length . 50)
   (sp-escape-quotes-after-insert . nil)
-  :defer-config
+  :config
   (sp-local-pair 'emacs-lisp-mode "<" ">")
   (require 'smartparens-config)
   (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
@@ -5286,7 +5286,7 @@ very useful to me.
   ;; allow space before asterisk for headings (e.g. ";; *")
   (lispy-outline . "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
   (lispy-key-theme . nil)
-  :defer-config
+  :config
   ;; You'll get void variable if you don't do this.
   (after! avy (setq lispy-avy-keys avy-keys)))
 #+end_src
@@ -5553,7 +5553,7 @@ This is better than evil escape as it only binds in insert.
 #+begin_src emacs-lisp
 (use-package key-chord
   :after-call (evil-insert-state evil-emacs-state)
-  :defer-config
+  :config
   (quiet! (key-chord-mode 1))
   (general-def :states '(visual insert)
     (general-chord "jk") 'evil-force-normal-state
@@ -5831,7 +5831,7 @@ Why not just go to the end of the ="= like any other around operator?
 
 #+begin_src emacs-lisp
 (use-package auto-yasnippet
-  :defer-config (advice-add #'aya-expand :after #'evil-insert-state)
+  :config (advice-add #'aya-expand :after #'evil-insert-state)
   :setq (aya-persist-snippets-dir . (concat VOID-LOCAL-DIR "auto-snippets/")))
 #+end_src
 
@@ -5928,7 +5928,7 @@ larger text objects. It's saves me keystrokes.
   (general-def 'visual
     "V" #'er/contract-region
     "v" #'er/expand-region)
-  :defer-config
+  :config
   (defadvice! quit-expand-region (:before evil-escape)
     "Properly abort an expand-region region."
     (when (memq last-command '(er/expand-region er/contract-region))
@@ -6039,7 +6039,7 @@ larger text objects. It's saves me keystrokes.
   :bind
   ([remap undo] . undo-fu-only-undo)
   ([remap redo] . undo-fu-only-redo)
-  :defer-config
+  :config
   (global-undo-tree-mode -1))
 #+end_src
 
@@ -6092,7 +6092,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
                               'face 'mode-line-highlight)
                              (propertize (current-time-string)
                               'face 'font-lock-keyword-face)))
-  :defer-config
+  :config
   (remove-hook 'eshell-output-filter-functions
                'eshell-postoutput-scroll-to-bottom))
 #+end_src
@@ -6161,7 +6161,7 @@ This replaces the default popup window at the bottom of eshell. By using the
   :after eshell
   :commands eshell/z
   :setq (eshell:z-file . (expand-file-name "z" eshell-directory-name))
-  :defer-config
+  :config
   (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name))
 #+end_src
 
@@ -6423,7 +6423,7 @@ have to set out to look for a file with =dired=.
   :before-call find-file
   :idle-require easymenu tree-widget timer
   :commands recentf-open-files
-  :defer-config
+  :config
   (void-add-advice #'recentf-save-list :before #'recentf-cleanup)
   (recentf-mode 1)
   :setq
@@ -6945,7 +6945,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   (magit-revision-show-gravatars . '("^Author:     " . "^Commit:     "))
   (magit-diff-refine-hunk . t)
   (magit-auto-revert-mode . nil)
-  :defer-config
+  :config
   (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode))
 #+end_src
 
@@ -6971,7 +6971,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
 #+begin_src emacs-lisp
 (use-package evil-magit
   :before-call magit-status
-  :defer-config
+  :config
   (shut-up! (evil-magit-init))
   (setq evil-magit-state 'normal)
   (require 'evil-magit nil :no-error))
@@ -7013,7 +7013,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   (auto-revert-use-notify . nil)
   (auto-revert-stop-on-user-input . nil)
   (revert-without-query . (list "."))
-  :defer-config
+  :config
   (defun auto-revert-buffer-maybe ()
     (unless (or (bound-and-true-p auto-revert-mode)
                 (active-minibuffer-window))
@@ -7080,7 +7080,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   :setq
   (auth-source-pass-filename . "~/.password-store")
   (auth-source-pass-port-separator . ":")
-  :defer-config (auth-source-pass-enable))
+  :config (auth-source-pass-enable))
 #+end_src
 
 **** epa
@@ -7594,7 +7594,7 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 #+begin_src emacs-lisp
 (use-package outshine
   :hook emacs-lisp-mode-hook
-  :defer-config
+  :config
   (general-def '(normal) emacs-lisp-mode-map
     "TAB" #'outline-toggle-children))
 #+end_src
