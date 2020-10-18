@@ -1171,32 +1171,6 @@ SYM is a symbol that stores a list."
 :ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
-*** boostrap
-:PROPERTIES:
-:ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
-:END:
-
-#+begin_src emacs-lisp
-(use-package use-package
-  :setq
-  (use-package-ignore-unknown-keywords . t)
-  (use-package-always-defer . t)
-  (use-package-always-ensure . nil)
-  (use-package-verbose . nil)
-  (use-package-expand-minimally . t))
-#+end_src
-
-*** convenience wrappers
-:PROPERTIES:
-:ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
-:END:
-
-#+begin_src emacs-lisp
-(defmacro use-feature! (feature &rest args)
-  (declare (indent defun))
-  `(use-package ,feature :ensure nil ,@args))
-#+end_src
-
 *** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
@@ -1363,6 +1337,32 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 #+begin_src emacs-lisp
 (defun use-package-normalize/:popup ()
   `(push (cons ) display-buffer-alist))
+#+end_src
+
+*** boostrap
+:PROPERTIES:
+:ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
+:END:
+
+#+begin_src emacs-lisp
+(use-package use-package
+  :setq
+  (use-package-ignore-unknown-keywords . t)
+  (use-package-always-defer . t)
+  (use-package-always-ensure . nil)
+  (use-package-verbose . nil)
+  (use-package-expand-minimally . t))
+#+end_src
+
+*** convenience wrappers
+:PROPERTIES:
+:ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
+:END:
+
+#+begin_src emacs-lisp
+(defmacro use-feature! (feature &rest args)
+  (declare (indent defun))
+  `(use-package ,feature :ensure nil ,@args))
 #+end_src
 
 ** Packages
