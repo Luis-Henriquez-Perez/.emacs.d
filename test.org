@@ -295,17 +295,17 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-setq ()
-  (should (equal (macroexpand-1 '(use-package foo :setq (one . 1)))
-                 '(progn (require 'foo nil nil) (setq one 1))))
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t))
 
-  (should (equal (macroexpand-1 '(use-package foo :setq (one . 1) (two . 2)))
-                 '(progn (require 'foo nil nil) (setq one 1) (setq two 2))))
+    (should (equal (macroexpand-1 '(use-package foo :setq (one . 1)))
+                   '(progn (setq one 1))))
 
-  (should (equal (macroexpand-1 '(use-package foo :setq ((one . 1) (two . 2))))
-                 '(progn (require 'foo nil nil) (setq one 1) (setq two 2))))
+    (should (equal (macroexpand-1 '(use-package foo :setq (one . 1) (two . 2)))
+                   '(progn (setq one 1) (setq two 2))))
 
-  ;; TODO: add errors that this should produce with incorrect arguments.
-  )
+    (should (equal (macroexpand-1 '(use-package foo :setq ((one . 1) (two . 2))))
+                   '(progn (setq one 1) (setq two 2))))))
 #+end_src
 
 ** before-call
