@@ -1358,10 +1358,15 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
   (thread-last <args>
     (--map-when (not (-cons-pair-p it)) (cons it nil))
-    ))
+    (map-keys-apply #'use-package:ensure-hook)
+    (map-values-apply (-partial #'use-package:ensure-mode))))
 
-(defun use-package:ensure-hook ())
-(defun use-package:ensure-mode ())
+(defun use-package:ensure-hook (hook)
+  )
+
+(defun use-package:ensure-mode (package name)
+  (or name
+      ()))
 
 (defadvice! use-void-add-hook (:override use-package-handler/:hook)
   (use-package-concat
