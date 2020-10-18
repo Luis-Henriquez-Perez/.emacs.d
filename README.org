@@ -1166,7 +1166,7 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq :ensure it) (list :os it) use-package-keywords))
+      (--splice (eq :straight it) (list :os it) use-package-keywords))
 
 (defun use-package-normalize/:os (name-symbol keyword args)
   (use-package-only-one (symbol-name keyword) args
@@ -3436,7 +3436,7 @@ to select candidates quickly.
 
 #+begin_src emacs-lisp
 (use-package ivy-avy
-  :ensure nil
+  :straight nil
   :commands ivy-avy
   :init
   (add-to-list 'load-path
@@ -4616,7 +4616,7 @@ Like [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screensho
 has a function that can capture a screenshot of a particular emacs window.
 
 #+begin_src emacs-lisp
-(use-package scrot :ensure (:host github :repo "dakra/scrot.el"))
+(use-package scrot :straight (:host github :repo "dakra/scrot.el"))
 #+end_src
 
 ** gifs
@@ -4640,7 +4640,7 @@ necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypressio
 
 #+begin_src emacs-lisp
 (use-package keypression
-  :ensure (:host github :repo "chuntaro/emacs-keypression")
+  :straight (:host github :repo "chuntaro/emacs-keypression")
   :setq (keypression-frame-justify . 'keypression-right-justified))
 #+end_src
 
@@ -4671,7 +4671,7 @@ Also pretty self explanatory is [[https://github.com/dgutov/highlight-escape-seq
 
 #+begin_src emacs-lisp
 (use-package highlight-escape-sequences
-  :ensure (:host github :repo "hlissner/highlight-escape-sequences")
+  :straight (:host github :repo "hlissner/highlight-escape-sequences")
   :hook (prog-mode-hook conf-mode-hook))
 #+end_src
 
@@ -4908,7 +4908,7 @@ hooks.
           ((beg . end) (org:dwim-description-bounds (point) elements))
           (edit-indirect-guess-mode-function (lambda (&rest _) (text-mode)))
           (edit-indirect-after-creation-hook edit-indirect-after-creation-hook))
-    (edit-indirect:add-before-commit-hook #'edit-indirect:ensure-newline)
+    (edit-indirect:add-before-commit-hook #'edit-indirect:straight-newline)
     (general-add-hook 'edit-indirect-after-creation-hook
                       ;; Move point to last non-whitespace character.
                       (list (lambda ()
@@ -4962,7 +4962,7 @@ otherwise the =#+end_src= code block delimiter will not end up in its own line
 (see this for example).
 
 #+begin_src emacs-lisp
-(defun edit-indirect:ensure-newline (&optional block-was-empty-p)
+(defun edit-indirect:straight-newline (&optional block-was-empty-p)
   "Ensure that source block ends with a newline.
 If the source block was initially empty and no content was added, don't add a newline.
 Otherwise, add a newline if there isn't one."
@@ -4989,7 +4989,7 @@ Otherwise, add a newline if there isn't one."
             (lang (plist-get (-second-item it) :language))
             (edit-indirect-guess-mode-function `(lambda (&rest _) (funcall (org-src-get-lang-mode ,lang))))
             (edit-indirect-after-creation-hook edit-indirect-after-creation-hook))
-      (add-hook 'edit-indirect-after-creation-hook #'edit-indirect:ensure-newline)
+      (add-hook 'edit-indirect-after-creation-hook #'edit-indirect:straight-newline)
       (add-hook 'edit-indirect-after-creation-hook #'beginning-of-buffer)
       (edit-indirect-region beg end t))))
 #+end_src
@@ -5326,7 +5326,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 (use-package spell-fu
-  :ensure (:host gitlab :repo "ideasman42/emacs-spell-fu")
+  :straight (:host gitlab :repo "ideasman42/emacs-spell-fu")
   :commands spell-fu-mode
   :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
 #+end_src
