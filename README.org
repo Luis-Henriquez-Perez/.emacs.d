@@ -1231,8 +1231,7 @@ SYM is a symbol that stores a list."
 (setq use-package-keywords
       (--splice (eq :init it) (list :setq-default it) use-package-keywords))
 
-(defun use-package-normalize/:setq-default (name keyword args)
-  args)
+(defalias 'use-package-normalize/:setq-default 'use-package-normalize/:setq)
 
 (defun use-package-handler/:setq-default (name _keyword args rest state)
   (use-package-concat
