@@ -1379,7 +1379,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr-x :demand t)
+(use-feature! subr-x
+  :demand t)
 #+end_src
 
 **** startup
