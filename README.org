@@ -3434,7 +3434,7 @@ been recently opened buffers (this list is managed by [[f26bedb3-a172-4543-afd0-
 
 #+begin_src emacs-lisp
 (use-package ivy
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :custom
   (ivy-initial-inputs-alist . nil)
   :setq
