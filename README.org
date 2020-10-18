@@ -1206,7 +1206,7 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (defadvice! return-args-as-is (:override use-package-normalize/:custom)
-  args)
+  <args>)
 
 (defadvice! use-cons-cell-not-lists (:override use-package-handler/:custom)
   (use-package-concat
