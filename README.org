@@ -1248,9 +1248,11 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
+(advice-remove 'use-package-normalize/:custom #'use-package-normalize/:custom@return-args-as-is)
 (defadvice! return-args-as-is (:override use-package-normalize/:custom)
   <args>)
 
+(advice-remove 'use-package-handler/:custom #'use-package-handler/:custom@use-cons-cell-not-lists)
 (defadvice! use-cons-cell-not-lists (:override use-package-handler/:custom)
   (use-package-concat
    (use-package-process-keywords <name> <rest> <state>)
