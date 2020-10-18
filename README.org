@@ -1206,7 +1206,7 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq :init it) (list setq-default it) use-package-keywords))
+      (--splice (eq :init it) (list :setq-default it) use-package-keywords))
 
 (defun use-package-normalize/setq-default (name keyword args)
   args)
