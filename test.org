@@ -299,7 +299,7 @@
         (use-package-always-defer t))
 
     (should (equal (macroexpand-1 '(use-package foo :setq (one . 1)))
-                   '(progn (setq one 1))))
+                   '(setq one 1)))
 
     (should (equal (macroexpand-1 '(use-package foo :setq (one . 1) (two . 2)))
                    '(progn (setq one 1) (setq two 2))))
