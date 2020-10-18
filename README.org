@@ -2222,7 +2222,7 @@ Emacs picks up. [[https://github.com/purcell/exec-path-from-shell][exec-path-fro
 color in the frame title.
 
 #+begin_src emacs-lisp
-(use-package! ns-auto-titlebar
+(use-package ns-auto-titlebar
   :os mac
   :when (or (daemonp) (display-graphic-p))
   :demand t)
