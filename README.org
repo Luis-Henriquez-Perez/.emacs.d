@@ -358,7 +358,7 @@ This code initializes straight if it's not already installed.
 :END:
 
 #+begin_src emacs-lisp
-(dolist (package '(leaf-keywords leaf dash dash-functional anaphora))
+(dolist (package '(dash dash-functional anaphora use-package))
   (funcall #'straight:install-package package)
   (require package))
 #+end_src
