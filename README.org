@@ -1379,7 +1379,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr-x :require t)
+(use-feature! subr-x :demand t)
 #+end_src
 
 **** startup
@@ -1515,7 +1515,7 @@ think you want to use =smtp=.
 #+begin_src emacs-lisp
 ;; This is where `->>' and `thread-first' come from.
 (use-feature! subr-x
-  :require t)
+  :demand t)
 #+end_src
 
 **** ffap
@@ -1748,7 +1748,7 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash-functional :require t)
+(use-package! dash-functional :demand t)
 #+end_src
 
 **** dash
@@ -1760,7 +1760,7 @@ as a dependency, I'd end up rewriting many of its functions.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash :require t)
+(use-package! dash :demand t)
 #+end_src
 
 **** general
@@ -1783,7 +1783,7 @@ handle all bindings. [[][general]] provides such a function ([[helpfn:general-de
 
 #+begin_src emacs-lisp
 (use-package! general
-  :require t
+  :demand t
   :config
   (general-auto-unbind-keys))
 #+end_src
@@ -1880,7 +1880,7 @@ make a difference. That's why.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! s :require t)
+(use-package! s :demand t)
 #+end_src
 
 **** gc
@@ -2202,7 +2202,7 @@ Emacs picks up. [[https://github.com/purcell/exec-path-from-shell][exec-path-fro
 (use-package exec-path-from-shell
   :os mac
   :when (or (daemonp) (display-graphic-p))
-  ;; :require t
+  ;; :demand t
   ;; :setq
   ;; (exec-path-from-shell-check-startup-files . nil)
   ;; (exec-path-from-shell-arguments . (delete "-i" exec-path-from-shell-arguments))
@@ -2225,7 +2225,7 @@ color in the frame title.
 (use-package! ns-auto-titlebar
   :os mac
   :when (or (daemonp) (display-graphic-p))
-  :require t)
+  :demand t)
 #+end_src
 
 ***** osx-clipboard
@@ -2452,7 +2452,7 @@ This package.
 
 #+begin_src emacs-lisp
 (use-package! idle-require
-  :require t
+  :demand t
   :hook emacs-startup-hook
   :setq
   (idle-require-idle-delay . 7)
@@ -5361,7 +5361,7 @@ and provides facilities for writing custom extensions. Also see our page on
 
 #+begin_src emacs-lisp
 (use-package! evil
-  :require t
+  :demand t
   :hook window-setup-hook
   :custom
   (evil-want-C-u-scroll    . t)
@@ -6526,7 +6526,7 @@ in time to see older posts.
 #+begin_src emacs-lisp
 (use-package! elfeed-org
   :after elfeed
-  :require t
+  :demand t
   :setq
   (rmh-elfeed-org-files      . (list (concat VOID-ORG-DIR "elfeed.org")))
   (rmh-elfeed-org-tree-id    . "ELFEED")
@@ -8487,7 +8487,7 @@ template element as you're writing it.
 #+begin_src emacs-lisp
 (use-package! doct
   :after org-capture
-  :require t
+  :demand t
   :config
   ;; (require 'doct)
   ;; doct just returns the new template.
@@ -8940,7 +8940,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 
 #+begin_src emacs-lisp
 (use-package! dashboard
-  :require t
+  :demand t
   :hook (window-setup-hook . dashboard-insert-startupify-lists)
   :init
   (defadvice! open-dashboard-instead (:override void-initial-buffer)
