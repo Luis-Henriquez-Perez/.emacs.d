@@ -1211,7 +1211,9 @@ SYM is a symbol that stores a list."
   (when (and (= (length args) 1) (not (-cons-pair-p (car args))))
     (setq args (car args)))
   (unless (-all-p #'-cons-pair-p args)
-    (use-package-error (format "should be all cons cell instead %S" args)))
+    (thread-last (-find (-not #'-cons-pair-p) args)
+      (format "All arguments should be cons cells. %S isn't though." args)
+      (use-package-error)))
   args)
 
 (defun use-package-handler/:setq (name _keyword args rest state)
