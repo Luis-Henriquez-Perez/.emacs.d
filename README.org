@@ -1348,6 +1348,9 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :ID:       bdd0f442-4351-4ac8-874b-33991b6c2806
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
