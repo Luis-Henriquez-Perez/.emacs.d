@@ -274,6 +274,22 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 [[straight][straight.el]] is a package manager that strives to make emacs configurations
 completely reproducable.
 
+**** straight
+:PROPERTIES:
+:ID:       9dff9894-667c-4e74-9624-8aee533f8f70
+:END:
+
+#+begin_src emacs-lisp
+(use-package straight
+  :defer t
+  :setq
+  (straight-disable-autoloads . nil)
+  (straight-cache-autoloads . t)
+  (straight-check-for-modifications . nil)
+  (straight-enable-package-integration . nil)
+  (straight-recipes-emacsmirror-use-mirror . t))
+#+end_src
+
 **** customize straight directory
 :PROPERTIES:
 :ID: 843cc8b9-edff-42f7-a767-65a59aa38fbc
@@ -1319,97 +1335,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
     (use-package-normalize-commands args))))
 #+end_src
 
-** Leaf
-:PROPERTIES:
-:ID:       109f58d7-525e-43f4-b997-658b1d5da0a8
-:END:
-
-Like =use-package=, leaf is a macro that fascilitates package configuration.
-
-*** custom leaf keywords
-:PROPERTIES:
-:ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
-:END:
-
-**** set keywords
-:PROPERTIES:
-:ID:       225cdf80-0770-47c0-8a94-6d69f4583374
-:END:
-
-Leaf keywords do not.
-
-***** custom
-:PROPERTIES:
-:ID:       bfa61a7a-1660-4000-a80e-15851a32ffd5
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :custom #'leaf:normalize-setq)
-#+end_src
-
-***** setq-default
-:PROPERTIES:
-:ID:       b8ab2bf6-2b4e-41db-93f8-ed5c86392c84
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :setq-default #'leaf:normalize-setq)
-#+end_src
-
 **** popup
 :PROPERTIES:
-:ID:       30845314-ac19-49bb-9065-591c13e55489
+:ID:       bdd0f442-4351-4ac8-874b-33991b6c2806
 :END:
-
-The point of this keyword is to let me configure the display of buffers for
-specific packages.
-
-#+begin_src emacs-lisp
-(define-leaf-keyword! popup (before :mode)
-  `(,@(--map `(push ',it display-buffer-alist) leaf--value)
-    ,@leaf--body))
-#+end_src
-
-**** os
-:PROPERTIES:
-:ID:       3335e409-b963-4504-b9fb-2faf4fb0be3d
-:END:
-
-#+begin_src emacs-lisp
-(define-leaf-keyword! os (before :when)
-  (when leaf--body `((with-os! ,leaf--value ,@leaf--body))))
-#+end_src
-
-**** straight
-:PROPERTIES:
-:ID:       9dff9894-667c-4e74-9624-8aee533f8f70
-:END:
-
-#+begin_src emacs-lisp
-(use-package straight
-  :defer t
-  :setq
-  (straight-disable-autoloads . nil)
-  (straight-cache-autoloads . t)
-  (straight-check-for-modifications . nil)
-  (straight-enable-package-integration . nil)
-  (straight-recipes-emacsmirror-use-mirror . t))
-#+end_src
-
-**** ignore-buffers
-:PROPERTIES:
-:ID:       46e099c0-257b-4292-b5bc-acdf1bceaeea
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :ignore-buffers #'leaf:normalize-commands)
-
-(define-leaf-keyword! ignore-buffers (before :init)
-  `((after! midnight
-      (--each ',leaf--value
-        (push it clean-buffer-list-kill-regexps)))
-    ,@leaf--body))
-#+end_src
 
 ** Packages
 :PROPERTIES:
