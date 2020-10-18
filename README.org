@@ -1347,7 +1347,7 @@ SYM is a symbol that stores a list."
            (use-package-normalize-commands args))))
 #+end_src
 
-**** hook                                                             :disabled:
+**** hook
 :PROPERTIES:
 :ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
 :END:
