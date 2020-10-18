@@ -1356,7 +1356,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
-  )
+  <args>)
 
 (defun use-package:ensure-hook ())
 (defun use-package:ensure-mode ())
