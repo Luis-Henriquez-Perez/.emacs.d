@@ -1363,12 +1363,14 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 (defadvice! use-void-add-hook (:override use-package-handler/:hook)
   (use-package-concat
-   (use-package-process-keywords name rest state)
-   (cl-mapcan
-    (-lambda ((syms . fun))
-      (mapcar (lambda (sym) `(void-add-hook ',sym #',fun))
-              (if (use-package-non-nil-symbolp syms) (list syms) syms)))
-    (use-package-normalize-commands args))))
+   (use-package-process-keywords <name> <rest> <state>)
+   (-list <args>)
+   ;; (cl-mapcan
+   ;;  (-lambda ((syms . fun))
+   ;;    (mapcar (lambda (sym) `(void-add-hook ',sym #',fun))
+   ;;            (if (use-package-non-nil-symbolp syms) (list syms) syms)))
+   ;;  (use-package-normalize-commands <args>))
+   ))
 #+end_src
 
 **** popup                                                            :disabled:
