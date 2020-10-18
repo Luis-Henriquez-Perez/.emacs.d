@@ -9310,7 +9310,7 @@ graphical interface but.
 
 #+end_src
 
-* Keybindings
+* Keybindings                                                         :disabled:
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
