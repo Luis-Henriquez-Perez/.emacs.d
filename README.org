@@ -1282,19 +1282,19 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq :init it)
-                (list :idle-require it)
-                use-package-keywords))
+      (--splice (eq :init it) (list :alias it) use-package-keywords))
 
-(defun use-package-normalize/:idle-require (name keyword args)
-  (-list (use-package-as-one () args
-           (lambda (label arg)
-             arg))))
+;; should be a cons cell.
+(defun use-package-normalize/:alias (name keyword args)
+  (alet (use-package-as-one () args
+          (lambda (label arg)
+            arg))
+    (if (-cons-pair-p it) (list it) it)))
 
-(defun use-package-handler/:idle-require (name _keyword args rest state)
+(defun use-package-handler/:alias (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   (mapcar (lambda (feature) `(idle-require ',feature))
+   (mapcar (-lambda ((alias . def)) `(defalias ',alias ',def))
            (use-package-normalize-commands args))))
 #+end_src
 
