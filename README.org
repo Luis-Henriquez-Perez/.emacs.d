@@ -1205,6 +1205,8 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
+(setq use-package-keywords (-remove-item :custom use-package-keywords))
+
 (defadvice! return-args-as-is (:override use-package-normalize/:custom)
   <args>)
 
