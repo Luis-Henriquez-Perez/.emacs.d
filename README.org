@@ -283,6 +283,7 @@ completely reproducable.
 (use-package straight
   :defer t
   :setq
+  (straight-enable-package-integration . t)
   (straight-disable-autoloads . nil)
   (straight-cache-autoloads . t)
   (straight-check-for-modifications . nil)
