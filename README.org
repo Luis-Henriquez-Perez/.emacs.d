@@ -1335,7 +1335,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 ;;   (use-package-always-ensure . nil)
 ;;   (use-package-verbose . nil)
 ;;   (use-package-expand-minimally . t))
-(setq use-package-ensure-function #'straight-use-package-ensure-function)
+;; (setq use-package-ensure-function #'straight-use-package-ensure-function)
 (progn
   (require 'use-package)
   (setq use-package-ignore-unknown-keywords t)
