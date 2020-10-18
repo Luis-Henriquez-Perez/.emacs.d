@@ -1212,7 +1212,7 @@ SYM is a symbol that stores a list."
   (use-package-concat
    (use-package-process-keywords <name> <rest> <state>)
    (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
-           args)))
+           <args>)))
 #+end_src
 
 **** before-call                                                      :disabled:
