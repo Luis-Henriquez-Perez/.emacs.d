@@ -1356,13 +1356,19 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
+  (alet (--map-when (not (-cons-pair-p it)) (cons it nil) <args>)
+    ())
   (thread-last <args>
-    (--map-when (not (-cons-pair-p it)) (cons it nil))
+
+    (--map-when (not (s-matches-p "-hook\\'" (symbol-name it)))
+                (void-symbol-intern it "-hook"))
     (map-keys-apply #'use-package:ensure-hook)
     (map-values-apply (-partial #'use-package:ensure-mode))))
 
 (defun use-package:ensure-hook (hook)
-  )
+  (if (not (s-matches-p (rx "-hook" eos) (symbol-name hook)))
+      (void-symbol-intern hook '-hook)
+    hook))
 
 (defun use-package:ensure-mode (package name)
   (or name
