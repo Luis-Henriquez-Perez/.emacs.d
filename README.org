@@ -2864,7 +2864,8 @@ window ends and another begins (see [[helpfn:window-divider-mode][window-divider
 makes emacs feel like a window manager with gaps.
 
 #+begin_src emacs-lisp
-(use-feature frame
+(use-package frame
+  :straight nil
   :hook (window-setup-hook . window-divider-mode)
   :custom
   (window-divider-default-places       . t)
