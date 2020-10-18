@@ -3509,7 +3509,7 @@ next completion.
 #+begin_src emacs-lisp
 (use-package prescient
   :pre-setq (prescient-save-file . (concat VOID-DATA-DIR "prescient-save.el"))
-  :hook (ivy-mode-hook . prescient-persist-mode))
+  :hook (ivy-mode . prescient-persist-mode))
 #+end_src
 
 **** sorting and filtering
@@ -3594,7 +3594,7 @@ that using =ivy= for completion.
 
 #+begin_src emacs-lisp
 (use-package counsel
-  :hook ivy-mode-hook
+  :hook ivy-mode
   :setq
   (counsel-find-file-ignore-regexp . "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)")
   (counsel-describe-function-function . #'helpful-callable)
@@ -3715,7 +3715,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (use-package company
-  :hook prog-mode-hook
+  :hook prog-mode
   :bind (:company-active-map
          ([tab] . company-select-next)
          ([backtab] . company-select-previous)
@@ -3822,7 +3822,7 @@ worth quoting here:
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
 
 #+begin_src emacs-lisp
-(use-package company-prescient :hook company-mode-hook)
+(use-package company-prescient :hook company-mode)
 #+end_src
 
 * Email
@@ -3980,7 +3980,7 @@ it is definitely on my list of things to try out.
 #+begin_src emacs-lisp
 (use-package org-mu4e
   :disabled t
-  :hook (mu4e-compose-mode-hook . org-mu4e-compose-org-mode)
+  :hook (mu4e-compose-mode . org-mu4e-compose-org-mode)
   :setq
   (org-mu4e-link-query-in-headers-mode . nil)
   (org-mu4e-convert-to-html . t)
@@ -4683,7 +4683,7 @@ What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is 
 
 #+begin_src emacs-lisp
 (use-package highlight-numbers
-  :hook (prog-mode-hook conf-mode-hook)
+  :hook (prog-mode conf-mode)
   :setq (highlight-numbers-generic-regexp . "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>"))
 #+end_src
 
@@ -4697,7 +4697,7 @@ Also pretty self explanatory is [[https://github.com/dgutov/highlight-escape-seq
 #+begin_src emacs-lisp
 (use-package highlight-escape-sequences
   :straight (:host github :repo "hlissner/highlight-escape-sequences")
-  :hook (prog-mode-hook conf-mode-hook))
+  :hook (prog-mode conf-mode))
 #+end_src
 
 ** hideshow
@@ -4710,7 +4710,7 @@ Org Mode. The feature responsible for doing this is [[][hideshow]].
 
 #+begin_src emacs-lisp
 (use-package hideshow
-  :hook (prog-mode-hook . hs-minor-mode)
+  :hook (prog-mode . hs-minor-mode)
   :commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
   :setq (hs-hide-comments-when-hiding-all . nil))
 #+end_src
@@ -4725,7 +4725,7 @@ great idea! It makes it really easy to see which parentheses go together.
 
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
-  :hook (prog-mode-hook reb-mode-hook)
+  :hook (prog-mode reb-mode-hook)
   :setq (rainbow-delimiters-max-face-count . 9))
 #+end_src
 
@@ -5084,7 +5084,7 @@ file, see [[helpfn:edit-indirect-commit][edit-indirect-commit]].
 it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
-(use-package aggressive-indent :hook emacs-lisp-mode-hook)
+(use-package aggressive-indent :hook emacs-lisp-mode)
 #+end_src
 
 *** electric indent
@@ -5107,7 +5107,7 @@ it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
 (use-package ws-butler
-  :hook (prog-mode-hook org-mode-hook)
+  :hook (prog-mode org-mode)
   :config
   (append! ws-butler-global-exempt-modes
     '(special-mode comint-mode term-mode eshell-mode)))
@@ -5141,7 +5141,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 
 #+begin_src emacs-lisp
 (use-package smartparens
-  :hook (prog-mode-hook eshell-mode-hook ielm-mode-hook)
+  :hook (prog-mode eshell-mode ielm-mode)
   :setq
   (sp-highlight-pair-overlay . nil)
   (sp-highlight-wrap-overlay . nil)
@@ -5199,7 +5199,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 #+begin_src emacs-lisp
 (use-package lispyville
   :commands lispyville-comment-or-uncomment-line
-  :hook emacs-lisp-mode-hook
+  :hook emacs-lisp-mode
   :bind
   (:emacs-lisp-mode-map
    ([remap evil-yank]                 . lispyville-yank)
@@ -5295,7 +5295,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 (use-package lispy
-  :hook emacs-lisp-mode-hook
+  :hook emacs-lisp-mode
   :setq
   (lispy-avy-style-paren . 'at-full)
   (lispy-eval-display-style . 'overlay)
@@ -5416,7 +5416,7 @@ and provides facilities for writing custom extensions. Also see our page on
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
-  :hook window-setup-hook
+  :hook window-setup
   :custom
   (evil-want-C-u-scroll    . t)
   (evil-want-C-d-scroll    . t)
@@ -6507,7 +6507,7 @@ again, you are taken to the location you left off. This is very convenient.
 #+begin_src emacs-lisp
 (use-feature savehist
   :idle-require custom
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (savehist-save-minibuffer-history . t)
   (savehist-autosave-interval . nil)
@@ -7320,7 +7320,7 @@ user delays.
 
 #+begin_src emacs-lisp
 (use-package super-save
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (super-save-idle-duration . 5)
   (super-save-auto-save-when-idle . t))
@@ -7575,7 +7575,7 @@ The change to this function."
 
 #+begin_src emacs-lisp
 (use-package highlight-quoted
-  :hook emacs-lisp-mode-hook)
+  :hook emacs-lisp-mode)
 #+end_src
 
 **** buttercup
@@ -7618,7 +7618,7 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 
 #+begin_src emacs-lisp
 (use-package outshine
-  :hook emacs-lisp-mode-hook
+  :hook emacs-lisp-mode
   :config
   (general-def '(normal) emacs-lisp-mode-map
     "TAB" #'outline-toggle-children))
@@ -8380,7 +8380,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package org-fancy-priorities
-  :hook org-mode-hook
+  :hook org-mode
   ;; :setq
   ;; (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
   ;;                                    (all-the-icons-octicon "arrow-up")
@@ -8398,7 +8398,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package org-superstar
-  :hook org-mode-hook
+  :hook org-mode
   :pre-setq
   (org-superstar-headline-bullets-list . (list "◉" "○" "▷"))
   :setq
@@ -8661,7 +8661,7 @@ referenance org headlines.
   ;; Global ID state means we can have ID links anywhere. This is required for
   ;; `org-brain', however.
   (org-id-locations-file-relative . t)
-  :hook (org-insert-heading-hook . org-id-get-create))
+  :hook (org-insert-heading . org-id-get-create))
 #+end_src
 
 *** org clock
@@ -8676,7 +8676,7 @@ tracking the time you spend on a particular task.
 (use-feature org-clock
   :commands org-clock-in
   ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
-  :hook (kill-emacs-hook . org-clock-save)
+  :hook (kill-emacs . org-clock-save)
   :setq
   ;; org-clock-sound
   ;; org-show-notification-handler
