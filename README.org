@@ -3529,7 +3529,7 @@ candidate.
   "C-l"     #'ivy-next-line-and-call
   "C-o"     #'ivy-occur
   "C-'"     #'ivy-avy
-  "C-i"     #'ivy-immediate-done
+  "C-d"     #'ivy-immediate-done
   "RET"     #'ivy-done)
 
 (general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
