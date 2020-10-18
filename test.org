@@ -347,20 +347,20 @@
 #+begin_src emacs-lisp
 (ert-deftest use-package-alias ()
 
-  (should (equal (macroexpand-1 '(use-package foo :alias (one . two)))
-                 '(progn
-                    (require 'foo nil nil)
-                    (idle-require 'flop))))
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t))
 
-  (should (equal (macroexpand-1 '(use-package foo :idle-require flop flap))
-                 '(progn
-                    (require 'foo nil nil)
-                    (idle-require 'flop)
-                    (idle-require 'flap))))
+    (should (equal (macroexpand-1 '(use-package foo :alias (one . two)))
+                   '(progn
+                      (alias 'one 'two))))
 
-  (should (equal (macroexpand-1 '(use-package foo :idle-require (flop flap)))
-                 '(progn
-                    (require 'foo nil nil)
-                    (idle-require 'flop)
-                    (idle-require 'flap)))))
+    (should (equal (macroexpand-1 '(use-package foo :alias (one . two) (three . four)))
+                   '(progn
+                      (alias 'one 'two)
+                      (alias 'three 'four))))
+
+    (should (equal (macroexpand-1 '(use-package foo :alias ((one . two) (three . four))))
+                   '(progn
+                      (alias 'one 'two)
+                      (alias 'three 'four))))))
 #+end_src
