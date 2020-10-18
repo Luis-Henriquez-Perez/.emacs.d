@@ -1262,12 +1262,12 @@ SYM is a symbol that stores a list."
                 use-package-keywords))
 
 (defun use-package-normalize/:idle-require (name keyword args)
-  (use-package-as-one () args
-    (lambda (label arg)
-      (unless (symbolp arg)
-        (use-package-error
-         (concat label " must be a symbol")))
-      arg)))
+  (-list (use-package-as-one () args
+           (lambda (label arg)
+             (unless (symbolp arg)
+               (use-package-error
+                (concat label " must be a symbol or a list of symbols")))
+             arg))))
 
 (defun use-package-handler/:idle-require (name _keyword args rest state)
   (use-package-concat
