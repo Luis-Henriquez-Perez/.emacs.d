@@ -1349,26 +1349,6 @@ SYM is a symbol that stores a list."
            (use-package-normalize-commands args))))
 #+end_src
 
-**** testhook
-:PROPERTIES:
-:ID:       92e108cb-cbbd-46b3-83bd-e50ddfd96979
-:END:
-
-***** normalize
-:PROPERTIES:
-:ID:       7c6fdff5-a2e7-486e-ac86-c04587f6c604
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package-normalize/:thook ()
-  )
-#+end_src
-
-***** handler
-:PROPERTIES:
-:ID:       34d664f9-e8bb-478d-8d45-7dd2a7efa17d
-:END:
-
 **** hook
 :PROPERTIES:
 :ID:       cd344df8-3345-4870-be25-df0003916ca8
