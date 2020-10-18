@@ -1945,7 +1945,7 @@ while the user is working.
 
 #+begin_src emacs-lisp
 (use-package gcmh
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (gcmh-idle-delay . 10)
   (gcmh-verbose . void-debug-p)
@@ -1971,7 +1971,7 @@ while the user is working.
 :END:
 
 #+begin_src emacs-lisp
-(use-package keyfreq :hook emacs-startup-hook)
+(use-package keyfreq :hook emacs-startup)
 #+end_src
 
 ** Initialize
@@ -2289,7 +2289,7 @@ color in the frame title.
 (use-package osx-clipboard
   :os mac
   :when (or (daemonp) (not (display-graphic-p)))
-  :hook emacs-startup-hook)
+  :hook emacs-startup)
 #+end_src
 
 **** linux
@@ -2505,7 +2505,7 @@ This package.
 #+begin_src emacs-lisp
 (use-package idle-require
   :demand t
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (idle-require-idle-delay . 7)
   (idle-require-load-break . 2))
@@ -2901,7 +2901,7 @@ makes emacs feel like a window manager with gaps.
 #+begin_src emacs-lisp
 (use-package frame
   :straight nil
-  :hook (window-setup-hook . window-divider-mode)
+  :hook (window-setup . window-divider-mode)
   :custom
   (window-divider-default-places       . t)
   (window-divider-default-bottom-width . 10)
@@ -3008,7 +3008,7 @@ functions which open external linux applications.
 
 #+begin_src emacs-lisp
 (use-package exwm
-  :hook (exwm-mode-hook . hide-mode-line-mode)
+  :hook (exwm-mode . hide-mode-line-mode)
   :before-call (void/open-qutebrowser counsel-linux-app void/open-emacs-instance)
   :setq (exwm-replace . nil)
   :config
@@ -3134,7 +3134,7 @@ Emacs's text editing capabilities on it.
 (use-package exwm-firefox-evil
   :disabled t
   :after exwm
-  :hook (exwm-manage-finish-hook . exwm-firefox-evil-activate-if-firefox)
+  :hook (exwm-manage-finish . exwm-firefox-evil-activate-if-firefox)
   :config
   (dolist (k `(escape))
     (cl-pushnew k exwm-input-prefix-keys)))
@@ -3374,7 +3374,7 @@ be inserted and interactively completed.
 
 #+begin_src emacs-lisp
 (use-package yasnippet
-  :hook (prog-mode-hook . yas-minor-mode-on)
+  :hook (prog-mode . yas-minor-mode-on)
   :setq
   (yas-snippet-dirs . (list (concat VOID-DATA-DIR "snippets/")))
   (yas-verbosity . (if void-debug-p 3 0))
@@ -8813,7 +8813,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package modern-cpp-font-lock
-  :hook (c++-mode-hook . modern-c++-font-lock-mode))
+  :hook (c++-mode . modern-c++-font-lock-mode))
 #+end_src
 
 *** demangle
@@ -8823,7 +8823,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package demangle-mode
-  :hook llvm-mode-hook)
+  :hook llvm-mode)
 #+end_src
 
 ** TODO latex
@@ -8839,7 +8839,7 @@ org api it seems.
 #+begin_src emacs-lisp
 (use-feature tex
   :mode ("\\.tex\\'" . LaTeX-mode)
-  :hook (LaTex-mode-hook . visual-line-mode)
+  :hook (LaTex-mode . visual-line-mode)
   :setq
   (TeX-parse-self . t)
   (TeX-auto-save . t)
@@ -8957,7 +8957,7 @@ you can "discover" the commands as you go along.
 
 #+begin_src emacs-lisp
 (use-package which-key
-  :hook emacs-startup-hook
+  :hook emacs-startup
   :setq
   (which-key-sort-uppercase-first . nil)
   (which-key-max-display-columns . nil)
@@ -8996,7 +8996,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 #+begin_src emacs-lisp
 (use-package dashboard
   :demand t
-  :hook (window-setup-hook . dashboard-insert-startupify-lists)
+  :hook (window-setup . dashboard-insert-startupify-lists)
   :init
   (defadvice! open-dashboard-instead (:override void-initial-buffer)
     (if void-debug-p (get-buffer "*Messages*")
