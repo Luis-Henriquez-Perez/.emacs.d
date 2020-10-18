@@ -1209,13 +1209,15 @@ SYM is a symbol that stores a list."
       (--splice (eq :init it) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
+  (cl-assert (-all-p #'-cons-pair-p args))
   args)
 
 (defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
-           args)))
+   `((after! ,name
+       ,@(mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
+                 args)))))
 #+end_src
 
 **** setq-default
@@ -1311,9 +1313,7 @@ SYM is a symbol that stores a list."
                 use-package-keywords))
 
 (defun use-package-normalize/:idle-require (name keyword args)
-  (-list (use-package-as-one () args
-           (lambda (label arg)
-             arg))))
+  args)
 
 (defun use-package-handler/:idle-require (name _keyword args rest state)
   (use-package-concat
@@ -1359,7 +1359,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
-  (message "NORMALIZE ARGS: %S" <args>)
   (let ((args (--map-when (symbolp it) (cons it nil) <args>)))
     (-zip-with #'cons
                (--map-when (not (s-matches-p "-hook\\'" (symbol-name it)))
@@ -1400,14 +1399,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-;; (use-package use-package
-;;   :setq
-;;   (use-package-ignore-unknown-keywords . t)
-;;   (use-package-always-defer . t)
-;;   (use-package-always-ensure . nil)
-;;   (use-package-verbose . nil)
-;;   (use-package-expand-minimally . t))
-;; (setq use-package-ensure-function #'straight-use-package-ensure-function)
 (progn
   (require 'use-package)
   (setq use-package-ignore-unknown-keywords t)
@@ -1418,11 +1409,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 (void-add-advice #'use-package-normalize/:bind :override #'ignore)
 (void-add-advice #'use-package-handler/:bind :override #'ignore)
-
-(setq use-package-keywords (-remove-item :bind use-package-keywords))
-(setq use-package-keywords (-remove-item :bind* use-package-keywords))
-(setq use-package-keywords (-remove-item :bind-keymap use-package-keywords))
-(setq use-package-keywords (-remove-item :bind-keymap& use-package-keywords))
 #+end_src
 
 *** convenience wrappers
