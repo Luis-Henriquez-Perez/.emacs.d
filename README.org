@@ -1441,7 +1441,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
 :END:
 
-*** built-in                                                          :disabled:
+*** built-in
 :PROPERTIES:
 :ID: 40367976-12a0-4ccd-9aff-4df144a73edf
 :END:
