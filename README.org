@@ -1199,6 +1199,22 @@ SYM is a symbol that stores a list."
            args)))
 #+end_src
 
+**** custom
+:PROPERTIES:
+:ID:       f8e1ed5c-5e97-4e49-a843-e0d485222c81
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! return-args-as-is (:override use-package-normalize/:custom)
+  args)
+
+(defadvice! use-cons-cell-not-lists (:override use-package-handler/:custom)
+  (use-package-concat
+   (use-package-process-keywords <name> <rest> <state>)
+   (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
+           args)))
+#+end_src
+
 **** before-call                                                      :disabled:
 :PROPERTIES:
 :ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
