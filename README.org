@@ -1326,136 +1326,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 Like =use-package=, leaf is a macro that fascilitates package configuration.
 
-*** defining leaf keywords
-:PROPERTIES:
-:ID:       5d7d9185-6897-419d-90bd-5e2d2cb3f1b1
-:END:
-
-Leaf is very low level. It does not provide a function or macro for fast new
-keyword creation. Whenever you want to create a new keyword you have to
-recall the underlying leaf data structure.
-
-**** leaf variables
-:PROPERTIES:
-:ID:       40d6a763-279b-4a18-9761-93754472b1a7
-:END:
-
-#+begin_src emacs-lisp
-(defvar leaf:process-variables
-  '(leaf--raw leaf--name leaf--key leaf--keyname leaf--value leaf--body)
-  "List of variables that leaf binds when processing a keyword.")
-#+end_src
-
-**** leaf insert keyword
-:PROPERTIES:
-:ID:       5369cb48-51f3-49c6-8374-5aa84db027e2
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:insert-keyword (keyword where place form)
-  "Insert KEYWORD at PLACE.
-WHERE can be the symbol `before' or `after'."
-  (alet (pcase where
-          ('after #'leaf-insert-list-after)
-          ('before #'leaf-insert-list-before)
-          (_ (error "where is %S but expected `before' or `after'" where)))
-    (setq leaf-keywords
-          (funcall it leaf-keywords place (list keyword form)))))
-#+end_src
-
-**** defer
-:PROPERTIES:
-:ID:       a965af35-804c-460c-8787-1cf8a849dba1
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:make-defer (keyword)
-  "Add KEYWORD to `leaf-defer-keywords'."
-  (add-to-list 'leaf-defer-keywords keyword))
-#+end_src
-
-**** alias
-:PROPERTIES:
-:ID:       7e515288-9071-44dd-b09d-bfddb58c1ea9
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:set-alias (alias name)
-  "Set ALIAS to NAME."
-  (push (cons alias name) leaf-alias-keyword-alist))
-#+end_src
-
-**** define-leaf-keyword!
-:PROPERTIES:
-:ID:       db05b51b-bbe4-41a4-ae45-1e72aba57ae4
-:END:
-
-#+begin_src emacs-lisp
-(defmacro define-leaf-keyword! (name args &rest body)
-  "Define a leaf keyword."
-  (declare (indent defun))
-  (-let* ((keyword (intern (concat ":" (symbol-name name))))
-          ((where place) args)
-          (docstring (when (stringp body) (pop body)))
-          (actions (--unfold (when (keywordp (car it))
-                               (cons (-take 2 it)
-                                     (setq body (-drop 2 it))))
-                             body))
-          (apply-fn (intern (concat "leaf::apply-" (symbol-name name))))
-          (form `(,apply-fn ,@leaf:process-variables)))
-    `(progn
-       (leaf:insert-keyword ,keyword ',where ,place ',form)
-       (defun ,apply-fn ,leaf:process-variables
-         ,docstring
-         (ignore ,@leaf:process-variables)
-         ,@body))))
-#+end_src
-
-**** normalizer
-:PROPERTIES:
-:ID:       cc4b1777-9ee5-42bf-a268-c43afcd3fc20
-:END:
-
-***** add normalizer
-:PROPERTIES:
-:ID:       2abfe05c-010b-467f-aab8-2949af3f7b64
-:END:
-
-#+begin_src emacs-lisp
-(defun leaf:set-normalizer (keyword normalizer)
-  "Add KEYWORD."
-  (push `((or (memq leaf--key '(,keyword))
-              (eq (alist-get leaf--key leaf-alias-keyword-alist) ,keyword))
-          (funcall #',normalizer leaf--value))
-        leaf-normalize))
-#+end_src
-
-***** normalizers
-:PROPERTIES:
-:ID:       72c23168-98dd-4a74-85b8-c0e313aa96df
-:END:
-
-****** normalizers
-:PROPERTIES:
-:ID:       bcf96e13-f3bc-4b23-832f-f94b31dd48a5
-:END:
-
-leaf's setq does not correctly handle setting variables to forms that need to be
-evaluated.
-
-#+begin_src emacs-lisp
-(defun leaf:normalize-setq (leaf--value)
-  (-map (-lambda ((var . value)) (cons var value))
-        leaf--value))
-
-(defun leaf:normalize-commands (leaf--value)
-  (-map (lambda (elm)
-          (cond ((memq leaf--key '(:after))
-                 (if (eq elm t) leaf--name elm))
-                (t elm)))
-        (-uniq (delq nil (leaf-flatten leaf--value)))))
-#+end_src
-
 *** custom leaf keywords
 :PROPERTIES:
 :ID:       2e9dac82-0709-4294-ae58-bb3eccfbb9a5
@@ -1467,24 +1337,6 @@ evaluated.
 :END:
 
 Leaf keywords do not.
-
-***** setq
-:PROPERTIES:
-:ID:       6f38c45b-9382-4d72-a7ae-6d7a8748d07f
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :setq #'leaf:normalize-setq)
-#+end_src
-
-***** pre-setq
-:PROPERTIES:
-:ID:       aba01554-fa11-4120-9867-19e5e2025df4
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :pre-setq #'leaf:normalize-setq)
-#+end_src
 
 ***** custom
 :PROPERTIES:
@@ -1542,21 +1394,6 @@ specific packages.
   (straight-check-for-modifications . nil)
   (straight-enable-package-integration . nil)
   (straight-recipes-emacsmirror-use-mirror . t))
-#+end_src
-
-**** alias
-:PROPERTIES:
-:ID:       9ce3a0f5-6b44-4c60-9599-b3b77199fa99
-:END:
-
-#+begin_src emacs-lisp
-(leaf:set-normalizer :alias #'leaf:normalize-setq)
-
-(define-leaf-keyword! alias (before :init)
-  `((eval-and-compile
-      ,@(-map (-lambda ((alias . def)) `(defalias ',alias ',def))
-              leaf--value))
-    ,@leaf--body))
 #+end_src
 
 **** ignore-buffers
