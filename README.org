@@ -1356,7 +1356,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (setq use-package-verbose nil)
   (setq use-package-expand-minimally t))
 
-(void-add-advice #'use-package-handler/:bind #'ignore)
+(void-add-advice #'use-package-handler/:bind :override #'ignore)
 
 (setq use-package-keywords (-remove-item :bind use-package-keywords))
 (setq use-package-keywords (-remove-item :bind* use-package-keywords))
