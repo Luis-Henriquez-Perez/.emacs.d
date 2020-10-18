@@ -1199,6 +1199,25 @@ SYM is a symbol that stores a list."
            args)))
 #+end_src
 
+**** setq-default
+:PROPERTIES:
+:ID:       82dc8306-b3e7-4205-8472-39333a9112fd
+:END:
+
+#+begin_src emacs-lisp
+(setq use-package-keywords
+      (--splice (eq :init it) (list setq-default it) use-package-keywords))
+
+(defun use-package-normalize/setq-default (name keyword args)
+  args)
+
+(defun use-package-handler/setq-default (name _keyword args rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (mapcar (lambda (pair) `(setq-default ,(car pair) ,(cdr pair)))
+           args)))
+#+end_src
+
 **** custom
 :PROPERTIES:
 :ID:       f8e1ed5c-5e97-4e49-a843-e0d485222c81
