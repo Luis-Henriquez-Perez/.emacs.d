@@ -351,16 +351,15 @@
         (use-package-always-defer t))
 
     (should (equal (macroexpand-1 '(use-package foo :alias (one . two)))
-                   '(progn
-                      (alias 'one 'two))))
+                   '(defalias 'one 'two)))
 
     (should (equal (macroexpand-1 '(use-package foo :alias (one . two) (three . four)))
                    '(progn
-                      (alias 'one 'two)
-                      (alias 'three 'four))))
+                      (defalias 'one 'two)
+                      (defalias 'three 'four))))
 
     (should (equal (macroexpand-1 '(use-package foo :alias ((one . two) (three . four))))
                    '(progn
-                      (alias 'one 'two)
-                      (alias 'three 'four))))))
+                      (defalias 'one 'two)
+                      (defalias 'three 'four))))))
 #+end_src
