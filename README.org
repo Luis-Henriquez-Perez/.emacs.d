@@ -1259,7 +1259,7 @@ SYM is a symbol that stores a list."
        (require ',name)))))
 #+end_src
 
-**** after-call                                                       :disabled:
+**** after-call
 :PROPERTIES:
 :ID:       03c442ed-f497-4206-8a09-d7203083b2f2
 :END:
