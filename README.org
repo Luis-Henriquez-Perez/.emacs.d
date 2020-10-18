@@ -274,7 +274,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 [[straight][straight.el]] is a package manager that strives to make emacs configurations
 completely reproducable.
 
-**** straight                                                         :disabled:
+**** straight
 :PROPERTIES:
 :ID:       9dff9894-667c-4e74-9624-8aee533f8f70
 :END:
