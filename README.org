@@ -1348,7 +1348,7 @@ SYM is a symbol that stores a list."
            (use-package-normalize-commands args))))
 #+end_src
 
-**** hook                                                             :disabled:
+**** hook
 :PROPERTIES:
 :ID:       cd344df8-3345-4870-be25-df0003916ca8
 :END:
@@ -1362,16 +1362,14 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
-  <args>
-  ;; (let ((args (--map-when (symbolp it) (cons it nil) <args>)))
-  ;;   (-zip-with #'cons
-  ;;              (--map-when (not (s-matches-p "-hook\\'" (symbol-name it)))
-  ;;                          (void-symbol-intern it "-hook")
-  ;;                          (-map #'car args))
-  ;;              (--map-when (null it)
-  ;;                          (void-symbol-intern <name> "-mode")
-  ;;                          (-map #'cdr args))))
-  )
+  (let ((args (--map-when (symbolp it) (cons it nil) <args>)))
+    (-zip-with #'cons
+               (--map-when (not (s-matches-p "-hook\\'" (symbol-name it)))
+                           (void-symbol-intern it "-hook")
+                           (-map #'car args))
+               (--map-when (null it)
+                           (void-symbol-intern <name> "-mode")
+                           (-map #'cdr args)))))
 #+end_src
 
 ***** handler
