@@ -1355,16 +1355,19 @@ SYM is a symbol that stores a list."
 Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:hook (name _keyword args rest state)
-  "Generate use-package custom keyword code."
+(defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
+  )
+
+(defun use-package:ensure-hook ())
+(defun use-package:ensure-mode ())
+
+(defadvice! use-void-add-hook (:override use-package-handler/:hook)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (cl-mapcan
     (-lambda ((syms . fun))
-      (when fun
-        (--map `(void-add-hook ',(intern (concat (symbol-name it) use-package-hook-name-suffix))
-                               #',fun)
-               (if (use-package-non-nil-symbolp syms) (list syms) syms))))
+      (mapcar (lambda (sym) `(void-add-hook ',sym #',fun))
+              (if (use-package-non-nil-symbolp syms) (list syms) syms)))
     (use-package-normalize-commands args))))
 #+end_src
 
