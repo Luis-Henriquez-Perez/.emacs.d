@@ -1345,14 +1345,19 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-(use-package use-package
-  :setq
-  (use-package-ignore-unknown-keywords . t)
-  (use-package-always-defer . t)
-  (use-package-always-ensure . nil)
-  (use-package-verbose . nil)
-  (use-package-expand-minimally . t))
-#+end_src
+;; (use-package use-package
+;;   :setq
+;;   (use-package-ignore-unknown-keywords . t)
+;;   (use-package-always-defer . t)
+;;   (use-package-always-ensure . nil)
+;;   (use-package-verbose . nil)
+;;   (use-package-expand-minimally . t))
+(progn
+  (setq use-package-ignore-unknown-keywords t)
+  (setq use-package-always-defer t)
+  (setq use-package-always-ensure nil)
+  (setq use-package-verbose nil)
+  (setq use-package-expand-minimally t))#+end_src
 
 *** convenience wrappers
 :PROPERTIES:
