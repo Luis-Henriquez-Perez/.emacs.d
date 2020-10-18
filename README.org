@@ -1153,6 +1153,8 @@ SYM is a symbol that stores a list."
 #+begin_src emacs-lisp
 (use-package use-package
   :setq
+  (use-package-always-defer . t)
+  (use-package-always-ensure . nil)
   (use-package-verbose . nil)
   (use-package-expand-minimally . t))
 #+end_src
