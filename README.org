@@ -1345,6 +1345,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
+(require 'use-package)
 (use-package use-package
   :setq
   (use-package-ignore-unknown-keywords . t)
