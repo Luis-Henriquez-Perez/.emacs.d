@@ -1362,10 +1362,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
     (-zip-with #'cons
                (--map-when (not (s-matches-p "-hook\\'" (symbol-name it)))
                            (void-symbol-intern it "-hook")
-                           (map-keys args))
+                           (-map #'car args))
                (--map-when (null it)
                            (void-symbol-intern <name> "-mode")
-                           (map-values args)))))
+                           (-map #'cdr args)))))
 
 
 (defadvice! use-void-add-hook (:override use-package-handler/:hook)
