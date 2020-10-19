@@ -6674,7 +6674,7 @@ in time to see older posts.
 
 #+begin_src emacs-lisp
 (use-package elfeed
-  :ignore-buffers ("\\*elfeed")
+  ;; :ignore-buffers ("\\*elfeed")
   :commands elfeed
   :setq
   (elfeed-search-filter         . "@1-year-old")
