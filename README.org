@@ -1351,7 +1351,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
-  (thread-last (use-package:args-or-error <args>)
+  (thread-last (use-package:args-or-error <args> (-orfn #'symbolp #'-cons-pair-p))
     (--map-when (not (-cons-pair-p it)) (cons it nil))
     (--map (cons (use-package:ensure-hook (car it))
                  (use-package:ensure-mode (cdr it) <name>)))))
