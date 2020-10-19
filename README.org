@@ -1464,7 +1464,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
 :END:
 
-*** invalid args
+**** invalid args
 :PROPERTIES:
 :ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
 :END:
@@ -1477,7 +1477,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
       args)))
 #+end_src
 
-*** unfold args
+**** unfold args
 :PROPERTIES:
 :ID:       a9ec9725-550e-4885-9292-1f937d6009f9
 :END:
@@ -1498,7 +1498,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
          (list args (-find (-not valid-item-p) args)))))
 #+end_src
 
-*** hook and mode
+**** hook and mode
 :PROPERTIES:
 :ID:       82ce7194-1619-4ecf-8c0d-d43bbde5f852
 :END:
