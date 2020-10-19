@@ -1199,8 +1199,6 @@ built-in packages and external packages.
 #+begin_src emacs-lisp
 (defvar use-package:defaults nil
   "Default keywords used for `use-package'.")
-
-(push (cons :ensure t) use-package-defaults)
 #+end_src
 
 *** add alias support
