@@ -1154,6 +1154,11 @@ SYM is a symbol that stores a list."
 :ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
+*** alises
+:PROPERTIES:
+:ID:       f2f69aaa-0641-49d0-8606-172ae5b260b3
+:END:
+
 *** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
