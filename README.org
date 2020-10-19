@@ -1386,7 +1386,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 (defadvice! use-void-add-hook (:override use-packag-handler/:hook)
   (use-package-concat
    (use-package-process-keywords <name> <rest> <state>)
-   (-list <args>)
+   (list <args>)
    ;; (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #'fn))
    ;;         <args>)
    ))
