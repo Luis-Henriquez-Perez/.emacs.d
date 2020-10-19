@@ -1171,6 +1171,7 @@ These are wrappers around =use-package= with a bit of additional functionality.
 #+begin_src emacs-lisp
 (defmacro use-package! (package &rest args)
   "Wrapper around `use-package'."
+  (declare (indent defun))
   `(use-package ,package
      ,@(thread-last (map-merge 'plist args use-package:defaults)
          (-replace-where #'keywordp #'use-package:true-key))))
@@ -1549,13 +1550,15 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (use-package! use-package
-  :demand t
   :setq
   (use-package-ignore-unknown-keywords . t)
   (use-package-always-defer . t)
   (use-package-always-ensure . nil)
   (use-package-verbose . nil)
-  (use-package-expand-minimally . t))
+  (use-package-expand-minimally . t)
+  :init
+  (push (cons :ensure t) use-package:defaults)
+  (push (cons :ensure :straight) use-package:aliases))
 #+end_src
 
 ** Packages
