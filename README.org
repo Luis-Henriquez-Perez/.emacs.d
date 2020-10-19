@@ -1441,10 +1441,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defun use-package:args-as-one (args &optional valid-item-p)
-  (aif (--find (not (funcall valid-item-p it)) args)
-      (progn (when (and (listp (car args)) (= 1 (length (car it))))
-               (use-package:args-as-one (car args) valid-item-p))
-             )
+  (aif (or (--find (not (funcall valid-item-p it)) args)
+           (when (and (listp (car args)) (= 1 (length (car it))))
+             (--find (not (funcall valid-item-p it)) (car args))))
+      (use-package-error (format "Invalid argument %s." it))
     args))
 #+end_src
 
