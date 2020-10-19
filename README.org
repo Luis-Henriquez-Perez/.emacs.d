@@ -1172,7 +1172,7 @@ In this headline, the things that will do.
   `(use-package! ,feature :straight nil ,@args))
 #+end_src
 
-**** use-package
+**** use-package!
 :PROPERTIES:
 :ID:       1903deb5-bbbd-4479-81a1-c12c56d29be7
 :END:
@@ -1182,6 +1182,11 @@ In this headline, the things that will do.
   `(use-package!,package
      ,@(-replace-where #'keywordp #'use-package:true-key args)))
 #+end_src
+
+**** use-feature!
+:PROPERTIES:
+:ID:       4b9e7bc4-4e22-4e81-bef0-99b78bc8befd
+:END:
 
 *** add alias support
 :PROPERTIES:
