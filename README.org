@@ -1196,7 +1196,7 @@ built-in packages and external packages.
 (defmacro use-feature! (feature &rest args)
   "Wrapper around `use-package!'."
   (declare (indent defun))
-  `(use-package! ,feature ,@args))
+  `(use-package! ,feature :ensure nil ,@args))
 #+end_src
 
 *** default keywords
