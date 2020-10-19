@@ -1396,16 +1396,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
     (--map-when (not (-cons-pair-p it)) (cons it nil))
     (--map (cons (use-package:ensure-hook (car it))
                  (use-package:ensure-mode (cdr it) <name>)))))
-
-(defun use-package:ensure-mode (val package)
-  (or val
-      (alet (not (string-match-p "-mode\\'" (void-to-string package)))
-        (void-symbol-intern package (when it "-mode")))))
-
-(defun use-package:ensure-hook (var)
-  (if (s-matches-p "-hook\\'" (symbol-name var))
-      var
-    (void-symbol-intern var "-hook")))
 #+end_src
 
 ***** handler
@@ -1503,6 +1493,23 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
          (list (car args) (-find (-not valid-item-p) (car args))))
         (t
          (list args (-find (-not valid-item-p) args)))))
+#+end_src
+
+*** hook and mode
+:PROPERTIES:
+:ID:       82ce7194-1619-4ecf-8c0d-d43bbde5f852
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:ensure-mode (val package)
+  (or val
+      (alet (not (string-match-p "-mode\\'" (void-to-string package)))
+        (void-symbol-intern package (when it "-mode")))))
+
+(defun use-package:ensure-hook (var)
+  (if (s-matches-p "-hook\\'" (symbol-name var))
+      var
+    (void-symbol-intern var "-hook")))
 #+end_src
 
 ** Packages
