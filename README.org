@@ -6565,12 +6565,12 @@ have to set out to look for a file with =dired=.
   (void-add-advice #'recentf-save-list :before #'recentf-cleanup)
   (recentf-mode 1)
   :setq
-  (recentf-exclude . (list #'file-remote-p
-                           "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
-                           ;; ignore private Void temp files (but not all of them)
-                           #'(lambda (file)
-                               (-some-p (apply-partially #'file-in-directory-p file)
-                                (list VOID-DATA-DIR)))))
+  ;; (recentf-exclude . (list #'file-remote-p
+  ;;                          "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
+  ;;                          ;; ignore private Void temp files (but not all of them)
+  ;;                          #'(lambda (file)
+  ;;                              (-some-p (apply-partially #'file-in-directory-p file)
+  ;;                               (list VOID-DATA-DIR)))))
   (recentf-max-menu-items . 0)
   (recentf-max-saved-items . 700)
   :custom
