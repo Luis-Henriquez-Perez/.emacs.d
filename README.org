@@ -1441,7 +1441,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defun use-package:args-or-error (args valid-p)
-  (-let (((args invalid-elt) (use-package:unfold-args args)))
+  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
     (if invalid-elt
         (use-package-error "Invalid element: %S" elt)
       args)))
