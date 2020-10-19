@@ -1188,6 +1188,9 @@ In this headline, the things that will do.
 :ID:       4b9e7bc4-4e22-4e81-bef0-99b78bc8befd
 :END:
 
+This wrapper around =use-package!= is meant to explicity distinguish between
+built-in packages and external packages.
+
 *** add alias support
 :PROPERTIES:
 :ID:       180869b2-db8d-48a6-ac6f-6a5be6313c73
