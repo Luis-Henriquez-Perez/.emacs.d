@@ -1169,7 +1169,7 @@ In this headline, the things that will do.
 #+begin_src emacs-lisp
 (defmacro use-feature (feature &rest args)
   (declare (indent defun))
-  `(use-package!,feature :straight nil ,@args))
+  `(use-package! ,feature :straight nil ,@args))
 #+end_src
 
 **** use-package
