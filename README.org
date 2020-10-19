@@ -1478,7 +1478,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq :hook it) (list :vhook it) use-package-keywords))
+      (--splice (eq :hook it) (list :hook it) use-package-keywords))
 #+end_src
 
 ****** normalize
@@ -1487,7 +1487,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-normalize/:vhook (name keyword args)
+(defun use-package-normalize/:hook (name keyword args)
   (thread-last (use-package:args-or-error args (-orfn #'symbolp #'-cons-pair-p))
     (--map-when (not (-cons-pair-p it)) (cons it nil))
     (--map (cons (use-package:ensure-hook (car it))
@@ -1500,7 +1500,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:vhook (name _keyword args rest state)
+(defun use-package-handler/:hook (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
@@ -2105,7 +2105,7 @@ while the user is working.
 
 #+begin_src emacs-lisp
 (use-package! gcmh
-  :vhook emacs-startup
+  :hook emacs-startup
   :setq
   (gcmh-idle-delay . 10)
   (gcmh-verbose . void-debug-p)
@@ -2132,7 +2132,7 @@ while the user is working.
 
 #+begin_src emacs-lisp
 (use-package! keyfreq
-  :vhook emacs-startup)
+  :hook emacs-startup)
 #+end_src
 
 ** Initialize
@@ -2450,7 +2450,7 @@ color in the frame title.
 (use-package! osx-clipboard
   :os mac
   :when (or (daemonp) (not (display-graphic-p)))
-  :vhook emacs-startup)
+  :hook emacs-startup)
 #+end_src
 
 **** linux
@@ -2666,7 +2666,7 @@ This package.
 #+begin_src emacs-lisp
 (use-package! idle-require
   :demand t
-  :vhook emacs-startup
+  :hook emacs-startup
   :setq
   (idle-require-idle-delay . 7)
   (idle-require-load-break . 2))
@@ -3062,7 +3062,7 @@ makes emacs feel like a window manager with gaps.
 #+begin_src emacs-lisp
 (use-package! frame
   :straight nil
-  :vhook (window-setup . window-divider-mode)
+  :hook (window-setup . window-divider-mode)
   :custom
   (window-divider-default-places       . t)
   (window-divider-default-bottom-width . 10)
@@ -3169,7 +3169,7 @@ functions which open external linux applications.
 
 #+begin_src emacs-lisp
 (use-package! exwm
-  :vhook (exwm-mode . hide-mode-line-mode)
+  :hook (exwm-mode . hide-mode-line-mode)
   :before-call (void/open-qutebrowser counsel-linux-app void/open-emacs-instance)
   :setq (exwm-replace . nil)
   :config
@@ -3295,7 +3295,7 @@ Emacs's text editing capabilities on it.
 (use-package! exwm-firefox-evil
   :disabled t
   :after exwm
-  :vhook (exwm-manage-finish . exwm-firefox-evil-activate-if-firefox)
+  :hook (exwm-manage-finish . exwm-firefox-evil-activate-if-firefox)
   :config
   (dolist (k `(escape))
     (cl-pushnew k exwm-input-prefix-keys)))
@@ -3535,7 +3535,7 @@ be inserted and interactively completed.
 
 #+begin_src emacs-lisp
 (use-package! yasnippet
-  :vhook (prog-mode . yas-minor-mode-on)
+  :hook (prog-mode . yas-minor-mode-on)
   :setq
   (yas-snippet-dirs . (list (concat VOID-DATA-DIR "snippets/")))
   (yas-verbosity . (if void-debug-p 3 0))
@@ -3595,7 +3595,7 @@ been recently opened buffers (this list is managed by [[f26bedb3-a172-4543-afd0-
 
 #+begin_src emacs-lisp
 (use-package! ivy
-  :vhook emacs-startup
+  :hook emacs-startup
   ;; :custom
   ;; (ivy-initial-inputs-alist . nil)
   :setq
@@ -3670,7 +3670,7 @@ next completion.
 #+begin_src emacs-lisp
 (use-package! prescient
   :pre-setq (prescient-save-file . (concat VOID-DATA-DIR "prescient-save.el"))
-  :vhook (ivy-mode . prescient-persist-mode))
+  :hook (ivy-mode . prescient-persist-mode))
 #+end_src
 
 **** sorting and filtering
@@ -3684,7 +3684,7 @@ filtering algorithm that I find preferrable to ivy's defaults.
 
 #+begin_src emacs-lisp
 (use-package! ivy-prescient
-  :vhook ivy-mode
+  :hook ivy-mode
   :setq
   (ivy-prescient-sort-commands . '(:not swiper swiper-isearch ivy-switch-buffer))
   (ivy-prescient-retain-classic-highlighting . t))
@@ -3755,7 +3755,7 @@ that using =ivy= for completion.
 
 #+begin_src emacs-lisp
 (use-package! counsel
-  :vhook ivy-mode
+  :hook ivy-mode
   :setq
   (counsel-find-file-ignore-regexp . "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)")
   (counsel-describe-function-function . #'helpful-callable)
@@ -3876,7 +3876,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (use-package! company
-  :vhook prog-mode
+  :hook prog-mode
   :bind (:company-active-map
          ([tab] . company-select-next)
          ([backtab] . company-select-previous)
@@ -3983,7 +3983,7 @@ worth quoting here:
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
 
 #+begin_src emacs-lisp
-(use-package! company-prescient :vhook company-mode)
+(use-package! company-prescient :hook company-mode)
 #+end_src
 
 * Email
@@ -4141,7 +4141,7 @@ it is definitely on my list of things to try out.
 #+begin_src emacs-lisp
 (use-package! org-mu4e
   :disabled t
-  :vhook (mu4e-compose-mode . org-mu4e-compose-org-mode)
+  :hook (mu4e-compose-mode . org-mu4e-compose-org-mode)
   :setq
   (org-mu4e-link-query-in-headers-mode . nil)
   (org-mu4e-convert-to-html . t)
@@ -4844,7 +4844,7 @@ What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is 
 
 #+begin_src emacs-lisp
 (use-package! highlight-numbers
-  :vhook (prog-mode conf-mode)
+  :hook (prog-mode conf-mode)
   :setq (highlight-numbers-generic-regexp . "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>"))
 #+end_src
 
@@ -4858,7 +4858,7 @@ Also pretty self explanatory is [[https://github.com/dgutov/highlight-escape-seq
 #+begin_src emacs-lisp
 (use-package! highlight-escape-sequences
   :straight (:host github :repo "hlissner/highlight-escape-sequences")
-  :vhook (prog-mode conf-mode))
+  :hook (prog-mode conf-mode))
 #+end_src
 
 ** hideshow
@@ -4871,7 +4871,7 @@ Org Mode. The feature responsible for doing this is [[][hideshow]].
 
 #+begin_src emacs-lisp
 (use-package! hideshow
-  :vhook (prog-mode . hs-minor-mode)
+  :hook (prog-mode . hs-minor-mode)
   :commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
   :setq (hs-hide-comments-when-hiding-all . nil))
 #+end_src
@@ -4886,7 +4886,7 @@ great idea! It makes it really easy to see which parentheses go together.
 
 #+begin_src emacs-lisp
 (use-package! rainbow-delimiters
-  :vhook (prog-mode reb-mode-hook)
+  :hook (prog-mode reb-mode-hook)
   :setq (rainbow-delimiters-max-face-count . 9))
 #+end_src
 
@@ -5246,7 +5246,7 @@ it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
 (use-package! aggressive-indent
-  :vhook emacs-lisp-mode)
+  :hook emacs-lisp-mode)
 #+end_src
 
 *** electric indent
@@ -5269,7 +5269,7 @@ it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
 (use-package! ws-butler
-  :vhook (prog-mode org-mode)
+  :hook (prog-mode org-mode)
   :config
   (append! ws-butler-global-exempt-modes
     '(special-mode comint-mode term-mode eshell-mode)))
@@ -5303,7 +5303,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 
 #+begin_src emacs-lisp
 (use-package! smartparens
-  :vhook (prog-mode eshell-mode ielm-mode)
+  :hook (prog-mode eshell-mode ielm-mode)
   :setq
   (sp-highlight-pair-overlay . nil)
   (sp-highlight-wrap-overlay . nil)
@@ -5361,7 +5361,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 #+begin_src emacs-lisp
 (use-package! lispyville
   :commands lispyville-comment-or-uncomment-line
-  :vhook emacs-lisp-mode
+  :hook emacs-lisp-mode
   :bind
   (:emacs-lisp-mode-map
    ([remap evil-yank]                 . lispyville-yank)
@@ -5457,7 +5457,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 (use-package! lispy
-  :vhook emacs-lisp-mode
+  :hook emacs-lisp-mode
   :setq
   (lispy-avy-style-paren . 'at-full)
   (lispy-eval-display-style . 'overlay)
@@ -5578,7 +5578,7 @@ and provides facilities for writing custom extensions. Also see our page on
 #+begin_src emacs-lisp
 (use-package! evil
   :demand t
-  :vhook window-setup
+  :hook window-setup
   ;; :custom
   ;; (evil-want-C-u-scroll    . t)
   ;; (evil-want-C-d-scroll    . t)
@@ -6050,7 +6050,7 @@ Why not just go to the end of the ="= like any other around operator?
 :END:
 
 #+begin_src emacs-lisp
-(use-package! evil-surround :vhook prog-mode-hook text-mode-hook)
+(use-package! evil-surround :hook prog-mode-hook text-mode-hook)
 #+end_src
 
 *** evil-matchit
@@ -6059,7 +6059,7 @@ Why not just go to the end of the ="= like any other around operator?
 :END:
 
 #+begin_src emacs-lisp
-(use-package! evil-matchit :vhook prog-mode)
+(use-package! evil-matchit :hook prog-mode)
 #+end_src
 
 *** evil-exchange
@@ -6669,7 +6669,7 @@ again, you are taken to the location you left off. This is very convenient.
 #+begin_src emacs-lisp
 (use-feature! savehist
   :idle-require custom
-  :vhook emacs-startup
+  :hook emacs-startup
   :setq
   (savehist-save-minibuffer-history . t)
   (savehist-autosave-interval . nil)
@@ -7049,7 +7049,7 @@ which only some files are hidden. That's wierd, so I get rid of it.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! all-the-icons-dired :vhook ranger-mode-hook)
+(use-package! all-the-icons-dired :hook ranger-mode-hook)
 #+end_src
 
 ** restart emacs
@@ -7481,7 +7481,7 @@ user delays.
 
 #+begin_src emacs-lisp
 (use-package! super-save
-  :vhook emacs-startup
+  :hook emacs-startup
   :setq
   (super-save-idle-duration . 5)
   (super-save-auto-save-when-idle . t))
@@ -7736,7 +7736,7 @@ The change to this function."
 
 #+begin_src emacs-lisp
 (use-package! highlight-quoted
-  :vhook emacs-lisp-mode)
+  :hook emacs-lisp-mode)
 #+end_src
 
 **** buttercup
@@ -7779,7 +7779,7 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 
 #+begin_src emacs-lisp
 (use-package! outshine
-  :vhook emacs-lisp-mode
+  :hook emacs-lisp-mode
   :config
   (general-def '(normal) emacs-lisp-mode-map
     "TAB" #'outline-toggle-children))
@@ -8541,7 +8541,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package! org-fancy-priorities
-  :vhook org-mode
+  :hook org-mode
   ;; :setq
   ;; (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
   ;;                                    (all-the-icons-octicon "arrow-up")
@@ -8559,7 +8559,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package! org-superstar
-  :vhook org-mode
+  :hook org-mode
   :pre-setq
   (org-superstar-headline-bullets-list . (list "◉" "○" "▷"))
   :setq
@@ -8823,7 +8823,7 @@ referenance org headlines.
   ;; Global ID state means we can have ID links anywhere. This is required for
   ;; `org-brain', however.
   (org-id-locations-file-relative . t)
-  :vhook (org-insert-heading . org-id-get-create))
+  :hook (org-insert-heading . org-id-get-create))
 #+end_src
 
 *** org clock
@@ -8838,7 +8838,7 @@ tracking the time you spend on a particular task.
 (use-feature! org-clock
   :commands org-clock-in
   ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
-  :vhook (kill-emacs . org-clock-save)
+  :hook (kill-emacs . org-clock-save)
   :setq
   ;; org-clock-sound
   ;; org-show-notification-handler
@@ -8859,7 +8859,7 @@ tracking the time you spend on a particular task.
 #+begin_src emacs-lisp
 (use-feature! org-crypt
   :commands org-encrypt-entries org-encrypt-entry org-decrypt-entries org-decrypt-entry
-  :vhook (org-reveal-start . org-decrypt-entry)
+  :hook (org-reveal-start . org-decrypt-entry)
   ;; :preface
   ;; ;; org-crypt falls back to CRYPTKEY property then `epa-file-encrypt-to', which
   ;; ;; is a better default than the empty string `org-crypt-key' defaults to.
@@ -8975,7 +8975,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package! modern-cpp-font-lock
-  :vhook (c++-mode . modern-c++-font-lock-mode))
+  :hook (c++-mode . modern-c++-font-lock-mode))
 #+end_src
 
 *** demangle
@@ -8985,7 +8985,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package! demangle-mode
-  :vhook llvm-mode)
+  :hook llvm-mode)
 #+end_src
 
 ** TODO latex
@@ -9001,7 +9001,7 @@ org api it seems.
 #+begin_src emacs-lisp
 (use-feature! tex
   :mode ("\\.tex\\'" . LaTeX-mode)
-  :vhook (LaTex-mode . visual-line-mode)
+  :hook (LaTex-mode . visual-line-mode)
   :setq
   (TeX-parse-self . t)
   (TeX-auto-save . t)
@@ -9032,7 +9032,7 @@ org api it seems.
 
 #+begin_src emacs-lisp
 (use-package! adaptive-wrap
-  :vhook (LaTeX-mode . adaptive-wrap-prefix-mode)
+  :hook (LaTeX-mode . adaptive-wrap-prefix-mode)
   :setq-default (adaptive-wrap-extra-indent . 0))
 #+end_src
 
@@ -9118,7 +9118,7 @@ you can "discover" the commands as you go along.
 
 #+begin_src emacs-lisp
 (use-package! which-key
-  :vhook emacs-startup
+  :hook emacs-startup
   :setq
   (which-key-sort-uppercase-first . nil)
   (which-key-max-display-columns . nil)
@@ -9157,7 +9157,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 #+begin_src emacs-lisp
 (use-package! dashboard
   :demand t
-  :vhook (window-setup . dashboard-insert-startupify-lists)
+  :hook (window-setup . dashboard-insert-startupify-lists)
   :init
   (defadvice! open-dashboard-instead (:override void-initial-buffer)
     (if void-debug-p (get-buffer "*Messages*")
@@ -9261,7 +9261,7 @@ the mode line.
 
 #+begin_src emacs-lisp
 (use-package! hide-mode-line
-  :vhook Man-mode completion-list-mode)
+  :hook Man-mode completion-list-mode)
 #+end_src
 
 ** all-the-icons
