@@ -1207,7 +1207,7 @@ to be so simple.
 :END:
 
 #+begin_src emacs-lisp
-(defvar use-package:aliases nil
+(defvar use-package:aliases '((:hook . :vhook) (:ensure . :straight))
   "An alist of the form (ALIAS . DEF).
 In the `use-package!' macro, keywords will be repaced with DEF.")
 #+end_src
