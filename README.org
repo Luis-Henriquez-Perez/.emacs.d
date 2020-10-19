@@ -7438,7 +7438,7 @@ user delays.
   (super-save-auto-save-when-idle . t))
 #+end_src
 
-* Languages                                                           :disabled:
+* Languages
 :PROPERTIES:
 :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
 :END:
@@ -8995,7 +8995,7 @@ org api it seems.
 (use-package latex-preview-pane)
 #+end_src
 
-* User Interface                                                      :disabled:
+* User Interface
 :PROPERTIES:
 :ID: ee57f711-9a4f-421f-b831-ab4907402e52
 :END:
