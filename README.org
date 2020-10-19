@@ -1204,6 +1204,62 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 :ID:       846f7099-131e-45a6-83ad-72fe5cb3c24c
 :END:
 
+*** helpers
+:PROPERTIES:
+:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
+:END:
+
+**** invalid args
+:PROPERTIES:
+:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:args-or-error (args valid-p)
+  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
+    (if invalid-elt
+        (use-package-error (format "bad elt: %S | list: %S" invalid-elt args))
+      args)))
+#+end_src
+
+**** unfold args
+:PROPERTIES:
+:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
+:END:
+
+=identify= should answer what should the first item of this list look like.
+
+#+begin_src emacs-lisp
+(defun use-package:unfold-args (args valid-item-p)
+  "Return a list of two items."
+  (cond ((-all-p valid-item-p args)
+         (list args nil))
+        ((alet (car args)
+           (and (= 1 (length args))
+                (not (-cons-pair-p it))
+                (listp it)))
+         (list (car args) (-find (-not valid-item-p) (car args))))
+        (t
+         (list args (-find (-not valid-item-p) args)))))
+#+end_src
+
+**** hook and mode
+:PROPERTIES:
+:ID:       82ce7194-1619-4ecf-8c0d-d43bbde5f852
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:ensure-mode (val package)
+  (or val
+      (alet (not (string-match-p "-mode\\'" (void-to-string package)))
+        (void-symbol-intern package (when it "-mode")))))
+
+(defun use-package:ensure-hook (var)
+  (if (s-matches-p "-hook\\'" (symbol-name var))
+      var
+    (void-symbol-intern var "-hook")))
+#+end_src
+
 *** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
@@ -1472,61 +1528,6 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
   (setq use-package-expand-minimally t))
 #+end_src
 
-*** helpers
-:PROPERTIES:
-:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
-:END:
-
-**** invalid args
-:PROPERTIES:
-:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:args-or-error (args valid-p)
-  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
-    (if invalid-elt
-        (use-package-error (format "bad elt: %S | list: %S" invalid-elt args))
-      args)))
-#+end_src
-
-**** unfold args
-:PROPERTIES:
-:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
-:END:
-
-=identify= should answer what should the first item of this list look like.
-
-#+begin_src emacs-lisp
-(defun use-package:unfold-args (args valid-item-p)
-  "Return a list of two items."
-  (cond ((-all-p valid-item-p args)
-         (list args nil))
-        ((alet (car args)
-           (and (= 1 (length args))
-                (not (-cons-pair-p it))
-                (listp it)))
-         (list (car args) (-find (-not valid-item-p) (car args))))
-        (t
-         (list args (-find (-not valid-item-p) args)))))
-#+end_src
-
-**** hook and mode
-:PROPERTIES:
-:ID:       82ce7194-1619-4ecf-8c0d-d43bbde5f852
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:ensure-mode (val package)
-  (or val
-      (alet (not (string-match-p "-mode\\'" (void-to-string package)))
-        (void-symbol-intern package (when it "-mode")))))
-
-(defun use-package:ensure-hook (var)
-  (if (s-matches-p "-hook\\'" (symbol-name var))
-      var
-    (void-symbol-intern var "-hook")))
-#+end_src
 
 ** Packages
 :PROPERTIES:
