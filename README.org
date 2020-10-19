@@ -1437,7 +1437,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 =identify= should answer what should the first item of this list look like.
 
 #+begin_src emacs-lisp
-(defun use-package:unfold-enlisted (args valid-item-p)
+(defun use-package:unfold-args (args valid-item-p)
   (cond ((-all-p valid-item-p args)
          args)
         ((alet (car args)
