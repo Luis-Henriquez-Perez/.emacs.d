@@ -1342,6 +1342,16 @@ SYM is a symbol that stores a list."
 :ID:       a24fb94b-7217-411d-86c6-144e34044a01
 :END:
 
+***** insert
+:PROPERTIES:
+:ID:       02d4c6fd-7203-4731-aace-17ddd9a52599
+:END:
+
+#+begin_src emacs-lisp
+(setq use-package-keywords
+      (--splice (eq :hook it) (list :thook it) use-package-keywords))
+#+end_src
+
 ***** normalize
 :PROPERTIES:
 :ID:       43767912-9f4d-46a9-bdfe-b7e4e5d1456c
@@ -2039,7 +2049,7 @@ while the user is working.
 
 #+begin_src emacs-lisp
 (use-package gcmh
-  :hook emacs-startup
+  :thook emacs-startup
   :setq
   (gcmh-idle-delay . 10)
   (gcmh-verbose . void-debug-p)
