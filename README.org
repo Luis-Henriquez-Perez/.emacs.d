@@ -1339,6 +1339,24 @@ SYM is a symbol that stores a list."
 
 **** thook
 :PROPERTIES:
+:ID:       a24fb94b-7217-411d-86c6-144e34044a01
+:END:
+
+***** normalize
+:PROPERTIES:
+:ID:       43767912-9f4d-46a9-bdfe-b7e4e5d1456c
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package-normalize/:thook (name keyword args)
+  (thread-last (use-package:args-or-error args (-orfn #'symbolp #'-cons-pair-p))
+    (--map-when (not (-cons-pair-p it)) (cons it nil))
+    (--map (cons (use-package:ensure-hook (car it))
+                 (use-package:ensure-mode (cdr it) name)))))
+#+end_src
+
+***** handle
+:PROPERTIES:
 :ID:       15b08656-4ee6-45fe-8fbb-83e087b08f31
 :END:
 
