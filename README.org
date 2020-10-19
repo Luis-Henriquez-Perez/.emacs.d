@@ -1236,7 +1236,7 @@ SYM is a symbol that stores a list."
            args)))
 #+end_src
 
-**** custom
+**** custom                                                           :disabled:
 :PROPERTIES:
 :ID:       f8e1ed5c-5e97-4e49-a843-e0d485222c81
 :END:
@@ -3001,7 +3001,7 @@ screen. By default the border between these windows is very thin, so it can be
 hard to distinguish windows sometimes. The point of adding borders to windows is
 to distinguish them easily from one another.
 
-*** window dividers
+*** window dividers                                                   :disabled:
 :PROPERTIES:
 :ID: 849718ae-9d4a-43ab-b113-584aefa87c5b
 :END:
@@ -3015,9 +3015,9 @@ makes emacs feel like a window manager with gaps.
   :straight nil
   :vhook (window-setup . window-divider-mode)
   :custom
-  (window-divider-default-places t)
-  (window-divider-default-bottom-width 10)
-  (window-divider-default-right-width 10)
+  (window-divider-default-places       . t)
+  (window-divider-default-bottom-width . 10)
+  (window-divider-default-right-width  . 10)
   :config
   (set-face-foreground 'window-divider "black")
   (blink-cursor-mode -1))
