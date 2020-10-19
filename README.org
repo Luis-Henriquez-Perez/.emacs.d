@@ -1328,10 +1328,7 @@ SYM is a symbol that stores a list."
 
 ;; should be a cons cell.
 (defun use-package-normalize/:alias (name keyword args)
-  (alet (use-package-as-one () args
-          (lambda (label arg)
-            arg))
-    (if (-cons-pair-p it) (list it) it)))
+  (use-package:args-or-error args #'symbolp))
 
 (defun use-package-handler/:alias (name _keyword args rest state)
   (use-package-concat
