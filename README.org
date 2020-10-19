@@ -1182,7 +1182,9 @@ These are wrappers around =use-package= with a bit of additional functionality.
   "Wrapper around `use-package'."
   (declare (indent defun))
   `(use-package ,package
-     ,@(-replace-where #'keywordp #'use-package:true-key args)))
+     ,@(thread-last args
+         (map-merge 'plist args use-package:defaults)
+         (-replace-where #'keywordp #'use-package:true-key))))
 #+end_src
 
 **** use-feature!
