@@ -1364,7 +1364,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (thread-last (use-package:args-as-one <args>)
     (--map-when (not (-cons-pair-p it)) (cons it nil))
     (--map (cons (use-package:ensure-hook (car it))
-                 (use-package:ensure-mode (cdr it) package)))))
+                 (use-package:ensure-mode (cdr it) <name>)))))
 
 (defun use-package:ensure-mode (val package)
   (or val
