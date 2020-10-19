@@ -1198,7 +1198,7 @@ built-in packages and external packages.
   "Wrapper around `use-package!'."
   (declare (indent defun))
   `(let ((use-package-always-ensure nil))
-     (use-package! ,feature :ensure nil ,@args)))
+     (use-package! ,feature ,@args)))
 #+end_src
 
 *** default keywords
