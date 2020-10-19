@@ -1360,11 +1360,8 @@ SYM is a symbol that stores a list."
 Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
-(defun use-package-normalize/:hook@abbrev-hooks-and-modes (name keyword args)
-  (use-package-as-one (symbol-name keyword) args
-    ()))
-
-(advice-add #'use-package-normalize/:hook :override #'use-package-normalize/:hook@abbrev-hooks-and-modes)
+(defadvice! abbrev-hooks-and-modes (:override abbrev-hooks-and-modes)
+  <args>)
 #+end_src
 
 ***** handler
