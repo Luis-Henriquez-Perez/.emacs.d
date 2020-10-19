@@ -1208,7 +1208,8 @@ SYM is a symbol that stores a list."
       (--splice (eq :init it) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
-  (let ((check (lambda (it) (and (consp it) (symbol-p (car it)))))
+  (or (use-package:unfold-enlisted args (lambda (it) (and (consp it) (symbol-p (car it))))))
+  (let ((check )
         )
     (use-package:args-as-one check args message))
   )
