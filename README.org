@@ -1293,9 +1293,7 @@ SYM is a symbol that stores a list."
 (push :after-call use-package-deferring-keywords)
 
 (defun use-package-normalize/:after-call (name keyword args)
-  (-list (use-package-as-one () args
-           (lambda (label arg)
-             arg))))
+  args)
 
 (defun use-package-handler/:after-call (name _keyword features rest state)
   (use-package-concat
