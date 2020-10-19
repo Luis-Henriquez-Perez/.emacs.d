@@ -1208,11 +1208,10 @@ SYM is a symbol that stores a list."
       (--splice (eq :init it) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
-  (aprog1 (use-package:args-as-one args)
-    (unless (-all-p #'consp it)
-      (thread-last (-find (-not #'consp) it)
-        (format "All arguments should be cons cells. %S isn't though.")
-        (use-package-error)))))
+  (let ((check (lambda (it) (and (consp it) (symbol-p (car it)))))
+        )
+    (use-package:args-as-one check args message))
+  )
 
 (defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
