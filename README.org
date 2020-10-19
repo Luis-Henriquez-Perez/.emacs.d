@@ -1953,16 +1953,6 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :ID: 6e4be80e-8149-424d-a801-d7871bfe8fc8
 :END:
 
-**** dash-functional
-:PROPERTIES:
-:ID:       4be107b5-b756-4372-9f74-655bda941b75
-:END:
-
-#+begin_src emacs-lisp
-(use-package! dash-functional
-  :demand t)
-#+end_src
-
 **** dash
 
 Dash is an excellent functional list manipulation library. If I did not use it
@@ -1973,6 +1963,16 @@ as a dependency, I'd end up rewriting many of its functions.
 
 #+begin_src emacs-lisp
 (use-package! dash :demand t)
+#+end_src
+
+**** dash-functional
+:PROPERTIES:
+:ID:       4be107b5-b756-4372-9f74-655bda941b75
+:END:
+
+#+begin_src emacs-lisp
+(use-package! dash-functional
+  :demand t)
 #+end_src
 
 **** general
