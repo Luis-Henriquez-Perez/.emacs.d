@@ -1183,7 +1183,7 @@ built-in packages and external packages.
 #+begin_src emacs-lisp
 (defmacro use-feature! (feature &rest args)
   (declare (indent defun))
-  `(use-package! ,feature :straight nil ,@args))
+  `(use-package! ,feature :ensure nil ,@args))
 #+end_src
 
 *** add alias support
