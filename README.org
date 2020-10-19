@@ -1421,6 +1421,20 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   `(use-package ,feature :straight nil ,@args))
 #+end_src
 
+*** helpers
+:PROPERTIES:
+:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:args-as-one (args)
+  (if (and (= 1 (length args))
+           (and (listp (car args))
+                (not (-cons-pair-p (car args)))))
+      (car args)
+    args))
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
