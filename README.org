@@ -1162,7 +1162,7 @@ SYM is a symbol that stores a list."
 #+begin_src emacs-lisp
 (defmacro use-package! (package &rest args)
   `(use-package ,package
-     ,@(--replace-where ())))
+     ,@(--replace-where () () args)))
 #+end_src
 
 *** alises
