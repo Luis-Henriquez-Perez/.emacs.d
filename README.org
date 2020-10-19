@@ -1210,7 +1210,7 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 (defun use-package:true-key (key)
   "Return the true KEY."
   (or (alist-get key use-package:alias-alist)
-      ))
+      key))
 #+end_src
 
 *** helpers
