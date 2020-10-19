@@ -1536,11 +1536,16 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
+(use-package! use-package
+  :setq
+  (use-package-ignore-unknown-keywords . t)
+  (use-package-always-defer . t)
+  (use-package-always-ensure . nil))
 (progn
   (require 'use-package)
-  (setq use-package-ignore-unknown-keywords t)
-  (setq use-package-always-defer t)
-  (setq use-package-always-ensure nil)
+  (setq )
+  (setq )
+  (setq )
   (setq use-package-verbose nil)
   (setq use-package-expand-minimally t))
 #+end_src
