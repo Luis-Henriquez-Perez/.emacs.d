@@ -1445,7 +1445,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
                 (not (-cons-pair-p it))
                 (listp it)))
          (or (-find (-not valid-item-p) (car args))
-             ))
+             (car args)))
         (t
          nil)))
 #+end_src
