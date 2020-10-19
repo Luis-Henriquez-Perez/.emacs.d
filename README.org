@@ -356,7 +356,7 @@ This code initializes straight if it's not already installed.
   (unless (featurep 'straight) (straight:init-fn))
   (let ((package (or (car-safe package-or-recipe) package-or-recipe)))
     (condition-case err
-        (progn (straight-use-package! package-or-recipe)
+        (progn (straight-use-package package-or-recipe)
                (void-log "✓ installed %s" package))
       (error
        (void-log "✕ failed to install %s because of %s" package err)))))
@@ -9712,7 +9712,7 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "p"
   ""  (list :ignore t                       :wk "package")
-  "i" (list :def #'straight-use-package!     :wk "install")
+  "i" (list :def #'straight-use-package     :wk "install")
   "r" (list :def #'straight-rebuild-package :wk "rebuild")
   "p" (list :def #'straight-pull-package    :wk "pull")
   "s" (list :def #'straight/search-package  :wk "search"))
