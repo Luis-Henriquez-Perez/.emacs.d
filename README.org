@@ -1361,8 +1361,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override #'use-package-normalize/:hook)
-  (if )
-  <args>)
+  (thread-last (use-package:args-as-one <args>)
+    (--map-when (not (-cons-pair-p it)) (cons it nil))
+    (map-keys-apply (lambda ()))
+    (map-values-apply (lambda ()))))
 #+end_src
 
 ***** handler
