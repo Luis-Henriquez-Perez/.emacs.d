@@ -1438,16 +1438,16 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defun use-package:unfold-args (args valid-item-p)
+  "Return a list of two items."
   (cond ((-all-p valid-item-p args)
-         args)
+         (list args nil))
         ((alet (car args)
            (and (= 1 (length args))
                 (not (-cons-pair-p it))
                 (listp it)))
-         (or (-find (-not valid-item-p) (car args))
-             (car args)))
+         (list (car args) (-find (-not valid-item-p) (car args))))
         (t
-         nil)))
+         (list args (-find (-not valid-item-p) args)))))
 #+end_src
 
 ** Packages
