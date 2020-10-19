@@ -1381,7 +1381,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
    ))
 #+end_src
 
-**** popup                                                            :disabled:
+**** popup
 :PROPERTIES:
 :ID:       bdd0f442-4351-4ac8-874b-33991b6c2806
 :END:
