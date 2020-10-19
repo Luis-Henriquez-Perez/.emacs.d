@@ -1190,7 +1190,8 @@ In this headline, the things that will do.
 
 One thing I miss about leaf is alias support. I would assume that in order to
 override a default use-package keyword, all you'd have to do is override or
-alias that keywords normalizer and handler functions.
+alias that keywords normalizer and handler functions. However, it doesn't seem
+to be so simple.
 
 **** aliases
 :PROPERTIES:
