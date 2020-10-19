@@ -1446,9 +1446,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
     (if (alet (car args)
           (and (listp it)
                (not (-cons-pair-p it))
-               (= 1 (length it))))
-        2
-      ;; (use-package:args-as-one (car args) valid-item-p)
+               (= 1 (length args))))
+        (use-package:args-as-one (car args) valid-item-p)
       nil)))
 #+end_src
 
