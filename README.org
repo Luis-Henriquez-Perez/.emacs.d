@@ -1197,8 +1197,7 @@ built-in packages and external packages.
 (defmacro use-feature! (feature &rest args)
   "Wrapper around `use-package!'."
   (declare (indent defun))
-  `(let ((use-package-always-ensure nil))
-     (use-package! ,feature ,@args)))
+  `(use-package! ,feature ,@args))
 #+end_src
 
 *** default keywords
@@ -1561,8 +1560,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 (use-package! use-package
   :setq
   (use-package-ignore-unknown-keywords . t)
-  (use-package-always-defer . t)
-  (use-package-always-ensure . t)
+  (use-package-always-defer . nil)
+  (use-package-always-ensure . nil)
   (use-package-verbose . nil)
   (use-package-expand-minimally . t)
   :init
