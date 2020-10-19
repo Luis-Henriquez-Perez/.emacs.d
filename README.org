@@ -1197,7 +1197,6 @@ built-in packages and external packages.
   "Wrapper around `use-package!'."
   (declare (indent defun))
   `(use-package! ,feature ,@(plist-put args :ensure nil)))
-
 #+end_src
 
 *** default keywords
