@@ -6674,7 +6674,6 @@ in time to see older posts.
 
 #+begin_src emacs-lisp
 (use-package elfeed
-  ;; :ignore-buffers ("\\*elfeed")
   :commands elfeed
   :setq
   (elfeed-search-filter         . "@1-year-old")
@@ -9017,7 +9016,6 @@ in a better format.
 
 #+begin_src emacs-lisp
 (use-package helpful
-  :ignore-buffers ("\\*Help.*")
   :popup
   ("\\*Help.*"
    (display-buffer-at-bottom)
