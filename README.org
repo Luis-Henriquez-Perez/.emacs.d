@@ -1172,7 +1172,8 @@ SYM is a symbol that stores a list."
 
 #+begin_src emacs-lisp
 (defvar use-package:aliases nil
-  "")
+  "An alias of alias definition.
+In the `use-package' macro, ")
 #+end_src
 
 *** custom keywords
