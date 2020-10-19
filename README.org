@@ -3937,7 +3937,7 @@ worth quoting here:
 (use-package company-prescient :vhook company-mode)
 #+end_src
 
-* Email                                                               :disabled:
+* Email
 :PROPERTIES:
 :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
 :END:
@@ -4510,7 +4510,7 @@ mean 2000 which is not a lot by today's standard).
   (gnus-sorted-header-list . gnus-visible-headers))
 #+end_src
 
-* Web Browsing                                                        :disabled:
+* Web Browsing
 :PROPERTIES:
 :ID: f0960e47-5dbb-4cca-a17a-f8eb0da445d3
 :END:
@@ -4612,7 +4612,7 @@ The optional argument NEW-WINDOW is not used."
   :setq (xwwp-follow-link-completion-system . 'ivy))
 #+end_src
 
-* Multimedia                                                          :disabled:
+* Multimedia
 :PROPERTIES:
 :ID: 20a915a0-8525-413c-bd68-f1d5c14ce3da
 :END:
@@ -6181,7 +6181,7 @@ larger text objects. It's saves me keystrokes.
   (global-undo-tree-mode -1))
 #+end_src
 
-* Utility                                                             :disabled:
+* Utility
 :PROPERTIES:
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
 :END:
@@ -9388,7 +9388,7 @@ graphical interface but.
 
 #+end_src
 
-* Keybindings                                                         :disabled:
+* Keybindings
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
