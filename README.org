@@ -1179,7 +1179,7 @@ In this headline, the things that will do.
 
 #+begin_src emacs-lisp
 (defmacro use-package! (package &rest args)
-  `(use-package!,package
+  `(use-package ,package
      ,@(-replace-where #'keywordp #'use-package:true-key args)))
 #+end_src
 
