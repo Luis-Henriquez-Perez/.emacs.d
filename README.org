@@ -1395,7 +1395,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq :init it) (list :alias it) use-package-keywords))
+      (--splice (eq :init it) (list :popup it) use-package-keywords))
 
 (defun use-package-normalize/:popup (name keyword args)
   (aprog1 (use-package:args-as-one args)))
