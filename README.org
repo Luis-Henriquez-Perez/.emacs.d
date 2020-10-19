@@ -5131,7 +5131,8 @@ file, see [[helpfn:edit-indirect-commit][edit-indirect-commit]].
 it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
-(use-package aggressive-indent :hook emacs-lisp-mode)
+(use-package aggressive-indent
+  :hook emacs-lisp-mode)
 #+end_src
 
 *** electric indent
