@@ -212,3 +212,8 @@ The purpose of this change is to add auto-committing to my emacs config.
 =use-package= is likely to be added to emacs. =use-package= rightly uses
 higher-order functions (the normalizer and handler) to control the expansion of
 new keywords.
+
+*** things
+:PROPERTIES:
+:ID:       648559e5-de65-4855-b5fd-38a28d75c8c9
+:END:
