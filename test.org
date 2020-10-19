@@ -292,14 +292,15 @@
                  '((a 2 3 4) a))))
 #+end_src
 
-* use-package
+* use-package!
 :PROPERTIES:
 :ID:       6c2ca11b-54bf-4875-87c8-5318f035a6c8
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest use-package-macro ()
-  )
+(ert-deftest use-package!-macro ()
+  (should-expand-to! (use-package! :hook emacs-startup-hook)
+                     (use-package :vhook emacs-startup-hook)))
 #+end_src
 
 * custom use-package keywords
