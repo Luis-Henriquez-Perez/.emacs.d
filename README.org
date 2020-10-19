@@ -1493,9 +1493,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
   (setq use-package-always-ensure nil)
   (setq use-package-verbose nil)
   (setq use-package-expand-minimally t))
-
-(void-add-advice #'use-package-normalize/:bind :override #'ignore)
-(void-add-advice #'use-package-handler/:bind :override #'ignore)
 #+end_src
 
 *** helpers
