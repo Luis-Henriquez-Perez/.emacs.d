@@ -208,3 +208,5 @@ The purpose of this change is to add auto-committing to my emacs config.
 :PROPERTIES:
 :ID:       c4b49a99-6b18-40b5-91ab-5c7965849e05
 :END:
+
+=use-package= is likely to be added to emacs.
