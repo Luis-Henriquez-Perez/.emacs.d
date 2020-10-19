@@ -1368,8 +1368,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 (defun use-package:ensure-mode (val package)
   (or val
-      (void-symbol-intern <name>
-                          (unless (string-match-p )))))
+      (alet (not (string-match-p "-mode\\'" package))
+        (void-symbol-intern <name> (when it "-mode")))))
 
 (defun use-package:ensure-hook (var)
   (if (s-matches-p "-hook\\'" (symbol-name var))
