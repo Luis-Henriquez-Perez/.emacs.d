@@ -2617,7 +2617,7 @@ This package.
 #+begin_src emacs-lisp
 (use-package idle-require
   :demand t
-  vhook emacs-startup
+  :vhook emacs-startup
   :setq
   (idle-require-idle-delay . 7)
   (idle-require-load-break . 2))
