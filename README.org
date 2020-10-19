@@ -1208,7 +1208,7 @@ SYM is a symbol that stores a list."
       (--splice (eq :init it) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
-  (use-package:args-or-error args (lambda (it) (and (consp it) (symbol-p (car it))))))
+  (use-package:args-or-error args (lambda (it) (and (consp it) (symbolp (car it))))))
 
 (defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
@@ -1308,8 +1308,7 @@ SYM is a symbol that stores a list."
                 use-package-keywords))
 
 (defun use-package-normalize/:idle-require (name keyword args)
-  (cl-assert (-all-p #'symbolp args))
-  args)
+  (use-package:args-or-error args #'symbolp))
 
 (defun use-package-handler/:idle-require (name _keyword args rest state)
   (use-package-concat
@@ -1355,7 +1354,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defadvice! abbrev-hooks-and-modes (:override use-package-normalize/:hook)
-  (thread-last (use-package:args-as-one <args>)
+  (thread-last (use-package:args-or-error <args>)
     (--map-when (not (-cons-pair-p it)) (cons it nil))
     (--map (cons (use-package:ensure-hook (car it))
                  (use-package:ensure-mode (cdr it) <name>)))))
