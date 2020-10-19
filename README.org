@@ -1154,7 +1154,23 @@ SYM is a symbol that stores a list."
 :ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
-*** use-package
+*** wrappers
+:PROPERTIES:
+:ID:       1e394ffd-597f-456c-9c56-ff9de5fae017
+:END:
+
+**** convenience wrappers
+:PROPERTIES:
+:ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
+:END:
+
+#+begin_src emacs-lisp
+(defmacro use-feature (feature &rest args)
+  (declare (indent defun))
+  `(use-package ,feature :straight nil ,@args))
+#+end_src
+
+**** use-package
 :PROPERTIES:
 :ID:       1903deb5-bbbd-4479-81a1-c12c56d29be7
 :END:
@@ -1480,17 +1496,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 (void-add-advice #'use-package-normalize/:bind :override #'ignore)
 (void-add-advice #'use-package-handler/:bind :override #'ignore)
-#+end_src
-
-*** convenience wrappers
-:PROPERTIES:
-:ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
-:END:
-
-#+begin_src emacs-lisp
-(defmacro use-feature (feature &rest args)
-  (declare (indent defun))
-  `(use-package ,feature :straight nil ,@args))
 #+end_src
 
 *** helpers
