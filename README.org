@@ -1363,8 +1363,13 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 (defadvice! abbrev-hooks-and-modes (:override #'use-package-normalize/:hook)
   (thread-last (use-package:args-as-one <args>)
     (--map-when (not (-cons-pair-p it)) (cons it nil))
-    (map-keys-apply (lambda ()))
-    (map-values-apply (lambda ()))))
+    (map-keys-apply (lambda (var)
+                      (if (s-matches-p (rx "-hook" eos))
+                          var
+                        (void-symbol-intern var "-hook"))))
+    (map-values-apply (lambda (val)
+                        (if (null val)
+                            )))))
 #+end_src
 
 ***** handler
