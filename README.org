@@ -3285,7 +3285,7 @@ Emacs's text editing capabilities on it.
    ("k" . buffer-expose-up-window)))
 #+end_src
 
-* Completion                                                          :disabled:
+* Completion
 :PROPERTIES:
 :ID: 056384d1-a95a-4dcb-bc9d-ffe95bbb52a8
 :END:
