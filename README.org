@@ -1188,7 +1188,7 @@ SYM is a symbol that stores a list."
 
 One thing I miss about leaf is alias support.
 
-**** alises
+**** aliases
 :PROPERTIES:
 :ID:       f2f69aaa-0641-49d0-8606-172ae5b260b3
 :END:
