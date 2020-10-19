@@ -1242,6 +1242,9 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
+(defun use-package-normalize/:custom ()
+  )
+
 (advice-remove 'use-package-normalize/:custom #'use-package-normalize/:custom@return-args-as-is)
 (defadvice! return-args-as-is (:override use-package-normalize/:custom)
   <args>)
