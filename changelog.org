@@ -203,3 +203,8 @@ emacs naming conventions to use the "-", I've decided to just use the prefix
 :END:
 
 The purpose of this change is to add auto-committing to my emacs config.
+
+** breaking change migrate from leaf to use-package
+:PROPERTIES:
+:ID:       c4b49a99-6b18-40b5-91ab-5c7965849e05
+:END:
