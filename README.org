@@ -1389,6 +1389,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 #+begin_src emacs-lisp
 (defun use-package-normalize/:popup ()
   `(push (cons ) display-buffer-alist))
+
+(defun use-package-handler/:popup ())
 #+end_src
 
 *** boostrap
