@@ -1390,7 +1390,7 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
            (use-package-normalize-commands args))))
 #+end_src
 
-**** thook
+**** hook
 :PROPERTIES:
 :ID:       a24fb94b-7217-411d-86c6-144e34044a01
 :END:
@@ -1429,39 +1429,6 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
    (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
            (use-package-normalize-commands args))))
-#+end_src
-
-**** hook                                                             :disabled:
-:PROPERTIES:
-:ID:       cd344df8-3345-4870-be25-df0003916ca8
-:END:
-
-***** normalize
-:PROPERTIES:
-:ID:       49eae781-64f1-4a9a-85f7-83de870d9f76
-:END:
-
-Use [[][void-add-hook]] instead of [[][add-hook]].
-
-#+begin_src emacs-lisp
-(defadvice! abbrev-hooks-and-modes (:override use-package-normalize/vhook)
-  (thread-last (use-package:args-or-error <args> (-orfn #'symbolp #'-cons-pair-p))
-    (--map-when (not (-cons-pair-p it)) (cons it nil))
-    (--map (cons (use-package:ensure-hook (car it))
-                 (use-package:ensure-mode (cdr it) <name>)))))
-#+end_src
-
-***** handler
-:PROPERTIES:
-:ID:       f5148b34-4d64-4dbd-af0f-2d5429e16f37
-:END:
-
-#+begin_src emacs-lisp
-(defadvice! use-void-add-hook (:override use-package-handler/vhook)
-  (use-package-concat
-   (use-package-process-keywords <name> <rest> <state>)
-   (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
-           (use-package-normalize-commands <args>))))
 #+end_src
 
 **** popup
