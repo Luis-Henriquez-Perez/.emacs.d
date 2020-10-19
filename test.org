@@ -272,6 +272,26 @@
     (should (string= "do-this" it))))
 #+end_src
 
+* use-package helpers
+:PROPERTIES:
+:ID:       d4a5f2af-2014-4d61-87de-748254c8c476
+:END:
+
+** as-one
+:PROPERTIES:
+:ID:       531081a7-7422-4678-bd5d-b55ff31d81c8
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package:unfold-args ()
+  (should (equal (use-package:unfold-args '(1 2 3 4) #'numberp)
+                 '((1 2 3 4) nil)))
+  (should (equal (use-package:unfold-args '((1 2 3 4)) #'numberp)
+                 '((1 2 3 4) nil)))
+  (should (equal (use-package:unfold-args '((a 2 3 4)) #'numberp)
+                 '((a 2 3 4) a))))
+#+end_src
+
 * custom use-package keywords
 :PROPERTIES:
 :ID:       724890eb-4760-400a-9943-3ba25a4772cd
@@ -284,8 +304,28 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-os ()
-  (should (equal (macroexpand-1 '(use-package dummy :os mac))
-                 '(with-os! mac (require 'dummy nil nil)))))
+  (should-expand-to! (use-package dummy :os mac :init (+ 1 1))
+                     (with-os! mac (+ 1 1))))
+#+end_src
+
+** pre-setq
+:PROPERTIES:
+:ID:       8b7867bb-6fa7-4702-a90f-0ec9759ec152
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-pre-setq ()
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t))
+
+    (should-expand-to! (use-package foo :pre-setq (one . 1))
+                       (setq one 1))
+
+    (should-expand-to! (use-package foo :pre-setq (one . 1) (two . 2))
+                       (progn (setq one 1) (setq two 2)))
+
+    (should-expand-to! (use-package foo :pre-setq ((one . 1) (two . 2)))
+                       (progn (setq one 1) (setq two 2)))))
 #+end_src
 
 ** setq
@@ -298,20 +338,76 @@
   (let ((use-package-expand-minimally t)
         (use-package-always-defer t))
 
-    (should (equal (macroexpand-1 '(use-package foo :setq (one . 1)))
-                   '(setq one 1)))
+    (should-expand-to! (use-package foo :setq (one . 1))
+                       (after! foo (setq one 1)))
 
-    (should (equal (macroexpand-1 '(use-package foo :setq (one . 1) (two . 2)))
-                   '(progn (setq one 1) (setq two 2))))
+    (should-expand-to! (use-package foo :setq (one . 1) (two . 2))
+                       (after! foo (setq one 1) (setq two 2)))
 
-    (should (equal (macroexpand-1 '(use-package foo :setq ((one . 1) (two . 2))))
-                   '(progn (setq one 1) (setq two 2))))))
+    (should-expand-to! (use-package foo :setq ((one . 1) (two . 2)))
+                       (after! foo (setq one 1) (setq two 2)))
+
+    (should-expand-to! (use-package foo :setq (one . 'hook) (two . 'fab))
+                       (after! foo (setq one 'hook) (setq two 'fab)))))
+#+end_src
+
+** setq-default
+:PROPERTIES:
+:ID:       f1751a23-0c0e-4f21-8afb-181ed789fbd1
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-setq-default ()
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t))
+
+    (should-expand-to! (use-package foo :setq-default (one . 1))
+                       (setq-default one 1))
+
+    (should-expand-to! (use-package foo :setq-default (one . 1) (two . 2))
+                       (progn (setq-default one 1) (setq-default two 2)))
+
+    (should-expand-to! (use-package foo :setq-default ((one . 1) (two . 2)))
+                       (progn (setq-default one 1) (setq-default two 2)))))
+#+end_src
+
+** custom
+:PROPERTIES:
+:ID:       a8702806-5b6e-4a66-a435-7ddd0b20352e
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-custom ()
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t))
+
+    (should-expand-to! (use-package foo :custom (one . 1))
+                       (custom-set-variable 'one 1))
+
+    (should-expand-to! (use-package foo :custom (one . 1) (two . 2))
+                       (progn (custom-set-variable 'one 1)
+                              (custom-set-variable 'two 1)))
+
+    (should-expand-to! (use-package foo :pre-setq ((one . 1) (two . 2)))
+                       (progn (setq one 1) (setq two 2)))))
 #+end_src
 
 ** before-call
 :PROPERTIES:
 :ID:       0a38dd5c-28b9-4132-9d13-8c89d474b029
 :END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-before-call ()
+
+  (should-expand-to! (use-package foo :before-call bar)
+                     (defadvice! load-foo (:before bar)
+                       (require 'foo)))
+
+  (should-expand-to! (use-package foo :before-call bar baz)
+                     (defadvice! load-foo (:before bar baz)
+                       (require 'foo))))
+#+end_src
 
 ** idle-require
 :PROPERTIES:
@@ -320,23 +416,16 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-idle-require ()
-
   (let ((use-package-expand-minimally t)
         (use-package-always-defer t))
+    (should-expand-to! (use-package foo :idle-require flop) (idle-require 'flop))
 
-    (should (equal (macroexpand-1 '(use-package foo :idle-require flop))
-                   '(progn
-                      (idle-require 'flop))))
+    (should-expand-to! (use-package foo :idle-require flop) (idle-require 'flop))
 
-    (should (equal (macroexpand-1 '(use-package foo :idle-require flop flap))
-                   '(progn
-                      (idle-require 'flop)
-                      (idle-require 'flap))))
-
-    (should (equal (macroexpand-1 '(use-package foo :idle-require (flop flap)))
-                   '(progn
-                      (idle-require 'flop)
-                      (idle-require 'flap))))))
+    (should-expand-to! (use-package foo :idle-require flop flap)
+                       (progn
+                         (idle-require 'flop)
+                         (idle-require 'flap)))))
 #+end_src
 
 ** alias
@@ -350,16 +439,56 @@
   (let ((use-package-expand-minimally t)
         (use-package-always-defer t))
 
-    (should (equal (macroexpand-1 '(use-package foo :alias (one . two)))
-                   '(defalias 'one 'two)))
+    (should-expand-to! (use-package foo :alias (one . two))
+                       (defalias 'one 'two))
 
-    (should (equal (macroexpand-1 '(use-package foo :alias (one . two) (three . four)))
-                   '(progn
-                      (defalias 'one 'two)
-                      (defalias 'three 'four))))
+    (should-expand-to! (use-package foo :alias (one . two) (three . four))
+                       (progn
+                         (defalias 'one 'two)
+                         (defalias 'three 'four)))
 
-    (should (equal (macroexpand-1 '(use-package foo :alias ((one . two) (three . four))))
-                   '(progn
-                      (defalias 'one 'two)
-                      (defalias 'three 'four))))))
+    (should-expand-to! (use-package foo :alias ((one . two) (three . four)))
+                       (progn
+                         (defalias 'one 'two)
+                         (defalias 'three 'four)))))
+#+end_src
+
+** hook
+:PROPERTIES:
+:ID:       c1779156-bcf4-4c8f-a555-46c4d99d2ce0
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-hook ()
+
+  (should-expand-to! (use-package foo :hook emacs-startup)
+                     (progn (unless (fboundp 'foo-mode)
+                              (autoload #'foo-mode "foo" nil t))
+                            (void-add-hook 'emacs-startup-hook #'foo-mode)))
+
+  (should-expand-to! (use-package foo :hook emacs-startup-hook)
+                     (progn (unless (fboundp 'foo-mode)
+                              (autoload #'foo-mode "foo" nil t))
+                            (void-add-hook 'emacs-startup-hook #'foo-mode)))
+
+  (should-expand-to! (use-package foo :hook (emacs-startup-hook . dap-mode))
+                     (progn (unless (fboundp 'dap-mode)
+                              (autoload #'dap-mode "foo" nil t))
+                            (void-add-hook 'emacs-startup-hook #'dap-mode)))
+
+  (should-expand-to! (use-package foo :hook ((emacs-startup-hook . dap-mode)))
+                     (progn (unless (fboundp 'dap-mode)
+                              (autoload #'dap-mode "foo" nil t))
+                            (void-add-hook 'emacs-startup-hook #'dap-mode))))
+#+end_src
+
+** popup
+:PROPERTIES:
+:ID:       b67e00d2-f531-4f96-bea6-57d06fff14db
+:END:
+
+#+begin_src emacs-lisp
+(ert-deftest use-package-popup ()
+  (should-expand-to! (use-package foo :popup ("\\*fap" (dap)))
+                     (push '("\\*fap" (dap)) display-buffer-alist)))
 #+end_src
