@@ -1206,6 +1206,11 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 :ID:       846f7099-131e-45a6-83ad-72fe5cb3c24c
 :END:
 
+#+begin_src emacs-lisp
+(defun use-package:true-key (key)
+  (or (alist-get)))
+#+end_src
+
 *** helpers
 :PROPERTIES:
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
