@@ -1557,7 +1557,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
   (use-package-verbose . nil)
   (use-package-expand-minimally . t)
   :init
-  (push (cons :ensure t) use-package:defaults)
+  (setq use-package:defaults (append '(:ensure t) use-package:defaults))
   (push (cons :ensure :straight) use-package:aliases))
 #+end_src
 
