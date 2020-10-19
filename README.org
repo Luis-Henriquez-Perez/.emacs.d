@@ -6574,9 +6574,9 @@ have to set out to look for a file with =dired=.
   (recentf-max-menu-items . 0)
   (recentf-max-saved-items . 700)
   :custom
-  (recentf-save-file . (concat VOID-DATA-DIR "recentf"))
-  (recentf-auto-cleanup . 'never)
-  (recentf-filename-handlers . '(file-truename abbreviate-file-name)))
+  (recentf-save-file (concat VOID-DATA-DIR "recentf"))
+  (recentf-auto-cleanup 'never)
+  (recentf-filename-handlers '(file-truename abbreviate-file-name)))
 #+end_src
 
 *** silence recentf
