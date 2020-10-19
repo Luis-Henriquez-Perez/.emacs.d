@@ -1553,7 +1553,7 @@ Emacs starts up with a default screen.
 
 #+begin_src emacs-lisp
 (use-feature startup
-  :setq
+  :pre-setq
   (inhibit-startup-screen . t)
   (inhibit-default-init . t)
   (inhibit-startup-buffer-menu . t)
