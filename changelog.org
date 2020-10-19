@@ -210,4 +210,5 @@ The purpose of this change is to add auto-committing to my emacs config.
 :END:
 
 =use-package= is likely to be added to emacs. =use-package= rightly uses
-higher-order functions (the normalizer and handler) to
+higher-order functions (the normalizer and handler) to control the expansion of
+new keywords.
