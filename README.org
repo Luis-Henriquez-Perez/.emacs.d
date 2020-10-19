@@ -1180,7 +1180,7 @@ In this headline, the things that will do.
 #+begin_src emacs-lisp
 (defmacro use-package! (package &rest args)
   `(use-package ,package
-     ,@(-replace-where #'keywordp (-partial #'alist-get ) args)))
+     ,@(-replace-where #'keywordp #'use-package:true-key args)))
 #+end_src
 
 *** add alias support
