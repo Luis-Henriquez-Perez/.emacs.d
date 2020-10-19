@@ -1373,7 +1373,8 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 (lambda (var)
   (if (s-matches-p (rx "-hook" eos))
       var
-    (void-symbol-intern var "-hook")))#+end_src
+    (void-symbol-intern var "-hook")))
+#+end_src
 
 ***** handler
 :PROPERTIES:
