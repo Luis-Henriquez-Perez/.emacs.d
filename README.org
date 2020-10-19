@@ -1373,12 +1373,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:hook@use-void-add-hook (name keyword args rest state)
+(defadvice! use-void-add-hook (:override use-packag-handler/:hook)
   (use-package-concat
-   (use-package-process-keywords name rest state)
-   (list args)))
-
-(advice-add #'use-package-handler/:hook :override #'use-package-handler/:hook@use-void-add-hook)
+   (use-package-process-keywords <name> <rest> <state>)
+   (list <args>)))
 #+end_src
 
 **** popup
