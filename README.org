@@ -1463,7 +1463,12 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
       (--splice (eq :hook it) (list :vhook it) use-package-keywords))
 #+end_src
 
-***** normalize
+***** hook
+:PROPERTIES:
+:ID:       82823374-1604-4a4c-8e72-638c430df38f
+:END:
+
+****** normalize
 :PROPERTIES:
 :ID:       43767912-9f4d-46a9-bdfe-b7e4e5d1456c
 :END:
@@ -1476,7 +1481,7 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
                  (use-package:ensure-mode (cdr it) name)))))
 #+end_src
 
-***** handle
+****** handle
 :PROPERTIES:
 :ID:       15b08656-4ee6-45fe-8fbb-83e087b08f31
 :END:
