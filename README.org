@@ -1159,6 +1159,11 @@ SYM is a symbol that stores a list."
 :ID:       f2f69aaa-0641-49d0-8606-172ae5b260b3
 :END:
 
+#+begin_src emacs-lisp
+(defvar use-package:aliases nil
+  "")
+#+end_src
+
 *** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
