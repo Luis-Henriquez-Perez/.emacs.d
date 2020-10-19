@@ -1441,7 +1441,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 #+begin_src emacs-lisp
 (defun use-package:args-as-one (args &optional valid-item-p)
-  ""
   (if (funcall valid-item-p (car args))
       ))
 #+end_src
