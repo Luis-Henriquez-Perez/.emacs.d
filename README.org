@@ -1439,7 +1439,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 (defun use-package:args-or-error (args valid-p)
   (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
     (if invalid-elt
-        (use-package-error "Invalid element: %S" elt)
+        (use-package-error "Invalid element: %S" invalid-elt)
       args)))
 #+end_src
 
