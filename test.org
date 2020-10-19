@@ -303,8 +303,9 @@
     (should-expand-to! (use-package! foo :hook emacs-startup-hook)
                        (use-package foo :vhook emacs-startup-hook)))
 
-  (let ((use-package:defaults '(:ensure )))
-    (should-expand-to!)))
+  ;; (let ((use-package:defaults '(:ensure )))
+  ;;   (should-expand-to!))
+  )
 #+end_src
 
 * custom use-package keywords
