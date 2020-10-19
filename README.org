@@ -1163,6 +1163,15 @@ In this headline, I configure =use-package=.
 
 These are wrappers around =use-package= with a bit of additional functionality.
 
+**** requirement
+:PROPERTIES:
+:ID:       d7a833af-2873-480e-bffb-f1f154331c95
+:END:
+
+#+begin_src emacs-lisp
+(require 'map)
+#+end_src
+
 **** use-package!
 :PROPERTIES:
 :ID:       1903deb5-bbbd-4479-81a1-c12c56d29be7
