@@ -8537,9 +8537,10 @@ powerful markup language?
 #+begin_src emacs-lisp
 (use-feature ol
   :after org
-  :custom
-  (org-link-descriptive . t)
-  (org-link-use-indirect-buffer-for-internals . t))
+  ;; :custom
+  ;; (org-link-descriptive . t)
+  ;; (org-link-use-indirect-buffer-for-internals . t)
+  )
 #+end_src
 
 **** custom link types
