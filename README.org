@@ -1431,6 +1431,24 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 
 *** helpers
 :PROPERTIES:
+:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
+:END:
+
+*** invalid args
+:PROPERTIES:
+:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:args-or-error (args valid-p)
+  (-let (((args invalid-elt) (use-package:unfold-args args)))
+    (if invalid-elt
+        (use-package-error "Invalid element: %S" elt)
+      args)))
+#+end_src
+
+*** unfold args
+:PROPERTIES:
 :ID:       a9ec9725-550e-4885-9292-1f937d6009f9
 :END:
 
