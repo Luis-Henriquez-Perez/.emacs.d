@@ -300,8 +300,11 @@
 #+begin_src emacs-lisp
 (ert-deftest use-package!-macro ()
   (let ((use-package:aliases '((:hook . :vhook))))
-    (should-expand-to! (use-package! :hook emacs-startup-hook)
-                       (use-package :vhook emacs-startup-hook))))
+    (should-expand-to! (use-package! foo :hook emacs-startup-hook)
+                       (use-package foo :vhook emacs-startup-hook)))
+
+  (let ((use-package:defaults '(:ensure )))
+    (should-expand-to!)))
 #+end_src
 
 * custom use-package keywords

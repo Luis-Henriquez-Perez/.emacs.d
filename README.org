@@ -261,7 +261,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
     (get-buffer "*scratch*")))
 #+end_src
 
-** Package Manager Bootstrap
+** Package Management
 :PROPERTIES:
 :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
 :END:
@@ -1154,12 +1154,14 @@ SYM is a symbol that stores a list."
 :ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
-In this headline, the things that will do.
+In this headline, I configure =use-package=.
 
 *** wrappers
 :PROPERTIES:
 :ID:       1e394ffd-597f-456c-9c56-ff9de5fae017
 :END:
+
+These are wrappers around =use-package= with a bit of additional functionality.
 
 **** use-package!
 :PROPERTIES:
@@ -1168,8 +1170,11 @@ In this headline, the things that will do.
 
 #+begin_src emacs-lisp
 (defmacro use-package! (package &rest args)
+  "Wrapper around `use-package'."
   `(use-package ,package
-     ,@(-replace-where #'keywordp #'use-package:true-key args)))
+     ,@(thread-last args
+         (map-merge 'plist use-package:defaults)
+         (-replace-where #'keywordp #'use-package:true-key))))
 #+end_src
 
 **** use-feature!
@@ -1182,8 +1187,19 @@ built-in packages and external packages.
 
 #+begin_src emacs-lisp
 (defmacro use-feature! (feature &rest args)
+  "Wrapper around `use-package!'."
   (declare (indent defun))
-  `(use-package! ,feature :ensure nil ,@args))
+  `(use-package! ,feature ,@(plist-put args :ensure nil)))
+#+end_src
+
+*** default keywords
+:PROPERTIES:
+:ID:       3a3e8b96-96ff-4d29-9767-686825a138d5
+:END:
+
+#+begin_src emacs-lisp
+(defvar use-package:defaults nil
+  "Default keywords used for `use-package'.")
 #+end_src
 
 *** add alias support
@@ -1202,7 +1218,7 @@ to be so simple.
 :END:
 
 #+begin_src emacs-lisp
-(defvar use-package:aliases '((:hook . :vhook) (:ensure . :straight))
+(defvar use-package:aliases nil
   "An alist of the form (ALIAS . DEF).
 In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 #+end_src
