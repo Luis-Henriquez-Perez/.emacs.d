@@ -1450,10 +1450,10 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 
 ***** hook
 :PROPERTIES:
-:ID:       a24fb94b-7217-411d-86c6-144e34044a01
+:ID:       82823374-1604-4a4c-8e72-638c430df38f
 :END:
 
-***** insert
+****** insert
 :PROPERTIES:
 :ID:       02d4c6fd-7203-4731-aace-17ddd9a52599
 :END:
@@ -1462,11 +1462,6 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 (setq use-package-keywords
       (--splice (eq :hook it) (list :vhook it) use-package-keywords))
 #+end_src
-
-***** hook
-:PROPERTIES:
-:ID:       82823374-1604-4a4c-8e72-638c430df38f
-:END:
 
 ****** normalize
 :PROPERTIES:
