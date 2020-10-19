@@ -1438,8 +1438,12 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :ID:       a9ec9725-550e-4885-9292-1f937d6009f9
 :END:
 
+=identify= should answer what should the first item of this list look like.
+
 #+begin_src emacs-lisp
-(defun use-package:args-as-one (args)
+(defun use-package:args-as-one (args &optional identify)
+  ""
+  (if )
   (if (and (= 1 (length args))
            (and (listp (car args))
                 (not (-cons-pair-p (car args)))))
