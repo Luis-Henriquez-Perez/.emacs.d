@@ -1188,7 +1188,8 @@ In this headline, the things that will do.
 :ID:       180869b2-db8d-48a6-ac6f-6a5be6313c73
 :END:
 
-One thing I miss about leaf is alias support. It seems that.
+One thing I miss about leaf is alias support. I would assume that in order to
+alias a use-package keyword, all you'd need to do is override
 
 **** aliases
 :PROPERTIES:
