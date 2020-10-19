@@ -1441,14 +1441,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 =identify= should answer what should the first item of this list look like.
 
 #+begin_src emacs-lisp
-(defun use-package:args-as-one (args &optional identify)
+(defun use-package:args-as-one (args &optional valid-item-p)
   ""
-  (if )
-  (if (and (= 1 (length args))
-           (and (listp (car args))
-                (not (-cons-pair-p (car args)))))
-      (car args)
-    args))
+  (if (funcall valid-item-p (car args))
+      ))
 #+end_src
 
 ** Packages
