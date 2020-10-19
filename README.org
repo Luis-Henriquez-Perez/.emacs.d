@@ -1553,7 +1553,7 @@ Emacs starts up with a default screen.
 
 #+begin_src emacs-lisp
 (use-feature startup
-  :pre-setq
+  :setq
   (inhibit-startup-screen . t)
   (inhibit-default-init . t)
   (inhibit-startup-buffer-menu . t)
@@ -3298,7 +3298,7 @@ through on our own. It's not much different in Emacs. We're constantly sifting
 though files, buffers, commands, words--all to try to get through to the subset
 of things that we actually want at this moment.
 
-** snippets                                                           :disabled:
+** snippets
 :PROPERTIES:
 :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
 :END:
