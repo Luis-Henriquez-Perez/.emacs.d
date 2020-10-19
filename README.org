@@ -1219,9 +1219,8 @@ In the `use-package!' macro, keywords will be repaced with DEF.")
 
 #+begin_src emacs-lisp
 (defun use-package:true-key (key)
-  "Return the true KEY."
-  (or (alist-get key use-package:alias-alist)
-      key))
+  "Return the KEY."
+  (or (alist-get key use-package:aliases) key))
 #+end_src
 
 *** helpers
