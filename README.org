@@ -9047,7 +9047,7 @@ understanding of a verbally terse and dry command description.
   :commands elisp-demos-add-demo)
 #+end_src
 
-* Asthetic                                                            :disabled:
+* Asthetic
 :PROPERTIES:
 :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
 :END:
