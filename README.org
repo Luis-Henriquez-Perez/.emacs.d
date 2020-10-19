@@ -1398,10 +1398,10 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
       (--splice (eq :init it) (list :popup it) use-package-keywords))
 
 (defun use-package-normalize/:popup (name keyword args)
-  (aprog1 (use-package:args-as-one args)))
+  args)
 
 (defun use-package-handler/:popup (name _keyword args rest state)
-  (mapcar `(push ',it display-buffer-alist) args))
+  (--map `(push ',it display-buffer-alist) args))
 #+end_src
 
 *** boostrap
