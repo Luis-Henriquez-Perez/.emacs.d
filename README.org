@@ -1450,7 +1450,6 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
          (use-package:args-as-one (car args) valid-item-p))
         (t
          (-first (-not valid-item-p) args))))
-
 #+end_src
 
 ** Packages
