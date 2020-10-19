@@ -1172,8 +1172,7 @@ These are wrappers around =use-package= with a bit of additional functionality.
 (defmacro use-package! (package &rest args)
   "Wrapper around `use-package'."
   `(use-package ,package
-     ,@(thread-last args
-         (map-merge 'plist use-package:defaults)
+     ,@(thread-last (map-merge 'plist args use-package:defaults)
          (-replace-where #'keywordp #'use-package:true-key))))
 #+end_src
 
