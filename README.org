@@ -1370,13 +1370,12 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! use-void-add-hook (:override use-package-handler/:hook)
+(defun use-package-handler/:hook@use-void-add-hook (name keyword args rest state)
   (use-package-concat
-   (use-package-process-keywords <name> <rest> <state>)
-   (list <args>)
-   ;; (mapcar (-lambda ((sym . fun)) `(void-add-hook ',sym #',fun))
-   ;;         <args>)
-   ))
+   (use-package-process-keywords name rest state)
+   (list args)))
+
+(advice-add #'use-package-handler/:hook :override #'use-package-handler/:hook@use-void-add-hook)
 #+end_src
 
 **** popup
