@@ -1172,24 +1172,19 @@ In this headline, the things that will do.
      ,@(-replace-where #'keywordp #'use-package:true-key args)))
 #+end_src
 
-**** use-feature!!
+**** use-feature!
 :PROPERTIES:
 :ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
 :END:
+
+This wrapper around =use-package!= is meant to explicity distinguish between
+built-in packages and external packages.
 
 #+begin_src emacs-lisp
 (defmacro use-feature! (feature &rest args)
   (declare (indent defun))
   `(use-package! ,feature :straight nil ,@args))
 #+end_src
-
-**** use-feature!
-:PROPERTIES:
-:ID:       4b9e7bc4-4e22-4e81-bef0-99b78bc8befd
-:END:
-
-This wrapper around =use-package!= is meant to explicity distinguish between
-built-in packages and external packages.
 
 *** add alias support
 :PROPERTIES:
