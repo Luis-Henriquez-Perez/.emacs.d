@@ -1440,7 +1440,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
 =identify= should answer what should the first item of this list look like.
 
 #+begin_src emacs-lisp
-(defun use-package:args-as-one (args valid-item-p)
+(defun use-package:unfold-enlisted (args valid-item-p)
   (cond ((-all-p valid-item-p args)
          args)
         ((alet (car args)
@@ -1449,7 +1449,7 @@ Use [[][void-add-hook]] instead of [[][add-hook]].
                 (listp it)))
          (use-package:args-as-one (car args) valid-item-p))
         (t
-         (-first (-not valid-item-p) args))))
+         nil)))
 #+end_src
 
 ** Packages
