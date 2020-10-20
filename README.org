@@ -3007,7 +3007,7 @@ a new theme.
   (apply <orig-fn> <args>))
 #+end_src
 
-* Window Management                                                   :disabled:
+* Window Management
 :PROPERTIES:
 :ID: 29dbf899-17cd-4b00-aacb-090ccd20e133
 :END:
