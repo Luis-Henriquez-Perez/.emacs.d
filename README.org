@@ -8799,7 +8799,7 @@ in the future. I use this template for this.
 #+begin_src emacs-lisp
 (use-feature! org-refile
   :after org
-  :setq
+  :pre-setq
   (org-refile-targets . `((,VOID-README-FILE . (:maxlevel . 10))
                           (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
   (org-refile-use-outline-path . 'file)
