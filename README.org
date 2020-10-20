@@ -3085,9 +3085,9 @@ makes emacs feel like a window manager with gaps.
   :ensure nil
   :hook (window-setup . window-divider-mode)
   :custom
-  (window-divider-default-places       . t)
-  (window-divider-default-bottom-width . 10)
-  (window-divider-default-right-width  . 10)
+  (window-divider-default-places  t)
+  (window-divider-default-bottom-width 10)
+  (window-divider-default-right-width  10)
   :config
   (set-face-foreground 'window-divider "black")
   (blink-cursor-mode -1))
