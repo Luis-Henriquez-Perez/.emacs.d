@@ -1267,27 +1267,6 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
        (use-package-error (format "%s wants %s") label ,message))))
 #+end_src
 
-**** unfold args
-:PROPERTIES:
-:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
-:END:
-
-=identify= should answer what should the first item of this list look like.
-
-#+begin_src emacs-lisp
-(defun use-package:unfold-args (args valid-item-p)
-  "Return a list of two items."
-  (cond ((-all-p valid-item-p args)
-         (list args nil))
-        ((alet (car args)
-           (and (= 1 (length args))
-                (not (-cons-pair-p it))
-                (listp it)))
-         (list (car args) (-find (-not valid-item-p) (car args))))
-        (t
-         (list args (-find (-not valid-item-p) args)))))
-#+end_src
-
 **** hook and mode
 :PROPERTIES:
 :ID:       82ce7194-1619-4ecf-8c0d-d43bbde5f852
