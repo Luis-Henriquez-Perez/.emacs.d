@@ -1472,7 +1472,7 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defhook! use-my-customized-normalize-fn (:override use-package-normalize/:hook)
+(defadvice! use-my-customized-normalize-fn (:override use-package-normalize/:hook)
   (thread-last "a symbol or cons cell"
     (use-package:args-or-error <keyword> <args> (-orfn #'symbolp #'-cons-pair-p))
     (--map-when (not (-cons-pair-p it)) (cons it nil))
