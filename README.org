@@ -1253,7 +1253,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (defun use-package:unfold-args (args valid-item-p)
-  "Return a list of two items."
+  "Return a list of two items.
+If VA"
   (cond ((-all-p valid-item-p args)
          (list args nil))
         ((alet (car args)
