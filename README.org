@@ -1364,9 +1364,6 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
       (--splice (eq :init it) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
-  (use-package-as-one (symbol-name keyword) args
-    (lambda (label args)
-      ))
   (use-package:args-or-error args (lambda (it) (and (consp it) (symbolp (car it))))))
 
 (defun use-package-handler/:setq (name _keyword args rest state)
