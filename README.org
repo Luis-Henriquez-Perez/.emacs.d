@@ -3644,7 +3644,7 @@ to select candidates quickly.
 #+begin_src emacs-lisp
 (use-package! ivy-avy
   :bind (:map ivy-minibuffer-map
-         "C-'" #'ivy-avy))
+         ("C-'" . #'ivy-avy)))
 #+end_src
 
 **** minibuffer bindings
