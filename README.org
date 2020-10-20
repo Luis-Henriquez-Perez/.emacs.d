@@ -9146,7 +9146,6 @@ you can "discover" the commands as you go along.
   (which-key-sort-order . #'which-key-prefix-then-key-order)
   (which-key-popup-type . 'minibuffer)
   :config
-  (which-key-mode)
   (defhook! set-line-spacing (which-key-init-buffer-hook)
     (setq line-spacing 3))
   (which-key-add-key-based-replacements void-leader-key "<leader>")
