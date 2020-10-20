@@ -1551,11 +1551,12 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package:args-or-error (args valid-p)
+(defun use-package:args-or-error (key args valid-p desc)
   (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
-    (if invalid-elt
-        (use-package-error (format "bad elt: %S | list: %S" invalid-elt args))
-      args)))
+    (if (not invalid-elt)
+        args
+      (thread-last (format "%s wants %s. Instead, %s was given" key desc invalid-elt)
+        (use-package-error)))))
 #+end_src
 
 **** unfold args
