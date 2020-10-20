@@ -1263,8 +1263,9 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 (defun use-package:check-fn (fn message)
   "Return a function used for `use-package-as-one'."
   `(lambda (label arg)
-     (unless (funcall #',fn arg)
-       (use-package-error (format "%s wants %s") label ,message))))
+     (if (not (funcall #',fn arg))
+         (use-package-error (format "%s wants %s" label ,message))
+       arg)))
 #+end_src
 
 **** hook and mode
