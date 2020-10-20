@@ -1457,7 +1457,7 @@ ANCHOR if AFTER is non-nil.)"
 :ID:       82823374-1604-4a4c-8e72-638c430df38f
 :END:
 
-****** insert
+****** insert                                                         :disabled:
 :PROPERTIES:
 :ID:       02d4c6fd-7203-4731-aace-17ddd9a52599
 :END:
@@ -1472,7 +1472,7 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-normalize/:vhook (name keyword args)
+(defun use-package-normalize/:hook (name keyword args)
   (thread-last "a symbol or cons cell"
     (use-package:args-or-error keyword args (-orfn #'symbolp #'-cons-pair-p))
     (--map-when (not (-cons-pair-p it)) (cons it nil))
@@ -1486,14 +1486,14 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:vhook (name _keyword args rest state)
+(defun use-package-handler/:hook (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
            (use-package-normalize-commands args))))
 #+end_src
 
-****** set an alias
+****** set an alias                                                   :disabled:
 :PROPERTIES:
 :ID:       4804d722-05ed-4da3-a448-9557a2416465
 :END:
