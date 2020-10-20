@@ -1321,8 +1321,9 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 (use-package:insert :os :ensure)
 
 (defun use-package-normalize/:os (name-symbol keyword args)
-  (thread-last "one of the following symbols: mac, windows, linux"
-    (use-package:as-one keyword args (-partial #'-contains-p '(mac windows linux)))))
+  (let ((message "one of the following symbols: mac, windows, linux")
+        (fn (-partial #'-contains-p '(mac windows linux))))
+    (use-package:as-one keyword args fn message)))
 
 (defun use-package-handler/:os (name _keyword features rest state)
   (let ((body (use-package-process-keywords name rest state)))
