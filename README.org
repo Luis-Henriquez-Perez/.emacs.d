@@ -395,7 +395,8 @@ This code initializes straight if it's not already installed.
 :ID:       b1ab4488-5793-4675-8404-b1719f804c25
 :END:
 
-In this headline, I configure =use-package=, a declaration macro designed to
+Package configuration can be a monotonous process. In this headline, I configure
+=use-package=, a declaration macro designed to
 
 **** wrappers
 :PROPERTIES:
