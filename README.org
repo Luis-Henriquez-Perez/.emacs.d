@@ -385,8 +385,9 @@ This code initializes straight if it's not already installed.
 #+begin_src emacs-lisp
 (dolist (package '(dash general dash-functional anaphora use-package s))
   (unless (package-installed-p package)
-    (package-refresh-contents))
-  (require package))
+    (package-refresh-contents)))
+
+(use-package dash :demand t)
 #+end_src
 
 ** Library
@@ -1300,7 +1301,7 @@ ANCHOR if AFTER is non-nil.)"
 
 #+begin_src emacs-lisp
 (defun use-package:ensure-hook (var)
-  (if (string-match-p "-hook\\'" (symbol-name var))
+  (if (s-matches-p "-hook\\'" (symbol-name var))
       var
     (void-symbol-intern var "-hook")))
 #+end_src
