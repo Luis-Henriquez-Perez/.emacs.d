@@ -396,7 +396,8 @@ This code initializes straight if it's not already installed.
 :END:
 
 Package configuration can be a monotonous process. In this headline, I configure
-=use-package=, a declaration macro designed to.
+=use-package=, a declaration macro designed to provide a concise syntax for
+configuring packages in a performance-oriented way.
 
 **** wrappers
 :PROPERTIES:
