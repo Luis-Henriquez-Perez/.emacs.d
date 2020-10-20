@@ -1467,8 +1467,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(setq use-package-keywords
-      (--splice (eq :hook it) (list :hook it) use-package-keywords))
+(use-package:insert :vhook :hook)
 #+end_src
 
 ****** normalize
