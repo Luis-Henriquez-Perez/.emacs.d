@@ -612,7 +612,9 @@ This keyword is for installing packages based on my operating system.
 :ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
 :END:
 
-=:before-call= and its counterpart =:after-call= let me
+=:before-call= and its counterpart =:after-call= let me put off package loading
+until the last minute--by which I mean just before a function that needs the
+package is called.
 
 #+begin_src emacs-lisp
 (use-package:insert :before-call :disabled)
