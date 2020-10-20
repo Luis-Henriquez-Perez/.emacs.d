@@ -1261,7 +1261,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (defun use-package:as-one (symbol args fn &optional message)
-  "")
+  ""
+  (use-package-as-one (symbol-name symbol) args ))
 #+end_src
 
 **** check fn
