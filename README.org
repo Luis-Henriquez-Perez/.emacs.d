@@ -1310,9 +1310,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
       (--splice (eq :ensure it) (list :os it) use-package-keywords))
 
 (defun use-package-normalize/:os (name-symbol keyword args)
-  (use-package-only-one (symbol-name keyword) args
-    (use-package:check-fn (-partial #'-contains-p '(mac windows linux))
-                          "one of the following symbols: mac, windows, linux")))
+  (thread-last "one of the following symbols: mac, windows, linux"
+    (use-package:as-one keyword args (-partial #'-contains-p '(mac windows linux)))))
 
 (defun use-package-handler/:os (name _keyword features rest state)
   (let ((body (use-package-process-keywords name rest state)))
