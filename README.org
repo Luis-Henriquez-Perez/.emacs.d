@@ -388,8 +388,8 @@ This code initializes straight if it's not already installed.
 (dolist (package '(dash dash-functional anaphora use-package s))
   (unless (package-installed-p package)
     (package-refresh-contents)
-    (package-install package)
-    (require package)))
+    (package-install package))
+  (require package))
 #+end_src
 
 ** Library
