@@ -1307,7 +1307,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (--splice (eq :ensure it) (list :os it) use-package-keywords))
+      (use-package-list-insert :os use-package-keywords :ensure))
 
 (defun use-package-normalize/:os (name-symbol keyword args)
   (thread-last "one of the following symbols: mac, windows, linux"
