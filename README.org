@@ -1364,7 +1364,10 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
       (--splice (eq :init it) (list :setq it) use-package-keywords))
 
 (defun use-package-normalize/:setq (name keyword args)
-  (use-package:args-or-error args (lambda (it) (and (consp it) (symbolp (car it))))))
+  (use-package-as-one (symbol-name keyword) args
+    (lambda (label it)
+      (unless (and (consp it) (symbolp (car it)))
+        (use-package-error (format "%s needs a cons cell whose CAR is a symbol" label))))))
 
 (defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
