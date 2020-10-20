@@ -1260,11 +1260,11 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package:args-or-error (args valid-p)
-  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
-    (if invalid-elt
-        (use-package-error (format "bad elt: %S | list: %S" invalid-elt args))
-      args)))
+(defun use-package:check-fn (fn &optional message)
+  "Return a function used for `use-package-as-one'."
+  `(lambda (label arg)
+     (unless (funcall ,valid-p arg)
+       (use-package-error (format "%s wants %s") label ,message))))
 #+end_src
 
 **** unfold args
