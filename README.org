@@ -377,6 +377,9 @@ This code initializes straight if it's not already installed.
 :ID:       22e4a725-d89a-4fd6-a3d7-9d160ea1e96f
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 *** required packages
 :PROPERTIES:
 :ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
