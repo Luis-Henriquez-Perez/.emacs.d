@@ -299,10 +299,10 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package!-macro ()
-  (let ((use-package:aliases '((:hook . :vhook)))
-        (use-package-defaults nil))
-    (should-expand-to! (use-package! foo :hook emacs-startup-hook)
-                       (use-package foo :vhook emacs-startup-hook)))
+  ;; (let ((use-package:aliases '((:hook . :vhook)))
+  ;;       (use-package-defaults nil))
+  ;;   (should-expand-to! (use-package! foo :hook emacs-startup-hook)
+  ;;                      (use-package foo :vhook emacs-startup-hook)))
 
   (let ((use-package:defaults '(:ensure t)))
     (should-expand-to! (use-package! foo)
