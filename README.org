@@ -1951,7 +1951,8 @@ as a dependency, I'd end up rewriting many of its functions.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash :demand t)
+(use-package! dash
+  :demand t)
 #+end_src
 
 **** dash-functional
@@ -2081,7 +2082,8 @@ make a difference. That's why.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! s :demand t)
+(use-package! s
+  :demand t)
 #+end_src
 
 **** gc
@@ -2404,11 +2406,11 @@ Emacs picks up. [[https://github.com/purcell/exec-path-from-shell][exec-path-fro
 (use-package! exec-path-from-shell
   :os mac
   :when (or (daemonp) (display-graphic-p))
-  ;; :demand t
-  ;; :setq
-  ;; (exec-path-from-shell-check-startup-files . nil)
-  ;; (exec-path-from-shell-arguments . (delete "-i" exec-path-from-shell-arguments))
-  ;; (exec-path-from-shell-debug . void-debug-p)
+  :demand t
+  :setq
+  (exec-path-from-shell-check-startup-files . nil)
+  (exec-path-from-shell-arguments . (delete "-i" exec-path-from-shell-arguments))
+  (exec-path-from-shell-debug . void-debug-p)
   :init
   (nconc! exec-path-from-shell-variables
     '("LC_CTYPE" "LC_ALL" "LANG"))
