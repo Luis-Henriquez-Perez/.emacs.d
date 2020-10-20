@@ -1358,8 +1358,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(setq use-package-keywords
-      (use-package-list-insert :setq use-package-keywords :init))
+(use-package:insert :setq :init)
 
 (defun use-package-normalize/:setq (name keyword args)
   (let ((message "a cons cell whose CAR is a symbol label")
