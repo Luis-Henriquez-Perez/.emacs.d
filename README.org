@@ -652,7 +652,7 @@ This keyword is for installing packages based on my operating system.
 :ID:       7e915205-cbfc-4171-b473-4ffe2baddcc3
 :END:
 
-This keyword depends on [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]].
+This keyword depends on [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]]. It allows me to specify a list of
 
 #+begin_src emacs-lisp
 (use-package:insert :idle-require :init)
