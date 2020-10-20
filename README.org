@@ -396,6 +396,7 @@ This code initializes straight if it's not already installed.
 :END:
 
 In this headline, I configure =use-package=, a declaration macro designed to
+abbreviate the monopo
 
 **** wrappers
 :PROPERTIES:
