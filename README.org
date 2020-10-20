@@ -1472,7 +1472,7 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! use-my-customized-normalize-fn (:override use-package-normalize/:hook)
+(defadvice! use-my-custom-normalize-fn (:override use-package-normalize/:hook)
   (thread-last "a symbol or cons cell"
     (use-package:args-or-error <keyword> <args> (-orfn #'symbolp #'-cons-pair-p))
     (--map-when (not (-cons-pair-p it)) (cons it nil))
@@ -1486,11 +1486,11 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:hook (name _keyword args rest state)
+(defadvice! use-my-custom-handler-fn (:override use-package-handler/:hook)
   (use-package-concat
-   (use-package-process-keywords name rest state)
+   (use-package-process-keywords <name> <rest> <state>)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
-           (use-package-normalize-commands args))))
+           (use-package-normalize-commands <args>))))
 #+end_src
 
 ****** set an alias                                                   :disabled:
