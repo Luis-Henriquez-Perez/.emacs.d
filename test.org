@@ -333,6 +333,7 @@
 #+begin_src emacs-lisp
 (ert-deftest use-package-pre-setq ()
   (let ((use-package-expand-minimally t)
+        (use-package-always-ensure nil)
         (use-package-always-defer t))
 
     (should-expand-to! (use-package foo :pre-setq (one . 1))
@@ -351,9 +352,13 @@
 :END:
 
 #+begin_src emacs-lisp
+(defmacro should-expand-to! (form1 form2)
+  `(should (equal (macroexpand-1 ',form1) ',form2)))
+
 (ert-deftest use-package-setq ()
   (let ((use-package-expand-minimally t)
-        (use-package-always-defer t))
+        (use-package-always-defer t)
+        (use-package-always-ensure nil))
 
     (should-expand-to! (use-package foo :setq (one . 1))
                        (after! foo (setq one 1)))
@@ -376,6 +381,7 @@
 #+begin_src emacs-lisp
 (ert-deftest use-package-setq-default ()
   (let ((use-package-expand-minimally t)
+        (use-package-always-ensure nil)
         (use-package-always-defer t))
 
     (should-expand-to! (use-package foo :setq-default (one . 1))
