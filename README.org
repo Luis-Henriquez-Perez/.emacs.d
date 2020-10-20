@@ -1261,7 +1261,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (defun use-package:insert (key &optional anchor after)
-  "Convenience function for inserting items into `use-package-keywords'."
+  "Convenience function for inserting items into `use-package-keywords'.
+This function has the side-effect of inserting KEY before ANCHOR (or after ANCHOR if AFTER is non-nil.)"
   (alet (use-package-list-insert key use-package-keywords anchor after)
     (setq use-package-keywords)))
 #+end_src
