@@ -412,10 +412,7 @@ These are wrappers around =use-package= with a bit of additional functionality.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro use-package! (package &rest args)
-  "Wrapper around `use-package'."
-  (declare (indent defun))
-  `(use-package ,package ,@args))
+(defalias 'use-package! 'use-package)
 #+end_src
 
 ***** use-feature!
