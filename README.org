@@ -4672,7 +4672,7 @@ The optional argument NEW-WINDOW is not used."
 #+begin_src emacs-lisp
 (use-package! xwwp-follow-link
   :ensure (:host github :repo "canatella/xwwp")
-  :bind (:xwidget-webkit-mode-map
+  :bind (:map xwidget-webkit-mode-map
          ("v" . #'xwwp-follow-link))
   :setq (xwwp-follow-link-completion-system . 'ivy))
 #+end_src
@@ -5379,7 +5379,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
   :commands lispyville-comment-or-uncomment-line
   :hook emacs-lisp-mode
   :bind
-  (:emacs-lisp-mode-map
+  (:map emacs-lisp-mode-map
    ([remap evil-yank]                 . lispyville-yank)
    ([remap evil-delete]               . lispyville-delete)
    ([remap evil-change]               . lispyville-change)
@@ -6107,7 +6107,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
   :commands
   evil-visualstar/begin-search-backward
   evil-visualstar/begin-search-forward
-  :bind (:evil-visual-state-map
+  :bind (:map evil-visual-state-map
          ("#" . evil-visualstar/begin-search-backward)
          ("*" . evil-visualstar/begin-search-forward)))
 #+end_src
