@@ -1207,38 +1207,6 @@ built-in packages and external packages.
   `(use-package! ,feature :ensure nil ,@args))
 #+end_src
 
-*** add alias support
-:PROPERTIES:
-:ID:       180869b2-db8d-48a6-ac6f-6a5be6313c73
-:END:
-
-One thing I miss about leaf is alias support. I would assume that in order to
-override a default use-package! keyword, all you'd have to do is override or
-alias that keywords normalizer and handler functions. However, it doesn't seem
-to be so simple.
-
-**** aliases
-:PROPERTIES:
-:ID:       f2f69aaa-0641-49d0-8606-172ae5b260b3
-:END:
-
-#+begin_src emacs-lisp
-(defvar use-package:aliases nil
-  "An alist of the form (ALIAS . DEF).
-In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
-#+end_src
-
-**** get-alias
-:PROPERTIES:
-:ID:       846f7099-131e-45a6-83ad-72fe5cb3c24c
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:true-key (key)
-  "Return the KEY."
-  (or (alist-get key use-package:aliases) key))
-#+end_src
-
 *** helpers
 :PROPERTIES:
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
