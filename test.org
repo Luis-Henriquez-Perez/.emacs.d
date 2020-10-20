@@ -321,8 +321,11 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-os ()
-  (should-expand-to! (use-package dummy :os mac :init (+ 1 1))
-                     (with-os! mac (+ 1 1))))
+  (let ((use-package-expand-minimally t)
+        (use-package-always-defer t)
+        (use-package-always-ensure nil))
+    (should-expand-to! (use-package dummy :os mac :init (+ 1 1))
+                       (with-os! mac (+ 1 1)))))
 #+end_src
 
 ** pre-setq
