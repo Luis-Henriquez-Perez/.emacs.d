@@ -5120,7 +5120,7 @@ hooks.
     (edit-indirect-region beg end t)))
 #+end_src
 
-**** org link minor mode
+**** org link minor mode                                              :disabled:
 :PROPERTIES:
 :ID: 7af9c8bb-f3ad-43a1-8c9b-aeac6a4fdb36
 :END:
