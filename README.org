@@ -372,6 +372,12 @@ This code initializes straight if it's not already installed.
 :ID:       e1154974-444c-46e5-a412-2b59cc2fa2d8
 :END:
 
+#+begin_src emacs-lisp
+(setq package-enable-at-startup nil)
+
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages"))
+#+end_src
+
 **** directory
 :PROPERTIES:
 :ID:       22e4a725-d89a-4fd6-a3d7-9d160ea1e96f
