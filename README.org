@@ -1453,7 +1453,7 @@ ANCHOR if AFTER is non-nil.)"
 (use-package:insert :idle-require :init)
 
 (defun use-package-normalize/:idle-require (name keyword args)
-  (use-package:args-or-error key args #'symbolp "a symbol"))
+  (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
 (defun use-package-handler/:idle-require (name _keyword args rest state)
   (use-package-concat
