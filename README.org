@@ -736,7 +736,7 @@ This keyword is for installing packages based on my operating system.
 
 #+begin_src emacs-lisp
 (use-package! use-package
-  :setq
+  :pre-setq
   (use-package-ignore-unknown-keywords . t)
   (use-package-always-defer . t)
   (use-package-always-ensure . t)
