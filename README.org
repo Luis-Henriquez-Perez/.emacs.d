@@ -377,7 +377,7 @@ This code initializes straight if it's not already installed.
 (package-initialize)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages"))
+;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages"))
 (setq package-user-dir (concat VOID-PACKAGES-DIR "package.el"))
 #+end_src
 
