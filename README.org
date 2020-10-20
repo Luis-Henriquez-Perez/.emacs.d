@@ -709,6 +709,8 @@ to be loaded during idle time.
 :ID:       3168a5c8-0534-42e7-82b7-ed33bcb99ff6
 :END:
 
+Many times I need to define aliases.
+
 #+begin_src emacs-lisp
 (use-package:insert :alias :init)
 
