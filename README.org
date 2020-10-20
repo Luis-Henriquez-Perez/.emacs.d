@@ -1406,8 +1406,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 (push :before-call use-package-deferring-keywords)
 
 (defun use-package-normalize/:before-call (name keyword args)
-  (use-package-as-one (symbol-name name) args
-    (use-package:check-fn #'symbolp "a symbol")))
+  (use-package:as-one keyword args #'symbolp "a symbol"))
 
 (defun use-package-handler/:before-call (name _keyword features rest state)
   (use-package-concat
