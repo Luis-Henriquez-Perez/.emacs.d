@@ -3612,11 +3612,7 @@ to select candidates quickly.
 
 #+begin_src emacs-lisp
 (use-package! ivy-avy
-  :ensure nil
-  :commands ivy-avy
-  :init
-  (add-to-list 'load-path
-               (concat (--find (s-matches-p (rx "/ivy" eos) it) load-path) "-avy")))
+  :commands ivy-avy)
 #+end_src
 
 **** minibuffer bindings
