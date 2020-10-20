@@ -1244,6 +1244,42 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
 :END:
 
+**** unfold args
+:PROPERTIES:
+:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
+:END:
+
+=identify= should answer what should the first item of this list look like.
+
+#+begin_src emacs-lisp
+(defun use-package:unfold-args (args valid-item-p)
+  "Return a list of two items."
+  (cond ((-all-p valid-item-p args)
+         (list args nil))
+        ((alet (car args)
+           (and (= 1 (length args))
+                (not (-cons-pair-p it))
+                (listp it)))
+         (list (car args) (-find (-not valid-item-p) (car args))))
+        (t
+         (list args (-find (-not valid-item-p) args)))))
+#+end_src
+
+**** args or error
+:PROPERTIES:
+:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:args-or-error (key args valid-p desc)
+  "Replacement for `use-package-as-one'."
+  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
+    (if (not invalid-elt)
+        args
+      (thread-last (format "%s wants %s. Instead, %s was given" key desc invalid-elt)
+        (use-package-error)))))
+#+end_src
+
 **** insert
 :PROPERTIES:
 :ID:       d81b2f05-4cc5-492a-8f90-18b2f6c7214e
@@ -1508,47 +1544,6 @@ ANCHOR if AFTER is non-nil.)"
 
 (defun use-package-handler/:popup (name _keyword args rest state)
   (--map `(push ',it display-buffer-alist) args))
-#+end_src
-
-*** done
-:PROPERTIES:
-:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
-:END:
-
-**** args or error
-:PROPERTIES:
-:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:args-or-error (key args valid-p desc)
-  "Replacement for `use-package-as-one'."
-  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
-    (if (not invalid-elt)
-        args
-      (thread-last (format "%s wants %s. Instead, %s was given" key desc invalid-elt)
-        (use-package-error)))))
-#+end_src
-
-**** unfold args
-:PROPERTIES:
-:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
-:END:
-
-=identify= should answer what should the first item of this list look like.
-
-#+begin_src emacs-lisp
-(defun use-package:unfold-args (args valid-item-p)
-  "Return a list of two items."
-  (cond ((-all-p valid-item-p args)
-         (list args nil))
-        ((alet (car args)
-           (and (= 1 (length args))
-                (not (-cons-pair-p it))
-                (listp it)))
-         (list (car args) (-find (-not valid-item-p) (car args))))
-        (t
-         (list args (-find (-not valid-item-p) args)))))
 #+end_src
 
 *** boostrap
