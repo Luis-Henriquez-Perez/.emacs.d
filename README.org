@@ -1395,27 +1395,6 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
            args)))
 #+end_src
 
-***** custom                                                          :disabled:
-:PROPERTIES:
-:ID:       f8e1ed5c-5e97-4e49-a843-e0d485222c81
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package-normalize/:custom ()
-  )
-
-(advice-remove 'use-package-normalize/:custom #'use-package-normalize/:custom@return-args-as-is)
-(defadvice! return-args-as-is (:override use-package-normalize/:custom)
-  <args>)
-
-(advice-remove 'use-package-handler/:custom #'use-package-handler/:custom@use-cons-cell-not-lists)
-(defadvice! use-cons-cell-not-lists (:override use-package-handler/:custom)
-  (use-package-concat
-   (use-package-process-keywords <name> <rest> <state>)
-   (mapcar (lambda (pair) `(customize-set-variable ',(car pair) ,(cdr pair)))
-           <args>)))
-#+end_src
-
 **** defer keywords
 :PROPERTIES:
 :ID:       f35c631b-05e6-4c6d-bd12-40023be8efce
