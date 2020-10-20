@@ -3029,7 +3029,7 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 #+begin_src emacs-lisp
 (use-package! ace-window
   :commands ace-window ace-swap-window
-  :bind ([remap other-window] . ace-window)
+  ;; :bind ([remap other-window] ace-window)
   :setq
   (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (aw-background . t))
