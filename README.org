@@ -1207,16 +1207,6 @@ built-in packages and external packages.
   `(use-package! ,feature :ensure nil ,@args))
 #+end_src
 
-*** default keywords
-:PROPERTIES:
-:ID:       3a3e8b96-96ff-4d29-9767-686825a138d5
-:END:
-
-#+begin_src emacs-lisp
-(defvar use-package:defaults nil
-  "Default keywords used for `use-package'.")
-#+end_src
-
 *** add alias support
 :PROPERTIES:
 :ID:       180869b2-db8d-48a6-ac6f-6a5be6313c73
@@ -1532,6 +1522,7 @@ ANCHOR if AFTER is non-nil.)"
 
 #+begin_src emacs-lisp
 (defun use-package:args-or-error (key args valid-p desc)
+  "Replacement for `use-package-as-one'."
   (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
     (if (not invalid-elt)
         args
@@ -3637,7 +3628,7 @@ to select candidates quickly.
 #+begin_src emacs-lisp
 (use-package! ivy-avy
   :bind (:map ivy-minibuffer-map
-         ("C-'" . #'ivy-avy)))
+         ("C-'" . ivy-avy)))
 #+end_src
 
 **** minibuffer bindings
