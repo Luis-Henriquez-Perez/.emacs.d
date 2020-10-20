@@ -1254,6 +1254,17 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
 :END:
 
+**** insert
+:PROPERTIES:
+:ID:       d81b2f05-4cc5-492a-8f90-18b2f6c7214e
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:insert (key &optional anchor after)
+  (setq use-package-keywords
+        ()))
+#+end_src
+
 **** my version of as-one
 :PROPERTIES:
 :ID:       b4bfce7d-9fa1-4c4f-bf7a-b474e2758f02
@@ -1306,8 +1317,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(setq use-package-keywords
-      (use-package-list-insert :os use-package-keywords :ensure))
+(use-package:insert :os :ensure)
 
 (defun use-package-normalize/:os (name-symbol keyword args)
   (thread-last "one of the following symbols: mac, windows, linux"
