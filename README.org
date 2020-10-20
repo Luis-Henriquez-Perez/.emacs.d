@@ -1352,7 +1352,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 (defun use-package-normalize/:setq (name keyword args)
   (let ((message "a cons cell whose CAR is a symbol label")
-        (fn (lambda (it) (and (consp it) (symbol-name (car it))))))
+        (fn (lambda (it) (and (consp it) (symbolp (car it))))))
     (use-package:as-one keyword args fn message)))
 
 (defun use-package-handler/:setq (name _keyword args rest state)
