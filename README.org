@@ -1423,8 +1423,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(setq use-package-keywords
-      (--splice (eq :disabled it) (list it :after-call) use-package-keywords))
+(use-package:insert :after-call :disabled)
 
 (push :after-call use-package-deferring-keywords)
 
