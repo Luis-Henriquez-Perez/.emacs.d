@@ -1476,7 +1476,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-normalize/:hook (name keyword args)
+(defun use-package-normalize/:vhook (name keyword args)
   (thread-last (use-package:args-or-error args (-orfn #'symbolp #'-cons-pair-p))
     (--map-when (not (-cons-pair-p it)) (cons it nil))
     (--map (cons (use-package:ensure-hook (car it))
@@ -1489,7 +1489,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:hook (name _keyword args rest state)
+(defun use-package-handler/:vhook (name _keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
