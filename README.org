@@ -548,6 +548,8 @@ packages based on my operating system.
 :ID:       e727f35b-470b-4374-9276-3a42cce6ff28
 :END:
 
+These keywords are based on keywords in [[][leaf]], an alternative to =use-package=.
+
 ****** pre-setq
 :PROPERTIES:
 :ID:       a4f5754e-e2f4-4d60-b675-64e92fcbe0e7
