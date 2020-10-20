@@ -1487,11 +1487,11 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! use-my-custom-handler-fn (:override use-package-handler/:hook)
+(defun use-package-handler/:hook (name rest state args)
   (use-package-concat
-   (use-package-process-keywords <name> <rest> <state>)
+   (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
-           (use-package-normalize-commands <args>))))
+           (use-package-normalize-commands args))))
 #+end_src
 
 ****** set an alias                                                   :disabled:
