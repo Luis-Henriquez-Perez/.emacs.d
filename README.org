@@ -3893,7 +3893,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 #+begin_src emacs-lisp
 (use-package! company
   :hook prog-mode
-  :bind (:company-active-map
+  :bind (:map company-active-map
          ([tab] . company-select-next)
          ([backtab] . company-select-previous)
          ("C-k"     . company-select-previous)
