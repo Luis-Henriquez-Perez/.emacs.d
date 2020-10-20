@@ -1487,7 +1487,7 @@ ANCHOR if AFTER is non-nil.)"
 :END:
 
 #+begin_src emacs-lisp
-(defun use-package-handler/:hook (name rest state args)
+(defun use-package-handler/:hook (name keyword args rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
