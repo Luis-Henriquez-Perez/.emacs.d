@@ -1342,7 +1342,7 @@ ANCHOR if AFTER is non-nil.)"
 :ID:       e6a50f57-5f74-4d8c-8a88-17ee6b11d4c1
 :END:
 
-This keyword loads
+This keyword is for installing packages based on my operating system.
 
 #+begin_src emacs-lisp
 (use-package:insert :os :ensure)
