@@ -1285,7 +1285,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :ID:       d81b2f05-4cc5-492a-8f90-18b2f6c7214e
 :END:
 
-
+While [[helpfn:use-package-insert][]] is more easily debuggable.
 
 #+begin_src emacs-lisp
 (defun use-package:insert (key &optional anchor after)
