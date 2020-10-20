@@ -7140,7 +7140,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   :popup ("magit:"
           (display-buffer-at-bottom)
           (window-height . 0.5))
-  :bind (:magit-status-mode-map
+  :bind (:map magit-status-mode-map
          ([remap magit-mode-bury-buffer] . magit/quit))
   :setq
   (magit-completing-read-function . #'ivy-completing-read)
