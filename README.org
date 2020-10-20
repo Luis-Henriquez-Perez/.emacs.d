@@ -387,11 +387,11 @@ This code initializes straight if it's not already installed.
 :END:
 
 #+begin_src emacs-lisp
-(dolist (package '(dash dash-functional anaphora use-package s))
+(dolist (package '(dash general dash-functional anaphora use-package s))
   (unless (package-installed-p package)
     (package-refresh-contents)))
 
-(use-package dash :demand t)
+;; (use-package dash :demand t)
 #+end_src
 
 ** Library
