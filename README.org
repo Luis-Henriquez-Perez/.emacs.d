@@ -3010,7 +3010,7 @@ a new theme.
   (apply <orig-fn> <args>))
 #+end_src
 
-* Window Management
+* Window Management                                                   :disabled:
 :PROPERTIES:
 :ID: 29dbf899-17cd-4b00-aacb-090ccd20e133
 :END:
@@ -3353,7 +3353,7 @@ Emacs's text editing capabilities on it.
    ("k" . buffer-expose-up-window)))
 #+end_src
 
-* Completion
+* Completion                                                          :disabled:
 :PROPERTIES:
 :ID: 056384d1-a95a-4dcb-bc9d-ffe95bbb52a8
 :END:
@@ -4005,7 +4005,7 @@ worth quoting here:
 (use-package! company-prescient :hook company-mode)
 #+end_src
 
-* Email
+* Email                                                               :disabled:
 :PROPERTIES:
 :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
 :END:
@@ -4578,7 +4578,7 @@ mean 2000 which is not a lot by today's standard).
   (gnus-sorted-header-list . gnus-visible-headers))
 #+end_src
 
-* Web Browsing
+* Web Browsing                                                        :disabled:
 :PROPERTIES:
 :ID: f0960e47-5dbb-4cca-a17a-f8eb0da445d3
 :END:
@@ -4680,7 +4680,7 @@ The optional argument NEW-WINDOW is not used."
   :setq (xwwp-follow-link-completion-system . 'ivy))
 #+end_src
 
-* Multimedia
+* Multimedia                                                          :disabled:
 :PROPERTIES:
 :ID: 20a915a0-8525-413c-bd68-f1d5c14ce3da
 :END:
@@ -4849,7 +4849,7 @@ necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypressio
   :setq (keypression-frame-justify . 'keypression-right-justified))
 #+end_src
 
-* Text Editing
+* Text Editing                                                        :disabled:
 :PROPERTIES:
 :ID: 42e0838f-f72a-43f3-8db2-a406d2d89adb
 :END:
@@ -6249,7 +6249,7 @@ larger text objects. It's saves me keystrokes.
   (global-undo-tree-mode -1))
 #+end_src
 
-* Utility
+* Utility                                                             :disabled:
 :PROPERTIES:
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
 :END:
@@ -7506,7 +7506,7 @@ user delays.
   (super-save-auto-save-when-idle . t))
 #+end_src
 
-* Languages
+* Languages                                                           :disabled:
 :PROPERTIES:
 :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
 :END:
@@ -9064,7 +9064,7 @@ org api it seems.
 (use-package! latex-preview-pane)
 #+end_src
 
-* User Interface
+* User Interface                                                      :disabled:
 :PROPERTIES:
 :ID: ee57f711-9a4f-421f-b831-ab4907402e52
 :END:
@@ -9114,7 +9114,7 @@ understanding of a verbally terse and dry command description.
   :commands elisp-demos-add-demo)
 #+end_src
 
-* Asthetic
+* Asthetic                                                            :disabled:
 :PROPERTIES:
 :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
 :END:
@@ -9455,7 +9455,7 @@ graphical interface but.
 
 #+end_src
 
-* Keybindings
+* Keybindings                                                         :disabled:
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
