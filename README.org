@@ -1262,7 +1262,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 #+begin_src emacs-lisp
 (defun use-package:insert (key &optional anchor after)
   "Convenience function for inserting items into `use-package-keywords'.
-This function has the side-effect of inserting KEY before ANCHOR (or after ANCHOR if AFTER is non-nil.)"
+This function has the side-effect of inserting KEY before ANCHOR. (or after
+ANCHOR if AFTER is non-nil.)"
   (alet (use-package-list-insert key use-package-keywords anchor after)
     (setq use-package-keywords)))
 #+end_src
@@ -1291,9 +1292,9 @@ This function has the side-effect of inserting KEY before ANCHOR (or after ANCHO
        arg)))
 #+end_src
 
-**** hook and mode
+**** mode
 :PROPERTIES:
-:ID:       82ce7194-1619-4ecf-8c0d-d43bbde5f852
+:ID:       efb56015-4466-460c-ac0e-bd11906cc054
 :END:
 
 #+begin_src emacs-lisp
@@ -1301,7 +1302,14 @@ This function has the side-effect of inserting KEY before ANCHOR (or after ANCHO
   (or val
       (alet (not (string-match-p "-mode\\'" (void-to-string package)))
         (void-symbol-intern package (when it "-mode")))))
+#+end_src
 
+**** hook
+:PROPERTIES:
+:ID:       8c2516d2-b747-4724-a3a4-c3b737862263
+:END:
+
+#+begin_src emacs-lisp
 (defun use-package:ensure-hook (var)
   (if (s-matches-p "-hook\\'" (symbol-name var))
       var
@@ -1324,7 +1332,7 @@ This function has the side-effect of inserting KEY before ANCHOR (or after ANCHO
 (defun use-package-normalize/:os (name-symbol keyword args)
   (let ((message "one of the following symbols: mac, windows, linux")
         (fn (-partial #'-contains-p '(mac windows linux))))
-    (use-package:as-one keyword args fn message)))
+    (use-package:args-or-error keyword args fn message)))
 
 (defun use-package-handler/:os (name _keyword features rest state)
   (let ((body (use-package-process-keywords name rest state)))
@@ -1530,6 +1538,45 @@ This function has the side-effect of inserting KEY before ANCHOR (or after ANCHO
 
 (defun use-package-handler/:popup (name _keyword args rest state)
   (--map `(push ',it display-buffer-alist) args))
+#+end_src
+
+*** done
+:PROPERTIES:
+:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
+:END:
+
+**** args or error
+:PROPERTIES:
+:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:args-or-error (args valid-p)
+  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
+    (if invalid-elt
+        (use-package-error (format "bad elt: %S | list: %S" invalid-elt args))
+      args)))
+#+end_src
+
+**** unfold args
+:PROPERTIES:
+:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
+:END:
+
+=identify= should answer what should the first item of this list look like.
+
+#+begin_src emacs-lisp
+(defun use-package:unfold-args (args valid-item-p)
+  "Return a list of two items."
+  (cond ((-all-p valid-item-p args)
+         (list args nil))
+        ((alet (car args)
+           (and (= 1 (length args))
+                (not (-cons-pair-p it))
+                (listp it)))
+         (list (car args) (-find (-not valid-item-p) (car args))))
+        (t
+         (list args (-find (-not valid-item-p) args)))))
 #+end_src
 
 *** boostrap
