@@ -1261,8 +1261,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (defun use-package:insert (key &optional anchor after)
-  (setq use-package-keywords
-        ()))
+  (alet (use-package-list-insert key use-package-keywords anchor after)
+    (setq use-package-keywords)))
 #+end_src
 
 **** my version of as-one
