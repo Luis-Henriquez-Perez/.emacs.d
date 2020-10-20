@@ -1513,7 +1513,8 @@ ANCHOR if AFTER is non-nil.)"
 (use-package:insert :popup :init)
 
 (defun use-package-normalize/:popup (name keyword args)
-  args)
+  (let ((message "a list"))
+    (use-package:args-or-error keyword args #'list message)))
 
 (defun use-package-handler/:popup (name _keyword args rest state)
   (--map `(push ',it display-buffer-alist) args))
