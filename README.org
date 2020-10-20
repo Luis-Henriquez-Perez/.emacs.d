@@ -362,6 +362,21 @@ This code initializes straight if it's not already installed.
        (void-log "✕ failed to install %s because of %s" package err)))))
 #+end_src
 
+*** package.el
+:PROPERTIES:
+:ID:       e73d50ef-42dd-4168-90f8-50563263133e
+:END:
+
+**** disable bad stuff
+:PROPERTIES:
+:ID:       e1154974-444c-46e5-a412-2b59cc2fa2d8
+:END:
+
+**** directory
+:PROPERTIES:
+:ID:       22e4a725-d89a-4fd6-a3d7-9d160ea1e96f
+:END:
+
 *** required packages
 :PROPERTIES:
 :ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
