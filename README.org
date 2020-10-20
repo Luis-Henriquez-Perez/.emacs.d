@@ -367,11 +367,6 @@ This code initializes straight if it's not already installed.
 :ID:       e73d50ef-42dd-4168-90f8-50563263133e
 :END:
 
-**** directory
-:PROPERTIES:
-:ID:       22e4a725-d89a-4fd6-a3d7-9d160ea1e96f
-:END:
-
 #+begin_src emacs-lisp
 (setq package-user-dir (concat VOID-PACKAGES-DIR "package.el"))
 (require 'package)
