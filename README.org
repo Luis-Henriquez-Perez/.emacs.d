@@ -421,7 +421,8 @@ These are wrappers around =use-package= with a bit of additional functionality.
 :END:
 
 This wrapper around =use-package!= is meant to explicity distinguish between
-built-in packages and external packages.
+built-in packages and external packages. The idea was taken from [[][]]. The
+only difference is that with use-feature! ensure is always nil.
 
 #+begin_src emacs-lisp
 (defmacro use-feature! (feature &rest args)
