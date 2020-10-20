@@ -1493,6 +1493,15 @@ ANCHOR if AFTER is non-nil.)"
            (use-package-normalize-commands args))))
 #+end_src
 
+****** set an alias
+:PROPERTIES:
+:ID:       4804d722-05ed-4da3-a448-9557a2416465
+:END:
+
+#+begin_src emacs-lisp
+(push (cons :hook :vhook) use-package:aliases)
+#+end_src
+
 **** alias
 :PROPERTIES:
 :ID:       3168a5c8-0534-42e7-82b7-ed33bcb99ff6
