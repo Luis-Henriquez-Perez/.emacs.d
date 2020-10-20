@@ -391,7 +391,7 @@ This code initializes straight if it's not already installed.
   (unless (package-installed-p package)
     (package-refresh-contents)))
 
-;; (use-package dash :demand t)
+(use-package dash :demand t)
 #+end_src
 
 ** Library
