@@ -1576,6 +1576,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 #+begin_src emacs-lisp
 (use-feature! vc-hooks
+  :ensure nil
   :setq
   (vc-follow-link . t)
   (vc-follow-symlinks . t))
