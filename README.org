@@ -1372,7 +1372,7 @@ ANCHOR if AFTER is non-nil.)"
 (defun use-package-normalize/:setq (name keyword args)
   (let ((message "a cons cell whose CAR is a symbol label")
         (fn (lambda (it) (and (consp it) (symbolp (car it))))))
-    (use-package:as-one keyword args fn message)))
+    (use-package:args-or-error keyword args fn message)))
 
 (defun use-package-handler/:setq (name _keyword args rest state)
   (use-package-concat
@@ -1415,11 +1415,9 @@ ANCHOR if AFTER is non-nil.)"
 (push :before-call use-package-deferring-keywords)
 
 (defun use-package-normalize/:before-call (name keyword args)
-  (aprog1 (use-package:as-one keyword args #'symbolp "a symbol")
-    (message "UP after: %S" it)))
+  (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
 (defun use-package-handler/:before-call (name _keyword features rest state)
-  (message "HAND: %S" features)
   (use-package-concat
    (use-package-process-keywords name rest state)
    `((defadvice! ,(intern (format "load-%s" name)) (:before ,@features)
@@ -1455,8 +1453,7 @@ ANCHOR if AFTER is non-nil.)"
 (use-package:insert :idle-require :init)
 
 (defun use-package-normalize/:idle-require (name keyword args)
-  (use-package-as-one (symbol-name name) args
-    (use-package:check-fn #'symbolp "a symbol")))
+  (use-package:args-or-error key args #'symbolp "a symbol"))
 
 (defun use-package-handler/:idle-require (name _keyword args rest state)
   (use-package-concat
