@@ -1541,15 +1541,6 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
   (--map `(push ',it display-buffer-alist) args))
 #+end_src
 
-**** package management
-:PROPERTIES:
-:ID:       432c46eb-7170-4668-b64e-ef85e196d361
-:END:
-
-#+begin_src emacs-lisp
-(setq use-package-ensure-function #'straight-use-package-ensure-function)
-#+end_src
-
 *** boostrap
 :PROPERTIES:
 :ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
