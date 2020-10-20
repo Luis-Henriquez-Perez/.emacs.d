@@ -5499,7 +5499,7 @@ very useful to me.
 :ID: 27e382d7-5735-4f33-87c8-3dec2d2ca082
 :END:
 
-*** spell-number
+*** spell-number                                                      :disabled:
 :PROPERTIES:
 :ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
 :END:
