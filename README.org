@@ -7347,7 +7347,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 (use-package! pdf-tools
   :magic ("%PDF" . pdf-view-mode)
   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
-  :bind (:pdf-view-mode-map
+  :bind (:map pdf-view-mode-map
          ("j" . pdf-view-next-line-or-next-page)
          ("k" . pdf-view-previous-line-or-previous-page)))
 #+end_src
