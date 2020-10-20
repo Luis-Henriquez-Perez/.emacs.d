@@ -1544,11 +1544,7 @@ This function has the side-effect of inserting KEY before ANCHOR (or after ANCHO
   (use-package-always-defer . t)
   (use-package-always-ensure . t)
   (use-package-verbose . nil)
-  (use-package-expand-minimally . t)
-  :init
-  ;; (setq use-package:defaults (append '(:ensure t) use-package:defaults))
-  ;; (push (cons :ensure :ensure) use-package:aliases)
-  )
+  (use-package-expand-minimally . t))
 #+end_src
 
 ** Packages
