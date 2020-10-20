@@ -378,6 +378,7 @@ This code initializes straight if it's not already installed.
 :END:
 
 #+begin_src emacs-lisp
+(setq package-user-dir (concat VOID-PACKAGES-DIR "package.el"))
 #+end_src
 
 *** required packages
