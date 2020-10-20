@@ -1512,8 +1512,8 @@ ANCHOR if AFTER is non-nil.)"
 
 ;; should be a cons cell.
 (defun use-package-normalize/:alias (name keyword args)
-  (let ((message "cons cell"))
-    (use-package:as-one keyword args #'-cons-pair-p message)))
+  (let ((message "a cons cell"))
+    (use-package:args-or-error keyword args #'-cons-pair-p message)))
 
 (defun use-package-handler/:alias (name _keyword args rest state)
   (use-package-concat
