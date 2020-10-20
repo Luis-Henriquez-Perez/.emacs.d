@@ -1505,7 +1505,8 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 
 ;; should be a cons cell.
 (defun use-package-normalize/:alias (name keyword args)
-  (use-package:args-or-error args #'-cons-pair-p))
+  (let ((message "cons cell"))
+    (use-package:as-one keyword args #'-cons-pair-p message)))
 
 (defun use-package-handler/:alias (name _keyword args rest state)
   (use-package-concat
