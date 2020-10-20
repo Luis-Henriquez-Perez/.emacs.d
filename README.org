@@ -5534,7 +5534,7 @@ very useful to me.
   :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
 #+end_src
 
-*** autocapitalize
+*** autocapitalize                                                    :disabled:
 :PROPERTIES:
 :ID: 35c7c4c0-5009-43d6-8c34-43d6111ceb28
 :END:
