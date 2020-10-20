@@ -548,7 +548,8 @@ packages based on my operating system.
 :ID:       e727f35b-470b-4374-9276-3a42cce6ff28
 :END:
 
-These keywords are based on keywords in [[][leaf]], an alternative to =use-package=.
+These keywords are based on keywords in [[][leaf]], an alternative to
+=use-package=. They distinguish setting variables from the rest of the configuration.
 
 ****** pre-setq
 :PROPERTIES:
