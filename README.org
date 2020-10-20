@@ -1254,7 +1254,7 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
 :END:
 
-**** invalid args
+**** check fn
 :PROPERTIES:
 :ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
 :END:
