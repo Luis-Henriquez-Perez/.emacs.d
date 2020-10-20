@@ -1254,6 +1254,16 @@ In the `use-package!' macro, keywords named ALIAS will be replaced with DEF.")
 :ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
 :END:
 
+**** my version of as-one
+:PROPERTIES:
+:ID:       b4bfce7d-9fa1-4c4f-bf7a-b474e2758f02
+:END:
+
+#+begin_src emacs-lisp
+(defun use-package:as-one (symbol args fn &optional message)
+  "")
+#+end_src
+
 **** check fn
 :PROPERTIES:
 :ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
