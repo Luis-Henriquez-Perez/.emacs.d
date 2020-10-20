@@ -490,26 +490,27 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-hook ()
+  (let ((use-package-expand-minimally t)
+        (use-package-always-ensure nil))
+    (should-expand-to! (use-package foo :hook emacs-startup)
+                       (progn (unless (fboundp 'foo-mode)
+                                (autoload #'foo-mode "foo" nil t))
+                              (void-add-hook 'emacs-startup-hook #'foo-mode)))
 
-  (should-expand-to! (use-package foo :hook emacs-startup)
-                     (progn (unless (fboundp 'foo-mode)
-                              (autoload #'foo-mode "foo" nil t))
-                            (void-add-hook 'emacs-startup-hook #'foo-mode)))
+    (should-expand-to! (use-package foo :hook emacs-startup-hook)
+                       (progn (unless (fboundp 'foo-mode)
+                                (autoload #'foo-mode "foo" nil t))
+                              (void-add-hook 'emacs-startup-hook #'foo-mode)))
 
-  (should-expand-to! (use-package foo :hook emacs-startup-hook)
-                     (progn (unless (fboundp 'foo-mode)
-                              (autoload #'foo-mode "foo" nil t))
-                            (void-add-hook 'emacs-startup-hook #'foo-mode)))
+    (should-expand-to! (use-package foo :hook (emacs-startup-hook . dap-mode))
+                       (progn (unless (fboundp 'dap-mode)
+                                (autoload #'dap-mode "foo" nil t))
+                              (void-add-hook 'emacs-startup-hook #'dap-mode)))
 
-  (should-expand-to! (use-package foo :hook (emacs-startup-hook . dap-mode))
-                     (progn (unless (fboundp 'dap-mode)
-                              (autoload #'dap-mode "foo" nil t))
-                            (void-add-hook 'emacs-startup-hook #'dap-mode)))
-
-  (should-expand-to! (use-package foo :hook ((emacs-startup-hook . dap-mode)))
-                     (progn (unless (fboundp 'dap-mode)
-                              (autoload #'dap-mode "foo" nil t))
-                            (void-add-hook 'emacs-startup-hook #'dap-mode))))
+    (should-expand-to! (use-package foo :hook ((emacs-startup-hook . dap-mode)))
+                       (progn (unless (fboundp 'dap-mode)
+                                (autoload #'dap-mode "foo" nil t))
+                              (void-add-hook 'emacs-startup-hook #'dap-mode)))))
 #+end_src
 
 ** popup
