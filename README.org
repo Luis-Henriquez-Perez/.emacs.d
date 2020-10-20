@@ -266,7 +266,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
 :END:
 
-*** straight.el
+*** straight.el                                                       :disabled:
 :PROPERTIES:
 :ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
 :END:
