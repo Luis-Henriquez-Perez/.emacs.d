@@ -386,6 +386,7 @@ This code initializes straight if it's not already installed.
 
 #+begin_src emacs-lisp
 (dolist (package '(dash dash-functional anaphora use-package s))
+  (package-install package)
   (unless (package-installed-p package)
     (package-refresh-contents)
     (package-install package))
