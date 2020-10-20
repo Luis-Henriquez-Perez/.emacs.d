@@ -3039,7 +3039,7 @@ screen. By default the border between these windows is very thin, so it can be
 hard to distinguish windows sometimes. The point of adding borders to windows is
 to distinguish them easily from one another.
 
-*** window dividers                                                   :disabled:
+*** window dividers
 :PROPERTIES:
 :ID: 849718ae-9d4a-43ab-b113-584aefa87c5b
 :END:
