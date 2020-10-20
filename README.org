@@ -1457,15 +1457,6 @@ ANCHOR if AFTER is non-nil.)"
 :ID:       82823374-1604-4a4c-8e72-638c430df38f
 :END:
 
-****** insert
-:PROPERTIES:
-:ID:       02d4c6fd-7203-4731-aace-17ddd9a52599
-:END:
-
-#+begin_src emacs-lisp
-(use-package:insert :hook :hook)
-#+end_src
-
 ****** normalize
 :PROPERTIES:
 :ID:       43767912-9f4d-46a9-bdfe-b7e4e5d1456c
@@ -1491,15 +1482,6 @@ ANCHOR if AFTER is non-nil.)"
    (use-package-process-keywords name rest state)
    (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
            (use-package-normalize-commands args))))
-#+end_src
-
-****** set an alias                                                   :disabled:
-:PROPERTIES:
-:ID:       4804d722-05ed-4da3-a448-9557a2416465
-:END:
-
-#+begin_src emacs-lisp
-(push (cons :hook :vhook) use-package:aliases)
 #+end_src
 
 **** alias
