@@ -425,14 +425,16 @@
 
 #+begin_src emacs-lisp
 (ert-deftest use-package-before-call ()
+  (let ((use-package-expand-minimally t)
+        (use-package-always-ensure nil)
+        (use-package-always-defer t))
+    (should-expand-to! (use-package foo :before-call bar)
+                       (defadvice! load-foo (:before bar)
+                         (require 'foo)))
 
-  (should-expand-to! (use-package foo :before-call bar)
-                     (defadvice! load-foo (:before bar)
-                       (require 'foo)))
-
-  (should-expand-to! (use-package foo :before-call bar baz)
-                     (defadvice! load-foo (:before bar baz)
-                       (require 'foo))))
+    (should-expand-to! (use-package foo :before-call bar baz)
+                       (defadvice! load-foo (:before bar baz)
+                         (require 'foo)))))
 #+end_src
 
 ** idle-require
@@ -443,6 +445,7 @@
 #+begin_src emacs-lisp
 (ert-deftest use-package-idle-require ()
   (let ((use-package-expand-minimally t)
+        (use-package-always-ensure nil)
         (use-package-always-defer t))
     (should-expand-to! (use-package foo :idle-require flop) (idle-require 'flop))
 
