@@ -1296,20 +1296,6 @@ ANCHOR if AFTER is non-nil.)"
     (setq use-package-keywords it)))
 #+end_src
 
-**** check fn
-:PROPERTIES:
-:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:check-fn (fn message)
-  "Return a function used for `use-package-as-one'."
-  `(lambda (label arg)
-     (if (not (funcall #',fn arg))
-         (use-package-error (format "%s wants %s" label ,message))
-       arg)))
-#+end_src
-
 **** mode
 :PROPERTIES:
 :ID:       efb56015-4466-460c-ac0e-bd11906cc054
