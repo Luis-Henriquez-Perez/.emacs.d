@@ -370,9 +370,10 @@ This code initializes straight if it's not already installed.
 #+begin_src emacs-lisp
 (require 'package)
 (setq package-user-dir (concat VOID-PACKAGES-DIR "package.el"))
-(package-initialize)
-(setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(setq package-enable-at-startup nil)
+
+(package-initialize)
 ;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages"))
 #+end_src
 
