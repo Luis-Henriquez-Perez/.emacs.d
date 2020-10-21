@@ -2212,6 +2212,15 @@ make a difference. That's why.
   :demand t)
 #+end_src
 
+**** ts
+:PROPERTIES:
+:ID:       64d19467-a878-449c-8402-88892c25ac9a
+:END:
+
+#+begin_src emacs-lisp
+(use-package! ts)
+#+end_src
+
 **** gc
 :PROPERTIES:
 :ID: 4f1477b7-7b28-4a20-9a31-cc34a10f5878
@@ -8822,7 +8831,12 @@ This was the answer to [[https://emacs.stackexchange.com/questions/53648/elimina
   (setq-local header-line-format nil))
 #+end_src
 
-**** doct
+**** template syntax
+:PROPERTIES:
+:ID:       ebb31724-10cc-4598-936c-8075076d520e
+:END:
+
+***** doct
 :PROPERTIES:
 :ID: 287fb9c7-110e-4758-aab2-71f74079ade2
 :END:
@@ -8836,20 +8850,50 @@ template element as you're writing it.
 #+begin_src emacs-lisp
 (use-package! doct
   :after org-capture
-  :demand t
-  :config
-  ;; (require 'doct)
-  ;; doct just returns the new template.
-  (defadvice! add-to-capture-templates (:around doct)
-    "Automatically add the template to capture templates."
-    (alet (apply <orig-fn> <args>)
-      (prepend! org-capture-templates it))))
+  :demand t)
+#+end_src
+
+***** add to templates
+:PROPERTIES:
+:ID:       4855cc10-a3ed-4ad1-90cf-4455b267346c
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! add-to-capture-templates (:around doct)
+  "Automatically add the template to capture templates."
+  (alet (apply <orig-fn> <args>)
+    (prepend! org-capture-templates it)))
 #+end_src
 
 **** capture templates
 :PROPERTIES:
 :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
 :END:
+
+***** generate the template with org-ml
+:PROPERTIES:
+:ID:       c1a9c9ee-be52-48d0-b069-796a02972bdc
+:END:
+
+Using org-ml guarantees that my headline will be the correct format.
+
+#+begin_src emacs-lisp
+(defun org-capture:generic-template ()
+  "Generate generic capture template."
+  (-let* ((id (org-id-new))
+          (date-created (format-time-string "%02m/%02d/%02Y at HH:MM"))
+          (start-date)
+          (end-date)
+          (planning-node (org-ml-build-planning! :scheduled start-date
+                                                 :deadline end-date)))
+    (->> (org-ml-build-headline! :title-text "%?"
+                                 :todo-keyword "TODO"
+                                 :tags '("emacs"))
+         (org-ml-headline-set-node-property "ID" id)
+         (org-ml-headline-set-node-property "CREATED" date-created)
+         (org-ml-headline-set-planning planning-node)
+         (org-ml-to-trimmed-string))))
+#+end_src
 
 ***** emacs
 :PROPERTIES:
@@ -8859,17 +8903,11 @@ template element as you're writing it.
 #+begin_src emacs-lisp
 (after! org-capture
   (doct (list "Emacs"
-              :after-finalize
-              (lambda ()
-                (org-back-to-heading)
-                (org-set-tags)
-                (org-schedule))
               :keys "e"
-              :file (lambda nil (concat VOID-ORG-DIR "todo.org"))
+              :file (-const (concat VOID-ORG-DIR "todo.org"))
               :prepend t
               :empty-lines 1
-              :ID (lambda () (require 'uuidgen) (uuidgen-4))
-              :template (org-ml-build-headline! ))))
+              :template #'org-capture:generic-template)))
 #+end_src
 
 ***** notes
@@ -8885,15 +8923,10 @@ in the future. I use this template for this.
 (after! org-capture
   (doct (list "Notes"
               :keys "n"
-              :file (lambda nil (concat VOID-ORG-DIR "notes.org"))
+              :file (-const (concat VOID-ORG-DIR "notes.org"))
               :prepend t
               :empty-lines 1
-              :ID (lambda () (require 'uuidgen) (uuidgen-4))
-              :template '("* %?"
-                          ":PROPERTIES:"
-                          ":ID: %{ID}"
-                          ":CREATED: %U"
-                          ":END:"))))
+              :template )))
 #+end_src
 
 ***** website (from firefox)
@@ -8908,12 +8941,7 @@ in the future. I use this template for this.
               :file (lambda nil (concat VOID-ORG-DIR "todo.org"))
               :prepend t
               :empty-lines 1
-              :ID (lambda () (require 'uuidgen) (uuidgen-4))
-              :template '("* %{todo-state} %?"
-                          ":PROPERTIES:"
-                          ":ID: %{ID}"
-                          ":CREATED: %U"
-                          ":END:"))))
+              :template #'org-capture:generic-template)))
 #+end_src
 
 **** prevent capture templates from deleting windows
