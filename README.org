@@ -1604,6 +1604,34 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
+*** whenlist!
+:PROPERTIES:
+:ID:       18d65173-0b3a-4191-ac90-2c56aed88ae9
+:END:
+
+#+begin_src emacs-lisp
+(defmacro whenlist! (condition &rest body)
+  (declare (indent defun))
+  `(when ,condition (list (progn ,@body))))
+#+end_src
+
+*** interactive functions
+:PROPERTIES:
+:ID:       32fb0ac4-d9b9-4f57-8597-90a6d264b176
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defcommand! (name args &rest body)
+  "Define a Void interactive function."
+  (declare (indent defun) (doc-string 3))
+  (let ((command-name (void-symbol-intern 'void/ name))
+        (docstring (whenlist! (stringp (car body)) (pop body))))
+    `(defun ,command-name ,args
+       ,@docstring
+       (interactive)
+       ,@body)))
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
@@ -2548,9 +2576,8 @@ color in the frame title.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/window-split-right-and-focus ()
+(defcommand! window-split-right-and-focus ()
   "Split window right and select the window created with the split."
-  (interactive)
   (select-window (split-window-right)))
 #+end_src
 
@@ -2560,9 +2587,8 @@ color in the frame title.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/window-split-below-and-focus ()
+(defcommand! window-split-below-and-focus ()
   "Split window below and select the window created with the split."
-  (interactive)
   (select-window (split-window-below)))
 #+end_src
 
@@ -2580,9 +2606,8 @@ Sometimes something goes wrong with [[helpvar:kill-emacs-hook][kill-emacs-hook]]
 close emacs. For that reason, I have this function.
 
 #+begin_src emacs-lisp
-(defun void/kill-emacs-no-hook ()
+(defcommand! kill-emacs-no-hook ()
   "Kill emacs, ignoring `kill-emacs-hook'."
-  (interactive)
   (when (yes-or-no-p "Quit without `kill-emacs-hook'?")
     (let (kill-emacs-hook) (kill-emacs))))
 #+end_src
@@ -2595,9 +2620,8 @@ close emacs. For that reason, I have this function.
 I've never had to use this. But better be safe than sorry.
 
 #+begin_src emacs-lisp
-(defun void/kill-emacs-brutally ()
+(defcommand! kill-emacs-brutally ()
   "Tell an external process to kill emacs."
-  (interactive)
   (when (yes-or-no-p "Do you want to BRUTALLY kill emacs?")
     (call-process "kill" nil nil nil "-9" (number-to-string (emacs-pid)))))
 #+end_src
@@ -2608,9 +2632,8 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/open-emacs-instance ()
+(defcommand! open-emacs-instance ()
   "Open a new emacs instance in debug-mode."
-  (interactive)
   (cond ((eq system-type 'darwin)
          (start-process-shell-command
           "emacs"
@@ -2625,8 +2648,7 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/kill-emacs-processes ()
-  (interactive)
+(defcommand! kill-emacs-processes ()
   (let ((count 1) (process "emacs"))
     (kill-process process)
     (while (ignore-errors (kill-process process))
@@ -2641,9 +2663,8 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/open-qutebrowser ()
+(defcommand! open-qutebrowser ()
   "Open qutebrowser."
-  (interactive)
   (start-process "qutebrowser" nil "qutebrowser"))
 #+end_src
 
@@ -2656,8 +2677,7 @@ In Emacs, messages. The messages buffer is where messages displayed at the botto
 of the Emacs frame are recorded after they expire.
 
 #+begin_src emacs-lisp
-(defun void/switch-to-messages ()
-  (interactive)
+(defcommand! switch-to-messages ()
   (select-window (display-buffer (get-buffer "*Messages*"))))
 #+end_src
 
@@ -2667,8 +2687,7 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/switch-to-main-org-file ()
-  (interactive)
+(defcommand! switch-to-main-org-file ()
   (find-file (concat VOID-EMACS-DIR "README.org")))
 #+end_src
 
@@ -2678,8 +2697,7 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/switch-to-todo-file ()
-  (interactive)
+(defcommand! switch-to-todo-file ()
   (switch-to-buffer (find-file VOID-TODO-FILE)))
 #+end_src
 
@@ -2689,8 +2707,7 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/enable-debug-mode ()
-  (interactive)
+(defcommand! enable-debug-mode ()
   (setq void-debug-p t))
 #+end_src
 
@@ -2700,9 +2717,8 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/switch-to-init-org-file ()
+(defcommand! switch-to-init-org-file ()
   "Switch to Void's init.el file."
-  (interactive)
   (switch-to-buffer VOID-INIT-FILE))
 #+end_src
 
@@ -2712,9 +2728,8 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/quit-emacs-no-prompt ()
+(defcommand! quit-emacs-no-prompt ()
   "Quit emacs without prompting."
-  (interactive)
   (let (confirm-kill-emacs)
     (kill-emacs)))
 #+end_src
@@ -2965,8 +2980,7 @@ happened before and it's a huge pain resetting the font-size when the
 font is super small). Therefore, I check the code.
 
 #+begin_src emacs-lisp
-(defun void/set-font-size ()
-  "Set the font size interactively."
+(defcommand! set-font-size ()
   (interactive)
   (let* ((old-font-size (face-attribute 'default :height))
          (prompt "The font size is %d. What do you want to change it to? ")
@@ -4846,9 +4860,8 @@ If emacs 27 has been compiled with Cairo support, it can take screenshots. I
 adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs]].
 
 #+begin_src emacs-lisp
-(defun void/take-screenshot ()
+(defcommand! take-screenshot ()
   "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
-  (interactive)
   (let* ((entered-image-name (read-string "Image Name: "))
          (default-image-name (format-time-string "image-%Y-%m-%d-%H:%M:%S"))
          (image-name (if (string-empty-p entered-image-name) default-image-name))
@@ -6261,20 +6274,16 @@ larger text objects. It's saves me keystrokes.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/evil-beginning-of-word ()
-  (interactive)
+(defcommand! evil-beginning-of-word ()
   (avy:jump-to-regexp (rx word-start nonl)))
 
-(defun void/evil-beginning-of-WORD ()
-  (interactive)
+(defcommand! evil-beginning-of-WORD ()
   (avy:jump-to-regexp (rx symbol-start nonl)))
 
-(defun void/evil-end-of-word ()
-  (interactive)
+(defcommand! evil-end-of-word ()
   (avy:jump-to-regexp (rx nonl word-end)))
 
-(defun void/evil-end-of-WORD ()
-  (interactive)
+(defcommand! evil-end-of-WORD ()
   (avy:jump-to-regexp (rx nonl symbol-end)))
 #+end_src
 
@@ -7519,8 +7528,7 @@ on the buffer you'd like to edit.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/dotfile-status ()
-  (interactive)
+(defcommand! dotfile-status ()
   (require 'tramp)
   (add-to-list 'tramp-methods
                '("yadm"
