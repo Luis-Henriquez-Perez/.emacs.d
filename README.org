@@ -4784,6 +4784,29 @@ even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots ar
 utilized at all). In Void, where documentation is *very* important, I supplement
 my description of problems with pictures.
 
+*** screenshot cairo
+:PROPERTIES:
+:ID:       d979ca37-e4e4-4205-bb94-b1ad6cfe1651
+:END:
+
+If emacs 27 has been compiled with Cairo support, it can take screenshots. I
+adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs]].
+
+#+begin_src emacs-lisp
+(defun void/take-screenshot ()
+  "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
+  (interactive)
+  (let* ((entered-image-name (read-string "Image Name: "))
+         (default-image-name (format-time-string "image-%Y-%m-%d-%H:%M:%S"))
+         (image-name (if (string-empty-p entered-image-name) default-image-name))
+         (filename (format "%s/%s.svg" image-name VOID-SCREENSHOT-DIR))
+	     (data (x-export-frames nil 'svg)))
+    (with-temp-file filename
+      (insert data))
+    (kill-new filename)
+    (message "%s -> %s" (f-filename filename) VOID-SCREENSHOT-DIR)))
+#+end_src
+
 *** screenshot
 :PROPERTIES:
 :ID: c0975eae-c03b-4d2a-a546-06c05197eded
