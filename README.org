@@ -8666,7 +8666,7 @@ it's installed, otherwise it defaults to bringing up an regular emacs help buffe
   ("p" #'org/toggle-property-drawer-display))
 #+end_src
 
-*** org capture
+*** TODO org capture
 :PROPERTIES:
 :ID: 81197df0-6744-4a63-a202-f7279d7b7119
 :END:
@@ -8686,7 +8686,11 @@ it.
 #+begin_src emacs-lisp
 (use-feature! org-capture
   :after org
-  :commands org-capture)
+  :commands org-capture
+  :popup ("\\`CAPTURE"
+          (display-buffer-at-bottom)
+          (window-height . 0.5)
+          (slot . 10)))
 #+end_src
 
 **** remove capture headerline
@@ -8739,19 +8743,17 @@ template element as you're writing it.
 #+begin_src emacs-lisp
 (after! org-capture
   (doct (list "Emacs"
+              :after-finalize
+              (lambda ()
+                (org-back-to-heading)
+                (org-set-tags)
+                (org-schedule))
               :keys "e"
               :file (lambda nil (concat VOID-ORG-DIR "todo.org"))
               :prepend t
               :empty-lines 1
               :ID (lambda () (require 'uuidgen) (uuidgen-4))
-              :template '("* %{todo-state} %?"
-                          ":PROPERTIES:"
-                          ":ID: %{ID}"
-                          ":CREATED: %U"
-                          ":END:")
-              :children
-              '(("Todo" :keys "1" :todo-state "TODO")
-                ("Bug" :keys "2" :todo-state "BUG")))))
+              :template (org-ml-build-headline! ))))
 #+end_src
 
 ***** notes
@@ -8772,6 +8774,26 @@ in the future. I use this template for this.
               :empty-lines 1
               :ID (lambda () (require 'uuidgen) (uuidgen-4))
               :template '("* %?"
+                          ":PROPERTIES:"
+                          ":ID: %{ID}"
+                          ":CREATED: %U"
+                          ":END:"))))
+#+end_src
+
+***** website (from firefox)
+:PROPERTIES:
+:ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
+:END:
+
+#+begin_src emacs-lisp
+(after! org-capture
+  (doct (list "Emacs"
+              :keys "e"
+              :file (lambda nil (concat VOID-ORG-DIR "todo.org"))
+              :prepend t
+              :empty-lines 1
+              :ID (lambda () (require 'uuidgen) (uuidgen-4))
+              :template '("* %{todo-state} %?"
                           ":PROPERTIES:"
                           ":ID: %{ID}"
                           ":CREATED: %U"
