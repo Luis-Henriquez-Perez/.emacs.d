@@ -3322,7 +3322,6 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (use-package! buffer-expose
-  :disabled t
   :commands
   buffer-expose
   buffer-expose-no-stars
@@ -3339,7 +3338,7 @@ Emacs's text editing capabilities on it.
   (buffer-expose-hide-modelines      . nil)
   (buffer-expose-key-hint            . "")
   :bind
-  (:buffer-expose-grid-map
+  (:map buffer-expose-grid-map
    ("l" . buffer-expose-next-window)
    ("h" . buffer-expose-prev-window)
    ("L" . buffer-expose-next-page)
