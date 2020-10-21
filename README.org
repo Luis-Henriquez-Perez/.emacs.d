@@ -886,6 +886,21 @@ placeholder.
 
 https://en.wikipedia.org/wiki/Anaphoric_macro
 
+***** anaphora font lock                                              :disabled:
+:PROPERTIES:
+:ID:       b82798a4-2ee0-49c3-9703-57c218787d50
+:END:
+
+This code will make sure variables of the form =<variable>= will be highlighted
+especially.
+
+#+begin_src emacs-lisp
+(defhook! add-anaphoric-symbols-font-lock (emacs-lisp-mode-hook)
+  "Add font lock for anaphoric keywords."
+  (alet `(("\\_<<[^[:space:]]+>\\_>" 1 font-lock-variable-name-face))
+    (font-lock-add-keywords nil it 'append)))
+#+end_src
+
 ***** anaphoric symbol regexp
 :PROPERTIES:
 :ID:       40c97bd5-dab1-44df-86f7-90274d5a8ea0
@@ -1124,6 +1139,23 @@ function.
                hooks))))
 #+end_src
 
+**** font-lock
+:PROPERTIES:
+:ID:       2837b042-d93b-492e-8dd4-0e2c74f9a966
+:END:
+
+=defhook= was designed to resemble =defun= in syntax. To make the resemblance
+complete I add the same type of syntax coloring that =defun= has to =defhook!=.
+
+#+begin_src emacs-lisp
+(defhook! activate-defhook-font-lock-keywords (emacs-lisp-mode-hook)
+  "Activate font lock keywords for `defhook!'."
+  (alet '(("(\\(\\<defhook!\\)\\s-*\\(\\(?:\\sw\\|\\s_\\)+\\)"
+           (1 font-lock-keyword-face nil t)
+           (2 font-lock-function-name-face nil t)))
+    (font-lock-add-keywords nil it)))
+#+end_src
+
 *** advice
 :PROPERTIES:
 :ID:       19b9021d-f310-485b-9258-4df19423c082
@@ -1274,6 +1306,23 @@ should expire."
 
 This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that
 provides a declarative way to define advices.
+
+***** font lock keywords
+:PROPERTIES:
+:ID:       6a8af0c0-dde6-4942-a528-cdde82fa540e
+:END:
+
+As with =defhook!= the syntax of =defadvice!= also resembles =defun= by design. It is
+meant to encourage a declarative way of defining advises.
+
+#+begin_src emacs-lisp
+(defhook! activate-defadvice-font-lock-keywords (emacs-lisp-mode-hook)
+  "Activate font lock keywords for `defadvice!'."
+  (alet '(("(\\(\\<defadvice!\\)\\s-*\\(\\(?:\\sw\\|\\s_\\)+\\)"
+           (1 font-lock-keyword-face nil t)
+           (2 font-lock-function-name-face nil t)))
+    (font-lock-add-keywords nil it)))
+#+end_src
 
 ***** define-advice!
 :PROPERTIES:
@@ -1979,6 +2028,10 @@ as a dependency, I'd end up rewriting many of its functions.
 #+begin_src emacs-lisp
 (use-package! dash
   :demand t)
+
+(defhook! enable-dash-font-lock (emacs-lisp-mode-hook)
+  "Enable dash's font lock for `emacs-lisp-mode'."
+  (dash-enable-font-lock))
 #+end_src
 
 **** dash-functional
