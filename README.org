@@ -8929,7 +8929,6 @@ in the future. I use this template for this.
       (apply <orig-fn> <args>))))
 #+end_src
 
-
 *** org agenda
 :PROPERTIES:
 :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
