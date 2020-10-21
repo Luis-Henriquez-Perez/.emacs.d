@@ -177,6 +177,26 @@ Void is compiled.
   (make-directory dir t))
 #+end_src
 
+*** naming
+:PROPERTIES:
+:ID:       845751b5-6887-4dcf-9dee-1d66edd359da
+:END:
+
+**** advice separator
+:PROPERTIES:
+:ID:       39d063e0-0a10-455c-b59c-c756f33e85f6
+:END:
+
+**** hook separator
+:PROPERTIES:
+:ID:       be78299c-1b85-4c13-be71-3881ee352edf
+:END:
+
+**** command prefix
+:PROPERTIES:
+:ID:       acef0e39-facb-4bab-bd90-89ab9534074e
+:END:
+
 *** message logging
 :PROPERTIES:
 :ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
