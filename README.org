@@ -1632,6 +1632,14 @@ SYM is a symbol that stores a list."
        ,@body)))
 #+end_src
 
+*** font lock
+:PROPERTIES:
+:ID:       35db4118-8b6f-474c-adb0-26d8bdeaf137
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
