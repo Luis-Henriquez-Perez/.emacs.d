@@ -8777,6 +8777,19 @@ in the future. I use this template for this.
                           ":END:"))))
 #+end_src
 
+**** prevent capture templates from deleting windows
+:PROPERTIES:
+:ID:       a13e330a-33ff-4c1e-add4-00c5db4e6cd1
+:END:
+
+#+begin_src emacs-lisp
+(after! org-capture
+  (defadvice! dont-delete-other-windows (:around org-capture-place-template)
+    "Don't delete other windows when opening a capture template."
+    (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
+      (apply <orig-fn> <args>))))
+#+end_src
+
 
 *** org agenda
 :PROPERTIES:
