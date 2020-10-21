@@ -7961,7 +7961,8 @@ files, or even converting an org mode document into another format. As the name
 :ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
 :END:
 
-[[][org ml]] is a library that.
+[[][org ml]] is a functional library for programmatically generating org mode
+structures. It was built for.
 
 #+begin_src emacs-lisp
 (use-package! org-ml)
