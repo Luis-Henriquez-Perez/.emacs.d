@@ -886,7 +886,7 @@ placeholder.
 
 https://en.wikipedia.org/wiki/Anaphoric_macro
 
-***** anaphora font lock                                              :disabled:
+***** anaphora font lock
 :PROPERTIES:
 :ID:       b82798a4-2ee0-49c3-9703-57c218787d50
 :END:
