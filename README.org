@@ -4590,39 +4590,10 @@ Emacs's go-to function for browsing the web is stored in the variable
 [[helpvar:browse-url-browser-function][browse-url-browser-function]].
 
 #+begin_src emacs-lisp
-(setq browse-url-browser-function #'browse-url-firefox)
-
-(defun browse-url-firefox (url &optional _new-window)
-  "Ask the Qutebrowser WWW browser to load URL.
-Default to the URL around or before point.  The strings in
-variable `browse-url-qutebrowser-arguments' are also passed to
-Qutebrowser.
-The optional argument NEW-WINDOW is not used."
-  (interactive (browse-url-interactive-arg "URL: "))
-  (setq url (browse-url-encode-url url))
-  (let* ((process-environment (browse-url-process-environment)))
-    (apply 'start-process
-           (concat "firefox " url) nil
-           (executable-find "qutebrowser")
-           (append nil (list url)))))
-#+end_src
-
-** xwebkit                                                            :disabled:
-:PROPERTIES:
-:ID: b33151c3-e980-41d3-8656-350d514f9925
-:END:
-
-*** going to url                                                      :disabled:
-:PROPERTIES:
-:ID: 1079a7c8-e596-40d4-b86e-e916944e9030
-:END:
-
-#+begin_src emacs-lisp
-(use-package! xwwp-follow-link
-  :straight (:host github :repo "canatella/xwwp")
-  :bind (:xwidget-webkit-mode-map
-         ("v" . #'xwwp-follow-link))
-  :setq (xwwp-follow-link-completion-system . 'ivy))
+(use-package! browse-url
+  :setq
+  (browse-url-firefox-arguments . (list "--new-window"))
+  (browse-url-browser-function . (list (cons "." #'browse-url-firefox))))
 #+end_src
 
 * Multimedia
