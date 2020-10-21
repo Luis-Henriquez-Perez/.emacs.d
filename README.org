@@ -458,8 +458,8 @@ if the element is a valid element. "
 :ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
 :END:
 
-This function strives to be more concise than [[helpfn:use-package-as-one][use-package-as-one]] by automatically. Also,
-unlike the latter, it always returns a list.
+This function strives to be more concise than [[helpfn:use-package-as-one][use-package-as-one]] by
+automatically. Also, unlike the latter, it always returns a list.
 
 #+begin_src emacs-lisp
 (defun use-package:args-or-error (key args valid-p desc)
