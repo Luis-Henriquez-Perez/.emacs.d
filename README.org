@@ -3267,6 +3267,75 @@ There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
 
+*** org capture from an exwm buffer
+:PROPERTIES:
+:ID:       5428bdc1-c075-4387-b3ab-080d372c478f
+:END:
+
+A common dream among many Org users is to integrate [[][]] into their browser.
+Indeed, the browser by nature would be a place you'd want to capture from a lot.
+However, since graphical browsers are not in emacs the main way to do this was
+via a hacky and difficult to set up [[][org-protocol]].
+
+https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
+
+**** replacement for fake id
+:PROPERTIES:
+:ID:       4f0436c4-bc37-49b0-a8a3-894e212d4d13
+:END:
+
+#+begin_src emacs-lisp
+(defun exwm-input::fake-key-to-id (event id)
+  "Fake a key event equivalent to Emacs event EVENT and send it
+ to program with x window ID."
+  (let* ((keysym (xcb:keysyms:event->keysym exwm--connection event))
+         keycode)
+    (when (= 0 (car keysym))
+      (user-error "[EXWM] Invalid key: %s" (single-key-description event)))
+    (setq keycode (xcb:keysyms:keysym->keycode exwm--connection
+					                           (car keysym)))
+    (when (/= 0 keycode)
+      (dolist (class '(xcb:KeyPress xcb:KeyRelease))
+        (xcb:+request exwm--connection
+	        (make-instance
+	         'xcb:SendEvent
+	         :propagate 0 :destination id
+	         :event-mask xcb:EventMask:NoEvent
+	         :event
+	         (xcb:marshal
+	          (make-instance
+	           class
+	           :detail keycode :time xcb:Time:CurrentTime
+	           :root exwm--root :event id :child 0 :root-x 0 :root-y 0
+	           :event-x 0 :event-y 0 :state (cdr keysym) :same-screen 0)
+	          exwm--connection)))))
+    (xcb:flush exwm--connection)))
+#+end_src
+
+**** url from firefox
+:PROPERTIES:
+:ID:       f407cc8c-0bb9-47fe-adeb-4e9d27b5c5b7
+:END:
+
+Emacs simulates a keypress to firefox
+
+#+begin_src emacs-lisp
+(defun exwm::get-url-from-firefox ()
+  (interactive)
+  ;; We get the xwindow id of the buffer named Firefox
+  (let ((fid (exwm--buffer->id (current-buffer))))
+    ;; Send c-l to select url
+    (exwm-input::fake-key-to-id 'C-l fid)
+    ;; We sleep to avoid race conditions.
+    (sleep-for 0 300)
+    ;; Copy url to kill ring (note: this is not affected by simulation keys)
+    (exwm-input::fake-key-to-id 'C-c fid)
+    (sleep-for 0 300)
+    ;; try to set the state back
+    (exwm-input::fake-key-to-id 'escape fid)
+    (current-kill 0)))
+#+end_src
+
 *** exwm
 :PROPERTIES:
 :ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
@@ -4892,10 +4961,10 @@ adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs
 #+begin_src emacs-lisp
 (defcommand! take-screenshot ()
   "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
-  (let* ((entered-image-name (read-string "Image Name: "))
-         (default-image-name (format-time-string "image-%Y-%m-%d-%H:%M:%S"))
-         (image-name (if (string-empty-p entered-image-name) default-image-name))
-         (filename (format "%s/%s.svg" image-name VOID-SCREENSHOT-DIR))
+  (let* ((entered-name (read-string "Image Name: "))
+         (default-name (format "image-%s" (ts-format)))
+         (image-name (if (string-empty-p entered-name) default-name entered-name))
+         (filename (format "%s%s.svg" VOID-SCREENSHOT-DIR image-name))
 	     (data (x-export-frames nil 'svg)))
     (with-temp-file filename
       (insert data))
@@ -8778,20 +8847,7 @@ it's installed, otherwise it defaults to bringing up an regular emacs help buffe
   (org-link-set-parameters "helpfn" :face #'ol:helpfn-face :follow #'ol:helpfn-follow))
 #+end_src
 
-**** toggle link display                                              :disabled:
-:PROPERTIES:
-:ID: 06d2b812-5d76-4bc4-bdce-3b6fcf5a9070
-:END:
-
-#+begin_src emacs-lisp
-(general-def
-  (:localleader "t")
-  (:map org-mode-map)
-  ("l" #'org-toggle-link-display)
-  ("p" #'org/toggle-property-drawer-display))
-#+end_src
-
-*** TODO org capture
+*** org capture
 :PROPERTIES:
 :ID: 81197df0-6744-4a63-a202-f7279d7b7119
 :END:
@@ -8831,12 +8887,7 @@ This was the answer to [[https://emacs.stackexchange.com/questions/53648/elimina
   (setq-local header-line-format nil))
 #+end_src
 
-**** template syntax
-:PROPERTIES:
-:ID:       ebb31724-10cc-4598-936c-8075076d520e
-:END:
-
-***** doct
+**** doct
 :PROPERTIES:
 :ID: 287fb9c7-110e-4758-aab2-71f74079ade2
 :END:
@@ -8853,46 +8904,61 @@ template element as you're writing it.
   :demand t)
 #+end_src
 
-***** add to templates
-:PROPERTIES:
-:ID:       4855cc10-a3ed-4ad1-90cf-4455b267346c
-:END:
-
-#+begin_src emacs-lisp
-(defadvice! add-to-capture-templates (:around doct)
-  "Automatically add the template to capture templates."
-  (alet (apply <orig-fn> <args>)
-    (prepend! org-capture-templates it)))
-#+end_src
-
 **** capture templates
 :PROPERTIES:
 :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
 :END:
 
-***** generate the template with org-ml
+I use [[][org-ml]] and [[][doct]] to generate templates dynamically. By "dynamically"
+I mean that a template for a given key is different every time I open it. This
+is possible with regular capture templates via [[][]], but I think the
+abstractions provided by =org-ml= and =doct= are even more robust and much easier to
+extend.
+
+***** helpers
 :PROPERTIES:
-:ID:       c1a9c9ee-be52-48d0-b069-796a02972bdc
+:ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
 :END:
 
-Using org-ml guarantees that my headline will be the correct format.
+****** add to capture templates
+:PROPERTIES:
+:ID:       16c55272-f8c2-4798-9da1-2ab492769f44
+:END:
+
+[[helpfn:doct][doct]] only returns what should be added into =org-capture-templates=, but it
+does not actually add it. As it is convenient to declare it and add it in all in
+one go. Additionally, it removes any capture templates with the same key. This
+is so that I can freely re-evaluate it without cluttering my capture templates
+with duplicate entries.
 
 #+begin_src emacs-lisp
-(defun org-capture:generic-template ()
-  "Generate generic capture template."
-  (-let* ((id (org-id-new))
-          (date-created (format-time-string "%02m/%02d/%02Y at HH:MM"))
-          (start-date)
-          (end-date)
-          (planning-node (org-ml-build-planning! :scheduled start-date
-                                                 :deadline end-date)))
-    (->> (org-ml-build-headline! :title-text "%?"
-                                 :todo-keyword "TODO"
-                                 :tags '("emacs"))
-         (org-ml-headline-set-node-property "ID" id)
-         (org-ml-headline-set-node-property "CREATED" date-created)
-         (org-ml-headline-set-planning planning-node)
-         (org-ml-to-trimmed-string))))
+(after! org-capture
+  (defun org-capture:add-to-templates (declarations)
+    "Convert DECLARATIONS add the result to `org-capture-templates'.
+Before adding result, remove any members of `org-capture-templates' with the
+same key as the one being added."
+    (let* ((capture-item (doct declarations))
+           (keys (-map #'-first-item capture-item)))
+      (setq org-capture-templates
+            (append capture-item
+                    (--remove (-any-p (-partial #'-contains-p it) keys)
+                              org-capture-templates))))))
+#+end_src
+
+****** schedule and deadline times
+:PROPERTIES:
+:ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
+:END:
+
+#+begin_src emacs-lisp
+(after! org-capture
+  (defun org-capture::planning-node (days-difference)
+    "Return the planning time."
+    (let* ((now (ts-now))
+           (later (ts-adjust 'day days-difference now))
+           (beg (list (ts-year now) (ts-month now) (ts-day now)))
+           (end (list (ts-year later) (ts-month later) (ts-day later))))
+      (org-ml-build-planning! :scheduled beg :deadline end))))
 #+end_src
 
 ***** emacs
@@ -8900,14 +8966,61 @@ Using org-ml guarantees that my headline will be the correct format.
 :ID: e6109a54-37af-44ba-852f-a1c34f910cb9
 :END:
 
+This capture template is for something emacs related I need to do.
+
 #+begin_src emacs-lisp
 (after! org-capture
-  (doct (list "Emacs"
-              :keys "e"
-              :file (-const (concat VOID-ORG-DIR "todo.org"))
-              :prepend t
-              :empty-lines 1
-              :template #'org-capture:generic-template)))
+  (defun org-capture::emacs-template ()
+    "Return the capture template for Emacs TODOs as a node"
+    (->> (org-capture::generic-template)
+         (org-ml-set-property :todo-keyword "TODO")
+         (org-ml-set-property :tags '("emacs"))
+         (org-ml-headline-set-planning (org-capture::planning-node 7))))
+
+  (org-capture:add-to-templates
+   (list "Emacs"
+         :keys "e"
+         :file (-const (concat VOID-ORG-DIR "todo.org"))
+         :prepend t
+         :empty-lines 1
+         :template (-compose #'org-ml-to-trimmed-string
+                             #'org-capture::emacs-template))))
+#+end_src
+
+***** generic todo
+:PROPERTIES:
+:ID:       3689e969-aefe-47f4-8d54-b23f08840374
+:END:
+
+#+begin_src emacs-lisp
+(after! org-capture
+  (defun org-capture::generic-template ()
+    "Return the capture template for Emacs TODOs (as a string)."
+    (->> (org-ml-build-headline! :title-text "%?")
+         (org-ml-headline-set-node-property "ID" (org-id-new))
+         (org-ml-headline-set-node-property "CREATED" (ts-format))
+         (org-ml-headline-set-planning (org-capture::planning-node 7))))
+
+  (org-capture:add-to-templates
+   (list "Todo"
+         :keys "t"
+         :file (-const (concat VOID-ORG-DIR "todo.org"))
+         :prepend t
+         :empty-lines 1
+         :template (-compose #'org-ml-to-trimmed-string
+                             #'org-capture::generic-template))))
+#+end_src
+
+***** problem
+:PROPERTIES:
+:ID:       a672f3eb-43c1-4310-adcc-6d0022e50579
+:END:
+
+A =TODO= is just for a task that I need to do later. The purpose of this template
+is for problems and issues I'm stumped on. It's similar to a TODO except that
+I'm not stumped or "stuck" with a TODO.
+
+#+begin_src emacs-lisp
 #+end_src
 
 ***** notes
@@ -8921,12 +9034,21 @@ in the future. I use this template for this.
 
 #+begin_src emacs-lisp
 (after! org-capture
-  (doct (list "Notes"
-              :keys "n"
-              :file (-const (concat VOID-ORG-DIR "notes.org"))
-              :prepend t
-              :empty-lines 1
-              :template )))
+  (defun org-capture::generic-template ()
+    "Return the capture template for Emacs TODOs (as a string)."
+    (->> (org-ml-build-headline! :title-text "%?")
+         (org-ml-headline-set-node-property "ID" (org-id-new))
+         (org-ml-headline-set-node-property "CREATED" (ts-format))
+         (org-ml-headline-set-planning (org-capture::planning-node 7))))
+
+  (org-capture:add-to-templates
+   (list "Notes"
+         :keys "n"
+         :file (-const (concat VOID-ORG-DIR "notes.org"))
+         :prepend t
+         :empty-lines 1
+         :template (-compose #'org-ml-to-trimmed-string
+                             #'org-capture::generic-template))))
 #+end_src
 
 ***** website (from firefox)
@@ -8934,14 +9056,59 @@ in the future. I use this template for this.
 :ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
 :END:
 
+While doing research for solving a problem I tend to browse many, many sites.
+Often after browsing I think: "Oh, that site I visited could be useful". But I
+can't easily find it again. I don't remember the exact search terms I used.
+Either I painstakingly check my browser history one at a time, or I just give
+up. This capture template is designed to solve this problem by allowing me to
+store the link to any webpage I find important.
+
+Storing the links is better, but not good enough. Webpages die. They can be
+taken off by a third-party or removed by the owner themselves. Even if they
+aren't though, they can be modified so that what you originally found isn't
+there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wkhtmltopdf]], a command that
+downloads a given webpage as pdf. A consequence of doing this is that you will
+have access to all the webpages you used for research offline.
+
 #+begin_src emacs-lisp
 (after! org-capture
-  (doct (list "Emacs"
-              :keys "e"
-              :file (lambda nil (concat VOID-ORG-DIR "todo.org"))
-              :prepend t
-              :empty-lines 1
-              :template #'org-capture:generic-template)))
+  (defun org-capture::website-template ()
+    "Return the capture template websites when used with exwm.
+Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
+    (let* ((url (exwm::get-url-from-firefox))
+           (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
+           (pdf-name (nth 1 (s-match title-regexp exwm-title)))
+           (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR pdf-name))
+           (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
+      ;; Does not entirely work yet, at least for certain webpages with unique titles.
+      (async-start-process "wkhtmltopdf"
+                           "wkhtmltopdf"
+                           (lambda (&rest _) (message "DONE"))
+                           url
+                           (format "%s%s.pdf" VOID-SCREENSHOT-DIR pdf-name))
+      (->> (org-ml-build-headline! :level 1 :title-text link-to-pdf)
+           (org-ml-headline-set-node-property "ID" (org-id-new))
+           (org-ml-headline-set-node-property "CREATED" (ts-format))
+           (org-ml-to-trimmed-string))))
+
+  (org-capture:add-to-templates
+   (list "Website"
+         :keys "w"
+         :contexts (list :in-buffer "[^z-a]+ - \\(?:firefox\\|ice\\(?:cat\\|weasel\\)\\)\\'")
+         :file (-const (concat VOID-ORG-DIR "websites.org"))
+         :prepend t
+         :empty-lines 1
+         :template #'org-capture::website-template)))
+#+end_src
+
+***** code
+:PROPERTIES:
+:ID:       2f4c41be-8974-4972-9a03-6a8d8c6e85f4
+:END:
+
+This is for capture templates that have no real place.
+
+#+begin_src emacs-lisp
 #+end_src
 
 **** prevent capture templates from deleting windows
@@ -8981,6 +9148,11 @@ in the future. I use this template for this.
 #+end_src
 
 *** org refile
+:PROPERTIES:
+:ID:       7cb6769d-2904-4675-b17d-f658edb5a917
+:END:
+
+**** org refile
 :PROPERTIES:
 :ID: 0174a708-8043-403e-b024-8ae29868564d
 :END:
