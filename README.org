@@ -8574,6 +8574,7 @@ hindsight, using this function is even easier than using ~window-beg~ and
 
 #+begin_src emacs-lisp
 (use-package! org-fancy-priorities
+  :when (display-graphic-p)
   :hook org-mode
   :setq
   (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
