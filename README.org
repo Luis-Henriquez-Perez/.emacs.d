@@ -8766,6 +8766,7 @@ Before adding result, remove any members of `org-capture-templates' with the
 same key as the one being added."
     (let* ((capture-item (doct declarations))
            (keys (-map #'-first-item capture-item)))
+      (message "KEYS: %s | OTHER: %s" keys (-map #'car org-capture-templates))
       (setq org-capture-templates
             (append capture-item
                     (--remove (-any-p (-partial #'-contains-p it) keys)
@@ -8786,6 +8787,19 @@ same key as the one being added."
            (beg (list (ts-year now) (ts-month now) (ts-day now)))
            (end (list (ts-year later) (ts-month later) (ts-day later))))
       (org-ml-build-planning! :scheduled beg :deadline end))))
+#+end_src
+
+****** generic template
+:PROPERTIES:
+:ID:       7945bb08-cb78-4c7e-840d-3cf92b7e3677
+:END:
+
+#+begin_src emacs-lisp
+(defun org-capture::generic-template ()
+  "Return the capture template for Emacs TODOs (as a string)."
+  (->> (org-ml-build-headline! :title-text "%?")
+       (org-ml-headline-set-node-property "ID" (org-id-new))
+       (org-ml-headline-set-node-property "CREATED" (ts-format))))
 #+end_src
 
 ***** emacs
@@ -8845,9 +8859,25 @@ This capture template is for something emacs related I need to do.
 
 A =TODO= is just for a task that I need to do later. The purpose of this template
 is for problems and issues I'm stumped on. It's similar to a TODO except that
-I'm not stumped or "stuck" with a TODO.
+I'm not stumped or "stuck" with a TODO. Here I write the description of the
+problem and what exactly I want as a solution. This process can help me reason
+through as much as I can and provide the perfect draft for a potential question
+for reddit or stackexchange.
 
 #+begin_src emacs-lisp
+(after! org-capture
+  (defun org-capture::problem-template ()
+    "Return the capture template for Emacs TODOs (as a string)."
+    (org-capture::generic-template))
+
+  (org-capture:add-to-templates
+   (list "Problem"
+         :keys "p"
+         :file (-const (concat VOID-ORG-DIR "problems.org"))
+         :prepend t
+         :empty-lines 1
+         :template (-compose #'org-ml-to-trimmed-string
+                             #'org-capture::generic-template))))
 #+end_src
 
 ***** notes
@@ -8878,7 +8908,32 @@ in the future. I use this template for this.
                              #'org-capture::generic-template))))
 #+end_src
 
-***** website (from firefox)
+***** browser templates
+:PROPERTIES:
+:ID:       f265705a-d8c1-49cc-967a-67ebd700d5a9
+:END:
+
+****** download webpage as pdf
+:PROPERTIES:
+:ID:       bd7165df-9dae-4954-b153-96335678e296
+:END:
+
+#+begin_src emacs-lisp
+(defun org-capture::save-webpage ()
+  "Save the webpage."
+  (async-start-process "wkhtmltopdf"
+                       "wkhtmltopdf"
+                       `(lambda (&rest _)
+                          (if (file-exists-p ,pdf-path)
+                              (message "Added page.")
+                            (warn "%s NOT added." ,pdf-path)))
+                       url
+                       pdf-path)
+  )
+
+#+end_src
+
+****** website (from firefox)
 :PROPERTIES:
 :ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
 :END:
@@ -8897,26 +8952,24 @@ there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wk
 downloads a given webpage as pdf. A consequence of doing this is that you will
 have access to all the webpages you used for research offline.
 
+A small note to avoid invalid filenames or wanting to create a filename but
+inadvertently adding a file to a directory I replace any forward slashes (=/=)
+with =~=.
+
 #+begin_src emacs-lisp
 (after! org-capture
   (defun org-capture::website-template ()
     "Return the capture template websites when used with exwm.
-Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
+Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'.
+Create"
     (let* ((url (exwm::get-url-from-firefox))
            (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
-           (pdf-name (nth 1 (s-match title-regexp exwm-title)))
+           (pdf-name (s-replace "/" "~" (nth 1 (s-match title-regexp exwm-title))))
            (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR pdf-name))
            (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
-      ;; Does not entirely work yet, at least for certain webpages with unique titles.
-      (async-start-process "wkhtmltopdf"
-                           "wkhtmltopdf"
-                           (lambda (&rest _) (message "DONE"))
-                           url
-                           (format "%s%s.pdf" VOID-SCREENSHOT-DIR pdf-name))
-      (->> (org-ml-build-headline! :level 1 :title-text link-to-pdf)
-           (org-ml-headline-set-node-property "ID" (org-id-new))
-           (org-ml-headline-set-node-property "CREATED" (ts-format))
-           (org-ml-to-trimmed-string))))
+      (->> (org-capture::generic-template)
+           (org-ml-headline-set-title! link-to-pdf nil)
+           (org-ml-headline-set-node-property "SOURCE" url))))
 
   (org-capture:add-to-templates
    (list "Website"
@@ -8925,7 +8978,10 @@ Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
          :file (-const (concat VOID-ORG-DIR "websites.org"))
          :prepend t
          :empty-lines 1
-         :template #'org-capture::website-template)))
+         :immediate-finish t
+         :after-finalize #'org-capture::save-webpage
+         :template (-compose #'org-ml-to-trimmed-string
+                             #'org-capture::website-template))))
 #+end_src
 
 ***** code
