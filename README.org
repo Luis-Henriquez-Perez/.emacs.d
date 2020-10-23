@@ -3806,34 +3806,6 @@ to select candidates quickly.
          ("C-'" . ivy-avy)))
 #+end_src
 
-**** minibuffer bindings
-:PROPERTIES:
-:ID:       5a21af24-4383-40dc-8c53-562f2cf68961
-:END:
-
-These bindings are influenced by some of helm's minibuffer bindings (namely
-=C-l= and =C-a=). They are also influenced by evil bindings, hence using =C-j=
-and =C-k= instead of the emacs staple =C-p= and =C-n=.
-
-Note that [[helpfn:ivy-immediate-done][ivy-immediate-done]] selects uses the minibuffer input as the current
-candidate.
-
-#+begin_src emacs-lisp
-(general-def '(emacs insert) ivy-minibuffer-map
-  "C-k"     #'ivy-previous-line
-  "C-j"     #'ivy-next-line
-  [backtab] #'ivy-previous-line
-  "C-a"     #'ivy-dispatching-done
-  "C-n"     #'ivy-toggle-marks
-  "C-l"     #'ivy-next-line-and-call
-  "C-o"     #'ivy-occur
-  "C-'"     #'ivy-avy
-  "C-d"     #'ivy-immediate-done
-  "RET"     #'ivy-done)
-
-(general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
-#+end_src
-
 **** remembering used candidates
 :PROPERTIES:
 :ID:       203dd3f4-bec7-4e3f-b1cf-30089f2ccb32
@@ -7038,152 +7010,6 @@ I might consider doing this asynchronously.
 [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
 inspired file manager]] of also called =ranger=.
 
-**** bindings
-:PROPERTIES:
-:ID: 6e779de2-86b8-4856-8569-33f6e69e3b17
-:END:
-
-***** important
-:PROPERTIES:
-:ID: d1835a7a-2a51-4bc5-98f6-4e13d2b98ee4
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  "m" #'dired-mark
-  "d" #'dired-do-delete
-  "s" #'dired-do-symlink
-  "e" #'eshell
-  "c" #'dired-do-copy
-  "M" #'dired-mark-files-containing-regexp
-  "r" #'dired-do-rename
-  "U" #'dired-unmark-all-marks
-  "x" #'dired-do-shell-command
-  "a" #'avy-goto-line
-  "C-r" #'ranger-refresh
-  "f" #'find-file
-  "q" #'ranger-close)
-#+end_src
-
-
-***** generic
-:PROPERTIES:
-:ID: 0b160960-0eab-4faa-911d-0d8aef12cc47
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  "A" #'dired-do-find-regexp
-  "C" #'dired-do-copy
-  "B" #'dired-do-byte-compile
-  "D" #'dired-do-delete
-  "H" #'dired-do-hardlink
-  "L" #'dired-do-load
-  "M" #'dired-do-chmod
-  "O" #'dired-do-chown
-  "P" #'dired-do-print
-  "Q" #'dired-do-find-regexp-and-replace
-  "R" #'dired-do-rename
-  "S" #'dired-do-symlink
-  "T" #'dired-do-touch
-  "X" #'dired-do-shell-command
-  "Z" #'dired-do-compress
-  "c" #'dired-do-compress-to
-  "!" #'dired-do-shell-command
-  "&" #'dired-do-async-shell-command)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: 45dab1c7-6558-42bc-a33e-91e1015d94ab
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  "["                   #'dired-prev-dirline
-  "]"                   #'dired-next-dirline
-  "<"                   #'dired-prev-dirline
-  ">"                   #'dired-next-dirline
-  "^"                   #'dired-up-directory
-  "k"                   #'dired-previous-line
-  "j"                   #'dired-next-line
-  "h"                   #'dired-up-directory
-  "l"                   #'dired-find-file
-  "RET"                 #'dired-find-file
-  [remap next-line]     #'dired-next-line
-  [remap previous-line] #'dired-previous-line)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: 1caa851b-211b-4bee-8d2b-0df643410640
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  :prefix "%"
-  "u" #'dired-upcase
-  "l" #'dired-downcase
-  "d" #'dired-flag-files-regexp
-  "r" #'dired-do-rename-regexp
-  "C" #'dired-do-copy-regexp
-  "H" #'dired-do-hardlink-regexp
-  "R" #'dired-do-rename-regexp
-  "S" #'dired-do-symlink-regexp
-  "&" #'dired-flag-garbage-files)
-#+end_src
-
-***** marking
-:PROPERTIES:
-:ID: a4fff7fe-a895-4cf9-9737-685aa1b68e2f
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  :prefix "*"
-  "*"         #'dired-mark-executables
-  "/"         #'dired-mark-directories
-  "@"         #'dired-mark-symlinks
-  "%"         #'dired-mark-files-regexp
-  "("         #'dired-mark-sexp
-  "."         #'dired-mark-extension
-  "O"         #'dired-mark-omitted
-  "c"         #'dired-change-marks
-  "s"         #'dired-mark-subdir-files
-  "m"         #'dired-mark
-  "u"         #'dired-unmark
-  "?"         #'dired-unmark-all-files
-  "!"         #'dired-unmark-all-marks
-  " <delete>" #'dired-unmark-backward
-  " C-n"      #'dired-next-marked-file
-  " C-p"      #'dired-prev-marked-file
-  "t"         #'dired-toggle-marks)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: 64d0879a-6b01-4898-976f-e3363b0a2d2c
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  [remap read-only-mode]   #'dired-toggle-read-only
-  [remap toggle-read-only] #'dired-toggle-read-only
-  "<delete>"               #'dired-unmark-backward
-  [remap undo]             #'dired-undo
-  [remap advertised-undo]  #'dired-undo)
-#+end_src
-
-***** make sure that =;= uses =M-x=
-:PROPERTIES:
-:ID:       c63911ca-6d26-4d7c-be76-246639fb6c7a
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  ";" #'execute-extended-command)
-#+end_src
-
 **** entry
 :PROPERTIES:
 :ID: 2edf3f72-726f-4b31-9ff0-20e5e7d251b1
@@ -9252,72 +9078,6 @@ diary/journal using =org-mode=.
   (org-journal-find-file . 'find-file))
 #+end_src
 
-*** keybindings
-:PROPERTIES:
-:ID: ee444a86-1266-42dd-9fe8-40192db1fdde
-:END:
-
-**** narrowing and widening                                           :disabled:
-:PROPERTIES:
-:ID: 72bd1c81-bd60-472f-8166-20bb2a16093d
-:END:
-
-#+begin_src emacs-lisp
-(general-def
-  (:localleader "n")
-  (:map org-mode-map)
-  (:wk "Narrow" "" nil)
-  (:wk "To Element" :n "e" #'org-narrow-to-element)
-  (:wk "To Block"   :n "b" #'org-narrow-to-block)
-  (:wk "To Subtree" :n "s" #'org-narrow-to-subtree)
-  (:wk "Widen"      :n "w" #'widen))
-#+end_src
-
-**** replace evil folding commands to outline folding
-:PROPERTIES:
-:ID: b3a4908d-538e-4d4c-acc9-fbd822220f03
-:END:
-
-By default evil binds =za= to [[helpfn:evil-open-folds][evil-open-folds]] and =zb= to [[helpfn:evil-close-folds][evil-close-folds]]. They do
-work in =org-mode= but I'd rather use the folding commands provided by =outline.el.=
-The outline api actually seems pretty solid; better coded and simpler than the
-org api it seems.
-
-#+begin_src emacs-lisp
-;; (general-def
-;;   (:leader "z")
-;;   (:n "a" #'outline-show-all)
-;;   (:n "m" #'outline:hide-all-sublevels))
-
-(general-def 'normal org-mode-map
-  [tab] #'outline-toggle-children
-  "TAB" #'outline-toggle-children)
-
-(defun outline:hide-all-sublevels ()
-  (interactive)
-  (outline-hide-sublevels 1))
-
-(general-def 'normal org-mode-map
-  "j" #'org/dwim-next-line
-  "k" #'org/dwim-previous-line
-  "b" #'org/dwim-insert-elisp-block
-  "o" #'org/insert-heading-below
-  "O" #'org/insert-heading-above
-  "l" #'org-do-demote
-  "h" #'org-promote-subtree
-  "L" #'org-demote-subtree
-  "t" #'org-set-tags-command
-  "r" #'org-capture
-  "s" #'org-schedule
-  "S" #'org-deadline
-  "R" #'org-refile
-  "T" #'org-todo
-  "D" #'org-cut-subtree
-  "Y" #'org-copy-subtree
-  "K" #'org-metaup
-  "J" #'org-metadown)
-#+end_src
-
 ** lua
 :PROPERTIES:
 :ID: 9f458b76-489f-45e0-b99a-ad6a9a2ae182
@@ -9803,6 +9563,251 @@ graphical interface but.
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
+
+** package-specific
+:PROPERTIES:
+:ID:       a1b87a13-d248-4247-bbbc-04667a477001
+:END:
+
+*** bindings
+:PROPERTIES:
+:ID: 6e779de2-86b8-4856-8569-33f6e69e3b17
+:END:
+
+*** important
+:PROPERTIES:
+:ID: d1835a7a-2a51-4bc5-98f6-4e13d2b98ee4
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  "m" #'dired-mark
+  "d" #'dired-do-delete
+  "s" #'dired-do-symlink
+  "e" #'eshell
+  "c" #'dired-do-copy
+  "M" #'dired-mark-files-containing-regexp
+  "r" #'dired-do-rename
+  "U" #'dired-unmark-all-marks
+  "x" #'dired-do-shell-command
+  "a" #'avy-goto-line
+  "C-r" #'ranger-refresh
+  "f" #'find-file
+  "q" #'ranger-close)
+#+end_src
+
+
+*** generic
+:PROPERTIES:
+:ID: 0b160960-0eab-4faa-911d-0d8aef12cc47
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  "A" #'dired-do-find-regexp
+  "C" #'dired-do-copy
+  "B" #'dired-do-byte-compile
+  "D" #'dired-do-delete
+  "H" #'dired-do-hardlink
+  "L" #'dired-do-load
+  "M" #'dired-do-chmod
+  "O" #'dired-do-chown
+  "P" #'dired-do-print
+  "Q" #'dired-do-find-regexp-and-replace
+  "R" #'dired-do-rename
+  "S" #'dired-do-symlink
+  "T" #'dired-do-touch
+  "X" #'dired-do-shell-command
+  "Z" #'dired-do-compress
+  "c" #'dired-do-compress-to
+  "!" #'dired-do-shell-command
+  "&" #'dired-do-async-shell-command)
+#+end_src
+
+*** other
+:PROPERTIES:
+:ID: 45dab1c7-6558-42bc-a33e-91e1015d94ab
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  "["                   #'dired-prev-dirline
+  "]"                   #'dired-next-dirline
+  "<"                   #'dired-prev-dirline
+  ">"                   #'dired-next-dirline
+  "^"                   #'dired-up-directory
+  "k"                   #'dired-previous-line
+  "j"                   #'dired-next-line
+  "h"                   #'dired-up-directory
+  "l"                   #'dired-find-file
+  "RET"                 #'dired-find-file
+  [remap next-line]     #'dired-next-line
+  [remap previous-line] #'dired-previous-line)
+#+end_src
+
+*** other
+:PROPERTIES:
+:ID: 1caa851b-211b-4bee-8d2b-0df643410640
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  :prefix "%"
+  "u" #'dired-upcase
+  "l" #'dired-downcase
+  "d" #'dired-flag-files-regexp
+  "r" #'dired-do-rename-regexp
+  "C" #'dired-do-copy-regexp
+  "H" #'dired-do-hardlink-regexp
+  "R" #'dired-do-rename-regexp
+  "S" #'dired-do-symlink-regexp
+  "&" #'dired-flag-garbage-files)
+#+end_src
+
+*** marking
+:PROPERTIES:
+:ID: a4fff7fe-a895-4cf9-9737-685aa1b68e2f
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  :prefix "*"
+  "*"         #'dired-mark-executables
+  "/"         #'dired-mark-directories
+  "@"         #'dired-mark-symlinks
+  "%"         #'dired-mark-files-regexp
+  "("         #'dired-mark-sexp
+  "."         #'dired-mark-extension
+  "O"         #'dired-mark-omitted
+  "c"         #'dired-change-marks
+  "s"         #'dired-mark-subdir-files
+  "m"         #'dired-mark
+  "u"         #'dired-unmark
+  "?"         #'dired-unmark-all-files
+  "!"         #'dired-unmark-all-marks
+  " <delete>" #'dired-unmark-backward
+  " C-n"      #'dired-next-marked-file
+  " C-p"      #'dired-prev-marked-file
+  "t"         #'dired-toggle-marks)
+#+end_src
+
+*** other
+:PROPERTIES:
+:ID: 64d0879a-6b01-4898-976f-e3363b0a2d2c
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  [remap read-only-mode]   #'dired-toggle-read-only
+  [remap toggle-read-only] #'dired-toggle-read-only
+  "<delete>"               #'dired-unmark-backward
+  [remap undo]             #'dired-undo
+  [remap advertised-undo]  #'dired-undo)
+#+end_src
+
+*** make sure that =;= uses =M-x=
+:PROPERTIES:
+:ID:       c63911ca-6d26-4d7c-be76-246639fb6c7a
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal ranger-mode-map
+  ";" #'execute-extended-command)
+#+end_src
+
+*** minibuffer bindings
+:PROPERTIES:
+:ID:       5a21af24-4383-40dc-8c53-562f2cf68961
+:END:
+
+These bindings are influenced by some of helm's minibuffer bindings (namely
+=C-l= and =C-a=). They are also influenced by evil bindings, hence using =C-j=
+and =C-k= instead of the emacs staple =C-p= and =C-n=.
+
+Note that [[helpfn:ivy-immediate-done][ivy-immediate-done]] selects uses the minibuffer input as the current
+candidate.
+
+#+begin_src emacs-lisp
+(general-def '(emacs insert) ivy-minibuffer-map
+  "C-k"     #'ivy-previous-line
+  "C-j"     #'ivy-next-line
+  [backtab] #'ivy-previous-line
+  "C-a"     #'ivy-dispatching-done
+  "C-n"     #'ivy-toggle-marks
+  "C-l"     #'ivy-next-line-and-call
+  "C-o"     #'ivy-occur
+  "C-'"     #'ivy-avy
+  "C-d"     #'ivy-immediate-done
+  "RET"     #'ivy-done)
+
+(general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
+#+end_src
+
+** keybindings
+:PROPERTIES:
+:ID: ee444a86-1266-42dd-9fe8-40192db1fdde
+:END:
+
+*** narrowing and widening                                            :disabled:
+:PROPERTIES:
+:ID: 72bd1c81-bd60-472f-8166-20bb2a16093d
+:END:
+
+#+begin_src emacs-lisp
+(general-def
+  (:localleader "n")
+  (:map org-mode-map)
+  (:wk "Narrow" "" nil)
+  (:wk "To Element" :n "e" #'org-narrow-to-element)
+  (:wk "To Block"   :n "b" #'org-narrow-to-block)
+  (:wk "To Subtree" :n "s" #'org-narrow-to-subtree)
+  (:wk "Widen"      :n "w" #'widen))
+#+end_src
+
+*** replace evil folding commands to outline folding
+:PROPERTIES:
+:ID: b3a4908d-538e-4d4c-acc9-fbd822220f03
+:END:
+
+By default evil binds =za= to [[helpfn:evil-open-folds][evil-open-folds]] and =zb= to [[helpfn:evil-close-folds][evil-close-folds]]. They do
+work in =org-mode= but I'd rather use the folding commands provided by =outline.el.=
+The outline api actually seems pretty solid; better coded and simpler than the
+org api it seems.
+
+#+begin_src emacs-lisp
+;; (general-def
+;;   (:leader "z")
+;;   (:n "a" #'outline-show-all)
+;;   (:n "m" #'outline:hide-all-sublevels))
+
+(general-def 'normal org-mode-map
+  [tab] #'outline-toggle-children
+  "TAB" #'outline-toggle-children)
+
+(defun outline:hide-all-sublevels ()
+  (interactive)
+  (outline-hide-sublevels 1))
+
+(general-def 'normal org-mode-map
+  "j" #'org/dwim-next-line
+  "k" #'org/dwim-previous-line
+  "b" #'org/dwim-insert-elisp-block
+  "o" #'org/insert-heading-below
+  "O" #'org/insert-heading-above
+  "l" #'org-do-demote
+  "h" #'org-promote-subtree
+  "L" #'org-demote-subtree
+  "t" #'org-set-tags-command
+  "r" #'org-capture
+  "s" #'org-schedule
+  "S" #'org-deadline
+  "R" #'org-refile
+  "T" #'org-todo
+  "D" #'org-cut-subtree
+  "Y" #'org-copy-subtree
+  "K" #'org-metaup
+  "J" #'org-metadown)
+#+end_src
 
 ** general
 :PROPERTIES:
