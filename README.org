@@ -8752,25 +8752,24 @@ extend.
 :ID:       16c55272-f8c2-4798-9da1-2ab492769f44
 :END:
 
-[[helpfn:doct][doct]] only returns what should be added into =org-capture-templates=, but it
-does not actually add it. As it is convenient to declare it and add it in all in
-one go. Additionally, it removes any capture templates with the same key. This
-is so that I can freely re-evaluate it without cluttering my capture templates
-with duplicate entries.
+[[helpfn:doct][doct]] =org-capture-templates= with the appropriate elements added to it based on
+the doct declarations. but it does not actually add it. As it is convenient to
+declare it and add it in all in one go. Additionally, it removes any capture
+templates with the same key. This is so that I can freely re-evaluate it without
+cluttering my capture templates with duplicate entries.
 
 #+begin_src emacs-lisp
 (after! org-capture
   (defun org-capture:add-to-templates (declarations)
     "Convert DECLARATIONS add the result to `org-capture-templates'.
 Before adding result, remove any members of `org-capture-templates' with the
-same key as the one being added."
-    (let* ((capture-item (doct declarations))
-           (keys (-map #'-first-item capture-item)))
-      (message "KEYS: %s | OTHER: %s" keys (-map #'car org-capture-templates))
-      (setq org-capture-templates
-            (append capture-item
-                    (--remove (-any-p (-partial #'-contains-p it) keys)
-                              org-capture-templates))))))
+same key as the one(s) being added."
+    (cl-labels ((clean (templates)
+                       (when templates
+                         (cons (car templates)
+                               (--remove (string= (caar templates) (car it))
+                                         (clean (cdr templates)))))))
+      (setq org-capture-templates (clean (doct declarations))))))
 #+end_src
 
 ****** schedule and deadline times
@@ -8908,7 +8907,7 @@ in the future. I use this template for this.
                              #'org-capture::generic-template))))
 #+end_src
 
-***** browser templates
+***** browser
 :PROPERTIES:
 :ID:       f265705a-d8c1-49cc-967a-67ebd700d5a9
 :END:
@@ -8921,16 +8920,17 @@ in the future. I use this template for this.
 #+begin_src emacs-lisp
 (defun org-capture::save-webpage ()
   "Save the webpage."
-  (async-start-process "wkhtmltopdf"
-                       "wkhtmltopdf"
-                       `(lambda (&rest _)
-                          (if (file-exists-p ,pdf-path)
-                              (message "Added page.")
-                            (warn "%s NOT added." ,pdf-path)))
-                       url
-                       pdf-path)
-  )
-
+  (let* ((program "wkhtmltopdf")
+         (name (format "%s - %s" program (ts-format)))
+         (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
+         (webpage-title (nth 1 (s-match title-regexp exwm-title)))
+         (pdf-path (concat VOID-SCREENSHOT-DIR (s-replace "/" "~" webpage-title)))
+         (url (exwm::get-url-from-firefox))
+         (fn `(lambda (&rest _)
+                (if (file-exists-p ,pdf-path)
+                    (message "Added page.")
+                  (warn "%s NOT added." ,pdf-path))))))
+  (async-start-process name program fn url pdf-path))
 #+end_src
 
 ****** website (from firefox)
@@ -8960,12 +8960,11 @@ with =~=.
 (after! org-capture
   (defun org-capture::website-template ()
     "Return the capture template websites when used with exwm.
-Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'.
-Create"
+Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
     (let* ((url (exwm::get-url-from-firefox))
            (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
-           (pdf-name (s-replace "/" "~" (nth 1 (s-match title-regexp exwm-title))))
-           (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR pdf-name))
+           (pdf-name (nth 1 (s-match title-regexp exwm-title)))
+           (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
            (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
       (->> (org-capture::generic-template)
            (org-ml-headline-set-title! link-to-pdf nil)
@@ -8974,12 +8973,15 @@ Create"
   (org-capture:add-to-templates
    (list "Website"
          :keys "w"
-         :contexts (list :in-buffer "[^z-a]+ - \\(?:firefox\\|ice\\(?:cat\\|weasel\\)\\)\\'")
+         :contexts '(:in-buffer "[^z-a]+ - \\(?:firefox\\|ice\\(?:cat\\|weasel\\)\\)\\'"
+                     :when (and (featurep 'exwm)
+                            (-any-p #'executable-find '("firefox" "iceweasel" "icecat"))))
          :file (-const (concat VOID-ORG-DIR "websites.org"))
          :prepend t
          :empty-lines 1
          :immediate-finish t
          :after-finalize #'org-capture::save-webpage
+         :when
          :template (-compose #'org-ml-to-trimmed-string
                              #'org-capture::website-template))))
 #+end_src
