@@ -8917,20 +8917,26 @@ in the future. I use this template for this.
 :ID:       bd7165df-9dae-4954-b153-96335678e296
 :END:
 
+Saving the webpage using wkhtmltopdf.
+
 #+begin_src emacs-lisp
 (defun org-capture::save-webpage ()
-  "Save the webpage."
+  "Save the webpage.
+Assumes the url is at the top of the kill ring."
   (let* ((program "wkhtmltopdf")
          (name (format "%s - %s" program (ts-format)))
          (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
-         (webpage-title (nth 1 (s-match title-regexp exwm-title)))
-         (pdf-path (concat VOID-SCREENSHOT-DIR (s-replace "/" "~" webpage-title)))
-         (url (exwm::get-url-from-firefox))
+         (webpage-title (thread-last (s-match title-regexp exwm-title)
+                          (nth 1)
+                          (s-replace "/" "~")))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" webpage-title)))
+         (url (car kill-ring))
          (fn `(lambda (&rest _)
                 (if (file-exists-p ,pdf-path)
-                    (message "Added page.")
-                  (warn "%s NOT added." ,pdf-path))))))
-  (async-start-process name program fn url pdf-path))
+                    (message "Webpage saved.")
+                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
+    (message "%s <-- %s" (f-abbrev pdf-path) url)
+    (async-start-process name program fn url pdf-path)))
 #+end_src
 
 ****** website (from firefox)
@@ -8981,19 +8987,8 @@ Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
          :empty-lines 1
          :immediate-finish t
          :after-finalize #'org-capture::save-webpage
-         :when
          :template (-compose #'org-ml-to-trimmed-string
                              #'org-capture::website-template))))
-#+end_src
-
-***** code
-:PROPERTIES:
-:ID:       2f4c41be-8974-4972-9a03-6a8d8c6e85f4
-:END:
-
-This is for capture templates that have no real place.
-
-#+begin_src emacs-lisp
 #+end_src
 
 **** prevent capture templates from deleting windows
@@ -9010,6 +9005,11 @@ This is for capture templates that have no real place.
 #+end_src
 
 *** org agenda
+:PROPERTIES:
+:ID:       16c1da27-264f-47df-a9d4-3f3ad8fa460f
+:END:
+
+**** org agenda
 :PROPERTIES:
 :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
 :END:
@@ -9030,6 +9030,14 @@ This is for capture templates that have no real place.
   (org-agenda-text-search-extra-files . '(agenda-archives))
   (org-agenda-dim-blocked-tasks . nil)
   (org-agenda-inhibit-startup . t))
+#+end_src
+
+**** org super agenda
+:PROPERTIES:
+:ID:       d4914094-9e4e-4269-a359-16c7abc6653a
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 *** org refile
