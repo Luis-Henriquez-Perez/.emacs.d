@@ -8599,6 +8599,46 @@ hindsight, using this function is even easier than using ~window-beg~ and
   (org-superstar-leading-bullet . ?\s))
 #+end_src
 
+**** org pretty tags
+:PROPERTIES:
+:ID:       e74e6fc4-0f6c-4c48-b6a2-3a31f82a9078
+:END:
+
+This package displays tags as images instead of as words. This has the advantage
+of making tags quicker to read at a glance.
+
+#+begin_src emacs-lisp
+(use-package! org-pretty-tags
+  :commands org-pretty-tags-global-mode
+  :config
+  (push (cons "idea" (all-the-icons-octicon "light-bulb"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "git" (all-the-icons-alltheicon "git"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "emacs" (all-the-icons-fileicon "emacs"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "cpp" (all-the-icons-alltheicon "cplusplus"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "font" (all-the-icons-faicon "font"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "org" (all-the-icons-fileicon "org"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "payment" (all-the-icons-faicon "money"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "school" (all-the-icons-material "school"))
+        org-pretty-tags-surrogate-strings)
+
+  (push (cons "font" (all-the-icons-faicon "font"))
+        org-pretty-tags-surrogate-strings))
+#+end_src
+
 *** links
 :PROPERTIES:
 :ID: dbc3d205-9831-41f0-95f8-1e8746e0be3a
