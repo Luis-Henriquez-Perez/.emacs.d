@@ -8700,12 +8700,78 @@ it.
           (slot . 10)))
 #+end_src
 
+**** helpers
+:PROPERTIES:
+:ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
+:END:
+
+***** add to capture templates
+:PROPERTIES:
+:ID:       16c55272-f8c2-4798-9da1-2ab492769f44
+:END:
+
+[[helpfn:doct][doct]] returns the new value of capture templates. but it does not actually add
+it. For convenience this function declare it and add it in all in one go.
+Additionally, it removes any capture templates with the same key so that I can
+freely re-evaluate it without cluttering my capture templates with duplicate
+entries.
+
+#+begin_src emacs-lisp
+(after! org-capture
+  (defun org-capture:add-to-templates (declarations)
+    "Convert DECLARATIONS add the result to `org-capture-templates'.
+Before adding result, remove any members of `org-capture-templates' with the
+same key as the one(s) being added."
+    (cl-labels ((clean (templates)
+                       (when templates
+                         (cons (car templates)
+                               (--remove (string= (caar templates) (car it))
+                                         (clean (cdr templates)))))))
+      (setq org-capture-templates (clean (doct declarations))))))
+#+end_src
+
+***** schedule and deadline times
+:PROPERTIES:
+:ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
+:END:
+
+For capture templates that have deadlines, I set a default start and end date.
+
+#+begin_src emacs-lisp
+(after! org-capture
+  (defun org-capture::planning-node (days-difference)
+    "Return the planning time."
+    (let* ((now (ts-now))
+           (later (ts-adjust 'day days-difference now))
+           (beg (list (ts-year now) (ts-month now) (ts-day now)))
+           (end (list (ts-year later) (ts-month later) (ts-day later))))
+      (org-ml-build-planning! :scheduled beg :deadline end))))
+#+end_src
+
+***** generic template
+:PROPERTIES:
+:ID:       7945bb08-cb78-4c7e-840d-3cf92b7e3677
+:END:
+
+To maximize code reusability, I create a generic template skeleton here. All of
+my headlines should have their own UUID. And almost all of my headlines will
+have the date created.
+
+#+begin_src emacs-lisp
+(defun org-capture::generic-template ()
+  "Return the capture template for Emacs TODOs (as a string)."
+  (->> (org-ml-build-headline! :title-text "%?")
+       (org-ml-headline-set-node-property "ID" (org-id-new))
+       (org-ml-headline-set-node-property "CREATED" (ts-format))))
+#+end_src
+
 **** remove capture headerline
 :PROPERTIES:
 :ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
 :END:
 
-This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I need to disable =org-capture's= header-line.
+By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
+need to disable =org-capture's= header-line.
 
 #+begin_src emacs-lisp
 (defhook! disable-header-line (org-capture-mode-hook)
@@ -8740,65 +8806,6 @@ I mean that a template for a given key is different every time I open it. This
 is possible with regular capture templates via [[][]], but I think the
 abstractions provided by =org-ml= and =doct= are even more robust and much easier to
 extend.
-
-***** helpers
-:PROPERTIES:
-:ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
-:END:
-
-****** add to capture templates
-:PROPERTIES:
-:ID:       16c55272-f8c2-4798-9da1-2ab492769f44
-:END:
-
-[[helpfn:doct][doct]] =org-capture-templates= with the appropriate elements added to it based on
-the doct declarations. but it does not actually add it. As it is convenient to
-declare it and add it in all in one go. Additionally, it removes any capture
-templates with the same key. This is so that I can freely re-evaluate it without
-cluttering my capture templates with duplicate entries.
-
-#+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture:add-to-templates (declarations)
-    "Convert DECLARATIONS add the result to `org-capture-templates'.
-Before adding result, remove any members of `org-capture-templates' with the
-same key as the one(s) being added."
-    (cl-labels ((clean (templates)
-                       (when templates
-                         (cons (car templates)
-                               (--remove (string= (caar templates) (car it))
-                                         (clean (cdr templates)))))))
-      (setq org-capture-templates (clean (doct declarations))))))
-#+end_src
-
-****** schedule and deadline times
-:PROPERTIES:
-:ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
-:END:
-
-#+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::planning-node (days-difference)
-    "Return the planning time."
-    (let* ((now (ts-now))
-           (later (ts-adjust 'day days-difference now))
-           (beg (list (ts-year now) (ts-month now) (ts-day now)))
-           (end (list (ts-year later) (ts-month later) (ts-day later))))
-      (org-ml-build-planning! :scheduled beg :deadline end))))
-#+end_src
-
-****** generic template
-:PROPERTIES:
-:ID:       7945bb08-cb78-4c7e-840d-3cf92b7e3677
-:END:
-
-#+begin_src emacs-lisp
-(defun org-capture::generic-template ()
-  "Return the capture template for Emacs TODOs (as a string)."
-  (->> (org-ml-build-headline! :title-text "%?")
-       (org-ml-headline-set-node-property "ID" (org-id-new))
-       (org-ml-headline-set-node-property "CREATED" (ts-format))))
-#+end_src
 
 ***** emacs
 :PROPERTIES:
@@ -8910,6 +8917,8 @@ in the future. I use this template for this.
 :PROPERTIES:
 :ID:       f265705a-d8c1-49cc-967a-67ebd700d5a9
 :END:
+
+These are capture templates to.
 
 ****** download webpage as pdf
 :PROPERTIES:
