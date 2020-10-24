@@ -9031,12 +9031,36 @@ Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
   (org-agenda-inhibit-startup . t))
 #+end_src
 
+**** interactive agenda command
+:PROPERTIES:
+:ID:       d6e7f76d-2084-4620-bb9d-ea1c2e7fb785
+:END:
+
+I don't care much for the other org agenda options, I just want to see the
+agenda itself tyvm.
+
+#+begin_src emacs-lisp
+(defun org-agenda/agenda ()
+  (interactive)
+  (org-agenda nil "a"))
+#+end_src
+
 **** org super agenda
 :PROPERTIES:
 :ID:       d4914094-9e4e-4269-a359-16c7abc6653a
 :END:
 
 #+begin_src emacs-lisp
+(use-package! org-super-agenda
+  :before-call org-agenda)
+
+(setq org-super-agenda-groups
+      '((:name "Today"
+         :time-grid t
+         :todo "TODO"
+         :scheduled today)
+        (:name "Tomorrow"
+         :time-grid t)))
 #+end_src
 
 *** org refile
