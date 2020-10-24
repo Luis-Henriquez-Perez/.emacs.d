@@ -9662,6 +9662,15 @@ graphical interface but.
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
 
+** evil collection
+:PROPERTIES:
+:ID:       a89e4935-6a3d-4c6e-9918-6db03ec2d523
+:END:
+
+#+begin_src emacs-lisp
+(use-package! evil-collection)
+#+end_src
+
 ** package-specific
 :PROPERTIES:
 :ID:       a1b87a13-d248-4247-bbbc-04667a477001
