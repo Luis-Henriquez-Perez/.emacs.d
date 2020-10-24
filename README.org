@@ -109,9 +109,6 @@ referenced alot.
 (defconst VOID-README-FILE (concat VOID-EMACS-DIR "README.org")
   "Path to the Org file that when that Void.")
 
-(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
-  "Path where Void's org files go.")
-
 (defconst VOID-SCREENSHOT-DIR (concat VOID-EMACS-DIR "screenshots/")
   "Path where any screenshots I take with Void go.")
 
@@ -120,6 +117,19 @@ referenced alot.
 
 (defconst VOID-TODO-FILE (concat VOID-ORG-DIR "emacs.org")
   "Path where all of Void's emacs related todos go.")
+#+end_src
+
+***** org
+:PROPERTIES:
+:ID:       c88f95cd-f5bd-4c69-8679-7e42c52e9a36
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
+  "File where all org captures will go.")
+
+(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
+  "Path where Void's org files go.")
 #+end_src
 
 ***** hidden
@@ -2212,15 +2222,6 @@ make a difference. That's why.
   :demand t)
 #+end_src
 
-**** ts
-:PROPERTIES:
-:ID:       64d19467-a878-449c-8402-88892c25ac9a
-:END:
-
-#+begin_src emacs-lisp
-(use-package! ts)
-#+end_src
-
 **** gc
 :PROPERTIES:
 :ID: 4f1477b7-7b28-4a20-9a31-cc34a10f5878
@@ -3337,6 +3338,27 @@ current url and to add it to the kill ring.
     (current-kill 0)))
 #+end_src
 
+**** url from qutebrowser
+:PROPERTIES:
+:ID:       822cbb61-60b4-445e-9756-4bf797500375
+:END:
+
+#+begin_src emacs-lisp
+(defun exwm::get-url-from-qutebrowser ()
+  (interactive)
+  (let ((fid (exwm--buffer->id (current-buffer))))
+    (sleep-for 0 300)
+    ;; if in insert state exit it.
+    (exwm-input::fake-key-to-id 'escape fid)
+    (sleep-for 0 300)
+    (exwm-input::fake-key-to-id 'y fid)
+    (sleep-for 0 300)
+    (exwm-input::fake-key-to-id 'y fid)
+    (sleep-for 0 300)
+    (aprog1 (current-kill 0)
+      (message "Copied %S to the kill ring." it))))
+#+end_src
+
 *** exwm
 :PROPERTIES:
 :ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
@@ -3391,7 +3413,7 @@ windows).
 :END:
 
 #+begin_src emacs-lisp
-(defvar exwm:char-mode-apps (list "emacs" "next" "nyxt")
+(defvar exwm:char-mode-apps (list "emacs" "next" "nyxt" "qutebrowser")
   "List of applications to exwm should start in char-mode.")
 #+end_src
 
@@ -4767,28 +4789,24 @@ javascript code.
 
 ** browse-url
 :PROPERTIES:
-:ID: c705a76a-26a9-4956-915a-d6d2561fe923
+:ID:       92e4183b-0fbf-44fa-a939-3f8e017deb4f
 :END:
 
-Emacs's go-to function for browsing the web is stored in the variable
-[[helpvar:browse-url-browser-function][browse-url-browser-function]].
+*** qutebrowser
+:PROPERTIES:
+:ID:       3277cd4e-01ce-40da-9d1e-9bf167d92aef
+:END:
 
 #+begin_src emacs-lisp
-(setq browse-url-browser-function #'browse-url-firefox)
-
-(defun browse-url-firefox (url &optional _new-window)
-  "Ask the Qutebrowser WWW browser to load URL.
-Default to the URL around or before point.  The strings in
-variable `browse-url-qutebrowser-arguments' are also passed to
-Qutebrowser.
-The optional argument NEW-WINDOW is not used."
+(defun browse-url-qutebrowser (url &optional _)
+  "Ask the Qutebrowser to load URL."
   (interactive (browse-url-interactive-arg "URL: "))
   (setq url (browse-url-encode-url url))
   (let* ((process-environment (browse-url-process-environment)))
     (apply 'start-process
-           (concat "firefox " url) nil
-           (executable-find "qutebrowser")
-           (append nil (list url)))))
+           (concat "qutebrowser " url) nil
+           "qutebrowser"
+           (list url))))
 #+end_src
 
 ** xwebkit                                                            :disabled:
@@ -4856,6 +4874,7 @@ Youtube contains a *huge* library of videos.
 YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
+(setq ytel-invidious-api-url "https://yewtu.be/")
 (use-package! ytel
   ;; depends on curl (executable-find "curl")
   :commands ytel
@@ -7860,18 +7879,6 @@ things like executing (or evaluating) source blocks, moving headlines to other
 files, or even converting an org mode document into another format. As the name
 =org= suggests, org is tool that's used for organization of data.
 
-*** org ml
-:PROPERTIES:
-:ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
-:END:
-
-[[][org ml]] is a functional library for programmatically generating org mode
-structures. It was built for.
-
-#+begin_src emacs-lisp
-(use-package! org-ml)
-#+end_src
-
 *** structures
 :PROPERTIES:
 :ID: 85ac0a35-4e44-41e6-a1f1-54698cb86212
@@ -7891,6 +7898,8 @@ structures. It was built for.
 (after! org
   (setq org-todo-keywords
         '((sequence "TODO" "PROJ" "NEXT" "WAITING" "|" "DONE")
+          (sequence "QUESTION" | "ANSWERED")
+          (sequence "BUG" "KNOWNCAUSE" "|" "FIXED")
           (sequence "|" "DUPLICATE")
           (sequence "|" "CANCELLED"))))
 #+end_src
@@ -8635,6 +8644,9 @@ of making tags quicker to read at a glance.
   (push (cons "school" (all-the-icons-material "school"))
         org-pretty-tags-surrogate-strings)
 
+  (push (cons "test" (all-the-icons-fileicon "test-generic"))
+        org-pretty-tags-surrogate-strings)
+
   (push (cons "font" (all-the-icons-faicon "font"))
         org-pretty-tags-surrogate-strings))
 #+end_src
@@ -8725,6 +8737,29 @@ designed to confront this problem. While in the middle of a task you can quickly
 jump into a small org buffer and write down an idea that you have, then close
 it.
 
+**** ts
+:PROPERTIES:
+:ID:       64d19467-a878-449c-8402-88892c25ac9a
+:END:
+
+=ts= is a time package.
+
+#+begin_src emacs-lisp
+(use-package! ts)
+#+end_src
+
+**** org ml
+:PROPERTIES:
+:ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
+:END:
+
+[[][org ml]] is a functional library for programmatically generating org mode
+structures. It was built for.
+
+#+begin_src emacs-lisp
+(use-package! org-ml)
+#+end_src
+
 **** org capture
 :PROPERTIES:
 :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
@@ -8740,10 +8775,56 @@ it.
           (slot . 10)))
 #+end_src
 
+**** doct
+:PROPERTIES:
+:ID: 287fb9c7-110e-4758-aab2-71f74079ade2
+:END:
+
+[[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
+by allowing you to write them in a declarative style (see [[][doct docstring]]).
+In org mode, capture templates are [[][represented as plain lists]]. This makes
+it easy to forget what a certain element meant or to accidentally omit a capture
+template element as you're writing it.
+
+#+begin_src emacs-lisp
+(use-package! doct
+  :after org-capture
+  :demand t)
+#+end_src
+
+**** remove capture headerline
+:PROPERTIES:
+:ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
+:END:
+
+By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
+need to disable =org-capture's= header-line.
+
+#+begin_src emacs-lisp
+(defhook! disable-header-line (org-capture-mode-hook)
+  "Turn of the header line message."
+  (setq-local header-line-format nil))
+#+end_src
+
 **** helpers
 :PROPERTIES:
 :ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
 :END:
+
+These functions are to help me reduce the boilerplate of defining a capture
+template.
+
+***** exwm title
+:PROPERTIES:
+:ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
+:END:
+
+#+begin_src emacs-lisp
+(defun exwm::title-info (title)
+  "Return the webpage and the program."
+  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
+    (list webpage program)))
+#+end_src
 
 ***** add to capture templates
 :PROPERTIES:
@@ -8775,16 +8856,17 @@ same key as the one(s) being added."
 :ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
 :END:
 
-For capture templates that have deadlines, I set a default start and end date.
+For capture templates that have deadlines, I set a start and an end date.
 
 #+begin_src emacs-lisp
 (after! org-capture
-  (defun org-capture::planning-node (days-difference)
-    "Return the planning time."
+  (defun org-capture::default-planning-node (&optional days-difference)
+    "Return the default planning node for `org-capture-templates'."
     (let* ((now (ts-now))
            (later (ts-adjust 'day days-difference now))
            (beg (list (ts-year now) (ts-month now) (ts-day now)))
-           (end (list (ts-year later) (ts-month later) (ts-day later))))
+           (end (list (ts-year later) (ts-month later) (ts-day later)))
+           (days-difference (or days-difference 7)))
       (org-ml-build-planning! :scheduled beg :deadline end))))
 #+end_src
 
@@ -8798,42 +8880,65 @@ my headlines should have their own UUID. And almost all of my headlines will
 have the date created.
 
 #+begin_src emacs-lisp
-(defun org-capture::generic-template ()
-  "Return the capture template for Emacs TODOs (as a string)."
-  (->> (org-ml-build-headline! :title-text "%?")
-       (org-ml-headline-set-node-property "ID" (org-id-new))
-       (org-ml-headline-set-node-property "CREATED" (ts-format))))
+(after! org-capture
+  (defun org-capture::generic-template ()
+    "Return the default `org-capture-template'."
+    (->> (org-ml-build-headline! :title-text "%?")
+         (org-ml-headline-set-node-property "ID" (org-id-new))
+         (org-ml-headline-set-node-property "CREATED" (ts-format)))))
 #+end_src
 
-**** remove capture headerline
+***** default template keywords
 :PROPERTIES:
-:ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
+:ID:       b2fe70d3-cc88-40fb-a718-8dafaeb98694
 :END:
 
-By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
-need to disable =org-capture's= header-line.
-
 #+begin_src emacs-lisp
-(defhook! disable-header-line (org-capture-mode-hook)
-  "Turn of the header line message."
-  (setq-local header-line-format nil))
+(defvar org-capture:defaults
+  (list :file #'org-capture:file
+        :prepend t
+        :empty-lines 1)
+  "A plist of keywords that should always apply to capture templates.")
 #+end_src
 
-**** doct
+***** convenience macro for defining capture templates
 :PROPERTIES:
-:ID: 287fb9c7-110e-4758-aab2-71f74079ade2
+:ID:       9a3ece9d-e8e4-4b32-b65b-4a992e9d20cf
 :END:
 
-[[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
-by allowing you to write them in a declarative style (see [[][doct docstring]]).
-In org mode, capture templates are [[][represented as plain lists]]. This makes
-it easy to forget what a certain element meant or to accidentally omit a capture
-template element as you're writing it.
+#+begin_src emacs-lisp
+(defmacro define-capture-template! (name args &rest body)
+  "Define a capture template."
+  (declare (indent defun))
+  (let* ((string-name (downcase (symbol-name name)))
+         (node-fn (intern (format "org-capture::%s-template-node" string-name)))
+         (string-fn (intern (format "org-capture::%s-template-string" string-name)))
+         (body (or body '((org-capture:default-template))))
+         (defaults org-capture:defaults)
+         (key (downcase (substring string-name 0 1))))
+    `(after! org-capture
+       (defun ,node-fn ()
+         "Return capture template node for."
+         ,@body)
+       (defun ,string-fn ()
+         "Return capture template as a string."
+         (org-ml-to-trimmed-string (,node-fn)))
+       (org-capture:add-to-templates
+        (cons ,(symbol-name name)
+              (-concat ,args org-capture:defaults '(:keys ,key :template ,string-fn)))))))
+#+end_src
+
+***** org-capture-file
+:PROPERTIES:
+:ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
+:END:
+
+The org-capture file is the default place for all capture templates.
 
 #+begin_src emacs-lisp
-(use-package! doct
-  :after org-capture
-  :demand t)
+(defun org-capture:file ()
+  "Return the org capture file."
+  VOID-CAPTURE-FILE)
 #+end_src
 
 **** capture templates
@@ -8847,6 +8952,46 @@ is possible with regular capture templates via [[][]], but I think the
 abstractions provided by =org-ml= and =doct= are even more robust and much easier to
 extend.
 
+***** question
+:PROPERTIES:
+:ID:       a672f3eb-43c1-4310-adcc-6d0022e50579
+:END:
+
+Sometimes I have questions that I want to record. It's kind of like a more
+specific =TODO= because their "task" is always to be answered. I think it's
+worth distinguishing them from tasks in which I need to perform an action that I
+have no questions about. The purpose of this template is for problems and issues
+I'm stumped on. This process can help me reason through as much as I can and
+provide the perfect draft for a potential question for reddit or stackexchange.
+
+#+begin_src emacs-lisp
+(define-capture-template! Question ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :tags '("question"))))
+#+end_src
+
+***** bug
+:PROPERTIES:
+:ID:       95c8bc05-0417-4f6e-953b-6df6ef5bbada
+:END:
+
+#+begin_src emacs-lisp
+(define-capture-template! Bug ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :todo-keyword "BUG")))
+#+end_src
+
+***** idea
+:PROPERTIES:
+:ID:       71864105-198a-4680-ad1d-bd3f40b7f0d6
+:END:
+
+#+begin_src emacs-lisp
+(define-capture-template! Idea ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :tags '("idea"))))
+#+end_src
+
 ***** emacs
 :PROPERTIES:
 :ID: e6109a54-37af-44ba-852f-a1c34f910cb9
@@ -8855,22 +9000,11 @@ extend.
 This capture template is for something emacs related I need to do.
 
 #+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::emacs-template ()
-    "Return the capture template for Emacs TODOs as a node"
-    (->> (org-capture::generic-template)
-         (org-ml-set-property :todo-keyword "TODO")
-         (org-ml-set-property :tags '("emacs"))
-         (org-ml-headline-set-planning (org-capture::planning-node 7))))
-
-  (org-capture:add-to-templates
-   (list "Emacs"
-         :keys "e"
-         :file (-const (concat VOID-ORG-DIR "todo.org"))
-         :prepend t
-         :empty-lines 1
-         :template (-compose #'org-ml-to-trimmed-string
-                             #'org-capture::emacs-template))))
+(define-capture-template! Emacs ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :todo-keyword "TODO")
+       (org-ml-set-property :tags '("emacs"))
+       (org-ml-headline-set-planning (org-capture::planning-node 7))))
 #+end_src
 
 ***** generic todo
@@ -8879,78 +9013,7 @@ This capture template is for something emacs related I need to do.
 :END:
 
 #+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::generic-template ()
-    "Return the capture template for Emacs TODOs (as a string)."
-    (->> (org-ml-build-headline! :title-text "%?")
-         (org-ml-headline-set-node-property "ID" (org-id-new))
-         (org-ml-headline-set-node-property "CREATED" (ts-format))
-         (org-ml-headline-set-planning (org-capture::planning-node 7))))
-
-  (org-capture:add-to-templates
-   (list "Todo"
-         :keys "t"
-         :file (-const (concat VOID-ORG-DIR "todo.org"))
-         :prepend t
-         :empty-lines 1
-         :template (-compose #'org-ml-to-trimmed-string
-                             #'org-capture::generic-template))))
-#+end_src
-
-***** problem
-:PROPERTIES:
-:ID:       a672f3eb-43c1-4310-adcc-6d0022e50579
-:END:
-
-A =TODO= is just for a task that I need to do later. The purpose of this template
-is for problems and issues I'm stumped on. It's similar to a TODO except that
-I'm not stumped or "stuck" with a TODO. Here I write the description of the
-problem and what exactly I want as a solution. This process can help me reason
-through as much as I can and provide the perfect draft for a potential question
-for reddit or stackexchange.
-
-#+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::problem-template ()
-    "Return the capture template for Emacs TODOs (as a string)."
-    (org-capture::generic-template))
-
-  (org-capture:add-to-templates
-   (list "Problem"
-         :keys "p"
-         :file (-const (concat VOID-ORG-DIR "problems.org"))
-         :prepend t
-         :empty-lines 1
-         :template (-compose #'org-ml-to-trimmed-string
-                             #'org-capture::generic-template))))
-#+end_src
-
-***** notes
-:PROPERTIES:
-:ID: b5af648e-d9fa-4d48-b68b-419c53dcd144
-:END:
-
-Sometimes there are things I want to capture that's not a =TODO=, but more like
-information I don't want to forget or that I feel like I might need to reference
-in the future. I use this template for this.
-
-#+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::generic-template ()
-    "Return the capture template for Emacs TODOs (as a string)."
-    (->> (org-ml-build-headline! :title-text "%?")
-         (org-ml-headline-set-node-property "ID" (org-id-new))
-         (org-ml-headline-set-node-property "CREATED" (ts-format))
-         (org-ml-headline-set-planning (org-capture::planning-node 7))))
-
-  (org-capture:add-to-templates
-   (list "Notes"
-         :keys "n"
-         :file (-const (concat VOID-ORG-DIR "notes.org"))
-         :prepend t
-         :empty-lines 1
-         :template (-compose #'org-ml-to-trimmed-string
-                             #'org-capture::generic-template))))
+(define-capture-template! todo)
 #+end_src
 
 ***** browser
@@ -8958,46 +9021,29 @@ in the future. I use this template for this.
 :ID:       f265705a-d8c1-49cc-967a-67ebd700d5a9
 :END:
 
-These are capture templates to.
+While doing research for solving a problem I tend to browse many, many sites.
+Often after browsing I think: "Oh, that site I visited could be useful". But I
+can't easily find it again. I don't remember the exact search terms I used.
+Either I painstakingly check my browser history one at a time, or I just give
+up. These are capture templates to add the url of the current webpage I'm
+visiting into an org file as a level one heading. This is like my own
+"bookmarks"/"history" for sites I fond useful or interesting.
+
+****** website-buffer
+:PROPERTIES:
+:ID:       7bbe8115-0c99-4c79-ba39-5ce34216285d
+:END:
+
+#+begin_src emacs-lisp
+(defun org-capture::browser-buffer-p ()
+  "Return whether a buffer is an browser buffer."
+  t)
+#+end_src
 
 ****** download webpage as pdf
 :PROPERTIES:
 :ID:       bd7165df-9dae-4954-b153-96335678e296
 :END:
-
-Saving the webpage using wkhtmltopdf.
-
-#+begin_src emacs-lisp
-(defun org-capture::save-webpage ()
-  "Save the webpage.
-Assumes the url is at the top of the kill ring."
-  (let* ((program "wkhtmltopdf")
-         (name (format "%s - %s" program (ts-format)))
-         (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
-         (webpage-title (thread-last (s-match title-regexp exwm-title)
-                          (nth 1)
-                          (s-replace "/" "~")))
-         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" webpage-title)))
-         (url (car kill-ring))
-         (fn `(lambda (&rest _)
-                (if (file-exists-p ,pdf-path)
-                    (message "Webpage saved.")
-                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
-    (message "%s <-- %s" (f-abbrev pdf-path) url)
-    (async-start-process name program fn url pdf-path)))
-#+end_src
-
-****** website (from firefox)
-:PROPERTIES:
-:ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
-:END:
-
-While doing research for solving a problem I tend to browse many, many sites.
-Often after browsing I think: "Oh, that site I visited could be useful". But I
-can't easily find it again. I don't remember the exact search terms I used.
-Either I painstakingly check my browser history one at a time, or I just give
-up. This capture template is designed to solve this problem by allowing me to
-store the link to any webpage I find important.
 
 Storing the links is better, but not good enough. Webpages die. They can be
 taken off by a third-party or removed by the owner themselves. Even if they
@@ -9006,43 +9052,50 @@ there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wk
 downloads a given webpage as pdf. A consequence of doing this is that you will
 have access to all the webpages you used for research offline.
 
+#+begin_src emacs-lisp
+(defun org-capture::save-webpage ()
+  "Save the webpage.
+Assumes the url is at the top of the kill ring."
+  (let* ((program "wkhtmltopdf")
+         (name (format "%s - %s" program (ts-format)))
+         (webpage-title (s-replace "/" "~" (exwm::webpage-name exwm-title)))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
+         (url (car kill-ring))
+         (fn `(lambda (&rest _)
+                (if (file-exists-p ,pdf-path)
+                    (message "Webpage saved succesfully.")
+                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
+    (message "%s <-- %s" (f-abbrev pdf-path) url)
+    (async-start-process name "firejail" fn program url pdf-path)))
+#+end_src
+
+****** website
+:PROPERTIES:
+:ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
+:END:
+
 A small note to avoid invalid filenames or wanting to create a filename but
 inadvertently adding a file to a directory I replace any forward slashes (=/=)
 with =~=.
 
 #+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::website-template ()
-    "Return the capture template websites when used with exwm.
-Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
-    (let* ((url (exwm::get-url-from-firefox))
-           (title-regexp "\\([^z-a]+\\) - \\(?:Firefox\\|Ice\\(?:cat\\|weasel\\)\\)")
-           (pdf-name (nth 1 (s-match title-regexp exwm-title)))
-           (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
-           (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
-      (->> (org-capture::generic-template)
-           (org-ml-headline-set-title! link-to-pdf nil)
-           (org-ml-headline-set-node-property "SOURCE" url))))
-
-  (org-capture:add-to-templates
-   (list "Website"
-         :keys "w"
-         :contexts '(:in-buffer "[^z-a]+ - \\(?:firefox\\|ice\\(?:cat\\|weasel\\)\\)\\'"
-                     :when (and (featurep 'exwm)
-                            (-any-p #'executable-find '("firefox" "iceweasel" "icecat"))))
-         :file (-const (concat VOID-ORG-DIR "websites.org"))
-         :prepend t
-         :empty-lines 1
-         :immediate-finish t
-         :after-finalize #'org-capture::save-webpage
-         :template (-compose #'org-ml-to-trimmed-string
-                             #'org-capture::website-template))))
+(define-capture-template! Website (:immediate-finish t
+                                   :after-finalize #'org-capture::save-webpage)
+  (let* ((url (exwm::browser-url))
+         (pdf-name (exwm::browser-webpage-name))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
+         (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
+    (->> (org-capture::generic-template)
+         (org-ml-headline-set-title! link-to-pdf nil)
+         (org-ml-headline-set-node-property "SOURCE" url))))
 #+end_src
 
 **** prevent capture templates from deleting windows
 :PROPERTIES:
 :ID:       a13e330a-33ff-4c1e-add4-00c5db4e6cd1
 :END:
+
+=org-capture= deletes all the other windows in the frame.
 
 #+begin_src emacs-lisp
 (after! org-capture
@@ -9062,21 +9115,21 @@ Create a pdf file of the page and store it in `VOID-SCREENSHOT-DIR'."
 :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
 :END:
 
-[[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the current week.
+[[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the
+current week.
 
 #+begin_src emacs-lisp
-(use-feature! org-agenda
-  :after org
-  :commands (org-agenda org-agenda-list)
+(use-package! org-agenda :straight nil :after org :commands
+  (org-agenda org-agenda-list)
   :setq
-  (org-agenda-files . (mapcar (lambda (it) (concat org-directory it))
-                               '("todo.org")))
+  (org-agenda-files list VOID-CAPTURE-FILE)
   (org-agenda-start-on-weekday . 0)
-  (org-agenda-timegrid-use-ampm . nil)
-  (org-agenda-skip-unavailable-files . nil)
+  (org-agenda-timegrid-use-ampm)
+  (org-agenda-skip-unavailable-files)
   (org-agenda-time-leading-zero . t)
-  (org-agenda-text-search-extra-files . '(agenda-archives))
-  (org-agenda-dim-blocked-tasks . nil)
+  (org-agenda-text-search-extra-files quote
+                                      (agenda-archives))
+  (org-agenda-dim-blocked-tasks)
   (org-agenda-inhibit-startup . t))
 #+end_src
 
