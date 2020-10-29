@@ -9082,7 +9082,7 @@ with =~=.
 (define-capture-template! Website (:immediate-finish t
                                    :after-finalize #'org-capture::save-webpage)
   (let* ((url (exwm::browser-url))
-         (pdf-name (exwm::browser-webpage-name))
+         (pdf-name (s-match ))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
          (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
     (->> (org-capture::generic-template)
