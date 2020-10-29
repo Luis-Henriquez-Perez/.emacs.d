@@ -3322,7 +3322,7 @@ Emacs simulates a keypress to firefox--specifically the keypresses to select the
 current url and to add it to the kill ring.
 
 #+begin_src emacs-lisp
-(defun exwm::get-url-from-firefox ()
+(defun exwm::firefox-url ()
   "Save the current firefox url to kill ring."
   ;; We get the xwindow id of the buffer named Firefox
   (let ((fid (exwm--buffer->id (current-buffer))))
