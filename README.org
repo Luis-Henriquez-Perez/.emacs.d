@@ -3356,7 +3356,7 @@ current url and to add it to the kill ring.
     (exwm-input::fake-key-to-id 'y fid)
     (sleep-for 0 300)
     (aprog1 (current-kill 0)
-      (message "Copied %S to the kill ring." it))))
+      (void-log "Copied %S to the kill ring." it))))
 #+end_src
 
 *** exwm
