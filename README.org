@@ -3359,6 +3359,14 @@ current url and to add it to the kill ring.
       (void-log "Copied %S to the kill ring." it))))
 #+end_src
 
+**** webpage regexp
+:PROPERTIES:
+:ID:       b2841e60-9580-4b3e-a7ee-287527e137a7
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** exwm webpage name
 :PROPERTIES:
 :ID:       1dd32c50-48cb-48a7-b401-613beae5e079
