@@ -3234,7 +3234,7 @@ Emacs simulates a keypress to firefox--specifically the keypresses to select the
 current url and to add it to the kill ring.
 
 #+begin_src emacs-lisp
-(defun exwm::get-url-from-firefox ()
+(defun exwm::firefox-url ()
   "Save the current firefox url to kill ring."
   ;; We get the xwindow id of the buffer named Firefox
   (let ((fid (exwm--buffer->id (current-buffer))))
@@ -3256,7 +3256,7 @@ current url and to add it to the kill ring.
 :END:
 
 #+begin_src emacs-lisp
-(defun exwm::get-url-from-qutebrowser ()
+(defun exwm::qutebrowser-url ()
   (interactive)
   (let ((fid (exwm--buffer->id (current-buffer))))
     (sleep-for 0 300)
@@ -3268,7 +3268,29 @@ current url and to add it to the kill ring.
     (exwm-input::fake-key-to-id 'y fid)
     (sleep-for 0 300)
     (aprog1 (current-kill 0)
-      (message "Copied %S to the kill ring." it))))
+      (void-log "Copied %S to the kill ring." it))))
+#+end_src
+
+**** webpage regexp
+:PROPERTIES:
+:ID:       b2841e60-9580-4b3e-a7ee-287527e137a7
+:END:
+
+#+begin_src emacs-lisp
+(defvar exwm::website-regexp nil
+  "Regexp used to.")
+#+end_src
+
+**** exwm webpage name
+:PROPERTIES:
+:ID:       1dd32c50-48cb-48a7-b401-613beae5e079
+:END:
+
+#+begin_src emacs-lisp
+(defun exwm::webpage-name ()
+  "Return the name of the webpage."
+  (->> (s-match (rx (group (1+ anything)) " - " (1+ anything)) exwm-title)
+       (nth 1)))
 #+end_src
 
 *** exwm
@@ -9128,7 +9150,7 @@ with =~=.
 (define-capture-template! Website (:immediate-finish t
                                    :after-finalize #'org-capture::save-webpage)
   (let* ((url (exwm::browser-url))
-         (pdf-name (exwm::browser-webpage-name))
+         (pdf-name (s-match ))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
          (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
     (->> (org-capture::generic-template)
