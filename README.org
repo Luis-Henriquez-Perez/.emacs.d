@@ -3367,8 +3367,8 @@ current url and to add it to the kill ring.
 #+begin_src emacs-lisp
 (defun exwm::webpage-name ()
   "Return the name of the webpage."
-  (let ((regexp))
-    (s-match )))
+  (->> (s-match (rx (1+ anything)) exwm-title)
+       (nth 1)))
 #+end_src
 
 *** exwm
