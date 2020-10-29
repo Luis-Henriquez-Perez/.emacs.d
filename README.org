@@ -3344,7 +3344,7 @@ current url and to add it to the kill ring.
 :END:
 
 #+begin_src emacs-lisp
-(defun exwm::get-url-from-qutebrowser ()
+(defun exwm::qutebrowser-url ()
   (interactive)
   (let ((fid (exwm--buffer->id (current-buffer))))
     (sleep-for 0 300)
