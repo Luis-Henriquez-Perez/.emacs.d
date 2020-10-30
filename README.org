@@ -8894,6 +8894,30 @@ template.
     (list webpage program)))
 #+end_src
 
+***** capture file
+:PROPERTIES:
+:ID:       459ccec8-37dc-4e7e-9382-9737ff0c3bf6
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
+  "File where all capture templates are filed to.")
+#+end_src
+
+***** org-capture-file
+:PROPERTIES:
+:ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
+:END:
+
+This function is a convenience wrapper to be used as the =:file= argument for [[helpfn:doct][doct
+declarations]].
+
+#+begin_src emacs-lisp
+(defun org-capture:file ()
+  "Return the org capture file."
+  VOID-CAPTURE-FILE)
+#+end_src
+
 ***** add to capture templates
 :PROPERTIES:
 :ID:       16c55272-f8c2-4798-9da1-2ab492769f44
@@ -8908,7 +8932,7 @@ entries.
 #+begin_src emacs-lisp
 (after! org-capture
   (defun org-capture:add-to-templates (declarations)
-    "Convert DECLARATIONS add the result to `org-capture-templates'.
+    "Set `org-capture-templates' to the result of (doct DECLARATIONS).
 Before adding result, remove any members of `org-capture-templates' with the
 same key as the one(s) being added."
     (cl-labels ((clean (templates)
@@ -8994,19 +9018,6 @@ have the date created.
        (org-capture:add-to-templates
         (cons ,(symbol-name name)
               (-concat ,args org-capture:defaults '(:keys ,key :template ,string-fn)))))))
-#+end_src
-
-***** org-capture-file
-:PROPERTIES:
-:ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
-:END:
-
-The org-capture file is the default place for all capture templates.
-
-#+begin_src emacs-lisp
-(defun org-capture:file ()
-  "Return the org capture file."
-  VOID-CAPTURE-FILE)
 #+end_src
 
 **** capture templates
