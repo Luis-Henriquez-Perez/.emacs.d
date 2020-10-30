@@ -3180,6 +3180,18 @@ There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
 
+*** exwm title
+:PROPERTIES:
+:ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
+:END:
+
+#+begin_src emacs-lisp
+(defun exwm::title-info (title)
+  "Return the webpage and the program."
+  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
+    (list webpage program)))
+#+end_src
+
 *** org capture from an exwm buffer
 :PROPERTIES:
 :ID:       5428bdc1-c075-4387-b3ab-080d372c478f
@@ -8882,18 +8894,6 @@ need to disable =org-capture's= header-line.
 These functions are to help me reduce the boilerplate of defining a capture
 template.
 
-***** exwm title
-:PROPERTIES:
-:ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
-:END:
-
-#+begin_src emacs-lisp
-(defun exwm::title-info (title)
-  "Return the webpage and the program."
-  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
-    (list webpage program)))
-#+end_src
-
 ***** capture file
 :PROPERTIES:
 :ID:       459ccec8-37dc-4e7e-9382-9737ff0c3bf6
@@ -8914,7 +8914,8 @@ declarations]].
 
 #+begin_src emacs-lisp
 (defun org-capture:file ()
-  "Return the org capture file."
+  "Return `VOID-CAPTURE-FILE'.
+This is a convenience wrapper for `doct' declarations."
   VOID-CAPTURE-FILE)
 #+end_src
 
