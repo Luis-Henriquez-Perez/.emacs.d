@@ -823,6 +823,17 @@ Therefore, I support keyword args in the function body.
         body))
 #+end_src
 
+**** format keyword
+:PROPERTIES:
+:ID:       1c8275ad-166e-4cc0-9f1c-c42de2adafdb
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defmacro! (name args &rest body)
+  "Uses anaphora to format."
+  (-tree-map ))
+#+end_src
+
 **** symbols
 :PROPERTIES:
 :ID: 2cdf8ab1-4e59-4128-a8a4-e5519ca0f4bf
