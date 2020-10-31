@@ -9068,17 +9068,6 @@ provide the perfect draft for a potential question for reddit or stackexchange.
        (org-ml-set-property :tags '("question"))))
 #+end_src
 
-***** bug
-:PROPERTIES:
-:ID:       95c8bc05-0417-4f6e-953b-6df6ef5bbada
-:END:
-
-#+begin_src emacs-lisp
-(define-capture-template! Bug ()
-  (->> (org-capture::generic-template)
-       (org-ml-set-property :todo-keyword "BUG")))
-#+end_src
-
 ***** idea
 :PROPERTIES:
 :ID:       71864105-198a-4680-ad1d-bd3f40b7f0d6
