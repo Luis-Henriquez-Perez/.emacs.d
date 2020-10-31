@@ -8931,17 +8931,16 @@ freely re-evaluate it without cluttering my capture templates with duplicate
 entries.
 
 #+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture:add-to-templates (declarations)
-    "Set `org-capture-templates' to the result of (doct DECLARATIONS).
+(defun org-capture:add-to-templates (declarations)
+  "Set `org-capture-templates' to the result of (doct DECLARATIONS).
 Before adding result, remove any members of `org-capture-templates' with the
 same key as the one(s) being added."
-    (cl-labels ((clean (templates)
-                       (when templates
-                         (cons (car templates)
-                               (--remove (string= (caar templates) (car it))
-                                         (clean (cdr templates)))))))
-      (setq org-capture-templates (clean (doct declarations))))))
+  (cl-labels ((clean (templates)
+                     (when templates
+                       (cons (car templates)
+                             (--remove (string= (caar templates) (car it))
+                                       (clean (cdr templates)))))))
+    (setq org-capture-templates (clean (doct declarations)))))
 #+end_src
 
 ***** schedule and deadline times
@@ -8952,15 +8951,14 @@ same key as the one(s) being added."
 For capture templates that have deadlines, I set a start and an end date.
 
 #+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::default-planning-node (&optional days-difference)
-    "Return the default planning node for `org-capture-templates'."
-    (let* ((now (ts-now))
-           (later (ts-adjust 'day days-difference now))
-           (beg (list (ts-year now) (ts-month now) (ts-day now)))
-           (end (list (ts-year later) (ts-month later) (ts-day later)))
-           (days-difference (or days-difference 7)))
-      (org-ml-build-planning! :scheduled beg :deadline end))))
+(defun org-capture::default-planning-node (&optional days-difference)
+  "Return the default planning node for `org-capture-templates'."
+  (let* ((now (ts-now))
+         (later (ts-adjust 'day days-difference now))
+         (beg (list (ts-year now) (ts-month now) (ts-day now)))
+         (end (list (ts-year later) (ts-month later) (ts-day later)))
+         (days-difference (or days-difference 7)))
+    (org-ml-build-planning! :scheduled beg :deadline end)))
 #+end_src
 
 ***** generic template
