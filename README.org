@@ -828,6 +828,8 @@ Therefore, I support keyword args in the function body.
 :ID:       c2f43f84-e400-45ed-9e96-7b8d38133810
 :END:
 
+The purpose of this macro is to
+
 ***** format keyword
 :PROPERTIES:
 :ID:       1c8275ad-166e-4cc0-9f1c-c42de2adafdb
