@@ -808,7 +808,8 @@ customizing emacs.
 :END:
 
 Following [[][past examples]], I initially opted for allowing keyword arguments
-in the "function args" part of defun-like macros. However,
+in the "function args" part of defun-like macros. This is fine when there's only
+one
 
 #+begin_src emacs-lisp
 (defun void--keyword-macro-args (body)
