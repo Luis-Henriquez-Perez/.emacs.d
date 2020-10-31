@@ -9088,9 +9088,9 @@ This capture template is for something emacs related I need to do.
 
 #+begin_src emacs-lisp
 (define-capture-template! Emacs ()
-  :children (("idea" :keys "i")
-             ("bug" :keys "b")
-             ("performance" :keys "p"))
+  ;; :children (("idea" :keys "i")
+  ;;            ("bug" :keys "b")
+  ;;            ("performance" :keys "p"))
   (->> (org-capture::generic-template)
        (org-ml-set-property :todo-keyword "TODO")
        (org-ml-set-property :tags '("emacs"))
