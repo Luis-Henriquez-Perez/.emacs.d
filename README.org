@@ -829,18 +829,22 @@ Therefore, I support keyword args in the function body.
 :END:
 
 The purpose of this macro is to fascillitate the creating of cut paste keywords
-so often used in macros.
+so often used in macros. Let me explain. Often you want a macro to be a
+"front-end" so-to-speak for defining functions and variables that usually follow
+a naming scheme. In the macro body we end up with many ~(intern (format
+"foo-%s-baz" var))~ forms. This macro allows you to write this as ~foo-<var>-baz~
+instead.
 
-***** a word that contains an anaphoric keyword
+***** whether a keyword
 :PROPERTIES:
-:ID:       4df8da60-621b-4fe7-b451-5cd7b44489e0
+:ID:       c075a57b-9e68-4e86-9166-6314a8468fe4
 :END:
 
 #+begin_src emacs-lisp
-(defun void--contains-anaphoric-p (symbol)
-  "Return non-nil if symbol contains an anaphora."
-  (s-matches-p (rx "<" (1+ (not white)) ">")
-               (symbol-name symbol)))
+(if (and (symbolp it)
+         (s-matches-p "<\\([^[:space:]]+\\)>" (symbol-name it)))
+    (void--anaphoric-format it)
+  it)
 #+end_src
 
 ***** convert a keyword into its equivalent
@@ -849,11 +853,24 @@ so often used in macros.
 :END:
 
 #+begin_src emacs-lisp
-(defun void--format-equiv (symbol)
-  "Return what will replace the symbol."
-  (s-match (rx (group "<" (1+ (not (white))) ">")) symbol)
-  (s-replace-regexp regexp "%s" symbol)
-  `(intern (format "something-%s-something") symbol))
+(cl-defun void--anaphoric-format (symbol)
+  "Return the form that will replace."
+  (let* ((string (symbol-name symbol))
+         (regexp (rx "<" (group (1+ (not (any white)))) ">"))
+         (format-string (s-replace-regexp regexp "%s" string))
+         (symbols (--map (nth 1 it) (s-match-strings-all regexp string))))
+    ;; create the format string.
+    `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))))
+#+end_src
+
+***** defmacro!
+:PROPERTIES:
+:ID:       7cd61cb8-22be-460d-b4f4-da6c82435958
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defmacro! (name args &rest body)
+  "")
 #+end_src
 
 ***** format keyword
@@ -861,10 +878,14 @@ so often used in macros.
 :ID:       1c8275ad-166e-4cc0-9f1c-c42de2adafdb
 :END:
 
+This is the main macro.
+
 #+begin_src emacs-lisp
-(defmacro format! (name args &rest body)
+(defmacro format! (&rest body)
   "Uses anaphora to format."
-  (-tree-map ))
+  `(progn
+     ,@(-tree-map #'void--anaphoric-format body)))
+
 #+end_src
 
 **** symbols
