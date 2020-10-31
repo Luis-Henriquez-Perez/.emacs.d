@@ -802,6 +802,21 @@ customizing emacs.
 :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
 :END:
 
+**** get keywords arguments in macro
+:PROPERTIES:
+:ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
+:END:
+
+#+begin_src emacs-lisp
+(defun void--keyword-macro-args (body)
+  "Return list of (KEYWORD-ARGS BODY)."
+  (list (--unfold (when (keywordp (car it))
+                    (cons (-take 2 it)
+                          (setq body (cddr it))))
+                  body)
+        body))
+#+end_src
+
 **** symbols
 :PROPERTIES:
 :ID: 2cdf8ab1-4e59-4128-a8a4-e5519ca0f4bf
@@ -1451,21 +1466,6 @@ from pulling (or failing to pull) in autoloaded macros/features.
 :PROPERTIES:
 :ID:       f27aa611-a2bd-4b76-85ce-72feb1e9f19f
 :END:
-
-**** get keywords arguments in macro
-:PROPERTIES:
-:ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
-:END:
-
-#+begin_src emacs-lisp
-(defun void--keyword-macro-args (body)
-  "Return list of (KEYWORD-ARGS BODY)."
-  (list (--unfold (when (keywordp (car it))
-                    (cons (-take 2 it)
-                          (setq body (cddr it))))
-                  body)
-        body))
-#+end_src
 
 **** ignore!
 :PROPERTIES:
