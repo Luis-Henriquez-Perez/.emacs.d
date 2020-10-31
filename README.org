@@ -8971,12 +8971,11 @@ my headlines should have their own UUID. And almost all of my headlines will
 have the date created.
 
 #+begin_src emacs-lisp
-(after! org-capture
-  (defun org-capture::generic-template ()
-    "Return the default `org-capture-template'."
-    (->> (org-ml-build-headline! :title-text "%?")
-         (org-ml-headline-set-node-property "ID" (org-id-new))
-         (org-ml-headline-set-node-property "CREATED" (ts-format)))))
+(defun org-capture::generic-template ()
+  "Return the default `org-capture-template'."
+  (->> (org-ml-build-headline! :title-text "%?")
+       (org-ml-headline-set-node-property "ID" (org-id-new))
+       (org-ml-headline-set-node-property "CREATED" (ts-format))))
 #+end_src
 
 ***** default template keywords
