@@ -9094,7 +9094,7 @@ This capture template is for something emacs related I need to do.
   (->> (org-capture::generic-template)
        (org-ml-set-property :todo-keyword "TODO")
        (org-ml-set-property :tags '("emacs"))
-       (org-ml-headline-set-planning (org-capture::default-planning-node 7))))
+       (org-ml-headline-set-planning (org-capture::default-planning-node))))
 #+end_src
 
 ***** generic todo
