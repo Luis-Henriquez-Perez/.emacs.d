@@ -493,3 +493,15 @@
   (should-expand-to! (use-package foo :popup ("\\*fap" (dap)))
                      (push '("\\*fap" (dap)) display-buffer-alist)))
 #+end_src
+
+* format
+:PROPERTIES:
+:ID:       4f45a68f-1822-4ef2-995b-a773927629c6
+:END:
+
+#+begin_src emacs-lisp
+(describe "")
+;; find all the symbols that match anaphoric macro.
+(s-match (rx "<" () ">"))
+(defun something-<name>-hook ())
+#+end_src

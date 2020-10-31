@@ -837,6 +837,23 @@ so often used in macros.
 :END:
 
 #+begin_src emacs-lisp
+(defun void--contains-anaphoric-p (symbol)
+  "Return non-nil if symbol contains an anaphora."
+  (s-matches-p (rx "<" (1+ (not white)) ">")
+               (symbol-name symbol)))
+#+end_src
+
+***** convert a keyword into its equivalent
+:PROPERTIES:
+:ID:       aa083f01-a4de-4ce8-bbcc-7f493adad227
+:END:
+
+#+begin_src emacs-lisp
+(defun void--format-equiv (symbol)
+  "Return what will replace the symbol."
+  (s-match (rx (group "<" (1+ (not (white))) ">")) symbol)
+  (s-replace-regexp regexp "%s" symbol)
+  `(intern (format "something-%s-something") symbol))
 #+end_src
 
 ***** format keyword
