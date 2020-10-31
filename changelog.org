@@ -215,3 +215,12 @@ post, auxiliary packages, etc.). Additionally, =use-package= rightly uses
 higher-order functions (the normalizer and handler) to control the expansion of
 new keywords as opposed to raw forms like leaf. Therefore, I think it is best to
 switch from leaf to use-package.
+
+** add capture templates and support for them
+:PROPERTIES:
+:ID:       72c04c33-1eae-47e3-be9d-7b8a2128746a
+:END:
+
+Capture templates are one of the simplest yet most powerful features of org
+mode. It is the one thing that I feel that all emacsers should utilize heavily
+all the time. The purpose of this change is to.
