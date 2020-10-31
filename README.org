@@ -531,6 +531,22 @@ ANCHOR if AFTER is non-nil)."
     (void-symbol-intern var "-hook")))
 #+end_src
 
+***** applying a keyword and its handler
+:PROPERTIES:
+:ID:       e79f67c7-d2f6-4db8-a291-156e2bbf4ebd
+:END:
+
+The purpose of this helper is to allow me to existing keywords in the body of
+keywords I'm creating.
+
+#+begin_src emacs-lisp
+(defun use-package:apply-keyword (name keyword args)
+  "Return the form that results from applying KEYWORD to ARGS."
+  (let ((handler (void-symbol-intern 'use-package-handler/ keyword))
+        (normalizer (void-symbol-intern 'use-package-normalize/ keyword)))
+    (funcall handler name keyword (funcall normalizer name keyword args) nil nil)))
+#+end_src
+
 **** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
@@ -9631,14 +9647,15 @@ understanding of a verbally terse and dry command description.
 
 #+begin_src emacs-lisp
 (use-package! elisp-demos
-<<<<<<< HEAD
-  ;; :functions elisp-demos-advice-helpful-update
-  ;; :advice (:after helpful-update elisp-demos-advice-helpful-update)
-  :commands elisp-demos-add-demo)
-=======
   :commands elisp-demos-add-demo
   :advice (:after (helpful-update . elisp-demos-advice-helpful-update)))
->>>>>>> 59b3d39 (Add advice keyword to use-package.)
+
+(defun use-package:apply-keyword (name keyword args)
+  (let ((handler (void-symbol-intern 'use-package-handler/ keyword))
+        (normalizer (void-symbol-intern 'use-package-normalize/ keyword)))
+    (funcall handler name keyword (funcall normalizer name keyword args) nil nil)))
+
+(use-package:apply-keyword 'ho :commands '(fee fii foo))
 #+end_src
 
 * Asthetic
