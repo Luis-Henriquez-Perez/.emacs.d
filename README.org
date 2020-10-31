@@ -5905,7 +5905,7 @@ We want escape to be a general "quit everything".
         (t (keyboard-quit))))
 #+end_src
 
-***** TODO keychord integration
+***** keychord integration
 :PROPERTIES:
 :ID:       33fa6402-f56e-4bea-a9b5-bd5a6f44792f
 :END:
