@@ -1452,6 +1452,21 @@ from pulling (or failing to pull) in autoloaded macros/features.
 :ID:       f27aa611-a2bd-4b76-85ce-72feb1e9f19f
 :END:
 
+**** get keywords arguments in macro
+:PROPERTIES:
+:ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
+:END:
+
+#+begin_src emacs-lisp
+(defun void--keyword-macro-args (body)
+  "Return list of (KEYWORD-ARGS BODY)."
+  (list (--unfold (when (keywordp (car it))
+                    (cons (-take 2 it)
+                          (setq body (cddr it))))
+                  body)
+        body))
+#+end_src
+
 **** ignore!
 :PROPERTIES:
 :ID: 0597956f-d40c-4c2b-9adf-5ece8c5b38de
@@ -5903,7 +5918,7 @@ This is better than evil escape as it only binds in insert.
 
 #+begin_src emacs-lisp
 (use-package! key-chord
-  :after-call (evil-insert-state evil-emacs-state)
+  :after-call evil-insert-state evil-emacs-state
   :config
   (quiet! (key-chord-mode 1))
   (general-def :states '(visual insert)
@@ -9156,8 +9171,9 @@ inadvertently adding a file to a directory I replace any forward slashes (=/=)
 with =~=.
 
 #+begin_src emacs-lisp
-(define-capture-template! Website (:immediate-finish t
-                                   :after-finalize #'org-capture::save-webpage)
+(define-capture-template! Website ()
+  :immediate-finish t
+  :after-finalize #'org-capture::save-webpage
   (let* ((url (exwm::browser-url))
          (pdf-name (s-match ))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
