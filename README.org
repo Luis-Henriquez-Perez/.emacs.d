@@ -828,7 +828,7 @@ Therefore, I support keyword args in the function body.
 :ID:       c2f43f84-e400-45ed-9e96-7b8d38133810
 :END:
 
-The purpose of this macro is to format
+The purpose of this macro.
 
 ***** format keyword
 :PROPERTIES:
@@ -836,7 +836,7 @@ The purpose of this macro is to format
 :END:
 
 #+begin_src emacs-lisp
-(defmacro defmacro! (name args &rest body)
+(defmacro format! (name args &rest body)
   "Uses anaphora to format."
   (-tree-map ))
 #+end_src
