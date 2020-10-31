@@ -828,7 +828,8 @@ Therefore, I support keyword args in the function body.
 :ID:       c2f43f84-e400-45ed-9e96-7b8d38133810
 :END:
 
-The purpose of this macro.
+The purpose of this macro is to fascillitate the creating of cut paste keywords
+so often used in macros.
 
 ***** format keyword
 :PROPERTIES:
