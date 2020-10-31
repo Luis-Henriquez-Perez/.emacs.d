@@ -8980,6 +8980,10 @@ template.
 :ID:       459ccec8-37dc-4e7e-9382-9737ff0c3bf6
 :END:
 
+I like to keep things simple. If I'm already going to be filtering captures,
+then why segregate them into multiple files? That just makes it harder because I
+have to consider which ones are in which file before filtering.
+
 #+begin_src emacs-lisp
 (defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
   "File where all capture templates are filed to.")
@@ -9034,7 +9038,8 @@ For capture templates that have deadlines, I set a start and an end date.
 #+begin_src emacs-lisp
 (defun org-capture::default-planning-node (&optional days-difference)
   "Return the default planning node for `org-capture-templates'."
-  (let* ((now (ts-now))
+  (let* ((days-difference (or days-difference 7))
+         (now (ts-now))
          (later (ts-adjust 'day days-difference now))
          (beg (list (ts-year now) (ts-month now) (ts-day now)))
          (end (list (ts-year later) (ts-month later) (ts-day later)))
@@ -9068,6 +9073,7 @@ have the date created.
 (defvar org-capture:defaults
   (list :file #'org-capture:file
         :prepend t
+        :hook #'evil-insert-state
         :empty-lines 1)
   "A plist of keywords that should always apply to capture templates.")
 #+end_src
