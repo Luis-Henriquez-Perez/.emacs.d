@@ -5905,7 +5905,7 @@ We want escape to be a general "quit everything".
         (t (keyboard-quit))))
 #+end_src
 
-***** keychord integration
+***** TODO keychord integration
 :PROPERTIES:
 :ID:       33fa6402-f56e-4bea-a9b5-bd5a6f44792f
 :END:
@@ -5918,7 +5918,7 @@ This is better than evil escape as it only binds in insert.
 
 #+begin_src emacs-lisp
 (use-package! key-chord
-  :after-call evil-insert-state evil-emacs-state
+  :after-call (evil-insert-state evil-emacs-state)
   :config
   (quiet! (key-chord-mode 1))
   (general-def :states '(visual insert)
