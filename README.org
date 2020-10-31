@@ -815,10 +815,11 @@ Therefore, I support keyword args in the function body.
 
 #+begin_src emacs-lisp
 (defun void--keyword-macro-args (body)
-  "Return list of (KEYWORD-ARGS BODY)."
-  (list (--unfold (when (keywordp (car it))
-                    (cons (-take 2 it)
-                          (setq body (cddr it))))
+  "Return list of (docstring KEYWORD-ARGS BODY)."
+  (list (when (stringp (car body)) (pop body))
+        (--unfold (when (keywordp (car it))
+                    (cons (cons (pop body) (pop body))
+                          body))
                   body)
         body))
 #+end_src
@@ -835,32 +836,21 @@ a naming scheme. In the macro body we end up with many ~(intern (format
 "foo-%s-baz" var))~ forms. This macro allows you to write this as ~foo-<var>-baz~
 instead.
 
-***** whether a keyword
-:PROPERTIES:
-:ID:       c075a57b-9e68-4e86-9166-6314a8468fe4
-:END:
-
-#+begin_src emacs-lisp
-(if (and (symbolp it)
-         (s-matches-p "<\\([^[:space:]]+\\)>" (symbol-name it)))
-    (void--anaphoric-format it)
-  it)
-#+end_src
-
 ***** convert a keyword into its equivalent
 :PROPERTIES:
 :ID:       aa083f01-a4de-4ce8-bbcc-7f493adad227
 :END:
 
 #+begin_src emacs-lisp
-(cl-defun void--anaphoric-format (symbol)
+(defun void--anaphoric-format (symbol)
   "Return the form that will replace."
-  (let* ((string (symbol-name symbol))
-         (regexp (rx "<" (group (1+ (not (any white)))) ">"))
-         (format-string (s-replace-regexp regexp "%s" string))
-         (symbols (--map (nth 1 it) (s-match-strings-all regexp string))))
-    ;; create the format string.
-    `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))))
+  (if-let ((regexp VOID-ANAPHORIC-SYMBOL-REGEXP)
+           (string (and (symbolp symbol) (symbol-name symbol)))
+           (symbols (--map (nth 1 it) (s-match-strings-all regexp string)))
+           ;; (regexp (rx "<" (group (1+ (not (any white)))) ">"))
+           (format-string (s-replace-regexp regexp "%s" string)))
+      `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))
+    symbol))
 #+end_src
 
 ***** defmacro!
@@ -870,22 +860,11 @@ instead.
 
 #+begin_src emacs-lisp
 (defmacro defmacro! (name args &rest body)
-  "")
-#+end_src
-
-***** format keyword
-:PROPERTIES:
-:ID:       1c8275ad-166e-4cc0-9f1c-c42de2adafdb
-:END:
-
-This is the main macro.
-
-#+begin_src emacs-lisp
-(defmacro format! (&rest body)
-  "Uses anaphora to format."
-  `(progn
-     ,@(-tree-map #'void--anaphoric-format body)))
-
+  "Like `defmacro' but allows for anaphoric formatting."
+  (-let [(docstring alist body) (void--keyword-macro-args body)]
+    `(defmacro ,name ,args
+       ,docstring
+       ,@(-tree-map #'void--anaphoric-format body))))
 #+end_src
 
 **** symbols
@@ -9105,25 +9084,25 @@ have the date created.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro define-capture-template! (name args &rest body)
+(defmacro! define-capture-template! (name args &rest body)
   "Define a capture template."
   (declare (indent defun))
   (let* ((string-name (downcase (symbol-name name)))
-         (node-fn (intern (format "org-capture::%s-template-node" string-name)))
-         (string-fn (intern (format "org-capture::%s-template-string" string-name)))
          (body (or body '((org-capture:default-template))))
          (defaults org-capture:defaults)
          (key (downcase (substring string-name 0 1))))
     `(after! org-capture
-       (defun ,node-fn ()
+       (defun org-capture::<string-name>-template-node ()
          "Return capture template node for."
          ,@body)
-       (defun ,string-fn ()
+       (defun org-capture::<string-name>-template-string ()
          "Return capture template as a string."
-         (org-ml-to-trimmed-string (,node-fn)))
-       (org-capture:add-to-templates
-        (cons ,(symbol-name name)
-              (-concat ,args org-capture:defaults '(:keys ,key :template ,string-fn)))))))
+         (->> (org-capture::<string-name>-template-string)
+              (org-ml-to-trimmed-string)))
+       (->> '(:keys ,key :template #'org-capture::<string-name>-template-string)
+            (-concat ,args org-capture:defaults)
+            (cons ,string-name)
+            (org-capture:add-to-templates)))))
 #+end_src
 
 **** capture templates
