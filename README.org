@@ -831,6 +831,14 @@ Therefore, I support keyword args in the function body.
 The purpose of this macro is to fascillitate the creating of cut paste keywords
 so often used in macros.
 
+***** a word that contains an anaphoric keyword
+:PROPERTIES:
+:ID:       4df8da60-621b-4fe7-b451-5cd7b44489e0
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ***** format keyword
 :PROPERTIES:
 :ID:       1c8275ad-166e-4cc0-9f1c-c42de2adafdb
