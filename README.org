@@ -9288,8 +9288,9 @@ with =~=.
 current week.
 
 #+begin_src emacs-lisp
-(use-package! org-agenda :straight nil :after org :commands
-  (org-agenda org-agenda-list)
+(use-feature! org-agenda
+  :after org
+  :commands (org-agenda org-agenda-list)
   :setq
   (org-agenda-files list VOID-CAPTURE-FILE)
   (org-agenda-start-on-weekday . 0)
