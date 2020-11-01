@@ -1204,7 +1204,7 @@ function.
           ((docstring _ body) (void--keyword-macro-args body)))
     `(progn
        ,@(-map (lambda (hook)
-                 `(aprog1 (defun void-<name>-hook (&rest _) ,docstring
+                 `(aprog1 (defun void--<name>-hook (&rest _) ,docstring
                                  ,@body)
                     (void-add-hook ',hook it ,depth ,local)))
                hooks))))
