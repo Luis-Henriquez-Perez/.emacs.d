@@ -9959,6 +9959,13 @@ graphical interface but.
 #+begin_src emacs-lisp
 (use-package! circadian)
 
+*** gruvbox-theme
+:PROPERTIES:
+:ID:       5f159c08-4c4d-4837-9625-2232e70139f5
+:END:
+
+#+begin_src emacs-lisp
+(use-package! gruvbox-theme)
 #+end_src
 
 * Keybindings
