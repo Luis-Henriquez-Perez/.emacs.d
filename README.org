@@ -1187,8 +1187,10 @@ function.
 
 \(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
   (declare (doc-string 3))
-  (-let ((hooks args)
-         ((docstring plist body) (void--keyword-macro-args body)))
+  (-let* ((hooks (-take-while (-not #'keywordp) args))
+          (local (plist-get hooks :local))
+          (depth (or (plist-get hooks :append) (plist-get hooks :depth)))
+          ((docstring _ body) (void--keyword-macro-args body)))
     `(progn
        ,@(-map (lambda (hook)
                  `(aprog1 (defun void-<name>-hook (&rest _) ,docstring
