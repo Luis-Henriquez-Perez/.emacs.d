@@ -8207,7 +8207,9 @@ I need this function for some org actions. Evil has this as
 
 (defadvice! properly-unfold-surrounding-headlines (:around counsel-org-goto-action)
   (prog1 (apply <orig-fn> <args>)
-    (org:prettify-nearby-headlines)))
+    (org:prettify-nearby-headlines)
+    (when (org:heading-folded-p)
+      (outline-toggle-children))))
 #+end_src
 
 **** helpers
