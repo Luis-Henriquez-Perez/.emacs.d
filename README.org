@@ -9323,7 +9323,6 @@ current week.
 
 #+begin_src emacs-lisp
 (use-feature! org-refile
-  :after org
   :pre-setq
   (org-refile-targets . `((,VOID-README-FILE . (:maxlevel . 10))
                           (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
