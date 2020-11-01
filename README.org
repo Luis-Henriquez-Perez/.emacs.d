@@ -4132,7 +4132,7 @@ worth quoting here:
 :END:
 
 #+begin_src emacs-lisp
-(defhook! setup-backends (after-change-major-mode-hook nil t)
+(defhook! setup-backends (after-change-major-mode-hook :local t)
   "Set `company-backends' for the current buffer."
   (when (and (bound-and-true-p company-mode)
              (not (eq major-mode 'fundamental-mode)))
@@ -6908,7 +6908,7 @@ again, you are taken to the location you left off. This is very convenient.
   (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
   (savehist-file . (concat VOID-DATA-DIR "savehist")))
 
-(defhook! unpropertize-kill-ring (kill-emacs-hook t)
+(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
   "Remove text properties from `kill-ring'."
   (setq kill-ring
         (mapcar (lambda (it) (when (stringp it) (substring-no-properties it)))
