@@ -9085,6 +9085,10 @@ have the date created.
         :hook #'evil-insert-state
         :empty-lines 1)
   "A plist of keywords that should always apply to capture templates.")
+
+(after! evil
+  (prepend! org-capture:defaults
+    (list :hook #'evil-insert-state)))
 #+end_src
 
 ***** convenience macro for defining capture templates
