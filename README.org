@@ -1360,7 +1360,7 @@ switched. In my opinion, the unique part of the function name being first is
 more consistent with =defun=.
 
 #+begin_src emacs-lisp
-(defmacro define-advice! (name args &rest body)
+(defmacro! define-advice! (name args &rest body)
   "A wrapper around `define-advice'.
 The only difference is that this switches the order the arguments have to be
 passed in.
@@ -1370,11 +1370,9 @@ passed in.
   (unless (listp args)
     (signal 'wrong-type-argument (list #'listp args)))
   (-let (((where lambda-args fn props) args))
-    `(alet
-         (defun ,(void-symbol-intern 'void-- name '-advice) ,lambda-args
-           ,@body)
-       (void-add-advice #',fn ,where it ,props)
-       it)))
+    `(aprog1 (defun ,void--<name>-advice ,lambda-args
+               ,@body)
+       (void-add-advice #',fn ,where it ,props))))
 #+end_src
 
 ***** anaphoric defadvice!
