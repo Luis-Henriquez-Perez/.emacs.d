@@ -1187,15 +1187,13 @@ function.
 
 \(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
   (declare (doc-string 3))
-  (-let (((hooks (depth local)) (-partition-by (-orfn #'booleanp #'numberp)
-                                               args))
-         (fn (void-symbol-intern 'void-- name '-hook))
-         (docstring (if (stringp (car body)) (pop body) nil)))
+  (-let ((hooks args)
+         ((docstring plist body) (void--keyword-macro-args body)))
     `(progn
        ,@(-map (lambda (hook)
-                 `(progn (void-add-hook ',hook #',fn ,depth ,local)
-                         (defun ,fn (&rest _) ,docstring
-                                ,@body)))
+                 `(aprog1 (defun void-<name>-hook (&rest _) ,docstring
+                                 ,@body)
+                    (void-add-hook ',hook it ,depth ,local)))
                hooks))))
 #+end_src
 
