@@ -1180,7 +1180,7 @@ If EXPIRE-FN"
 defun-like syntax.
 
 #+begin_src emacs-lisp
-(defmacro defhook! (name args &rest body)
+(defmacro! defhook! (name args &rest body)
   "Define a hook function and attatch it to HOOK and HOOKS.
 DEPTH and LOCAL are the same as in `add-hook'. BODY is the body of the hook
 function.
