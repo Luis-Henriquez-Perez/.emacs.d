@@ -2805,7 +2805,7 @@ hook variables use action verbs in their names not nouns. So the =exit= in
   "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
   (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
 
-(defhook! defer-garbage-collection (minibuffer-exit-hook t)
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
   "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
   (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
 #+end_src
@@ -2826,7 +2826,7 @@ preferable for quitting emacs to be slightly slower than for emacs startup to
 be.
 
 #+begin_src emacs-lisp
-(defhook! tangle-on-quit-maybe (kill-emacs-hook t)
+(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
   "Tangle if `void-needs-tangling-p' returns t."
   (when (void-needs-tangling-p)
     (void/tangle-org-file)))
