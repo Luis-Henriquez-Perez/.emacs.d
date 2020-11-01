@@ -9090,10 +9090,6 @@ have the date created.
         :prepend t
         :empty-lines 1)
   "A plist of keywords that should always apply to capture templates.")
-
-(after! (org-capture evil)
-  (prepend! org-capture:defaults
-    (list :hook #'evil-insert-state)))
 #+end_src
 
 ***** convenience macro for defining capture templates
@@ -9121,6 +9117,17 @@ have the date created.
             (-concat ,args org-capture:defaults)
             (cons ,string-name)
             (org-capture:add-to-templates)))))
+#+end_src
+
+***** default template keyword for evil
+:PROPERTIES:
+:ID:       2dd987b5-a4b7-4f51-8e71-5324e06d9e97
+:END:
+
+#+begin_src emacs-lisp
+(after! (org-capture evil)
+  (prepend! org-capture:defaults
+    (list :hook #'evil-insert-state)))
 #+end_src
 
 **** capture templates
