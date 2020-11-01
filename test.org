@@ -31,7 +31,7 @@
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest ivy-filtering-working-as-expected ()
+(it "should"
   ;; make sure `ivy-sort-max-size' is not too low.
   (should (>= 30000 ivy-sort-max-size))
   ;; prescient-save-file
