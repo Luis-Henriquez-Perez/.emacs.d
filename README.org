@@ -873,6 +873,9 @@ instead.
 :END:
 
 #+begin_src emacs-lisp
+(defhook! add-syntax-highlighting-for-defmacro (emacs-lisp-mode-hook)
+  "Add"
+  ())
 #+end_src
 
 **** symbols
