@@ -807,11 +807,11 @@ customizing emacs.
 :ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
 :END:
 
-Following [[][past examples]], I initially opted for allowing keyword arguments
-in the "function args" part of defun-like macros. This is fine when there's only
-one keyword argument, but any more and it starts to get crowded. It doesn't help
-that emacs functions tend towards longer names due to a lack of namespaces.
-Therefore, I support keyword args in the function body.
+Following past examples (such as), I initially opted for allowing keyword
+arguments in the "function args" part of defun-like macros. This is fine when
+there's only one keyword argument, but any more and it starts to get crowded. It
+doesn't help that emacs functions tend towards longer names due to a lack of
+namespaces. Therefore, I support keyword args in the function body.
 
 #+begin_src emacs-lisp
 (defun void--keyword-macro-args (body)
