@@ -804,6 +804,29 @@ it drives the point home that this package is loaded during initialization.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** org ml
+:PROPERTIES:
+:ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
+:END:
+
+[[][org ml]] is a functional library for programmatically generating org mode
+structures. It was built for.
+
+#+begin_src emacs-lisp
+(use-package! org-ml)
+#+end_src
+
+*** ts
+:PROPERTIES:
+:ID:       64d19467-a878-449c-8402-88892c25ac9a
+:END:
+
+=ts= is a time package.
+
+#+begin_src emacs-lisp
+(use-package! ts)
+#+end_src
+
 *** macro writing tools
 :PROPERTIES:
 :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
@@ -8970,29 +8993,6 @@ You can resolve to make note of it later but then you might forget. Capturing is
 designed to confront this problem. While in the middle of a task you can quickly
 jump into a small org buffer and write down an idea that you have, then close
 it.
-
-**** ts
-:PROPERTIES:
-:ID:       64d19467-a878-449c-8402-88892c25ac9a
-:END:
-
-=ts= is a time package.
-
-#+begin_src emacs-lisp
-(use-package! ts)
-#+end_src
-
-**** org ml
-:PROPERTIES:
-:ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
-:END:
-
-[[][org ml]] is a functional library for programmatically generating org mode
-structures. It was built for.
-
-#+begin_src emacs-lisp
-(use-package! org-ml)
-#+end_src
 
 **** org capture
 :PROPERTIES:
