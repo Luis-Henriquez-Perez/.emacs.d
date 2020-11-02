@@ -9208,6 +9208,15 @@ This capture template is for something emacs related I need to do.
 (define-capture-template! todo ())
 #+end_src
 
+***** test code
+:PROPERTIES:
+:ID:       8e478b44-930f-458b-90c8-fbb5b2031177
+:END:
+
+#+begin_src emacs-lisp
+(define-capture-template! )
+#+end_src
+
 ***** browser
 :PROPERTIES:
 :ID:       f265705a-d8c1-49cc-967a-67ebd700d5a9
