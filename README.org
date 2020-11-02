@@ -847,6 +847,7 @@ instead.
   (if-let ((regexp VOID-ANAPHORIC-SYMBOL-REGEXP)
            (string (and (symbolp symbol) (symbol-name symbol)))
            (symbols (--map (nth 1 it) (s-match-strings-all regexp string)))
+           ;; (regexp (rx "<" (group (1+ (not (any white)))) ">"))
            (format-string (s-replace-regexp regexp "%s" string)))
       `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))
     symbol))
