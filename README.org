@@ -9006,7 +9006,9 @@ structures. It was built for.
   :popup ("\\`CAPTURE"
           (display-buffer-at-bottom)
           (window-height . 0.5)
-          (slot . 10)))
+          (slot . 10))
+  ;; :trigger org-ml ts
+  )
 #+end_src
 
 **** doct
