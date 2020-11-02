@@ -7324,7 +7324,12 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :ID: d99a378c-449f-4a0d-9b88-dd77d5a41bb1
 :END:
 
-*** auto-commit
+*** committing
+:PROPERTIES:
+:ID:       f1d66266-d3e3-41e4-8790-a8ea1e7d7a1f
+:END:
+
+**** auto-commit
 :PROPERTIES:
 :ID:       36b71eb7-b71d-47a0-ad0a-5d62825fffa3
 :END:
@@ -7342,18 +7347,31 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   (gac-automatically-push-p . nil)
   (gac-ask-for-summary . nil)
   (gac-default-message . #'gac:commit-message)
-  (gac-commit-additional-flag . "-S")
-  :config
-  (defun gac:commit-message (file)
-    "Return the commit message for changes to FILE."
-    (or (with-current-buffer (get-file-buffer file)
-          (when (eq major-mode 'org-mode)
-            (--> (org-ml-parse-subtree-at (point))
-                 (org-element-map it org-element-all-elements #'identity)
-                 (car it)
-                 (org-element-property :raw-value it)
-                 (format "Change at \"%s\".\n" it))))
-        (format "Update %s" (f-base file)))))
+  (gac-commit-additional-flag . "-S"))
+#+end_src
+
+**** commit message
+:PROPERTIES:
+:ID:       3f0297a0-5929-4217-a109-545a2a010473
+:END:
+
+Committing often as I recommend will inevitably result with commits that are
+many bits and pieces of a change. The idea is to then squash together all
+related commits for the "polished" result. With this function I create "smart"
+commit messages that take advantage of the org headline structure. This makes it
+easy to go back and group commits which are related.
+
+#+begin_src emacs-lisp
+(defun gac:commit-message (file)
+  "Return the commit message for changes to FILE."
+  (or (with-current-buffer (get-file-buffer file)
+        (when (eq major-mode 'org-mode)
+          (--> (org-ml-parse-subtree-at (point))
+               (org-element-map it org-element-all-elements #'identity)
+               (car it)
+               (org-element-property :raw-value it)
+               (format "Change at \"%s\".\n" it))))
+      (format "Update %s" (f-base file))))
 #+end_src
 
 *** magit
