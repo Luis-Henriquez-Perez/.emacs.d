@@ -7341,12 +7341,19 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
   :setq
   (gac-automatically-push-p . nil)
   (gac-ask-for-summary . nil)
-  (gac-default-message . #'gac:default-message-fn)
+  (gac-default-message . #'gac:commit-message)
   (gac-commit-additional-flag . "-S")
   :config
-  (defun gac:default-message-fn (file)
-    "Return the default commit message for file."
-    (format "Update %s." (f-base file))))
+  (defun gac:commit-message (file)
+    "Return the commit message for changes to FILE."
+    (or (with-current-buffer (get-file-buffer file)
+          (when (eq major-mode 'org-mode)
+            (--> (org-ml-parse-subtree-at (point))
+                 (org-element-map it org-element-all-elements #'identity)
+                 (car it)
+                 (org-element-property :raw-value it)
+                 (format "Change at \"%s\".\n" it))))
+        (format "Update %s" (f-base file)))))
 #+end_src
 
 *** magit
