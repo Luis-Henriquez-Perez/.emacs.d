@@ -5726,7 +5726,7 @@ very useful to me.
 :ID: 27e382d7-5735-4f33-87c8-3dec2d2ca082
 :END:
 
-*** spell-number                                                      :disabled:
+*** spell-number
 :PROPERTIES:
 :ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
 :END:
@@ -5749,19 +5749,19 @@ very useful to me.
 (use-package! aggressive-fill-paragraph)
 #+end_src
 
-*** spell check                                                       :disabled:
+*** spell check
 :PROPERTIES:
 :ID: fc68d949-246f-43bf-85c2-7fbb947af7e9
 :END:
 
 #+begin_src emacs-lisp
 (use-package! spell-fu
-  :ensure (:host gitlab :repo "ideasman42/emacs-spell-fu")
+  :straight (:host gitlab :repo "ideasman42/emacs-spell-fu")
   :commands spell-fu-mode
   :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
 #+end_src
 
-*** autocapitalize                                                    :disabled:
+*** autocapitalize
 :PROPERTIES:
 :ID: 35c7c4c0-5009-43d6-8c34-43d6111ceb28
 :END:
@@ -5774,7 +5774,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
   :setq (auto-capitalize-words . '("I" "English")))
 #+end_src
 
-*** thesaurus                                                         :disabled:
+*** thesaurus
 :PROPERTIES:
 :ID: 5578aaf2-796f-4006-af60-de87b215120a
 :END:
@@ -5797,6 +5797,19 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
   :setq
   (define-it-output-choice . 'view)
   (define-it-show-google-translate . nil))
+#+end_src
+
+*** plural
+:PROPERTIES:
+:ID:       71162148-f2ee-4f38-a2bf-eede4ed17762
+:END:
+
+This package determines whether a noun is plural and provides a function to
+convert a singular noun to a plural one. For example ~()~ returns ~"geese"~.
+
+#+begin_src emacs-lisp
+(use-package plural
+  :commands (plural-make-plural))
 #+end_src
 
 ** evil
@@ -8993,11 +9006,6 @@ template.
 
 ***** capture file
 :PROPERTIES:
-:ID:       4a5ea7e2-2cad-43ac-95bb-0638362e0fff
-:END:
-
-****** capture file
-:PROPERTIES:
 :ID:       459ccec8-37dc-4e7e-9382-9737ff0c3bf6
 :END:
 
@@ -9010,7 +9018,7 @@ have to consider which ones are in which file before filtering.
   "File where all capture templates are filed to.")
 #+end_src
 
-****** org-capture-file
+***** org-capture-file
 :PROPERTIES:
 :ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
 :END:
