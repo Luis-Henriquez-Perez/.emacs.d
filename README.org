@@ -861,13 +861,13 @@ instead.
 #+begin_src emacs-lisp
 (defmacro defmacro! (name args &rest body)
   "Like `defmacro' but allows for anaphoric formatting."
-  (-let [(docstring alist body) (void--keyword-macro-args body)]
+  (-let [(docstring _ body) (void--keyword-macro-args body)]
     `(defmacro ,name ,args
        ,docstring
        ,@(-tree-map #'void--anaphoric-format body))))
 #+end_src
 
-***** syntax highlighting
+***** TODO syntax highlighting
 :PROPERTIES:
 :ID:       0a3778f3-f1f9-40c9-908e-1fe8ab68b08a
 :END:
@@ -8596,7 +8596,8 @@ use =edit-indirect= to edit source blocks.
   (org-enforce-todo-dependencies . t)
   (org-use-fast-tag-selection . nil)
   (org-tags-column . -80)
-  (org-tag-alist . nil))
+  (org-tag-alist . nil)
+  (org-log-done . 'time))
 #+end_src
 
 *** asthetic
@@ -9102,21 +9103,21 @@ have the date created.
   "Define a capture template."
   (declare (indent defun))
   (let* ((string-name (downcase (symbol-name name)))
-         (body (or body '((org-capture:default-template))))
+         (body (or body '((org-capture::generic-template))))
          (defaults org-capture:defaults)
          (key (downcase (substring string-name 0 1))))
     `(after! org-capture
-       (defun org-capture::<string-name>-template-node ()
-         "Return capture template node for."
+       (defun ,org-capture::<string-name>-template-node ()
+         ,"Return capture template node for <string-name>."
          ,@body)
-       (defun org-capture::<string-name>-template-string ()
-         "Return capture template as a string."
-         (->> (org-capture::<string-name>-template-string)
+       (defun ,org-capture::<string-name>-template-string ()
+         ,"Return capture template as a string."
+         (->> (org-capture::<string-name>-template-node)
               (org-ml-to-trimmed-string)))
-       (->> '(:keys ,key :template #'org-capture::<string-name>-template-string)
-            (-concat ,args org-capture:defaults)
-            (cons ,string-name)
-            (org-capture:add-to-templates)))))
+       (org-capture:add-to-templates
+        (->> (list :keys ,key :template #'org-capture::<string-name>-template-string)
+             (-concat ,args org-capture:defaults)
+             (cons ,string-name))))))
 #+end_src
 
 ***** default template keyword for evil
@@ -9179,9 +9180,6 @@ This capture template is for something emacs related I need to do.
 
 #+begin_src emacs-lisp
 (define-capture-template! Emacs ()
-  ;; :children (("idea" :keys "i")
-  ;;            ("bug" :keys "b")
-  ;;            ("performance" :keys "p"))
   (->> (org-capture::generic-template)
        (org-ml-set-property :todo-keyword "TODO")
        (org-ml-set-property :tags '("emacs"))
@@ -9194,7 +9192,7 @@ This capture template is for something emacs related I need to do.
 :END:
 
 #+begin_src emacs-lisp
-(define-capture-template! todo)
+(define-capture-template! todo ())
 #+end_src
 
 ***** browser
