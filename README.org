@@ -7368,7 +7368,8 @@ related commits for the "polished" result. With this function I create "smart"
 commit messages that take advantage of the org headline structure. This makes it
 easy to go back and group commits which are related. Note that this function
 fails when you have a change that spans across multiple headlines (such as the
-replacement of a name throughout a document).
+replacement of a name throughout a document). This is something I plan to
+address later.
 
 #+begin_src emacs-lisp
 (defun gac:commit-message (file)
