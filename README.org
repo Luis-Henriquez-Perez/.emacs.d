@@ -99,6 +99,10 @@ These are important files and directories that I end up referring to often in my
 code. Well, not so much =VOID-README-FILE= and =VOID-TODO-FILE= but the others are
 referenced alot.
 
+One of the ideas in Void is that good text documentation is not enough. I want
+documentation that has screenshots, gifs, videos--anything that helps explain
+behaviors, bugs features or whatever else I want to in emacs.
+
 #+begin_src emacs-lisp
 (defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
   "Path to `user-emacs-directory'.")
@@ -109,8 +113,9 @@ referenced alot.
 (defconst VOID-README-FILE (concat VOID-EMACS-DIR "README.org")
   "Path to the Org file that when that Void.")
 
-(defconst VOID-SCREENSHOT-DIR (concat VOID-EMACS-DIR "screenshots/")
-  "Path where any screenshots I take with Void go.")
+(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
+  "Directory where any multimedia describing VOID should go.
+ These could screenshots are for detailing any problems, interesting behaviors or features.")
 
 (defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
   "Path to the file that contains all of Void's tests.")
@@ -5003,16 +5008,16 @@ adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs
 
 #+begin_src emacs-lisp
 (defun void/take-screenshot ()
-  "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
+  "Take a screenshot and save it in `VOID-MULTIMEDIA-DIR'."
   (let* ((entered-name (read-string "Image Name: "))
          (default-name (format "image-%s" (ts-format)))
          (image-name (if (string-empty-p entered-name) default-name entered-name))
-         (filename (format "%s%s.svg" VOID-SCREENSHOT-DIR image-name))
+         (filename (format "%s%s.svg" VOID-MULTIMEDIA-DIR image-name))
 	     (data (x-export-frames nil 'svg)))
     (with-temp-file filename
       (insert data))
     (kill-new filename)
-    (message "%s -> %s" (f-filename filename) VOID-SCREENSHOT-DIR)))
+    (message "%s -> %s" (f-filename filename) VOID-MULTIMEDIA-DIR)))
 #+end_src
 
 *** screenshot
