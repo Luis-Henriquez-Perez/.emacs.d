@@ -9120,11 +9120,11 @@ have the date created.
          (defaults org-capture:defaults)
          (key (downcase (substring string-name 0 1))))
     `(after! org-capture
-       (defun ,org-capture::<string-name>-template-node ()
-         ,"Return capture template node for <string-name>."
+       (defun org-capture::<string-name>-template-node ()
+         "Return capture template node for <string-name>."
          ,@body)
-       (defun ,org-capture::<string-name>-template-string ()
-         ,"Return capture template as a string."
+       (defun org-capture::<string-name>-template-string ()
+         "Return capture template as a string."
          (->> (org-capture::<string-name>-template-node)
               (org-ml-to-trimmed-string)))
        (org-capture:add-to-templates
@@ -9205,82 +9205,9 @@ This capture template is for something emacs related I need to do.
 :END:
 
 #+begin_src emacs-lisp
-(define-capture-template! todo ())
-#+end_src
-
-***** browser
-:PROPERTIES:
-:ID:       f265705a-d8c1-49cc-967a-67ebd700d5a9
-:END:
-
-While doing research for solving a problem I tend to browse many, many sites.
-Often after browsing I think: "Oh, that site I visited could be useful". But I
-can't easily find it again. I don't remember the exact search terms I used.
-Either I painstakingly check my browser history one at a time, or I just give
-up. These are capture templates to add the url of the current webpage I'm
-visiting into an org file as a level one heading. This is like my own
-"bookmarks"/"history" for sites I fond useful or interesting.
-
-****** website-buffer
-:PROPERTIES:
-:ID:       7bbe8115-0c99-4c79-ba39-5ce34216285d
-:END:
-
-#+begin_src emacs-lisp
-(defun org-capture::browser-buffer-p ()
-  "Return whether a buffer is an browser buffer."
-  t)
-#+end_src
-
-****** download webpage as pdf
-:PROPERTIES:
-:ID:       bd7165df-9dae-4954-b153-96335678e296
-:END:
-
-Storing the links is better, but not good enough. Webpages die. They can be
-taken off by a third-party or removed by the owner themselves. Even if they
-aren't though, they can be modified so that what you originally found isn't
-there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wkhtmltopdf]], a command that
-downloads a given webpage as pdf. A consequence of doing this is that you will
-have access to all the webpages you used for research offline.
-
-#+begin_src emacs-lisp
-(defun org-capture::save-webpage ()
-  "Save the webpage.
-Assumes the url is at the top of the kill ring."
-  (let* ((program "wkhtmltopdf")
-         (name (format "%s - %s" program (ts-format)))
-         (webpage-title (s-replace "/" "~" (exwm::webpage-name exwm-title)))
-         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
-         (url (car kill-ring))
-         (fn `(lambda (&rest _)
-                (if (file-exists-p ,pdf-path)
-                    (message "Webpage saved succesfully.")
-                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
-    (message "%s <-- %s" (f-abbrev pdf-path) url)
-    (async-start-process name "firejail" fn program url pdf-path)))
-#+end_src
-
-****** website
-:PROPERTIES:
-:ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
-:END:
-
-A small note to avoid invalid filenames or wanting to create a filename but
-inadvertently adding a file to a directory I replace any forward slashes (=/=)
-with =~=.
-
-#+begin_src emacs-lisp
-(define-capture-template! Website ()
-  :immediate-finish t
-  :after-finalize #'org-capture::save-webpage
-  (let* ((url (exwm::browser-url))
-         (pdf-name (s-match ))
-         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
-         (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
-    (->> (org-capture::generic-template)
-         (org-ml-headline-set-title! link-to-pdf nil)
-         (org-ml-headline-set-node-property "SOURCE" url))))
+(define-capture-template! todo ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :todo-keyword "TODO")))
 #+end_src
 
 **** prevent capture templates from deleting windows
