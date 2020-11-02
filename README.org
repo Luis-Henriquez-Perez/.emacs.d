@@ -9001,7 +9001,6 @@ it.
 
 #+begin_src emacs-lisp
 (use-feature! org-capture
-  :after org
   :commands org-capture
   :popup ("\\`CAPTURE"
           (display-buffer-at-bottom)
