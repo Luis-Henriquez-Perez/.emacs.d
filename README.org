@@ -8204,12 +8204,10 @@ I need this function for some org actions. Evil has this as
     (move-to-column col)))
 #+end_src
 
-**** TODO fix nearby line adjustment
+**** fix nearby line adjustment
 :PROPERTIES:
 :ID: 6168590a-db23-4f0b-bdd9-9d9666624af6
 :END:
-
-=counsel-org-goto= is lets you fuzzy search a term among org headings.
 
 #+begin_src emacs-lisp
 (defun org:prettify-nearby-headlines ()
@@ -8223,8 +8221,20 @@ I need this function for some org actions. Evil has this as
     (forward-line (1- line)))
   (recenter (1- (max 1 scroll-margin)))
   (org-beginning-of-line))
+#+end_src
 
+**** unfold nearby headlines
+:PROPERTIES:
+:ID:       c8dddafd-d39c-4757-acd2-d1bdf2b0a3c9
+:END:
+
+=counsel-org-goto= is lets you fuzzy search a term among org headings. It is
+invaluable when you have a large org file you're dealing with a large org file.
+However, when jumping to a source block.
+
+#+begin_src emacs-lisp
 (defadvice! properly-unfold-surrounding-headlines (:around counsel-org-goto-action)
+  "Properly unfold nearby headlines and reveal current headline if it is folded."
   (prog1 (apply <orig-fn> <args>)
     (org:prettify-nearby-headlines)
     (when (org:heading-folded-p)
