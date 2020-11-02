@@ -159,6 +159,8 @@ Files that need to exist, but I don't typically want to see go here.")
 :ID:       f3bdd353-b0ff-48fd-a2f2-295ccfa139ab
 :END:
 
+These are directories I have on my system.
+
 #+begin_src emacs-lisp
 (defconst VOID-DOWNLOAD-DIR (expand-file-name "~/Downloads/")
   "Directory where downloads should go.")
