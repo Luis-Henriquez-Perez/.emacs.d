@@ -8282,7 +8282,7 @@ However, when jumping to a source block.
 
 #+begin_src emacs-lisp
 (defadvice! properly-unfold-surrounding-headlines (:around counsel-org-goto-action)
-  "Properly unfold nearby headlines and reveal current headline if it is folded."
+  "Properly unfold nearby headlines and reveal current headline."
   (prog1 (apply <orig-fn> <args>)
     (org:prettify-nearby-headlines)
     (when (org:heading-folded-p)
