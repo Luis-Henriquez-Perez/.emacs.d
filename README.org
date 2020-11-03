@@ -119,9 +119,6 @@ behaviors, bugs features or whatever else I want to in emacs.
 
 (defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
   "Path to the file that contains all of Void's tests.")
-
-(defconst VOID-TODO-FILE (concat VOID-ORG-DIR "emacs.org")
-  "Path where all of Void's emacs related todos go.")
 #+end_src
 
 ***** org
@@ -2738,9 +2735,9 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/switch-to-todo-file ()
+(defun void/switch-to-capture-file ()
   (interactive)
-  (switch-to-buffer (find-file VOID-TODO-FILE)))
+  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
 #+end_src
 
 **** turn on debug-mode
@@ -7371,7 +7368,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
 
 #+begin_src emacs-lisp
 (use-package! git-auto-commit-mode
-  :ensure-system-package git
+  ;; :ensure-system-package git
   :commands git-auto-commit-mode
   :setq
   (gac-automatically-push-p . nil)
