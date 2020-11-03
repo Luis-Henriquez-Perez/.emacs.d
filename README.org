@@ -893,17 +893,6 @@ instead.
        ,@(-tree-map #'void--anaphoric-format body))))
 #+end_src
 
-***** TODO syntax highlighting
-:PROPERTIES:
-:ID:       0a3778f3-f1f9-40c9-908e-1fe8ab68b08a
-:END:
-
-#+begin_src emacs-lisp
-(defhook! add-syntax-highlighting-for-defmacro (emacs-lisp-mode-hook)
-  "Add"
-  ())
-#+end_src
-
 **** symbols
 :PROPERTIES:
 :ID: 2cdf8ab1-4e59-4128-a8a4-e5519ca0f4bf
