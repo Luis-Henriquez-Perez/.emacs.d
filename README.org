@@ -7284,7 +7284,7 @@ which only some files are hidden. That's wierd, so I get rid of it.
   (ranger-setup))
 #+end_src
 
-**** silence window check                                              :silence:
+**** silence window check
 :PROPERTIES:
 :ID: e9d83b37-1257-4d78-ae5f-863c4e7198d1
 :END:
