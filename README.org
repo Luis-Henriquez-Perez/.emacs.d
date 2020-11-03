@@ -9649,13 +9649,6 @@ understanding of a verbally terse and dry command description.
 (use-package! elisp-demos
   :commands elisp-demos-add-demo
   :advice (:after (helpful-update . elisp-demos-advice-helpful-update)))
-
-(defun use-package:apply-keyword (name keyword args)
-  (let ((handler (void-symbol-intern 'use-package-handler/ keyword))
-        (normalizer (void-symbol-intern 'use-package-normalize/ keyword)))
-    (funcall handler name keyword (funcall normalizer name keyword args) nil nil)))
-
-(use-package:apply-keyword 'ho :commands '(fee fii foo))
 #+end_src
 
 * Asthetic
