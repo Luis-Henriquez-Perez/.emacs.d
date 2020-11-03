@@ -127,11 +127,11 @@ behaviors, bugs features or whatever else I want to in emacs.
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
-  "File where all org captures will go.")
-
 (defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
   "Path where Void's org files go.")
+
+(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
+  "File where all org captures will go.")
 #+end_src
 
 ***** hidden
