@@ -826,25 +826,19 @@ The trigger the loading of specific dependencies for a package.
 #+begin_src emacs-lisp
 (use-package:insert :trigger :commands t)
 
-()
-(defun use-package-normalize/:before-call (name keyword args)
+(defun use-package-normalize/:trigger (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
-(defun use-package-handler/:before-call (name _keyword features rest state)
+(defun use-package-handler/:trigger (name _keyword features rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   `((defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,@features)
-       (require ',name)))))
-
-(defun use-package-handler/:trigger (name _keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (--map (let ((advice-name (intern (format "load-%s-for-%s" name))))
-            `(defadvice! ,load-%s-form-%s (it :expire t)
-               "Load"
-               (require ',it)))
-          args)
-   (use-package:apply-keyword name :commands (-map #'cdr advices))))
+   (if (plist-get state :commands)
+       (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
+                 (require ',it))
+              args)
+     `(after! ,name
+        (void-log "Loading needed libraries for name.")
+        (-map #'require '())))))
 #+end_src
 
 **** boostrap
