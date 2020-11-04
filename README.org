@@ -3381,7 +3381,31 @@ There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
 
-*** download webpage as pdf
+*** org capture from an exwm buffer
+:PROPERTIES:
+:ID:       5428bdc1-c075-4387-b3ab-080d372c478f
+:END:
+
+A common dream among many Org users is to integrate [[][org-capture]] into their browser.
+Indeed, the browser by nature would be a place you'd want to capture from a lot.
+However, since graphical browsers are not in emacs the main way to do this was
+via a hacky and difficult to set up [[][org-protocol]].
+
+https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
+
+**** exwm title
+:PROPERTIES:
+:ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
+:END:
+
+#+begin_src emacs-lisp
+(defun exwm::title-info (title)
+  "Return the webpage and the program."
+  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
+    (list webpage program)))
+#+end_src
+
+**** download webpage as pdf
 :PROPERTIES:
 :ID:       bd7165df-9dae-4954-b153-96335678e296
 :END:
@@ -3407,30 +3431,6 @@ have access to all the webpages you used for research offline.
     (message "%s <-- %s" (f-abbrev pdf-path) url)
     (async-start-process process-name "firejail" fn program url pdf-path)))
 #+end_src
-
-*** exwm title
-:PROPERTIES:
-:ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
-:END:
-
-#+begin_src emacs-lisp
-(defun exwm::title-info (title)
-  "Return the webpage and the program."
-  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
-    (list webpage program)))
-#+end_src
-
-*** org capture from an exwm buffer
-:PROPERTIES:
-:ID:       5428bdc1-c075-4387-b3ab-080d372c478f
-:END:
-
-A common dream among many Org users is to integrate [[][org-capture]] into their browser.
-Indeed, the browser by nature would be a place you'd want to capture from a lot.
-However, since graphical browsers are not in emacs the main way to do this was
-via a hacky and difficult to set up [[][org-protocol]].
-
-https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
 
 **** replacement for fake id
 :PROPERTIES:
