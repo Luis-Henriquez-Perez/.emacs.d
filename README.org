@@ -9279,8 +9279,9 @@ with =~=.
 #+begin_src emacs-lisp
 (define-capture-template! Website ()
   :immediate-finish t
-  :after-finalize #'exwm:save-browser-webpage
-  (let* ((url (exwm:get-browser-url))
+  :after-finalize #'void-download-webpage-as-pdf
+  (let* ((url (exwm:browser-url))
+         ;; find the newest pdf added to the directory.
          (pdf-name (s-match ))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
          (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
