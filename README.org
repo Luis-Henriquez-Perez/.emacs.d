@@ -854,7 +854,7 @@ The trigger the loading of specific dependencies for a package.
 As is the ensure keyword that comes with use-package is too coarse.
 
 #+begin_src emacs-lisp
-(use-package:insert ::system-ensure :commands t)
+(use-package:insert :system-ensure :commands t)
 
 (defun use-package-normalize/:system-ensure (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
