@@ -829,21 +829,19 @@ The trigger the loading of specific dependencies for a package.
 (defun use-package-normalize/:trigger (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
-(defun use-package-handler/:trigger (name _keyword features rest state)
+(defun use-package-handler/:trigger (name _keyword dependencies rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   ;; I need to get the functions autoloaded by entry point keywords.
-   (message "rest: %S" rest)
-   (message "commands: %S" (plist-get rest :commands))
-   nil
-   ;; (if (plist-get state :commands)
-   ;;     (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
-   ;;               (require ',it))
-   ;;            args)
-   ;;   `((after! ,name
-   ;;       (void-log "Loading needed libraries for name.")
-   ;;       (-map #'require '()))))
-   ))
+   (list
+    (if-let ((commands (plist-get rest :commands))
+             (advice (intern (format "load-dependencies-for-%s" name)))
+             (body (--map `(require ',it) dependencies)))
+        `(defadvice! ,advice (:before ,@commands)
+           (void-log "Loading needed libraries for .")
+           ,@body)
+      `(after! ,name
+         (void-log "Loading needed libraries for .")
+         ,@body)))))
 #+end_src
 
 ***** TODO system ensure keyword
