@@ -5062,19 +5062,20 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
   (mpc-host . "127.0.0.1:6600"))
 #+end_src
 
-*** quitting                                                          :disabled:
+*** quitting
 :PROPERTIES:
 :ID: 545e6534-f289-4a89-838a-2a65ac74fe72
 :END:
 
 #+begin_src emacs-lisp
-(defhook! quit-emms (kill-emacs-hook)
-  "Shut down EMMS."
-  (when emms-player-playing-p (emms-pause))
-  (emms-stop)
-  ;; kill any existing mpd processes
-  (when (member 'emms-player-mpd emms-player-list)
-    (call-process "killall" nil nil nil "mpd")))
+(after! emms
+  (defhook! quit-emms (kill-emacs-hook)
+    "Shut down EMMS."
+    (when emms-player-playing-p (emms-pause))
+    (emms-stop)
+    ;; kill any existing mpd processes
+    (when (member 'emms-player-mpd emms-player-list)
+      (call-process "killall" nil nil nil "mpd"))))
 #+end_src
 
 ** screenshot                                                         :disabled:
