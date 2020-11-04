@@ -5049,9 +5049,8 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
 (use-package! emms
-  ;; emms-player
-  ;; :trigger emms-player-mpv
-  :commands (emms-play-directory)
+  :commands (emms emms-play-directory emms-play-file)
+  :trigger emms-player-mpv
   :setq
   (emms-directory . (concat VOID-DATA-DIR "emms/"))
   (emms-seek-seconds . 5)
