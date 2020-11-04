@@ -4986,29 +4986,6 @@ information such as music, videos, images, and gifs.
 
 Youtube contains a *huge* library of videos.
 
-*** ytdl
-:PROPERTIES:
-:ID:       27739f6e-9104-4e2f-b8e5-c8f56e5bb69b
-:END:
-
-=ytdl= is an emacs interface to youtube-dl.
-
-#+begin_src emacs-lisp
-(use-package! ytdl
-  :ensure-system-package youtube-dl
-  :setq
-  (ytdl-downloads-folder . VOID-DOWNLOAD-DIR)
-  (ytdl-music-folder . VOID-MUSIC-DIR)
-  (ytdl-video-folder . (expand-file-name VOID-VIDEO-DIR))
-  (ytdl-always-query-default-filename . nil)
-  (ytdl-always-ask-delete-confirmation . t)
-  (ytdl-always-query-default-filename . nil)  ;; :config
-  (ytdl-media-player . "mpv")
-  (ytdl-max-mini-buffer-download-type-entries . 0)
-  ;; (ytdl-add-field-in-download-type-list "Music" "p" (expand-file-name "~/podcasts") nil)
-  )
-#+end_src
-
 *** ytel
 :PROPERTIES:
 :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
@@ -5019,20 +4996,45 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
 (use-package! ytel
-  ;; depends on curl (executable-find "curl")
-  :ensure-system-package youtube-dl
+  :ensure-system-package (youtube-dl curl)
   :commands ytel
-  :config
-  (defun ytel/watch ()
-    "Stream video at point in mpv."
-    (interactive)
-    (let* ((video (ytel-get-current-video))
-     	   (id    (ytel-video-id video)))
-      (start-process "ytel mpv" nil
-		             "mpv"
-		             (concat "https://www.youtube.com/watch?v=" id))
-	  "--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
-    (message "Starting streaming...")))
+  :setq (ytel-invidious-api-url . "https://invidious.snopyta.org"))
+#+end_src
+
+*** watch video
+:PROPERTIES:
+:ID:       547c6d1d-c8a5-42b3-8000-029228923304
+:END:
+
+#+begin_src emacs-lisp
+(defun ytel/watch ()
+  "Stream video at point in mpv."
+  (interactive)
+  (let* ((video (ytel-get-current-video))
+     	 (id    (ytel-video-id video)))
+    (start-process "ytel mpv" nil
+		           "mpv"
+		           (concat "https://www.youtube.com/watch?v=" id))
+	"--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
+  (message "Starting streaming..."))
+#+end_src
+
+*** download music
+:PROPERTIES:
+:ID:       7c28f457-3a63-45a7-87bc-dc5232a5a5cd
+:END:
+
+#+begin_src emacs-lisp
+(defun ytel/download-music ()
+  "Download youtube video from `ytel' interface."
+  (interactive)
+  (let* ((video (ytel-get-current-video))
+         (title (ytel-video-title video))
+         (id (ytel-video-id video))
+         (dir VOID-MUSIC-DIR)
+         (url (format "https://www.youtube.com/watch?v=%s" id)))
+    (async-shell-command (format "cd %s && youtube-dl -f bestaudio %s" dir url))
+    (message "Downloading music...")))
 #+end_src
 
 ** emms
@@ -5040,7 +5042,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
 :END:
 
-[[https://www.gnu.org/software/emms/][emms]] is a very complete music player. https://github.com/daedreth/UncleDavesEmacs
+[[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
 
 *** emms
 :PROPERTIES:
@@ -5049,6 +5051,9 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
 (use-package! emms
+  ;; emms-player
+  ;; :trigger emms-player-mpv
+  :commands (emms-play-directory)
   :setq
   (emms-directory . (concat VOID-DATA-DIR "emms/"))
   (emms-seek-seconds . 5)
