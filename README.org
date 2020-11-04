@@ -531,6 +531,22 @@ ANCHOR if AFTER is non-nil)."
     (void-symbol-intern var "-hook")))
 #+end_src
 
+***** applying a keyword and its handler
+:PROPERTIES:
+:ID:       e79f67c7-d2f6-4db8-a291-156e2bbf4ebd
+:END:
+
+The purpose of this helper is to allow me to existing keywords in the body of
+keywords I'm creating.
+
+#+begin_src emacs-lisp
+(defun use-package:apply-keyword (name keyword args)
+  "Return the form that results from applying KEYWORD to ARGS."
+  (let ((handler (void-symbol-intern 'use-package-handler/ keyword))
+        (normalizer (void-symbol-intern 'use-package-normalize/ keyword)))
+    (funcall handler name keyword (funcall normalizer name keyword args) nil nil)))
+#+end_src
+
 **** custom keywords
 :PROPERTIES:
 :ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
@@ -742,7 +758,6 @@ Many times I need to define aliases.
 #+begin_src emacs-lisp
 (use-package:insert :alias :init)
 
-;; should be a cons cell.
 (defun use-package-normalize/:alias (name keyword args)
   (let ((message "a cons cell"))
     (use-package:args-or-error keyword args #'-cons-pair-p message)))
@@ -765,14 +780,43 @@ Many packages have their own buffers they like to open.
 (use-package:insert :popup :init)
 
 (defun use-package-normalize/:popup (name keyword args)
-  (let ((message "a list"))
-    (use-package:args-or-error keyword args #'list message)))
+  (use-package:args-or-error keyword args #'list "a list"))
 
 (defun use-package-handler/:popup (name _keyword args rest state)
   (--map `(push ',it display-buffer-alist) args))
 #+end_src
 
-**** bootstrap
+***** advice
+:PROPERTIES:
+:ID:       a7ac6b87-62d3-416e-bc0a-26072bcf3bf8
+:END:
+
+The advice keyword allows for a quick and convenient adding of advice.
+
+#+begin_src emacs-lisp
+(use-package:insert :advice :hook)
+
+(defun use-package-normalize/:advice (name keyword args)
+  (if (and (listp (car args))
+           (-all-p (-orfn #'symbolp #'-cons-pair-p) (cdr args)))
+      (cons (car args)
+            (--map-when (not (-cons-pair-p it))
+                        (cons it nil)
+                        (cdr args)))
+    (use-package-error "should be a keyword followed by")))
+
+(defun use-package-handler/:advice (name _keyword args rest state)
+  (-let* (((where . advices) (car args)))
+    (use-package-concat
+     (use-package-process-keywords name rest state)
+     (-map (-lambda ((fn . advice)) `(void-add-advice #',fn ,where #',advice))
+           advices)
+     (use-package:apply-keyword name :commands (-map #'cdr advices)))))
+
+(push :advice use-package-deferring-keywords)
+#+end_src
+
+**** boostrap
 :PROPERTIES:
 :ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
 :END:
@@ -9574,9 +9618,8 @@ understanding of a verbally terse and dry command description.
 
 #+begin_src emacs-lisp
 (use-package! elisp-demos
-  ;; :functions elisp-demos-advice-helpful-update
-  ;; :advice (:after helpful-update elisp-demos-advice-helpful-update)
-  :commands elisp-demos-add-demo)
+  :commands elisp-demos-add-demo
+  :advice (:after (helpful-update . elisp-demos-advice-helpful-update)))
 #+end_src
 
 * Asthetic
