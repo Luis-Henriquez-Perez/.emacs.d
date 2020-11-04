@@ -861,18 +861,15 @@ As is the ensure keyword that comes with use-package is too coarse.
   (use-package-concat
    (use-package-process-keywords name rest state)
    (list
-    (if-let ((commands (plist-get state :commands))
-             (advice (intern (format "ensure-system-packages-for-%s" name))))
-        `(defadvice! ,advice (:around ,@commands)
-           (if (system-packages-package-installed-p it)
-               ;; prompt the user to install the package.
-               (apply <orig-fn> args)
-             (aif (y-or-n-p "%s is needed for %s to work.\nWould you like to install?")
-                 (progn (system-packages-install it)
-                        (apply <orig-fn> <args>)))))
-      `(after! ,name
-         (void-log "Loading needed libraries for name.")
-         (-map #'require '()))))))
+    (when-let ((commands (plist-get state :commands))
+               (advice (intern (format "ensure-system-packages-for-%s" name))))
+      `(defadvice! ,advice (:around ,@commands)
+         (if (system-packages-package-installed-p it)
+             ;; prompt the user to install the package.
+             (apply <orig-fn> args)
+           (aif (y-or-n-p "%s is needed for %s to work.\nWould you like to install?")
+               (progn (system-packages-install it)
+                      (apply <orig-fn> <args>)))))))))
 #+end_src
 
 **** boostrap
