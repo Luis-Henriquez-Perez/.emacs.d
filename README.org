@@ -4984,8 +4984,6 @@ information such as music, videos, images, and gifs.
 :ID: 10642631-365c-46b4-ad29-e28e509aa1ae
 :END:
 
-Youtube contains a *huge* library of videos.
-
 *** ytel
 :PROPERTIES:
 :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
