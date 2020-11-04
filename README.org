@@ -833,7 +833,8 @@ The trigger the loading of specific dependencies for a package.
     (use-package-concat
      (use-package-process-keywords name rest state)
      (if ()
-         (defadvice! load-%s)
+         (defadvice! load-%s- ()
+           )
        (-map (require ',package) advices))
      (use-package:apply-keyword name :commands (-map #'cdr advices)))))
 #+end_src
