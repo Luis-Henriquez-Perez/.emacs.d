@@ -895,12 +895,6 @@ it drives the point home that this package is loaded during initialization.
   (use-package-always-ensure . nil)
   (use-package-verbose . nil)
   (use-package-expand-minimally . t))
-
-;; ensure system package is a feature of `use-package' that integrates with
-;; `system-packages' to ensure a package has its required system packages
-;; installed.
-(use-package! use-package-ensure-system-package
-  :demand t)
 #+end_src
 
 ** Library
