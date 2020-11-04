@@ -3342,6 +3342,35 @@ There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
 
+*** download webpage as pdf
+:PROPERTIES:
+:ID:       bd7165df-9dae-4954-b153-96335678e296
+:END:
+
+Storing the links is better, but not good enough. Webpages die. They can be
+taken off by a third-party or removed by the owner themselves. Even if they
+aren't though, they can be modified so that what you originally found isn't
+there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wkhtmltopdf]], a command that
+downloads a given webpage as pdf. A consequence of doing this is that you will
+have access to all the webpages you used for research offline.
+
+#+begin_src emacs-lisp
+(defun org-capture::save-webpage ()
+  "Save the webpage.
+Assumes the url is at the top of the kill ring."
+  (let* ((program "wkhtmltopdf")
+         (name (format "%s - %s" program (ts-format)))
+         (webpage-title (s-replace "/" "~" (exwm::webpage-name exwm-title)))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
+         (url (car kill-ring))
+         (fn `(lambda (&rest _)
+                (if (file-exists-p ,pdf-path)
+                    (message "Webpage saved succesfully.")
+                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
+    (message "%s <-- %s" (f-abbrev pdf-path) url)
+    (async-start-process name "firejail" fn program url pdf-path)))
+#+end_src
+
 *** exwm title
 :PROPERTIES:
 :ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
@@ -9217,6 +9246,28 @@ I mean that a template for a given key is different every time I open it. This
 is possible with regular capture templates via [[info:org#Template expansion][org template expansion]], but I think the
 abstractions provided by =org-ml= and =doct= are even more robust and much easier to
 extend.
+
+***** website
+:PROPERTIES:
+:ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
+:END:
+
+A small note to avoid invalid filenames or wanting to create a filename but
+inadvertently adding a file to a directory I replace any forward slashes (=/=)
+with =~=.
+
+#+begin_src emacs-lisp
+(define-capture-template! Website ()
+  :immediate-finish t
+  :after-finalize #'org-capture::save-webpage
+  (let* ((url (exwm::browser-url))
+         (pdf-name (s-match ))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
+         (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
+    (->> (org-capture::generic-template)
+         (org-ml-headline-set-title! link-to-pdf nil)
+         (org-ml-headline-set-node-property "SOURCE" url))))
+#+end_src
 
 ***** question
 :PROPERTIES:
