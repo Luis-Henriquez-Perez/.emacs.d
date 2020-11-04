@@ -3394,10 +3394,10 @@ downloads a given webpage as pdf. A consequence of doing this is that you will
 have access to all the webpages you used for research offline.
 
 #+begin_src emacs-lisp
-(defun void-save-webpage (url webpage-title)
-  "Save the webpage at URL to `void-screenshot-dir'."
+(defun void-download-webpage-as-pdf (url webpage-title)
+  "Save the webpage at URL to `VOID-SCREENSHOT-DIR'."
   (let* ((program "wkhtmltopdf")
-         (name (format "%s - %s" program (ts-format)))
+         (process-name (format "%s - %s" program (ts-format)))
          (webpage-title (s-replace "/" "~" webpage-title))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
          (fn `(lambda (&rest _)
@@ -3405,7 +3405,7 @@ have access to all the webpages you used for research offline.
                     (message "Webpage saved succesfully.")
                   (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
     (message "%s <-- %s" (f-abbrev pdf-path) url)
-    (async-start-process name "firejail" fn program url pdf-path)))
+    (async-start-process process-name "firejail" fn program url pdf-path)))
 #+end_src
 
 *** exwm title
