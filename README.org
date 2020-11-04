@@ -849,16 +849,17 @@ The trigger the loading of specific dependencies for a package.
 As is the ensure keyword that comes with use-package is too coarse.
 
 #+begin_src emacs-lisp
-(use-package:insert :trigger :commands t)
+(use-package:insert ::system-ensure :commands t)
 
-(defun use-package-normalize/:trigger (name keyword args)
+(defun use-package-normalize/::system-ensure (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
-(defun use-package-handler/:trigger (name _keyword features rest state)
+(defun use-package-handler/::system-ensure (name _keyword features rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (if (plist-get state :commands)
-       (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
+       (--map `(defadvice! ,(intern (format "ensure-%s-for-%s" it name)) (:before ,it)
+                 (when (system-packages-ensure "youtube-dl"))
                  (require ',it))
               args)
      `((after! ,name
