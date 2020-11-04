@@ -816,7 +816,7 @@ The advice keyword allows for a quick and convenient adding of advice.
 (push :advice use-package-deferring-keywords)
 #+end_src
 
-***** trigger
+***** TODO trigger
 :PROPERTIES:
 :ID:       0a3580f4-42a3-4b17-807b-366611d6f90a
 :END:
