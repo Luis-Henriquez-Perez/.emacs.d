@@ -4231,7 +4231,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 #+begin_src emacs-lisp
 (use-package! mu4e
   :straight nil
-  :ensure-system-package (mu . "yay -S mu")
+  :system-ensure (mu . "yay -S mu")
   :load-path "/usr/share/emacs/site-lisp/mu4e/"
   :commands mu4e
   :setq
@@ -4508,7 +4508,7 @@ emails.
 
 #+begin_src emacs-lisp
 (use-package! notmuch
-  :ensure-system-package notmuch
+  :system-ensure notmuch
   :commands notmuch
   :setq
   (notmuch-search-oldest-first . nil)
@@ -4762,7 +4762,7 @@ javascript code.
 
 #+begin_src emacs-lisp
 (use-package! w3m
-  :ensure-system-package w3m
+  :system-ensure w3m
   :commands w3m
   :setq (w3m-search-default-engine . "google"))
 #+end_src
@@ -4830,7 +4830,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
 (use-package! ytel
-  :ensure-system-package (youtube-dl curl)
+  :system-ensure (youtube-dl curl)
   :commands ytel
   :setq (ytel-invidious-api-url . "https://invidious.snopyta.org"))
 #+end_src
@@ -7267,7 +7267,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
 
 #+begin_src emacs-lisp
 (use-package! git-auto-commit-mode
-  :ensure-system-package git
+  :system-ensure git
   :commands git-auto-commit-mode
   :setq
   (gac-automatically-push-p . nil)
@@ -7329,7 +7329,7 @@ address later.
 
 #+begin_src emacs-lisp
 (use-package! magit
-  :ensure-system-package git
+  :system-ensure git
   :commands magit-status magit-get-current-branch
   :idle-require f s with-editor git-commit package eieio lv transient
   :popup ("magit:"
@@ -7381,7 +7381,7 @@ address later.
 
 #+begin_src emacs-lisp
 (use-package! git-gutter
-  :ensure-system-package git
+  :system-ensure git
   :commands git-gutter-mode)
 #+end_src
 
@@ -7446,7 +7446,7 @@ address later.
 
 #+begin_src emacs-lisp
 (use-package! pass
-  :ensure-system-package pass
+  :system-ensure pass
   :commands pass
   :setq
   (pass-username-field . "username"))
@@ -7543,7 +7543,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 
 #+begin_src emacs-lisp
 (use-package! pdf-tools
-  :ensure-system-package (libpng zlib poppler-glib)
+  :system-ensure (libpng zlib poppler-glib)
   :magic ("%PDF" . pdf-view-mode)
   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
   :bind (:map pdf-view-mode-map
@@ -7623,7 +7623,7 @@ enough.
 
 #+begin_src emacs-lisp
 (use-package! alert
-  :ensure-system-package libnotify
+  :system-ensure libnotify
   :setq
   (alert-default-style . 'libnotify)
   (alert-log-messages . t))
@@ -7668,7 +7668,7 @@ on the buffer you'd like to edit.
 
 #+begin_src emacs-lisp
 (use-package! plantuml-mode
-  :ensure-system-package plantuml
+  :system-ensure plantuml
   :init
   (after! org
     (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
@@ -7723,7 +7723,7 @@ user delays.
 
 #+begin_src emacs-lisp
 (use-package! sly
-  :ensure-system-package sbcl
+  :system-ensure sbcl
   :setq (inferior-lisp-program . "/usr/bin/sbcl"))
 #+end_src
 
@@ -7736,7 +7736,7 @@ user delays.
 
 #+begin_src emacs-lisp
 (use-package! cider
-  :ensure-system-package clojure
+  :system-ensure clojure
   :commands cider)
 #+end_src
 
