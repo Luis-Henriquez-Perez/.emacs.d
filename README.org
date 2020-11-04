@@ -3355,13 +3355,12 @@ downloads a given webpage as pdf. A consequence of doing this is that you will
 have access to all the webpages you used for research offline.
 
 #+begin_src emacs-lisp
-(defun void-save-webpage (url)
+(defun void-save-webpage (url webpage-title)
   "Save the webpage at URL to `void-screenshot-dir'."
   (let* ((program "wkhtmltopdf")
          (name (format "%s - %s" program (ts-format)))
-         (webpage-title (s-replace "/" "~" (exwm::webpage-name exwm-title)))
+         (webpage-title (s-replace "/" "~" webpage-title))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
-         (url (car kill-ring))
          (fn `(lambda (&rest _)
                 (if (file-exists-p ,pdf-path)
                     (message "Webpage saved succesfully.")
