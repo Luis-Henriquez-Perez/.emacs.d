@@ -824,7 +824,7 @@ The advice keyword allows for a quick and convenient adding of advice.
 The trigger the loading of specific dependencies for a package.
 
 #+begin_src emacs-lisp
-(use-package:insert :trigger :commands t)
+(use-package:insert :trigger :commands)
 
 (defun use-package-normalize/:trigger (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
@@ -832,13 +832,18 @@ The trigger the loading of specific dependencies for a package.
 (defun use-package-handler/:trigger (name _keyword features rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   (if (plist-get state :commands)
-       (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
-                 (require ',it))
-              args)
-     `((after! ,name
-         (void-log "Loading needed libraries for name.")
-         (-map #'require '()))))))
+   ;; I need to get the functions autoloaded by entry point keywords.
+   (message "rest: %S" rest)
+   (message "commands: %S" (plist-get rest :commands))
+   nil
+   ;; (if (plist-get state :commands)
+   ;;     (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
+   ;;               (require ',it))
+   ;;            args)
+   ;;   `((after! ,name
+   ;;       (void-log "Loading needed libraries for name.")
+   ;;       (-map #'require '()))))
+   ))
 #+end_src
 
 ***** TODO system ensure keyword
