@@ -8074,7 +8074,8 @@ files, or even converting an org mode document into another format. As the name
 #+begin_src emacs-lisp
 (after! org
   (setq org-todo-keywords
-        '((sequence "TODO" "NEXT" "STARTED" "WAITING" "|" "DONE")
+        '((sequence "TODO" "NEXT" "STARTED" "|" "DONE")
+          (sequence "|" "PAUSED")
           (sequence "|" "CANCELLED"))))
 #+end_src
 
