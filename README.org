@@ -841,6 +841,31 @@ The trigger the loading of specific dependencies for a package.
          (-map #'require '()))))))
 #+end_src
 
+***** TODO system ensure keyword
+:PROPERTIES:
+:ID:       6fb147bd-157a-40e4-90bd-f6f173598f60
+:END:
+
+As is the ensure keyword that comes with use-package is too coarse.
+
+#+begin_src emacs-lisp
+(use-package:insert :trigger :commands t)
+
+(defun use-package-normalize/:trigger (name keyword args)
+  (use-package:args-or-error keyword args #'symbolp "a symbol"))
+
+(defun use-package-handler/:trigger (name _keyword features rest state)
+  (use-package-concat
+   (use-package-process-keywords name rest state)
+   (if (plist-get state :commands)
+       (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
+                 (require ',it))
+              args)
+     `((after! ,name
+         (void-log "Loading needed libraries for name.")
+         (-map #'require '()))))))
+#+end_src
+
 **** boostrap
 :PROPERTIES:
 :ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
