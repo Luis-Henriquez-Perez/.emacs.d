@@ -9063,7 +9063,7 @@ it.
 
 #+begin_src emacs-lisp
 (use-feature! org-capture
-  ;; :trigger org-ml ts
+  :trigger org-ml ts
   :commands org-capture
   :popup ("\\`CAPTURE"
           (display-buffer-at-bottom)
