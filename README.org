@@ -9376,6 +9376,7 @@ current week.
 :END:
 
 #+begin_src emacs-lisp
+(use-package! org-super-agenda)
 #+end_src
 
 *** org refile
