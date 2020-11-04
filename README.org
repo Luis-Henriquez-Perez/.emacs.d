@@ -836,9 +836,9 @@ The trigger the loading of specific dependencies for a package.
        (--map `(defadvice! ,(intern (format "load-%s-for-%s" it name)) (:before ,it)
                  (require ',it))
               args)
-     `(after! ,name
-        (void-log "Loading needed libraries for name.")
-        (-map #'require '())))))
+     `((after! ,name
+         (void-log "Loading needed libraries for name.")
+         (-map #'require '()))))))
 #+end_src
 
 **** boostrap
