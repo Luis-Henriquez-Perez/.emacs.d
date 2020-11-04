@@ -3355,9 +3355,8 @@ downloads a given webpage as pdf. A consequence of doing this is that you will
 have access to all the webpages you used for research offline.
 
 #+begin_src emacs-lisp
-(defun org-capture::save-webpage ()
-  "Save the webpage.
-Assumes the url is at the top of the kill ring."
+(defun void-save-webpage (url)
+  "Save the webpage at URL to `void-screenshot-dir'."
   (let* ((program "wkhtmltopdf")
          (name (format "%s - %s" program (ts-format)))
          (webpage-title (s-replace "/" "~" (exwm::webpage-name exwm-title)))
