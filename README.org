@@ -860,18 +860,18 @@ As is the ensure keyword that comes with use-package is too coarse.
 (defun use-package-handler/:system-ensure (name _keyword features rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
-   (if (plist-get state :commands)
-       (--map `(defadvice! ,(intern (format "ensure-%s-for-%s" it name)) (:around ,it)
-                 (unless (system-packages-package-installed-p it)
-                   ;; prompt the user to install the package.
-                   (aif (y-or-n-p "%s is needed for %s to work.\nWould you like to install?")
-                       (progn (system-packages-install it)
-                              (apply <orig-fn> <args>))
-                     (message "Aborting the loading of %s." name)))
-                 (apply <orig-fn> args)
-                 (require ',it))
-              args)
-     `((after! ,name
+   (list
+    (if-let (commands (plist-get state :commands))
+        (--map `(defadvice! ,(intern (format "ensure-%s-for-%s" it name)) (:around ,it)
+                  (if (system-packages-package-installed-p it)
+                      ;; prompt the user to install the package.
+                      (apply <orig-fn> args)
+                    (aif (y-or-n-p "%s is needed for %s to work.\nWould you like to install?")
+                        (progn (system-packages-install it)
+                               (apply <orig-fn> <args>))
+                      (message "Aborting the function call of %s." name))))
+               ())
+      `(after! ,name
          (void-log "Loading needed libraries for name.")
          (-map #'require '()))))))
 #+end_src
