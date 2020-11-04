@@ -816,6 +816,28 @@ The advice keyword allows for a quick and convenient adding of advice.
 (push :advice use-package-deferring-keywords)
 #+end_src
 
+***** trigger
+:PROPERTIES:
+:ID:       0a3580f4-42a3-4b17-807b-366611d6f90a
+:END:
+
+The trigger the loading of specific dependencies for a package.
+
+#+begin_src emacs-lisp
+(use-package:insert :trigger :commands t)
+
+()
+
+(defun use-package-handler/:trigger (name _keyword args rest state)
+  (-let* (((where . advices) (car args)))
+    (use-package-concat
+     (use-package-process-keywords name rest state)
+     (if ()
+         (defadvice! load-%s)
+       (-map (require ',package) advices))
+     (use-package:apply-keyword name :commands (-map #'cdr advices)))))
+#+end_src
+
 **** boostrap
 :PROPERTIES:
 :ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
