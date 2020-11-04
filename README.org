@@ -856,10 +856,10 @@ As is the ensure keyword that comes with use-package is too coarse.
 #+begin_src emacs-lisp
 (use-package:insert ::system-ensure :commands t)
 
-(defun use-package-normalize/::system-ensure (name keyword args)
+(defun use-package-normalize/:system-ensure (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
-(defun use-package-handler/::system-ensure (name _keyword features rest state)
+(defun use-package-handler/:system-ensure (name _keyword features rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (if (plist-get state :commands)
