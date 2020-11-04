@@ -9292,6 +9292,8 @@ extend.
 :ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
 :END:
 
+The purpose of this template is to.
+
 A small note to avoid invalid filenames or wanting to create a filename but
 inadvertently adding a file to a directory I replace any forward slashes (=/=)
 with =~=.
@@ -9299,8 +9301,8 @@ with =~=.
 #+begin_src emacs-lisp
 (define-capture-template! Website ()
   :immediate-finish t
-  :after-finalize #'org-capture::save-webpage
-  (let* ((url (exwm::browser-url))
+  :after-finalize #'exwm:save-browser-webpage
+  (let* ((url (exwm:get-browser-url))
          (pdf-name (s-match ))
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
          (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
