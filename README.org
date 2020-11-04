@@ -9093,7 +9093,8 @@ same key as the one(s) being added."
                        (cons (car templates)
                              (--remove (string= (caar templates) (car it))
                                        (clean (cdr templates)))))))
-    (setq org-capture-templates (clean (doct declarations)))))
+    (setq org-capture-templates
+          (clean (-concat (doct declarations) org-capture-templates)))))
 #+end_src
 
 ***** schedule and deadline times
@@ -9188,9 +9189,9 @@ have the date created.
 :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
 :END:
 
-I use [[][org-ml]] and [[][doct]] to generate templates dynamically. By "dynamically"
+I use [[https://github.com/ndwarshuis/org-ml][org-ml]] and [[https://github.com/progfolio/doct][doct]] to generate templates dynamically. By "dynamically"
 I mean that a template for a given key is different every time I open it. This
-is possible with regular capture templates via [[][]], but I think the
+is possible with regular capture templates via [[info:org#Template expansion][org template expansion]], but I think the
 abstractions provided by =org-ml= and =doct= are even more robust and much easier to
 extend.
 
