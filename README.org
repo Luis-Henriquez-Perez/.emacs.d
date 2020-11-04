@@ -5085,7 +5085,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
       (call-process "killall" nil nil nil "mpd"))))
 #+end_src
 
-** screenshot                                                         :disabled:
+** screenshot
 :PROPERTIES:
 :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
 :END:
