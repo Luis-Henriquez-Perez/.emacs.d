@@ -7706,6 +7706,17 @@ user delays.
 :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
 :END:
 
+** TODO csv
+:PROPERTIES:
+:ID:       e5b591e4-a261-4a36-90d0-b370cda73a47
+:END:
+
+#+begin_src emacs-lisp
+(use-package! csv-mode
+  :mode "\\.csv\\'"
+  :hook (csv-mode-hook . csv-align-mode))
+#+end_src
+
 ** lisp
 :PROPERTIES:
 :ID: 9b7ec12e-e62b-447a-90dd-2fef0cc952ad
