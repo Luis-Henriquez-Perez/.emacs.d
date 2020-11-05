@@ -857,19 +857,20 @@ As is the ensure keyword that comes with use-package is too coarse.
 (defun use-package-normalize/:system-ensure (name keyword args)
   (use-package:args-or-error keyword args #'symbolp "a symbol"))
 
-(defun use-package-handler/:system-ensure (name _keyword features rest state)
+(defun use-package-handler/:system-ensure (name _keyword packages rest state)
   (use-package-concat
    (use-package-process-keywords name rest state)
    (list
-    (when-let ((commands (plist-get state :commands))
-               (advice (intern (format "ensure-system-packages-for-%s" name))))
+    (when-let ((commands (plist-get rest :commands))
+               (advice (intern (format "ensure-system-packages-for-%s" name)))
+               (packages (-map #'symbol-name packages)))
       `(defadvice! ,advice (:around ,@commands)
-         (if (system-packages-package-installed-p it)
-             ;; prompt the user to install the package.
-             (apply <orig-fn> args)
-           (aif (y-or-n-p "%s is needed for %s to work.\nWould you like to install it?")
-               (progn (system-packages-install it)
-                      (apply <orig-fn> <args>)))))))))
+         (use-package! system-packages :demand t)
+         (if-let (uninstalled (-remove #'system-packages-package-installed-p ',packages))
+             (aif (y-or-n-p ,(format "%S is needed for %s to work.\nWould you like to install it?" packages name))
+                 (progn (-map #'system-packages-install uninstalled)
+                        (apply <orig-fn> <args>)))
+           (apply <orig-fn> <args>)))))))
 #+end_src
 
 **** boostrap
