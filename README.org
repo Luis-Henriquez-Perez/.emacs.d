@@ -866,7 +866,7 @@ As is the ensure keyword that comes with use-package is too coarse.
                (packages (-map #'symbol-name packages)))
       `(defadvice! ,advice (:around ,@commands)
          (use-package! system-packages :demand t)
-         (if-let (uninstalled (-remove #'system-packages-package-installed-p ',packages))
+         (if-let (uninstalled (-filter #'system-packages-package-installed-p ',packages))
              (aif (y-or-n-p ,(format "%S is needed for %s to work.\nWould you like to install it?" packages name))
                  (progn (-map #'system-packages-install uninstalled)
                         (apply <orig-fn> <args>)))
