@@ -9054,9 +9054,12 @@ have the date created.
          (->> (org-capture::<string-name>-template-node)
               (org-ml-to-trimmed-string)))
        (org-capture:add-to-templates
-        (->> (list :keys ,key :template #'org-capture::<string-name>-template-string)
-             (-concat ,args org-capture:defaults)
-             (cons ,string-name))))))
+        (list ,string-name
+              :keys ,key
+              :template #'org-capture::<string-name>-template-string
+              ,@plist
+              ,@args
+              ,@org-capture:defaults)))))
 #+end_src
 
 ***** default template keyword for evil
