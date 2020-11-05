@@ -9041,10 +9041,10 @@ have the date created.
 (defmacro! define-capture-template! (name args &rest body)
   "Define a capture template."
   (declare (indent defun))
-  (let* ((string-name (downcase (symbol-name name)))
-         (body (or body '((org-capture::generic-template))))
-         (defaults org-capture:defaults)
-         (key (downcase (substring string-name 0 1))))
+  (-let* ((string-name (downcase (symbol-name name)))
+          ((_ plist body) (void--keyword-macro-args body))
+          (defaults org-capture:defaults)
+          (key (downcase (substring string-name 0 1))))
     `(after! org-capture
        (defun org-capture::<string-name>-template-node ()
          "Return capture template node for <string-name>."
