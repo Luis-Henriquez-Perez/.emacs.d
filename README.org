@@ -6455,6 +6455,21 @@ larger text objects. It's saves me keystrokes.
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
 :END:
 
+** find-file-rg
+:PROPERTIES:
+:ID:       b45fd2d1-d21a-49aa-8ad9-7ba4dbec1356
+:END:
+
+=find-file-rg= is a package that uses [[https://github.com/BurntSushi/ripgrep][ripgrep]] to find files.
+
+#+begin_src emacs-lisp
+(use-package! find-file-rg
+  :system-ensure rg
+  :bind
+  (([remap find-file]          . find-file-rg)
+   ([remap find-file-at-point] . find-file-rg-at-point)))
+#+end_src
+
 ** eshell
 :PROPERTIES:
 :ID: 5f04a252-2985-46b4-ab0b-eb4567de5dd9
