@@ -9053,7 +9053,7 @@ have the date created.
   "Define a capture template."
   (declare (indent defun))
   (-let* ((string-name (downcase (symbol-name name)))
-          ((_ plist body) (void--keyword-macro-args body))
+          ((_ alist body) (void--keyword-macro-args body))
           (defaults org-capture:defaults)
           (key (downcase (substring string-name 0 1))))
     `(after! org-capture
@@ -9068,8 +9068,7 @@ have the date created.
         (list ,string-name
               :keys ,key
               :template #'org-capture::<string-name>-template-string
-              ,@plist
-              ,@args
+              ,@(-flatten-n 1 (-map #'-cons-to-list alist))
               ,@org-capture:defaults)))))
 #+end_src
 
