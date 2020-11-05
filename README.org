@@ -837,10 +837,10 @@ The trigger the loading of specific dependencies for a package.
              (advice (intern (format "load-dependencies-for-%s" name)))
              (body (--map `(require ',it) dependencies)))
         `(defadvice! ,advice (:before ,@commands)
-           (void-log "Loading needed libraries for .")
+           (void-log "Loading needed libraries for %s." ',name)
            ,@body)
       `(after! ,name
-         (void-log "Loading needed libraries for .")
+         (void-log "Loading needed libraries for %s." ',name)
          ,@body)))))
 #+end_src
 
