@@ -9964,6 +9964,8 @@ press as well and even faster than =SPC SPC=.
 #+begin_src emacs-lisp
 (define-leader-key! "SPC" (list :def #'execute-extended-command :wk "M-x"))
 
+(general-def 'normal ";" #'execute-extended-command)
+
 (general-def
   "A-x" #'execute-extended-command
   "M-x" #'execute-extended-command)
