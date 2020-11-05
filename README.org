@@ -3747,13 +3747,18 @@ on. Traversing the jungle of candidates.
 
 *** ivy
 :PROPERTIES:
+:ID:       ce0570e1-7c5e-499f-97c3-a66233d2fe80
+:END:
+
+**** ivy
+:PROPERTIES:
 :ID:       68d2ef19-dac6-407f-9220-8da816b873e8
 :END:
 
 [[github:abo-abo/swiper][ivy]] provides a user interface for choosing from a list of options by typing a
 query to narrow the list, and then selecting one of the remaining candidates.
 
-**** bootstrap
+***** bootstrap
 :PROPERTIES:
 :ID: 4bf12e8b-7f71-45cc-bf48-c1aec795c9fe
 :END:
@@ -3782,7 +3787,7 @@ been recently opened buffers (this list is managed by [[f26bedb3-a172-4543-afd0-
   (ivy-count-format . "%-4d "))
 #+end_src
 
-**** ivy-avy
+***** ivy-avy
 :PROPERTIES:
 :ID:       a1224932-eb2b-4f6c-949b-de9383506ab8
 :END:
@@ -3796,7 +3801,7 @@ to select candidates quickly.
          ("C-'" . ivy-avy)))
 #+end_src
 
-**** minibuffer bindings
+***** minibuffer bindings
 :PROPERTIES:
 :ID:       5a21af24-4383-40dc-8c53-562f2cf68961
 :END:
@@ -3824,7 +3829,7 @@ candidate.
 (general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
 #+end_src
 
-**** remembering used candidates
+***** remembering used candidates
 :PROPERTIES:
 :ID:       203dd3f4-bec7-4e3f-b1cf-30089f2ccb32
 :END:
@@ -3840,7 +3845,7 @@ next completion.
   :hook (ivy-mode . prescient-persist-mode))
 #+end_src
 
-**** sorting and filtering
+***** sorting and filtering
 :PROPERTIES:
 :ID: ec8cd466-c6cf-4b25-9624-07e9d0e0fd0c
 :END:
@@ -3857,7 +3862,7 @@ filtering algorithm that I find preferrable to ivy's defaults.
   (ivy-prescient-retain-classic-highlighting . t))
 #+end_src
 
-**** selecting multiple candidates
+***** selecting multiple candidates
 :PROPERTIES:
 :ID: 2414a29d-e874-4174-8f90-b9d80c001026
 :END:
@@ -3877,14 +3882,14 @@ you to [[file:./multimedia/gifs/ivy-marking-candidates.gif][toggle marking a can
   "C-SPC" #'ivy/toggle-mark)
 #+end_src
 
-*** counsel
+**** counsel
 :PROPERTIES:
 :ID:       47e0919a-0852-4454-853d-7c7875760de8
 :END:
 
 Counsel is a library of convenience functions built on top of ivy.
 
-**** don't include binding information
+***** don't include binding information
 :PROPERTIES:
 :ID:       50e3991d-8c46-4dcb-86d9-79c2bede4e50
 :END:
@@ -3898,7 +3903,7 @@ visually distracting and not particularly useful for me, so I disable it.
   (void-add-advice #'counsel-M-x-transformer :override #'identity))
 #+end_src
 
-**** make the default action setting the font
+***** make the default action setting the font
 :PROPERTIES:
 :ID:       17f2d06a-835c-4bba-960b-d0f8c028a91a
 :END:
@@ -3912,7 +3917,7 @@ visually distracting and not particularly useful for me, so I disable it.
     (set-face-attribute 'default nil :font font)))
 #+end_src
 
-**** counsel
+***** counsel
 :PROPERTIES:
 :ID: f1f77877-1cbc-40c4-b62c-4239a0c338e6
 :END:
@@ -3932,7 +3937,7 @@ that using =ivy= for completion.
   (counsel-pt-base-command . "pt -zS --nocolor --nogroup -e %s"))
 #+end_src
 
-**** remap common commands
+***** remap common commands
 :PROPERTIES:
 :ID:       c117480c-89e6-463b-9d07-cf0155c9c617
 :END:
@@ -3966,7 +3971,7 @@ equivalents.
   [remap yank-pop]                 #'counsel-yank-pop)
 #+end_src
 
-**** no sort commands
+***** no sort commands
 :PROPERTIES:
 :ID:       a9861cab-eded-413f-939d-92b66ed32961
 :END:
@@ -3985,7 +3990,7 @@ candidates sorted.
                #'counsel-buffer-or-recentf)))
 #+end_src
 
-**** counsel-org-capture-string
+***** counsel-org-capture-string
 :PROPERTIES:
 :ID: 799ac569-85e8-43c0-93ae-a00cf982777f
 :END:
@@ -4002,7 +4007,7 @@ completing-read-using replacement for [[helpfn:org-capture][org-capture]] called
   :commands counsel-org-capture-string)
 #+end_src
 
-**** counsel-web
+***** counsel-web
 :PROPERTIES:
 :ID:       4b6f264a-1724-4fc5-8b95-54d14642c429
 :END:
@@ -4015,7 +4020,7 @@ This package lets me search the web via ivy.
   :setq (counsel-web-search-dynamic-update . t))
 #+end_src
 
-*** swiper
+**** swiper
 :PROPERTIES:
 :ID: 732421fb-2eb6-4701-be12-d4b03c726df8
 :END:
@@ -4028,6 +4033,16 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
   :commands swiper swiper-isearch
   :setq (swiper-action-recenter . t))
 #+end_src
+
+*** selectrum                                                         :disabled:
+:PROPERTIES:
+:ID:       06f3ca3b-3af5-46c7-8978-978b752942d1
+:END:
+
+*** helm
+:PROPERTIES:
+:ID:       1b29973a-a6b5-42d2-895c-34974df6fdf4
+:END:
 
 ** company
 :PROPERTIES:
