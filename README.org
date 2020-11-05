@@ -4039,6 +4039,16 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 :ID:       06f3ca3b-3af5-46c7-8978-978b752942d1
 :END:
 
+**** selectrum
+:PROPERTIES:
+:ID:       1c8a1295-d74c-43a2-b1af-fe54eac5d5ff
+:END:
+
+**** selectrum prescient
+:PROPERTIES:
+:ID:       3e261b91-b0e1-47ec-aeef-3c43c4eded2a
+:END:
+
 *** helm
 :PROPERTIES:
 :ID:       1b29973a-a6b5-42d2-895c-34974df6fdf4
