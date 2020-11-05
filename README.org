@@ -9097,7 +9097,7 @@ with =~=.
 
 #+begin_src emacs-lisp
 (define-capture-template! Website ()
-  ;; :in-buffer
+  :file (concat VOID-ORG-DIR "websites.org")
   :immediate-finish t
   :after-finalize (lambda () (void-download-webpage-as-pdf (exwm::qutebrowser-url) exwm-title))
   (let* ((url (exwm::qutebrowser-url))
