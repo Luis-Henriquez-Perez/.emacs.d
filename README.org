@@ -113,7 +113,7 @@ behaviors, bugs features or whatever else I want to in emacs.
 (defconst VOID-README-FILE (concat VOID-EMACS-DIR "README.org")
   "Path to the Org file that when that Void.")
 
-(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
+(defconst VOID-SCREENSHOT-DIR (concat VOID-EMACS-DIR "screenshots/")
   "Directory where any multimedia describing VOID should go.
  These could screenshots are for detailing any problems, interesting behaviors or features.")
 
