@@ -4044,12 +4044,24 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 :ID:       1c8a1295-d74c-43a2-b1af-fe54eac5d5ff
 :END:
 
+#+begin_src emacs-lisp
+(use-package! selectrum)
+#+end_src
+
 **** selectrum prescient
 :PROPERTIES:
 :ID:       3e261b91-b0e1-47ec-aeef-3c43c4eded2a
 :END:
 
-*** helm
+**** embark
+:PROPERTIES:
+:ID:       ac9042f8-f9ee-49fe-a871-557c9acaf2d3
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+*** helm                                                              :disabled:
 :PROPERTIES:
 :ID:       1b29973a-a6b5-42d2-895c-34974df6fdf4
 :END:
