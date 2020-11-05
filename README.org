@@ -9094,11 +9094,12 @@ with =~=.
 
 #+begin_src emacs-lisp
 (define-capture-template! Website ()
+  ;; :in-buffer
   :immediate-finish t
-  :after-finalize #'void-download-webpage-as-pdf
-  (let* ((url (exwm:browser-url))
+  :after-finalize (lambda () (void-download-webpage-as-pdf (exwm::qutebrowser-url) exwm-title))
+  (let* ((url (exwm::qutebrowser-url))
          ;; find the newest pdf added to the directory.
-         (pdf-name (s-match ))
+         (pdf-name exwm-title)
          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
          (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
     (->> (org-capture::generic-template)
