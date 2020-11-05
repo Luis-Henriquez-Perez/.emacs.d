@@ -9089,9 +9089,9 @@ have the date created.
 
 #+begin_src emacs-lisp
 (defvar org-capture:defaults
-  (list :file #'org-capture:file
-        :prepend t
-        :empty-lines 1)
+  '(:file #'org-capture:file
+    :prepend t
+    :empty-lines 1)
   "A plist of keywords that should always apply to capture templates.")
 #+end_src
 
