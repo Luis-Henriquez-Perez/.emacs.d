@@ -2368,12 +2368,22 @@ different systems. Considering that some emacs packages require.
   :popup ("\\*system-packages"
           (display-buffer-at-bottom)
           (window-height . 0.5))
-  :setq (system-packages-noconfirm . t)
-  :config
+  :setq (system-packages-noconfirm . t))
+#+end_src
+
+***** use yay for arch
+:PROPERTIES:
+:ID:       2fc48e66-83f3-4e35-8b2c-ef9113cb9b45
+:END:
+
+#+begin_src emacs-lisp
+;; If we're in arch and we have yay intalled, use that.
+(after! system-packages
   (when (and (eq system-packages-package-manager 'pacman)
              (system-packages-package-installed-p "yay"))
     (alet (alist-get 'pacman system-packages-supported-package-managers)
       (push `(yay
+              ;; yay doesn't want sudo passed in (I believe it uses a fakeroot environment)
               (default-sudo . nil)
               ,@(-map (-lambda ((action . command))
                         (cons action (s-replace "pacman" "yay" command)))
