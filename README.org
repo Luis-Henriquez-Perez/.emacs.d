@@ -7210,6 +7210,9 @@ inspired file manager]] of also called =ranger=.
 :ID:       cef37397-53aa-47e1-a519-ef56a311ae30
 :END:
 
+Ranger doesn't refresh the buffer after stuff like moving and pasting has
+happend. It results in a very jarring display.
+
 #+begin_src emacs-lisp
 (defadvice! refresh-contents (:after ranger-paste dired-do-rename)
   "Refresh contents."
