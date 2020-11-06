@@ -1687,7 +1687,7 @@ should return the value of structure for that symbol.
 BODY contains any number of `<NAME>' where NAME refers to the name of the symbol."
   (declare (indent 2))
   (let* ((symbols (->> (flatten-list body)
-                       (-filter #'void-anaphoric-symbol-p)
+                       (-select #'void-anaphoric-symbol-p)
                        (-uniq)))
          (names (-map #'void-anaphoric-true-symbol symbols))
          (structure-sym (make-symbol "structure")))
@@ -2353,6 +2353,33 @@ while the user is working.
 #+begin_src emacs-lisp
 (use-package! keyfreq
   :hook emacs-startup)
+#+end_src
+
+**** system-packages
+:PROPERTIES:
+:ID:       55a3368b-34e7-495a-86f9-3386ed90038c
+:END:
+
+System packages provides an abstraction for operating on packages across
+different systems. Considering that some emacs packages require.
+
+#+begin_src emacs-lisp
+(use-package! system-packages
+  :popup ("\\*system-packages"
+          (display-buffer-at-bottom)
+          (window-height . 0.5))
+  :setq (system-packages-noconfirm . t)
+  :config
+  (when (and (eq system-packages-package-manager 'pacman)
+             (system-packages-package-installed-p "yay"))
+    (alet (alist-get 'pacman system-packages-supported-package-managers)
+      (push `(yay
+              (default-sudo . nil)
+              ,@(-map (-lambda ((action . command))
+                        (cons action (s-replace "pacman" "yay" command)))
+                      (cdr it)))
+            system-packages-supported-package-managers))
+    (setq system-packages-package-manager 'yay)))
 #+end_src
 
 ** Initialize
