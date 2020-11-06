@@ -865,14 +865,14 @@ keyword is too coarse: it perfoms this check with an =eval-after-load= form.
    (list
     (when-let ((commands (plist-get rest :commands))
                (advice (intern (format "ensure-system-packages-for-%s" name)))
-               (packages (-map #'symbol-name packages)))
+               (packages (string-join (-map #'symbol-name packages) "\s")))
       `(defadvice! ,advice (:around ,@commands)
          (require 'system-packages)
          (if-let ((uninstalled (-select (-not #'system-packages-package-installed-p) ',packages))
                   (prompt (format "%S is needed for %s to work.\nWould you like to install it?" packages name)))
              (if (y-or-n-p prompt)
                  (progn (let (system-packages-noconfirm)
-                          (-each #'system-packages-install uninstalled))
+                          (system-packages-install packages))
                         (apply <orig-fn> <args>))
                (message "Aborting the loading of %s" ',name))
            (apply <orig-fn> <args>)))))))
@@ -5825,8 +5825,6 @@ like that concern N number of things, where N could be 1 or more things.
   (push (cons (rx bos "is" eos) "are") plural-knowledge)
   (push (cons (rx bos "thas" eos) "those") plural-knowledge)
   (push (cons (rx bos "this" eos) "these") plural-knowledge))
-#+end_src
-
 #+end_src
 
 ** evil
