@@ -7120,37 +7120,20 @@ I might consider doing this asynchronously.
 [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
 inspired file manager]] of also called =ranger=.
 
-**** bindings
+**** make sure that =;= uses =M-x=
 :PROPERTIES:
-:ID: 6e779de2-86b8-4856-8569-33f6e69e3b17
-:END:
-
-***** important
-:PROPERTIES:
-:ID: d1835a7a-2a51-4bc5-98f6-4e13d2b98ee4
+:ID:       c63911ca-6d26-4d7c-be76-246639fb6c7a
 :END:
 
 #+begin_src emacs-lisp
 (general-def 'normal ranger-mode-map
-  "m" #'dired-mark
-  "d" #'dired-do-delete
-  "s" #'dired-do-symlink
-  "e" #'eshell
-  "c" #'dired-do-copy
-  "M" #'dired-mark-files-containing-regexp
-  "r" #'dired-do-rename
-  "U" #'dired-unmark-all-marks
-  "x" #'dired-do-shell-command
-  "a" #'avy-goto-line
-  "C-r" #'ranger-refresh
-  "f" #'find-file
-  "q" #'ranger-close)
+  ";" #'execute-extended-command
+  "u" #'dired-unmark)
 #+end_src
 
-
-***** generic
+**** general bindings
 :PROPERTIES:
-:ID: 0b160960-0eab-4faa-911d-0d8aef12cc47
+:ID:       f69d31ab-1385-498c-9423-8fb3d5e4e94e
 :END:
 
 #+begin_src emacs-lisp
@@ -7173,97 +7156,6 @@ inspired file manager]] of also called =ranger=.
   "c" #'dired-do-compress-to
   "!" #'dired-do-shell-command
   "&" #'dired-do-async-shell-command)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: 45dab1c7-6558-42bc-a33e-91e1015d94ab
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  "["                   #'dired-prev-dirline
-  "]"                   #'dired-next-dirline
-  "<"                   #'dired-prev-dirline
-  ">"                   #'dired-next-dirline
-  "^"                   #'dired-up-directory
-  "k"                   #'dired-previous-line
-  "j"                   #'dired-next-line
-  "h"                   #'dired-up-directory
-  "l"                   #'dired-find-file
-  "RET"                 #'dired-find-file
-  [remap next-line]     #'dired-next-line
-  [remap previous-line] #'dired-previous-line)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: 1caa851b-211b-4bee-8d2b-0df643410640
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  :prefix "%"
-  "u" #'dired-upcase
-  "l" #'dired-downcase
-  "d" #'dired-flag-files-regexp
-  "r" #'dired-do-rename-regexp
-  "C" #'dired-do-copy-regexp
-  "H" #'dired-do-hardlink-regexp
-  "R" #'dired-do-rename-regexp
-  "S" #'dired-do-symlink-regexp
-  "&" #'dired-flag-garbage-files)
-#+end_src
-
-***** marking
-:PROPERTIES:
-:ID: a4fff7fe-a895-4cf9-9737-685aa1b68e2f
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  :prefix "*"
-  "*"         #'dired-mark-executables
-  "/"         #'dired-mark-directories
-  "@"         #'dired-mark-symlinks
-  "%"         #'dired-mark-files-regexp
-  "("         #'dired-mark-sexp
-  "."         #'dired-mark-extension
-  "O"         #'dired-mark-omitted
-  "c"         #'dired-change-marks
-  "s"         #'dired-mark-subdir-files
-  "m"         #'dired-mark
-  "u"         #'dired-unmark
-  "?"         #'dired-unmark-all-files
-  "!"         #'dired-unmark-all-marks
-  " <delete>" #'dired-unmark-backward
-  " C-n"      #'dired-next-marked-file
-  " C-p"      #'dired-prev-marked-file
-  "t"         #'dired-toggle-marks)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: 64d0879a-6b01-4898-976f-e3363b0a2d2c
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  [remap read-only-mode]   #'dired-toggle-read-only
-  [remap toggle-read-only] #'dired-toggle-read-only
-  "<delete>"               #'dired-unmark-backward
-  [remap undo]             #'dired-undo
-  [remap advertised-undo]  #'dired-undo)
-#+end_src
-
-***** make sure that =;= uses =M-x=
-:PROPERTIES:
-:ID:       c63911ca-6d26-4d7c-be76-246639fb6c7a
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal ranger-mode-map
-  ";" #'execute-extended-command)
 #+end_src
 
 **** entry
@@ -7319,7 +7211,6 @@ which only some files are hidden. That's wierd, so I get rid of it.
   "Silence `ranger-window-check'."
   (quiet! (apply <orig-fn> <args>)))
 #+end_src
-
 
 *** dired icons
 :PROPERTIES:
