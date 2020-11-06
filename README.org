@@ -9899,7 +9899,8 @@ press as well and even faster than =SPC SPC=.
 #+begin_src emacs-lisp
 (define-leader-key! "SPC" (list :def #'execute-extended-command :wk "M-x"))
 
-(general-def 'normal ";" #'execute-extended-command)
+(general-def 'normal
+  ";" #'execute-extended-command)
 
 (general-def
   "A-x" #'execute-extended-command
@@ -9925,6 +9926,9 @@ common commands however, so I bound them to =J= and =K= respectively.
 :PROPERTIES:
 :ID: 927dedb6-eee9-47ff-9298-c2e21bbce524
 :END:
+
+The commands [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale-decrease][text-scale-decrease]] increase and decrease
+the size of buffer text respectively. I play with text scale very often.
 
 #+begin_src emacs-lisp
 (general-def '(emacs normal)
