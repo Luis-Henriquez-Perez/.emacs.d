@@ -2382,6 +2382,16 @@ different systems. Considering that some emacs packages require.
     (setq system-packages-package-manager 'yay)))
 #+end_src
 
+**** request
+:PROPERTIES:
+:ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
+:END:
+
+#+begin_src emacs-lisp
+(use-package! request
+  :setq (request-storage-directory . (concat VOID-DATA-DIR "request")))
+#+end_src
+
 ** Initialize
 :PROPERTIES:
 :ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
@@ -7180,6 +7190,18 @@ inspired file manager]] of also called =ranger=.
 
 (setq image-dired-dir (concat VOID-DATA-DIR "image-dir"))
 (setq dired-omit-verbose nil)
+#+end_src
+
+**** refresh contents
+:PROPERTIES:
+:ID:       cef37397-53aa-47e1-a519-ef56a311ae30
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! refresh-contents (:after ranger-paste dired-do-rename)
+  "Refresh contents."
+  (when (eq major-mode 'ranger-mode)
+    (ranger-refresh)))
 #+end_src
 
 **** toggle dotfiles
