@@ -863,16 +863,16 @@ keyword is too coarse: it perfoms this check with an =eval-after-load= form.
   (use-package-concat
    (use-package-process-keywords name rest state)
    (list
-    (when-let ((commands (plist-get rest :commands))
-               (advice (intern (format "ensure-system-packages-for-%s" name)))
-               (packages (-map #'symbol-name packages)))
+    (when-let* ((commands (plist-get rest :commands))
+                (advice (intern (format "ensure-system-packages-for-%s" name)))
+                (packages (-map #'symbol-name packages)))
       `(defadvice! ,advice (:around ,@commands)
          (require 'system-packages)
          (if-let ((uninstalled (-select (-not #'system-packages-package-installed-p) ',packages))
-                  (prompt (format "%S is needed for %s to work.\nWould you like to install it?" packages name)))
+                  (prompt (format "%S is needed for %s to work.\nWould you like to install it?" ',packages ',name)))
              (if (y-or-n-p prompt)
                  (progn (let (system-packages-noconfirm)
-                          (-each #'system-packages-install uninstalled))
+                          (system-packages-install ,(string-join packages "\s")))
                         (apply <orig-fn> <args>))
                (message "Aborting the loading of %s" ',name))
            (apply <orig-fn> <args>)))))))
@@ -2355,7 +2355,12 @@ while the user is working.
   :hook emacs-startup)
 #+end_src
 
-**** system-packages
+**** system packages
+:PROPERTIES:
+:ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
+:END:
+
+***** system-packages
 :PROPERTIES:
 :ID:       55a3368b-34e7-495a-86f9-3386ed90038c
 :END:
@@ -2368,12 +2373,22 @@ different systems. Considering that some emacs packages require.
   :popup ("\\*system-packages"
           (display-buffer-at-bottom)
           (window-height . 0.5))
-  :setq (system-packages-noconfirm . t)
-  :config
+  :setq (system-packages-noconfirm . t))
+#+end_src
+
+***** use yay for arch
+:PROPERTIES:
+:ID:       2fc48e66-83f3-4e35-8b2c-ef9113cb9b45
+:END:
+
+#+begin_src emacs-lisp
+;; If we're in arch and we have yay intalled, use that.
+(after! system-packages
   (when (and (eq system-packages-package-manager 'pacman)
              (system-packages-package-installed-p "yay"))
     (alet (alist-get 'pacman system-packages-supported-package-managers)
       (push `(yay
+              ;; yay doesn't want sudo passed in (I believe it uses a fakeroot environment)
               (default-sudo . nil)
               ,@(-map (-lambda ((action . command))
                         (cons action (s-replace "pacman" "yay" command)))
@@ -5825,8 +5840,6 @@ like that concern N number of things, where N could be 1 or more things.
   (push (cons (rx bos "is" eos) "are") plural-knowledge)
   (push (cons (rx bos "thas" eos) "those") plural-knowledge)
   (push (cons (rx bos "this" eos) "these") plural-knowledge))
-#+end_src
-
 #+end_src
 
 ** evil
