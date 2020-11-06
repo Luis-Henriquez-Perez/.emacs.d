@@ -8182,6 +8182,7 @@ files, or even converting an org mode document into another format. As the name
 (after! org
   (setq org-todo-keywords
         '((sequence "TODO" "NEXT" "STARTED" "|" "DONE")
+          (sequence "QUESTION" "NEXT" "INVESTIGATING" "|" "ANSWERED")
           (sequence "|" "PAUSED")
           (sequence "|" "CANCELLED"))))
 #+end_src
