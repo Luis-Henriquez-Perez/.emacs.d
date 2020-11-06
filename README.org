@@ -866,7 +866,7 @@ As is the ensure keyword that comes with use-package is too coarse.
                (packages (-map #'symbol-name packages)))
       `(defadvice! ,advice (:around ,@commands)
          (use-package! system-packages :demand t)
-         (if-let (uninstalled (-filter #'system-packages-package-installed-p ',packages))
+         (if-let (uninstalled (-remove #'system-packages-package-installed-p ',packages))
              (aif (y-or-n-p ,(format "%S is needed for %s to work.\nWould you like to install it?" packages name))
                  (progn (-map #'system-packages-install uninstalled)
                         (apply <orig-fn> <args>)))
@@ -5769,11 +5769,21 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :END:
 
 This package determines whether a noun is plural and provides a function to
-convert a singular noun to a plural one. For example ~()~ returns ~"geese"~.
+convert a singular noun to a plural one. For example ~(plural-pluralize
+"goose")~ returns ~"geese"~.
+
+My intended use for this package is to help automate prompts, docstrings or the
+like that concern N number of things, where N could be 1 or more things.
 
 #+begin_src emacs-lisp
 (use-package plural
-  :commands (plural-make-plural))
+  :commands (plural-make-plural)
+  :config
+  (push (cons (rx bos "is" eos) "are") plural-knowledge)
+  (push (cons (rx bos "thas" eos) "those") plural-knowledge)
+  (push (cons (rx bos "this" eos) "these") plural-knowledge))
+#+end_src
+
 #+end_src
 
 ** evil
