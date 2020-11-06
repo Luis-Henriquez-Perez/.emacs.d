@@ -10001,8 +10001,6 @@ common commands however, so I bound them to =J= and =K= respectively.
 :ID: 927dedb6-eee9-47ff-9298-c2e21bbce524
 :END:
 
-As someone who spends much of his day on the computer.
-
 #+begin_src emacs-lisp
 (general-def '(emacs normal)
   "M--" #'text-scale-decrease
