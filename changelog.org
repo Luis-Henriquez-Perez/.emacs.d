@@ -224,3 +224,11 @@ switch from leaf to use-package.
 Capture templates are one of the simplest yet most powerful features of org
 mode. It is the one thing that I feel that all emacsers should utilize heavily
 all the time. The purpose of this change is to.
+
+** use system packages
+:PROPERTIES:
+:ID:       9a9774e3-cad0-4ff4-a4be-73897f105da9
+:END:
+
+Many packages require certain other packages to work such as magit. The purpose
+of this change is to.
