@@ -2355,7 +2355,12 @@ while the user is working.
   :hook emacs-startup)
 #+end_src
 
-**** system-packages
+**** system packages
+:PROPERTIES:
+:ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
+:END:
+
+***** system-packages
 :PROPERTIES:
 :ID:       55a3368b-34e7-495a-86f9-3386ed90038c
 :END:
