@@ -9932,7 +9932,8 @@ type as well as consistent with other =SPC= bindings. While =;= is super fast to
 press as well and even faster than =SPC SPC=.
 
 #+begin_src emacs-lisp
-(define-leader-key! "SPC" (list :def #'execute-extended-command :wk "M-x"))
+(define-leader-key! "SPC"
+  (list :def #'execute-extended-command :wk "M-x"))
 
 (general-def 'normal
   ";" #'execute-extended-command)
@@ -10147,6 +10148,7 @@ Emacs and for that we need all the help we can get.
   "k" (list :def #'describe-key            :wk "key")
   "f" (list :def #'describe-function       :wk "function")
   "l" (list :def #'global-command-log-mode :wk "command log")
+  "i" (list :def #'helm-info :wk "info")
   "a" (list :def #'apropos                 :wk "apropos"))
 #+end_src
 
@@ -10198,7 +10200,9 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   ""  (list :ignore t :wk "search")
-  "s" (list :def #'swiper :wk "swiper"))
+  "s" (list :def #'swiper :wk "swiper")
+  "w" (list :def #'counsel-search :wk "web")
+  "i" (list :def #'helm-info :wk "info"))
 
 (define-leader-key!
   :infix "s"
