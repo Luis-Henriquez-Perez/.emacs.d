@@ -8089,7 +8089,7 @@ when headline contents begin.
 #+begin_src emacs-lisp
 (defun org:todo-keywords ()
   "Return list of all TODO keywords."
-  (--filter (and (stringp it) (not (string= "|" it)))
+  (--select (and (stringp it) (not (string= "|" it)))
             (flatten-list org-todo-keywords)))
 #+end_src
 
