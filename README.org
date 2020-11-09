@@ -4827,7 +4827,7 @@ available to us only a web search away.
 there, but =w3m= has the benefit of having comprehensive [[https://github.com/emacs-w3m/emacs-w3m][emacs interface]]. Why
 use this when you can use the GUI browser? Well, using the Emacs interface I can
 view an Emacs webpage as plain text, which means I can perform searches on it
-with [[][swiper]], or any other Emacs operation on it. Another advantage is that
+with [[https://github.com/abo-abo/swiper.git][swiper]], or any other Emacs operation on it. Another advantage is that
 because the w3m interface's backend is a terminal application, it will (I'm
 guessing; no benchmarks made) typically be faster than browsers at rendering
 plain text webpages. Of course, the main limitation is that w3m will typically
