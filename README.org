@@ -369,6 +369,8 @@ This code initializes straight if it's not already installed.
 :ID:       0edcf34d-a368-4e86-9365-1402f23befbb
 :END:
 
+
+
 #+begin_src emacs-lisp
 (defun straight:get-package-homepage (package)
   "Return the homepage for recipe.
