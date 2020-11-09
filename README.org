@@ -5101,19 +5101,6 @@ What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is 
   :setq (highlight-numbers-generic-regexp . "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>"))
 #+end_src
 
-** highlight-escape-sequences                                         :disabled:
-:PROPERTIES:
-:ID: 608d94c5-806f-4303-bb81-0b95a3dfcacc
-:END:
-
-Also pretty self explanatory is [[https://github.com/dgutov/highlight-escape-sequences][highlight-escape-sequences]].
-
-#+begin_src emacs-lisp
-(use-package! highlight-escape-sequences
-  :ensure (:host github :repo "hlissner/highlight-escape-sequences")
-  :hook (prog-mode conf-mode))
-#+end_src
-
 ** hideshow
 :PROPERTIES:
 :ID: 915f65c3-8121-4480-b246-f190fe117950
