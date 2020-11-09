@@ -370,6 +370,17 @@ This code initializes straight if it's not already installed.
 :END:
 
 #+begin_src emacs-lisp
+(defun straight:get-package-homepage (package)
+  "Return the homepage for recipe.
+Assumes vc is git which is fine because straight only uses git right now."
+  (let* ((recipe (straight-recipes-retrieve package straight-recipe-repositories))
+         (repo (plist-get (cdr recipe) :repo))
+         (host (plist-get (cdr recipe) :host)))
+    (straight-vc-git--encode-url repo host)))
+
+(defun straight/get-homepage ()
+  (interactive)
+  (browse-url (straight:get-package-homepage (symbol-at-point))))
 #+end_src
 
 *** required packages
