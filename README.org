@@ -5031,7 +5031,7 @@ adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs
 :ID: c0975eae-c03b-4d2a-a546-06c05197eded
 :END:
 
-[[][]] is another emacs screenshot package that.
+[[https://github.com/emacsmirror/screenshot.git][screenshot]] is another emacs screenshot package that.
 
 #+begin_src emacs-lisp
 (use-package! screenshot :commands screenshot)
