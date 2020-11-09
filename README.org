@@ -364,6 +364,8 @@ This code initializes straight if it's not already installed.
 :ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
 :END:
 
+Straight is very minimal.
+
 ****** package homepage
 :PROPERTIES:
 :ID:       0edcf34d-a368-4e86-9365-1402f23befbb
