@@ -96,7 +96,7 @@ time.
 :END:
 
 These are important files and directories that I end up referring to often in my
-code. Well, not so much =VOID-README-FILE= and =VOID-TODO-FILE= but the others are
+code. Well, not so much =VOID-INIT-ORG-FILE= and =VOID-TODO-FILE= but the others are
 referenced alot.
 
 One of the ideas in Void is that good text documentation is not enough. I want
@@ -110,7 +110,7 @@ behaviors, bugs features or whatever else I want to in emacs.
 (defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-README-FILE (concat VOID-EMACS-DIR "README.org")
+(defconst VOID-INIT-ORG-FILE (concat VOID-EMACS-DIR "README.org")
   "Path to the Org file that when that Void.")
 
 (defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
@@ -2937,16 +2937,16 @@ be.
 :END:
 
 This is another attempt to keep my =main.el= file in sync as much as possible with
-[[helpvar:VOID-README-FILE][void-main-org-file]]. ~void-tangle-on-save-h~ is called whenever a buffer is being
+[[helpvar:VOID-INIT-ORG-FILE][void-main-org-file]]. ~void-tangle-on-save-h~ is called whenever a buffer is being
 saved to a file. The reason why I use ~cl-letf~ to temporarily override [[helpfn:load][load]] is
 because ~VOID-INIT-FILE~ already contains all the code I need so I don't want it
 to waste time loading ~void-main-elisp-file~.
 
 #+begin_src emacs-lisp
 (defhook! tangle-maybe (after-save-hook)
-  "Tangle `VOID-README-FILE' asynchronously when it is saved."
+  "Tangle `VOID-INIT-ORG-FILE' asynchronously when it is saved."
   (when (and (require 'async nil t)
-             (string= (file-truename VOID-README-FILE)
+             (string= (file-truename VOID-INIT-ORG-FILE)
                       (or (buffer-file-name (current-buffer)) ""))
              (void-needs-tangling-p))
     (async-start
@@ -2962,7 +2962,7 @@ to waste time loading ~void-main-elisp-file~.
      (lambda (_)
        (void-log
         (concat (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
-                " tangling `VOID-README-FILE'."))))))
+                " tangling `VOID-INIT-ORG-FILE'."))))))
 #+end_src
 
 ** UI
@@ -9390,7 +9390,7 @@ current week.
 #+begin_src emacs-lisp
 (use-feature! org-refile
   :pre-setq
-  (org-refile-targets . `((,VOID-README-FILE . (:maxlevel . 10))
+  (org-refile-targets . `((,VOID-INIT-ORG-FILE . (:maxlevel . 10))
                           (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
   (org-refile-use-outline-path . 'file)
   (org-refile-allow-creating-parent-nodes . t)
