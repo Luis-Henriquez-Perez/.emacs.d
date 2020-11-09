@@ -3,7 +3,54 @@
 :ID:       b5ff0849-7f4d-433c-ad6e-74fa3e76b130
 :END:
 
-This is an emacs configuration I have built over he course of over two year.
+This is an emacs configuration I have built over he course of over two year. The
+reason I made this emacs configuration is to have a interfact to the computer
+that is 100% customizable.
+
+#+CAPTION[dashboard]:Font - Anonymous-Pro-Minus | Theme - tsdh-light
+[[./screenshots/image~2020-11-09~19:01:00~-0500.png]]
+
+#+CAPTION[part of my org file]
+[[./screenshots/image~2020-11-09~][]]
+
+Note that I don't use a modeline because I find it consumes too much space and
+is distracting. Maybe I'll use one if I figure out how to make it appear on the
+frame instead of on each window.
+
+* Principles
+:PROPERTIES:
+:ID:       9bd8b2d0-a75d-4ebb-9b1a-ff2bfe495e7b
+:END:
+
+These are ideas I try to document things.
+
+** Document Everything
+:PROPERTIES:
+:ID:       4f3ceddd-02fd-4ad2-9b3d-a2ea7340d742
+:END:
+
+I think that documentation in the form of docstrings and comments is
+insufficient.
+
+** Go Fast
+:PROPERTIES:
+:ID:       bce101e5-4da5-4799-ba2e-14149c45cd5c
+:END:
+
+I try. While my startup time is relatively fast compared to other emacs configs,
+I have not yet implemented.
+
+** Robust
+:PROPERTIES:
+:ID:       df0b966f-5b4d-4ce1-8b2c-48a0668fcd5e
+:END:
+
+** Utilize existing functionality
+:PROPERTIES:
+:ID:       134cd32b-1933-4fac-8032-aa4ffbf2c617
+:END:
+
+In general, I try to use existing packages instead of doing things from scratch myself.
 
 * Features
 :PROPERTIES:
@@ -15,10 +62,14 @@ This is an emacs configuration I have built over he course of over two year.
 :ID:       43baa970-dc10-4887-8819-e5cb48ae198e
 :END:
 
+I document everything with.
+
 ** advanced lazy-loading
 :PROPERTIES:
 :ID:       5c437948-5eb6-45b1-a874-2f07c463450a
 :END:
+
+I load packages just before function calls, I.
 
 ** naming convention
 :PROPERTIES:
@@ -30,7 +81,48 @@ This is an emacs configuration I have built over he course of over two year.
 :ID:       8f33347e-6d9f-4b90-8a73-d438843341e7
 :END:
 
+Every function that's in a hook or that's used for advice should be named based
+on its purpose. Doing this makes it easy to know what a hook or advice does at a
+glance and also allows for easy removal/modification of a hook or advice.
+
+** every function should have a docstring
+:PROPERTIES:
+:ID:       dde32cf8-7c32-48d4-ba94-382b8bb51fc6
+:END:
+
 ** use-package with many custom keywords
 :PROPERTIES:
 :ID:       963e4f05-10aa-4e31-9e9c-b715e904ba63
+:END:
+
+** idle feature loading with =idle-require=
+:PROPERTIES:
+:ID:       a79acdb0-5272-4316-bb11-553a36aa5df1
+:END:
+
+** optional system dependency management via system-packages
+:PROPERTIES:
+:ID:       f60d4c21-30fd-42b0-9b86-d1013909f6a8
+:END:
+
+* Future Goals
+:PROPERTIES:
+:ID:       16f35872-4347-439e-a90a-cc50ca21ef97
+:END:
+
+These are things I plan to do in the future.
+
+** optimize package loading during compilation
+:PROPERTIES:
+:ID:       92dca801-0261-43b5-b64f-5a3636886da8
+:END:
+
+** module like dynamic tangling of headlines
+:PROPERTIES:
+:ID:       98a39ba4-97ca-4324-8433-322cf9c29137
+:END:
+
+** dynamic bindings
+:PROPERTIES:
+:ID:       992c3678-8788-4f1e-b355-dab53cb7b9b3
 :END:
