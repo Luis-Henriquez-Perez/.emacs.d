@@ -5110,7 +5110,7 @@ Hiding text can be extremely useful. It is something that's used extensively in
 Org Mode. The feature responsible for doing this is [[][hideshow]].
 
 #+begin_src emacs-lisp
-(use-package! hideshow
+(use-feature! hideshow
   :hook (prog-mode . hs-minor-mode)
   :commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
   :setq (hs-hide-comments-when-hiding-all . nil))
