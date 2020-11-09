@@ -392,7 +392,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 #+begin_src emacs-lisp
 (defun straight/goto-readme-dir ()
-  "")
+  "Go to the directory in ranger or dired.")
 #+end_src
 
 *** required packages
