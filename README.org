@@ -3435,7 +3435,7 @@ use a typical window manager, you have to.
 A common dream among many Org users is to integrate [[info:org#Capture][org-capture]] into their browser.
 Indeed, the browser by nature would be a place you'd want to capture from a lot.
 However, since graphical browsers are not in emacs the main way to do this was
-via a hacky and difficult to set up [[][org-protocol]].
+via a hacky and difficult to set up [[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol]].
 
 https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
 
