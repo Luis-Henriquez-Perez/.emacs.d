@@ -9755,8 +9755,8 @@ VOID install. For writing this code I referenced the body of
                        "material-design-icons.ttf"
                        "octicons.ttf"
                        "weathericons.ttf"))
-      (void-log "No icons installed. Installing...")
-      (all-the-icons-install-fonts :ignore-prompt))))
+      (when (yes-or-no-p "No icons installed. Install?")
+        (all-the-icons-install-fonts :ignore-prompt)))))
 #+end_src
 
 *** boostrap
