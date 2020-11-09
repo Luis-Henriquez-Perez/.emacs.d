@@ -382,7 +382,7 @@ Assumes vc is git which is fine because straight only uses git right now."
          (host (plist-get (cdr recipe) :host)))
     (straight-vc-git--encode-url repo host)))
 
-(defun straight/get-homepage ()
+(defun straight/goto-homepage ()
   (interactive)
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 #+end_src
