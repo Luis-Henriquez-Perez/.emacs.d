@@ -31,9 +31,7 @@ When VOID is performing computationally intensive operations,
 `gc-cons-threshold' is set to this value.")
 
 (defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
-  "The default value for `gc-cons-threshold'.
-If you experience freezing, decrease this. If you experience stuttering,
-increase this.")
+  "The default value for `gc-cons-threshold'.")
 
 (defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
   "The upper limit for `gc-cons-percentage'.
