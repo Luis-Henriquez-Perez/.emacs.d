@@ -369,7 +369,7 @@ This code initializes straight if it's not already installed.
 :ID:       0edcf34d-a368-4e86-9365-1402f23befbb
 :END:
 
-
+This function gets me the homepage of a package.
 
 #+begin_src emacs-lisp
 (defun straight:get-package-homepage (package)
@@ -389,6 +389,11 @@ Assumes vc is git which is fine because straight only uses git right now."
 :PROPERTIES:
 :ID:       4d5c4f2e-4f28-4a19-9470-97a398ccb224
 :END:
+
+#+begin_src emacs-lisp
+(defun straight:goto-readme-dir ()
+  "")
+#+end_src
 
 *** required packages
 :PROPERTIES:
