@@ -8932,8 +8932,8 @@ it.
 :END:
 
 [[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
-by allowing you to write them in a declarative style (see [[][doct docstring]]).
-In org mode, capture templates are [[][represented as plain lists]]. This makes
+by allowing you to write them in a declarative style (see [[helpfn:doct][doct docstring]]).
+In org mode, capture templates are [[info:org#Capture templates][represented as plain lists]]. This makes
 it easy to forget what a certain element meant or to accidentally omit a capture
 template element as you're writing it.
 
