@@ -110,7 +110,7 @@ behaviors, bugs features or whatever else I want to in emacs.
 (defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "README.org")
+(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
   "Path to the Org file that when that Void.")
 
 (defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
