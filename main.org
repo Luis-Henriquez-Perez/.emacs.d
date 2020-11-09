@@ -5078,7 +5078,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
       (call-process "killall" nil nil nil "mpd"))))
 #+end_src
 
-** screenshot                                                         :disabled:
+** screenshot
 :PROPERTIES:
 :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
 :END:
@@ -5086,8 +5086,9 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
 cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or [[https://www.reddit.com/r/emacs/][emacs-reddit]] or
 even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or often not
-utilized at all). In Void, where documentation is *very* important, I supplement
-my description of problems with pictures.
+utilized at all).
+
+There are three screenshot packages I know of [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[][]].
 
 *** screenshot cairo
 :PROPERTIES:
@@ -5099,11 +5100,12 @@ adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs
 
 #+begin_src emacs-lisp
 (defun void/take-screenshot ()
-  "Take a screenshot and save it in `VOID-MULTIMEDIA-DIR'."
+  "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
+  (interactive)
   (let* ((entered-name (read-string "Image Name: "))
          (default-name (format "image-%s" (ts-format)))
          (image-name (if (string-empty-p entered-name) default-name entered-name))
-         (filename (format "%s%s.svg" VOID-MULTIMEDIA-DIR image-name))
+         (filename (format "%s%s.svg" VOID-SCREENSHOT-DIR image-name))
 	     (data (x-export-frames nil 'svg)))
     (with-temp-file filename
       (insert data))
@@ -5111,36 +5113,41 @@ adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs
     (message "%s -> %s" (f-filename filename) VOID-MULTIMEDIA-DIR)))
 #+end_src
 
-*** screenshot
+*** use current window
 :PROPERTIES:
-:ID: c0975eae-c03b-4d2a-a546-06c05197eded
+:ID:       04f42f4f-40e2-4376-82e7-5dad06bfdb1d
 :END:
 
-[[][]] is another emacs screenshot package that.
+From checking out [[][scrot]], I learned how to specify.
 
 #+begin_src emacs-lisp
-(use-package! screenshot :commands screenshot)
+(defun scrot/screenshot-current-window ()
+  "Take a screenshot of the current Emacs window."
+  (interactive)
+  (-let* ((id (frame-parameter (selected-frame) 'window-id))
+          ((x y width height) (window-pixel-edges))
+          (geometry (format "%dx%d+%d+%d" width height x y))
+          (filename (format "%s%s~%s.png" VOID-SCREENSHOT-DIR "image" (s-replace "\s" "~" (ts-format)))))
+    (call-process-shell-command
+     "maim" nil nil nil
+     "--window" id
+     "--geometry" geometry
+     filename)))
 #+end_src
 
-*** escr                                                              :disabled:
+*** use current frame
 :PROPERTIES:
-:ID:       06f23fc2-7f6b-4812-a14d-185b42a42976
+:ID:       a92cd2f2-78a7-4a5a-83f5-a6877d22e99d
 :END:
 
 #+begin_src emacs-lisp
-(use-package! escr :disabled t)
-#+end_src
-
-*** scrot
-:PROPERTIES:
-:ID: 325935aa-b0f1-49b6-8c67-1173c5a1d42b
-:END:
-
-Like [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screenshot taking utility. Interestingly, scrot
-has a function that can capture a screenshot of a particular emacs window.
-
-#+begin_src emacs-lisp
-(use-package! scrot :straight (:host github :repo "dakra/scrot.el"))
+(defun void/screenshot-current-frame ()
+  "Take a screenshot of the current Emacs frame"
+  (interactive)
+  (let ((width (frame-pixel-width))
+        (height (frame-pixel-height))
+        (scor))
+    ))
 #+end_src
 
 ** gifs
