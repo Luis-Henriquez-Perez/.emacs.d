@@ -5107,7 +5107,7 @@ What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is 
 :END:
 
 Hiding text can be extremely useful. It is something that's used extensively in
-Org Mode. The feature responsible for doing this is [[][hideshow]].
+Org Mode. The feature responsible for doing this is [[][hide-lines]].
 
 #+begin_src emacs-lisp
 (use-feature! hideshow
