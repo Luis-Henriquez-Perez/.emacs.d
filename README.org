@@ -912,7 +912,7 @@ customizing emacs.
 :ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
 :END:
 
-[[][org ml]] is a functional library for programmatically generating org mode
+[[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
 structures. It was built for.
 
 #+begin_src emacs-lisp
@@ -2208,9 +2208,9 @@ as a dependency, I'd end up rewriting many of its functions.
 
 There are numerous keybinding functions in Emacs; and they all look a little
 different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set-key][local-set-key]], [[helpfn:define-key][define-key]] and the list goes
-on. And with [[][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
+on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
 [[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
-handle all bindings. [[][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
+handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
 
 #+begin_src emacs-lisp
 (use-package! general
@@ -2225,7 +2225,7 @@ handle all bindings. [[][general]] provides such a function ([[helpfn:general-de
 :END:
 
 A popular strategy to mitigate the mental load of remembering many keybindings
-is to bind them in a tree-like fashion. [[][spacemacs]].
+is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacemacs][spacemacs]]).
 
 ****** leader Keys
 :PROPERTIES:
@@ -3432,7 +3432,7 @@ use a typical window manager, you have to.
 :ID:       5428bdc1-c075-4387-b3ab-080d372c478f
 :END:
 
-A common dream among many Org users is to integrate [[][org-capture]] into their browser.
+A common dream among many Org users is to integrate [[info:org#Capture][org-capture]] into their browser.
 Indeed, the browser by nature would be a place you'd want to capture from a lot.
 However, since graphical browsers are not in emacs the main way to do this was
 via a hacky and difficult to set up [[][org-protocol]].
