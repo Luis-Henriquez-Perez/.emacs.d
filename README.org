@@ -361,6 +361,44 @@ This code initializes straight if it's not already installed.
     (load bootstrap-file nil 'nomessage)))
 #+end_src
 
+***** utility functions
+:PROPERTIES:
+:ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
+:END:
+
+Straight is very minimal.
+
+****** package homepage
+:PROPERTIES:
+:ID:       0edcf34d-a368-4e86-9365-1402f23befbb
+:END:
+
+This function gets me the homepage of a package.
+
+#+begin_src emacs-lisp
+(defun straight:get-package-homepage (package)
+  "Return the homepage for recipe.
+Assumes vc is git which is fine because straight only uses git right now."
+  (let* ((recipe (straight-recipes-retrieve package straight-recipe-repositories))
+         (repo (plist-get (cdr recipe) :repo))
+         (host (plist-get (cdr recipe) :host)))
+    (straight-vc-git--encode-url repo host)))
+
+(defun straight/goto-homepage ()
+  (interactive)
+  (browse-url (straight:get-package-homepage (symbol-at-point))))
+#+end_src
+
+****** go to readme
+:PROPERTIES:
+:ID:       4d5c4f2e-4f28-4a19-9470-97a398ccb224
+:END:
+
+#+begin_src emacs-lisp
+(defun straight/goto-readme-dir ()
+  "Go to the directory in ranger or dired.")
+#+end_src
+
 *** required packages
 :PROPERTIES:
 :ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
