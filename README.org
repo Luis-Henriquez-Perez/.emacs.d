@@ -4622,18 +4622,6 @@ see my inbox, no questions asked.
   "Display the inbox."
   (interactive)
   (notmuch-search "tag:inbox" notmuch-search-oldest-first))
-
-(defun notmuch/luishp-account ()
-  (interactive)
-  (notmuch-search "to:luis@luishp.xyz" notmuch-search-oldest-first))
-
-(defun notmuch/luishenriquezperez-account ()
-  (interactive)
-  (notmuch-search "to:luishenriquezperez@gmail.com NOT tag:spam" notmuch-search-oldest-first))
-
-(defun notmuch/snhu-account ()
-  (interactive)
-  (notmuch-search "to:luis.henriquez@snhu.edu"))
 #+end_src
 
 *** update mail
