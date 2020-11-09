@@ -391,7 +391,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 :END:
 
 #+begin_src emacs-lisp
-(defun straight:goto-readme-dir ()
+(defun straight/goto-readme-dir ()
   "")
 #+end_src
 
