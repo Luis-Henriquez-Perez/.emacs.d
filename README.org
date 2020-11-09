@@ -9727,7 +9727,7 @@ A little bit of decoration and spice can go a long way. As its name suggests,
 a few). In practice I use these icons to (1) make things look nicer and more
 colorful and (2) enhance readability of plain text.
 
-*** install all the icons if not installed                            :disabled:
+*** install all the icons if not installed
 :PROPERTIES:
 :ID: 1cda0692-8f42-4bb3-b11d-da52e2004a55
 :END:
@@ -9755,8 +9755,8 @@ VOID install. For writing this code I referenced the body of
                        "material-design-icons.ttf"
                        "octicons.ttf"
                        "weathericons.ttf"))
-      (void-log "No icons installed. Installing...")
-      (all-the-icons-install-fonts :ignore-prompt))))
+      (when (yes-or-no-p "No icons installed. Install?")
+        (all-the-icons-install-fonts :ignore-prompt)))))
 #+end_src
 
 *** boostrap
