@@ -8061,7 +8061,7 @@ I'm adding [[https://github.com/jrblevin/markdown-mode][markdown-mode]] so I can
 Org mode introduces an elegant way of dealing with different languages in one
 file. In an org file the background language is Org's own markup language that's
 typically composed mostly of outline headlines. In the org markup language you
-can embed multiple different languages in [[][source blocks]]. Additionally, org
+can embed multiple different languages in [[info:org#Editing Source Code][source blocks]]. Additionally, org
 mode provides a library of functions for dealing with these files. This includes
 things like executing (or evaluating) source blocks, moving headlines to other
 files, or even converting an org mode document into another format. As the name
