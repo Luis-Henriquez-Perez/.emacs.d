@@ -7148,6 +7148,18 @@ I might consider doing this asynchronously.
   (add-to-list 'find-file-not-found-functions 'dired:create-non-existent-directory-h nil #'eq))
 #+end_src
 
+**** dont confirm killing buffers
+:PROPERTIES:
+:ID:       1b8f9331-33af-4496-9ec2-24357c954c43
+:END:
+
+When you trash or delete a buffer, dired asks you to confirm whether you want to
+kill it.
+
+#+begin_src emacs-lisp
+(setq dired-clean-confirm-killing-deleted-buffers nil)
+#+end_src
+
 *** ranger
 :PROPERTIES:
 :ID: 7504cab0-ddd9-4069-b6bb-9a5f3161cace
