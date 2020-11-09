@@ -4648,7 +4648,7 @@ see my inbox, no questions asked.
 :END:
 
 Perhaps the least popular way of using emails is using gnus. It is actually how
-[[][John Wiegley]], one of Emacs's maintainers, has managed his email for over
+[[https://github.com.cnpmjs.org/jwiegley][John Wiegley]], one of Emacs's maintainers, has managed his email for over
 20 years. Gnus is really a mixed bag. One the one hand, I absolutely love the
 fact that it's written in pure elisp (making it extremely customizable) and that
 it's built-in to emacs. You can be on a completely different computer and set up
