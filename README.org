@@ -359,6 +359,16 @@ This code initializes straight if it's not already installed.
     (load bootstrap-file nil 'nomessage)))
 #+end_src
 
+***** utility functions
+:PROPERTIES:
+:ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
+:END:
+
+****** package homepage
+:PROPERTIES:
+:ID:       0edcf34d-a368-4e86-9365-1402f23befbb
+:END:
+
 *** required packages
 :PROPERTIES:
 :ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
