@@ -5095,12 +5095,13 @@ There are three screenshot packages I know of [[][screenshot]], [[https://github
 :END:
 
 #+begin_src emacs-lisp
-(defun void--screenshot (x y height width &optional image-name)
+(defun void--screenshot (geometry image-name &rest args)
   "Take a screenshot of area."
-  (call-process-shell-command
-   "maim" nil nil nil
-   "--geometry" (format "%dx%d+%d+%d" width height x y)
-   image-name))
+  (let [(x y height width) geometry]
+    (call-process-shell-command
+     "maim" nil nil nil
+     "--geometry" (format "%dx%d+%d+%d" width height x y)
+     image-name)))
 #+end_src
 
 *** use current window
