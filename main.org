@@ -10013,10 +10013,16 @@ press as well and even faster than =SPC SPC=.
 :ID:       a10b02c5-40b7-4d2e-81dc-26df984f2a7d
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 *** agenda
 :PROPERTIES:
 :ID:       35cf5313-12c2-4c65-9492-6b6770163acb
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 *** screenshots
 :PROPERTIES:
