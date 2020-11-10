@@ -5206,7 +5206,30 @@ There are three screenshot packages I know of [[][screenshot]], [[https://github
 #+begin_src emacs-lisp
 (use-package! escr
   :straight (:host github :repo "atykhonov/escr")
-  :setq (escr-screenshot-directory . VOID-SCREENSHOT-DIR))
+  :commands (escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
+  :setq
+  (escr-screenshot-quality . 10)
+  (escr-screenshot-directory . VOID-SCREENSHOT-DIR))
+#+end_src
+
+*** function for geting screenshot filename
+:PROPERTIES:
+:ID:       58405f4f-e891-494e-afc7-a227415ec12b
+:END:
+
+=escr= doesn't prompt for the filename. While this is faster in the shortrun and
+may be useful for situations when you're short on time, it does mean that I'll
+need to invest time in looking at the screenshots again so you can properly name
+them.
+
+#+begin_src emacs-lisp
+(defun escr:get-filename ()
+  "Return the filename."
+  (alet (format "%s-%s.png"
+                (alet (read-string "Image name: ")
+                  (if (string-empty-p it) "screenshot" it))
+                (format-time-string "%Y-%m-%d-%H-%M-%S.png"))
+    (expand-file-name it escr-screenshot-directory)))
 #+end_src
 
 *** tell =escr--screenshot= to use maim
@@ -5218,13 +5241,11 @@ There are three screenshot packages I know of [[][screenshot]], [[https://github
 (defadvice! use-miam (:override (x y width height) escr--screenshot)
   (let ((window-id (frame-parameter (selected-frame) 'window-id))
         (crop (format "%sx%s+%s+%s" width height x y))
-        (filename (thread-last escr-filename-format
-                    (format-time-string (current-time))
-                    (expand-file-name escr-screenshot-directory))))
-    (call-process "miam" nil nil nil
+        (filename (escr:get-filename)))
+    (call-process "maim" nil nil nil
                   "--window" window-id
                   "--geometry" crop
-                  "--quality" escr-screenshot-quality
+                  "--quality" (number-to-string escr-screenshot-quality)
                   filename)))
 #+end_src
 
@@ -9957,12 +9978,10 @@ graphical interface but.
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
 
-** general
+** essential bindings
 :PROPERTIES:
-:ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
+:ID:       35dea311-fc84-4913-ac49-762cc316a611
 :END:
-
-This heading is dedicated to general keybinding decisions I make.
 
 *** execute extended command
 :PROPERTIES:
@@ -9988,6 +10007,22 @@ press as well and even faster than =SPC SPC=.
   "A-x" #'execute-extended-command
   "M-x" #'execute-extended-command)
 #+end_src
+
+*** screenshots
+:PROPERTIES:
+:ID:       2fa0edba-6812-4713-8b52-93901a7fed9a
+:END:
+
+#+begin_src emacs-lisp
+(general-def)
+#+end_src
+
+** general
+:PROPERTIES:
+:ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
+:END:
+
+This heading is dedicated to general keybinding decisions I make.
 
 *** scrolling pages
 
