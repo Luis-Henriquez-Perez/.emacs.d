@@ -7467,6 +7467,14 @@ address later.
       (format "Update %s" (f-base file))))
 #+end_src
 
+**** get password from pass
+:PROPERTIES:
+:ID:       79df7157-adfd-4b29-8091-d95c64524455
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 *** magit
 :PROPERTIES:
 :ID:       d6088ed3-417a-44e8-822b-ce4743f497d0
