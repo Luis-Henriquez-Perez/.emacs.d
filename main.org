@@ -7474,16 +7474,16 @@ address later.
 
 #+begin_src emacs-lisp
 (defadvice! get-credentials-from-pass (:override gac-push)
-  ""
+  "Get my credentials from pass."
   (let ((default-directory (file-name-directory (buffer-file-name buffer)))
-        (username (password-store-get "github"))
-        (password (password-store-get "github"))
-        (repo ())
+        (entry (password-store-parse-entry "github"))
+        (username (password-store-get-field entry "username"))
+        (password (password-store-get entry))
+        (repo (git-repo <buffer>))
         (command (format "%s:%s@%s" username password repository)))
-    (let ((proc (start-process "git" "*git-auto-push*" "git" "push")))
-      (set-process-sentinel proc 'gac-process-sentinel)
-      (set-process-filter proc 'gac-process-filter)))
-  )
+    (alet (start-process "git" "*git-auto-push*" "git" "push")
+      (set-process-sentinel it 'gac-process-sentinel)
+      (set-process-filter it 'gac-process-filter))))
 #+end_src
 
 *** magit
