@@ -7473,6 +7473,14 @@ address later.
 :END:
 
 #+begin_src emacs-lisp
+(defadvice! get-credentials-from-pass (:override gac-push)
+  ""
+  (let ((default-directory (file-name-directory (buffer-file-name buffer)))
+        (command (format "%s:%s@%s" username password repository)))
+    (let ((proc (start-process "git" "*git-auto-push*" "git" "push")))
+      (set-process-sentinel proc 'gac-process-sentinel)
+      (set-process-filter proc 'gac-process-filter)))
+  )
 #+end_src
 
 *** magit
