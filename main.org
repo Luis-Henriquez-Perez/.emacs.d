@@ -1733,9 +1733,12 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
-(defmacro defcommand! ()
+(defmacro defcommand! (name args body)
   "Define a void command."
-  ())
+  `(defun ,name ,args
+     ,docstring
+     (interactive)
+     ,@body))
 #+end_src
 
 ** Packages
