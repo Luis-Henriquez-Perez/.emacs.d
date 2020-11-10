@@ -3923,7 +3923,12 @@ As [[id:][I've mentioned]], querying is a huge part of our workflow. In emacs, y
 find yourself querying for the right command, or for the variable you want help
 on. Traversing the jungle of candidates.
 
-*** ivy
+*** ivy                                                               :disabled:
+:PROPERTIES:
+:ID:       f2cff6ea-cc9f-4f84-b2b6-e7c627f156eb
+:END:
+
+**** ivy
 :PROPERTIES:
 :ID:       68d2ef19-dac6-407f-9220-8da816b873e8
 :END:
@@ -3931,7 +3936,7 @@ on. Traversing the jungle of candidates.
 [[github:abo-abo/swiper][ivy]] provides a user interface for choosing from a list of options by typing a
 query to narrow the list, and then selecting one of the remaining candidates.
 
-**** bootstrap
+***** bootstrap
 :PROPERTIES:
 :ID: 4bf12e8b-7f71-45cc-bf48-c1aec795c9fe
 :END:
@@ -3960,7 +3965,7 @@ been recently opened buffers (this list is managed by [[f26bedb3-a172-4543-afd0-
   (ivy-count-format . "%-4d "))
 #+end_src
 
-**** ivy-avy
+***** ivy-avy
 :PROPERTIES:
 :ID:       a1224932-eb2b-4f6c-949b-de9383506ab8
 :END:
@@ -3974,7 +3979,7 @@ to select candidates quickly.
          ("C-'" . ivy-avy)))
 #+end_src
 
-**** minibuffer bindings
+***** minibuffer bindings
 :PROPERTIES:
 :ID:       5a21af24-4383-40dc-8c53-562f2cf68961
 :END:
@@ -4002,7 +4007,7 @@ candidate.
 (general-def '(emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
 #+end_src
 
-**** remembering used candidates
+***** remembering used candidates
 :PROPERTIES:
 :ID:       203dd3f4-bec7-4e3f-b1cf-30089f2ccb32
 :END:
@@ -4018,7 +4023,7 @@ next completion.
   :hook (ivy-mode . prescient-persist-mode))
 #+end_src
 
-**** sorting and filtering
+***** sorting and filtering
 :PROPERTIES:
 :ID: ec8cd466-c6cf-4b25-9624-07e9d0e0fd0c
 :END:
@@ -4035,7 +4040,7 @@ filtering algorithm that I find preferrable to ivy's defaults.
   (ivy-prescient-retain-classic-highlighting . t))
 #+end_src
 
-**** selecting multiple candidates
+***** selecting multiple candidates
 :PROPERTIES:
 :ID: 2414a29d-e874-4174-8f90-b9d80c001026
 :END:
@@ -4055,14 +4060,14 @@ you to [[file:./multimedia/gifs/ivy-marking-candidates.gif][toggle marking a can
   "C-SPC" #'ivy/toggle-mark)
 #+end_src
 
-*** counsel
+**** counsel
 :PROPERTIES:
 :ID:       47e0919a-0852-4454-853d-7c7875760de8
 :END:
 
 Counsel is a library of convenience functions built on top of ivy.
 
-**** don't include binding information
+***** don't include binding information
 :PROPERTIES:
 :ID:       50e3991d-8c46-4dcb-86d9-79c2bede4e50
 :END:
@@ -4076,7 +4081,7 @@ visually distracting and not particularly useful for me, so I disable it.
   (void-add-advice #'counsel-M-x-transformer :override #'identity))
 #+end_src
 
-**** make the default action setting the font
+***** make the default action setting the font
 :PROPERTIES:
 :ID:       17f2d06a-835c-4bba-960b-d0f8c028a91a
 :END:
@@ -4090,7 +4095,7 @@ visually distracting and not particularly useful for me, so I disable it.
     (set-face-attribute 'default nil :font font)))
 #+end_src
 
-**** counsel
+***** counsel
 :PROPERTIES:
 :ID: f1f77877-1cbc-40c4-b62c-4239a0c338e6
 :END:
@@ -4110,7 +4115,7 @@ that using =ivy= for completion.
   (counsel-pt-base-command . "pt -zS --nocolor --nogroup -e %s"))
 #+end_src
 
-**** remap common commands
+***** remap common commands
 :PROPERTIES:
 :ID:       c117480c-89e6-463b-9d07-cf0155c9c617
 :END:
@@ -4144,7 +4149,7 @@ equivalents.
   [remap yank-pop]                 #'counsel-yank-pop)
 #+end_src
 
-**** no sort commands
+***** no sort commands
 :PROPERTIES:
 :ID:       a9861cab-eded-413f-939d-92b66ed32961
 :END:
@@ -4163,7 +4168,7 @@ candidates sorted.
                #'counsel-buffer-or-recentf)))
 #+end_src
 
-**** counsel-org-capture-string
+***** counsel-org-capture-string
 :PROPERTIES:
 :ID: 799ac569-85e8-43c0-93ae-a00cf982777f
 :END:
@@ -4180,7 +4185,7 @@ completing-read-using replacement for [[helpfn:org-capture][org-capture]] called
   :commands counsel-org-capture-string)
 #+end_src
 
-**** counsel-web
+***** counsel-web
 :PROPERTIES:
 :ID:       4b6f264a-1724-4fc5-8b95-54d14642c429
 :END:
@@ -4193,7 +4198,7 @@ This package lets me search the web via ivy.
   :setq (counsel-web-search-dynamic-update . t))
 #+end_src
 
-*** swiper
+**** swiper
 :PROPERTIES:
 :ID: 732421fb-2eb6-4701-be12-d4b03c726df8
 :END:
@@ -4205,6 +4210,179 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 (use-package! swiper
   :commands swiper swiper-isearch
   :setq (swiper-action-recenter . t))
+#+end_src
+
+*** selectrum
+:PROPERTIES:
+:ID:       294a9fde-e76f-40ce-9552-dd5801318717
+:END:
+
+**** selectrum
+:PROPERTIES:
+:ID:       962a027b-ed50-4bf8-8def-a00a199517bf
+:END:
+
+#+begin_src emacs-lisp
+(use-package! selectrum
+  :hook emacs-startup-hook
+  :setq
+  (selectrum-fix-minibuffer-height . t)
+  (selectrum-should-sort-p . t)
+  (selectrum-count-style . nil)
+  (selectrum-num-candidates-displayed . 15))
+
+(general-def '(insert emacs) selectrum-minibuffer-map
+  "TAB" #'selectrum-next-candidate
+  "C-k" #'selectrum-previous-candidate
+  "C-j" #'selectrum-next-candidate
+  "C-l" #'selectrum/mark-candidate
+  [backtab] #'selectrum-previous-candidate)
+#+end_src
+
+**** selectrum prescient
+:PROPERTIES:
+:ID:       e8c77d62-9c28-4193-9c60-f1148b55f96e
+:END:
+
+#+begin_src emacs-lisp
+(use-package! prescient
+  :hook (selectrum-mode-hook . prescient-persist-mode)
+  :setq
+  (prescient-save-file . (concat VOID-DATA-DIR "prescient-save-file")))
+
+(use-package! selectrum-prescient
+  :hook selectrum-mode-hook
+  :setq
+  (selectrum-preprocess-candidates-function . #'selectrum-prescient--preprocess))
+#+end_src
+
+**** orderless
+:PROPERTIES:
+:ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
+:END:
+
+#+begin_src emacs-lisp
+(use-package! orderless
+  :init
+  (defadvice! orderless:inhibit-filtering-and-highlighting (orig-fn &rest args)
+    "Don't let `selectrum-prescient' filter or highlight.
+Orderless will do this."
+    :around selectrum-prescient-mode
+    (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
+          (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
+      (apply orig-fn args)))
+  :setq
+  (selectrum-refine-candidates-function . #'orderless-filter)
+  (selectrum-highlight-candidates-function . #'orderless-highlight-matches))
+#+end_src
+
+**** utilities
+:PROPERTIES:
+:ID:       7c8cf72d-6429-438c-bb2c-31efb3327b9a
+:END:
+
+***** set font
+:PROPERTIES:
+:ID:       f24d97b6-7c74-491a-a77c-ba3ec22a2b68
+:END:
+
+#+begin_src emacs-lisp
+(defun void/set-font ()
+  "Select xfont."
+  (interactive)
+  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*"))))
+#+end_src
+
+***** swiper
+:PROPERTIES:
+:ID:       dc63f51f-9675-4784-95d2-a25e35edad47
+:END:
+
+#+begin_src emacs-lisp
+(defvar selectrum:swiper-history nil "Submission history for `selectrum-swiper'.")
+
+(defun selectrum/swiper ()
+  "Search for a matching line and jump to the beginning of its text.  Obeys narrowing."
+  (interactive)
+  (let* ((selectrum-should-sort-p nil)
+         (gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+         (minimum-line-number (line-number-at-pos (point-min) t))
+         (current-line-number (line-number-at-pos (point) t))
+         (line-choices (->> (split-string (buffer-string) "\n")
+                            (--map-indexed (unless (string-empty-p it)
+                                             (format "L%d: %s" (+ it-index minimum-line-number) it)))
+                            (-non-nil)))
+         (chosen-line (completing-read "Jump to matching line: " line-choices
+                                       nil t nil 'selectrum:swiper-history))
+         (chosen-line-num (--> chosen-line
+                               (s-match (rx "L" (group (+ digit)) ":") it)
+                               (elt it 1)
+                               (string-to-number it))))
+    (push-mark (point) t)
+    (forward-line (- chosen-line-num current-line-number))
+    (beginning-of-line-text 1)))
+#+end_src
+
+***** switch to buffer
+:PROPERTIES:
+:ID:       70c72340-8601-40a7-9ffe-8296ba720e6a
+:END:
+
+#+begin_src emacs-lisp
+(defun selectrum/switch-buffer ()
+  (interactive)
+  (require 'f)
+  (let* ((selectrum-should-sort-p nil)
+         (other-buffers (->> (buffer-list)
+                             (-remove-item (current-buffer))
+                             (-map #'buffer-name)
+                             (--remove (s-prefix-p " " it))))
+         (buffer-file-paths (->> other-buffers
+                                 (--map (buffer-file-name (get-buffer it)))
+                                 (-non-nil)))
+         (recentf-paths (--remove (-any-p (-partial #'string= (f-full it))
+                                          buffer-file-paths)
+                                  recentf-list)))
+    (alet (completing-read "Select buffer: " (append other-buffers recentf-paths))
+      (funcall (if (-contains-p recentf-list it)
+                   #'find-file
+                 #'switch-to-buffer)
+               it))))
+
+(general-def [remap switch-to-buffer] #'selectrum/switch-buffer)
+#+end_src
+
+***** org outline headings
+:PROPERTIES:
+:ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
+:END:
+
+#+begin_src emacs-lisp
+(defun selectrum/org-outline-headings ()
+  "Jump to an org heading using selectrum."
+  (interactive)
+  (let ((selectrum-should-sort-p nil)
+        (org-outline-path-complete-in-steps)
+        (org-goto-interface 'outline-path-completion))
+    (org-goto)))
+#+end_src
+
+***** org select tags
+:PROPERTIES:
+:ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
+:END:
+
+#+begin_src emacs-lisp
+(defun selectrum/org-select-tags ()
+  "Select tags to add to headline."
+  (interactive)
+  (let* ((current (org-get-tags (point)))
+         (selected (completing-read-multiple "Select org tag(s): " (org-get-buffer-tags))))
+    (alet (-uniq (append (-difference current selected)
+                         (-difference selected current)))
+      (org-set-tags it))))
+
+(general-def [remap org-set-tags-command] #'selectrum/org-select-tags)
 #+end_src
 
 ** company
