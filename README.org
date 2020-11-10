@@ -24,10 +24,7 @@ frame instead of on each window.
 
 These are ideas I try to document things.
 
-** Document Everything
-:PROPERTIES:
-:ID:       4f3ceddd-02fd-4ad2-9b3d-a2ea7340d742
-:END:
+- Document Everything
 
 I think that documentation in the form of docstrings and comments is
 insufficient.
