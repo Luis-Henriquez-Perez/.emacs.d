@@ -29,23 +29,14 @@ These are ideas I try to document things.
 I think that documentation in the form of docstrings and comments is
 insufficient.
 
-** Go Fast
-:PROPERTIES:
-:ID:       bce101e5-4da5-4799-ba2e-14149c45cd5c
-:END:
+- Go Fast
 
 I try. While my startup time is relatively fast compared to other emacs configs,
 I have not yet implemented.
 
-** Robust
-:PROPERTIES:
-:ID:       df0b966f-5b4d-4ce1-8b2c-48a0668fcd5e
-:END:
+- Robustness
 
-** Utilize existing functionality
-:PROPERTIES:
-:ID:       134cd32b-1933-4fac-8032-aa4ffbf2c617
-:END:
+- Use existing functionality when you can
 
 In general, I try to use existing packages instead of doing things from scratch myself.
 
