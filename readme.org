@@ -1,0 +1,33 @@
+* What is this?
+:PROPERTIES:
+:ID:       bf3947fc-4279-4359-871e-e4596a91ccaf
+:END:
+
+This is my emacs configuration.
+
+* Goals
+:PROPERTIES:
+:ID:       1b1ee897-0c73-42e8-95a7-dd7dda181959
+:END:
+
+** speed
+:PROPERTIES:
+:ID:       e36e7886-23b7-42e7-a8f8-ccd9f6092951
+:END:
+
+** asthetic design
+:PROPERTIES:
+:ID:       1791cbe3-723f-4fcc-830b-e6c20634bc20
+:END:
+
+** efficiency
+:PROPERTIES:
+:ID:       7868dc10-e4d1-4b56-b9ec-2d303849a4c5
+:END:
+
+** Screenshots
+:PROPERTIES:
+:ID:       3d62076f-d326-418d-92ed-def9eb70f1fe
+:END:
+
+[[file:./multimedia/screenshots/void-dashboard-one-light.png]]
