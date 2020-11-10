@@ -7476,8 +7476,10 @@ address later.
 (defadvice! get-credentials-from-pass (:override gac-push)
   ""
   (let ((default-directory (file-name-directory (buffer-file-name buffer)))
+        (username (password-store-get "github"))
+        (password (password-store-get "github"))
+        (repo ())
         (command (format "%s:%s@%s" username password repository)))
-    (git-repo)
     (let ((proc (start-process "git" "*git-auto-push*" "git" "push")))
       (set-process-sentinel proc 'gac-process-sentinel)
       (set-process-filter proc 'gac-process-filter)))
