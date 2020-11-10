@@ -24,19 +24,31 @@ frame instead of on each window.
 
 These are ideas I try to document things.
 
-- Document Everything
+** Document Everything
+:PROPERTIES:
+:ID:       4f3ceddd-02fd-4ad2-9b3d-a2ea7340d742
+:END:
 
 I think that documentation in the form of docstrings and comments is
 insufficient.
 
-- Go Fast
+** Go Fast
+:PROPERTIES:
+:ID:       bce101e5-4da5-4799-ba2e-14149c45cd5c
+:END:
 
 I try. While my startup time is relatively fast compared to other emacs configs,
 I have not yet implemented.
 
-- Robustness
+** Robust
+:PROPERTIES:
+:ID:       df0b966f-5b4d-4ce1-8b2c-48a0668fcd5e
+:END:
 
-- Use existing functionality when you can
+** Utilize existing functionality
+:PROPERTIES:
+:ID:       134cd32b-1933-4fac-8032-aa4ffbf2c617
+:END:
 
 In general, I try to use existing packages instead of doing things from scratch myself.
 
