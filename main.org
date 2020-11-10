@@ -7480,7 +7480,7 @@ address later.
         (username (password-store-get-field entry "username"))
         (password (password-store-get entry))
         (repo (git-repo <buffer>))
-        (command (format "%s:%s@%s" username password repository)))
+        (command (format "%s:%s@%s" username password repo)))
     (alet (start-process "git" "*git-auto-push*" "git" "push")
       (set-process-sentinel it 'gac-process-sentinel)
       (set-process-filter it 'gac-process-filter))))
