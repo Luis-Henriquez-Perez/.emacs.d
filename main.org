@@ -5118,7 +5118,7 @@ From checking out [[][scrot]], I learned how to specify.
   (-let* ((id (frame-parameter (selected-frame) 'window-id))
           ((x y width height) (window-pixel-edges))
           (geometry (format "%dx%d+%d+%d" width height x y))
-          (filename (format "%s%s~%s.png" VOID-SCREENSHOT-DIR "image" (s-replace "\s" "~" (ts-format)))))
+          (filename ))
     (void-screenshot)))
 #+end_src
 
