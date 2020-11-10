@@ -7477,6 +7477,7 @@ address later.
   ""
   (let ((default-directory (file-name-directory (buffer-file-name buffer)))
         (command (format "%s:%s@%s" username password repository)))
+    (git-repo)
     (let ((proc (start-process "git" "*git-auto-push*" "git" "push")))
       (set-process-sentinel proc 'gac-process-sentinel)
       (set-process-filter proc 'gac-process-filter)))
