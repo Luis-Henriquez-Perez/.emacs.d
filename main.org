@@ -7431,7 +7431,12 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :ID: d99a378c-449f-4a0d-9b88-dd77d5a41bb1
 :END:
 
-*** auto-commit
+*** auto commit
+:PROPERTIES:
+:ID:       475c0383-543e-4381-82c0-6b5328068424
+:END:
+
+**** auto-commit
 :PROPERTIES:
 :ID:       36b71eb7-b71d-47a0-ad0a-5d62825fffa3
 :END:
