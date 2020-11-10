@@ -1,4 +1,3 @@
-
 * Core
 :PROPERTIES:
 :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
@@ -31,7 +30,9 @@ When VOID is performing computationally intensive operations,
 `gc-cons-threshold' is set to this value.")
 
 (defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
-  "The default value for `gc-cons-threshold'.")
+  "The default value for `gc-cons-threshold'.
+If you experience freezing, decrease this. If you experience stuttering,
+increase this.")
 
 (defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
   "The upper limit for `gc-cons-percentage'.
@@ -94,7 +95,7 @@ time.
 :END:
 
 These are important files and directories that I end up referring to often in my
-code. Well, not so much =VOID-README-FILE= and =VOID-TODO-FILE= but the others are
+code. Well, not so much =VOID-MAIN-ORG-FILE= and =VOID-TODO-FILE= but the others are
 referenced alot.
 
 One of the ideas in Void is that good text documentation is not enough. I want
@@ -108,10 +109,10 @@ behaviors, bugs features or whatever else I want to in emacs.
 (defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-README-FILE (concat VOID-EMACS-DIR "README.org")
+(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
   "Path to the Org file that when that Void.")
 
-(defconst VOID-SCREENSHOT-DIR (concat VOID-EMACS-DIR "screenshots/")
+(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
   "Directory where any multimedia describing VOID should go.
  These could screenshots are for detailing any problems, interesting behaviors or features.")
 
@@ -307,8 +308,8 @@ completely reproducable.
   (setq straight-use-package-version 'straight)
   (setq straight-use-package-by-default t)
   (setq straight-enable-package-integration t)
-  (setq straight-disable-autoloads t)
-  (setq straight-cache-autoloads nil)
+  (setq straight-disable-autoloads nil)
+  (setq straight-cache-autoloads t)
   (setq straight-check-for-modifications nil)
   (setq straight-enable-package-integration nil)
   (setq straight-recipes-emacsmirror-use-mirror t))
@@ -852,7 +853,7 @@ The advice keyword allows for a quick and convenient adding of advice.
 (push :advice use-package-deferring-keywords)
 #+end_src
 
-***** TODO trigger
+***** trigger
 :PROPERTIES:
 :ID:       0a3580f4-42a3-4b17-807b-366611d6f90a
 :END:
@@ -1723,7 +1724,7 @@ should return the value of structure for that symbol.
 BODY contains any number of `<NAME>' where NAME refers to the name of the symbol."
   (declare (indent 2))
   (let* ((symbols (->> (flatten-list body)
-                       (-select #'void-anaphoric-symbol-p)
+                       (-filter #'void-anaphoric-symbol-p)
                        (-uniq)))
          (names (-map #'void-anaphoric-true-symbol symbols))
          (structure-sym (make-symbol "structure")))
@@ -1794,6 +1795,20 @@ SYM is a symbol that stores a list."
   "Append LISTS to SYM by altering them in place."
   (declare (indent 1))
   `(setq ,sym (nconc ,sym ,@lists)))
+#+end_src
+
+*** defcommand!
+:PROPERTIES:
+:ID:       fd5db6dc-9647-45d9-be02-03e2a5cd5564
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defcommand! (name args body)
+  "Define a void command."
+  `(defun ,name ,args
+     ,docstring
+     (interactive)
+     ,@body))
 #+end_src
 
 ** Packages
@@ -2909,7 +2924,7 @@ of the Emacs frame are recorded after they expire.
 #+begin_src emacs-lisp
 (defun void/switch-to-main-org-file ()
   (interactive)
-  (find-file (concat VOID-EMACS-DIR "README.org")))
+  (find-file (concat VOID-EMACS-DIR "main.org")))
 #+end_src
 
 **** main todo file
@@ -3065,9 +3080,9 @@ to waste time loading ~void-main-elisp-file~.
 
 #+begin_src emacs-lisp
 (defhook! tangle-maybe (after-save-hook)
-  "Tangle `VOID-README-FILE' asynchronously when it is saved."
+  "Tangle `VOID-MAIN-ORG-FILE' asynchronously when it is saved."
   (when (and (require 'async nil t)
-             (string= (file-truename VOID-README-FILE)
+             (string= (file-truename VOID-MAIN-ORG-FILE)
                       (or (buffer-file-name (current-buffer)) ""))
              (void-needs-tangling-p))
     (async-start
@@ -3083,7 +3098,7 @@ to waste time loading ~void-main-elisp-file~.
      (lambda (_)
        (void-log
         (concat (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
-                " tangling `VOID-README-FILE'."))))))
+                " tangling `VOID-MAIN-ORG-FILE'."))))))
 #+end_src
 
 ** UI
@@ -3372,8 +3387,8 @@ makes emacs feel like a window manager with gaps.
   :hook (window-setup . window-divider-mode)
   :custom
   (window-divider-default-places  t)
-  (window-divider-default-bottom-width 10)
-  (window-divider-default-right-width  10)
+  (window-divider-default-bottom-width 4)
+  (window-divider-default-right-width  4)
   :config
   (set-face-foreground 'window-divider "black")
   (blink-cursor-mode -1))
@@ -4127,37 +4142,178 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
   :setq (swiper-action-recenter . t))
 #+end_src
 
-*** selectrum                                                         :disabled:
+*** selectrum
 :PROPERTIES:
-:ID:       06f3ca3b-3af5-46c7-8978-978b752942d1
+:ID:       294a9fde-e76f-40ce-9552-dd5801318717
 :END:
 
 **** selectrum
 :PROPERTIES:
-:ID:       1c8a1295-d74c-43a2-b1af-fe54eac5d5ff
+:ID:       962a027b-ed50-4bf8-8def-a00a199517bf
 :END:
 
 #+begin_src emacs-lisp
-(use-package! selectrum)
+(use-package! selectrum
+  :hook emacs-startup-hook
+  :setq
+  (selectrum-fix-minibuffer-height . t)
+  (selectrum-should-sort-p . t)
+  (selectrum-count-style . nil)
+  (selectrum-num-candidates-displayed . 15))
+
+(general-def '(insert emacs) selectrum-minibuffer-map
+  "TAB" #'selectrum-next-candidate
+  "C-k" #'selectrum-previous-candidate
+  "C-j" #'selectrum-next-candidate
+  "C-l" #'selectrum/mark-candidate
+  [backtab] #'selectrum-previous-candidate)
 #+end_src
 
 **** selectrum prescient
 :PROPERTIES:
-:ID:       3e261b91-b0e1-47ec-aeef-3c43c4eded2a
-:END:
-
-**** embark
-:PROPERTIES:
-:ID:       ac9042f8-f9ee-49fe-a871-557c9acaf2d3
+:ID:       e8c77d62-9c28-4193-9c60-f1148b55f96e
 :END:
 
 #+begin_src emacs-lisp
+(use-package! prescient
+  :hook (selectrum-mode-hook . prescient-persist-mode)
+  :setq
+  (prescient-save-file . (concat VOID-DATA-DIR "prescient-save-file")))
+
+(use-package! selectrum-prescient
+  :hook selectrum-mode-hook
+  :setq
+  (selectrum-preprocess-candidates-function . #'selectrum-prescient--preprocess))
 #+end_src
 
-*** helm                                                              :disabled:
+**** orderless
 :PROPERTIES:
-:ID:       1b29973a-a6b5-42d2-895c-34974df6fdf4
+:ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
 :END:
+
+#+begin_src emacs-lisp
+(use-package! orderless
+  :init
+  (defadvice! orderless:inhibit-filtering-and-highlighting (orig-fn &rest args)
+    "Don't let `selectrum-prescient' filter or highlight.
+Orderless will do this."
+    :around selectrum-prescient-mode
+    (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
+          (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
+      (apply orig-fn args)))
+  :setq
+  (selectrum-refine-candidates-function . #'orderless-filter)
+  (selectrum-highlight-candidates-function . #'orderless-highlight-matches))
+#+end_src
+
+**** utilities
+:PROPERTIES:
+:ID:       7c8cf72d-6429-438c-bb2c-31efb3327b9a
+:END:
+
+***** set font
+:PROPERTIES:
+:ID:       f24d97b6-7c74-491a-a77c-ba3ec22a2b68
+:END:
+
+#+begin_src emacs-lisp
+(defun void/set-font ()
+  "Select xfont."
+  (interactive)
+  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*"))))
+#+end_src
+
+***** swiper
+:PROPERTIES:
+:ID:       dc63f51f-9675-4784-95d2-a25e35edad47
+:END:
+
+#+begin_src emacs-lisp
+(defvar selectrum:swiper-history nil "Submission history for `selectrum-swiper'.")
+
+(defun selectrum/swiper ()
+  "Search for a matching line and jump to the beginning of its text.  Obeys narrowing."
+  (interactive)
+  (let* ((selectrum-should-sort-p nil)
+         (gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+         (minimum-line-number (line-number-at-pos (point-min) t))
+         (current-line-number (line-number-at-pos (point) t))
+         (line-choices (->> (split-string (buffer-string) "\n")
+                            (--map-indexed (unless (string-empty-p it)
+                                             (format "L%d: %s" (+ it-index minimum-line-number) it)))
+                            (-non-nil)))
+         (chosen-line (completing-read "Jump to matching line: " line-choices
+                                       nil t nil 'selectrum:swiper-history))
+         (chosen-line-num (--> chosen-line
+                               (s-match (rx "L" (group (+ digit)) ":") it)
+                               (elt it 1)
+                               (string-to-number it))))
+    (push-mark (point) t)
+    (forward-line (- chosen-line-num current-line-number))
+    (beginning-of-line-text 1)))
+#+end_src
+
+***** switch to buffer
+:PROPERTIES:
+:ID:       70c72340-8601-40a7-9ffe-8296ba720e6a
+:END:
+
+#+begin_src emacs-lisp
+(defun selectrum/switch-buffer ()
+  (interactive)
+  (require 'f)
+  (let* ((selectrum-should-sort-p nil)
+         (other-buffers (->> (buffer-list)
+                             (-remove-item (current-buffer))
+                             (-map #'buffer-name)
+                             (--remove (s-prefix-p " " it))))
+         (buffer-file-paths (->> other-buffers
+                                 (--map (buffer-file-name (get-buffer it)))
+                                 (-non-nil)))
+         (recentf-paths (--remove (-any-p (-partial #'string= (f-full it))
+                                          buffer-file-paths)
+                                  recentf-list)))
+    (alet (completing-read "Select buffer: " (append other-buffers recentf-paths))
+      (funcall (if (-contains-p recentf-list it)
+                   #'find-file
+                 #'switch-to-buffer)
+               it))))
+
+(general-def [remap switch-to-buffer] #'selectrum/switch-buffer)
+#+end_src
+
+***** org outline headings
+:PROPERTIES:
+:ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
+:END:
+
+#+begin_src emacs-lisp
+(defun selectrum/org-outline-headings ()
+  "Jump to an org heading using selectrum."
+  (interactive)
+  (let ((selectrum-should-sort-p nil)
+        (org-outline-path-complete-in-steps)
+        (org-goto-interface 'outline-path-completion))
+    (org-goto)))
+#+end_src
+
+***** org select tags
+:PROPERTIES:
+:ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
+:END:
+
+#+begin_src emacs-lisp
+(defun selectrum/org-select-tags ()
+  "Select tags to add to headline."
+  (interactive)
+  (let* ((current (org-get-tags (point)))
+         (selected (completing-read-multiple "Select org tag(s): " (org-get-buffer-tags))))
+    (alet (-uniq (append (-difference current selected)
+                         (-difference selected current)))
+      (org-set-tags it))))
+
+(general-def [remap org-set-tags-command] #'selectrum/org-select-tags)
+#+end_src
 
 ** company
 :PROPERTIES:
@@ -5037,61 +5193,63 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
 cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or [[https://www.reddit.com/r/emacs/][emacs-reddit]] or
 even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or often not
-utilized at all). In Void, where documentation is *very* important, I supplement
-my description of problems with pictures.
+utilized at all).
 
-*** screenshot cairo
+There are three screenshot packages I know of [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and
+[[][]]. But they all have their downsides. Screenshot. Scrot. escr.
+
+*** take screenshot
 :PROPERTIES:
-:ID:       d979ca37-e4e4-4205-bb94-b1ad6cfe1651
+:ID:       59a326d7-6199-4e34-b5e1-8c3cb0128232
 :END:
 
-If emacs 27 has been compiled with Cairo support, it can take screenshots. I
-adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs]].
-
 #+begin_src emacs-lisp
-(defun void/take-screenshot ()
-  "Take a screenshot and save it in `VOID-MULTIMEDIA-DIR'."
-  (let* ((entered-name (read-string "Image Name: "))
-         (default-name (format "image-%s" (ts-format)))
-         (image-name (if (string-empty-p entered-name) default-name entered-name))
-         (filename (format "%s%s.svg" VOID-MULTIMEDIA-DIR image-name))
-	     (data (x-export-frames nil 'svg)))
-    (with-temp-file filename
-      (insert data))
-    (kill-new filename)
-    (message "%s -> %s" (f-filename filename) VOID-MULTIMEDIA-DIR)))
+(defun void--screenshot (geometry image-name &rest args)
+  "Take a screenshot of area."
+  (let [(x y height width) geometry]
+    (call-process-shell-command
+     "maim" nil nil nil
+     "--geometry" (format "%dx%d+%d+%d" width height x y)
+     image-name)))
 #+end_src
 
-*** screenshot
+*** screenshot-filename
 :PROPERTIES:
-:ID: c0975eae-c03b-4d2a-a546-06c05197eded
+:ID:       1327940f-49ff-4a5a-8623-166bbc426967
 :END:
 
-[[https://github.com/emacsmirror/screenshot.git][screenshot]] is another emacs screenshot package that.
-
 #+begin_src emacs-lisp
-(use-package! screenshot :commands screenshot)
+(defun void--screenshot-filename ()
+  "Return file name for screenshot."
+  (alet (filename (read-string "Image name: " (format-time-string "-%Y-%m-%d")))))
 #+end_src
 
-*** escr                                                              :disabled:
+*** use current window
 :PROPERTIES:
-:ID:       06f23fc2-7f6b-4812-a14d-185b42a42976
+:ID:       04f42f4f-40e2-4376-82e7-5dad06bfdb1d
 :END:
 
+From checking out [[][scrot]], I learned how to specify.
+
 #+begin_src emacs-lisp
-(use-package! escr :disabled t)
+(defun void/screenshot-current-window ()
+  "Take a screenshot of the current Emacs window."
+  (interactive)
+  (void--screenshot (window-pixel-edges) (void--screenshot-filename)))
 #+end_src
 
-*** scrot
+*** use current frame
 :PROPERTIES:
-:ID: 325935aa-b0f1-49b6-8c67-1173c5a1d42b
+:ID:       a92cd2f2-78a7-4a5a-83f5-a6877d22e99d
 :END:
 
-Like [[id:c0975eae-c03b-4d2a-a546-06c05197eded][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] is screenshot taking utility. Interestingly, scrot
-has a function that can capture a screenshot of a particular emacs window.
-
 #+begin_src emacs-lisp
-(use-package! scrot :straight (:host github :repo "dakra/scrot.el"))
+(defun void/screenshot-current-frame ()
+  "Take a screenshot of the current Emacs frame"
+  (interactive)
+  (let ((height (frame-pixel-height))
+        (width (frame-pixel-width)))
+    (void--screenshot (window-pixel-edges) (void--screenshot-filename))))
 #+end_src
 
 ** gifs
@@ -7382,7 +7540,7 @@ address later.
   :bind (:map magit-status-mode-map
          ([remap magit-mode-bury-buffer] . magit/quit))
   :setq
-  (magit-completing-read-function . #'ivy-completing-read)
+  (magit-completing-read-function . #'completing-read)
   (magit-revision-show-gravatars . '("^Author:     " . "^Commit:     "))
   (magit-diff-refine-hunk . t)
   (magit-auto-revert-mode . nil)
@@ -8150,7 +8308,7 @@ when headline contents begin.
 #+begin_src emacs-lisp
 (defun org:todo-keywords ()
   "Return list of all TODO keywords."
-  (--select (and (stringp it) (not (string= "|" it)))
+  (--filter (and (stringp it) (not (string= "|" it)))
             (flatten-list org-todo-keywords)))
 #+end_src
 
@@ -9120,17 +9278,6 @@ have the date created.
               ,@org-capture:defaults)))))
 #+end_src
 
-***** default template keyword for evil
-:PROPERTIES:
-:ID:       2dd987b5-a4b7-4f51-8e71-5324e06d9e97
-:END:
-
-#+begin_src emacs-lisp
-(after! (org-capture evil)
-  (prepend! org-capture:defaults
-    (list :hook #'evil-insert-state)))
-#+end_src
-
 **** capture templates
 :PROPERTIES:
 :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
@@ -9288,7 +9435,7 @@ current week.
 #+begin_src emacs-lisp
 (use-feature! org-refile
   :pre-setq
-  (org-refile-targets . `((,VOID-README-FILE . (:maxlevel . 10))
+  (org-refile-targets . `((,VOID-MAIN-ORG-FILE . (:maxlevel . 10))
                           (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
   (org-refile-use-outline-path . 'file)
   (org-refile-allow-creating-parent-nodes . t)
@@ -9829,22 +9976,6 @@ graphical interface but.
   (if (display-graphic-p) (apply <orig-fn> <args>) ""))
 #+end_src
 
-** themes
-:PROPERTIES:
-:ID:       d21b01bd-b5fe-461e-bd3e-54bcde7a8244
-:END:
-
-*** circadian                                                         :disabled:
-:PROPERTIES:
-:ID:       1f8dfb73-9709-4b3b-b02f-0c81b04665f3
-:END:
-
-[[https://github.com/GuidoSchmidt/circadian.el][circadian]] manages the loading of themes at certain time.
-
-#+begin_src emacs-lisp
-(use-package! circadian)
-#+end_src
-
 * Keybindings
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
@@ -9864,7 +9995,7 @@ This heading is dedicated to general keybinding decisions I make.
 
 One of the most common--if not the most common--command you use in Emacs is
 [[helpfn:execute-extended-command][execute-extended-command]]. This command let's you search any other command and
-upon pressing enter, you execute the command. The fact that this command is
+upon pressing enter, then you execute the command. The fact that this command is
 invoked so frequently demands it have one of the shortest, easiest to press
 bindings. I chose to give it =SPC SPC= and =;=. =SPC SPC= is short and quick to
 type as well as consistent with other =SPC= bindings. While =;= is super fast to
@@ -9883,24 +10014,6 @@ press as well and even faster than =SPC SPC=.
 #+end_src
 
 *** scrolling pages
-:PROPERTIES:
-:ID: 4861fa41-7185-471f-bfad-bba1283414ce
-:END:
-
-I scroll pages all the time. The default binding for scrolling pages in evil are
-=C-j= to scroll down and =C-k= to scroll up. These chords are too much for such
-common commands however, so I bound them to =J= and =K= respectively.
-
-#+begin_src emacs-lisp
-(general-def 'normal
-  "K" #'evil-scroll-page-up
-  "J" #'evil-scroll-page-down)
-#+end_src
-
-*** increasing text scale
-:PROPERTIES:
-:ID: 927dedb6-eee9-47ff-9298-c2e21bbce524
-:END:
 
 The commands [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale-decrease][text-scale-decrease]] increase and decrease
 the size of buffer text respectively. I play with text scale very often.
@@ -10087,7 +10200,6 @@ Emacs and for that we need all the help we can get.
   "k" (list :def #'describe-key            :wk "key")
   "f" (list :def #'describe-function       :wk "function")
   "l" (list :def #'global-command-log-mode :wk "command log")
-  "i" (list :def #'helm-info :wk "info")
   "a" (list :def #'apropos                 :wk "apropos"))
 #+end_src
 
@@ -10139,9 +10251,7 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   ""  (list :ignore t :wk "search")
-  "s" (list :def #'swiper :wk "swiper")
-  "w" (list :def #'counsel-search :wk "web")
-  "i" (list :def #'helm-info :wk "info"))
+  "s" (list :def #'swiper :wk "swiper"))
 
 (define-leader-key!
   :infix "s"
