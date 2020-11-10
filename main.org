@@ -5095,7 +5095,7 @@ There are three screenshot packages I know of [[][screenshot]], [[https://github
 :END:
 
 #+begin_src emacs-lisp
-(defun void--screenshot (x y height width)
+(defun void--screenshot (x y height width &optional image-name)
   "Take a screenshot of area."
   )
 #+end_src
