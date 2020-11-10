@@ -5198,58 +5198,34 @@ utilized at all).
 There are three screenshot packages I know of [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and
 [[][]]. But they all have their downsides. Screenshot. Scrot. escr.
 
-*** take screenshot
+*** escr
 :PROPERTIES:
-:ID:       59a326d7-6199-4e34-b5e1-8c3cb0128232
+:ID:       f71ee7f4-752d-4d90-9cf9-874cb1a1af11
 :END:
 
 #+begin_src emacs-lisp
-(defun void--screenshot (geometry image-name &rest args)
-  "Take a screenshot of area."
-  (let [(x y height width) geometry]
-    (call-process-shell-command
-     "maim" nil nil nil
-     "--geometry" (format "%dx%d+%d+%d" width height x y)
-     image-name)))
+(use-package! escr
+  :straight (:host github :repo "atykhonov/escr")
+  :setq (escr-screenshot-directory . VOID-SCREENSHOT-DIR))
 #+end_src
 
-*** screenshot-filename
+*** tell =escr--screenshot= to use maim
 :PROPERTIES:
-:ID:       1327940f-49ff-4a5a-8623-166bbc426967
+:ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
 :END:
 
 #+begin_src emacs-lisp
-(defun void--screenshot-filename ()
-  "Return file name for screenshot."
-  (alet (filename (read-string "Image name: " (format-time-string "-%Y-%m-%d")))))
-#+end_src
-
-*** use current window
-:PROPERTIES:
-:ID:       04f42f4f-40e2-4376-82e7-5dad06bfdb1d
-:END:
-
-From checking out [[][scrot]], I learned how to specify.
-
-#+begin_src emacs-lisp
-(defun void/screenshot-current-window ()
-  "Take a screenshot of the current Emacs window."
-  (interactive)
-  (void--screenshot (window-pixel-edges) (void--screenshot-filename)))
-#+end_src
-
-*** use current frame
-:PROPERTIES:
-:ID:       a92cd2f2-78a7-4a5a-83f5-a6877d22e99d
-:END:
-
-#+begin_src emacs-lisp
-(defun void/screenshot-current-frame ()
-  "Take a screenshot of the current Emacs frame"
-  (interactive)
-  (let ((height (frame-pixel-height))
-        (width (frame-pixel-width)))
-    (void--screenshot (window-pixel-edges) (void--screenshot-filename))))
+(defadvice! use-miam (:override (x y width height) escr--screenshot)
+  (let ((window-id (frame-parameter (selected-frame) 'window-id))
+        (crop (format "%sx%s+%s+%s" width height x y))
+        (filename (thread-last escr-filename-format
+                    (format-time-string (current-time))
+                    (expand-file-name escr-screenshot-directory))))
+    (call-process "miam" nil nil nil
+                  "--window" window-id
+                  "--geometry" crop
+                  "--quality" escr-screenshot-quality
+                  filename)))
 #+end_src
 
 ** gifs
