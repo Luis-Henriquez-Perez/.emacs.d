@@ -5089,6 +5089,17 @@ utilized at all).
 
 There are three screenshot packages I know of [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[][]].
 
+*** take screenshot
+:PROPERTIES:
+:ID:       59a326d7-6199-4e34-b5e1-8c3cb0128232
+:END:
+
+#+begin_src emacs-lisp
+(defun void-take-screenshot (x y height width)
+  "Take a screenshot of area."
+  )
+#+end_src
+
 *** use current window
 :PROPERTIES:
 :ID:       04f42f4f-40e2-4376-82e7-5dad06bfdb1d
