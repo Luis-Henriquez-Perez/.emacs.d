@@ -10,8 +10,8 @@ that is 100% customizable.
 #+CAPTION[dashboard]:Font - Anonymous-Pro-Minus | Theme - tsdh-light
 [[./screenshots/image~2020-11-09~19:01:00~-0500.png]]
 
-#+CAPTION[part of my org file]
-[[./screenshots/image~2020-11-09~][]]
+# #+CAPTION[part of my org file]
+# [[./screenshots/image~2020-11-09~][]]
 
 Note that I don't use a modeline because I find it consumes too much space and
 is distracting. Maybe I'll use one if I figure out how to make it appear on the
