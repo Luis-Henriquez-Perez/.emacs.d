@@ -5112,7 +5112,7 @@ There are three screenshot packages I know of [[][screenshot]], [[https://github
 From checking out [[][scrot]], I learned how to specify.
 
 #+begin_src emacs-lisp
-(defun scrot/screenshot-current-window ()
+(defun void/take-screenshot-current-window ()
   "Take a screenshot of the current Emacs window."
   (interactive)
   (-let* ((id (frame-parameter (selected-frame) 'window-id))
