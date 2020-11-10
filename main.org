@@ -5089,22 +5089,6 @@ utilized at all).
 
 There are three screenshot packages I know of [[][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[][]].
 
-*** screenshot cairo
-:PROPERTIES:
-:ID:       d979ca37-e4e4-4205-bb94-b1ad6cfe1651
-:END:
-
-If emacs 27 has been compiled with Cairo support, it can take screenshots. I
-adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs]].
-
-#+begin_src emacs-lisp
-(defun void-take-screenshot-with-emacs (imagename)
-  "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
-  (with-temp-file imagename
-    (insert (x-export-frames nil 'svg)))
-  (kill-new imagename))
-#+end_src
-
 *** use current window
 :PROPERTIES:
 :ID:       04f42f4f-40e2-4376-82e7-5dad06bfdb1d
