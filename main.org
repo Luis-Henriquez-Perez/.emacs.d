@@ -5098,18 +5098,11 @@ If emacs 27 has been compiled with Cairo support, it can take screenshots. I
 adapted this example from [[https://github.com/caiohcs/my-emacs][caiohcs's emacs]].
 
 #+begin_src emacs-lisp
-(defun void/take-screenshot ()
+(defun void-take-screenshot-with-emacs (imagename)
   "Take a screenshot and save it in `VOID-SCREENSHOT-DIR'."
-  (interactive)
-  (let* ((entered-name (read-string "Image Name: "))
-         (default-name (format "image-%s" (ts-format)))
-         (image-name (if (string-empty-p entered-name) default-name entered-name))
-         (filename (format "%s%s.svg" VOID-SCREENSHOT-DIR image-name))
-	     (data (x-export-frames nil 'svg)))
-    (with-temp-file filename
-      (insert data))
-    (kill-new filename)
-    (message "%s -> %s" (f-filename filename) VOID-MULTIMEDIA-DIR)))
+  (with-temp-file imagename
+    (insert (x-export-frames nil 'svg)))
+  (kill-new imagename))
 #+end_src
 
 *** use current window
