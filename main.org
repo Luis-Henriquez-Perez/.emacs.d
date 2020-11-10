@@ -5119,11 +5119,7 @@ From checking out [[][scrot]], I learned how to specify.
           ((x y width height) (window-pixel-edges))
           (geometry (format "%dx%d+%d+%d" width height x y))
           (filename (format "%s%s~%s.png" VOID-SCREENSHOT-DIR "image" (s-replace "\s" "~" (ts-format)))))
-    (call-process-shell-command
-     "maim" nil nil nil
-     "--window" id
-     "--geometry" geometry
-     filename)))
+    (void-screenshot)))
 #+end_src
 
 *** use current frame
