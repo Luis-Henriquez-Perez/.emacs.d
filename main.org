@@ -7467,7 +7467,7 @@ address later.
       (format "Update %s" (f-base file))))
 #+end_src
 
-**** get password from pass
+**** get credentials from pass
 :PROPERTIES:
 :ID:       79df7157-adfd-4b29-8091-d95c64524455
 :END:
