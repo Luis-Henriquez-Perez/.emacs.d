@@ -1354,7 +1354,7 @@ If EXPIRE-FN"
 defun-like syntax.
 
 #+begin_src emacs-lisp
-(defmacro! defhook! (name args &rest body)
+(defmacro defhook! (name args &rest body)
   "Define a hook function and attatch it to HOOK and HOOKS.
 DEPTH and LOCAL are the same as in `add-hook'. BODY is the body of the hook
 function.
@@ -1364,11 +1364,11 @@ function.
   (-let* ((hooks (-take-while (-not #'keywordp) args))
           (local (plist-get hooks :local))
           (depth (or (plist-get hooks :append) (plist-get hooks :depth)))
-          ((docstring _ body) (void--keyword-macro-args body)))
+          ((docstring _ body) (void--keyword-macro-args body))
+          (hook-name (void-symbol-intern 'void-- name '-hook)))
     `(progn
        ,@(-map (lambda (hook)
-                 `(aprog1 (defun void--<name>-hook (&rest _) ,docstring
-                                 ,@body)
+                 `(aprog1 (defun ,hook-name (&rest _) ,docstring ,@body)
                     (void-add-hook ',hook it ,depth ,local)))
                hooks))))
 #+end_src
