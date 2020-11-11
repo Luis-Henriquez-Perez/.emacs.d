@@ -9478,7 +9478,8 @@ press as well and even faster than =SPC SPC=.
 :END:
 
 #+begin_src emacs-lisp
-(define-leader-key!)
+(define-leader-key! :infix "s"
+  "w" (list :))
 #+end_src
 
 ** general
