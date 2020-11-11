@@ -20,12 +20,7 @@ This is my emacs configuration.
 :ID:       1791cbe3-723f-4fcc-830b-e6c20634bc20
 :END:
 
-** efficiency
-:PROPERTIES:
-:ID:       7868dc10-e4d1-4b56-b9ec-2d303849a4c5
-:END:
-
-** Screenshots
+** screenshots
 :PROPERTIES:
 :ID:       3d62076f-d326-418d-92ed-def9eb70f1fe
 :END:
