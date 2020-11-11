@@ -9479,7 +9479,7 @@ press as well and even faster than =SPC SPC=.
 
 #+begin_src emacs-lisp
 (define-leader-key! :infix "s"
-  "w" (list :))
+  "w" (list :def #'web-search :wk "web search"))
 #+end_src
 
 ** general
