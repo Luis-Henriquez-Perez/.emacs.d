@@ -9455,6 +9455,7 @@ press as well and even faster than =SPC SPC=.
 
 #+begin_src emacs-lisp
 (define-leader-key!
+  :package escr
   :infix "as"
   ""  (list :ignore nil                   :wk "screenshot")
   "s" (list :def #'escr-window-screenshot :wk "screenshot")
