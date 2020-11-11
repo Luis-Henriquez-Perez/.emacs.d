@@ -4775,18 +4775,6 @@ plain text webpages. Of course, the main limitation is that w3m will typically
 only display text based web pages well--not ones with lots of interactive
 javascript code.
 
-*** w3m
-:PROPERTIES:
-:ID: 10ddb49f-9280-49f4-8ca4-c46310d8a1dd
-:END:
-
-#+begin_src emacs-lisp
-(use-package! w3m
-  :system-ensure w3m
-  :commands w3m
-  :setq (w3m-search-default-engine . "google"))
-#+end_src
-
 *** traversing
 :PROPERTIES:
 :ID: aded77d8-8088-4aad-b0b9-bb5a45d343f2
@@ -5858,28 +5846,6 @@ Why not just go to the end of the ="= like any other around operator?
 (use-package! auto-yasnippet
   :config (advice-add #'aya-expand :after #'evil-insert-state)
   :setq (aya-persist-snippets-dir . (concat VOID-LOCAL-DIR "auto-snippets/")))
-#+end_src
-
-***** yasnippet
-:PROPERTIES:
-:ID: d3b2a618-d008-427e-9947-44741bb0bbf9
-:END:
-
-#+begin_src emacs-lisp
-(after! (evil lispy)
-  (general-def
-    (:map evil-lispy-state-map)
-    ("l" #'lispy-right)
-    ("h" #'lispy-left)
-    ("f" #'lispy-flow)
-    ("j" #'lispy-down)
-    ("k" #'lispy-up)
-    ("d" #'lispy-different)
-    ("o" #'lispy-other-mode)
-    ("p" #'lispy-eval-other-window)
-    ("P" #'lispy-paste)
-    ("y" #'lispy-occur)
-    ("z" #'lh-knight/body)))
 #+end_src
 
 *** evil-surround
