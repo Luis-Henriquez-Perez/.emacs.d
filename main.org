@@ -1644,8 +1644,7 @@ Furthermore, this could interfere with
         (condition-case error
             (progn ,@body)
           (error
-           (message "Error: %S" error)
-           (message "BODY: %S" ',body))))))
+           (message "Error in `eval-after-load': %S" error))))))
 #+end_src
 
 **** after!
