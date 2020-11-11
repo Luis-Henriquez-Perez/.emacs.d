@@ -3936,7 +3936,7 @@ candidate.
   "C-d"     #'ivy-immediate-done
   "RET"     #'ivy-done)
 
-(define-key! (emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
+(general-def (emacs insert) ivy-minibuffer-map "TAB" #'ivy-next-line)
 #+end_src
 
 ***** remembering used candidates
