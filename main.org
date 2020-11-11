@@ -4826,11 +4826,7 @@ see my inbox, no questions asked.
   (interactive)
   (start-process-shell-command
    "notmuch update" nil
-   "mbsync -a && notmuch new")
-  ;; (notmuch-tag "tag:new and folder:luishenriquezperez@gmail.com/spam" '("+spam" "-new" "-unread"))
-  ;; tag new spam email as spam.
-  ;; mark new email as new.
-  )
+   "mbsync -a && notmuch new"))
 #+end_src
 
 
