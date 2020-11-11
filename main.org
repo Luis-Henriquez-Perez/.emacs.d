@@ -9410,7 +9410,11 @@ press as well and even faster than =SPC SPC=.
 :END:
 
 #+begin_src emacs-lisp
-(define-leader-key!)
+(define-leader-key! "a"
+  "s" "w" #'escr-window-screenshot)
+
+(define-leader-key! "a"
+  "s" "w" #'escr-frame-screenshot)
 #+end_src
 
 ** general
