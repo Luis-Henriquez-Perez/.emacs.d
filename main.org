@@ -4450,6 +4450,53 @@ have 20,000+ emails in a particular account. Unsurprisingly, when we're getting
 so many emails, it's easy to become overwhelmed. Fortunately, there are numerous
 ways to read and send emails in Emacs.
 
+** built-in settings
+:PROPERTIES:
+:ID:       f2f187ab-caef-4fa6-85e7-628f76e3da41
+:END:
+
+*** sendmail
+:PROPERTIES:
+:ID:       48c3332f-975d-4f22-94a8-4ccd394ca82a
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! sendmail
+  :setq
+  (send-mail-function . #'sendmail-send-it)
+  (sendmail-program . (executable-find "msmtp"))
+  (mail-specify-envelope-from . t))
+#+end_src
+
+*** smtpmail
+:PROPERTIES:
+:ID: 4dc1e0a6-5441-4b3e-8b75-ed3626a59154
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! smtpmail
+  :disabled t
+  :setq
+  (smtp-default-mail-server . "mail.example.com")
+  (smtp-smtp-server . "mail.example.com")
+  (smtpmail-smtp-service . 587)
+  (smtpmail-debug-info . t))
+#+end_src
+
+*** message
+:PROPERTIES:
+:ID:       4cf38804-18d6-470c-a9c3-e3327f2bebf9
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! message
+  :setq
+  (message-signature . user-full-name)
+  (message-sendmail-envelope-from . 'header)
+  (message-send-mail-function . #'sendmail-send-it)
+  (message-kill-buffer-on-exit . t))
+#+end_src
+
 ** mu4e
 :PROPERTIES:
 :ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
@@ -4700,53 +4747,6 @@ If there is no match, return POSSIBLE-NAME."
 #+begin_src emacs-lisp
 (defhook! wrap-text-in-message (mu4e-view-mode-hook)
   (setq-local truncate-lines nil))
-#+end_src
-
-** built-in settings
-:PROPERTIES:
-:ID:       f2f187ab-caef-4fa6-85e7-628f76e3da41
-:END:
-
-*** sendmail
-:PROPERTIES:
-:ID:       48c3332f-975d-4f22-94a8-4ccd394ca82a
-:END:
-
-#+begin_src emacs-lisp
-(use-feature! sendmail
-  :setq
-  (send-mail-function . #'sendmail-send-it)
-  (sendmail-program . (executable-find "msmtp"))
-  (mail-specify-envelope-from . t))
-#+end_src
-
-*** smtpmail
-:PROPERTIES:
-:ID: 4dc1e0a6-5441-4b3e-8b75-ed3626a59154
-:END:
-
-#+begin_src emacs-lisp
-(use-feature! smtpmail
-  :disabled t
-  :setq
-  (smtp-default-mail-server . "mail.example.com")
-  (smtp-smtp-server . "mail.example.com")
-  (smtpmail-smtp-service . 587)
-  (smtpmail-debug-info . t))
-#+end_src
-
-*** message
-:PROPERTIES:
-:ID:       4cf38804-18d6-470c-a9c3-e3327f2bebf9
-:END:
-
-#+begin_src emacs-lisp
-(use-feature! message
-  :setq
-  (message-signature . user-full-name)
-  (message-sendmail-envelope-from . 'header)
-  (message-send-mail-function . #'sendmail-send-it)
-  (message-kill-buffer-on-exit . t))
 #+end_src
 
 ** notmuch
