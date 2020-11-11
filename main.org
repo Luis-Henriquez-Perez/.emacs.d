@@ -1595,6 +1595,20 @@ to use =defadvice!= or =anaphoric-defadvice!=.
                 fns))))
 #+end_src
 
+*** defcommand!
+:PROPERTIES:
+:ID:       fd5db6dc-9647-45d9-be02-03e2a5cd5564
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defcommand! (name args body)
+  "Define a void command."
+  `(defun ,name ,args
+     ,docstring
+     (interactive)
+     ,@body))
+#+end_src
+
 *** with-os!
 :PROPERTIES:
 :ID: 1a645745-11ce-4cfb-8c5f-63470f0a61c3
@@ -1791,20 +1805,6 @@ SYM is a symbol that stores a list."
   "Append LISTS to SYM by altering them in place."
   (declare (indent 1))
   `(setq ,sym (nconc ,sym ,@lists)))
-#+end_src
-
-*** defcommand!
-:PROPERTIES:
-:ID:       fd5db6dc-9647-45d9-be02-03e2a5cd5564
-:END:
-
-#+begin_src emacs-lisp
-(defmacro defcommand! (name args body)
-  "Define a void command."
-  `(defun ,name ,args
-     ,docstring
-     (interactive)
-     ,@body))
 #+end_src
 
 ** Packages
