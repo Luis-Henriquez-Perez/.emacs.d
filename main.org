@@ -1633,7 +1633,8 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 
 If an =eval-after-load= block contains an error and it is triggered by a
 feature, the error will keep raised everytime you load that feature.
-Furthermore, this could interfere with the loading of other things.
+Furthermore, this could interfere with the loading of other things. So I catch
+the error and print it out.
 
 #+begin_src emacs-lisp
 (defmacro eval-after-load! (feature &rest body)
