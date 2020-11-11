@@ -5743,30 +5743,6 @@ Why not just go to the end of the ="= like any other around operator?
     (add-hook 'org-capture-mode-hook #'evil-insert-state)))
 #+end_src
 
-***** Info                                                            :disabled:
-:PROPERTIES:
-:ID: c6c401dc-a7cf-460d-9188-1ee8bb2dad24
-:END:
-
-#+begin_src emacs-lisp
-(general-def
-  (:map Info-mode-map)
-  (:m "h"   #'Info-backward-node)
-  (:m "l"   #'Info-forward-node)
-  (:m "H"   #'Info-history-back)
-  (:m "L"   #'Info-history-forward)
-  (:m "r"   #'Info-history)
-  (:m "J"   #'evil-scroll-page-down)
-  (:m "K"   #'evil-scroll-page-up)
-  (:m "f"   #'ace-link-info)
-  (:m "u"   #'Info-up)
-  (:m "U"   #'Info-top-node)
-  (:m "m"   #'Info-menu)
-  (:m "s"   #'Info-search)
-  (:m "RET" #'Info-follow-nearest-node)
-  (:m "q"   #'quit-window))
-#+end_src
-
 ***** eshell
 :PROPERTIES:
 :ID: 0a974596-2004-4ed2-9053-8bc6db1acd84
@@ -8944,22 +8920,6 @@ diary/journal using =org-mode=.
 :PROPERTIES:
 :ID: ee444a86-1266-42dd-9fe8-40192db1fdde
 :END:
-
-**** narrowing and widening                                           :disabled:
-:PROPERTIES:
-:ID: 72bd1c81-bd60-472f-8166-20bb2a16093d
-:END:
-
-#+begin_src emacs-lisp
-(general-def
-  (:localleader "n")
-  (:map org-mode-map)
-  (:wk "Narrow" "" nil)
-  (:wk "To Element" :n "e" #'org-narrow-to-element)
-  (:wk "To Block"   :n "b" #'org-narrow-to-block)
-  (:wk "To Subtree" :n "s" #'org-narrow-to-subtree)
-  (:wk "Widen"      :n "w" #'widen))
-#+end_src
 
 **** replace evil folding commands to outline folding
 :PROPERTIES:
