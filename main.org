@@ -9437,7 +9437,7 @@ press as well and even faster than =SPC SPC=.
   "c" (list :def #'org-capture :wk "capture"))
 #+end_src
 
-*** agenda
+*** agenda                                                            :disabled:
 :PROPERTIES:
 :ID:       35cf5313-12c2-4c65-9492-6b6770163acb
 :END:
