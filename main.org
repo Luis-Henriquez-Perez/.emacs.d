@@ -9471,6 +9471,11 @@ press as well and even faster than =SPC SPC=.
 (define-leader-key!)
 #+end_src
 
+*** search the web
+:PROPERTIES:
+:ID:       45afdf5f-81dc-460c-b123-54af07d5eca4
+:END:
+
 ** general
 :PROPERTIES:
 :ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
