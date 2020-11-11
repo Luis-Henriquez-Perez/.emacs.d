@@ -9444,6 +9444,16 @@ press as well and even faster than =SPC SPC=.
 :ID:       b09e29ab-7289-4e71-bc4c-638f73836c0e
 :END:
 
+*** switch theme
+:PROPERTIES:
+:ID:       d63f1552-d329-4b9d-b6f9-bd22929a33fb
+:END:
+
+*** change font
+:PROPERTIES:
+:ID:       75822f13-1935-4aa7-a9b9-6d624a808fce
+:END:
+
 ** minibuffer
 :PROPERTIES:
 :ID:       eed9eb25-c4d0-4b29-8c8b-8893810a42c3
