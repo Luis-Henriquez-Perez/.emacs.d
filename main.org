@@ -1662,7 +1662,7 @@ from pulling (or failing to pull) in autoloaded macros/features.
 
 #+begin_src emacs-lisp
 (defmacro after! (features &rest body)
-  "Same as `with-eval-after-load' but."
+  "Wrapper around `with-eval-after-load'."
   (declare (indent defun) (debug t))
   (pcase (car-safe features)
     ('or
