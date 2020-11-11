@@ -5191,7 +5191,7 @@ even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots ar
 utilized at all).
 
 There are three screenshot packages I know of [[https://github.com/emacsmirror/screenshot][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and
-[[][escr]]. But they all have their downsides. Screenshot's main command,
+[[https://github.com/atykhonov/escr][escr]]. But they all have their downsides. Screenshot's main command,
 =screenshot=, assumes that you want. =escr= doesn't provide prompt you for the
 filename or provide any option that would prompt you for the file name. =scrot=.
 
