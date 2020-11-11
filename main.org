@@ -6866,6 +6866,16 @@ address later.
   (pass-username-field . "username"))
 #+end_src
 
+**** password-store
+:PROPERTIES:
+:ID:       8dd647c8-ebda-47e1-a8ba-0544c1b75d23
+:END:
+
+#+begin_src emacs-lisp
+(use-package! password-store
+  :ensure pass)
+#+end_src
+
 **** get password
 :PROPERTIES:
 :ID: 52d9423c-32fb-4538-9e69-537e458b52d5
