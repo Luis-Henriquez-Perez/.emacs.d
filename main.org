@@ -9686,7 +9686,7 @@ press as well and even faster than =SPC SPC=.
 :END:
 
 #+begin_src emacs-lisp
-(general-def)
+;; (general-def)
 #+end_src
 
 ** general
