@@ -1636,7 +1636,7 @@ feature, the error will keep raised everytime you load that feature.
 
 #+begin_src emacs-lisp
 (defmacro eval-after-load! (feature &rest body)
-  ""
+  "A wrapper around `eval-after-load!' with error catching."
   (declare (indent defun))
   `(eval-after-load ',feature
      '(with-no-warnings
