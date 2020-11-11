@@ -9434,16 +9434,6 @@ press as well and even faster than =SPC SPC=.
   "w" (list :def #'web-search :wk "web search"))
 #+end_src
 
-*** search the buffer
-:PROPERTIES:
-:ID:       0eddcc4a-995a-41e7-a369-5c59be319861
-:END:
-
-*** search org headlines
-:PROPERTIES:
-:ID:       b09e29ab-7289-4e71-bc4c-638f73836c0e
-:END:
-
 *** switch theme
 :PROPERTIES:
 :ID:       d63f1552-d329-4b9d-b6f9-bd22929a33fb
