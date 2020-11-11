@@ -9540,11 +9540,12 @@ to open another emacs instance.
 (define-leader-key!
   :infix "a"
   ""  (list :ignore t                       :wk "app")
+  "m" (list :def #'mu4e                     :wk "mu4e")
   "E" (list :def #'elfeed                   :wk "elfeed")
   "d" (list :def #'deer                     :wk "deer")
   "r" (list :def #'ranger                   :wk "ranger")
   "e" (list :def #'void/open-emacs-instance :wk "emacs")
-  "q" (list :def #'browse-url           :wk "browse web")
+  "q" (list :def #'browse-url               :wk "browse web")
   "c" (list :def #'org-capture              :wk "capture"))
 #+end_src
 
