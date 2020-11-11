@@ -9454,11 +9454,6 @@ press as well and even faster than =SPC SPC=.
 :ID:       75822f13-1935-4aa7-a9b9-6d624a808fce
 :END:
 
-** minibuffer
-:PROPERTIES:
-:ID:       eed9eb25-c4d0-4b29-8c8b-8893810a42c3
-:END:
-
 ** general
 :PROPERTIES:
 :ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
