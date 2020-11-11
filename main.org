@@ -9423,7 +9423,7 @@ press as well and even faster than =SPC SPC=.
   "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 #+end_src
 
-*** opening apps
+*** opening apps                                                      :disabled:
 :PROPERTIES:
 :ID:       1fddfca6-2cf5-4dc6-869f-b10778c049b8
 :END:
