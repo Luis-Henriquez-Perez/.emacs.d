@@ -9686,7 +9686,9 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   ""  (list :ignore t :wk "search")
-  "s" (list :def #'swiper :wk "swiper"))
+  "s" (list :def #'swiper :wk "swiper")
+  "w" (list :def #'web-search :wk "web")
+  )
 
 (define-leader-key!
   :infix "s"
