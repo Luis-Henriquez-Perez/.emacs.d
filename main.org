@@ -9424,15 +9424,6 @@ press as well and even faster than =SPC SPC=.
   "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 #+end_src
 
-*** opening apps                                                      :disabled:
-:PROPERTIES:
-:ID:       1fddfca6-2cf5-4dc6-869f-b10778c049b8
-:END:
-
-#+begin_src emacs-lisp
-(define-key! )
-#+end_src
-
 *** search the web
 :PROPERTIES:
 :ID:       45afdf5f-81dc-460c-b123-54af07d5eca4
