@@ -1595,12 +1595,7 @@ to use =defadvice!= or =anaphoric-defadvice!=.
                 fns))))
 #+end_src
 
-*** deferred loading
-:PROPERTIES:
-:ID:       1d0746ea-ecb2-46ad-8afa-a54aca74a185
-:END:
-
-**** with-os!
+*** with-os!
 :PROPERTIES:
 :ID: 1a645745-11ce-4cfb-8c5f-63470f0a61c3
 :END:
@@ -1626,7 +1621,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
     `(progn ,@body)))
 #+end_src
 
-**** eval-after-load!
+*** eval-after-load!
 :PROPERTIES:
 :ID:       8d831084-539b-4072-a86a-b55afb09bf02
 :END:
@@ -1648,7 +1643,7 @@ the error and print it out.
            (message "Error in `eval-after-load': %S" error))))))
 #+end_src
 
-**** after!
+*** after!
 :PROPERTIES:
 :ID: b31cd42d-cc57-492d-afae-d7d5e353e931
 :END:
