@@ -4749,65 +4749,6 @@ If there is no match, return POSSIBLE-NAME."
   (setq-local truncate-lines nil))
 #+end_src
 
-** notmuch
-:PROPERTIES:
-:ID: 9bc1dad1-e2ec-4699-b471-a25b28aaaf26
-:END:
-
-Notmuch is probably the most elegant email solution of the three. It operates
-purely on tags. Mu4e uses tags in the background but =notmuch= goes all out.
-There's no concept of folders. A great thing about this is you avoid the
-headache of Mu4e contexts because there is no such thing as a context to
-=notmuch=. =notmuch= couldn't care less about how your emails are organized. Also,
-=notmuch= is even faster than Mu4e when it comes to indexing email. Though this
-probably won't be a significant practical difference unless you have *many*
-emails.
-
-*** bootstrap
-:PROPERTIES:
-:ID: e0cbf1d5-6e48-4a11-8f68-1151d2fc3e28
-:END:
-
-#+begin_src emacs-lisp
-(use-package! notmuch
-  :system-ensure notmuch
-  :commands notmuch
-  :setq
-  (notmuch-search-oldest-first . nil)
-  ;; Don't show notmuch logo.
-  (notmuch-show-logo . nil)
-  (notmuch-show-mark-read-tags . '("-unread")))
-#+end_src
-
-*** accounts
-:PROPERTIES:
-:ID: 5db186cb-8650-4be9-9b9a-9b001a951d35
-:END:
-
-I want this command to be a replacement to `notmuch'. Calling `notmuch'
-displays an (ugly) intro screen. I find that most of the time I just want to
-see my inbox, no questions asked.
-
-#+begin_src emacs-lisp
-(defun notmuch/display-inbox ()
-  "Display the inbox."
-  (interactive)
-  (notmuch-search "tag:inbox" notmuch-search-oldest-first))
-#+end_src
-
-*** update mail
-:PROPERTIES:
-:ID: e98aae10-ae2f-479b-97b5-2a84a202e5fe
-:END:
-
-#+begin_src emacs-lisp
-(defun notmuch/update ()
-  (interactive)
-  (start-process-shell-command
-   "notmuch update" nil
-   "mbsync -a && notmuch new"))
-#+end_src
-
 * Web Browsing
 :PROPERTIES:
 :ID: f0960e47-5dbb-4cca-a17a-f8eb0da445d3
@@ -9491,7 +9432,9 @@ press as well and even faster than =SPC SPC=.
 :END:
 
 #+begin_src emacs-lisp
-(define-leader-key!)
+(define-leader-key!
+  :infix "a"
+  "c" (list :def #'org-capture :wk "capture"))
 #+end_src
 
 *** agenda                                                            :disabled:
@@ -9509,11 +9452,12 @@ press as well and even faster than =SPC SPC=.
 :END:
 
 #+begin_src emacs-lisp
-(define-leader-key! "a"
-  "s" "w" #'escr-window-screenshot)
-
-(define-leader-key! "a"
-  "s" "w" #'escr-frame-screenshot)
+(define-leader-key!
+  :infix "as"
+  ""  (list :ignore nil                   :wk "screenshot")
+  "s" (list :def #'escr-window-screenshot :wk "screenshot")
+  "w" (list :def #'escr-window-screenshot :wk "window")
+  "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 #+end_src
 
 ** general
