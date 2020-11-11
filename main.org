@@ -9449,16 +9449,6 @@ press as well and even faster than =SPC SPC=.
 :ID:       9fca022e-94fc-4acd-a125-a3d9eccb1c5f
 :END:
 
-*** ivy
-:PROPERTIES:
-:ID:       a91b770e-541d-4fee-8e21-fbf8a5f79f66
-:END:
-
-*** selectrum
-:PROPERTIES:
-:ID:       1b263c72-944d-472c-9f3c-b7d2c13f50e9
-:END:
-
 ** general
 :PROPERTIES:
 :ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
