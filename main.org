@@ -1239,6 +1239,11 @@ Bare symbols in BINDINGS are equivalent to:
                         body)))))
 #+end_src
 
+*** defun!
+:PROPERTIES:
+:ID:       21c8e809-6c8f-4118-9de7-fae8491081e7
+:END:
+
 *** hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
