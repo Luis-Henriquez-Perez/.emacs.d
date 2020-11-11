@@ -9386,7 +9386,7 @@ press as well and even faster than =SPC SPC=.
   "M-x" #'execute-extended-command)
 #+end_src
 
-*** capture
+*** capture                                                           :disabled:
 :PROPERTIES:
 :ID:       a10b02c5-40b7-4d2e-81dc-26df984f2a7d
 :END:
@@ -9395,7 +9395,7 @@ press as well and even faster than =SPC SPC=.
 (define-leader-key!)
 #+end_src
 
-*** agenda
+*** agenda                                                            :disabled:
 :PROPERTIES:
 :ID:       35cf5313-12c2-4c65-9492-6b6770163acb
 :END:
@@ -9404,7 +9404,7 @@ press as well and even faster than =SPC SPC=.
 (define-leader-key!)
 #+end_src
 
-*** taking screenshots
+*** taking screenshots                                                :disabled:
 :PROPERTIES:
 :ID:       2fa0edba-6812-4713-8b52-93901a7fed9a
 :END:
