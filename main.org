@@ -9469,7 +9469,7 @@ press as well and even faster than =SPC SPC=.
 :END:
 
 #+begin_src emacs-lisp
-(define-leader-key!)
+(define-key! )
 #+end_src
 
 *** search the web
