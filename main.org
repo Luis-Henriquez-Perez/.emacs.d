@@ -9445,7 +9445,7 @@ press as well and even faster than =SPC SPC=.
 #+begin_src emacs-lisp
 (define-leader-key!
   :infix "a"
-  "a" (list :def :wk))
+  "a" (list :def #'void/open-org-agenda :wk "agenda"))
 #+end_src
 
 *** taking screenshots
