@@ -4450,7 +4450,12 @@ have 20,000+ emails in a particular account. Unsurprisingly, when we're getting
 so many emails, it's easy to become overwhelmed. Fortunately, there are numerous
 ways to read and send emails in Emacs.
 
-** sendmail
+** built-in settings
+:PROPERTIES:
+:ID:       f2f187ab-caef-4fa6-85e7-628f76e3da41
+:END:
+
+*** sendmail
 :PROPERTIES:
 :ID:       48c3332f-975d-4f22-94a8-4ccd394ca82a
 :END:
@@ -4463,7 +4468,7 @@ ways to read and send emails in Emacs.
   (mail-specify-envelope-from . t))
 #+end_src
 
-** smtpmail
+*** smtpmail
 :PROPERTIES:
 :ID: 4dc1e0a6-5441-4b3e-8b75-ed3626a59154
 :END:
@@ -4478,7 +4483,7 @@ ways to read and send emails in Emacs.
   (smtpmail-debug-info . t))
 #+end_src
 
-** message
+*** message
 :PROPERTIES:
 :ID:       4cf38804-18d6-470c-a9c3-e3327f2bebf9
 :END:
