@@ -4829,7 +4829,6 @@ see my inbox, no questions asked.
    "mbsync -a && notmuch new"))
 #+end_src
 
-
 ** gnus                                                               :disabled:
 :PROPERTIES:
 :ID: d9ce252d-5f33-469b-a88c-84131f6f0eaa
