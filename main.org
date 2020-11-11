@@ -9439,6 +9439,11 @@ press as well and even faster than =SPC SPC=.
 :ID:       0eddcc4a-995a-41e7-a369-5c59be319861
 :END:
 
+*** search org headlines
+:PROPERTIES:
+:ID:       b09e29ab-7289-4e71-bc4c-638f73836c0e
+:END:
+
 ** minibuffer
 :PROPERTIES:
 :ID:       eed9eb25-c4d0-4b29-8c8b-8893810a42c3
