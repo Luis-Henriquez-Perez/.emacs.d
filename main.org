@@ -9354,16 +9354,6 @@ press as well and even faster than =SPC SPC=.
   "M-x" #'execute-extended-command)
 #+end_src
 
-*** search the web
-:PROPERTIES:
-:ID:       45afdf5f-81dc-460c-b123-54af07d5eca4
-:END:
-
-#+begin_src emacs-lisp
-(define-leader-key! :infix "s"
-  "w" (list :def #'web-search :wk "web search"))
-#+end_src
-
 ** general
 :PROPERTIES:
 :ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
