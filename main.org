@@ -4816,6 +4816,7 @@ javascript code.
 :END:
 
 =web-search= provides an aptly named command "web-search" to browse the web with.
+=browse-url= is nice, but I never know the exact url I want to visit.
 
 #+begin_src emacs-lisp
 (use-package! web-search
