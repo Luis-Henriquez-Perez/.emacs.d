@@ -4800,12 +4800,7 @@ javascript code.
 
 ** browse-url
 :PROPERTIES:
-:ID:       92e4183b-0fbf-44fa-a939-3f8e017deb4f
-:END:
-
-*** qutebrowser
-:PROPERTIES:
-:ID:       3277cd4e-01ce-40da-9d1e-9bf167d92aef
+:ID:       9eda7617-8492-4459-87db-ba5d92222a9b
 :END:
 
 #+begin_src emacs-lisp
