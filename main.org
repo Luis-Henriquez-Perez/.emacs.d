@@ -9619,7 +9619,7 @@ prompt asking me if I'm sure.
   :infix "s"
   ""  (list :ignore t :wk "search")
   "s" (list :def #'swiper :wk "swiper")
-  "w" (list :def #'web-search :wk "web"))
+  "w" (list :def #'search-web/default-engine :wk "web"))
 
 (define-leader-key!
   :infix "s"
