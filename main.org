@@ -9468,7 +9468,7 @@ These keybindings are for opening particular apps.
   "d" (list :def #'deer                     :wk "deer")
   "r" (list :def #'ranger                   :wk "ranger")
   "e" (list :def #'void/open-emacs-instance :wk "emacs")
-  "q" (list :def #'web-search               :wk "browse web")
+  "q" (list :def #'search-web/default-engine               :wk "browse web")
   "c" (list :def #'org-capture              :wk "capture"))
 
 (define-leader-key! "s" (list :ignore nil :wk "screenshot"))
