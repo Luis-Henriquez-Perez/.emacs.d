@@ -9354,42 +9354,6 @@ press as well and even faster than =SPC SPC=.
   "M-x" #'execute-extended-command)
 #+end_src
 
-*** capture
-:PROPERTIES:
-:ID:       a10b02c5-40b7-4d2e-81dc-26df984f2a7d
-:END:
-
-#+begin_src emacs-lisp
-(define-leader-key!
-  :infix "a"
-  "c" (list :def #'org-capture :wk "capture"))
-#+end_src
-
-*** agenda                                                            :disabled:
-:PROPERTIES:
-:ID:       35cf5313-12c2-4c65-9492-6b6770163acb
-:END:
-
-#+begin_src emacs-lisp
-(define-leader-key!
-  :infix "a"
-  "a" (list :def #'void/open-org-agenda :wk "agenda"))
-#+end_src
-
-*** taking screenshots
-:PROPERTIES:
-:ID:       2fa0edba-6812-4713-8b52-93901a7fed9a
-:END:
-
-#+begin_src emacs-lisp
-(define-leader-key!
-  :infix "as"
-  ""  (list :ignore nil                   :wk "screenshot")
-  "s" (list :def #'escr-window-screenshot :wk "screenshot")
-  "w" (list :def #'escr-window-screenshot :wk "window")
-  "f" (list :def #'escr-frame-screenshot  :wk "frame"))
-#+end_src
-
 *** search the web
 :PROPERTIES:
 :ID:       45afdf5f-81dc-460c-b123-54af07d5eca4
@@ -9399,16 +9363,6 @@ press as well and even faster than =SPC SPC=.
 (define-leader-key! :infix "s"
   "w" (list :def #'web-search :wk "web search"))
 #+end_src
-
-*** switch theme
-:PROPERTIES:
-:ID:       d63f1552-d329-4b9d-b6f9-bd22929a33fb
-:END:
-
-*** change font
-:PROPERTIES:
-:ID:       75822f13-1935-4aa7-a9b9-6d624a808fce
-:END:
 
 ** minibuffer
 :PROPERTIES:
@@ -9511,6 +9465,7 @@ to open another emacs instance.
 (define-leader-key!
   :infix "a"
   ""  (list :ignore t                       :wk "app")
+  "a" (list :def #'void/open-org-agenda :wk "agenda")
   "m" (list :def #'mu4e                     :wk "mu4e")
   "E" (list :def #'elfeed                   :wk "elfeed")
   "d" (list :def #'deer                     :wk "deer")
@@ -9518,6 +9473,13 @@ to open another emacs instance.
   "e" (list :def #'void/open-emacs-instance :wk "emacs")
   "q" (list :def #'browse-url               :wk "browse web")
   "c" (list :def #'org-capture              :wk "capture"))
+
+(define-leader-key!
+  :infix "as"
+  ""  (list :ignore nil                   :wk "screenshot")
+  "s" (list :def #'escr-window-screenshot :wk "screenshot")
+  "w" (list :def #'escr-window-screenshot :wk "window")
+  "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 #+end_src
 
 ** file
