@@ -4819,16 +4819,17 @@ javascript code.
 =browse-url= is nice, but I never know the exact url I want to visit.
 
 #+begin_src emacs-lisp
-(use-package! web-search
-  :commands web-search
+(use-package! search-web
+  :commands search-web
   :config
   ;; add qwant as a provider
   (prepend! web-search-default-provider
     )
+  (defun search-web/default-engine ()
+    (interactive)
+    (search-web "duck" nil))
   ;; don't use thing at point
-  (defadvice! dont-use-what-I-have-at-point (:around web-search)
-    (cl-letf (((symbol-function #'current-word) #'ignore))
-      (apply <orig-fn> <args>)))
+  (defadvice! use-default-engine ())
   :setq
   (web-search-default-provider . "DuckDuckGo"))
 #+end_src
