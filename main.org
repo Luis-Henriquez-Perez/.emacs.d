@@ -9485,6 +9485,11 @@ These keybindings are for opening particular apps.
 :ID:       f27e7e3a-9206-4733-adc7-de05f3be9663
 :END:
 
+*** traversal
+:PROPERTIES:
+:ID:       4a361ca2-d16c-46be-a4d6-0d3f2bc3a1cf
+:END:
+
 ** file
 :PROPERTIES:
 :ID: 2231147b-88c9-4c63-9c75-488cd1465807
