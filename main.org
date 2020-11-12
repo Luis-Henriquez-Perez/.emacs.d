@@ -4810,10 +4810,17 @@ javascript code.
   (browse-url-browser-function . (list (cons "." #'browse-url-firefox))))
 #+end_src
 
-**
+** web-search
 :PROPERTIES:
 :ID:       b96fbbf4-5092-4f4c-a9bb-e59f6ede4f98
 :END:
+
+#+begin_src emacs-lisp
+(use-package! web-search
+  :commands web-search
+  :setq
+  (web-search-default-provider . "DuckDuckGo"))
+#+end_src
 
 * Multimedia
 :PROPERTIES:
