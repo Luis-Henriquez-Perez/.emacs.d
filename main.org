@@ -9466,7 +9466,7 @@ These keybindings are for opening particular apps.
   "m" (list :def #'mu4e                     :wk "mu4e")
   "l" (list :def #'elfeed                   :wk "elfeed")
   "d" (list :def #'deer                     :wk "deer")
-  "r" (list :def #'ranger                   :wk "ranger")
+  ;; "r" (list :def #'ranger                   :wk "ranger")
   "e" (list :def #'void/open-emacs-instance :wk "emacs")
   "q" (list :def #'search-web/default-engine               :wk "browse web")
   "k" (list :def #'org-capture              :wk "capture"))
