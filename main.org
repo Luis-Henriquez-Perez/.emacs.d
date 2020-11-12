@@ -9461,7 +9461,7 @@ to open another emacs instance.
 
 (define-leader-key!
   :infix "a"
-  "a" (list :def #'void/open-org-agenda :wk "agenda")
+  "a" (list :def #'void/open-org-agenda     :wk "agenda")
   "m" (list :def #'mu4e                     :wk "mu4e")
   "E" (list :def #'elfeed                   :wk "elfeed")
   "d" (list :def #'deer                     :wk "deer")
