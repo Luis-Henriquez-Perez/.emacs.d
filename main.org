@@ -4825,6 +4825,10 @@ javascript code.
   ;; add qwant as a provider
   (prepend! web-search-default-provider
     )
+  ;; don't use thing at point
+  (defadvice! dont-use-what-I-have-at-point (:around web-search)
+    (cl-letf (((symbol-function #'current-word) #'ignore))
+      (apply <orig-fn> <args>)))
   :setq
   (web-search-default-provider . "DuckDuckGo"))
 #+end_src
