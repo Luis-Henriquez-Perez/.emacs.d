@@ -4821,6 +4821,10 @@ javascript code.
 #+begin_src emacs-lisp
 (use-package! web-search
   :commands web-search
+  :config
+  ;; add qwant as a provider
+  (prepend! web-search-default-provider
+    )
   :setq
   (web-search-default-provider . "DuckDuckGo"))
 #+end_src
