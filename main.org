@@ -9458,10 +9458,10 @@ visit so often that it's worth having keybindings just for them.
 These keybindings are for opening particular apps.
 
 #+begin_src emacs-lisp
-(define-leader-key! "a" (list :ignore t :wk "app"))
+(define-leader-key! "f" (list :ignore t :wk "fast"))
 
 (define-leader-key!
-  :infix "a"
+  :infix "f"
   "a" (list :def #'void/open-org-agenda     :wk "agenda")
   "m" (list :def #'mu4e                     :wk "mu4e")
   "l" (list :def #'elfeed                   :wk "elfeed")
@@ -9469,12 +9469,12 @@ These keybindings are for opening particular apps.
   "r" (list :def #'ranger                   :wk "ranger")
   "e" (list :def #'void/open-emacs-instance :wk "emacs")
   "q" (list :def #'search-web/default-engine               :wk "browse web")
-  "c" (list :def #'org-capture              :wk "capture"))
+  "k" (list :def #'org-capture              :wk "capture"))
 
-(define-leader-key! "s" (list :ignore nil :wk "screenshot"))
+(define-leader-key! "fs" (list :ignore nil :wk "screenshot"))
 
 (define-leader-key!
-  :infix "as"
+  :infix "fs"
   "s" (list :def #'escr-window-screenshot :wk "screenshot")
   "w" (list :def #'escr-window-screenshot :wk "window")
   "f" (list :def #'escr-frame-screenshot  :wk "frame"))
