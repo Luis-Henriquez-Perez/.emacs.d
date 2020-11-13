@@ -4250,11 +4250,10 @@ Orderless will do this."
 :END:
 
 #+begin_src emacs-lisp
-(defun selectrum/switch-buffer ()
+(defun void/switch-buffer ()
   (interactive)
   (require 'f)
-  (let* ((selectrum-should-sort-p nil)
-         (other-buffers (->> (buffer-list)
+  (let* ((other-buffers (->> (buffer-list)
                              (-remove-item (current-buffer))
                              (-map #'buffer-name)
                              (--remove (s-prefix-p " " it))))
@@ -4269,8 +4268,6 @@ Orderless will do this."
                    #'find-file
                  #'switch-to-buffer)
                it))))
-
-(general-def [remap switch-to-buffer] #'selectrum/switch-buffer)
 #+end_src
 
 ***** org outline headings
