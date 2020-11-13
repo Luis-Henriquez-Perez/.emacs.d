@@ -4152,13 +4152,6 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
   (selectrum-should-sort-p . t)
   (selectrum-count-style . nil)
   (selectrum-num-candidates-displayed . 15))
-
-(general-def '(insert emacs) selectrum-minibuffer-map
-  "TAB" #'selectrum-next-candidate
-  "C-k" #'selectrum-previous-candidate
-  "C-j" #'selectrum-next-candidate
-  "C-l" #'selectrum/mark-candidate
-  [backtab] #'selectrum-previous-candidate)
 #+end_src
 
 **** selectrum prescient
@@ -9319,6 +9312,20 @@ the size of buffer text respectively. I play with text scale very often.
 :PROPERTIES:
 :ID:       d56ec4ce-f891-4e47-897a-e97699f19c43
 :END:
+
+*** selectrum
+:PROPERTIES:
+:ID:       6b6db3fa-6e6b-480f-ba57-3493b876a077
+:END:
+
+#+begin_src emacs-lisp
+(general-def '(insert emacs) selectrum-minibuffer-map
+  "TAB" #'selectrum-next-candidate
+  "C-k" #'selectrum-previous-candidate
+  "C-j" #'selectrum-next-candidate
+  "C-l" #'selectrum/mark-candidate
+  [backtab] #'selectrum-previous-candidate)
+#+end_src
 
 ** windows
 :PROPERTIES:
