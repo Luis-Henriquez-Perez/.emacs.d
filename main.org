@@ -1442,8 +1442,7 @@ appropriate name to target.
 
 #+begin_src emacs-lisp
 (defun void-add-advice (target where advice &optional props expire-fn)
-  "Advise TARGETS with Void ADVICES.
-This function generates a new."
+  "Advise TARGETS with Void ADVICES."
   (let* ((new-advice (void-advice-name target advice))
          (log-advice (void-symbol-intern new-advice '@ 'log-on-debug)))
     (defalias new-advice advice)
