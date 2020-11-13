@@ -5325,7 +5325,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 ;; You'll get void variable if you don't do this.
-(after! avy (setq lispy-avy-keys avy-keys))
+(after! (avy lispy) (setq lispy-avy-keys avy-keys))
 #+end_src
 
 ** writing
