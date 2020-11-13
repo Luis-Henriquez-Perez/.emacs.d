@@ -1616,6 +1616,9 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 :END:
 
 #+begin_src emacs-lisp
+(defhook! enable-defcommand-font-lock ()
+  "Enable font-lock for `defcommand!'."
+  )
 #+end_src
 
 *** with-os!
