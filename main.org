@@ -9577,7 +9577,7 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   ""  (list :ignore t :wk "search")
-  "s" (list :def #'swiper :wk "swiper")
+  "s" (list :def #'void/swiper :wk "swiper")
   "w" (list :def #'search-web/default-engine :wk "web"))
 
 (define-leader-key!
