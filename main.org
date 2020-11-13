@@ -9512,6 +9512,7 @@ These bindings are for generally working with code.
 (define-leader-key! "c" (list :ignore t :wk "code"))
 
 (define-leader-key!
+  :infix "c"
   "a" (list :def #'ialign                               :wk "align")
   "l" (list :def #'lispyville-comment-or-uncomment-line :wk "toggle comment")
   "y" (list :def #'lispyvile-comment-and-cone-dwim      :wk "copy comment"))
