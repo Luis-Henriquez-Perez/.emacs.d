@@ -9429,7 +9429,7 @@ visit so often that it's worth having keybindings just for them.
   "S" (list :def #'void/open-scratch            :wk "*scratch*")
   "i" (list :def #'void/switch-to-init-org-file :wk "fallback")
   "I" (list :def #'void/switch-to-main-elisp    :wk "main.el")
-  "m" (list :def #'void/switch-to-main-org-file :wk "Void README")
+  "m" (list :def #'void/switch-to-main-org-file :wk "main.org")
   "M" (list :def #'void/switch-to-messages      :wk "*messages*"))
 
 (define-leader-key!
