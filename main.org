@@ -9118,6 +9118,7 @@ you can "discover" the commands as you go along.
   (which-key-side-window-slot . -10)
   (which-key-sort-order . #'which-key-prefix-then-key-order)
   (which-key-popup-type . 'minibuffer)
+  (which-key-idle-delay . 0.8)
   :config
   (defhook! set-line-spacing (which-key-init-buffer-hook)
     (setq line-spacing 3))
