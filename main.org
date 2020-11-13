@@ -7779,22 +7779,6 @@ However, when jumping to a source block.
   (outline-invisible-p (line-end-position)))
 #+end_src
 
-***** heading
-:PROPERTIES:
-:ID: f6b74522-180a-485c-b946-f7fa2e18a826
-:END:
-
-#+begin_src emacs-lisp
-(defun org:heading-end-of-heading ()
-  "Return point at end of heading.")
-
-(defun org:heading-block-lang ()
-  "Return the language of the current language's source block."
-  (save-excursion
-    (org-back-to-heading)
-    (re-search-forward org-babel-src-block-regexp)))
-#+end_src
-
 **** preserve point
 :PROPERTIES:
 :ID: 52781cc9-e1ca-4618-aa1b-6845494b5dc6
