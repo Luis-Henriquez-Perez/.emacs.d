@@ -5315,10 +5315,17 @@ very useful to me.
   (lispy-use-sly . t)
   ;; allow space before asterisk for headings (e.g. ";; *")
   (lispy-outline . "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
-  (lispy-key-theme . nil)
-  :config
-  ;; You'll get void variable if you don't do this.
-  (after! avy (setq lispy-avy-keys avy-keys)))
+  (lispy-key-theme . nil))
+#+end_src
+
+**** avoid void variable error
+:PROPERTIES:
+:ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
+:END:
+
+#+begin_src emacs-lisp
+;; You'll get void variable if you don't do this.
+(after! avy (setq lispy-avy-keys avy-keys))
 #+end_src
 
 ** writing
