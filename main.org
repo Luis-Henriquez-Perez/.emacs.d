@@ -4173,22 +4173,35 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 **** orderless
 :PROPERTIES:
+:ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
+:END:
+
+***** orderless
+:PROPERTIES:
 :ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
 :END:
 
 #+begin_src emacs-lisp
 (use-package! orderless
   :init
-  (defadvice! orderless:inhibit-filtering-and-highlighting (orig-fn &rest args)
-    "Don't let `selectrum-prescient' filter or highlight.
-Orderless will do this."
-    :around selectrum-prescient-mode
-    (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
-          (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
-      (apply orig-fn args)))
+
   :setq
   (selectrum-refine-candidates-function . #'orderless-filter)
   (selectrum-highlight-candidates-function . #'orderless-highlight-matches))
+#+end_src
+
+***** stop selectrum filtering and highlight
+:PROPERTIES:
+:ID:       a6720cdc-9d51-463b-9ffe-f9341c6bd967
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! orderless:inhibit-filtering-and-highlighting (:around selectrum-prescient-mode)
+  "Don't let `selectrum-prescient' filter or highlight.
+Orderless will do this."
+  (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
+        (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
+    (apply <orig-fn> <args>)))
 #+end_src
 
 **** utilities
