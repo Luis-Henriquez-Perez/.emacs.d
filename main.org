@@ -5310,7 +5310,6 @@ very useful to me.
   (lispy-safe-actions-no-pull-delimiters-into-comments . t)
   (lispy-delete-sexp-from-within . t)
   (lispy-parens-only-left-in-string-or-comment . nil)
-  ;; TODO see how performant is at larger thresholds and optimize
   (lispy-safe-threshold . 5000)
   (lispy-use-sly . t)
   ;; allow space before asterisk for headings (e.g. ";; *")
