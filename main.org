@@ -9200,7 +9200,8 @@ instead.
 :END:
 
 This is a convenience macro that allows navigation buttons to be defined
-declaratively and with a "defun-like" syntax.
+declaratively and with a "defun-like" syntax. Perhaps this is overkill, but I
+dont like
 
 #+begin_src emacs-lisp
 (defmacro dashboard:define-naviator-button! (name args description &rest body)
