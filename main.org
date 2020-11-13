@@ -5280,7 +5280,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
   "<" #'lispyville-barf)
 #+end_src
 
-**** escape
+**** escape                                                           :disabled:
 :PROPERTIES:
 :ID: b355e1a1-6242-47f5-b357-5c3f5adbd200
 :END:
