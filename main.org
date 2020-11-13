@@ -9315,6 +9315,11 @@ the size of buffer text respectively. I play with text scale very often.
   "M-=" #'text-scale-increase)
 #+end_src
 
+** minibuffer
+:PROPERTIES:
+:ID:       d56ec4ce-f891-4e47-897a-e97699f19c43
+:END:
+
 ** windows
 :PROPERTIES:
 :ID: 784956e2-3696-4f92-80ca-41b7e30e5b2b
