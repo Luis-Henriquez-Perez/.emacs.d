@@ -1593,6 +1593,11 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 
 *** defcommand!
 :PROPERTIES:
+:ID:       52363ccb-c9f7-4428-882d-ec2ee120057a
+:END:
+
+**** defcommand!
+:PROPERTIES:
 :ID:       fd5db6dc-9647-45d9-be02-03e2a5cd5564
 :END:
 
@@ -1603,6 +1608,14 @@ to use =defadvice!= or =anaphoric-defadvice!=.
      ,docstring
      (interactive)
      ,@body))
+#+end_src
+
+**** font lock
+:PROPERTIES:
+:ID:       b1f14c3a-bb91-4fa1-ae66-922db2b74d6b
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 *** with-os!
