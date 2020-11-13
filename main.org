@@ -95,12 +95,7 @@ time.
 :END:
 
 These are important files and directories that I end up referring to often in my
-code. Well, not so much =VOID-MAIN-ORG-FILE= and =VOID-TODO-FILE= but the others are
-referenced alot.
-
-One of the ideas in Void is that good text documentation is not enough. I want
-documentation that has screenshots, gifs, videos--anything that helps explain
-behaviors, bugs features or whatever else I want to in emacs.
+code.
 
 #+begin_src emacs-lisp
 (defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
