@@ -9480,9 +9480,6 @@ These keybindings are for opening particular apps.
   "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 #+end_src
 
-#+begin_src emacs-lisp
-#+end_src
-
 ** org mode
 :PROPERTIES:
 :ID:       f27e7e3a-9206-4733-adc7-de05f3be9663
