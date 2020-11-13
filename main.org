@@ -5208,9 +5208,9 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
    ([remap evil-join]                 . lispyville-join)))
 #+end_src
 
-**** text objects
+**** inner text objects
 :PROPERTIES:
-:ID: d553eee0-9b35-4a7d-a048-0f4a550b2471
+:ID:       f9f82ebe-5749-452f-ba49-269e60526b04
 :END:
 
 #+begin_src emacs-lisp
@@ -5223,7 +5223,14 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
   ;; "c" #'evilnc-inner-comment
   ;; overriding inner-sentence.
   "s" #'lispyville-inner-string)
+#+end_src
 
+**** outer text objects
+:PROPERTIES:
+:ID:       9dda9a1b-c76f-4537-9554-45ad3c77977a
+:END:
+
+#+begin_src emacs-lisp
 (general-def evil-outer-text-objects-map
   "a" #'lispyville-a-atom
   "l" #'lispyville-a-list
