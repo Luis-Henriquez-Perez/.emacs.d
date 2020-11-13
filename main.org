@@ -1610,7 +1610,7 @@ to use =defadvice!= or =anaphoric-defadvice!=.
      ,@body))
 #+end_src
 
-**** font lock
+**** font lock                                                        :disabled:
 :PROPERTIES:
 :ID:       b1f14c3a-bb91-4fa1-ae66-922db2b74d6b
 :END:
