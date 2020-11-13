@@ -4161,7 +4161,10 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (after! selectrum
-  (defadvice! dont-sort-with-selectrum ()))
+  (defadvice! dont-sort-with-selectrum (:around void/swiper)
+    (if (bound-and-true-p selectrum-mode)
+        (let (selectrum-should-sort-p) (apply <orig-fn> <args>))
+      (apply <orig-fn> <args>))))
 #+end_src
 
 **** selectrum prescient
