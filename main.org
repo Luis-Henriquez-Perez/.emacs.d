@@ -3614,7 +3614,7 @@ functions which open external linux applications.
 #+begin_src emacs-lisp
 (use-package! exwm
   :hook (exwm-mode . hide-mode-line-mode)
-  :before-call (void/open-qutebrowser counsel-linux-app void/open-emacs-instance)
+  :before-call browse-url
   :setq (exwm-replace . nil)
   :config
   (exwm-init)
@@ -9583,7 +9583,7 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   :keymaps 'org-mode-map
-  "h" (list :def #'counsel-org-goto :wk "headlines"))
+  "h" (list :def #'void/swiper :wk "headlines"))
 #+end_src
 
 ** git
