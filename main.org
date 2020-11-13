@@ -9336,12 +9336,7 @@ graphical interface but.
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
 
-** essential bindings
-:PROPERTIES:
-:ID:       35dea311-fc84-4913-ac49-762cc316a611
-:END:
-
-*** execute extended command
+** execute extended command
 :PROPERTIES:
 :ID: d8071a32-e58c-41ab-8fd7-7d7732708ee8
 :END:
@@ -9366,14 +9361,7 @@ press as well and even faster than =SPC SPC=.
   "M-x" #'execute-extended-command)
 #+end_src
 
-** general
-:PROPERTIES:
-:ID: 3260f794-2d7f-4a68-a36a-78af01e4a4a9
-:END:
-
-This heading is dedicated to general keybinding decisions I make.
-
-*** scrolling pages
+** scrolling pages
 
 The commands [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale-decrease][text-scale-decrease]] increase and decrease
 the size of buffer text respectively. I play with text scale very often.
@@ -9450,7 +9438,7 @@ visit so often that it's worth having keybindings just for them.
   "c" (list #'kill-current-buffer :wk "current"))
 #+end_src
 
-** fast
+** app
 :PROPERTIES:
 :ID: 3f09a41a-03b8-4d5c-85c5-d7adeb7dd328
 :END:
@@ -9458,32 +9446,27 @@ visit so often that it's worth having keybindings just for them.
 These are keybindings I use most frequently.
 
 #+begin_src emacs-lisp
-(define-leader-key! "f" (list :ignore t :wk "fast"))
+(define-leader-key! "a" (list :ignore t :wk "app"))
 
 (define-leader-key!
-  :infix "f"
-  "a" (list :def #'void/open-org-agenda     :wk "agenda")
-  "m" (list :def #'mu4e                     :wk "mu4e")
-  "l" (list :def #'elfeed                   :wk "elfeed")
-  "d" (list :def #'deer                     :wk "deer")
-  "r" (list :def #'ranger                   :wk "ranger")
-  "e" (list :def #'void/open-emacs-instance :wk "emacs")
-  "q" (list :def #'search-web/default-engine               :wk "browse web")
-  "k" (list :def #'org-capture              :wk "capture"))
+  :infix "a"
+  "a" (list :def #'void/open-org-agenda      :wk "agenda")
+  "m" (list :def #'mu4e                      :wk "mu4e")
+  "l" (list :def #'elfeed                    :wk "elfeed")
+  "d" (list :def #'deer                      :wk "deer")
+  "r" (list :def #'ranger                    :wk "ranger")
+  "e" (list :def #'void/open-emacs-instance  :wk "emacs")
+  "q" (list :def #'search-web/default-engine :wk "browse web")
+  "k" (list :def #'org-capture               :wk "capture"))
 
-(define-leader-key! "fs" (list :ignore nil :wk "screenshot"))
+(define-leader-key! "as" (list :ignore nil :wk "screenshot"))
 
 (define-leader-key!
-  :infix "fs"
+  :infix "as"
   "s" (list :def #'escr-window-screenshot :wk "screenshot")
   "w" (list :def #'escr-window-screenshot :wk "window")
   "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 #+end_src
-
-** org mode
-:PROPERTIES:
-:ID:       f27e7e3a-9206-4733-adc7-de05f3be9663
-:END:
 
 ** file
 :PROPERTIES:
