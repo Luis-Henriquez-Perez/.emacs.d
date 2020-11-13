@@ -7779,33 +7779,6 @@ However, when jumping to a source block.
   (outline-invisible-p (line-end-position)))
 #+end_src
 
-***** beginning-of-headline
-:PROPERTIES:
-:ID: ac43317c-485e-4efb-aff7-36c3ab69ea79
-:END:
-
-#+begin_src emacs-lisp
-(defun org:beginning-of-headline (&optional end)
-  "Return the character position at the end of the headline."
-  (let (case-fold-search)
-    (save-excursion
-      (org-back-to-heading)
-      (looking-at org-complex-heading-regexp)
-      (funcall (if end #'match-end #'match-beginning) 4))))
-#+end_src
-
-***** end-of-headline
-:PROPERTIES:
-:ID: b9f9115c-4f84-4894-b926-8c1b948c0246
-:END:
-
-#+begin_src emacs-lisp
-(defun org:end-of-headline ()
-  "Return the character position at the end of the headline."
-  (interactive)
-  (org:beginning-of-headline t))
-#+end_src
-
 ***** heading
 :PROPERTIES:
 :ID: f6b74522-180a-485c-b946-f7fa2e18a826
