@@ -89,7 +89,8 @@ time.
 :ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
 :END:
 
-This headline contains constant variables that store important directories.
+This headline contains constant variables that store important directories and
+files.
 
 ***** top level
 :PROPERTIES:
