@@ -4013,7 +4013,7 @@ visually distracting and not particularly useful for me, so I disable it.
 #+begin_src emacs-lisp
 (after! ivy
   (ivy-set-actions #'counsel-fonts (list (list "o" #'void-set-font "set font")))
-  (defun void-set-font (font)
+  (defun counsel:set-font (font)
     (set-face-attribute 'default nil :font font)))
 #+end_src
 
