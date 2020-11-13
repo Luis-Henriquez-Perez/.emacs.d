@@ -4295,7 +4295,7 @@ Orderless will do this."
 :END:
 
 #+begin_src emacs-lisp
-(defun selectrum/org-select-tags ()
+(defun void/org-select-tags ()
   "Select tags to add to headline."
   (interactive)
   (let* ((current (org-get-tags (point)))
@@ -4303,8 +4303,6 @@ Orderless will do this."
     (alet (-uniq (append (-difference current selected)
                          (-difference selected current)))
       (org-set-tags it))))
-
-(general-def [remap org-set-tags-command] #'selectrum/org-select-tags)
 #+end_src
 
 ** company
