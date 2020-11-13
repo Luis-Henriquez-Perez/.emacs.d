@@ -9225,7 +9225,7 @@ declaratively and with a "defun-like" syntax.
 (dashboard:define-naviator-button! Homepage ()
   "Browse Homepage."
   :icon "mark-github"
-  (browse-url "https://github.com/Luis-Henriquez-Perez/dotfiles"))
+  (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
 #+end_src
 
 **** go to readme
@@ -9238,7 +9238,7 @@ declaratively and with a "defun-like" syntax.
   "Go to README."
   :icon "eye"
   :type faicon
-  (browse-url "https://github.com/Luis-Henriquez-Perez/dotfiles"))
+  (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
 #+end_src
 
 ** hide-mode-line
