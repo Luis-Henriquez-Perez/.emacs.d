@@ -4225,12 +4225,12 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 :END:
 
 #+begin_src emacs-lisp
-(after! orderless
-  (defadvice! orderless:inhibit-filtering-and-highlighting (:around selectrum-prescient-mode)
-    "Don't let `selectrum-prescient' filter or highlight. Orderless will do this."
-    (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
-          (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
-      (apply <orig-fn> <args>))))
+(defadvice! orderless:inhibit-filtering-and-highlighting (:around selectrum-prescient-mode)
+  "Don't let `selectrum-prescient' filter or highlight.
+Orderless will do this."
+  (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
+        (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
+    (apply <orig-fn> <args>)))
 #+end_src
 
 **** utilities
