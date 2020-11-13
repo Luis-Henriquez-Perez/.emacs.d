@@ -1547,6 +1547,8 @@ passed in.
 =anaphoric-define-advice!= lets you omit the =lambda-args=. If you do omit the
 arguments and you want to use them, you can do so via [[id:9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df][anaphoric variables]].
 
+Note that [[helpfn:help-function-arglist][help-function-arglist]] returns =t= when it fails.
+
 #+begin_src emacs-lisp
 (defmacro anaphoric-define-advice! (name args &rest body)
   "A variant of `define-advice!'.
