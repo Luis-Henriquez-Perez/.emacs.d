@@ -4196,6 +4196,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (use-package! orderless
+  :demand t
   :setq
   (selectrum-refine-candidates-function . #'orderless-filter)
   (selectrum-highlight-candidates-function . #'orderless-highlight-matches))
