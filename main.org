@@ -9527,9 +9527,10 @@ These bindings are for generally working with code.
 :END:
 
 #+begin_src emacs-lisp
+(define-leader-key! "t" (list :ignore t :wk "toggle/set"))
+
 (define-leader-key!
   :infix "t"
-  ""  (list :ignore t                    :wk "toggle/set")
   "r" (list :def #'read-only-mode        :wk "read-only")
   "t" (list :def #'load-theme            :wk "load theme")
   "c" (list :def #'caps-lock-mode        :wk "caps lock")
