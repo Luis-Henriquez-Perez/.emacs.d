@@ -7779,24 +7779,6 @@ However, when jumping to a source block.
   (outline-invisible-p (line-end-position)))
 #+end_src
 
-***** headline-name
-:PROPERTIES:
-:ID: 97ac2e07-9db1-43e4-a71b-1a4ed959c7b1
-:END:
-
-#+begin_src emacs-lisp
-(defun org:heading-name ()
-  "Return the headline of the current heading."
-  (interactive)
-  (save-excursion
-    (org-back-to-heading)
-    (unless org-complex-heading-regexp
-      (let ((major-mode 'org-mode))
-        (org-set-regexps-and-options)))
-    (looking-at org-complex-heading-regexp)
-    (match-string 4)))
-#+end_src
-
 ***** beginning-of-headline
 :PROPERTIES:
 :ID: ac43317c-485e-4efb-aff7-36c3ab69ea79
