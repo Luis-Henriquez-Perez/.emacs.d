@@ -9386,6 +9386,7 @@ These are keybindings I use most frequently.
   "r" (list :def #'ranger                    :wk "ranger")
   "e" (list :def #'void/open-emacs-instance  :wk "emacs")
   "q" (list :def #'search-web/default-engine :wk "browse web")
+  "j" (list :def #'org/avy-jump-to-heading :wk "heading jump")
   "k" (list :def #'org-capture               :wk "capture"))
 
 (define-leader-key! "as" (list :ignore nil :wk "screenshot"))
