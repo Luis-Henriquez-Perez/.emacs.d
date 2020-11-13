@@ -9490,13 +9490,19 @@ These are keybindings I use most frequently.
 :END:
 
 #+begin_src emacs-lisp
+(define-leader-key! "e" (list :ignore t :wk "eval"))
+
 (define-leader-key!
-  :infix "e"
-  ""  (list :ignore t                   :wk "eval")
   "r" (list :def #'eval-region          :wk "region")
   "d" (list :def #'eval-defun           :wk "defun")
   "l" (list :def #'eval-print-last-sexp :wk "sexp")
-  "b" (list :def #'eval-buffer          :wk "buffer"))
+  "B" (list :def #'eval-buffer          :wk "buffer"))
+
+(define-leader-key!
+  :infix "e"
+  :keymaps 'org-mode-map
+  "b" (list :def #'org-babel-execute-src-block :wk "source block")
+  "s" (list :def #'org-babel-execute-subtree :wk "subtree"))
 #+end_src
 
 ** code
