@@ -9450,12 +9450,12 @@ visit so often that it's worth having keybindings just for them.
   "c" (list #'kill-current-buffer :wk "current"))
 #+end_src
 
-** app
+** fast
 :PROPERTIES:
 :ID: 3f09a41a-03b8-4d5c-85c5-d7adeb7dd328
 :END:
 
-These keybindings are for opening particular apps.
+These are keybindings I use most frequently.
 
 #+begin_src emacs-lisp
 (define-leader-key! "f" (list :ignore t :wk "fast"))
