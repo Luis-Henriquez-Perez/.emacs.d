@@ -4154,6 +4154,16 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
   (selectrum-num-candidates-displayed . 15))
 #+end_src
 
+**** ensure certain functions dont sort
+:PROPERTIES:
+:ID:       1e39a4d2-8d4a-4413-a86e-3f92547cff14
+:END:
+
+#+begin_src emacs-lisp
+(after! selectrum
+  (defadvice! dont-sort-with-selectrum ()))
+#+end_src
+
 **** selectrum prescient
 :PROPERTIES:
 :ID:       e8c77d62-9c28-4193-9c60-f1148b55f96e
