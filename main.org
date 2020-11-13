@@ -89,6 +89,8 @@ time.
 :ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
 :END:
 
+This headline contains constant variables that store
+
 ***** top level
 :PROPERTIES:
 :ID: 48bf884a-de27-45f8-a5b1-94567815942d
