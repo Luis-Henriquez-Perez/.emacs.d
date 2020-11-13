@@ -5287,6 +5287,11 @@ Sometimes =evil-normal-state= enters visual state.
 
 *** lispy
 :PROPERTIES:
+:ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
+:END:
+
+**** lispy
+:PROPERTIES:
 :ID: 4b4bfc73-e4e3-44f0-9553-61ac5182c946
 :END:
 
