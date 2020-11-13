@@ -4810,7 +4810,7 @@ javascript code.
   (browse-url-browser-function . (list (cons "." #'browse-url-firefox))))
 #+end_src
 
-** web-search
+** search web
 :PROPERTIES:
 :ID:       b96fbbf4-5092-4f4c-a9bb-e59f6ede4f98
 :END:
