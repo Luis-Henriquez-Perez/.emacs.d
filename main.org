@@ -9488,6 +9488,7 @@ These are keybindings I use most frequently.
 (define-leader-key! "e" (list :ignore t :wk "eval"))
 
 (define-leader-key!
+  :infix "e"
   "r" (list :def #'eval-region          :wk "region")
   "d" (list :def #'eval-defun           :wk "defun")
   "l" (list :def #'eval-print-last-sexp :wk "sexp")
