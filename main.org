@@ -3845,7 +3845,7 @@ As [[id:][I've mentioned]], querying is a huge part of our workflow. In emacs, y
 find yourself querying for the right command, or for the variable you want help
 on. Traversing the jungle of candidates.
 
-*** ivy
+*** ivy                                                               :disabled:
 :PROPERTIES:
 :ID:       ce0570e1-7c5e-499f-97c3-a66233d2fe80
 :END:
@@ -4134,7 +4134,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
   :setq (swiper-action-recenter . t))
 #+end_src
 
-*** selectrum                                                         :disabled:
+*** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
 :END:
