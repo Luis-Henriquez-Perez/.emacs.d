@@ -4230,8 +4230,7 @@ Orderless will do this."
 (defun void/swiper ()
   "Search for a matching line and jump to the beginning of its text."
   (interactive)
-  (let* ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
-         (minimum-line-number (line-number-at-pos (point-min) t))
+  (let* ((minimum-line-number (line-number-at-pos (point-min) t))
          (current-line-number (line-number-at-pos (point) t))
          (line-choices (->> (split-string (buffer-string) "\n")
                             (--map-indexed (unless (string-empty-p it)
