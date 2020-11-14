@@ -4317,7 +4317,7 @@ Orderless will do this."
 :END:
 
 #+begin_src emacs-lisp
-(defun selectrum/org-outline-headings ()
+(defun void/org-outline-headings ()
   "Jump to an org heading using selectrum."
   (interactive)
   (let ((selectrum-should-sort-p nil)
@@ -9623,7 +9623,7 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   :keymaps 'org-mode-map
-  "h" (list :def #'void/swiper :wk "headlines"))
+  "h" (list :def #'void/org-outline-headings :wk "headlines"))
 #+end_src
 
 ** git
