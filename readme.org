@@ -10,7 +10,7 @@ This is my emacs configuration. Something I've built over the span of a few year
 :ID:       1b1ee897-0c73-42e8-95a7-dd7dda181959
 :END:
 
-** extensive documentation
+** extensive, next-level documentation
 :PROPERTIES:
 :ID:       2afae4fc-25eb-40e0-ad5d-07317b1cc535
 :END:
@@ -33,3 +33,8 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :END:
 
 [[file:./multimedia/screenshots/void-dashboard-one-light.png]]
+
+* Struggles
+:PROPERTIES:
+:ID:       1abb5289-5ee2-4766-bfb3-a80246b42571
+:END:
