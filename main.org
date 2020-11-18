@@ -4184,7 +4184,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (after! selectrum
-  (defadvice! dont-sort-with-selectrum (:around void/swiper void/set-font void/switch-to-buffer)
+  (defadvice! dont-sort-with-selectrum (:around void/swiper void/set-font void/switch-buffer)
     (if (bound-and-true-p selectrum-mode)
         (let (selectrum-should-sort-p) (apply <orig-fn> <args>))
       (apply <orig-fn> <args>))))
@@ -4292,23 +4292,19 @@ Orderless will do this."
 
 #+begin_src emacs-lisp
 (defun void/switch-buffer ()
+  "Wrapper around `switch-to-buffer'.
+Prompt for buffer or recentf file to switch to. If buffer is selected, switch to
+the buffer. If a recentf path is selected, find the file of the recentf path."
   (interactive)
-  (require 'f)
-  (let* ((other-buffers (->> (buffer-list)
-                             (-remove-item (current-buffer))
-                             (-map #'buffer-name)
-                             (--remove (s-prefix-p " " it))))
-         (buffer-file-paths (->> other-buffers
-                                 (--map (buffer-file-name (get-buffer it)))
-                                 (-non-nil)))
-         (recentf-paths (--remove (-any-p (-partial #'string= (f-full it))
-                                          buffer-file-paths)
-                                  recentf-list)))
-    (alet (completing-read "Select buffer: " (append other-buffers recentf-paths))
-      (funcall (if (-contains-p recentf-list it)
-                   #'find-file
-                 #'switch-to-buffer)
-               it))))
+  (let* ((other-buffers (--reject (s-prefix-p " " (buffer-name it)) (cdr (buffer-list))))
+         (file-buffer-paths (-non-nil (-map #'buffer-file-name other-buffers))))
+    (--> (append (-map #'buffer-name other-buffers)
+                 (-difference recentf-list file-buffer-paths))
+         (completing-read "Select buffer: " it)
+         (funcall (if (-contains-p recentf-list it)
+                      #'find-file
+                    #'switch-to-buffer)
+                  it))))
 #+end_src
 
 ***** org outline headings
@@ -9369,8 +9365,47 @@ the size of buffer text respectively. I play with text scale very often.
   "TAB" #'selectrum-next-candidate
   "C-k" #'selectrum-previous-candidate
   "C-j" #'selectrum-next-candidate
+  "C-;" #'selectrum-insert-current-candidate
   "C-l" #'selectrum/mark-candidate
   [backtab] #'selectrum-previous-candidate)
+#+end_src
+
+** org mode
+:PROPERTIES:
+:ID:       6939399a-8737-447b-94d8-a4bbd2d6febf
+:END:
+
+*** editing source block
+:PROPERTIES:
+:ID:       9f24cf0e-4510-4848-84f6-8872757b8972
+:END:
+
+#+begin_src emacs-lisp
+(define-localleader-key!
+  :keymaps 'org-mode-map
+  "w" (list :def #'widen                      :wk "widen")
+  "n" (list :def #'org-narrow-to-subtree      :wk "narrow")
+  "k" (list :def #'org-cut-subtree            :wk "cut subtree")
+  "c" (list :def #'org-copy-subtree           :wk "copy subtree")
+  "r" (list :def #'org-refile                 :wk "refile")
+  "E" (list :def #'org-babel-execute-subtree  :wk "execute subtree")
+  "e" (list :def #'org/dwim-edit-source-block  :wk "edit source block")
+  "," (list :def #'org/dwim-edit-source-block :wk "edit source block"))
+#+end_src
+
+*** exiting source block
+:PROPERTIES:
+:ID:       cfeb4ae6-a957-4dff-82f6-0b1d92d95b89
+:END:
+
+Note that you should have bindings that are different for entering and exiting
+source blocks.
+
+#+begin_src emacs-lisp
+(defhook! enable-org-exit-src-bindings (org-src-mode-hook)
+  (define-localleader-key!
+    "," (list :def #'org-edit-src-exit :wk "exit source block")
+    "c" (list :def #'org-edit-src-exit :wk "exit source block")))
 #+end_src
 
 ** windows
