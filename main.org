@@ -9459,7 +9459,7 @@ visit so often that it's worth having keybindings just for them.
   "p" (list :def #'previous-buffer              :wk "previous")
   "n" (list :def #'next-buffer                  :wk "next")
   "s" (list :def #'switch-to-buffer             :wk "switch")
-  "b" (list :def #'switch-to-buffer             :wk "display")
+  "b" (list :def #'void/switch-buffer             :wk "display")
   "d" (list :def #'display-buffer               :wk "display")
   "t" (list :def #'void/switch-to-todo-file     :wk "Void TODO")
   "S" (list :def #'void/open-scratch            :wk "*scratch*")
