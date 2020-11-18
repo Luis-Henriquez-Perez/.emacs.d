@@ -4184,7 +4184,7 @@ example, [[file:./screenshots/searching-for-default-in-swiper.png][this]] is a s
 
 #+begin_src emacs-lisp
 (after! selectrum
-  (defadvice! dont-sort-with-selectrum (:around void/swiper void/set-font void/switch-buffer)
+  (defadvice! dont-sort-with-selectrum (:around void/goto-line void/set-font void/switch-buffer)
     (if (bound-and-true-p selectrum-mode)
         (let (selectrum-should-sort-p) (apply <orig-fn> <args>))
       (apply <orig-fn> <args>))))
@@ -4263,9 +4263,10 @@ Orderless will do this."
 :END:
 
 #+begin_src emacs-lisp
-(defvar void:swiper-history nil "Submission history for `selectrum-swiper'.")
+(defvar void:goto-line-history nil
+  "Submission history for `selectrum-swiper'.")
 
-(defun void/swiper ()
+(defun void/goto-line ()
   "Search for a matching line and jump to the beginning of its text."
   (interactive)
   (let* ((minimum-line-number (line-number-at-pos (point-min) t))
@@ -4313,7 +4314,7 @@ the buffer. If a recentf path is selected, find the file of the recentf path."
 :END:
 
 #+begin_src emacs-lisp
-(defun void/org-outline-headings ()
+(defun org/goto-headline ()
   "Jump to an org heading using selectrum."
   (interactive)
   (let ((selectrum-should-sort-p nil)
@@ -7804,7 +7805,7 @@ invaluable when you have a large org file you're dealing with a large org file.
 However, when jumping to a source block.
 
 #+begin_src emacs-lisp
-(defadvice! properly-unfold-surrounding-headlines (:around counsel-org-goto-action)
+(defadvice! properly-unfold-surrounding-headlines (:around void/goto-line void/jump-to-headline)
   "Properly unfold nearby headlines and reveal current headline."
   (prog1 (apply <orig-fn> <args>)
     (org:prettify-nearby-headlines)
@@ -9652,13 +9653,13 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "s"
   ""  (list :ignore t :wk "search")
-  "s" (list :def #'void/swiper :wk "swiper")
+  "s" (list :def #'void/goto-line :wk "swiper")
   "w" (list :def #'search-web/default-engine :wk "web"))
 
 (define-leader-key!
   :infix "s"
   :keymaps 'org-mode-map
-  "h" (list :def #'void/org-outline-headings :wk "headlines"))
+  "h" (list :def #'org/goto-headline :wk "headlines"))
 #+end_src
 
 ** git
