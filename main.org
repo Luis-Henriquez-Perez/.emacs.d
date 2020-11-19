@@ -4258,9 +4258,9 @@ Orderless will do this."
   (set-frame-font (completing-read "Choose font: " (x-list-fonts "*"))))
 #+end_src
 
-***** swiper
+***** goto line
 :PROPERTIES:
-:ID:       dc63f51f-9675-4784-95d2-a25e35edad47
+:ID:       14111399-f75a-40ba-b9be-15a8b6a07ae9
 :END:
 
 #+begin_src emacs-lisp
@@ -7688,6 +7688,63 @@ things like executing (or evaluating) source blocks, moving headlines to other
 files, or even converting an org mode document into another format. As the name
 =org= suggests, org is tool that's used for organization of data.
 
+*** do the right thing after jumping to headline
+:PROPERTIES:
+:ID:       2ca61454-a0ca-47b3-8622-91d7969653da
+:END:
+
+When I search for a headline with [[helpfn:void/goto-line][void/goto-line]] or [[helpfn:void/goto-headline][void/goto-headline]] or even their
+counsel equivalents, the proper headlines aren't automatically revealed.
+
+[[screenshot:][This]] is what headline structure looks after using counsel/ivy's [[helpfn:swiper][swiper]] to find
+the word =void/goto-line= in my emacs. You can see that only the headline that has
+the target word is revealed but it's parents are (akwardly) hidden. I never want
+headlines to be unfolded like this.
+
+**** show branch
+:PROPERTIES:
+:ID:       d95fab52-7d8f-439f-9221-188490f4ad5f
+:END:
+
+This shows all headlines that make up the branch of the current headine and
+their children. This is the typical behavior you would expect in any outlining
+program.
+
+#+begin_src emacs-lisp
+(defun org:show-branch ()
+  "Reveal the current org branch."
+  (let (points)
+    (save-excursion
+      (org-back-to-heading t)
+      (push (point) points)
+      (while (org-up-heading-safe)
+        (push (point) points))
+      (--each points
+        (goto-char it)
+        (outline-show-children)
+        (outline-show-entry)))))
+#+end_src
+
+**** show branch after jumping to point
+:PROPERTIES:
+:ID:       251e5df0-0a7d-4bf9-8fd9-69991d89a074
+:END:
+
+Note that I use points to store the heading points and go back to them inreverse
+order. This is important because org does not unfold headlines properly if you
+start from an invisible subheading.
+
+Notably, I do not try to conserve the return value of =void/goto-line= or
+=void/jump-to-headline= because these functions are and should only be used for
+their side-effects.
+
+#+begin_src emacs-lisp
+(defadvice! show-current-branch-in-org-mode (:after void/goto-line void/jump-to-headline)
+  "Properly unfold nearby headlines and reveal current headline."
+  (when (eq major-mode 'org-mode)
+    (org:show-branch)))
+#+end_src
+
 *** structures
 :PROPERTIES:
 :ID: 85ac0a35-4e44-41e6-a1f1-54698cb86212
@@ -7763,66 +7820,7 @@ when headline contents begin.
     (call-interactively #'org-return))))
 #+end_src
 
-**** TODO scroll window to top
-:PROPERTIES:
-:ID: 149e9f0c-e984-42e6-afb1-03502eda41ea
-:END:
-
-I need this function for some org actions. Evil has this as
-[[helpfn:evil-scroll-line-to-top][evil-scroll-line-to-top]] but I didn't want to depend on evil.
-
-#+begin_src emacs-lisp
-(defun org:scroll-window-to-top ()
-  (let ((line (line-number-at-pos (point)))
-        (col (current-column)))
-    (goto-char (point-min))
-    (forward-line (1- line))
-    (move-to-column col)))
-#+end_src
-
-**** fix nearby line adjustment
-:PROPERTIES:
-:ID: 6168590a-db23-4f0b-bdd9-9d9666624af6
-:END:
-
-#+begin_src emacs-lisp
-(defun org:prettify-nearby-headlines ()
-  "Prettify display of nearby headlines."
-  (save-excursion
-    (while (org-up-heading-safe)
-      (outline-show-children)))
-  (outline-show-children)
-  (let ((line (line-number-at-pos (point))))
-    (goto-char (point-min))
-    (forward-line (1- line)))
-  (recenter (1- (max 1 scroll-margin)))
-  (org-beginning-of-line))
-#+end_src
-
-**** unfold nearby headlines
-:PROPERTIES:
-:ID:       c8dddafd-d39c-4757-acd2-d1bdf2b0a3c9
-:END:
-
-=counsel-org-goto= is lets you fuzzy search a term among org headings. It is
-invaluable when you have a large org file you're dealing with a large org file.
-However, when jumping to a source block.
-
-#+begin_src emacs-lisp
-(defadvice! properly-unfold-surrounding-headlines (:around void/goto-line void/jump-to-headline)
-  "Properly unfold nearby headlines and reveal current headline."
-  (prog1 (apply <orig-fn> <args>)
-    (org:prettify-nearby-headlines)
-    (when (org:heading-folded-p)
-      (outline-toggle-children))))
-#+end_src
-
-**** helpers
-:PROPERTIES:
-:ID: 50b79866-2905-459e-9723-6b822dde9127
-:END:
-
-***** org-heading-folded-p
+**** org-heading-folded-p
 :PROPERTIES:
 :ID: 919b2b6e-2c43-4fd5-87cc-cfc62cf75405
 :END:
