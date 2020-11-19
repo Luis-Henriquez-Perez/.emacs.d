@@ -4318,6 +4318,7 @@ the buffer. If a recentf path is selected, find the file of the recentf path."
 (defun org/goto-headline ()
   "Jump to an org heading using selectrum."
   (interactive)
+  (require 'org-refile)
   (let ((selectrum-should-sort-p nil)
         (org-outline-path-complete-in-steps)
         (org-goto-interface 'outline-path-completion))
