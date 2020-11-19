@@ -9235,9 +9235,14 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 Feebleline is a replaces the typical emacs modeline with text printed out to
 echo area.
 
-The problem with the typical emacs modeline is that it appears in every buffer.
-Better is a global modeline that displays the information from the buffer
-displayed in the currently selected window.
+Why use this instead of a typical modeline (such as doom-modeline,
+telephone-line, smart-mode-line, etc.)? The problem with typical emacs modelines
+is that they appear in every buffer. This means they do not scale well in terms
+of screen space because each additional vertical window means another line
+dedicated to the modeline. Moreover, more modelines aren't even more useful,
+it's just excess information you don't need to know unless you're visiting the
+buffer. Better is a global modeline that displays the information from the
+buffer displayed in the currently selected window.
 
 #+begin_src emacs-lisp
 (use-package! feebleline
