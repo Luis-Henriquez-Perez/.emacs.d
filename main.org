@@ -4298,7 +4298,7 @@ Orderless will do this."
 Prompt for buffer or recentf file to switch to. If buffer is selected, switch to
 the buffer. If a recentf path is selected, find the file of the recentf path."
   (interactive)
-  (let* ((other-buffers (--reject (s-prefix-p " " (buffer-name it)) (cdr (buffer-list))))
+  (let* ((other-buffers (--remove (s-prefix-p " " (buffer-name it)) (cdr (buffer-list))))
          (file-buffer-paths (-non-nil (-map #'buffer-file-name other-buffers))))
     (--> (append (-map #'buffer-name other-buffers)
                  (-difference recentf-list file-buffer-paths))
