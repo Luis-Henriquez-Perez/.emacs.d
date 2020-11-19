@@ -7788,7 +7788,7 @@ Notably, I do not try to conserve the return value of =void/goto-line= or
 their side-effects.
 
 #+begin_src emacs-lisp
-(defadvice! show-current-branch-in-org-mode (:after void/goto-line void/jump-to-headline)
+(defadvice! show-current-branch-in-org-mode (:after void/goto-line org/goto-headline)
   "Properly unfold nearby headlines and reveal current headline."
   (when (eq major-mode 'org-mode)
     (org:show-branch)))
