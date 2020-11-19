@@ -3829,8 +3829,9 @@ be inserted and interactively completed.
 #+begin_src emacs-lisp
 (use-package! yasnippet
   :hook (prog-mode . yas-minor-mode-on)
-  :setq
+  :pre-setq
   (yas-snippet-dirs . (list (concat VOID-DATA-DIR "snippets/")))
+  :setq
   (yas-verbosity . (if void-debug-p 3 0))
   (yas-indent-line . 'auto)
   (yas-prompt-functions . '(yas-completing-prompt yas-ido-prompt))
@@ -9221,6 +9222,36 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
   :icon "eye"
   :type faicon
   (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
+#+end_src
+
+** feebleline
+:PROPERTIES:
+:ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
+:END:
+
+Feebleline is a replaces the typical emacs modeline with text printed out to
+echo area.
+
+The problem with the typical emacs modeline is that it appears in every buffer.
+Better is a global modeline that displays the information from the buffer
+displayed in the currently selected window.
+
+#+begin_src emacs-lisp
+(use-package! feebleline
+  :hook window-setup-hook
+  :config
+  (defun feebleline:msg-display-mdy ()
+    (format-time-string "%m:%d:%Y"))
+  (defun feebleline:msg-display-mhs ()
+    (format-time-string "%H:%M:%S"))
+  (setq feebleline-msg-functions
+        '((feebleline-line-number :post "" :fmt "%5s")
+          (feebleline-column-number :pre ":" :fmt "%-2s")
+          (feebleline-file-or-buffer-name :face font-lock-keyword-face :post "")
+          (feebleline-file-modified-star :face font-lock-warning-face :post "")
+          (feebleline-git-branch :face feebleline-git-face :pre " - ")
+          (feebleline:msg-display-mhs :align right)
+          (feebleline:msg-display-mdy :align right))))
 #+end_src
 
 ** hide-mode-line
