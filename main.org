@@ -9429,8 +9429,9 @@ the size of buffer text respectively. I play with text scale very often.
   "k" (list :def #'org-cut-subtree            :wk "cut subtree")
   "c" (list :def #'org-copy-subtree           :wk "copy subtree")
   "r" (list :def #'org-refile                 :wk "refile")
+  "j" (list :def #'org/avy-goto-headline      :wk "jump to headline")
   "E" (list :def #'org-babel-execute-subtree  :wk "execute subtree")
-  "e" (list :def #'org/dwim-edit-source-block  :wk "edit source block")
+  "e" (list :def #'org/dwim-edit-source-block :wk "edit source block")
   "," (list :def #'org/dwim-edit-source-block :wk "edit source block"))
 #+end_src
 
@@ -9534,7 +9535,7 @@ These are keybindings I use most frequently.
   "r" (list :def #'ranger                    :wk "ranger")
   "e" (list :def #'void/open-emacs-instance  :wk "emacs")
   "q" (list :def #'search-web/default-engine :wk "browse web")
-  "j" (list :def #'org/avy-jump-to-heading :wk "heading jump")
+  "j" (list :def #'org/avy-goto-headline :wk "heading jump")
   "c" (list :def #'org-capture               :wk "capture"))
 
 (define-leader-key! "as" (list :ignore nil :wk "screenshot"))
