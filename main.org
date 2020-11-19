@@ -4253,9 +4253,9 @@ Orderless will do this."
 
 #+begin_src emacs-lisp
 (defun void/set-font-face ()
-  "Select xfont."
+  "Apply an existing xfont to all graphical frames."
   (interactive)
-  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*"))))
+  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*")) nil t))
 #+end_src
 
 ***** goto line
