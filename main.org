@@ -4325,13 +4325,13 @@ the buffer. If a recentf path is selected, find the file of the recentf path."
     (org-goto)))
 #+end_src
 
-***** org select tags
+***** org choose tags
 :PROPERTIES:
 :ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
 :END:
 
 #+begin_src emacs-lisp
-(defun void/org-select-tags ()
+(defun org/choose-tags ()
   "Select tags to add to headline."
   (interactive)
   (let* ((current (org-get-tags (point)))
