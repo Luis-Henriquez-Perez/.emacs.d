@@ -7712,7 +7712,9 @@ program.
 
 #+begin_src emacs-lisp
 (defun org:show-branch ()
-  "Reveal the current org branch."
+  "Reveal the current org branch.
+Show all of the current headine's parents and their children. This includes this
+headline."
   (let (points)
     (save-excursion
       (org-back-to-heading t)
