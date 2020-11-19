@@ -9416,9 +9416,9 @@ the size of buffer text respectively. I play with text scale very often.
 :ID:       6939399a-8737-447b-94d8-a4bbd2d6febf
 :END:
 
-*** editing source block
+*** org mode local bindings
 :PROPERTIES:
-:ID:       9f24cf0e-4510-4848-84f6-8872757b8972
+:ID:       a950d732-b0d2-46b9-82ce-1b9a474e7d76
 :END:
 
 #+begin_src emacs-lisp
@@ -9435,9 +9435,9 @@ the size of buffer text respectively. I play with text scale very often.
   "," (list :def #'org/dwim-edit-source-block :wk "edit source block"))
 #+end_src
 
-*** exiting source block
+*** bindings in source block
 :PROPERTIES:
-:ID:       cfeb4ae6-a957-4dff-82f6-0b1d92d95b89
+:ID:       df270638-f6a7-4f0e-abe7-dd0c4e7df7ce
 :END:
 
 Note that you should have bindings that are different for entering and exiting
