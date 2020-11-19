@@ -5015,11 +5015,14 @@ them.
   (let ((window-id (frame-parameter (selected-frame) 'window-id))
         (crop (format "%sx%s+%s+%s" width height x y))
         (filename (escr:get-filename)))
-    (call-process "maim" nil nil nil
-                  "--window" window-id
-                  "--geometry" crop
-                  "--quality" (number-to-string escr-screenshot-quality)
-                  filename)))
+    (alet `(lambda ()
+             (call-process "maim" nil nil nil
+                           "--window" ,window-id
+                           "--geometry" ,crop
+                           "--quality" ,(number-to-string escr-screenshot-quality)
+                           ,filename)
+             (message "Screenshot Taken!"))
+      (run-with-timer 1 nil it))))
 #+end_src
 
 ** gifs
