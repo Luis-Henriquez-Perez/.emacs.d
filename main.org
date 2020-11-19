@@ -7983,7 +7983,7 @@ If DIR is a negative integer, go the opposite direction: the start of the
 :END:
 
 #+begin_src emacs-lisp
-(defun org/avy-jump-to-heading ()
+(defun org/avy-goto-headline ()
   "Jump to the beginning of a visible heading using `avy'."
   (interactive)
   (org-back-to-heading)
@@ -8006,7 +8006,7 @@ If DIR is a negative integer, go the opposite direction: the start of the
   ""
   (interactive)
   (let ((origin (point)))
-    (if (and (org/avy-jump-to-heading)
+    (if (and (org/avy-goto-headline)
              (org:heading-folded-p))
         (progn (outline-toggle-children)
                (org:scroll-window-to-top))
