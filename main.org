@@ -3116,6 +3116,22 @@ to waste time loading ~void-main-elisp-file~.
                 " tangling `VOID-MAIN-ORG-FILE'."))))))
 #+end_src
 
+*** prevent emacs from killing certain buffers
+:PROPERTIES:
+:ID:       ae935cf5-7322-499c-96d7-20209d9b6641
+:END:
+
+I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
+to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
+
+#+begin_src emacs-lisp
+(defhook! lock-certain-buffers (after-init-hook)
+  "Prevent certain buffers from being killed."
+  (--each (list "*scratch*" "*Messages*")
+    (with-current-buffer it
+      (emacs-lock-mode 'kill))))
+#+end_src
+
 ** UI
 :PROPERTIES:
 :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
