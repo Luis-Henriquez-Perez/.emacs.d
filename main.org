@@ -8096,9 +8096,12 @@ use =edit-indirect= to edit source blocks.
 
 #+begin_src emacs-lisp
 (use-feature! org-src
+  :popup ("\\*Org Src"
+          (display-buffer-at-bottom)
+          (window-height . 0.5))
   :setq
   (org-edit-src-persistent-message . nil)
-  (org-src-window-setup . 'current-window)
+  (org-src-window-setup . 'plain)
   (org-src-fontify-natively . t)
   (org-src-ask-before-returning-to-edit-buffer . nil)
   (org-src-preserve-indentation . t)
