@@ -9243,10 +9243,8 @@ displayed in the currently selected window.
 (use-package! feebleline
   :hook window-setup-hook
   :config
-  (defun feebleline:msg-display-mdy ()
-    (format-time-string "%m:%d:%Y"))
-  (defun feebleline:msg-display-mhs ()
-    (format-time-string "%H:%M:%S"))
+  (defun feebleline:msg-display-time ()
+    (format-time-string "%T %D %a"))
   (setq feebleline-msg-functions
         '((feebleline-line-number :post "" :fmt "%5s")
           (feebleline-column-number :pre ":" :fmt "%-2s")
