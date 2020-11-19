@@ -4357,6 +4357,36 @@ the buffer. If a recentf path is selected, find the file of the recentf path."
       (org-set-tags it))))
 #+end_src
 
+***** org choose capture template
+:PROPERTIES:
+:ID:       fc2cf818-48c4-4e52-8356-56106623ad77
+:END:
+
+#+begin_src emacs-lisp
+(defun org/choose-capture-template ()
+  "Select capture template."
+  (interactive)
+  (let (prefixes)
+    (alet (mapcan (lambda (x)
+                    (let ((x-keys (car x)))
+                      ;; Remove prefixed keys until we get one that matches the current item.
+                      (while (and prefixes
+                                  (let ((p1-keys (caar prefixes)))
+                                    (or
+                                     (<= (length x-keys) (length p1-keys))
+                                     (not (string-prefix-p p1-keys x-keys)))))
+                        (pop prefixes))
+                      (if (> (length x) 2)
+                          (let ((desc (mapconcat #'cadr (reverse (cons x prefixes)) " | ")))
+                            (list (format "%-5s %s" x-keys desc)))
+                        (push x prefixes)
+                        nil)))
+                  (-> org-capture-templates
+                      (org-capture-upgrade-templates)
+                      (org-contextualize-keys org-capture-templates-contexts)))
+      (funcall #'org-capture nil (car (split-string (completing-read "Capture template: " it nil t)))) )))
+#+end_src
+
 ** company
 :PROPERTIES:
 :ID: 436d68f7-09f1-470a-a730-fd79d9c183ee
