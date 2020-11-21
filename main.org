@@ -8978,10 +8978,15 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 
 ** feebleline
 :PROPERTIES:
+:ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
+:END:
+
+*** feebleline
+:PROPERTIES:
 :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
 :END:
 
-Feebleline is a replaces the typical emacs modeline with text printed out to
+Feebleline replaces the typical emacs modeline with text printed out to
 echo area.
 
 Why use this instead of a typical modeline (such as doom-modeline,
