@@ -9200,8 +9200,9 @@ source blocks.
 #+begin_src emacs-lisp
 (defhook! enable-org-exit-src-bindings (org-src-mode-hook)
   (define-localleader-key!
-    "," (list :def #'org-edit-src-exit :wk "exit source block")
-    "c" (list :def #'org-edit-src-exit :wk "exit source block")))
+    "," (list :def #'org-edit-src-exit  :wk "exit source block")
+    "a" (list :def #'org-edit-src-abort :wk "abort source block")
+    "c" (list :def #'org-edit-src-exit  :wk "exit source block")))
 #+end_src
 
 ** windows
