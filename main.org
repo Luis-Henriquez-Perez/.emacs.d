@@ -9240,9 +9240,11 @@ number when editing text. To me they are just distracting eye-candy.
 :END:
 
 #+begin_src emacs-lisp
-(defun feebleline:battery-percentage ()
-  "Return battery percentage."
-  (concat "%" (battery-format "%p" (funcall battery-status-function))))
+(defun feebleline:battery-info ()
+  "Return battery information."
+  (let ((percentage (battery-format "%p" (funcall battery-status-function)))
+        (status-indicator (feebleline:battery-status-indicator)))
+    (format "%s %%s" status-indicator percentage)))
 #+end_src
 
 *** music
