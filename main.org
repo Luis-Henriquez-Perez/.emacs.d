@@ -9280,9 +9280,10 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
   (let ((percentage (thread-last (funcall battery-status-function)
                       (battery-format "%p")
                       (string-to-number)))
-        (status-indicator (feebleline:battery-status-indicator)))
-    (when (> 30 percentage)
-      (propertize status-indicator 'face 'font-lock-warning-face))
+        (status-indicator (alet (feebleline:battery-status-indicator)
+                            (if (> 30 percentage)
+                                (propertize it 'font-lock-face '(:foreground "red"))
+                              it))))
     (format "%s %%%d" status-indicator percentage)))
 #+end_src
 
