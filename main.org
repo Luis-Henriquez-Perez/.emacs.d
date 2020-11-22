@@ -9188,17 +9188,6 @@ number when editing text. To me they are just distracting eye-candy.
     (all-the-icons-material "save" :v-adjust -0.01)))
 #+end_src
 
-**** saved status
-:PROPERTIES:
-:ID:       eba2ad0e-11de-4c2f-9748-2a4d699886c3
-:END:
-
-#+begin_src emacs-lisp
-(defun feebleline:saved-buffer-status ()
-  ""
-  )
-#+end_src
-
 *** battery
 :PROPERTIES:
 :ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
