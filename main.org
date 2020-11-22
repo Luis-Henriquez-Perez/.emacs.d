@@ -9237,9 +9237,11 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (defun feebleline:battery-info ()
   "Return battery information."
-  (let ((percentage (battery-format "%p" (funcall battery-status-function)))
+  (let ((percentage (thread-last (funcall battery-status-function)
+                      (battery-format "%p")
+                      (string-to-number)))
         (status-indicator (feebleline:battery-status-indicator)))
-    (format "%s %%%s" status-indicator percentage)))
+    (format "%s %%%d" status-indicator percentage)))
 #+end_src
 
 *** music track
