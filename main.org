@@ -9085,8 +9085,8 @@ number when editing text. To me they are just distracting eye-candy.
   (setq feebleline-msg-functions
         '((feebleline:mode-icon :fmt "%2s")
           (feebleline-file-or-buffer-name :face font-lock-keyword-face)
-          (feebleline:saved-buffer-indicator :face font-lock-warning-face)
-          (feebleline:git-branch-icon)
+          ;; (feebleline:saved-buffer-indicator :face font-lock-warning-face)
+          ;; (feebleline:git-branch-icon)
           (feebleline-git-branch :face feebleline-git-face)
           (feebleline:current-track)
           (feebleline:battery-info :align right)
