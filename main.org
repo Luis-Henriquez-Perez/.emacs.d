@@ -9264,7 +9264,6 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
 #+begin_src emacs-lisp
 (defun feebleline:battery-info ()
   "Return battery information."
-  (require 'battery)
   (let* ((percentage (thread-last (funcall battery-status-function)
                        (battery-format "%p")
                        (string-to-number)))
