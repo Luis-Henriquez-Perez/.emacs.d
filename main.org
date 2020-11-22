@@ -9205,6 +9205,17 @@ number when editing text. To me they are just distracting eye-candy.
 :ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
 :END:
 
+**** battery charging
+:PROPERTIES:
+:ID:       0a44e046-e78b-4681-8cad-3cec5dbb2c14
+:END:
+
+#+begin_src emacs-lisp
+(defun battery:charging-p ()
+  "Return non-nil if the battery is charging."
+  )
+#+end_src
+
 **** battery status
 :PROPERTIES:
 :ID:       212b76e2-b562-49d4-bdba-2d7a33d03981
