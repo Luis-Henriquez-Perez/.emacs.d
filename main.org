@@ -9242,7 +9242,7 @@ number when editing text. To me they are just distracting eye-candy.
     (format "%s %%%s" status-indicator percentage)))
 #+end_src
 
-*** music
+*** music track
 :PROPERTIES:
 :ID:       58edb392-282a-4acd-a5a2-4c248da423ec
 :END:
@@ -9273,10 +9273,10 @@ number when editing text. To me they are just distracting eye-candy.
   "Add track information if playing."
   (when (and (bound-and-true-p emms-player-playing-p)
              (not emms-player-paused-p))
-    (thread-last (emms-playlist-current-selected-track)
-      (emms-track-name)
-      (f-base)
-      (s-truncate 25))))
+    (->> (emms-playlist-current-selected-track)
+         (emms-track-name)
+         (f-base))
+    (format "%s %s" track-status (s-truncate 25 track))))
 #+end_src
 
 ** hide-mode-line
