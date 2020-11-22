@@ -9115,7 +9115,7 @@ number when editing text. To me they are just distracting eye-candy.
 (defun all-the-icons:icon (type name &rest properties)
   "Return icon."
   (if (void-icons-displayable-p)
-      (apply (void-symbol-intern 'all-the-icons- type) properties)
+      (apply (void-symbol-intern 'all-the-icons- type) name properties)
     (plist-get properties :fallback)))
 #+end_src
 
