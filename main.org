@@ -4762,6 +4762,9 @@ them.
 :ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
 :END:
 
+If we don't use an short idle timer to take the screenshot, we'll end up
+capturing the prompt for the filename (like in [[][this example]]).
+
 #+begin_src emacs-lisp
 (defadvice! use-miam (:override (x y width height) escr--screenshot)
   (let ((window-id (frame-parameter (selected-frame) 'window-id))
