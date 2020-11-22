@@ -7636,6 +7636,70 @@ see if it's gone farther than it should have and in that case goes back.
 :ID: 86f0b9be-0033-46bd-8d02-7e506fe73ead
 :END:
 
+***** org choose capture template
+:PROPERTIES:
+:ID:       fc2cf818-48c4-4e52-8356-56106623ad77
+:END:
+
+#+begin_src emacs-lisp
+(defun org/choose-capture-template ()
+  "Select capture template."
+  (interactive)
+  (let (prefixes)
+    (alet (mapcan (lambda (x)
+                    (let ((x-keys (car x)))
+                      ;; Remove prefixed keys until we get one that matches the current item.
+                      (while (and prefixes
+                                  (let ((p1-keys (caar prefixes)))
+                                    (or
+                                     (<= (length x-keys) (length p1-keys))
+                                     (not (string-prefix-p p1-keys x-keys)))))
+                        (pop prefixes))
+                      (if (> (length x) 2)
+                          (let ((desc (mapconcat #'cadr (reverse (cons x prefixes)) " | ")))
+                            (list (format "%-5s %s" x-keys desc)))
+                        (push x prefixes)
+                        nil)))
+                  (-> org-capture-templates
+                      (org-capture-upgrade-templates)
+                      (org-contextualize-keys org-capture-templates-contexts)))
+      (funcall #'org-capture nil (car (split-string (completing-read "Capture template: " it nil t)))) )))
+#+end_src
+
+***** org choose tags
+:PROPERTIES:
+:ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
+:END:
+
+#+begin_src emacs-lisp
+(defun org/choose-tags ()
+  "Select tags to add to headline."
+  (interactive)
+  (let* ((current (org-get-tags (point)))
+         (selected (->> (org-get-buffer-tags)
+                        (completing-read-multiple "Select org tag(s): "))))
+    (alet (-distinct (append (-difference current selected)
+                             (-difference selected current)))
+      (message "%S" it)
+      (org-set-tags it))))
+#+end_src
+
+***** org outline headings
+:PROPERTIES:
+:ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
+:END:
+
+#+begin_src emacs-lisp
+(defun org/goto-headline ()
+  "Jump to an org heading using selectrum."
+  (interactive)
+  (require 'org-refile)
+  (let ((selectrum-should-sort-p nil)
+        (org-outline-path-complete-in-steps)
+        (org-goto-interface 'outline-path-completion))
+    (org-goto)))
+#+end_src
+
 ***** dwim
 :PROPERTIES:
 :ID: 93a6e45c-b23b-4639-9e1c-9f1aef0fb95a
