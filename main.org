@@ -9019,11 +9019,6 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
 :END:
 
-*** feebleline
-:PROPERTIES:
-:ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
-:END:
-
 Feebleline replaces the typical emacs modeline with text printed out to
 echo area.
 
@@ -9036,20 +9031,234 @@ it's just excess information you don't need to know unless you're visiting the
 buffer. Better is a global modeline that displays the information from the
 buffer displayed in the currently selected window.
 
+*** feebleline
+:PROPERTIES:
+:ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
+:END:
+
 #+begin_src emacs-lisp
 (use-package! feebleline
-  :hook window-setup-hook
-  :config
-  (defun feebleline:msg-display-time ()
-    (format-time-string "%T %D %a"))
+  :hook window-setup-hook)
+#+end_src
+
+*** modeline display
+:PROPERTIES:
+:ID:       3061498c-9533-4595-a5ab-71bbf111fd87
+:END:
+
+It's really easy to add new segments to this modeline.
+
+There are those who insist on the usefulness of line numbers and column number.
+I'm not one of them. I rarely ever need to use a specific line number or column
+number when editing text. To me they are just distracting eye-candy.
+
+#+begin_src emacs-lisp
+(after! feebleline
   (setq feebleline-msg-functions
-        '((feebleline-line-number :post "" :fmt "%5s")
-          (feebleline-column-number :pre ":" :fmt "%-2s")
-          (feebleline-file-or-buffer-name :face font-lock-keyword-face :post "")
-          (feebleline-file-modified-star :face font-lock-warning-face :post "")
-          (feebleline-git-branch :face feebleline-git-face :pre " - ")
-          (feebleline:msg-display-mhs :align right)
-          (feebleline:msg-display-mdy :align right))))
+        '(
+          ;; (feebleline-line-number :post "" :fmt "%5s")
+          ;; (feebleline-column-number :pre ":" :fmt "%-2s")
+          (feebleline:mode-icon :fmt "%2s")
+          (feebleline-file-or-buffer-name :face font-lock-keyword-face)
+          ;; (feebleline:saved-buffer-icon :face font-lock-warning-face)
+          (feebleline-file-modified-star :face font-lock-warning-face)
+          (feebleline:git-branch-icon)
+          (feebleline-git-branch :face feebleline-git-face)
+          (feebleline:current-track)
+          (feebleline:battery :align right)
+          (feebleline:msg-display-time :align right))))
+#+end_src
+
+*** icon displayable
+:PROPERTIES:
+:ID:       8f470288-9779-4bd9-95d7-b725ea3507c6
+:END:
+
+#+begin_src emacs-lisp
+(defun void-icons-displayable-p ()
+  "Return non-nil when icons are displayable."
+  (and (display-graphic-p)
+       (featurep 'all-the-icons)
+       t))
+#+end_src
+
+*** icon generic function
+:PROPERTIES:
+:ID:       e32829fe-6f94-4a20-956d-85248e940f54
+:END:
+
+#+begin_src emacs-lisp
+(defun all-the-icons:icon (type name &rest properties)
+  "Return icon."
+  (if (void-icons-displayable-p)
+      (apply (void-symbol-intern 'all-the-icons- type) properties)
+    (plist-get properties :fallback)))
+#+end_src
+
+*** buffer mode
+:PROPERTIES:
+:ID:       666cea86-49d8-44c2-8727-e50c94963eee
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:mode-icon ()
+  "Display a mode icon."
+  (when (and (display-graphic-p) (featurep 'all-the-icons))
+    (--> (all-the-icons-icon-for-buffer)
+         (if (or (null it) (symbolp it))
+             (all-the-icons-faicon "file-o")
+           it)
+         (propertize it 'display '(raise 0.01)))))
+#+end_src
+
+*** git branch
+:PROPERTIES:
+:ID:       48e08229-355d-4d4f-a003-d56781f94c80
+:END:
+
+**** branch icon
+:PROPERTIES:
+:ID:       58c2d085-f377-4444-85a7-2780421f28ee
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:git-branch-icon ()
+  (when (and (void-icons-displayable-p)
+             (magit-git-repo-p default-directory))
+    (all-the-icons-octicon "git-branch" :v-adjust 0.01)))
+#+end_src
+
+**** branch name
+:PROPERTIES:
+:ID:       19d82da4-6492-49cb-9971-893033b4fa0a
+:END:
+
+*** time
+:PROPERTIES:
+:ID:       c2e0ce83-e2e4-4930-99f8-3c1eb53fdd56
+:END:
+
+**** time
+:PROPERTIES:
+:ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:msg-display-time ()
+  (format-time-string "%T %D %a"))
+#+end_src
+
+*** saved buffer
+:PROPERTIES:
+:ID:       d5b65ce4-8947-44ba-b424-458ec8a196b4
+:END:
+
+**** saved buffer
+:PROPERTIES:
+:ID:       f956383b-0e7e-4d42-95fb-2cb65faf5c35
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:saved-buffer-status ()
+  "Display saved icon if buffer has been saved."
+  (when (and (buffer-file-name) (buffer-modified-p))
+    (all-the-icons-material "save" :v-adjust -0.01)))
+#+end_src
+
+**** saved status
+:PROPERTIES:
+:ID:       eba2ad0e-11de-4c2f-9748-2a4d699886c3
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:saved-buffer-status ()
+  ""
+  )
+#+end_src
+
+*** battery
+:PROPERTIES:
+:ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
+:END:
+
+**** battery
+:PROPERTIES:
+:ID:       af0ce658-56a8-4b53-b707-210432e8dda4
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:battery ()
+  "Return the battery percentage display of feebleline."
+  (require 'battery)
+  (let* ((battery-fn (-rpartial #'battery-format (funcall battery-status-function)))
+         (percent (string-to-number (funcall battery-fn "%p")))
+         (icon-fn #'all-the-icons-faicon))
+    (--> (cond ((string= (funcall battery-fn "%B") "Charging")
+                (setq icon-fn #'all-the-icons-alltheicon)
+                "-charging")
+               ((> percent 75) "-full")
+               ((> percent 50) "-three-quarters")
+               ((> percent 25) "-half")
+               ((> percent 10) "-quarter")
+               (t "-empty"))
+         (funcall icon-fn (concat "battery" it) :v-adjust 0.01)
+         (format "%s %%%d" it percent))))
+#+end_src
+
+**** battery status
+:PROPERTIES:
+:ID:       212b76e2-b562-49d4-bdba-2d7a33d03981
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:battery-status ()
+  "docstring"
+  )
+#+end_src
+
+**** percentage
+:PROPERTIES:
+:ID:       3a4875be-45e4-4e49-bc05-dcbf50a80eff
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:battery-percentage ()
+  "Return battery percentage."
+  (concat "%" (battery-format "%p" (funcall battery-status-function))))
+#+end_src
+
+*** music
+:PROPERTIES:
+:ID:       58edb392-282a-4acd-a5a2-4c248da423ec
+:END:
+
+**** track status
+:PROPERTIES:
+:ID:       e0ec86fe-018f-4253-af4d-5a2173da659f
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:track-status-indicator ()
+  (when (bound-and-true-p emms-player-playing-p)
+    (cond (emms-player-paused-p '(material "pause" :v-adjust 0.01 :fallback "*paused*"))
+          (emms-repeat-track '(material "repeat_one" :fallback "*repeat-one*"))
+          (t '(material "music_note" :fallback "*playing*")))))
+#+end_src
+
+**** music
+:PROPERTIES:
+:ID:       b3b654bb-e789-4647-9e82-e6c04c867ff8
+:END:
+
+#+begin_src emacs-lisp
+(defun feebleline:current-track ()
+  "Add track information if playing."
+  (when (and (bound-and-true-p emms-player-playing-p)
+             (not emms-player-paused-p))
+    (thread-last (emms-playlist-current-selected-track)
+      (emms-track-name)
+      (f-base)
+      (s-truncate 25))))
 #+end_src
 
 ** hide-mode-line
