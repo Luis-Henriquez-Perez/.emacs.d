@@ -9271,9 +9271,9 @@ see it if it's running low and my laptop's not charging.
 #+begin_src emacs-lisp
 (defun feebleline:dwim-battery-info ()
   "Same as `feebleline:battery-info' but."
-  (let ((charging))
-    (when ))
-  )
+  (when (and (not (battery:charging-p))
+             (>= 40 (battery:percentage)))
+    (feebleline:battery-info)))
 #+end_src
 
 *** music track
