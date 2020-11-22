@@ -9093,6 +9093,16 @@ number when editing text. To me they are just distracting eye-candy.
           (feebleline:msg-display-time :align right))))
 #+end_src
 
+*** whether to display icons
+:PROPERTIES:
+:ID:       15850007-1ec3-45d0-afb9-0fd764991fca
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-display-icons-p t
+  "Whether to display icons.")
+#+end_src
+
 *** icon displayable
 :PROPERTIES:
 :ID:       8f470288-9779-4bd9-95d7-b725ea3507c6
@@ -9102,6 +9112,7 @@ number when editing text. To me they are just distracting eye-candy.
 (defun void-icons-displayable-p ()
   "Return non-nil when icons are displayable."
   (and (display-graphic-p)
+       void-display-icons-p
        (featurep 'all-the-icons)
        t))
 #+end_src
