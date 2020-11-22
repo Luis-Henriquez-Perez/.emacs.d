@@ -7896,6 +7896,11 @@ options. For this reason I wrote my own insert heading functions.
 
 *** source blocks
 :PROPERTIES:
+:ID:       480f4384-b560-4a47-978d-0c8058519294
+:END:
+
+**** source blocks
+:PROPERTIES:
 :ID: 2bb1b8ef-f41c-4dfa-8e47-549326f7ce05
 :END:
 
@@ -8275,7 +8280,12 @@ it's installed, otherwise it defaults to bringing up an regular emacs help buffe
   (org-link-set-parameters "helpfn" :face #'ol:helpfn-face :follow #'ol:helpfn-follow))
 #+end_src
 
-*** org capture
+*** built in features
+:PROPERTIES:
+:ID:       e882f8f8-195f-4349-b766-a87a39be7e10
+:END:
+
+**** org capture
 :PROPERTIES:
 :ID: 81197df0-6744-4a63-a202-f7279d7b7119
 :END:
@@ -8287,7 +8297,7 @@ designed to confront this problem. While in the middle of a task you can quickly
 jump into a small org buffer and write down an idea that you have, then close
 it.
 
-**** org capture
+***** org capture
 :PROPERTIES:
 :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
 :END:
@@ -8302,7 +8312,7 @@ it.
           (slot . 10)))
 #+end_src
 
-**** doct
+***** doct
 :PROPERTIES:
 :ID: 287fb9c7-110e-4758-aab2-71f74079ade2
 :END:
@@ -8319,7 +8329,7 @@ template element as you're writing it.
   :demand t)
 #+end_src
 
-**** remove capture headerline
+***** remove capture headerline
 :PROPERTIES:
 :ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
 :END:
@@ -8333,7 +8343,7 @@ need to disable =org-capture's= header-line.
   (setq-local header-line-format nil))
 #+end_src
 
-**** helpers
+***** helpers
 :PROPERTIES:
 :ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
 :END:
@@ -8341,7 +8351,7 @@ need to disable =org-capture's= header-line.
 These functions are to help me reduce the boilerplate of defining a capture
 template.
 
-***** org-capture-file
+****** org-capture-file
 :PROPERTIES:
 :ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
 :END:
@@ -8358,7 +8368,7 @@ This is a convenience wrapper for `doct' declarations."
   VOID-CAPTURE-FILE)
 #+end_src
 
-***** add to capture templates
+****** add to capture templates
 :PROPERTIES:
 :ID:       16c55272-f8c2-4798-9da1-2ab492769f44
 :END:
@@ -8383,7 +8393,7 @@ same key as the one(s) being added."
           (clean (-concat (doct declarations) org-capture-templates)))))
 #+end_src
 
-***** schedule and deadline times
+****** schedule and deadline times
 :PROPERTIES:
 :ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
 :END:
@@ -8402,7 +8412,7 @@ For capture templates that have deadlines, I set a start and an end date.
     (org-ml-build-planning! :scheduled beg :deadline end)))
 #+end_src
 
-***** generic template
+****** generic template
 :PROPERTIES:
 :ID:       7945bb08-cb78-4c7e-840d-3cf92b7e3677
 :END:
@@ -8419,7 +8429,7 @@ have the date created.
        (org-ml-headline-set-node-property "CREATED" (ts-format))))
 #+end_src
 
-***** default template keywords
+****** default template keywords
 :PROPERTIES:
 :ID:       b2fe70d3-cc88-40fb-a718-8dafaeb98694
 :END:
@@ -8432,7 +8442,7 @@ have the date created.
   "A plist of keywords that should always apply to capture templates.")
 #+end_src
 
-***** convenience macro for defining capture templates
+****** convenience macro for defining capture templates
 :PROPERTIES:
 :ID:       9a3ece9d-e8e4-4b32-b65b-4a992e9d20cf
 :END:
@@ -8461,7 +8471,7 @@ have the date created.
               ,@org-capture:defaults)))))
 #+end_src
 
-**** capture templates
+***** capture templates
 :PROPERTIES:
 :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
 :END:
@@ -8472,7 +8482,7 @@ is possible with regular capture templates via [[info:org#Template expansion][or
 abstractions provided by =org-ml= and =doct= are even more robust and much easier to
 extend.
 
-***** website
+****** website
 :PROPERTIES:
 :ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
 :END:
@@ -8498,7 +8508,7 @@ with =~=.
          (org-ml-headline-set-node-property "SOURCE" url))))
 #+end_src
 
-***** question
+****** question
 :PROPERTIES:
 :ID:       a672f3eb-43c1-4310-adcc-6d0022e50579
 :END:
@@ -8516,7 +8526,7 @@ provide the perfect draft for a potential question for reddit or stackexchange.
        (org-ml-set-property :tags '("question"))))
 #+end_src
 
-***** idea
+****** idea
 :PROPERTIES:
 :ID:       71864105-198a-4680-ad1d-bd3f40b7f0d6
 :END:
@@ -8527,7 +8537,7 @@ provide the perfect draft for a potential question for reddit or stackexchange.
        (org-ml-set-property :tags '("idea"))))
 #+end_src
 
-***** emacs
+****** emacs
 :PROPERTIES:
 :ID: e6109a54-37af-44ba-852f-a1c34f910cb9
 :END:
@@ -8542,7 +8552,7 @@ This capture template is for something emacs related I need to do.
        (org-ml-headline-set-planning (org-capture::default-planning-node))))
 #+end_src
 
-***** generic todo
+****** generic todo
 :PROPERTIES:
 :ID:       3689e969-aefe-47f4-8d54-b23f08840374
 :END:
@@ -8553,7 +8563,7 @@ This capture template is for something emacs related I need to do.
        (org-ml-set-property :todo-keyword "TODO")))
 #+end_src
 
-**** prevent capture templates from deleting windows
+***** prevent capture templates from deleting windows
 :PROPERTIES:
 :ID:       a13e330a-33ff-4c1e-add4-00c5db4e6cd1
 :END:
@@ -8567,12 +8577,12 @@ This capture template is for something emacs related I need to do.
     (apply <orig-fn> <args>)))
 #+end_src
 
-*** org agenda
+**** org agenda
 :PROPERTIES:
 :ID:       16c1da27-264f-47df-a9d4-3f3ad8fa460f
 :END:
 
-**** org agenda
+***** org agenda
 :PROPERTIES:
 :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
 :END:
@@ -8596,7 +8606,7 @@ current week.
   (org-agenda-inhibit-startup . t))
 #+end_src
 
-**** org super agenda
+***** org super agenda
 :PROPERTIES:
 :ID:       d4914094-9e4e-4269-a359-16c7abc6653a
 :END:
@@ -8605,12 +8615,12 @@ current week.
 (use-package! org-super-agenda)
 #+end_src
 
-*** org refile
+**** org refile
 :PROPERTIES:
 :ID:       7cb6769d-2904-4675-b17d-f658edb5a917
 :END:
 
-**** org refile
+***** org refile
 :PROPERTIES:
 :ID: 0174a708-8043-403e-b024-8ae29868564d
 :END:
@@ -8626,7 +8636,7 @@ current week.
   (org-outline-path-complete-in-steps . nil))
 #+end_src
 
-*** org id
+**** org id
 :PROPERTIES:
 :ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
 :END:
@@ -8646,7 +8656,7 @@ referenance org headlines.
   :hook (org-insert-heading . org-id-get-create))
 #+end_src
 
-*** org clock
+**** org clock
 :PROPERTIES:
 :ID:       d378471c-89df-48c9-a755-b79880f27308
 :END:
@@ -8671,7 +8681,7 @@ tracking the time you spend on a particular task.
   (org-clock-persistence-insinuate))
 #+end_src
 
-*** org crypt
+**** org crypt
 :PROPERTIES:
 :ID:       f5278890-8b84-43df-b5dc-0ef8074bfba9
 :END:
