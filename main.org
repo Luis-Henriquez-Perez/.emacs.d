@@ -9227,7 +9227,8 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (defun battery:charging-p ()
   "Return non-nil if the battery is charging."
-  ())
+  (alet (battery-format "%B" (funcall battery-status-function))
+    (string= it "Charging")))
 #+end_src
 
 ***** battery percentage
