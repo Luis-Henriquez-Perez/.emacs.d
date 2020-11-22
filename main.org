@@ -9281,6 +9281,8 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
                       (battery-format "%p")
                       (string-to-number)))
         (status-indicator (feebleline:battery-status-indicator)))
+    (when (> 30 percentage)
+      (propertize status-indicator 'face 'font-lock-warning-face))
     (format "%s %%%d" status-indicator percentage)))
 #+end_src
 
