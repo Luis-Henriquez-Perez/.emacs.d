@@ -9232,12 +9232,6 @@ number when editing text. To me they are just distracting eye-candy.
                 ((> charge 10) '(faicon "quarter"        "[#   ]"))
                 (t             '(faicon "empty"          "[    ]")))
       (apply icon-fn (car it) (concat "battery-" (cadr it)) :fallback (caddr it) props))))
-
-
-
-
-
-
 #+end_src
 
 **** percentage
