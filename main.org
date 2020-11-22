@@ -9085,8 +9085,6 @@ number when editing text. To me they are just distracting eye-candy.
   (setq feebleline-msg-functions
         '((feebleline:mode-icon :fmt "%2s")
           (feebleline-file-or-buffer-name :face font-lock-keyword-face)
-          ;; (feebleline:saved-buffer-indicator :face font-lock-warning-face)
-          ;; (feebleline:git-branch-icon)
           (feebleline-git-branch :face feebleline-git-face)
           (feebleline:current-track)
           (feebleline:dwim-battery-info :align right)
@@ -9311,7 +9309,7 @@ see it if it's running low and my laptop's not charging.
 :END:
 
 #+begin_src emacs-lisp
-(defun feebleline:track-status-indicator ()
+(defun feebleline:emms-track-status-indicator ()
   "Return the indicator for track status."
   (when (bound-and-true-p emms-player-playing-p)
     (alet (cond
@@ -9333,7 +9331,7 @@ see it if it's running low and my laptop's not charging.
 :END:
 
 #+begin_src emacs-lisp
-(defun feebleline:current-track ()
+(defun feebleline:emms-current-track ()
   "Add track information if playing."
   (when (and (bound-and-true-p emms-player-playing-p)
              (not emms-player-paused-p))
