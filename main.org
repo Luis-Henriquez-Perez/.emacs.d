@@ -9101,6 +9101,11 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (defvar void-display-icons-p t
   "Whether to display icons.")
+
+(defun void/toggle-icon-display ()
+  "Toggle the display of icons."
+  (interactive)
+  (toggle! void-display-icons-p))
 #+end_src
 
 *** icon displayable
