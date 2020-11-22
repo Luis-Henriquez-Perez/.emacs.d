@@ -9219,9 +9219,25 @@ number when editing text. To me they are just distracting eye-candy.
 :END:
 
 #+begin_src emacs-lisp
-(defun feebleline:battery-status ()
-  "docstring"
-  )
+(defun feebleline:battery-status-indicator ()
+  "Return what's used to indicate battery status."
+  (let ((icon-fn #'all-the-icons:icon)
+        (props '(:v-adjust 0.01))
+        (charge (thread-last (funcall battery-status-function)
+                  (battery-format "%p")
+                  (string-to-number))))
+    (alet (cond ((> charge 75) '(faicon "full"           "[####]"))
+                ((> charge 50) '(faicon "three-quarters" "[### ]"))
+                ((> charge 25) '(faicon "half"           "[##  ]"))
+                ((> charge 10) '(faicon "quarter"        "[#   ]"))
+                (t             '(faicon "empty"          "[    ]")))
+      (apply icon-fn (car it) (concat "battery-" (cadr it)) :fallback (caddr it) props))))
+
+
+
+
+
+
 #+end_src
 
 **** percentage
