@@ -9314,11 +9314,11 @@ see it if it's running low and my laptop's not charging.
 (defun feebleline:track-status-indicator ()
   "Return the indicator for track status."
   (when (bound-and-true-p emms-player-playing-p)
-    (let (())
-      (cond
-       (emms-player-paused-p '(material "pause" "*paused*"))
-       (emms-repeat-track    '(material "repeat_one" "*repeat-one*"))
-       (t                    '(material "music_note" "*playing*"))))))
+    (alet (cond
+           (emms-player-paused-p '(material "pause" "*paused*"))
+           (emms-repeat-track    '(material "repeat_one" "*repeat-one*"))
+           (t                    '(material "music_note" "*playing*")))
+      (funcall #'all-the-icons:icon ))))
 #+end_src
 
 **** music
