@@ -8708,56 +8708,6 @@ diary/journal using =org-mode=.
   (org-journal-find-file . 'find-file))
 #+end_src
 
-*** keybindings
-:PROPERTIES:
-:ID: ee444a86-1266-42dd-9fe8-40192db1fdde
-:END:
-
-**** replace evil folding commands to outline folding
-:PROPERTIES:
-:ID: b3a4908d-538e-4d4c-acc9-fbd822220f03
-:END:
-
-By default evil binds =za= to [[helpfn:evil-open-folds][evil-open-folds]] and =zb= to [[helpfn:evil-close-folds][evil-close-folds]]. They do
-work in =org-mode= but I'd rather use the folding commands provided by =outline.el.=
-The outline api actually seems pretty solid; better coded and simpler than the
-org api it seems.
-
-#+begin_src emacs-lisp
-;; (general-def
-;;   (:leader "z")
-;;   (:n "a" #'outline-show-all)
-;;   (:n "m" #'outline:hide-all-sublevels))
-
-(general-def 'normal org-mode-map
-  [tab] #'outline-toggle-children
-  "TAB" #'outline-toggle-children)
-
-(defun outline:hide-all-sublevels ()
-  (interactive)
-  (outline-hide-sublevels 1))
-
-(general-def 'normal org-mode-map
-  "j" #'org/dwim-next-line
-  "k" #'org/dwim-previous-line
-  "b" #'org/dwim-insert-elisp-block
-  "o" #'org/insert-heading-below
-  "O" #'org/insert-heading-above
-  "l" #'org-do-demote
-  "h" #'org-promote-subtree
-  "L" #'org-demote-subtree
-  "t" #'org-set-tags-command
-  "r" #'org-capture
-  "s" #'org-schedule
-  "S" #'org-deadline
-  "R" #'org-refile
-  "T" #'org-todo
-  "D" #'org-cut-subtree
-  "Y" #'org-copy-subtree
-  "K" #'org-metaup
-  "J" #'org-metadown)
-#+end_src
-
 ** lua
 :PROPERTIES:
 :ID: 9f458b76-489f-45e0-b99a-ad6a9a2ae182
