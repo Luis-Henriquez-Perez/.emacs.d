@@ -9636,7 +9636,8 @@ These are keybindings I use most frequently.
 (define-leader-key!
   :infix "f"
   ""  (list :ignore t          :wk "file")
-  "s" (list :def #'sudo-edit   :wk "sudo")
+  "S" (list :def #'sudo-edit   :wk "sudo")
+  "s" (list :def #'save-buffer :wk "save buffer")
   "f" (list :def #'find-file   :wk "find file")
   "r" (list :def #'ranger      :wk "ranger")
   "d" (list :def #'deer        :wk "deer"))
