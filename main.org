@@ -9089,7 +9089,8 @@ number when editing text. To me they are just distracting eye-candy.
           (feebleline:git-branch-icon)
           (feebleline-git-branch :face feebleline-git-face)
           (feebleline:current-track)
-          (feebleline:battery :align right)
+          ;; (feebleline:battery :align right)
+          (feebleline:battery-info :align right)
           (feebleline:msg-display-time :align right))))
 #+end_src
 
@@ -9242,7 +9243,8 @@ number when editing text. To me they are just distracting eye-candy.
         (charge (thread-last (funcall battery-status-function)
                   (battery-format "%p")
                   (string-to-number))))
-    (alet (cond ((> charge 75) '(faicon "full"           "[####]"))
+    (alet (cond (chargingp     '(alltheicon "charging"   "[++++]"))
+                ((> charge 75) '(faicon "full"           "[####]"))
                 ((> charge 50) '(faicon "three-quarters" "[### ]"))
                 ((> charge 25) '(faicon "half"           "[##  ]"))
                 ((> charge 10) '(faicon "quarter"        "[#   ]"))
