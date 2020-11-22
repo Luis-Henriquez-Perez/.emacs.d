@@ -9282,7 +9282,7 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
                        (string-to-number)))
          (status-indicator (alet (feebleline:battery-status-indicator)
                              (if (> 30 percentage)
-                                 (propertize it 'font-lock-face '(:foreground "red"))
+                                 (propertize it 'face font-lock-warning-face)
                                it))))
     (format "%s %%%d" status-indicator percentage)))
 #+end_src
