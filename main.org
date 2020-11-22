@@ -9154,15 +9154,14 @@ number when editing text. To me they are just distracting eye-candy.
 :ID:       48e08229-355d-4d4f-a003-d56781f94c80
 :END:
 
-**** branch icon
+**** branch icon                                                      :disabled:
 :PROPERTIES:
 :ID:       58c2d085-f377-4444-85a7-2780421f28ee
 :END:
 
 #+begin_src emacs-lisp
 (defun feebleline:git-branch-icon ()
-  (when (and (void-icons-displayable-p)
-             (magit-git-repo-p default-directory))
+  (when (magit-git-repo-p default-directory)
     (all-the-icons-octicon "git-branch" :v-adjust 0.01)))
 #+end_src
 
