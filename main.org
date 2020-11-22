@@ -9182,7 +9182,7 @@ number when editing text. To me they are just distracting eye-candy.
 :END:
 
 #+begin_src emacs-lisp
-(defun feebleline:saved-buffer-status ()
+(defun feebleline:saved-buffer-indicator ()
   "Display saved icon if buffer has been saved."
   (when (and (buffer-file-name) (buffer-modified-p))
     (all-the-icons-material "save" :v-adjust -0.01)))
