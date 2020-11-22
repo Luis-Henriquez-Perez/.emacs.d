@@ -9207,6 +9207,11 @@ number when editing text. To me they are just distracting eye-candy.
 
 **** battery
 :PROPERTIES:
+:ID:       b1d5e914-3337-4426-94f7-9d618e9ffacf
+:END:
+
+***** battery
+:PROPERTIES:
 :ID:       9514f9db-4937-435a-943c-27cf066e979e
 :END:
 
@@ -9214,7 +9219,7 @@ number when editing text. To me they are just distracting eye-candy.
 (use-feature! battery)
 #+end_src
 
-**** battery charging
+***** battery charging
 :PROPERTIES:
 :ID:       0a44e046-e78b-4681-8cad-3cec5dbb2c14
 :END:
@@ -9225,7 +9230,7 @@ number when editing text. To me they are just distracting eye-candy.
   ())
 #+end_src
 
-**** battery percentage
+***** battery percentage
 :PROPERTIES:
 :ID:       5b557679-4ddd-4ed3-92b7-e5e415e47497
 :END:
