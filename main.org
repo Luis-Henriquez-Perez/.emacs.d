@@ -2215,7 +2215,11 @@ Don't ping things that look like domain names.
 
 #+begin_src emacs-lisp
 (use-feature! calendar
-  :setq (diary-file . (concat VOID-DATA-DIR "diary")))
+  :pre-setq (diary-file . (concat VOID-DATA-DIR "diary"))
+  :config
+  (require 'f)
+  (unless (f-exists-p diary-file)
+    (f-touch diary-file)))
 #+end_src
 
 **** mule-cmds
