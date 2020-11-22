@@ -9254,10 +9254,8 @@ number when editing text. To me they are just distracting eye-candy.
   (let* ((battery-fn (-rpartial #'battery-format (funcall battery-status-function)))
          (icon-fn #'all-the-icons:icon)
          (props '(:v-adjust 0.01))
-         (chargingp (string= (funcall battery-fn "%B") "Charging"))
-         (charge (thread-last (funcall battery-status-function)
-                   (battery-format "%p")
-                   (string-to-number))))
+         (charge (battery:percentage))
+         (chargingp (battery:charging-p)))
     (alet (cond (chargingp '(alltheicon "charging"       "[++++]"))
                 ((> charge 75) '(faicon "full"           "[####]"))
                 ((> charge 50) '(faicon "three-quarters" "[### ]"))
@@ -9282,7 +9280,6 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
   (let ((percentage (thread-last (funcall battery-status-function)
                       (battery-format "%p")
                       (string-to-number)))
-        (chargingp)
         (status-indicator (feebleline:battery-status-indicator)))
     (format "%s %%%d" status-indicator percentage)))
 #+end_src
@@ -9299,7 +9296,7 @@ see it if it's running low and my laptop's not charging.
 (defun feebleline:dwim-battery-info ()
   "Same as `feebleline:battery-info' but."
   (when (and (not (battery:charging-p))
-             (>= 40 (battery:percentage)))
+             (>= 35 (battery:percentage)))
     (feebleline:battery-info)))
 #+end_src
 
