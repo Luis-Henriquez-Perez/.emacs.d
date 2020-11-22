@@ -9213,7 +9213,15 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (defun battery:charging-p ()
   "Return non-nil if the battery is charging."
-  )
+  ())
+#+end_src
+
+**** battery percentage
+:PROPERTIES:
+:ID:       5b557679-4ddd-4ed3-92b7-e5e415e47497
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 **** battery status
