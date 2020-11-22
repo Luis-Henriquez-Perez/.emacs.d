@@ -9205,6 +9205,15 @@ number when editing text. To me they are just distracting eye-candy.
 :ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
 :END:
 
+**** battery
+:PROPERTIES:
+:ID:       9514f9db-4937-435a-943c-27cf066e979e
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! battery)
+#+end_src
+
 **** battery charging
 :PROPERTIES:
 :ID:       0a44e046-e78b-4681-8cad-3cec5dbb2c14
