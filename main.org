@@ -8467,6 +8467,36 @@ have the date created.
               ,@org-capture:defaults)))))
 #+end_src
 
+****** capture get url
+:PROPERTIES:
+:ID:       a0f5b143-f48f-4c6a-a1d1-63d638b15e22
+:END:
+
+#+begin_src emacs-lisp
+(defun org-capture:browser-url ()
+  "Return the url of current browser."
+  (cond ((and (bound-and-true-p exwm-mode))
+         (exwm::firefox-url))
+        (()
+         (exwm::qutebrowser-url))
+        ((eq major-mode 'eww-mode)
+         (eww-current-url))
+        ((eq major-mode 'w3m-mode)
+         ))
+  )
+#+end_src
+
+****** is a browser buffer
+:PROPERTIES:
+:ID:       649c42af-cba2-4c0b-86a7-221ba6609592
+:END:
+
+#+begin_src emacs-lisp
+(defun in-browser-buffer-p ()
+  "docstring"
+  (s-matches-p (buffer-name)))
+#+end_src
+
 ***** capture templates
 :PROPERTIES:
 :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
@@ -8491,6 +8521,7 @@ with =~=.
 
 #+begin_src emacs-lisp
 (define-capture-template! Website ()
+  :when #'org-capture:in-browser-buffer-p
   :file (concat VOID-ORG-DIR "websites.org")
   :immediate-finish t
   :after-finalize (lambda () (void-download-webpage-as-pdf (exwm::qutebrowser-url) exwm-title))
