@@ -1857,6 +1857,25 @@ installed or not. Therefore, I advise straight to log this information for me.
 :ID: 40367976-12a0-4ccd-9aff-4df144a73edf
 :END:
 
+**** calc
+:PROPERTIES:
+:ID:       a9617132-5112-4099-bc99-3abee4919bc7
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! calc
+  :custom
+  (math-additional-units
+   '((GiB "1024 * MiB" "Giga Byte")
+     (MiB "1024 * KiB" "Mega Byte")
+     (KiB "1024 * B" "Kilo Byte")
+     (B nil "Byte")
+     (Gib "1024 * Mib" "Giga Bit")
+     (Mib "1024 * Kib" "Mega Bit")
+     (Kib "1024 * b" "Kilo Bit")
+     (b "B / 8" "Bit"))))
+#+end_src
+
 **** vc-hook
 :PROPERTIES:
 :ID:       a8dcb1f6-05a0-46cb-95b5-1d0cd0ad4467
@@ -3345,6 +3364,86 @@ a new theme.
   (apply <orig-fn> <args>))
 #+end_src
 
+** general commands
+:PROPERTIES:
+:ID:       14fd249d-b972-472c-b57e-4e53a80b22dc
+:END:
+
+*** switch to buffer
+:PROPERTIES:
+:ID:       70c72340-8601-40a7-9ffe-8296ba720e6a
+:END:
+
+#+begin_src emacs-lisp
+(defun void/switch-buffer ()
+  "Wrapper around `switch-to-buffer'.
+Prompt for buffer or recentf file to switch to. If buffer is selected, switch to
+the buffer. If a recentf path is selected, find the file of the recentf path."
+  (interactive)
+  (let* ((other-buffers (--remove (s-prefix-p " " (buffer-name it)) (cdr (buffer-list))))
+         (file-buffer-paths (-non-nil (-map #'buffer-file-name other-buffers))))
+    (--> (append (-map #'buffer-name other-buffers)
+                 (-difference recentf-list file-buffer-paths))
+         (completing-read "Select buffer: " it)
+         (funcall (if (-contains-p recentf-list it)
+                      #'find-file
+                    #'switch-to-buffer)
+                  it))))
+#+end_src
+
+*** goto line
+:PROPERTIES:
+:ID:       14111399-f75a-40ba-b9be-15a8b6a07ae9
+:END:
+
+#+begin_src emacs-lisp
+(defvar void:goto-line-history nil
+  "Submission history for `selectrum-swiper'.")
+
+(defun void/goto-line ()
+  "Search for a matching line and jump to the beginning of its text."
+  (interactive)
+  (let* ((minimum-line-number (line-number-at-pos (point-min) t))
+         (current-line-number (line-number-at-pos (point) t))
+         (line-choices (->> (split-string (buffer-string) "\n")
+                            (--map-indexed (unless (string-empty-p it)
+                                             (format "L%d: %s" (+ it-index minimum-line-number) it)))
+                            (-non-nil)))
+         (chosen-line (completing-read "Jump to matching line: " line-choices
+                                       nil t nil 'selectrum:swiper-history))
+         (chosen-line-num (--> chosen-line
+                               (s-match (rx "L" (group (+ digit)) ":") it)
+                               (elt it 1)
+                               (string-to-number it))))
+    (push-mark (point) t)
+    (forward-line (- chosen-line-num current-line-number))
+    (beginning-of-line-text 1)))
+#+end_src
+
+*** set font
+:PROPERTIES:
+:ID:       f24d97b6-7c74-491a-a77c-ba3ec22a2b68
+:END:
+
+#+begin_src emacs-lisp
+(defun void/set-font-face ()
+  "Apply an existing xfont to all graphical frames."
+  (interactive)
+  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*")) nil t))
+#+end_src
+
+*** switch to scratch buffer
+:PROPERTIES:
+:ID:       7d9af4b6-7744-437f-b088-ec9397056113
+:END:
+
+#+begin_src emacs-lisp
+(defun void/open-scratch ()
+  "Pop scratch."
+  (interactive)
+  (pop-to-buffer "*scratch*"))
+#+end_src
+
 * Window Management
 :PROPERTIES:
 :ID: 29dbf899-17cd-4b00-aacb-090ccd20e133
@@ -3896,7 +3995,7 @@ be inserted and interactively completed.
   (selectrum-num-candidates-displayed . 15))
 #+end_src
 
-**** ensure certain functions dont sort
+*** ensure certain functions dont sort
 :PROPERTIES:
 :ID:       1e39a4d2-8d4a-4413-a86e-3f92547cff14
 :END:
@@ -3909,7 +4008,7 @@ be inserted and interactively completed.
       (apply <orig-fn> <args>))))
 #+end_src
 
-**** selectrum prescient
+*** prescient
 :PROPERTIES:
 :ID:       e8c77d62-9c28-4193-9c60-f1148b55f96e
 :END:
@@ -3919,19 +4018,26 @@ be inserted and interactively completed.
   :hook (selectrum-mode-hook . prescient-persist-mode)
   :setq
   (prescient-save-file . (concat VOID-DATA-DIR "prescient-save-file")))
+#+end_src
 
+*** selectrum prescient
+:PROPERTIES:
+:ID:       5215a4ad-67cd-4c02-ac79-e4ace589c253
+:END:
+
+#+begin_src emacs-lisp
 (use-package! selectrum-prescient
   :hook selectrum-mode-hook
   :setq
   (selectrum-preprocess-candidates-function . #'selectrum-prescient--preprocess))
 #+end_src
 
-**** orderless
+*** orderless
 :PROPERTIES:
 :ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
 :END:
 
-***** orderless
+**** orderless
 :PROPERTIES:
 :ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
 :END:
@@ -3945,7 +4051,7 @@ be inserted and interactively completed.
     (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)))
 #+end_src
 
-***** stop selectrum filtering and highlight
+**** stop selectrum filtering and highlight
 :PROPERTIES:
 :ID:       a6720cdc-9d51-463b-9ffe-f9341c6bd967
 :END:
@@ -3957,136 +4063,6 @@ Orderless will do this."
   (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
         (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
     (apply <orig-fn> <args>)))
-#+end_src
-
-**** utilities
-:PROPERTIES:
-:ID:       7c8cf72d-6429-438c-bb2c-31efb3327b9a
-:END:
-
-***** set font
-:PROPERTIES:
-:ID:       f24d97b6-7c74-491a-a77c-ba3ec22a2b68
-:END:
-
-#+begin_src emacs-lisp
-(defun void/set-font-face ()
-  "Apply an existing xfont to all graphical frames."
-  (interactive)
-  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*")) nil t))
-#+end_src
-
-***** goto line
-:PROPERTIES:
-:ID:       14111399-f75a-40ba-b9be-15a8b6a07ae9
-:END:
-
-#+begin_src emacs-lisp
-(defvar void:goto-line-history nil
-  "Submission history for `selectrum-swiper'.")
-
-(defun void/goto-line ()
-  "Search for a matching line and jump to the beginning of its text."
-  (interactive)
-  (let* ((minimum-line-number (line-number-at-pos (point-min) t))
-         (current-line-number (line-number-at-pos (point) t))
-         (line-choices (->> (split-string (buffer-string) "\n")
-                            (--map-indexed (unless (string-empty-p it)
-                                             (format "L%d: %s" (+ it-index minimum-line-number) it)))
-                            (-non-nil)))
-         (chosen-line (completing-read "Jump to matching line: " line-choices
-                                       nil t nil 'selectrum:swiper-history))
-         (chosen-line-num (--> chosen-line
-                               (s-match (rx "L" (group (+ digit)) ":") it)
-                               (elt it 1)
-                               (string-to-number it))))
-    (push-mark (point) t)
-    (forward-line (- chosen-line-num current-line-number))
-    (beginning-of-line-text 1)))
-#+end_src
-
-***** switch to buffer
-:PROPERTIES:
-:ID:       70c72340-8601-40a7-9ffe-8296ba720e6a
-:END:
-
-#+begin_src emacs-lisp
-(defun void/switch-buffer ()
-  "Wrapper around `switch-to-buffer'.
-Prompt for buffer or recentf file to switch to. If buffer is selected, switch to
-the buffer. If a recentf path is selected, find the file of the recentf path."
-  (interactive)
-  (let* ((other-buffers (--remove (s-prefix-p " " (buffer-name it)) (cdr (buffer-list))))
-         (file-buffer-paths (-non-nil (-map #'buffer-file-name other-buffers))))
-    (--> (append (-map #'buffer-name other-buffers)
-                 (-difference recentf-list file-buffer-paths))
-         (completing-read "Select buffer: " it)
-         (funcall (if (-contains-p recentf-list it)
-                      #'find-file
-                    #'switch-to-buffer)
-                  it))))
-#+end_src
-
-***** org outline headings
-:PROPERTIES:
-:ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
-:END:
-
-#+begin_src emacs-lisp
-(defun org/goto-headline ()
-  "Jump to an org heading using selectrum."
-  (interactive)
-  (require 'org-refile)
-  (let ((selectrum-should-sort-p nil)
-        (org-outline-path-complete-in-steps)
-        (org-goto-interface 'outline-path-completion))
-    (org-goto)))
-#+end_src
-
-***** org choose tags
-:PROPERTIES:
-:ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
-:END:
-
-#+begin_src emacs-lisp
-(defun org/choose-tags ()
-  "Select tags to add to headline."
-  (interactive)
-  (let* ((current (org-get-tags (point)))
-         (selected (completing-read-multiple "Select org tag(s): " (org-get-buffer-tags))))
-    (alet (-uniq (append (-difference current selected)
-                         (-difference selected current)))
-      (org-set-tags it))))
-#+end_src
-
-***** org choose capture template
-:PROPERTIES:
-:ID:       fc2cf818-48c4-4e52-8356-56106623ad77
-:END:
-
-#+begin_src emacs-lisp
-(defun org/choose-capture-template ()
-  "Select capture template."
-  (interactive)
-  (let (prefixes)
-    (alet (mapcan (lambda (x)
-                    (let ((x-keys (car x)))
-                      ;; Remove prefixed keys until we get one that matches the current item.
-                      (while (and prefixes
-                                  (let ((p1-keys (caar prefixes)))
-                                    (or
-                                     (<= (length x-keys) (length p1-keys))
-                                     (not (string-prefix-p p1-keys x-keys)))))
-                        (pop prefixes))
-                      (if (> (length x) 2)
-                          (let ((desc (mapconcat #'cadr (reverse (cons x prefixes)) " | ")))
-                            (list (format "%-5s %s" x-keys desc)))
-                        (push x prefixes)
-                        nil)))
-                  (-> org-capture-templates
-                      (org-capture-upgrade-templates)
-                      (org-contextualize-keys org-capture-templates-contexts)))
-      (funcall #'org-capture nil (car (split-string (completing-read "Capture template: " it nil t)))) )))
 #+end_src
 
 ** company
@@ -4530,6 +4506,28 @@ If there is no match, return POSSIBLE-NAME."
 
 In current times we are fortunate enough to have a wealth of information
 available to us only a web search away.
+
+** engine-mode
+:PROPERTIES:
+:ID:       2f5c974e-b26e-4080-a9b3-acd6406ab118
+:END:
+
+This package essentially automates the creation of an interactive web searching
+functions. Engine mode seems to only be useful for binding keys.
+
+#+begin_src emacs-lisp
+(use-package! engine-mode
+  :straight (:host github :branch "main" :repo "hrs/engine-mode")
+  :config
+  (defengine amazon
+    "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s")
+  (defengine qwant
+    "https://www.qwant.com/?q=%s")
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"))
+#+end_src
 
 ** w3m
 :PROPERTIES:
@@ -9285,13 +9283,14 @@ These are keybindings I use most frequently.
   :infix "a"
   "a" (list :def #'void/open-org-agenda      :wk "agenda")
   "m" (list :def #'mu4e                      :wk "mu4e")
-  "l" (list :def #'elfeed                    :wk "elfeed")
+  "l" (list :def #'org-store-link                    :wk "store link")
+  "f" (list :def #'elfeed                    :wk "elfeed")
   "d" (list :def #'deer                      :wk "deer")
   "r" (list :def #'ranger                    :wk "ranger")
   "e" (list :def #'void/open-emacs-instance  :wk "emacs")
-  "q" (list :def #'search-web/default-engine :wk "browse web")
+  "q" (list :def #'engine/search-qwant :wk "browse web")
   "j" (list :def #'org/avy-goto-headline :wk "heading jump")
-  "c" (list :def #'org-capture               :wk "capture"))
+  "c" (list :def #'org/choose-capture-template               :wk "capture"))
 
 (define-leader-key! "as" (list :ignore nil :wk "screenshot"))
 
