@@ -7927,6 +7927,22 @@ use =edit-indirect= to edit source blocks.
                                      (:tangle . "yes"))))
 #+end_src
 
+**** edit source blocks
+:PROPERTIES:
+:ID:       a0e1c9d6-9071-4c6f-abc4-d2e9f011be03
+:END:
+
+#+begin_src emacs-lisp
+(defun org/dwim-edit-source-block ()
+  "Edit source block in current heading.
+Point does not have to be on source block."
+  (interactive)
+  (let ((org-src-window-setup 'plain))
+    (org-back-to-heading)
+    (org-next-block 1)
+    (org-edit-src-code)))
+#+end_src
+
 *** org-mode
 :PROPERTIES:
 :ID: c1c5724e-028a-42a5-a982-28d57203b335
