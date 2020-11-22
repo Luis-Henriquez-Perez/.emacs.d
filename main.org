@@ -9089,8 +9089,8 @@ number when editing text. To me they are just distracting eye-candy.
           (feebleline:git-branch-icon)
           (feebleline-git-branch :face feebleline-git-face)
           (feebleline:current-track)
-          (feebleline:battery :align right)
-          ;; (feebleline:battery-info :align right)
+          ;; (feebleline:battery :align right)
+          (feebleline:battery-info :align right)
           (feebleline:msg-display-time :align right))))
 #+end_src
 
