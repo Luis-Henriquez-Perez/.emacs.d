@@ -9257,10 +9257,13 @@ number when editing text. To me they are just distracting eye-candy.
 
 #+begin_src emacs-lisp
 (defun feebleline:track-status-indicator ()
+  "Return the indicator for track status."
   (when (bound-and-true-p emms-player-playing-p)
-    (cond (emms-player-paused-p '(material "pause" :v-adjust 0.01 :fallback "*paused*"))
-          (emms-repeat-track '(material "repeat_one" :fallback "*repeat-one*"))
-          (t '(material "music_note" :fallback "*playing*")))))
+    (let (())
+      (cond
+       (emms-player-paused-p '(material "pause" "*paused*"))
+       (emms-repeat-track    '(material "repeat_one" "*repeat-one*"))
+       (t                    '(material "music_note" "*playing*"))))))
 #+end_src
 
 **** music
