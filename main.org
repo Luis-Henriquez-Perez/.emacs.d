@@ -9141,7 +9141,7 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (defun feebleline:mode-icon ()
   "Display a mode icon."
-  (when (and (display-graphic-p) (featurep 'all-the-icons))
+  (when (void-icons-displayable-p)
     (--> (all-the-icons-icon-for-buffer)
          (if (or (null it) (symbolp it))
              (all-the-icons-faicon "file-o")
