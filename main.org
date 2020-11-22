@@ -9161,6 +9161,9 @@ number when editing text. To me they are just distracting eye-candy.
 :ID:       19d82da4-6492-49cb-9971-893033b4fa0a
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 *** time
 :PROPERTIES:
 :ID:       c2e0ce83-e2e4-4930-99f8-3c1eb53fdd56
