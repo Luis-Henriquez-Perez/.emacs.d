@@ -9206,30 +9206,6 @@ number when editing text. To me they are just distracting eye-candy.
 :ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
 :END:
 
-**** battery
-:PROPERTIES:
-:ID:       af0ce658-56a8-4b53-b707-210432e8dda4
-:END:
-
-#+begin_src emacs-lisp
-(defun feebleline:battery ()
-  "Return the battery percentage display of feebleline."
-  (require 'battery)
-  (let* ((battery-fn (-rpartial #'battery-format (funcall battery-status-function)))
-         (percent (string-to-number (funcall battery-fn "%p")))
-         (icon-fn #'all-the-icons-faicon))
-    (--> (cond ((string= (funcall battery-fn "%B") "Charging")
-                (setq icon-fn #'all-the-icons-alltheicon)
-                "-charging")
-               ((> percent 75) "-full")
-               ((> percent 50) "-three-quarters")
-               ((> percent 25) "-half")
-               ((> percent 10) "-quarter")
-               (t "-empty"))
-         (funcall icon-fn (concat "battery" it) :v-adjust 0.01)
-         (format "%s %%%d" it percent))))
-#+end_src
-
 **** battery status
 :PROPERTIES:
 :ID:       212b76e2-b562-49d4-bdba-2d7a33d03981
@@ -9238,12 +9214,14 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (defun feebleline:battery-status-indicator ()
   "Return what's used to indicate battery status."
-  (let ((icon-fn #'all-the-icons:icon)
-        (props '(:v-adjust 0.01))
-        (charge (thread-last (funcall battery-status-function)
-                  (battery-format "%p")
-                  (string-to-number))))
-    (alet (cond (chargingp     '(alltheicon "charging"   "[++++]"))
+  (let* ((battery-fn (-rpartial #'battery-format (funcall battery-status-function)))
+         (icon-fn #'all-the-icons:icon)
+         (props '(:v-adjust 0.01))
+         (chargingp (string= (funcall battery-fn "%B") "Charging"))
+         (charge (thread-last (funcall battery-status-function)
+                   (battery-format "%p")
+                   (string-to-number))))
+    (alet (cond (chargingp '(alltheicon "charging"       "[++++]"))
                 ((> charge 75) '(faicon "full"           "[####]"))
                 ((> charge 50) '(faicon "three-quarters" "[### ]"))
                 ((> charge 25) '(faicon "half"           "[##  ]"))
@@ -9262,7 +9240,7 @@ number when editing text. To me they are just distracting eye-candy.
   "Return battery information."
   (let ((percentage (battery-format "%p" (funcall battery-status-function)))
         (status-indicator (feebleline:battery-status-indicator)))
-    (format "%s %%s" status-indicator percentage)))
+    (format "%s %%%s" status-indicator percentage)))
 #+end_src
 
 *** music
