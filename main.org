@@ -3476,24 +3476,13 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
   (aw-background . t))
 #+end_src
 
-** eyebrowse
+** perspective
 :PROPERTIES:
-:ID: 4ad6f8e6-0465-4d84-aa71-8848e69ccc5c
+:ID:       f646341e-018a-44f7-9907-bd9dc964ae99
 :END:
 
-[[https://github.com/wasamasa/eyebrowse][eyebrowse]] is for managing workspaces. A workspace in Emacs a specific window
-setup. It's for when you are doing some task let's say researching some
-eyebrowse code and then you want to take a break and do something else but you
-don't want to close all the nice windows you have up (and have to set them up
-again later). You can create a new workspace with [[helpfn:eyebrowse-create-window-config][eyebrowse-create-window-config]]
-and switch to it with [[helpfn:eyebrowse-next-window-config][eyebrowse-next-window-config]]. You can always go back to
-your previous workspace now with [[helpfn:eyebrowse-prev-window-config][eyebrowse-prev-window-config]] or
-[[helpfn:eyebrowse-switch-to-window-config][eyebrowse-switch-to-window-config]].
-
 #+begin_src emacs-lisp
-(use-package! eyebrowse
-  :commands eyebrowse-create-window-config
-  :setq (eyebrowse-wrap-around . t))
+(use-package! perspective)
 #+end_src
 
 ** window divider
