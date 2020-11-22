@@ -9083,13 +9083,9 @@ number when editing text. To me they are just distracting eye-candy.
 #+begin_src emacs-lisp
 (after! feebleline
   (setq feebleline-msg-functions
-        '(
-          ;; (feebleline-line-number :post "" :fmt "%5s")
-          ;; (feebleline-column-number :pre ":" :fmt "%-2s")
-          (feebleline:mode-icon :fmt "%2s")
+        '((feebleline:mode-icon :fmt "%2s")
           (feebleline-file-or-buffer-name :face font-lock-keyword-face)
-          ;; (feebleline:saved-buffer-icon :face font-lock-warning-face)
-          (feebleline-file-modified-star :face font-lock-warning-face)
+          (feebleline:saved-buffer-indicator :face font-lock-warning-face)
           (feebleline:git-branch-icon)
           (feebleline-git-branch :face feebleline-git-face)
           (feebleline:current-track)
