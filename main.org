@@ -9203,7 +9203,7 @@ number when editing text. To me they are just distracting eye-candy.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! battery)
+(use-feature! battery :demand t)
 #+end_src
 
 ***** battery charging
