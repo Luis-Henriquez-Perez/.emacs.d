@@ -9231,6 +9231,9 @@ number when editing text. To me they are just distracting eye-candy.
 :END:
 
 #+begin_src emacs-lisp
+(defun battery:percentage ()
+  "Return the battery percentage."
+  ())
 #+end_src
 
 **** battery status
