@@ -9277,13 +9277,13 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
 #+begin_src emacs-lisp
 (defun feebleline:battery-info ()
   "Return battery information."
-  (let ((percentage (thread-last (funcall battery-status-function)
-                      (battery-format "%p")
-                      (string-to-number)))
-        (status-indicator (alet (feebleline:battery-status-indicator)
-                            (if (> 30 percentage)
-                                (propertize it 'font-lock-face '(:foreground "red"))
-                              it))))
+  (let* ((percentage (thread-last (funcall battery-status-function)
+                       (battery-format "%p")
+                       (string-to-number)))
+         (status-indicator (alet (feebleline:battery-status-indicator)
+                             (if (> 30 percentage)
+                                 (propertize it 'font-lock-face '(:foreground "red"))
+                               it))))
     (format "%s %%%d" status-indicator percentage)))
 #+end_src
 
