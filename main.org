@@ -9234,6 +9234,8 @@ number when editing text. To me they are just distracting eye-candy.
 :ID:       3a4875be-45e4-4e49-bc05-dcbf50a80eff
 :END:
 
+The battery percentage actually comes with the tens place [[][string-to-number]]
+
 #+begin_src emacs-lisp
 (defun feebleline:battery-info ()
   "Return battery information."
