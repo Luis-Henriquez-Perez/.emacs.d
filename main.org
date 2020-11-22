@@ -9168,11 +9168,6 @@ number when editing text. To me they are just distracting eye-candy.
 
 *** time
 :PROPERTIES:
-:ID:       c2e0ce83-e2e4-4930-99f8-3c1eb53fdd56
-:END:
-
-**** time
-:PROPERTIES:
 :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
 :END:
 
@@ -9183,16 +9178,11 @@ number when editing text. To me they are just distracting eye-candy.
 
 *** saved buffer
 :PROPERTIES:
-:ID:       d5b65ce4-8947-44ba-b424-458ec8a196b4
-:END:
-
-**** saved buffer
-:PROPERTIES:
 :ID:       f956383b-0e7e-4d42-95fb-2cb65faf5c35
 :END:
 
 #+begin_src emacs-lisp
-(defun feebleline:saved-buffer-indicator ()
+(defun feebleline:saved-buffer-indicator-icon ()
   "Display saved icon if buffer has been saved."
   (when (and (buffer-file-name) (buffer-modified-p))
     (all-the-icons:icon 'material "save" :v-adjust -0.01)))
