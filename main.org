@@ -9156,14 +9156,6 @@ number when editing text. To me they are just distracting eye-candy.
     (all-the-icons-octicon "git-branch" :v-adjust 0.01)))
 #+end_src
 
-**** branch name
-:PROPERTIES:
-:ID:       19d82da4-6492-49cb-9971-893033b4fa0a
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 *** time
 :PROPERTIES:
 :ID:       c2e0ce83-e2e4-4930-99f8-3c1eb53fdd56
