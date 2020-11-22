@@ -9254,6 +9254,9 @@ mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes th
 :ID:       0494e978-5f28-495f-87d4-904287495e92
 :END:
 
+I don't always need to display the battery information. It's only important to
+see it if it's running low and my laptop's not charging.
+
 #+begin_src emacs-lisp
 (defun feebleline:dwim-battery-info ()
   "Same as `feebleline:battery-info' but."
