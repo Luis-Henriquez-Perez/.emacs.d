@@ -3482,7 +3482,8 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! perspective)
+(use-package! perspective
+  :setq (persp-state-default-file . (concat VOID-DATA-DIR "persp-state")))
 #+end_src
 
 ** window divider
