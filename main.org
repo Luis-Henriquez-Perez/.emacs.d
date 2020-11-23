@@ -7723,13 +7723,25 @@ see if it's gone farther than it should have and in that case goes back.
 :ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
 :END:
 
+Annoyingly, the first time you call org/goto-headline, a prompt from
+=org-goto-location= is triggered and somehow the call to =org/goto-headline= is
+canceled. I had a damingly difficult time figuring out where exactly this
+happens (and I didn't actually figure it out). However, overriding
+=org-goto-location= seems to work. If I end up having some problems with other
+calls to =org-goto-location=, I'll advise it only within the body. Or even better
+create a transient advice that only happens the first time the function is
+called.
+
 #+begin_src emacs-lisp
+(advice-add #'org-goto-location :override
+            (lambda (&rest _) (call-interactively #'org/goto-headline)))
+
 (defun org/goto-headline ()
   "Jump to an org heading using selectrum."
   (interactive)
   (require 'org-refile)
   (let ((selectrum-should-sort-p nil)
-        (org-outline-path-complete-in-steps)
+        (org-outline-path-complete-in-steps nil)
         (org-goto-interface 'outline-path-completion))
     (org-goto)))
 #+end_src
