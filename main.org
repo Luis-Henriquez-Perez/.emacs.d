@@ -9360,12 +9360,11 @@ see it if it's running low and my laptop's not charging.
 #+begin_src emacs-lisp
 (defun feebleline:emms-current-track ()
   "Add track information if playing."
-  (when (and (bound-and-true-p emms-player-playing-p)
-             (not emms-player-paused-p))
-    (->> (emms-playlist-current-selected-track)
-         (emms-track-name)
-         (f-base))
-    (format "%s %s" track-status (s-truncate 25 track))))
+  (when (bound-and-true-p emms-player-playing-p)
+    (alet (->> (emms-playlist-current-selected-track)
+               (emms-track-name)
+               (f-base))
+      (s-truncate 25 it))))
 #+end_src
 
 ** hide-mode-line
