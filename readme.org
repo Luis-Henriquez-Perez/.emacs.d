@@ -37,17 +37,17 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :ID:       95c5d555-f0f3-431c-903e-970b05fd4da8
 :END:
 
-*** fast startup using a [[][custom tangling function]]
+*** fast startup using a [[id:][custom tangling function]]
 :PROPERTIES:
 :ID:       8c1aa018-c803-4228-a1bd-2d0635988b31
 :END:
 
-*** avoids tangling on startup with [[][asynchronous tangling on save]]
+*** avoids tangling on startup with [[id:][asynchronous tangling on save]]
 :PROPERTIES:
 :ID:       26aa3464-5aa4-4b7f-a21b-e91da71fb69d
 :END:
 
-*** garbage collection when idle with [[][]]
+*** garbage collection when idle with [[id:][]]
 :PROPERTIES:
 :ID:       9a10166d-d78b-42df-bd6c-2c3a1bf0e480
 :END:
