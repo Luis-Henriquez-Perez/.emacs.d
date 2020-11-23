@@ -3476,25 +3476,25 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
   (aw-background . t))
 #+end_src
 
-** perspective
-:PROPERTIES:
-:ID:       f646341e-018a-44f7-9907-bd9dc964ae99
-:END:
-
-#+begin_src emacs-lisp
-(use-package! perspective
-  :setq (persp-state-default-file . (concat VOID-DATA-DIR "persp-state")))
-#+end_src
-
 ** workspaces
 :PROPERTIES:
 :ID:       b5093cc3-b6fd-41b5-b9d0-cb0a38cd369f
 :END:
 
+There is a need to save buffers and window configurations in their own groups.
+Often we'll have a group of buffers we've setup to work on a project or task and
+suddenly, in the middle of that task we'll want to work on another task. It's
+inconvenient to get rid of the window configuration we've set up just to have to
+come back to it and set it up again. This is what workspaces, also called
+workgroups, are for. You can save the window configuration you're using and
+switch to a new one.
+
 *** workgroups
 :PROPERTIES:
 :ID:       dd0f2eb0-1d88-4690-ac5d-5e965f380a31
 :END:
+
+Workgroup provides a.
 
 #+begin_src emacs-lisp
 (use-package! workgroups2
