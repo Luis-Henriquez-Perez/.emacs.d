@@ -28,6 +28,7 @@ startup time is typically around 1.0 seconds.
 :ID:       9f743a11-d83e-4256-b610-d9caebe705cb
 :END:
 
+|-------------------------------------------+---------------|
 | computer                                  | thinkpad-t400 |
 |-------------------------------------------+---------------|
 | GUI startup (average of 10 startup times) |          0.94 |
