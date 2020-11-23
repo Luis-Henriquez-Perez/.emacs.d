@@ -32,7 +32,7 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :ID:       0ca86d40-f021-41b6-8624-6a56d72f4e3c
 :END:
 
-*** just in time loading with certain keywords
+*** just in time loading with =:before-call= and =:after-call= keywords
 :PROPERTIES:
 :ID:       95c5d555-f0f3-431c-903e-970b05fd4da8
 :END:
