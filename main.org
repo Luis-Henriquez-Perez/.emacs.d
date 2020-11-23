@@ -3494,7 +3494,10 @@ switch to a new one.
 :ID:       dd0f2eb0-1d88-4690-ac5d-5e965f380a31
 :END:
 
-Workgroup provides a.
+Workgroup provides a. One notable advantage of workgroups is that it does not
+use emacs's built-in serialization of window configs. Usually, it is better to
+use something that's built-in. However, emacs's serialization has the drawback
+that it's not a lisp object; implying that it is not.
 
 #+begin_src emacs-lisp
 (use-package! workgroups2
