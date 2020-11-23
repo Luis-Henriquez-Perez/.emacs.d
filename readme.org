@@ -42,7 +42,7 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :ID:       8c1aa018-c803-4228-a1bd-2d0635988b31
 :END:
 
-*** avoids tangling on startup with [[][]]
+*** avoids tangling on startup with [[][asynchronous tangling on save]]
 :PROPERTIES:
 :ID:       26aa3464-5aa4-4b7f-a21b-e91da71fb69d
 :END:
