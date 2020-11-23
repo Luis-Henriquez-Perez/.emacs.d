@@ -9628,9 +9628,9 @@ to window/workspace actions.
   "l" (list :def #'windmove-right                    :wk "move right")
   "x" (list :def #'ace-swap-window                   :wk "swap windows")
   "t" (list :def #'transpose-frame                   :wk "transpose")
-  "n" (list :def #'eyebrowse-create-window-config    :wk "save window config")
-  "J" (list :def #'eyebrowse-next-window-config      :wk "next window config")
-  "K" (list :def #'eyebrowse-prev-window-config      :wk "prev window config"))
+  ;; workgroups
+  "n" (list :def #'wg-create-workgroup    :wk "save window config")
+  )
 #+end_src
 
 ** buffer
