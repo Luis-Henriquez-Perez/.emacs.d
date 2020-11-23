@@ -37,6 +37,11 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :ID:       95c5d555-f0f3-431c-903e-970b05fd4da8
 :END:
 
+*** fast startup using a [[][custom tangling function]]
+:PROPERTIES:
+:ID:       8c1aa018-c803-4228-a1bd-2d0635988b31
+:END:
+
 ** asthetic design
 :PROPERTIES:
 :ID:       1791cbe3-723f-4fcc-830b-e6c20634bc20
