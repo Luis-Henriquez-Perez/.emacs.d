@@ -64,8 +64,6 @@ Instead of using a typical modeline such as.
 :ID:       3d62076f-d326-418d-92ed-def9eb70f1fe
 :END:
 
-[[file:./multimedia/screenshots/void-dashboard-one-light.png]]
-
 * Struggles
 :PROPERTIES:
 :ID:       1abb5289-5ee2-4766-bfb3-a80246b42571
