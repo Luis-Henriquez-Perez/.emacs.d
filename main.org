@@ -3486,6 +3486,44 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
   :setq (persp-state-default-file . (concat VOID-DATA-DIR "persp-state")))
 #+end_src
 
+** workspaces
+:PROPERTIES:
+:ID:       b5093cc3-b6fd-41b5-b9d0-cb0a38cd369f
+:END:
+
+*** workgroups
+:PROPERTIES:
+:ID:       dd0f2eb0-1d88-4690-ac5d-5e965f380a31
+:END:
+
+#+begin_src emacs-lisp
+(use-package! workgroups2
+  :commands workgroups-mode
+  :init (advice-add #'wg-change-modeline :override #'ignore)
+  :pre-setq
+  (wg-mode-line-display-on . nil)
+  (wg-flag-modified . nil)
+  (wg-session-file . (concat VOID-DATA-DIR "wg-session"))
+  :setq
+  (wg-emacs-exit-save-behavior . 'save)
+  (wg-workgroups-mode-exit-save-behavior . 'save)
+  (wg-flag-modified . nil))
+#+end_src
+
+*** display in modeline
+:PROPERTIES:
+:ID:       80793c50-2954-4ea4-a7e5-df5e2da60d7f
+:END:
+
+#+begin_src emacs-lisp
+(after! feebleline
+  (defun feebleline:current-workgroup ()
+    (when (bound-and-true-p workgroups-mode)
+      (format "%s %s"
+              (all-the-icons-material "work")
+              (wg-workgroup-name (wg-current-workgroup))))))
+#+end_src
+
 ** window divider
 :PROPERTIES:
 :ID: 0bcebb71-f730-427f-9919-1538bd63456c
