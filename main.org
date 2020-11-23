@@ -3446,9 +3446,9 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
   (aw-background . t))
 #+end_src
 
-** workspaces
+** workgroups
 :PROPERTIES:
-:ID:       b5093cc3-b6fd-41b5-b9d0-cb0a38cd369f
+:ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
