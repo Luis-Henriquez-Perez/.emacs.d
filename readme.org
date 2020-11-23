@@ -20,7 +20,8 @@ This is my emacs configuration. Something I've built over the span of a few year
 :ID:       e36e7886-23b7-42e7-a8f8-ccd9f6092951
 :END:
 
-Performance here includes startup speed as well as "snappiness" in emacs.
+Performance here includes startup speed as well as "snappiness" in emacs. My
+startup time is typically around 1.0 seconds.
 
 *** lazy loaded whenever possible using [[][use-package]]
 :PROPERTIES:
