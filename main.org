@@ -8650,8 +8650,7 @@ current week.
   (org-agenda-timegrid-use-ampm)
   (org-agenda-skip-unavailable-files)
   (org-agenda-time-leading-zero . t)
-  (org-agenda-text-search-extra-files quote
-                                      (agenda-archives))
+  (org-agenda-text-search-extra-files . '(agenda-archives))
   (org-agenda-dim-blocked-tasks)
   (org-agenda-inhibit-startup . t))
 #+end_src
