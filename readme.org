@@ -47,6 +47,11 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :ID:       26aa3464-5aa4-4b7f-a21b-e91da71fb69d
 :END:
 
+*** garbage collection when idle with [[][]]
+:PROPERTIES:
+:ID:       9a10166d-d78b-42df-bd6c-2c3a1bf0e480
+:END:
+
 ** asthetic design
 :PROPERTIES:
 :ID:       1791cbe3-723f-4fcc-830b-e6c20634bc20
