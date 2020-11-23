@@ -21,7 +21,8 @@ This is my emacs configuration. Something I've built over the span of a few year
 :END:
 
 Performance here includes startup speed as well as "snappiness" in emacs. My
-startup time is typically around 1.0 seconds.
+startup time is typically around 1.0 seconds. Note that this was around the same
+startup time doom had when installed in my machine.
 
 *** startup time
 :PROPERTIES:
