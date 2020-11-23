@@ -31,8 +31,8 @@ startup time is typically around 1.0 seconds.
 |-------------------------------------------+---------------|
 | computer                                  | thinkpad-t400 |
 |-------------------------------------------+---------------|
-| GUI startup (average of 10 startup times) |          0.94 |
-| CLI startup (average of 10 startup times) |          0.94 |
+| GUI startup (average of 10 startup times) |          ---- |
+| CLI startup (average of 10 startup times) |          ---- |
 |-------------------------------------------+---------------|
 
 *** lazy loaded whenever possible using [[][use-package]]
