@@ -27,7 +27,7 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :ID:       cae79da5-9cb0-4bfa-881e-82555eb4ef9a
 :END:
 
-*** idle loading featuring =idle-require=
+*** [idle loading] featuring [[id][idle-require]]
 :PROPERTIES:
 :ID:       0ca86d40-f021-41b6-8624-6a56d72f4e3c
 :END:
