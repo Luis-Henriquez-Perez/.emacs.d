@@ -9327,14 +9327,11 @@ see it if it's running low and my laptop's not charging.
     (alet (cond
            (emms-player-paused-p '(material "pause" "*paused*"))
            (emms-repeat-track    '(material "repeat_one" "*repeat-one*"))
-           (t                    '(faicon "play" "*playing*"))
-           ;; (t                    '(material "music_note" "*playing*"))
-           )
+           (t                    '(material "music_note" "*playing*")))
       (funcall #'all-the-icons:icon
                (car it)
                (cadr it)
-               :fallback (caddr it)
-               :v-adjust 0.01))))
+               :fallback (caddr it)))))
 #+end_src
 
 **** music
