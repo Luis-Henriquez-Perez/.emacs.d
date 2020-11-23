@@ -31,6 +31,7 @@ startup time is typically around 1.0 seconds.
 | computer    | thinkpad-t400 |
 |-------------+---------------|
 | GUI startup |               |
+|             |               |
 
 *** lazy loaded whenever possible using [[][use-package]]
 :PROPERTIES:
