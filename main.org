@@ -9108,7 +9108,9 @@ number when editing text. To me they are just distracting eye-candy.
         '((feebleline:mode-icon :fmt "%2s")
           (feebleline-file-or-buffer-name :face font-lock-keyword-face)
           (feebleline-git-branch :face feebleline-git-face)
+          (feebleline:emms-track-status-indicator)
           (feebleline:emms-current-track)
+          (feebleline:current-workgroup :align right)
           (feebleline:dwim-battery-info :align right)
           (feebleline:msg-display-time :align right))))
 #+end_src
