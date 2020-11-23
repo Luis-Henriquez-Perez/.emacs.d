@@ -23,6 +23,11 @@ This is my emacs configuration. Something I've built over the span of a few year
 Performance here includes startup speed as well as "snappiness" in emacs. My
 startup time is typically around 1.0 seconds.
 
+*** startup time
+:PROPERTIES:
+:ID:       9f743a11-d83e-4256-b610-d9caebe705cb
+:END:
+
 *** lazy loaded whenever possible using [[][use-package]]
 :PROPERTIES:
 :ID:       cae79da5-9cb0-4bfa-881e-82555eb4ef9a
