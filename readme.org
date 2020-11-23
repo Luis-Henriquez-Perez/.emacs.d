@@ -22,6 +22,21 @@ This is my emacs configuration. Something I've built over the span of a few year
 
 Performance here includes startup speed as well as "snappiness" in emacs.
 
+*** lazy loaded whenever possible using [[][use-package]] with several custom keywords
+:PROPERTIES:
+:ID:       cae79da5-9cb0-4bfa-881e-82555eb4ef9a
+:END:
+
+*** idle loading featuring =idle-require=
+:PROPERTIES:
+:ID:       0ca86d40-f021-41b6-8624-6a56d72f4e3c
+:END:
+
+*** just in time loading with certain keywords
+:PROPERTIES:
+:ID:       95c5d555-f0f3-431c-903e-970b05fd4da8
+:END:
+
 ** asthetic design
 :PROPERTIES:
 :ID:       1791cbe3-723f-4fcc-830b-e6c20634bc20
