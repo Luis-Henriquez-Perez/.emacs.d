@@ -1598,36 +1598,6 @@ to use =defadvice!= or =anaphoric-defadvice!=.
                 fns))))
 #+end_src
 
-*** defcommand!
-:PROPERTIES:
-:ID:       52363ccb-c9f7-4428-882d-ec2ee120057a
-:END:
-
-**** defcommand!
-:PROPERTIES:
-:ID:       fd5db6dc-9647-45d9-be02-03e2a5cd5564
-:END:
-
-#+begin_src emacs-lisp
-(defmacro defcommand! (name args body)
-  "Define a void command."
-  `(defun ,name ,args
-     ,docstring
-     (interactive)
-     ,@body))
-#+end_src
-
-**** font lock                                                        :disabled:
-:PROPERTIES:
-:ID:       b1f14c3a-bb91-4fa1-ae66-922db2b74d6b
-:END:
-
-#+begin_src emacs-lisp
-(defhook! enable-defcommand-font-lock ()
-  "Enable font-lock for `defcommand!'."
-  )
-#+end_src
-
 *** with-os!
 :PROPERTIES:
 :ID: 1a645745-11ce-4cfb-8c5f-63470f0a61c3
