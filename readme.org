@@ -5,7 +5,7 @@
 
 This is my emacs configuration. Something I've built over the span of a few years.
 
-* Goals
+* Features
 :PROPERTIES:
 :ID:       1b1ee897-0c73-42e8-95a7-dd7dda181959
 :END:
@@ -26,6 +26,13 @@ Performance here includes startup speed as well as "snappiness" in emacs.
 :PROPERTIES:
 :ID:       1791cbe3-723f-4fcc-830b-e6c20634bc20
 :END:
+
+*** minimal, fast and dynamic modeline using feebleline
+:PROPERTIES:
+:ID:       1659f117-a5ed-40f4-8508-69df26346f89
+:END:
+
+Instead of using a typical modeline such as.
 
 ** screenshots
 :PROPERTIES:
