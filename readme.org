@@ -22,7 +22,7 @@ This is my emacs configuration. Something I've built over the span of a few year
 
 Performance here includes startup speed as well as "snappiness" in emacs.
 
-*** lazy loaded whenever possible using [[][use-package]] with several custom keywords
+*** lazy loaded whenever possible using [[][use-package]]
 :PROPERTIES:
 :ID:       cae79da5-9cb0-4bfa-881e-82555eb4ef9a
 :END:
