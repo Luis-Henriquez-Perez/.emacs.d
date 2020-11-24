@@ -978,7 +978,9 @@ appropriate name to target.
 #+begin_src emacs-lisp
 (defun void-add-advice (hooks functions where)
   "docstring"
-  ())
+  (dolist (hook hooks)
+    (dolist (fn functions)
+      (void--add-advice hook fn))))
 #+end_src
 
 **** advice action
