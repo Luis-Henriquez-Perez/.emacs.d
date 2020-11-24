@@ -5683,7 +5683,7 @@ Why not just go to the end of the ="= like any other around operator?
 :END:
 
 #+begin_src emacs-lisp
-(use-package! evil-matchit :hook prog-mode)
+(void-add-hook 'prog-mode-hook #'evil-matchit-mode)
 #+end_src
 
 *** evil-exchange
