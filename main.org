@@ -3182,9 +3182,9 @@ makes emacs feel like a window manager with gaps.
 :END:
 
 #+begin_src emacs-lisp
-(window-divider-default-places  t)
-(window-divider-default-bottom-width 4)
-(window-divider-default-right-width  4)
+(general-setq window-divider-default-places  t)
+(general-setq window-divider-default-bottom-width 4)
+(general-setq window-divider-default-right-width  4)
 #+end_src
 
 *** color
@@ -5223,8 +5223,8 @@ and provides facilities for writing custom extensions. Also see our page on
 (use-package! evil
   :demand t
   :hook window-setup
-  ;; :custom
-  ;; (evil-want-C-u-scroll    . t)
+  :custom
+  (evil-want-C-u-scroll    t)
   ;; (evil-want-C-d-scroll    . t)
   ;; (evil-want-C-w-delete    . t)
   ;; (evil-want-Y-yank-to-eol . t)
