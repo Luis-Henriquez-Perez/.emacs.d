@@ -5346,6 +5346,10 @@ We want escape to be a general "quit everything".
 :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
 :END:
 
+#+begin_src emacs-lisp
+(void-load-on-call 'keychord :before (list #'))
+#+end_src
+
 ****** be quiet when turning on
 :PROPERTIES:
 :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
