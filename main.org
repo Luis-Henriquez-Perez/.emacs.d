@@ -3167,7 +3167,7 @@ Window dividers are useful in general so I don't get confused about when one
 window ends and another begins (see [[helpfn:window-divider-mode][window-divider-mode]]). When using [[I like emacs][exwm]] it
 makes emacs feel like a window manager with gaps.
 
-*** init
+*** hooks
 :PROPERTIES:
 :ID:       66ada8e3-2fce-428b-a096-e3495e573414
 :END:
@@ -3509,49 +3509,6 @@ windows).
     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
 #+end_src
 
-*** keybindings
-:PROPERTIES:
-:ID: 293bc7c5-1320-4f3f-af2b-198d56694f71
-:END:
-
-#+begin_src emacs-lisp
-(after! exwm
-  (funcall (get 'exwm-input-global-keys 'custom-set)
-           'exwm-input-global-keys
-           `((,(kbd "s-R") . exwm-reset)
-             (,(kbd "s-x") . exwm-input-toggle-keyboard)
-             (,(kbd "s-h") . windmove-left)
-             (,(kbd "s-j") . windmove-down)
-             (,(kbd "s-k") . windmove-up)
-             (,(kbd "s-l") . windmove-right)
-             (,(kbd "s-t") . transpose-frame)
-             (,(kbd "s-D") . kill-this-buffer)
-             (,(kbd "s-b") . switch-to-buffer)
-             (,(kbd "s-f") . find-file)
-             (,(kbd "s-O") . exwm-layout-toggle-fullscreen)
-             (,(kbd "s-p") . previous-buffer)
-             (,(kbd "s-n") . next-buffer)
-             (,(kbd "s-q") . void/open-qutebrowser)
-             (,(kbd "s-e") . void/open-emacs-instance))))
-
-(general-def
-  "s-R" #'exwm-reset
-  "s-x" #'exwm-input-toggle-keyboard
-  "s-h" #'windmove-left
-  "s-j" #'windmove-down
-  "s-k" #'windmove-up
-  "s-l" #'windmove-right
-  "s-t" #'transpose-frame
-  "s-D" #'kill-this-buffer
-  "s-b" #'switch-to-buffer
-  "s-f" #'find-file
-  "s-O" #'exwm-layout-toggle-fullscreen
-  "s-p" #'previous-buffer
-  "s-n" #'next-buffer
-  "s-q" #'void/open-qutebrowser
-  "s-e" #'void/open-emacs-instance)
-#+end_src
-
 *** exwm-edit
 :PROPERTIES:
 :ID: 1a167827-b791-4a69-a90e-c2d30bd83abb
@@ -3569,19 +3526,28 @@ Emacs's text editing capabilities on it.
 (use-package! exwm-edit :after exwm)
 #+end_src
 
-*** exwm firefox
+*** exwm-firefox
 :PROPERTIES:
-:ID:       a78eec54-687f-4a40-8c68-db096112ef52
+:ID:       333e6bd1-4371-4563-a0d1-a12b42c67836
+:END:
+
+**** setup
+:PROPERTIES:
+:ID:       027e4e46-bb81-4161-8a46-7c6576ec3435
 :END:
 
 #+begin_src emacs-lisp
-(use-package! exwm-firefox-evil
-  :disabled t
-  :after exwm
-  :hook (exwm-manage-finish . exwm-firefox-evil-activate-if-firefox)
-  :config
-  (dolist (k `(escape))
-    (cl-pushnew k exwm-input-prefix-keys)))
+(void-add-hook 'exwm-manage-finish-hook #'exwm-firefox-evil-activate-if-firefox)
+#+end_src
+
+**** add appropriate prefix keys
+:PROPERTIES:
+:ID:       2b37c2a6-83ea-458d-9749-781903b3b82d
+:END:
+
+#+begin_src emacs-lisp
+(dolist (k `(escape))
+  (cl-pushnew k exwm-input-prefix-keys))
 #+end_src
 
 ** buffer-expose
@@ -9844,6 +9810,49 @@ graphical interface but.
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
+
+** keybindings
+:PROPERTIES:
+:ID: 293bc7c5-1320-4f3f-af2b-198d56694f71
+:END:
+
+#+begin_src emacs-lisp
+(after! exwm
+  (funcall (get 'exwm-input-global-keys 'custom-set)
+           'exwm-input-global-keys
+           `((,(kbd "s-R") . exwm-reset)
+             (,(kbd "s-x") . exwm-input-toggle-keyboard)
+             (,(kbd "s-h") . windmove-left)
+             (,(kbd "s-j") . windmove-down)
+             (,(kbd "s-k") . windmove-up)
+             (,(kbd "s-l") . windmove-right)
+             (,(kbd "s-t") . transpose-frame)
+             (,(kbd "s-D") . kill-this-buffer)
+             (,(kbd "s-b") . switch-to-buffer)
+             (,(kbd "s-f") . find-file)
+             (,(kbd "s-O") . exwm-layout-toggle-fullscreen)
+             (,(kbd "s-p") . previous-buffer)
+             (,(kbd "s-n") . next-buffer)
+             (,(kbd "s-q") . void/open-qutebrowser)
+             (,(kbd "s-e") . void/open-emacs-instance))))
+
+(general-def
+  "s-R" #'exwm-reset
+  "s-x" #'exwm-input-toggle-keyboard
+  "s-h" #'windmove-left
+  "s-j" #'windmove-down
+  "s-k" #'windmove-up
+  "s-l" #'windmove-right
+  "s-t" #'transpose-frame
+  "s-D" #'kill-this-buffer
+  "s-b" #'switch-to-buffer
+  "s-f" #'find-file
+  "s-O" #'exwm-layout-toggle-fullscreen
+  "s-p" #'previous-buffer
+  "s-n" #'next-buffer
+  "s-q" #'void/open-qutebrowser
+  "s-e" #'void/open-emacs-instance)
+#+end_src
 
 ** bindings
 :PROPERTIES:
