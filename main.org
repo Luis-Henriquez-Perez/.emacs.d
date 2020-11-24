@@ -3567,7 +3567,7 @@ Emacs's text editing capabilities on it.
 :END:
 
 #+begin_src emacs-lisp
-(void-autoload )
+(void-autoload (list ))
 buffer-expose
 buffer-expose-no-stars
 buffer-expose-major-mode
