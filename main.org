@@ -1930,20 +1930,25 @@ make a difference. That's why.
 :LOCAL-REPO: system-packages
 :END:
 
-***** system-packages
+***** settings
 :PROPERTIES:
-:ID:       55a3368b-34e7-495a-86f9-3386ed90038c
+:ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
 :END:
 
-System packages provides an abstraction for operating on packages across
-different systems. Considering that some emacs packages require.
+#+begin_src emacs-lisp
+(setq system-packages-noconfirm t)
+#+end_src
+
+***** popup
+:PROPERTIES:
+:ID:       69631be9-ce8f-4f65-b112-229bf1722621
+:END:
 
 #+begin_src emacs-lisp
-(use-package! system-packages
-  :popup ("\\*system-packages"
-          (display-buffer-at-bottom)
-          (window-height . 0.5))
-  :setq (system-packages-noconfirm . t))
+(push '("\\*system-packages"
+        (display-buffer-at-bottom)
+        (window-height . 0.5))
+      display-buffer-alist)
 #+end_src
 
 ***** use yay for arch
@@ -1970,6 +1975,13 @@ different systems. Considering that some emacs packages require.
 **** request
 :PROPERTIES:
 :ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (request.el request-pkg.el)
+:HOST:     github
+:REPO:     tkf/emacs-request
+:PACKAGE:  request
+:LOCAL-REPO: emacs-request
 :END:
 
 #+begin_src emacs-lisp
@@ -6715,15 +6727,23 @@ I do not like dealing with the command line. I want real elisp code please.
 ** uuidgen
 :PROPERTIES:
 :ID: 9becd3bb-e74e-4644-a716-5b941fbbda50
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     kanru/uuidgen-el
+:PACKAGE:  uuidgen
+:LOCAL-REPO: uuidgen-el
 :END:
-
-#+begin_src emacs-lisp
-(use-package! uuidgen)
-#+end_src
 
 ** xr
 :PROPERTIES:
 :ID: 75c56163-9ce1-4726-969a-350fcc56395f
+:TYPE:     git
+:HOST:     github
+:REPO:     emacs-straight/xr
+:FILES:    (* (:exclude .git))
+:PACKAGE:  xr
+:LOCAL-REPO: xr
 :END:
 
 This package is the inverse of =rx=. It takes a regular expression and returns the
@@ -6738,6 +6758,13 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 ** pdf-tools
 :PROPERTIES:
 :ID:       63343f9d-6b19-43de-8302-d1344d571949
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (lisp/*.el README (build Makefile) (build server) (:exclude lisp/tablist.el lisp/tablist-filter.el) pdf-tools-pkg.el)
+:HOST:     github
+:REPO:     politza/pdf-tools
+:PACKAGE:  pdf-tools
+:LOCAL-REPO: pdf-tools
 :END:
 
 *** pdf-tools
@@ -6800,11 +6827,13 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 ** circe
 :PROPERTIES:
 :ID: 65495471-b9b4-47cc-aa85-5a6ead4c6538
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     jorgenschaefer/circe
+:PACKAGE:  circe
+:LOCAL-REPO: circe
 :END:
-
-#+begin_src emacs-lisp
-(use-package! circe)
-#+end_src
 
 ** peristent scratch
 :PROPERTIES:
@@ -6815,22 +6844,6 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 (use-package! persistent-scratch
   :commands persistent-scratch-restore
   :setq (persistent-scratch-save-file . (concat VOID-DATA-DIR "scratch")))
-#+end_src
-
-** alert
-:PROPERTIES:
-:ID: 07960fe7-7ef5-48db-bfd9-86c980a7599d
-:END:
-
-Notifications are very important. Messages from the =*Messages*= buffer are not
-enough.
-
-#+begin_src emacs-lisp
-(use-package! alert
-  :system-ensure libnotify
-  :setq
-  (alert-default-style . 'libnotify)
-  (alert-log-messages . t))
 #+end_src
 
 ** sudo-edit
@@ -6865,7 +6878,18 @@ on the buffer you'd like to edit.
   (magit-status "/yadm::"))
 #+end_src
 
-** plantuml
+** plantuml-mode
+:PROPERTIES:
+:ID:       5fb03277-998a-4a86-8ef7-f157a2642b49
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     skuro/plantuml-mode
+:PACKAGE:  plantuml-mode
+:LOCAL-REPO: plantuml-mode
+:END:
+
+*** plantuml
 :PROPERTIES:
 :ID:       4c452dea-a404-4443-9ecc-189c940d201e
 :END:
@@ -6885,9 +6909,15 @@ on the buffer you'd like to edit.
   (org-plantuml-executable-path . (executable-find "plantuml")))
 #+end_src
 
-** super save
+** super-save
 :PROPERTIES:
-:ID:       bd455e73-4035-49b9-bbdf-3d59d4906c97
+:ID:       684e788c-6db9-4e6e-826b-d4871c0a3f90
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     bbatsov/super-save
+:PACKAGE:  super-save
+:LOCAL-REPO: super-save
 :END:
 
 The default auto-saving feature in emacs saves after a certain number of
@@ -6899,12 +6929,23 @@ time and after certain commands like [[helpfn:switch-to-buffer][switch-to-buffer
 Note that this is the same strategy employed by [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]] to load packages.
 Saving files like this reduces the likelihood of user delays.
 
+*** TODO hooks
+:PROPERTIES:
+:ID:       18d884a6-5eab-4454-8806-d2d760b8ea0c
+:END:
+
 #+begin_src emacs-lisp
-(use-package! super-save
-  :hook emacs-startup
-  :setq
-  (super-save-idle-duration . 5)
-  (super-save-auto-save-when-idle . t))
+(void-add-hook 'emacs-startup-hook #'super-save-mode)
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       d4253696-58cc-49a4-b5de-e6458597352a
+:END:
+
+#+begin_src emacs-lisp
+(setq super-save-idle-duration 5)
+(setq super-save-auto-save-when-idle t)
 #+end_src
 
 * Languages
@@ -7176,13 +7217,16 @@ The change to this function."
 **** buttercup
 :PROPERTIES:
 :ID: 228fb805-620d-4519-822f-f633540f7b58
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults bin buttercup-pkg.el)
+:HOST:     github
+:REPO:     jorgenschaefer/emacs-buttercup
+:PACKAGE:  buttercup
+:LOCAL-REPO: emacs-buttercup
 :END:
 
 [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is an emacs debugging suite.
-
-#+begin_src emacs-lisp
-(use-package! buttercup)
-#+end_src
 
 **** outorg
 :PROPERTIES:
@@ -7221,6 +7265,22 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 
 **** macrostep
 :PROPERTIES:
+:ID:       ecf2ab24-c3a0-4a72-8ba3-b5c1ed4a3f0a
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     joddie/macrostep
+:PACKAGE:  macrostep
+:LOCAL-REPO: macrostep
+:END:
+
+***** commands
+:PROPERTIES:
+:ID:       c6a0b556-8a8a-4abf-a920-87fff7ab078d
+:END:
+
+***** macrostep
+:PROPERTIES:
 :ID: 81e59dcc-7e23-4dd1-9917-06f0ab59f2a6
 :END:
 
@@ -7246,10 +7306,10 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 :END:
 
 #+begin_src emacs-lisp
-(use-package! hy-mode :mode "\\.hy\\'")
+(add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
 #+end_src
 
-** markdown
+** markdown-mode
 :PROPERTIES:
 :ID: 9d684855-961a-4294-8b90-44d2796526e2
 :END:
