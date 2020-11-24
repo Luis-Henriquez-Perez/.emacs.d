@@ -5952,6 +5952,7 @@ larger text objects. It's saves me keystrokes.
 ** eshell
 :PROPERTIES:
 :ID: 5f04a252-2985-46b4-ab0b-eb4567de5dd9
+:TYPE:     built-in
 :END:
 
 [[info:eshell#Top][eshell]] is a built-in shell written entirely in elisp. This means that it's as
