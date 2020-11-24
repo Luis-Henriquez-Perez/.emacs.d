@@ -420,521 +420,6 @@ Assumes vc is git which is fine because straight only uses git right now."
   (require package))
 #+end_src
 
-*** use-package
-:PROPERTIES:
-:ID:       b1ab4488-5793-4675-8404-b1719f804c25
-:END:
-
-Package configuration can be a monotonous and repetative process. Here, I
-configure =use-package=, a declaration macro designed to provide a concise
-syntax for configuring packages in a performance-oriented way.
-
-**** wrappers
-:PROPERTIES:
-:ID:       1e394ffd-597f-456c-9c56-ff9de5fae017
-:END:
-
-These are wrappers around =use-package=. They serve to be consistent
-with my macro naming conventions and to allow me means of customizing the
-use-package syntax and arguments (as I did with [[id:3bfe8efb-bd24-47ca-90af-dd55ee950442][use-feature!]]).
-
-***** use-package!
-:PROPERTIES:
-:ID:       1903deb5-bbbd-4479-81a1-c12c56d29be7
-:END:
-
-#+begin_src emacs-lisp
-(defalias 'use-package! 'use-package)
-#+end_src
-
-***** use-feature!
-:PROPERTIES:
-:ID:       3bfe8efb-bd24-47ca-90af-dd55ee950442
-:END:
-
-This wrapper around =use-package!= is meant to explicity distinguish between
-built-in packages and external packages. The idea was taken from [[https://github.com/raxod502/radian][Radian]]. The
-only difference from this and =use-package!= is that straight is always nil.
-
-#+begin_src emacs-lisp
-(defmacro use-feature! (feature &rest args)
-  "Wrapper around `use-package!'."
-  (declare (indent defun))
-  `(use-package! ,feature :straight nil ,@args))
-#+end_src
-
-**** helpers
-:PROPERTIES:
-:ID:       6aad4f21-9b19-44e5-8282-3aa3d7901c49
-:END:
-
-These are functions I use to help me with the configuration of =use-package=.
-
-***** normalizing arguments
-:PROPERTIES:
-:ID:       31f0a13d-2175-43fe-bbce-606bbfc22fd6
-:END:
-
-****** unfold args
-:PROPERTIES:
-:ID:       a9ec9725-550e-4885-9292-1f937d6009f9
-:END:
-
-It's common in =use-package= to allow for arguments to be either
-keyword followed by a series of arguments or a keyword followed by a list
-containing the arguments. For example, =:foo 1 2 3 4= versus =:foo (1 2 3 4)=. I use
-=valid-item-p= for help resolve ambigious cases, like whether ~(1 2 3 4)~ is one
-argument or four.
-
-#+begin_src emacs-lisp
-(defun use-package:unfold-args (args valid-item-p)
-  "Return the correct args and first invalid item from args.
-Test whether every element of args is a valid.
-VALID-ITEM-P is a function that takes an element as an argument and returns true
-if the element is a valid element. "
-  (cond ((-all-p valid-item-p args)
-         (list args nil))
-        ((alet (car args)
-           (and (= 1 (length args))
-                (not (-cons-pair-p it))
-                (listp it)))
-         (list (car args) (-find (-not valid-item-p) (car args))))
-        (t
-         (list args (-find (-not valid-item-p) args)))))
-#+end_src
-
-****** args or error
-:PROPERTIES:
-:ID:       58aa283e-3fb1-4483-b14f-a26aadf0231e
-:END:
-
-This function strives to be more concise than [[helpfn:use-package-as-one][use-package-as-one]] by
-automatically. Also, unlike the latter, it always returns a list.
-
-#+begin_src emacs-lisp
-(defun use-package:args-or-error (key args valid-p desc)
-  "Replacement for `use-package-as-one'.
-DESC is the description what an individual argument should be.
-VALID-P is a function that should return true is an argument is valid and false
-otherwise."
-  (-let (((args invalid-elt) (use-package:unfold-args args valid-p)))
-    (if (not invalid-elt)
-        args
-      (thread-last (format "%s wants %s. Instead, %s was given" key desc invalid-elt)
-        (use-package-error)))))
-#+end_src
-
-***** inserting a keyword
-:PROPERTIES:
-:ID:       d81b2f05-4cc5-492a-8f90-18b2f6c7214e
-:END:
-
-While [[helpfn:use-package-list-insert][use-package-list-insert]] is written in a functional style; you need to pass
-in the list you want to insert into and it returns a new list with the insertion
-done. But really, when am I going to use this function to insert into something
-other than leaf-keywords? Using this wrapper makes adding keywords more concise.
-
-#+begin_src emacs-lisp
-(defun use-package:insert (key &optional anchor after)
-  "Convenience function for inserting items into `use-package-keywords'.
-This function has the side-effect of inserting KEY before ANCHOR (or after
-ANCHOR if AFTER is non-nil)."
-  (alet (use-package-list-insert key use-package-keywords anchor after)
-    (setq use-package-keywords it)))
-#+end_src
-
-***** mode
-:PROPERTIES:
-:ID:       efb56015-4466-460c-ac0e-bd11906cc054
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:ensure-mode (val package)
-  (or val
-      (alet (not (string-match-p "-mode\\'" (void-to-string package)))
-        (void-symbol-intern package (when it "-mode")))))
-#+end_src
-
-***** hook
-:PROPERTIES:
-:ID:       8c2516d2-b747-4724-a3a4-c3b737862263
-:END:
-
-#+begin_src emacs-lisp
-(defun use-package:ensure-hook (var)
-  (if (string-match-p "-hook\\'" (symbol-name var))
-      var
-    (void-symbol-intern var "-hook")))
-#+end_src
-
-***** applying a keyword and its handler
-:PROPERTIES:
-:ID:       e79f67c7-d2f6-4db8-a291-156e2bbf4ebd
-:END:
-
-The purpose of this helper is to allow me to existing keywords in the body of
-keywords I'm creating.
-
-#+begin_src emacs-lisp
-(defun use-package:apply-keyword (name keyword args)
-  "Return the form that results from applying KEYWORD to ARGS."
-  (let ((handler (void-symbol-intern 'use-package-handler/ keyword))
-        (normalizer (void-symbol-intern 'use-package-normalize/ keyword)))
-    (funcall handler name keyword (funcall normalizer name keyword args) nil nil)))
-#+end_src
-
-**** custom keywords
-:PROPERTIES:
-:ID:       7b2e899f-6fd5-45aa-91ad-464463cc229e
-:END:
-
-In this headline I define custom use-package keywords. These reflect aspects
-that I feel are not covered by default =use-package= keywords.
-
-Note that, as it says in the [[https://github.com/jwiegley/use-package][use-package README]] that defining a keyword takes
-three parts inserting the keyword into [[helpvar:use-package-keywords][use-package-keywords]], defining a
-normalizer, and defining a handler.
-
-***** os
-:PROPERTIES:
-:ID:       e6a50f57-5f74-4d8c-8a88-17ee6b11d4c1
-:END:
-
-This keyword provides integration of [[id:1a645745-11ce-4cfb-8c5f-63470f0a61c3][with-os!]] with =use-package=. As some packages
-are operating system specific, it make sense to have such a keyword for the
-=use-package= declaration.
-
-#+begin_src emacs-lisp
-(use-package:insert :os :ensure)
-
-(defun use-package-normalize/:os (name-symbol keyword args)
-  (let ((message "one of the following symbols: mac, windows, linux")
-        (fn (-partial #'-contains-p '(mac windows linux))))
-    (use-package:args-or-error keyword args fn message)))
-
-(defun use-package-handler/:os (name _keyword features rest state)
-  (let ((body (use-package-process-keywords name rest state)))
-    `((with-os! ,features ,@body))))
-#+end_src
-
-***** setting
-:PROPERTIES:
-:ID:       e727f35b-470b-4374-9276-3a42cce6ff28
-:END:
-
-These keywords are based on keywords in [[https://github.com/conao3/leaf.el][leaf]], an alternative to =use-package=.
-They make an (I would argue) useful distinction between setting variables and
-doing some non-trivial configuration in =:config= and =:init=.
-
-****** pre-setq
-:PROPERTIES:
-:ID:       a4f5754e-e2f4-4d60-b675-64e92fcbe0e7
-:END:
-
-=:pre-setq= is made to set variables before a package is loaded.
-
-#+begin_src emacs-lisp
-(use-package:insert :pre-setq :init)
-
-(defalias 'use-package-normalize/:pre-setq 'use-package-normalize/:setq)
-
-(defun use-package-handler/:pre-setq (name _keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
-           args)))
-#+end_src
-
-****** setq
-:PROPERTIES:
-:ID:       790d9f48-b670-4325-9fe2-f36631d8f1a5
-:END:
-
-=:setq= sets variables after a package is loaded.
-
-#+begin_src emacs-lisp
-(use-package:insert :setq :init)
-
-(defun use-package-normalize/:setq (name keyword args)
-  (let ((message "a cons cell whose CAR is a symbol label")
-        (fn (lambda (it) (and (consp it) (symbolp (car it))))))
-    (use-package:args-or-error keyword args fn message)))
-
-(defun use-package-handler/:setq (name _keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   `((after! ,name
-       ,@(mapcar (lambda (pair) `(setq ,(car pair) ,(cdr pair)))
-                 args)))))
-#+end_src
-
-****** setq-default
-:PROPERTIES:
-:ID:       82dc8306-b3e7-4205-8472-39333a9112fd
-:END:
-
-#+begin_src emacs-lisp
-(use-package:insert :setq-default :init)
-
-(defalias 'use-package-normalize/:setq-default 'use-package-normalize/:setq)
-
-(defun use-package-handler/:setq-default (name _keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (mapcar (lambda (pair) `(setq-default ,(car pair) ,(cdr pair)))
-           args)))
-#+end_src
-
-***** defer keywords
-:PROPERTIES:
-:ID:       f35c631b-05e6-4c6d-bd12-40023be8efce
-:END:
-
-These keywords help improve Void startup time by deferring the loading of
-packages to a later time--a time when the package is actually needed.
-
-****** before-call
-:PROPERTIES:
-:ID:       ca7db9fa-1fd5-4a4e-b3bb-c0611f10c4f4
-:END:
-
-=:before-call= and its counterpart [[id:03c442ed-f497-4206-8a09-d7203083b2f2][:after-call]] let me put off package loading
-until the last minute--by which I mean just before a function that needs the
-package is called.
-
-#+begin_src emacs-lisp
-(use-package:insert :before-call :disabled)
-
-(push :before-call use-package-deferring-keywords)
-
-(defun use-package-normalize/:before-call (name keyword args)
-  (use-package:args-or-error keyword args #'symbolp "a symbol"))
-
-(defun use-package-handler/:before-call (name _keyword features rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   `((defadvice! ,(intern (format "load-%s" name)) (:before ,@features)
-       (require ',name)))))
-#+end_src
-
-****** after-call
-:PROPERTIES:
-:ID:       03c442ed-f497-4206-8a09-d7203083b2f2
-:END:
-
-#+begin_src emacs-lisp
-(use-package:insert :after-call :disabled)
-
-(push :after-call use-package-deferring-keywords)
-
-(defun use-package-normalize/:after-call (name keyword args)
-  args)
-
-(defun use-package-handler/:after-call (name _keyword features rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   `((defadvice! ,(intern (format "load-%s" name)) (:after ,@features)
-       (require ',name)))))
-#+end_src
-
-****** idle-require
-:PROPERTIES:
-:ID:       7e915205-cbfc-4171-b473-4ffe2baddcc3
-:END:
-
-This keyword depends on [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]]. It allows me to specify a list of packages
-to be loaded during idle time. The idea is to load dependencies of a big package
-(like Org for example) so that when the time comes to load it, it will load
-faster.
-
-#+begin_src emacs-lisp
-(use-package:insert :idle-require :init)
-
-(defun use-package-normalize/:idle-require (name keyword args)
-  (use-package:args-or-error keyword args #'symbolp "a symbol"))
-
-(defun use-package-handler/:idle-require (name _keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (mapcar (lambda (feature) `(idle-require ',feature))
-           (use-package-normalize-commands args))))
-#+end_src
-
-****** hook
-:PROPERTIES:
-:ID:       82823374-1604-4a4c-8e72-638c430df38f
-:END:
-
-Notably I overwrite the built-in definitions for the hook normalizer and
-handler. I should be using overriding advice. However, when I tried to do this I
-would get unusual problems.
-
-#+begin_src emacs-lisp
-(defun use-package-normalize/:hook (name keyword args)
-  (thread-last "a symbol or cons cell"
-    (use-package:args-or-error keyword args (-orfn #'symbolp #'-cons-pair-p))
-    (--map-when (not (-cons-pair-p it)) (cons it nil))
-    (--map (cons (use-package:ensure-hook (car it))
-                 (use-package:ensure-mode (cdr it) name)))))
-
-(defun use-package-handler/:hook (name keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (mapcar (-lambda ((hook . fn)) `(void-add-hook ',hook #',fn))
-           (use-package-normalize-commands args))))
-#+end_src
-
-***** alias
-:PROPERTIES:
-:ID:       3168a5c8-0534-42e7-82b7-ed33bcb99ff6
-:END:
-
-Many times I need to define aliases.
-
-#+begin_src emacs-lisp
-(use-package:insert :alias :init)
-
-(defun use-package-normalize/:alias (name keyword args)
-  (let ((message "a cons cell"))
-    (use-package:args-or-error keyword args #'-cons-pair-p message)))
-
-(defun use-package-handler/:alias (name _keyword args rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (mapcar (-lambda ((alias . def)) `(defalias ',alias ',def))
-           (use-package-normalize-commands args))))
-#+end_src
-
-***** popup
-:PROPERTIES:
-:ID:       bdd0f442-4351-4ac8-874b-33991b6c2806
-:END:
-
-Many packages have their own buffers they like to open.
-
-#+begin_src emacs-lisp
-(use-package:insert :popup :init)
-
-(defun use-package-normalize/:popup (name keyword args)
-  (use-package:args-or-error keyword args #'list "a list"))
-
-(defun use-package-handler/:popup (name _keyword args rest state)
-  (--map `(push ',it display-buffer-alist) args))
-#+end_src
-
-***** advice
-:PROPERTIES:
-:ID:       a7ac6b87-62d3-416e-bc0a-26072bcf3bf8
-:END:
-
-The advice keyword allows for a quick and convenient adding of advice.
-
-#+begin_src emacs-lisp
-(use-package:insert :advice :hook)
-
-(defun use-package-normalize/:advice (name keyword args)
-  (if (and (listp (car args))
-           (-all-p (-orfn #'symbolp #'-cons-pair-p) (cdr args)))
-      (cons (car args)
-            (--map-when (not (-cons-pair-p it))
-                        (cons it nil)
-                        (cdr args)))
-    (use-package-error "should be a keyword followed by")))
-
-(defun use-package-handler/:advice (name _keyword args rest state)
-  (-let* (((where . advices) (car args)))
-    (use-package-concat
-     (use-package-process-keywords name rest state)
-     (-map (-lambda ((fn . advice)) `(void-add-advice #',fn ,where #',advice))
-           advices)
-     (use-package:apply-keyword name :commands (-map #'cdr advices)))))
-
-(push :advice use-package-deferring-keywords)
-#+end_src
-
-***** trigger
-:PROPERTIES:
-:ID:       0a3580f4-42a3-4b17-807b-366611d6f90a
-:END:
-
-The trigger the loading of specific dependencies for a package.
-
-#+begin_src emacs-lisp
-(use-package:insert :trigger :commands)
-
-(defun use-package-normalize/:trigger (name keyword args)
-  (use-package:args-or-error keyword args #'symbolp "a symbol"))
-
-(defun use-package-handler/:trigger (name _keyword dependencies rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (list
-    (if-let ((commands (plist-get rest :commands))
-             (advice (intern (format "load-dependencies-for-%s" name)))
-             (body (--map `(require ',it) dependencies)))
-        `(defadvice! ,advice (:before ,@commands)
-           (void-log "Loading needed libraries for %s." ',name)
-           ,@body)
-      `(after! ,name
-         (void-log "Loading needed libraries for %s." ',name)
-         ,@body)))))
-#+end_src
-
-***** TODO system ensure keyword
-:PROPERTIES:
-:ID:       6fb147bd-157a-40e4-90bd-f6f173598f60
-:END:
-
-The purpose of this keyword. This is similar to an existing keyword that is
-provided with =use-package= called =:=. The reason I don't use it is because that
-keyword is too coarse: it perfoms this check with an =eval-after-load= form.
-
-#+begin_src emacs-lisp
-(use-package:insert :system-ensure :commands)
-
-(defun use-package-normalize/:system-ensure (name keyword args)
-  (use-package:args-or-error keyword args #'symbolp "a symbol"))
-
-(defun use-package-handler/:system-ensure (name _keyword packages rest state)
-  (use-package-concat
-   (use-package-process-keywords name rest state)
-   (list
-    (when-let* ((commands (plist-get rest :commands))
-                (advice (intern (format "ensure-system-packages-for-%s" name)))
-                (packages (-map #'symbol-name packages)))
-      `(defadvice! ,advice (:around ,@commands)
-         (require 'system-packages)
-         (if-let ((uninstalled (-select (-not #'system-packages-package-installed-p) ',packages))
-                  (prompt (format "%S is needed for %s to work.\nWould you like to install it?" ',packages ',name)))
-             (if (y-or-n-p prompt)
-                 (progn (let (system-packages-noconfirm)
-                          (system-packages-install ,(string-join packages "\s")))
-                        (apply <orig-fn> <args>))
-               (message "Aborting the loading of %s" ',name))
-           (apply <orig-fn> <args>)))))))
-#+end_src
-
-**** boostrap
-:PROPERTIES:
-:ID:       90cc0147-85eb-4d5a-a555-8699faf5a29e
-:END:
-
-What better way to start =use-package= than by using it to configure itself?! I
-set [[helpvar:use-package-always-ensure][use-package-always-ensure]] to nil because straight handles that. =:demand t=
-isn't necessary here because =use-package= is a required package. However, having
-it drives the point home that this package is loaded during initialization.
-
-#+begin_src emacs-lisp
-(use-package! use-package
-  :demand t
-  :pre-setq
-  (use-package-ignore-unknown-keywords . t)
-  (use-package-always-defer . t)
-  (use-package-always-ensure . nil)
-  (use-package-verbose . nil)
-  (use-package-expand-minimally . t))
-#+end_src
-
 ** Library
 :PROPERTIES:
 :ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
@@ -951,20 +436,12 @@ customizing emacs.
 [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
 structures. It was built for.
 
-#+begin_src emacs-lisp
-(use-package! org-ml)
-#+end_src
-
 *** ts
 :PROPERTIES:
 :ID:       64d19467-a878-449c-8402-88892c25ac9a
 :END:
 
 =ts= is a time package.
-
-#+begin_src emacs-lisp
-(use-package! ts)
-#+end_src
 
 *** macro writing tools
 :PROPERTIES:
@@ -1891,13 +1368,12 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 **** paren
 :PROPERTIES:
 :ID: 8ba80d6f-292e-4d44-acfe-d7b7ba939fa4
+:TYPE:     built-in
 :END:
 
 #+begin_src emacs-lisp
-(use-package! paren
-  :hook (prog-mode-hook . show-paren-mode)
-  :setq-default
-  (show-paren-delay . 0))
+(setq-default show-paren-delay 0)
+(void-add-hook 'prog-mode-hook #'show-paren-mode)
 #+end_src
 
 **** clipboard
@@ -2241,8 +1717,7 @@ as a dependency, I'd end up rewriting many of its functions.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash
-  :demand t)
+(require 'dash)
 #+end_src
 
 **** dash-functional
@@ -2251,8 +1726,7 @@ as a dependency, I'd end up rewriting many of its functions.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dash-functional
-  :demand t)
+(require 'dash-functional)
 #+end_src
 
 **** general
@@ -2272,10 +1746,8 @@ on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3
 handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
 
 #+begin_src emacs-lisp
-(use-package! general
-  :demand t
-  :config
-  (general-auto-unbind-keys))
+(require 'general)
+(general-auto-unbind-keys)
 #+end_src
 
 ***** prefix bindings
@@ -2370,53 +1842,92 @@ make a difference. That's why.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! s
-  :demand t)
+(require 's)
 #+end_src
 
-**** gc
+**** gcmh
 :PROPERTIES:
-:ID: 4f1477b7-7b28-4a20-9a31-cc34a10f5878
+:ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
 :END:
 
-Wait until idle time to garbage collect while staving off garbage collector
-while the user is working.
-
-#+begin_src emacs-lisp
-(use-package! gcmh
-  :hook emacs-startup
-  :setq
-  (gcmh-idle-delay . 10)
-  (gcmh-verbose . void-debug-p)
-  (gcmh-high-cons-threshold . (* 16 1024 1024)))
-#+end_src
-
-**** shut-up
+***** init
 :PROPERTIES:
-:ID:       65590d3e-ef24-4214-a602-2f4728b2f8c1
+:ID:       2566c5a9-a4aa-4c4b-a975-b454cd852984
 :END:
 
 #+begin_src emacs-lisp
-(use-package! shut-up
-  :commands shut-up
-  :init
-  (defalias 'shut-up! 'shut-up)
-  (defalias 'quiet! 'shut-up))
+(void-add-hook 'emacs-startup-hook #'gcmh-mode)
+#+end_src
+
+***** settings
+:PROPERTIES:
+:ID:       60995ab2-ce84-41b9-b24f-aa41aaaeac1d
+:END:
+
+#+begin_src emacs-lisp
+(setq gcmh-idle-delay 10)
+(setq gcmh-verbose void-debug-p)
+(setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+#+end_src
+
+**** shutup
+:PROPERTIES:
+:ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
+:END:
+
+***** aliases
+:PROPERTIES:
+:ID:       d1e16f01-e967-4e31-873d-1fbd1845c951
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+***** shut-up
+:PROPERTIES:
+:ID:       23d602fa-57f6-4119-90b4-de7c2a22676c
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     cask/shut-up
+:PACKAGE:  shut-up
+:LOCAL-REPO: shut-up
+:END:
+
+****** aliases
+:PROPERTIES:
+:ID:       6da042bf-916f-4af4-a41e-53800f5950f9
+:END:
+
+#+begin_src emacs-lisp
+(defalias 'shut-up! 'shut-up)
+(defalias 'quiet! 'shut-up)
 #+end_src
 
 **** keyfreq
 :PROPERTIES:
 :ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     dacap/keyfreq
+:PACKAGE:  keyfreq
+:LOCAL-REPO: keyfreq
 :END:
 
 #+begin_src emacs-lisp
-(use-package! keyfreq
-  :hook emacs-startup)
+(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
 #+end_src
 
-**** system packages
+**** system-packages
 :PROPERTIES:
 :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     jabranham/system-packages
+:PACKAGE:  system-packages
+:LOCAL-REPO: system-packages
 :END:
 
 ***** system-packages
@@ -2462,8 +1973,7 @@ different systems. Considering that some emacs packages require.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! request
-  :setq (request-storage-directory . (concat VOID-DATA-DIR "request")))
+(setq request-storage-directory . (concat VOID-DATA-DIR "request"))
 #+end_src
 
 ** Initialize
@@ -2987,20 +2497,38 @@ of the Emacs frame are recorded after they expire.
 :ID: 0f1da89a-2278-4493-ba62-e2a334204be6
 :END:
 
-**** idle require
+**** idle-require
 :PROPERTIES:
-:ID:       c550f82a-9608-47e6-972b-eca460015e3c
+:ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
 :END:
 
-This package.
+***** init
+:PROPERTIES:
+:ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
+:END:
 
 #+begin_src emacs-lisp
-(use-package! idle-require
-  :demand t
-  :hook emacs-startup
-  :setq
-  (idle-require-idle-delay . 7)
-  (idle-require-load-break . 2))
+(require 'idle-require)
+(void-add-hook 'emacs-startup-hook #'idle-require-mode)
+#+end_src
+
+***** settings
+:PROPERTIES:
+:ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
+:END:
+
+#+begin_src emacs-lisp
+(setq idle-update-delay 7)
+(setq idle-require-load-break 2)
+#+end_src
+
+***** TODO make idle require use void-log                             :disabled:
+:PROPERTIES:
+:ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
+:END:
+
+#+begin_src emacs-lisp
+()
 #+end_src
 
 **** =tty=
@@ -3429,7 +2957,11 @@ instead of windows).
 
 ** ace-window
 :PROPERTIES:
-:ID: b7cb25b4-ede8-4350-846c-d5c243a4a937
+:ID:       ff248a3a-5dbd-4a3d-b27d-1ac5e2b0215a
+:REPO:     abo-abo/ace-window
+:HOST:     github
+:TYPE:     git
+:COMMIT:   c7cb315
 :END:
 
 [[https://github.com/abo-abo/ace-window][ace-window]] uses avy to navigate windows in cases when there are many. There is
@@ -3437,18 +2969,39 @@ an alternative package for this, [[https://github.com/dimitri/switch-window][swi
 is that the characters used for switching to a window are *really* easy to see,
 but you can't see the buffer contents. That's a no-go for me I need to see them.
 
+*** commands
+:PROPERTIES:
+:ID:       b25171b9-15e2-40b3-9f44-d207d63efab6
+:END:
+
 #+begin_src emacs-lisp
-(use-package! ace-window
-  :commands ace-window ace-swap-window
-  :bind ([remap other-window] . ace-window)
-  :setq
-  (aw-keys . '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (aw-background . t))
+(void-autoload '(ace-window ace-swap-window))
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       b6717e75-96a8-415c-9c33-52821476d44c
+:END:
+
+#+begin_src emacs-lisp
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(setq aw-background t)
+#+end_src
+
+*** bindings
+:PROPERTIES:
+:ID:       eaaafeb8-0aa3-4c10-8b9f-6283d4e75e7f
+:END:
+
+#+begin_src emacs-lisp
+:bind ([remap other-window] . ace-window)
 #+end_src
 
 ** workgroups
 :PROPERTIES:
 :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
+:HOST:     github
+:TYPE:     git
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
@@ -3459,28 +3012,48 @@ come back to it and set it up again. This is what workspaces, also called
 workgroups, are for. You can save the window configuration you're using and
 switch to a new one.
 
-*** workgroups
-:PROPERTIES:
-:ID:       dd0f2eb0-1d88-4690-ac5d-5e965f380a31
-:END:
-
 Workgroup provides a. One notable advantage of workgroups is that it does not
 use emacs's built-in serialization of window configs. Usually, it is better to
 use something that's built-in. However, emacs's serialization has the drawback
 that it's not a lisp object; implying that it is not.
 
+*** commands
+:PROPERTIES:
+:ID:       9d07b39b-4eea-4ecd-af19-b452ede30088
+:END:
+
 #+begin_src emacs-lisp
-(use-package! workgroups2
-  :commands workgroups-mode
-  :init (advice-add #'wg-change-modeline :override #'ignore)
-  :pre-setq
-  (wg-mode-line-display-on . nil)
-  (wg-flag-modified . nil)
-  (wg-session-file . (concat VOID-DATA-DIR "wg-session"))
-  :setq
-  (wg-emacs-exit-save-behavior . 'save)
-  (wg-workgroups-mode-exit-save-behavior . 'save)
-  (wg-flag-modified . nil))
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
+:END:
+
+#+begin_src emacs-lisp
+(setq wg-mode-line-display-on nil)
+(setq wg-flag-modified nil)
+(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+#+end_src
+
+*** ignore changing the modeline
+:PROPERTIES:
+:ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
+:END:
+
+#+begin_src emacs-lisp
+(advice-add #'wg-change-modeline :override #'ignore)
+#+end_src
+
+*** save sessions on quit
+:PROPERTIES:
+:ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
+:END:
+
+#+begin_src emacs-lisp
+(setq wg-emacs-exit-save-behavior 'save)
+(setq wg-workgroups-mode-exit-save-behavior 'save)
+(setq wg-flag-modified nil)
 #+end_src
 
 *** display in modeline
@@ -3589,29 +3162,85 @@ Somtimes I might want to adjust this.
 ** transpose-frame
 :PROPERTIES:
 :ID: 5487535d-2534-4857-b1e0-c63b40917710
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     emacsorphanage/transpose-frame
+:PACKAGE:  transpose-frame
+:LOCAL-REPO: transpose-frame
 :END:
 
 https://www.emacswiki.org/emacs/TransposeFrame
 
 #+begin_src emacs-lisp
-(use-package! transpose-frame
-  :commands
-  transpose-frame
-  flip-frame
-  flop-frame
-  rotate-frame
-  rotate-frame-clockwise)
+(void-autoload '(transpose-frame flip-frame flop-frame rotate-frame rotate-frame-clockwise)
+               'transpose-frame)
 #+end_src
 
 ** exwm
 :PROPERTIES:
 :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
+:TYPE:     git
+:HOST:     github
+:REPO:     emacs-straight/exwm
+:FILES:    (* (:exclude .git))
+:PACKAGE:  exwm
+:LOCAL-REPO: exwm
 :END:
 
 [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
 There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
+
+*** init
+:PROPERTIES:
+:ID:       cc51646a-ab29-4544-ae69-5968d43491a3
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+*** hide the modeline
+:PROPERTIES:
+:ID:       581b8529-00a0-4935-9363-60dba9dbe5f4
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'exwm-mode #'hide-mode-line-mode)
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       d99af013-45ac-454c-bac5-3970b287d5e6
+:END:
+
+*** exwm
+:PROPERTIES:
+:ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
+:END:
+
+In fact, EXWM does not need to be loaded on startup. It is only needed when you
+actually want to open another application such as a separate Emacs instance or
+the web browser. This is great because EXWM actually does consume significant
+startup time. Instead of loading =EXWM= immediately, I add advises to the
+functions which open external linux applications.
+
+#+begin_src emacs-lisp
+(use-package! exwm
+  :hook (exwm-mode . hide-mode-line-mode)
+  :before-call browse-url
+  :setq (exwm-replace . nil)
+  :config
+  (exwm-init)
+  ;; Enable the clipboard.
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable))
+
+(defhook! setup-hide-mode-line (exwm-mode-hook)
+  (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
+  (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
+#+end_src
 
 *** org capture from an exwm buffer
 :PROPERTIES:
@@ -3743,33 +3372,6 @@ current url and to add it to the kill ring.
       (void-log "Copied %S to the kill ring." it))))
 #+end_src
 
-*** exwm
-:PROPERTIES:
-:ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
-:END:
-
-In fact, EXWM does not need to be loaded on startup. It is only needed when you
-actually want to open another application such as a separate Emacs instance or
-the web browser. This is great because EXWM actually does consume significant
-startup time. Instead of loading =EXWM= immediately, I add advises to the
-functions which open external linux applications.
-
-#+begin_src emacs-lisp
-(use-package! exwm
-  :hook (exwm-mode . hide-mode-line-mode)
-  :before-call browse-url
-  :setq (exwm-replace . nil)
-  :config
-  (exwm-init)
-  ;; Enable the clipboard.
-  (require 'exwm-systemtray)
-  (exwm-systemtray-enable))
-
-(defhook! setup-hide-mode-line (exwm-mode-hook)
-  (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
-  (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
-#+end_src
-
 *** appropriate name for exwm buffers
 :PROPERTIES:
 :ID: b9712cdc-2cf9-482f-8f62-b2e4f56b9c97
@@ -3888,36 +3490,59 @@ Emacs's text editing capabilities on it.
     (cl-pushnew k exwm-input-prefix-keys)))
 #+end_src
 
-** buffer expose
+** buffer-expose
 :PROPERTIES:
-:ID: df46e75c-0613-41e4-a4e4-a477f112adcb
+:ID:       07b13cf0-49ca-4463-9d5b-9eb032585e96
+:TYPE:     git
+:HOST:     github
+:REPO:     emacs-straight/buffer-expose
+:FILES:    (* (:exclude .git))
+:PACKAGE:  buffer-expose
+:LOCAL-REPO: buffer-expose
+:END:
+
+*** commands
+:PROPERTIES:
+:ID:       6ea230c6-d60e-4cc1-989b-cb9b34198311
 :END:
 
 #+begin_src emacs-lisp
-(use-package! buffer-expose
-  :commands
-  buffer-expose
-  buffer-expose-no-stars
-  buffer-expose-major-mode
-  buffer-expose-dired-buffers
-  buffer-expose-stars
-  buffer-expose-current-mode
-  :setq
-  (buffer-expose-show-current-buffer . t)
-  (buffer-expose-rescale-factor      . 0.5)
-  (buffer-expose-highlight-selected  . nil)
-  (buffer-expose-max-num-windows     . 8)
-  (buffer-expose-auto-init-aw        . t)
-  (buffer-expose-hide-modelines      . nil)
-  (buffer-expose-key-hint            . "")
-  :bind
-  (:map buffer-expose-grid-map
-   ("l" . buffer-expose-next-window)
-   ("h" . buffer-expose-prev-window)
-   ("L" . buffer-expose-next-page)
-   ("H" . buffer-expose-prev-page)
-   ("j" . buffer-expose-down-window)
-   ("k" . buffer-expose-up-window)))
+buffer-expose
+buffer-expose-no-stars
+buffer-expose-major-mode
+buffer-expose-dired-buffers
+buffer-expose-stars
+buffer-expose-current-mode
+#+end_src
+
+*** setq
+:PROPERTIES:
+:ID:       b30c439e-a2e0-43c4-a1ef-08d68d579c21
+:END:
+
+#+begin_src emacs-lisp
+(buffer-expose-show-current-buffer . t)
+(buffer-expose-rescale-factor      . 0.5)
+(buffer-expose-highlight-selected  . nil)
+(buffer-expose-max-num-windows     . 8)
+(buffer-expose-auto-init-aw        . t)
+(buffer-expose-hide-modelines      . nil)
+(buffer-expose-key-hint            . "")
+#+end_src
+
+*** bindings
+:PROPERTIES:
+:ID:       c73d075a-bbf2-4548-baee-9963f4acd725
+:END:
+
+#+begin_src emacs-lisp
+(:map buffer-expose-grid-map
+ ("l" . buffer-expose-next-window)
+ ("h" . buffer-expose-prev-window)
+ ("L" . buffer-expose-next-page)
+ ("H" . buffer-expose-prev-page)
+ ("j" . buffer-expose-down-window)
+ ("k" . buffer-expose-up-window))
 #+end_src
 
 * Completion
@@ -3939,6 +3564,27 @@ of things that we actually want at this moment.
 :END:
 
 *** yasnippet
+:PROPERTIES:
+:ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (yasnippet.el snippets yasnippet-pkg.el)
+:HOST:     github
+:REPO:     joaotavora/yasnippet
+:PACKAGE:  yasnippet
+:LOCAL-REPO: yasnippet
+:END:
+
+**** init
+:PROPERTIES:
+:ID:       9ccba3e4-072e-4838-9461-b962740f02c6
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
+#+end_src
+
+**** yasnippet
 :PROPERTIES:
 :ID: 1f362298-2b47-4929-9484-ce7f26f80adf
 :END:
@@ -3965,7 +3611,19 @@ be inserted and interactively completed.
     (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay)))
 #+end_src
 
-*** snippet collection
+*** yasnippet-snippets
+:PROPERTIES:
+:ID:       006e4191-a61f-4886-86db-024180a5fb1c
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (*.el snippets .nosearch yasnippet-snippets-pkg.el)
+:HOST:     github
+:REPO:     AndreaCrotti/yasnippet-snippets
+:PACKAGE:  yasnippet-snippets
+:LOCAL-REPO: yasnippet-snippets
+:END:
+
+**** snippet collection
 :PROPERTIES:
 :ID:       ceb066ac-2242-492d-9609-9e3b879b10b7
 :END:
@@ -3983,6 +3641,12 @@ be inserted and interactively completed.
 ** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     raxod502/selectrum
+:PACKAGE:  selectrum
+:LOCAL-REPO: selectrum
 :END:
 
 *** selectrum
@@ -4073,9 +3737,20 @@ Orderless will do this."
 ** company
 :PROPERTIES:
 :ID: 436d68f7-09f1-470a-a730-fd79d9c183ee
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     company-mode/company-mode
+:PACKAGE:  company
+:LOCAL-REPO: company-mode
 :END:
 
 *** company
+:PROPERTIES:
+:ID:       0f670007-165b-4a2d-ac35-97eab9ada739
+:END:
+
+**** company
 :PROPERTIES:
 :ID: 89fcd613-f7ea-461b-a91c-0d9a0ae28093
 :END:
@@ -4544,6 +4219,13 @@ functions. Engine mode seems to only be useful for binding keys.
 ** w3m
 :PROPERTIES:
 :ID: e5e13423-bc70-49b0-969e-94897c798d54
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults icons (:exclude octet.el mew-w3m.el w3m-xmas.el) w3m-pkg.el)
+:HOST:     github
+:REPO:     emacs-w3m/emacs-w3m
+:PACKAGE:  w3m
+:LOCAL-REPO: emacs-w3m
 :END:
 
 [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
@@ -4676,6 +4358,12 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 ** emms
 :PROPERTIES:
 :ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (*.el lisp/*.el doc/emms.texinfo emms-pkg.el)
+:REPO:     https://git.savannah.gnu.org/git/emms.git
+:PACKAGE:  emms
+:LOCAL-REPO: emms
 :END:
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
@@ -4820,30 +4508,63 @@ necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypressio
 
 ** highlight-numbers
 :PROPERTIES:
-:ID: d6e3227c-7678-47f0-95a8-3a6fda1638d6
+:ID:       373d8428-5ac4-480c-82b3-44d9013ed97a
 :END:
 
 What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is pretty self explanatory: it highlights numbers.
 
+*** hooks
+:PROPERTIES:
+:ID:       203c9d45-7293-4edd-afab-d22acf07b655
+:END:
+
 #+begin_src emacs-lisp
-(use-package! highlight-numbers
-  :hook (prog-mode conf-mode)
-  :setq (highlight-numbers-generic-regexp . "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>"))
+(void-add-hook '(prog-mode-hook conf-mode-hook) #'highlight-numbers-mode)
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       d8ec896c-9ac0-4d06-b4dd-1d0195bdee7a
+:END:
+
+#+begin_src emacs-lisp
+(setq highlight-numbers-generic-regexp "\\_<[[:digit:]]+\\(?:\\.[0-9]*\\)?\\_>")
 #+end_src
 
 ** hideshow
 :PROPERTIES:
-:ID: 915f65c3-8121-4480-b246-f190fe117950
+:ID:       85063206-4937-49df-95fa-c42484c0d199
+:TYPE:     built-in
 :END:
 
 Hiding text can be extremely useful. It is something that's used extensively in
 Org Mode. The feature responsible for doing this is [[][hide-lines]].
 
+*** commands
+:PROPERTIES:
+:ID:       f377eed0-45bc-4309-9056-349f71857764
+:END:
+
 #+begin_src emacs-lisp
-(use-feature! hideshow
-  :hook (prog-mode . hs-minor-mode)
-  :commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
-  :setq (hs-hide-comments-when-hiding-all . nil))
+:commands hs-minor-mode hs-toggle-hiding hs-already-hidden-p
+#+end_src
+
+*** hooks
+:PROPERTIES:
+:ID:       97dc0e31-88f7-48d2-9d29-8f2e4af18f2f
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'prog-mode-hook #'hs-minor-mode)
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       2926b12e-2383-4fab-86e9-c69760ee8652
+:END:
+
+#+begin_src emacs-lisp
+:setq (hs-hide-comments-when-hiding-all . nil)
 #+end_src
 
 ** rainbow-delimiters
@@ -4868,14 +4589,19 @@ great idea! It makes it really easy to see which parentheses go together.
 *** aggressive-indent
 :PROPERTIES:
 :ID: f1b9a36e-26e4-4305-99ae-cbcf6a90013d
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     Malabarba/aggressive-indent-mode
+:PACKAGE:  aggressive-indent
+:LOCAL-REPO: aggressive-indent-mode
 :END:
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
 it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
-(use-package! aggressive-indent
-  :hook emacs-lisp-mode)
+(void-add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 #+end_src
 
 *** electric indent
@@ -4889,7 +4615,18 @@ it. It's pretty smart and very convenient.
   (electric-indent-mode -1))
 #+end_src
 
-*** ws-bulter
+*** ws-butler
+:PROPERTIES:
+:ID:       caf0335b-923c-4427-af2b-d398af1700f7
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     lewang/ws-butler
+:PACKAGE:  ws-butler
+:LOCAL-REPO: ws-butler
+:END:
+
+**** ws-bulter
 :PROPERTIES:
 :ID: 7e0c30ea-a109-4176-a92b-4a1de4922032
 :END:
@@ -4923,30 +4660,50 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 *** smartparens
 :PROPERTIES:
 :ID: 17257f23-c45e-4b7b-a3b4-7fd2333edf4d
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     Fuco1/smartparens
+:PACKAGE:  smartparens
+:LOCAL-REPO: smartparens
 :END:
 
-**** bootstrap
+**** hooks
+:PROPERTIES:
+:ID:       5ed7b555-0d58-4925-b23e-bceec2092f24
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook '(prog-mode-hook eshell-mode-hook ielm-mode-hook)
+               #'smartparens-strict-mode)
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       d4c619a8-c3e3-49ae-9e43-8274aeab1ba9
+:END:
+
+#+begin_src emacs-lisp
+(setq sp-highlight-pair-overlay nil)
+(setq sp-highlight-wrap-overlay nil)
+(setq sp-highlight-wrap-tag-overlay nil)
+(setq sp-show-pair-from-inside t)
+(setq sp-cancel-autoskip-on-backward-movement nil)
+(setq sp-show-pair-delay 0.1)
+(setq sp-max-pair-length 4)
+(setq sp-max-prefix-length 50)
+(setq sp-escape-quotes-after-insert . nil)
+#+end_src
+
+**** config
 :PROPERTIES:
 :ID: f1c64411-ad51-4c24-8dad-b4aa7b8fc3b5
 :END:
 
 #+begin_src emacs-lisp
-(use-package! smartparens
-  :hook (prog-mode eshell-mode ielm-mode)
-  :setq
-  (sp-highlight-pair-overlay . nil)
-  (sp-highlight-wrap-overlay . nil)
-  (sp-highlight-wrap-tag-overlay . nil)
-  (sp-show-pair-from-inside . t)
-  (sp-cancel-autoskip-on-backward-movement . nil)
-  (sp-show-pair-delay . 0.1)
-  (sp-max-pair-length . 4)
-  (sp-max-prefix-length . 50)
-  (sp-escape-quotes-after-insert . nil)
-  :config
-  (sp-local-pair 'emacs-lisp-mode "<" ">")
-  (require 'smartparens-config)
-  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
+(sp-local-pair 'emacs-lisp-mode "<" ">")
+(require 'smartparens-config)
+(sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
 #+end_src
 
 **** disable =smartparens-navigate-skip-match=
@@ -4977,6 +4734,12 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 *** lispyville
 :PROPERTIES:
 :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     noctuid/lispyville
+:PACKAGE:  lispyville
+:LOCAL-REPO: lispyville
 :END:
 
 [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
@@ -5086,33 +4849,46 @@ Sometimes =evil-normal-state= enters visual state.
 *** lispy
 :PROPERTIES:
 :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
-:END:
-
-**** lispy
-:PROPERTIES:
-:ID: 4b4bfc73-e4e3-44f0-9553-61ac5182c946
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults lispy-clojure.clj lispy-python.py lispy-pkg.el)
+:HOST:     github
+:REPO:     abo-abo/lispy
+:PACKAGE:  lispy
+:LOCAL-REPO: lispy
 :END:
 
 For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
 very useful to me.
 
+**** hook
+:PROPERTIES:
+:ID:       37bd49d1-3e34-4579-87d2-e791278be017
+:END:
+
 #+begin_src emacs-lisp
-(use-package! lispy
-  :hook emacs-lisp-mode
-  :setq
-  (lispy-avy-style-paren . 'at-full)
-  (lispy-eval-display-style . 'overlay)
-  (lispy-safe-delete . t)
-  (lispy-safe-copy . t)
-  (lispy-safe-paste . t)
-  (lispy-safe-actions-no-pull-delimiters-into-comments . t)
-  (lispy-delete-sexp-from-within . t)
-  (lispy-parens-only-left-in-string-or-comment . nil)
-  (lispy-safe-threshold . 5000)
-  (lispy-use-sly . t)
-  ;; allow space before asterisk for headings (e.g. ";; *")
-  (lispy-outline . "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
-  (lispy-key-theme . nil))
+(void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       20d99206-ddc4-42db-b4c1-8721decbaf8d
+:END:
+
+#+begin_src emacs-lisp
+(setq lispy-avy-style-paren 'at-full)
+(setq lispy-eval-display-style 'overlay)
+(setq lispy-safe-delete t)
+(setq lispy-safe-copy t)
+(setq lispy-safe-paste t)
+(setq lispy-safe-actions-no-pull-delimiters-into-comments t)
+(setq lispy-delete-sexp-from-within t)
+(setq lispy-parens-only-left-in-string-or-comment nil)
+(setq lispy-safe-threshold 5000)
+(setq lispy-use-sly t)
+;; allow space before asterisk for headings (e.g. ";; *")
+(setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
+(setq lispy-key-theme nil)
 #+end_src
 
 **** avoid void variable error
@@ -5133,6 +4909,11 @@ very useful to me.
 *** spell-number
 :PROPERTIES:
 :ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
+:TYPE:     git
+:HOST:     github
+:REPO:     emacsmirror/spell-number
+:PACKAGE:  spell-number
+:LOCAL-REPO: spell-number
 :END:
 
 #+begin_src emacs-lisp
@@ -5144,9 +4925,15 @@ very useful to me.
   (spelln-decimal-character . ?.))
 #+end_src
 
-*** fill paragraph
+*** aggressive-fill-paragraph
 :PROPERTIES:
 :ID: 4f57fd49-b466-4eea-b91a-2cc8f0b07297
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     davidshepherd7/aggressive-fill-paragraph-mode
+:PACKAGE:  aggressive-fill-paragraph
+:LOCAL-REPO: aggressive-fill-paragraph-mode
 :END:
 
 #+begin_src emacs-lisp
@@ -5232,6 +5019,13 @@ like that concern N number of things, where N could be 1 or more things.
 *** evil
 :PROPERTIES:
 :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults doc/build/texinfo/evil.texi (:exclude evil-test-helpers.el) evil-pkg.el)
+:HOST:     github
+:REPO:     emacs-evil/evil
+:PACKAGE:  evil
+:LOCAL-REPO: evil
 :END:
 
 [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
@@ -5668,11 +5462,16 @@ Why not just go to the end of the ="= like any other around operator?
 
 *** evil-surround
 :PROPERTIES:
+:ID:       bc9899a4-654e-4bf6-89bd-557a72c713a8
+:END:
+
+**** hooks
+:PROPERTIES:
 :ID: ef933441-4891-48d8-a4aa-016702e55b48
 :END:
 
 #+begin_src emacs-lisp
-(use-package! evil-surround :hook prog-mode-hook text-mode-hook)
+(void-add-hook '(prog-mode-hook text-mode-hook) #'evil-surround-mode)
 #+end_src
 
 *** evil-matchit
@@ -5720,6 +5519,17 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 
 ** expand-region
 :PROPERTIES:
+:ID:       8ffebf9c-c783-4a5d-beb1-3194863bb234
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     magnars/expand-region.el
+:PACKAGE:  expand-region
+:LOCAL-REPO: expand-region.el
+:END:
+
+*** expand-region
+:PROPERTIES:
 :ID: 417c9c53-a776-4779-9afc-1eaa35a145c6
 :END:
 
@@ -5747,9 +5557,47 @@ larger text objects. It's saves me keystrokes.
 ** avy
 :PROPERTIES:
 :ID: 71d016e2-a118-4468-8a01-fe86863bc030
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     abo-abo/avy
+:PACKAGE:  avy
+:LOCAL-REPO: avy
 :END:
 
 [[https://github.com/abo-abo/avy][Avy]]
+
+*** settings
+:PROPERTIES:
+:ID:       fd52fbe0-e491-41f8-8558-3fc263a62c80
+:END:
+
+#+begin_src emacs-lisp
+(avy-background . t)
+;; Jump only on current window.
+(avy-all-windows . nil)
+;; Use avy keys.
+(avy-keys-alist . nil)
+
+(avy-style . 'at)
+#+end_src
+
+*** avy keys
+:PROPERTIES:
+:ID:       cbe231da-a16e-4846-a30e-aa4bc8228378
+:END:
+
+#+begin_src emacs-lisp
+(avy-keys . (list
+             ;; homerow keys in alternating order.
+             ?a ?j ?s ?k ?d ?l ?f ?\;
+             ;; middle homerow keys
+             ?g ?h
+             ;; keys above homerow in alternating order
+             ?t ?y ?r ?u ?e ?i ?w ?o ?q ?p
+             ;; keys below homerow
+             ?b ?n ?v ?m ?c ?, ?x ?. ?z ?/))
+#+end_src
 
 *** bootstrap
 :PROPERTIES:
@@ -5757,24 +5605,7 @@ larger text objects. It's saves me keystrokes.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! avy
-  :commands avy-jump
-  :setq
-  (avy-background . t)
-  ;; Jump only on current window.
-  (avy-all-windows . nil)
-  ;; Use avy keys.
-  (avy-keys-alist . nil)
-  (avy-keys . (list
-               ;; homerow keys in alternating order.
-               ?a ?j ?s ?k ?d ?l ?f ?\;
-               ;; middle homerow keys
-               ?g ?h
-               ;; keys above homerow in alternating order
-               ?t ?y ?r ?u ?e ?i ?w ?o ?q ?p
-               ;; keys below homerow
-               ?b ?n ?v ?m ?c ?, ?x ?. ?z ?/))
-  (avy-style . 'at))
+(void-autoload 'avy 'avy-jump)
 #+end_src
 
 *** avy-command-helper
@@ -5813,21 +5644,7 @@ larger text objects. It's saves me keystrokes.
   (avy:jump-to-regexp (rx nonl symbol-end)))
 #+end_src
 
-*** bindings
-:PROPERTIES:
-:ID: a8febb0e-768b-412d-9d86-1f1439eced0e
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal
-  "f" #'avy-goto-char
-  "w" #'void/evil-beginning-of-word
-  "W" #'void/evil-beginning-of-WORD
-  "e" #'void/evil-end-of-word
-  "E" #'void/evil-end-of-WORD)
-#+end_src
-
-** undo                                                               :disabled:
+** undo
 :PROPERTIES:
 :ID: 87fde0b2-5db6-4b5f-8945-d469449f1207
 :END:
@@ -5839,7 +5656,7 @@ larger text objects. It's saves me keystrokes.
 
 #+begin_src emacs-lisp
 (use-package! undo-fu
-  :after-hook void-after-switch-buffer-hook
+  ;; :after-hook void-after-switch-buffer-hook
   :before-call after-find-file
   :setq
   (undo-limit . 400000)
@@ -5858,6 +5675,17 @@ larger text objects. It's saves me keystrokes.
 :END:
 
 ** find-file-rg
+:PROPERTIES:
+:ID:       561ebd06-98db-4253-bee8-066c338b8cac
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     muffinmad/emacs-find-file-rg
+:PACKAGE:  find-file-rg
+:LOCAL-REPO: emacs-find-file-rg
+:END:
+
+*** find-file-rg
 :PROPERTIES:
 :ID:       b45fd2d1-d21a-49aa-8ad9-7ba4dbec1356
 :END:
@@ -6211,6 +6039,17 @@ aliases.
 
 ** command-log-mode
 :PROPERTIES:
+:ID:       714699b3-1d02-4c0b-9898-d56f872af351
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     lewang/command-log-mode
+:PACKAGE:  command-log-mode
+:LOCAL-REPO: command-log-mode
+:END:
+
+*** command-log-mode
+:PROPERTIES:
 :ID: 10226327-4c31-41db-b202-e4a9f44fc6fe
 :END:
 
@@ -6341,9 +6180,20 @@ read this [[https://emacs.stackexchange.com/questions/51853/retracing-steps-with
 ** elfeed
 :PROPERTIES:
 :ID:       e018eeba-2e0b-4d9e-b813-bb9c427098f5
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     skeeto/elfeed
+:PACKAGE:  elfeed
+:LOCAL-REPO: elfeed
 :END:
 
 *** elfeed
+:PROPERTIES:
+:ID:       171f6599-052e-4a75-bc28-5b0314577424
+:END:
+
+**** elfeed
 :PROPERTIES:
 :ID: 7454a51a-cb50-47e4-b0ab-7ac493d9d09d
 :END:
@@ -6370,7 +6220,7 @@ in time to see older posts.
   (shr-max-image-proportion     . 0.8))
 #+end_src
 
-*** elfeed org
+**** elfeed org
 :PROPERTIES:
 :ID: e385b9b0-4681-4faa-9bfe-c759080ff5d9
 :END:
@@ -6386,31 +6236,6 @@ in time to see older posts.
   :config
   (let ((default-directory org-directory))
     (elfeed-org)))
-#+end_src
-
-** pomodoro
-:PROPERTIES:
-:ID: d8056c5a-6b10-49d1-befc-842cea64419e
-:END:
-
-[[https://github.com/baudtack/pomodoro.el][pomodoro]] is meant to provide functions to follow the pomodoro style of working.
-There is a slight lag in emacs when I play a sound with ~(play-sound-file sound)~.
-I might consider doing this asynchronously.
-
-#+begin_src emacs-lisp
-(use-package! pomodoro
-  :commands pomodoro-start
-  :setq
-  (pomodoro-play-sounds       . t)
-  (pomodoro-work-start-sound  . (concat VOID-ALERT-SOUNDS "A-Tone-His_Self-1266414414.wav"))
-  (pomodoro-break-start-sound . (concat VOID-ALERT-SOUNDS "A-Tone-His_Self-1266414414.wav"))
-  (pomodoro-work-time         . 25)
-  (pomodoro-break-time        . 5)
-  (pomodoro-long-break-time   . 15))
-
-(defadvice! dont-use-call-process (:override play-pomodoro-sound)
-  "Play sound without using the call-process."
-  (play-sound-file <sound>))
 #+end_src
 
 ** file browsing
@@ -9450,6 +9275,20 @@ graphical interface but.
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
+
+** bindings
+:PROPERTIES:
+:ID: a8febb0e-768b-412d-9d86-1f1439eced0e
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal
+  "f" #'avy-goto-char
+  "w" #'void/evil-beginning-of-word
+  "W" #'void/evil-beginning-of-WORD
+  "e" #'void/evil-end-of-word
+  "E" #'void/evil-end-of-WORD)
+#+end_src
 
 ** replace evil folding commands to outline folding
 :PROPERTIES:
