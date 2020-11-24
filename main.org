@@ -6295,26 +6295,28 @@ Each element of the list is an abbreviated.")
 :LOCAL-REPO: "command-log-mode"
 :END:
 
+[[https://github.com/lewang/command-log-mode][command-log-mode]] keeps track of all the commands you run and displays them to
+you on a side window.
+
 *** init
 :PROPERTIES:
 :ID:       4bb025cf-5933-46ed-abc6-7f1d40a7faa5
 :END:
 
-*** command-log-mode
+#+begin_src emacs-lisp
+:commands command-log-mode global-command-log-mode
+#+end_src
+
+*** settings
 :PROPERTIES:
-:ID: 10226327-4c31-41db-b202-e4a9f44fc6fe
+:ID:       5cad9fe1-772e-46d7-88dd-09a5cdd366b0
 :END:
 
-[[https://github.com/lewang/command-log-mode][command-log-mode]] keeps track of all the commands you run and displays them to
-you on a side window.
-
 #+begin_src emacs-lisp
-(use-package! command-log-mode
-  :commands command-log-mode global-command-log-mode
-  :setq
-  (command-log-mode-auto-show . t)
-  (command-log-mode-open-log-turns-on-mode . nil)
-  (command-log-mode-is-global . t))
+:setq
+(command-log-mode-auto-show . t)
+(command-log-mode-open-log-turns-on-mode . nil)
+(command-log-mode-is-global . t)
 #+end_src
 
 ** recentf
