@@ -940,6 +940,11 @@ Advice name is of the form FN@ADVICE."
 
 **** adding advice
 :PROPERTIES:
+:ID:       3ab8947c-15f0-4fb7-bd75-f0baabc20ec1
+:END:
+
+***** adding advice
+:PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
 :END:
 
@@ -963,6 +968,17 @@ appropriate name to target.
     (when expire-fn
       (->> (void-expire-advice target expire-fn)
            (advice-add new-advice :around)))))
+#+end_src
+
+***** adding advice
+:PROPERTIES:
+:ID:       1298ea9d-870c-45da-9424-9cf8c66f7403
+:END:
+
+#+begin_src emacs-lisp
+(defun void-add-advice (hooks functions where)
+  "docstring"
+  ())
 #+end_src
 
 **** advice action
