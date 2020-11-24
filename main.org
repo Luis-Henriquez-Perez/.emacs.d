@@ -954,7 +954,7 @@ convention I created [[helpfn:void-add-advice][void-add-advice]]. It will create
 appropriate name to target.
 
 #+begin_src emacs-lisp
-(defun void-add-advice (target where advice &optional props expire-fn)
+(defun void--add-advice (target where advice &optional props expire-fn)
   "Advise TARGETS with Void ADVICES."
   (let* ((new-advice (void-advice-name target advice))
          (log-advice (void-symbol-intern new-advice '@ 'log-on-debug)))
