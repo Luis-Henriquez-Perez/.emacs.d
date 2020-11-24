@@ -1301,6 +1301,18 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
+*** load-on-call
+:PROPERTIES:
+:ID:       324e707b-2f44-4168-a846-037f5401dedb
+:END:
+
+#+begin_src emacs-lisp
+(defun void-load-on-call (package where functions)
+  "Load packages before FUNCTIONS are called."
+  (fset ' `(lambda () (require ',package)))
+  (void-add-advice () :before nil t))
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
