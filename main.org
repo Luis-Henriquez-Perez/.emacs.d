@@ -428,9 +428,15 @@ Assumes vc is git which is fine because straight only uses git right now."
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
-*** org ml
+*** org-ml
 :PROPERTIES:
 :ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     ndwarshuis/org-ml
+:PACKAGE:  org-ml
+:LOCAL-REPO: org-ml
 :END:
 
 [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
@@ -439,6 +445,12 @@ structures. It was built for.
 *** ts
 :PROPERTIES:
 :ID:       64d19467-a878-449c-8402-88892c25ac9a
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     alphapapa/ts.el
+:PACKAGE:  ts
+:LOCAL-REPO: ts.el
 :END:
 
 =ts= is a time package.
@@ -1732,11 +1744,12 @@ as a dependency, I'd end up rewriting many of its functions.
 **** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
-:END:
-
-***** general
-:PROPERTIES:
-:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     noctuid/general.el
+:PACKAGE:  general
+:LOCAL-REPO: general.el
 :END:
 
 There are numerous keybinding functions in Emacs; and they all look a little
@@ -1744,6 +1757,11 @@ different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set
 on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
 [[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
 handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
+
+***** general
+:PROPERTIES:
+:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
+:END:
 
 #+begin_src emacs-lisp
 (require 'general)
@@ -1839,6 +1857,13 @@ make a difference. That's why.
 **** s
 :PROPERTIES:
 :ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (s.el s-pkg.el)
+:HOST:     github
+:REPO:     magnars/s.el
+:PACKAGE:  s
+:LOCAL-REPO: s.el
 :END:
 
 #+begin_src emacs-lisp
@@ -2227,12 +2252,12 @@ Some command line options aren't necessary.
     (setenv "GIT_ASKPASS" "git-gui--askpass")))
 #+end_src
 
-**** mac                                                              :disabled:
+**** mac
 :PROPERTIES:
 :ID: e502d7e6-8b19-4300-a4fd-9a797df98402
 :END:
 
-***** defaults                                                        :disabled:
+***** defaults
 :PROPERTIES:
 :ID: 8e4e5a73-5616-4aca-b939-5bad62e6c657
 :END:
@@ -2253,7 +2278,7 @@ Some command line options aren't necessary.
   (setq ns-pop-up-frames nil))
 #+end_src
 
-***** exec path from shell                                            :disabled:
+***** exec path from shell
 :PROPERTIES:
 :ID: 0cc48982-6a3e-40ee-9e95-3e21dae157b5
 :END:
@@ -3513,12 +3538,13 @@ Emacs's text editing capabilities on it.
 :LOCAL-REPO: buffer-expose
 :END:
 
-*** commands
+*** TODO commands
 :PROPERTIES:
 :ID:       6ea230c6-d60e-4cc1-989b-cb9b34198311
 :END:
 
 #+begin_src emacs-lisp
+(void-autoload )
 buffer-expose
 buffer-expose-no-stars
 buffer-expose-major-mode
@@ -3533,13 +3559,13 @@ buffer-expose-current-mode
 :END:
 
 #+begin_src emacs-lisp
-(buffer-expose-show-current-buffer . t)
-(buffer-expose-rescale-factor      . 0.5)
-(buffer-expose-highlight-selected  . nil)
-(buffer-expose-max-num-windows     . 8)
-(buffer-expose-auto-init-aw        . t)
-(buffer-expose-hide-modelines      . nil)
-(buffer-expose-key-hint            . "")
+(setq buffer-expose-show-current-buffer t)
+(setq buffer-expose-rescale-factor      0.5)
+(setq buffer-expose-highlight-selected  nil)
+(setq buffer-expose-max-num-windows     8)
+(setq buffer-expose-auto-init-aw        t)
+(setq buffer-expose-hide-modelines      nil)
+(setq buffer-expose-key-hint            "")
 #+end_src
 
 *** bindings
@@ -3548,13 +3574,13 @@ buffer-expose-current-mode
 :END:
 
 #+begin_src emacs-lisp
-(:map buffer-expose-grid-map
- ("l" . buffer-expose-next-window)
- ("h" . buffer-expose-prev-window)
- ("L" . buffer-expose-next-page)
- ("H" . buffer-expose-prev-page)
- ("j" . buffer-expose-down-window)
- ("k" . buffer-expose-up-window))
+(general-def buffer-expose-grid-map
+  "l" buffer-expose-next-window
+  "h" buffer-expose-prev-window
+  "L" buffer-expose-next-page
+  "H" buffer-expose-prev-page
+  "j" buffer-expose-down-window
+  "k" buffer-expose-up-window)
 #+end_src
 
 * Completion
@@ -3594,33 +3620,52 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
+
+(setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
 #+end_src
 
-**** yasnippet
+**** settings
 :PROPERTIES:
-:ID: 1f362298-2b47-4929-9484-ce7f26f80adf
+:ID:       eeebeb45-18a3-41ab-a540-3fc67e272b89
 :END:
 
-[[https://github.com/joaotavora/yasnippet][yasnippet]] is a template completion package. You can define templates which can
-be inserted and interactively completed.
+#+begin_src emacs-lisp
+(setq yas-verbosity (if void-debug-p 3 0))
+(setq yas-indent-line 'auto)
+(setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
+(setq yas-use-menu nil)
+(setq yas-triggers-in-field t)
+#+end_src
+
+**** ensure each yasnippet directory
+:PROPERTIES:
+:ID:       0dae1585-e454-4740-b8c6-bad7bf1e4bb0
+:END:
 
 #+begin_src emacs-lisp
-(use-package! yasnippet
-  :hook (prog-mode . yas-minor-mode-on)
-  :pre-setq
-  (yas-snippet-dirs . (list (concat VOID-DATA-DIR "snippets/")))
-  :setq
-  (yas-verbosity . (if void-debug-p 3 0))
-  (yas-indent-line . 'auto)
-  (yas-prompt-functions . '(yas-completing-prompt yas-ido-prompt))
-  (yas-use-menu . nil)
-  (yas-triggers-in-field . t)
-  :config
-  (--each yas-snippet-dirs (mkdir it t))
-  (delq #'yas-dropdown-prompt yas-prompt-functions)
-  (after! smartparens
-    ;; tell smartparens overlays not to interfere with yasnippet keybinds
-    (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay)))
+(defhook! create-yasnippet-dirs-maybe (yas-minor-mode-hook)
+  (--each yas-snippet-dirs
+    (mkdir it t)))
+#+end_src
+
+**** delete yasnippet prompt
+:PROPERTIES:
+:ID:       c66234de-3bd7-48bd-a518-538002fbaa6c
+:END:
+
+#+begin_src emacs-lisp
+(delq #'yas-dropdown-prompt yas-prompt-functions)
+#+end_src
+
+**** other
+:PROPERTIES:
+:ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
+:END:
+
+#+begin_src emacs-lisp
+(after! smartparens
+  ;; tell smartparens overlays not to interfere with yasnippet keybinds
+  (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
 #+end_src
 
 *** yasnippet-snippets
@@ -4272,35 +4317,6 @@ javascript code.
   "H" #'w3m-view-previous-page
   ;; Move forward COUNT pages in history.
   "L" #'w3m-view-next-page)
-#+end_src
-
-** browse-url
-:PROPERTIES:
-:ID:       9eda7617-8492-4459-87db-ba5d92222a9b
-:END:
-
-#+begin_src emacs-lisp
-(use-package! browse-url
-  :setq
-  (browse-url-firefox-arguments . (list "--new-window"))
-  (browse-url-browser-function . (list (cons "." #'browse-url-firefox))))
-#+end_src
-
-** search web
-:PROPERTIES:
-:ID:       b96fbbf4-5092-4f4c-a9bb-e59f6ede4f98
-:END:
-
-=web-search= provides an aptly named command "web-search" to browse the web with.
-=browse-url= is nice, but I never know the exact url I want to visit.
-
-#+begin_src emacs-lisp
-(use-package! search-web
-  :commands search-web
-  :init
-  (defun search-web/default-engine ()
-    (interactive)
-    (search-web "duck" (read-string "Search: "))))
 #+end_src
 
 * Multimedia
@@ -5514,6 +5530,17 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 
 *** evil-visualstar
 :PROPERTIES:
+:ID:       8b86236c-2162-47e2-a2cc-eaee2f51d1b2
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     bling/evil-visualstar
+:PACKAGE:  evil-visualstar
+:LOCAL-REPO: evil-visualstar
+:END:
+
+*** evil-visualstar
+:PROPERTIES:
 :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
 :END:
 
@@ -5663,22 +5690,46 @@ larger text objects. It's saves me keystrokes.
 
 *** undo-fu
 :PROPERTIES:
-:ID: 2cb27d5e-e26c-4805-9ee7-f93222d75220
+:ID:       a808c260-399c-4cf7-82ae-48a433474e25
+:END:
+
+**** load before
+:PROPERTIES:
+:ID:       d36e9447-2134-49cb-973d-c3a8c695f8ac
 :END:
 
 #+begin_src emacs-lisp
-(use-package! undo-fu
-  ;; :after-hook void-after-switch-buffer-hook
-  :before-call after-find-file
-  :setq
-  (undo-limit . 400000)
-  (undo-strong-limit . 3000000)
-  (undo-outer-limit . 3000000)
-  :bind
-  ([remap undo] . undo-fu-only-undo)
-  ([remap redo] . undo-fu-only-redo)
-  :config
-  (global-undo-tree-mode -1))
+(void-load-on-call :before 'undo-tree)
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       85230cf3-d90a-426a-b3dd-7cb3b27e8218
+:END:
+
+#+begin_src emacs-lisp
+(setq undo-limit 400000)
+(setq undo-strong-limit 3000000)
+(setq undo-outer-limit 3000000)
+#+end_src
+
+**** bind
+:PROPERTIES:
+:ID:       650470d8-bf28-49a7-b120-7c60b1bfd618
+:END:
+
+#+begin_src emacs-lisp
+(general-def [remap undo] undo-fu-only-undo)
+(general-def [remap redo] undo-fu-only-redo)
+#+end_src
+
+**** make sure that built-in undo is disabled
+:PROPERTIES:
+:ID:       aa8f5747-5c19-45da-9957-ddf2b1c3f067
+:END:
+
+#+begin_src emacs-lisp
+(global-undo-tree-mode -1)
 #+end_src
 
 * Utility
