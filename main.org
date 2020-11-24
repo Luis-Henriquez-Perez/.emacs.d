@@ -1306,6 +1306,8 @@ SYM is a symbol that stores a list."
 :ID:       324e707b-2f44-4168-a846-037f5401dedb
 :END:
 
+I want a shorthand for advices.
+
 #+begin_src emacs-lisp
 (defun void-load-on-call (package where functions)
   "Load packages before FUNCTIONS are called."
