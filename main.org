@@ -5336,6 +5336,25 @@ We want escape to be a general "quit everything".
         (t (keyboard-quit))))
 #+end_src
 
+***** keychord
+:PROPERTIES:
+:ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
+:END:
+
+****** init
+:PROPERTIES:
+:ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
+:END:
+
+****** be quiet when turning on
+:PROPERTIES:
+:ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
+:END:
+
+#+begin_src emacs-lisp
+(quiet! (key-chord-mode 1))
+#+end_src
+
 ***** keychord integration
 :PROPERTIES:
 :ID:       33fa6402-f56e-4bea-a9b5-bd5a6f44792f
