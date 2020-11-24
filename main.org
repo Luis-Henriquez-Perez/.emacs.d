@@ -4514,6 +4514,16 @@ available to us only a web search away.
 
 ** engine-mode
 :PROPERTIES:
+:ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
+:HOST:     github
+:BRANCH:   main
+:REPO:     hrs/engine-mode
+:COMMIT:   e0910f1
+:TYPE:     git
+:END:
+
+*** different engines
+:PROPERTIES:
 :ID:       2f5c974e-b26e-4080-a9b3-acd6406ab118
 :END:
 
@@ -4521,17 +4531,14 @@ This package essentially automates the creation of an interactive web searching
 functions. Engine mode seems to only be useful for binding keys.
 
 #+begin_src emacs-lisp
-(use-package! engine-mode
-  :straight (:host github :branch "main" :repo "hrs/engine-mode")
-  :config
-  (defengine amazon
-    "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
-  (defengine duckduckgo
-    "https://duckduckgo.com/?q=%s")
-  (defengine qwant
-    "https://www.qwant.com/?q=%s")
-  (defengine wikipedia
-    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"))
+(defengine amazon
+  "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s")
+(defengine qwant
+  "https://www.qwant.com/?q=%s")
+(defengine wikipedia
+  "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s")
 #+end_src
 
 ** w3m
