@@ -434,9 +434,9 @@ customizing emacs.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     ndwarshuis/org-ml
-:PACKAGE:  org-ml
-:LOCAL-REPO: org-ml
+:REPO:     "ndwarshuis/org-ml"
+:PACKAGE:  "org-ml"
+:LOCAL-REPO: "org-ml"
 :END:
 
 [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
@@ -804,6 +804,11 @@ This function is to help produce names that abide by hook naming conventions.
 
 **** adding hooks
 :PROPERTIES:
+:ID:       882bc5d2-a0e2-4ea7-b9d2-ab64b3407f82
+:END:
+
+***** internal helper
+:PROPERTIES:
 :ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
 :END:
 
@@ -811,9 +816,7 @@ Add a hook that follow naming conventions. When adding a hook, if it is a void
 function, change it to a hook.
 
 #+begin_src emacs-lisp
-(defun void-add-hook (var hook &optional depth local expire-fn)
-  "Alias HOOK to match Void naming conventions and add it to VAR.
-If EXPIRE-FN"
+(defun void--add-hook (var hook &optional depth local expire-fn)
   (let* ((new-hook (void-hook-name var hook))
          (hook-log (void-symbol-intern new-hook '@ 'log-on-debug)))
     (defalias new-hook hook)
@@ -826,6 +829,19 @@ If EXPIRE-FN"
     (when expire-fn
       (->> (void-expire-advice hook expire-fn t)
            (advice-add new-hook :around)))))
+#+end_src
+
+***** adding hooks
+:PROPERTIES:
+:ID:       10dcca8f-7dd0-45da-a413-43608c098b10
+:END:
+
+#+begin_src emacs-lisp
+(defun void-add-hook (vars hooks &optional depth local expire-fn)
+  "Alias HOOK to match Void naming conventions and add it to VAR."
+  (dolist (var (-list vars))
+    (dolist (hook (-list hooks))
+      (void--add-hook var hook depth local expire-fn))))
 #+end_src
 
 **** defhook!
@@ -2278,7 +2294,22 @@ Some command line options aren't necessary.
   (setq ns-pop-up-frames nil))
 #+end_src
 
-***** exec path from shell
+***** exec-path-from-shell
+:PROPERTIES:
+:ID:       c5d9c64c-469e-4452-b3d1-07886a2878ff
+:END:
+
+****** init
+:PROPERTIES:
+:ID:       c89020a2-14e1-4c67-8a23-d2e21567c314
+:END:
+
+****** settings
+:PROPERTIES:
+:ID:       f8000314-ed70-4e8e-a42f-ab4e7fcc82ac
+:END:
+
+****** exec path from shell
 :PROPERTIES:
 :ID: 0cc48982-6a3e-40ee-9e95-3e21dae157b5
 :END:
@@ -2303,6 +2334,11 @@ Emacs picks up. [[https://github.com/purcell/exec-path-from-shell][exec-path-fro
     '("LC_CTYPE" "LC_ALL" "LANG"))
   (exec-path-from-shell-initialize))
 #+end_src
+
+****** initialize
+:PROPERTIES:
+:ID:       57d71ae1-abbd-4744-8269-5f53c2d2c2f8
+:END:
 
 ***** ns-auto-titlebar
 :PROPERTIES:
@@ -2995,10 +3031,13 @@ instead of windows).
 ** ace-window
 :PROPERTIES:
 :ID:       ff248a3a-5dbd-4a3d-b27d-1ac5e2b0215a
-:REPO:     abo-abo/ace-window
+:REPO:     "abo-abo/ace-window"
 :HOST:     github
 :TYPE:     git
 :COMMIT:   c7cb315
+:FLAVOR:   melpa
+:PACKAGE:  "ace-window"
+:LOCAL-REPO: "ace-window"
 :END:
 
 [[https://github.com/abo-abo/ace-window][ace-window]] uses avy to navigate windows in cases when there are many. There is
@@ -3031,14 +3070,19 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 :END:
 
 #+begin_src emacs-lisp
-:bind ([remap other-window] . ace-window)
+(general-def [remap other-window] #'ace-window)
 #+end_src
 
-** workgroups
+** workgroups2
 :PROPERTIES:
 :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
 :HOST:     github
 :TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("src/*.el" "workgroups2-pkg.el")
+:REPO:     "pashinin/workgroups2"
+:PACKAGE:  "workgroups2"
+:LOCAL-REPO: "workgroups2"
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
@@ -3110,6 +3154,7 @@ that it's not a lisp object; implying that it is not.
 ** window divider
 :PROPERTIES:
 :ID: 0bcebb71-f730-427f-9919-1538bd63456c
+:TYPE:     built-in
 :END:
 
 Emacs can add border to windows using a mode called [[helpfn:window-divider-mode][window-divider-mode]].
@@ -3118,25 +3163,37 @@ screen. By default the border between these windows is very thin, so it can be
 hard to distinguish windows sometimes. The point of adding borders to windows is
 to distinguish them easily from one another.
 
-*** window dividers
-:PROPERTIES:
-:ID: 849718ae-9d4a-43ab-b113-584aefa87c5b
-:END:
-
 Window dividers are useful in general so I don't get confused about when one
 window ends and another begins (see [[helpfn:window-divider-mode][window-divider-mode]]). When using [[I like emacs][exwm]] it
 makes emacs feel like a window manager with gaps.
 
+*** init
+:PROPERTIES:
+:ID:       66ada8e3-2fce-428b-a096-e3495e573414
+:END:
+
 #+begin_src emacs-lisp
-(use-feature! frame
-  :hook (window-setup . window-divider-mode)
-  :custom
-  (window-divider-default-places  t)
-  (window-divider-default-bottom-width 4)
-  (window-divider-default-right-width  4)
-  :config
-  (set-face-foreground 'window-divider "black")
-  (blink-cursor-mode -1))
+(void-add-hook 'window-setup-hook #'window-divider-mode)
+#+end_src
+
+*** custom variables
+:PROPERTIES:
+:ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
+:END:
+
+#+begin_src emacs-lisp
+(window-divider-default-places  t)
+(window-divider-default-bottom-width 4)
+(window-divider-default-right-width  4)
+#+end_src
+
+*** color
+:PROPERTIES:
+:ID:       61157149-dcce-40a9-8bfa-76a6af24838a
+:END:
+
+#+begin_src emacs-lisp
+(set-face-foreground 'window-divider "black")
 #+end_src
 
 *** update on theme change
@@ -3202,9 +3259,9 @@ Somtimes I might want to adjust this.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     emacsorphanage/transpose-frame
-:PACKAGE:  transpose-frame
-:LOCAL-REPO: transpose-frame
+:REPO:     "emacsorphanage/transpose-frame"
+:PACKAGE:  "transpose-frame"
+:LOCAL-REPO: "transpose-frame"
 :END:
 
 https://www.emacswiki.org/emacs/TransposeFrame
@@ -3532,10 +3589,10 @@ Emacs's text editing capabilities on it.
 :ID:       07b13cf0-49ca-4463-9d5b-9eb032585e96
 :TYPE:     git
 :HOST:     github
-:REPO:     emacs-straight/buffer-expose
-:FILES:    (* (:exclude .git))
-:PACKAGE:  buffer-expose
-:LOCAL-REPO: buffer-expose
+:REPO:     "emacs-straight/buffer-expose"
+:FILES:    ("*" (:exclude ".git"))
+:PACKAGE:  "buffer-expose"
+:LOCAL-REPO: "buffer-expose"
 :END:
 
 *** TODO commands
@@ -3606,11 +3663,11 @@ of things that we actually want at this moment.
 :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (yasnippet.el snippets yasnippet-pkg.el)
+:FILES:    ("yasnippet.el" "snippets" "yasnippet-pkg.el")
 :HOST:     github
-:REPO:     joaotavora/yasnippet
-:PACKAGE:  yasnippet
-:LOCAL-REPO: yasnippet
+:REPO:     "joaotavora/yasnippet"
+:PACKAGE:  "yasnippet"
+:LOCAL-REPO: "yasnippet"
 :END:
 
 **** init
@@ -3673,24 +3730,20 @@ of things that we actually want at this moment.
 :ID:       006e4191-a61f-4886-86db-024180a5fb1c
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (*.el snippets .nosearch yasnippet-snippets-pkg.el)
+:FILES:    ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el")
 :HOST:     github
-:REPO:     AndreaCrotti/yasnippet-snippets
-:PACKAGE:  yasnippet-snippets
-:LOCAL-REPO: yasnippet-snippets
+:REPO:     "AndreaCrotti/yasnippet-snippets"
+:PACKAGE:  "yasnippet-snippets"
+:LOCAL-REPO: "yasnippet-snippets"
 :END:
 
-**** snippet collection
+**** init
 :PROPERTIES:
-:ID:       ceb066ac-2242-492d-9609-9e3b879b10b7
+:ID:       4a32b503-c39d-4030-8c6e-d391ef101772
 :END:
-
-=yasnippet-snippets= is a collection of snippets.
 
 #+begin_src emacs-lisp
-(use-package! yasnippet-snippets
-  :after yasnippet
-  :init
+(after! yasnippet
   (awhen (-first (-partial #'s-contains-p "yasnippet-snippets") load-path)
     (push it yas-snippet-dirs)))
 #+end_src
@@ -3701,24 +3754,35 @@ of things that we actually want at this moment.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     raxod502/selectrum
-:PACKAGE:  selectrum
-:LOCAL-REPO: selectrum
+:REPO:     "raxod502/selectrum"
+:PACKAGE:  "selectrum"
+:LOCAL-REPO: "selectrum"
 :END:
 
-*** selectrum
+*** init
 :PROPERTIES:
-:ID:       962a027b-ed50-4bf8-8def-a00a199517bf
+:ID:       6e670980-7794-4505-a285-184416a5b377
+:END:
+
+**** hook
+:PROPERTIES:
+:ID:       c12c2919-adf7-44ad-8175-b92bb8905f74
 :END:
 
 #+begin_src emacs-lisp
-(use-package! selectrum
-  :hook emacs-startup-hook
-  :setq
-  (selectrum-fix-minibuffer-height . t)
-  (selectrum-should-sort-p . t)
-  (selectrum-count-style . nil)
-  (selectrum-num-candidates-displayed . 15))
+(void-add-hook 'emacs-startup-hook #'selectrum-mode)
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       29cf793e-2b4c-4e33-822c-cc8b9ab2f713
+:END:
+
+#+begin_src emacs-lisp
+(selectrum-fix-minibuffer-height . t)
+(selectrum-should-sort-p . t)
+(selectrum-count-style . nil)
+(selectrum-num-candidates-displayed . 15)
 #+end_src
 
 *** ensure certain functions dont sort
@@ -3735,6 +3799,18 @@ of things that we actually want at this moment.
 #+end_src
 
 *** prescient
+:PROPERTIES:
+:ID:       4445c814-9899-4d54-affe-0cee38642690
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("prescient.el" "prescient-pkg.el")
+:HOST:     github
+:REPO:     "raxod502/prescient.el"
+:PACKAGE:  "prescient"
+:LOCAL-REPO: "prescient.el"
+:END:
+
+**** prescient
 :PROPERTIES:
 :ID:       e8c77d62-9c28-4193-9c60-f1148b55f96e
 :END:
@@ -3761,6 +3837,12 @@ of things that we actually want at this moment.
 *** orderless
 :PROPERTIES:
 :ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "oantolin/orderless"
+:PACKAGE:  "orderless"
+:LOCAL-REPO: "orderless"
 :END:
 
 **** orderless
@@ -3797,9 +3879,9 @@ Orderless will do this."
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     company-mode/company-mode
-:PACKAGE:  company
-:LOCAL-REPO: company-mode
+:REPO:     "company-mode/company-mode"
+:PACKAGE:  "company"
+:LOCAL-REPO: "company-mode"
 :END:
 
 *** company
@@ -4248,10 +4330,12 @@ available to us only a web search away.
 :PROPERTIES:
 :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
 :HOST:     github
-:BRANCH:   main
-:REPO:     hrs/engine-mode
+:BRANCH:   "main"
+:REPO:     "hrs/engine-mode"
 :COMMIT:   e0910f1
 :TYPE:     git
+:PACKAGE:  "engine-mode"
+:LOCAL-REPO: "engine-mode"
 :END:
 
 *** different engines
@@ -4278,11 +4362,11 @@ functions. Engine mode seems to only be useful for binding keys.
 :ID: e5e13423-bc70-49b0-969e-94897c798d54
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (:defaults icons (:exclude octet.el mew-w3m.el w3m-xmas.el) w3m-pkg.el)
+:FILES:    (:defaults "icons" (:exclude "octet.el" "mew-w3m.el" "w3m-xmas.el") "w3m-pkg.el")
 :HOST:     github
-:REPO:     emacs-w3m/emacs-w3m
-:PACKAGE:  w3m
-:LOCAL-REPO: emacs-w3m
+:REPO:     "emacs-w3m/emacs-w3m"
+:PACKAGE:  "w3m"
+:LOCAL-REPO: "emacs-w3m"
 :END:
 
 [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
@@ -4334,6 +4418,11 @@ information such as music, videos, images, and gifs.
 
 *** ytel
 :PROPERTIES:
+:ID:       6bf0b85c-212d-406d-b4b5-7720ccc274ba
+:END:
+
+**** ytel
+:PROPERTIES:
 :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
 :END:
 
@@ -4341,13 +4430,14 @@ information such as music, videos, images, and gifs.
 YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
-(use-package! ytel
-  :system-ensure (youtube-dl curl)
-  :commands ytel
-  :setq (ytel-invidious-api-url . "https://invidious.snopyta.org"))
+(void-autoload #'ytel 'ytel)
+
+(setq ytel-invidious-api-url "https://invidious.snopyta.org")
+
+(void-system-ensure 'ytel '(youtube-dl curl))
 #+end_src
 
-*** watch video
+**** watch video
 :PROPERTIES:
 :ID:       547c6d1d-c8a5-42b3-8000-029228923304
 :END:
@@ -4365,7 +4455,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
   (message "Starting streaming..."))
 #+end_src
 
-*** download music
+**** download music
 :PROPERTIES:
 :ID:       7c28f457-3a63-45a7-87bc-dc5232a5a5cd
 :END:
@@ -4388,13 +4478,28 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (*.el lisp/*.el doc/emms.texinfo emms-pkg.el)
-:REPO:     https://git.savannah.gnu.org/git/emms.git
-:PACKAGE:  emms
-:LOCAL-REPO: emms
+:FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
+:REPO:     "https://git.savannah.gnu.org/git/emms.git"
+:PACKAGE:  "emms"
+:LOCAL-REPO: "emms"
 :END:
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
+
+*** settings
+:PROPERTIES:
+:ID:       3861c03d-b08e-463b-a28e-e88c191993fc
+:END:
+
+#+begin_src emacs-lisp
+(setq emms-directory (concat VOID-DATA-DIR "emms/"))
+(setq emms-seek-seconds 5)
+(setq emms-player-list '(emms-player-mpv))
+(setq emms-source-file-default-directory VOID-MUSIC-DIR)
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
+(setq mpc-host "127.0.0.1:6600")
+#+end_src
 
 *** emms
 :PROPERTIES:
@@ -4402,18 +4507,19 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
+(defun void-autoload-commands (package commands)
+  "Autoload COMMANDS for package."
+  (--each commands
+    (unless (foundp it)
+      (autoload it (symbol-name package)))))
+
+(defun void-ensure-system-package-on-load (package &rest system-packages)
+  )
+
 (use-package! emms
   :system-ensure mpv
   :commands (emms emms-play-directory emms-play-file)
-  :trigger emms-player-mpv
-  :setq
-  (emms-directory . (concat VOID-DATA-DIR "emms/"))
-  (emms-seek-seconds . 5)
-  (emms-player-list . '(emms-player-mpv))
-  (emms-source-file-default-directory . VOID-MUSIC-DIR)
-  (emms-source-file-directory-tree-function . 'emms-source-file-directory-tree-find)
-  (emms-playlist-buffer-name . "*EMMS-PLAYLIST*")
-  (mpc-host . "127.0.0.1:6600"))
+  :trigger emms-player-mpv)
 #+end_src
 
 *** quitting
@@ -4422,17 +4528,16 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
-(after! emms
-  (defhook! quit-emms (kill-emacs-hook)
-    "Shut down EMMS."
-    (when emms-player-playing-p (emms-pause))
-    (emms-stop)
-    ;; kill any existing mpd processes
-    (when (member 'emms-player-mpd emms-player-list)
-      (call-process "killall" nil nil nil "mpd"))))
+(defhook! quit-emms (kill-emacs-hook)
+  "Shut down EMMS."
+  (when emms-player-playing-p (emms-pause))
+  (emms-stop)
+  ;; kill any existing mpd processes
+  (when (member 'emms-player-mpd emms-player-list)
+    (call-process "killall" nil nil nil "mpd")))
 #+end_src
 
-** screenshot
+** escr
 :PROPERTIES:
 :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
 :END:
@@ -4447,6 +4552,22 @@ they all have their downsides. Screenshot's main command, =screenshot=, assumes
 that you want. =escr= doesn't provide prompt you for the filename or provide any
 option that would prompt you for the file name.
 
+*** init
+:PROPERTIES:
+:ID:       a6a8610e-84b5-471d-8f07-2ad2c67c2998
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       4ec97ac8-cad6-4536-be21-6ae2ee1655f3
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 *** escr
 :PROPERTIES:
 :ID:       f71ee7f4-752d-4d90-9cf9-874cb1a1af11
@@ -4454,7 +4575,6 @@ option that would prompt you for the file name.
 
 #+begin_src emacs-lisp
 (use-package! escr
-  :straight (:host github :repo "atykhonov/escr")
   :commands (escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
   :setq
   (escr-screenshot-quality . 10)
@@ -4597,6 +4717,17 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 
 ** rainbow-delimiters
 :PROPERTIES:
+:ID:       5b58bb1c-5d3c-4f04-b4fb-c55f1588839e
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "Fanael/rainbow-delimiters"
+:PACKAGE:  "rainbow-delimiters"
+:LOCAL-REPO: "rainbow-delimiters"
+:END:
+
+*** init
+:PROPERTIES:
 :ID: c771a943-593f-4119-8754-9d7e5da4466b
 :END:
 
@@ -4604,9 +4735,8 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 great idea! It makes it really easy to see which parentheses go together.
 
 #+begin_src emacs-lisp
-(use-package! rainbow-delimiters
-  :hook (prog-mode reb-mode-hook)
-  :setq (rainbow-delimiters-max-face-count . 9))
+(void-add-hook '(prog-mode-hook reb-mode-hook) #'rainbow-delimiters-mode)
+(setq rainbow-delimiters-max-face-count 9)
 #+end_src
 
 ** spacing and indentation
@@ -4620,9 +4750,9 @@ great idea! It makes it really easy to see which parentheses go together.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     Malabarba/aggressive-indent-mode
-:PACKAGE:  aggressive-indent
-:LOCAL-REPO: aggressive-indent-mode
+:REPO:     "Malabarba/aggressive-indent-mode"
+:PACKAGE:  "aggressive-indent"
+:LOCAL-REPO: "aggressive-indent-mode"
 :END:
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
@@ -4649,9 +4779,19 @@ it. It's pretty smart and very convenient.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     lewang/ws-butler
-:PACKAGE:  ws-butler
-:LOCAL-REPO: ws-butler
+:REPO:     "lewang/ws-butler"
+:PACKAGE:  "ws-butler"
+:LOCAL-REPO: "ws-butler"
+:END:
+
+**** init
+:PROPERTIES:
+:ID:       fc23d1b2-c174-4159-bb3f-e63895fb100f
+:END:
+
+**** exempt modes
+:PROPERTIES:
+:ID:       eada4f60-aad8-471f-8f5a-43fed5d32295
 :END:
 
 **** ws-bulter
@@ -4691,14 +4831,14 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     Fuco1/smartparens
-:PACKAGE:  smartparens
-:LOCAL-REPO: smartparens
+:REPO:     "Fuco1/smartparens"
+:PACKAGE:  "smartparens"
+:LOCAL-REPO: "smartparens"
 :END:
 
-**** hooks
+**** init
 :PROPERTIES:
-:ID:       5ed7b555-0d58-4925-b23e-bceec2092f24
+:ID:       e26f4c55-9585-4544-bed6-9733d50823e7
 :END:
 
 #+begin_src emacs-lisp
@@ -4765,9 +4905,9 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     noctuid/lispyville
-:PACKAGE:  lispyville
-:LOCAL-REPO: lispyville
+:REPO:     "noctuid/lispyville"
+:PACKAGE:  "lispyville"
+:LOCAL-REPO: "lispyville"
 :END:
 
 [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
@@ -4879,11 +5019,11 @@ Sometimes =evil-normal-state= enters visual state.
 :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (:defaults lispy-clojure.clj lispy-python.py lispy-pkg.el)
+:FILES:    (:defaults "lispy-clojure.clj" "lispy-python.py" "lispy-pkg.el")
 :HOST:     github
-:REPO:     abo-abo/lispy
-:PACKAGE:  lispy
-:LOCAL-REPO: lispy
+:REPO:     "abo-abo/lispy"
+:PACKAGE:  "lispy"
+:LOCAL-REPO: "lispy"
 :END:
 
 For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
@@ -4939,9 +5079,9 @@ very useful to me.
 :ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
 :TYPE:     git
 :HOST:     github
-:REPO:     emacsmirror/spell-number
-:PACKAGE:  spell-number
-:LOCAL-REPO: spell-number
+:REPO:     "emacsmirror/spell-number"
+:PACKAGE:  "spell-number"
+:LOCAL-REPO: "spell-number"
 :END:
 
 #+begin_src emacs-lisp
@@ -4959,9 +5099,9 @@ very useful to me.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     davidshepherd7/aggressive-fill-paragraph-mode
-:PACKAGE:  aggressive-fill-paragraph
-:LOCAL-REPO: aggressive-fill-paragraph-mode
+:REPO:     "davidshepherd7/aggressive-fill-paragraph-mode"
+:PACKAGE:  "aggressive-fill-paragraph"
+:LOCAL-REPO: "aggressive-fill-paragraph-mode"
 :END:
 
 #+begin_src emacs-lisp
@@ -4969,6 +5109,11 @@ very useful to me.
 #+end_src
 
 *** spell check
+:PROPERTIES:
+:ID:       864ab561-f3f6-4fdf-8b85-009a90f1b1f5
+:END:
+
+**** spell check
 :PROPERTIES:
 :ID: fc68d949-246f-43bf-85c2-7fbb947af7e9
 :END:
@@ -4979,6 +5124,11 @@ very useful to me.
   :commands spell-fu-mode
   :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
 #+end_src
+
+**** directory
+:PROPERTIES:
+:ID:       f3c7b015-c3c4-4898-9f64-834435cdae2f
+:END:
 
 *** autocapitalize
 :PROPERTIES:
@@ -4993,19 +5143,23 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
   :setq (auto-capitalize-words . '("I" "English")))
 #+end_src
 
-*** thesaurus
+*** powerthesaurus
 :PROPERTIES:
 :ID: 5578aaf2-796f-4006-af60-de87b215120a
 :END:
 
 #+begin_src emacs-lisp
-(use-package! powerthesaurus
-  :commands
-  powerthesaurus-lookup-word-at-point
-  power-thesaurus-lookup-word-dwim)
+(void-autoload 'powerthesaurus
+               (list #'powerthesaurus-lookup-word-at-point
+                     #'power-thesaurus-lookup-word-dwim))
 #+end_src
 
-*** dictionary
+*** define-it
+:PROPERTIES:
+:ID:       97a0e6f4-3f38-495e-9dd9-3b518676de2a
+:END:
+
+**** dictionary
 :PROPERTIES:
 :ID: 9ddc66c9-87be-43d1-8366-1bdb40718892
 :END:
@@ -5049,11 +5203,11 @@ like that concern N number of things, where N could be 1 or more things.
 :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (:defaults doc/build/texinfo/evil.texi (:exclude evil-test-helpers.el) evil-pkg.el)
+:FILES:    (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el")
 :HOST:     github
-:REPO:     emacs-evil/evil
-:PACKAGE:  evil
-:LOCAL-REPO: evil
+:REPO:     "emacs-evil/evil"
+:PACKAGE:  "evil"
+:LOCAL-REPO: "evil"
 :END:
 
 [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
@@ -5534,9 +5688,9 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     bling/evil-visualstar
-:PACKAGE:  evil-visualstar
-:LOCAL-REPO: evil-visualstar
+:REPO:     "bling/evil-visualstar"
+:PACKAGE:  "evil-visualstar"
+:LOCAL-REPO: "evil-visualstar"
 :END:
 
 *** evil-visualstar
@@ -5562,9 +5716,9 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     magnars/expand-region.el
-:PACKAGE:  expand-region
-:LOCAL-REPO: expand-region.el
+:REPO:     "magnars/expand-region.el"
+:PACKAGE:  "expand-region"
+:LOCAL-REPO: "expand-region.el"
 :END:
 
 *** expand-region
@@ -5599,9 +5753,9 @@ larger text objects. It's saves me keystrokes.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     abo-abo/avy
-:PACKAGE:  avy
-:LOCAL-REPO: avy
+:REPO:     "abo-abo/avy"
+:PACKAGE:  "avy"
+:LOCAL-REPO: "avy"
 :END:
 
 [[https://github.com/abo-abo/avy][Avy]]
@@ -5691,6 +5845,12 @@ larger text objects. It's saves me keystrokes.
 *** undo-fu
 :PROPERTIES:
 :ID:       a808c260-399c-4cf7-82ae-48a433474e25
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "ideasman42/emacs-undo-fu"
+:PACKAGE:  "undo-fu"
+:LOCAL-REPO: "emacs-undo-fu"
 :END:
 
 **** load before
@@ -5732,6 +5892,11 @@ larger text objects. It's saves me keystrokes.
 (global-undo-tree-mode -1)
 #+end_src
 
+*** undo-fu-session
+:PROPERTIES:
+:ID:       12a36a4e-65df-4dd3-be35-d84dd76651a4
+:END:
+
 * Utility
 :PROPERTIES:
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
@@ -5743,9 +5908,9 @@ larger text objects. It's saves me keystrokes.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     muffinmad/emacs-find-file-rg
-:PACKAGE:  find-file-rg
-:LOCAL-REPO: emacs-find-file-rg
+:REPO:     "muffinmad/emacs-find-file-rg"
+:PACKAGE:  "find-file-rg"
+:LOCAL-REPO: "emacs-find-file-rg"
 :END:
 
 *** find-file-rg
@@ -5773,7 +5938,47 @@ portable and customizable as emacs itself. It can run elisp functions as
 commands. There's a good article about it in [[https://masteringemacs.org/article/complete-guide-mastering-eshell][mastering-emacs]]. Other articles I
 have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell post]], [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][Howard Abram's Post]].
 
-*** bootstrap
+*** init
+:PROPERTIES:
+:ID:       f91b3d13-3470-4108-aae3-2b8b4e5f5edb
+:END:
+
+**** idle require
+:PROPERTIES:
+:ID:       9ff94547-b138-41dc-836f-71fc37171ec3
+:END:
+
+#+begin_src emacs-lisp
+(-each '(em-alias em-banner em-basic em-cmpl
+         em-dirs em-glob em-hist em-ls em-prompt
+         em-script em-term em-unix)
+  #'idle-require)
+#+end_src
+
+**** popup
+:PROPERTIES:
+:ID:       bd580e0c-1736-4855-8cfb-e4e365ecd8d3
+:END:
+
+#+begin_src emacs-lisp
+:popup ("\\*eshell"
+        (display-buffer-at-bottom)
+        (window-height . 0.5)
+        (side . bottom)
+        (slot . 2))
+#+end_src
+
+**** directories
+:PROPERTIES:
+:ID:       4923faac-1630-4389-8f2c-d9e75c88eecf
+:END:
+
+#+begin_src emacs-lisp
+(eshell-directory-name . (concat VOID-DATA-DIR "eshell/"))
+(eshell-history-file-name . (concat eshell-directory-name "history"))
+#+end_src
+
+**** bootstrap
 :PROPERTIES:
 :ID: 8ed5b69c-be1f-4181-bd01-88fc33b148d6
 :END:
@@ -5782,17 +5987,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 (use-feature! eshell
   :commands eshell
   :idle-require
-  em-alias em-banner em-basic em-cmpl
-  em-dirs em-glob em-hist em-ls em-prompt
-  em-script em-term em-unix
-  :popup ("\\*eshell"
-          (display-buffer-at-bottom)
-          (window-height . 0.5)
-          (side . bottom)
-          (slot . 2))
   :setq
-  (eshell-directory-name . (concat VOID-DATA-DIR "eshell/"))
-  (eshell-history-file-name . (concat eshell-directory-name "history"))
   (eshell-prefer-lisp-functions . nil)
   (eshell-scroll-to-bottom-on-input . 'all)
   (eshell-scroll-to-bottom-on-output . 'all)
@@ -5867,6 +6062,17 @@ This replaces the default popup window at the bottom of eshell. By using the
 :END:
 
 **** eshell-z
+:PROPERTIES:
+:ID:       5a90b4ea-a3ee-42cf-825f-d1d093133b58
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "xuchunyang/eshell-z"
+:PACKAGE:  "eshell-z"
+:LOCAL-REPO: "eshell-z"
+:END:
+
+***** eshell-z
 :PROPERTIES:
 :ID: 497798a0-7b62-4779-bf15-f67500528f03
 :END:
@@ -6041,63 +6247,19 @@ Each element of the list is an abbreviated.")
 (add-hook 'eshell-mode-hook #'hide-mode-line-mode)
 #+end_src
 
-*** hooks
-:PROPERTIES:
-:ID: bfe31d56-9fae-4841-b078-d1f276f29611
-:END:
-
-**** aliases
-:PROPERTIES:
-:ID: 4f53fbac-9d9f-4e58-8e3a-0baad56d2ae9
-:END:
-
-***** setup
-:PROPERTIES:
-:ID: 1a346816-85a1-402e-81ac-c0dd0ef6dfc7
-:END:
-
-They are meant to emulate useful shell utilities, like fasd and bd.
-Note that you may overwrite these in your [[helpvar:eshell-aliases-file][eshell-aliases-file]]. This is
-here to provide an alternative, elisp-centric way to define your
-aliases.
-
-#+begin_src emacs-lisp
-(defvar eshell:aliases
-  '(("q"  "exit")
-    ("ff"  "find-file $1")
-    ("rg" "rg --color=always $*")
-    ("ag" "ag --color=always $*")
-    ("l"  "ls -lh")
-    ("ll" "ls -lah"))
-  "An alist of default eshell aliases. ")
-#+end_src
-
-***** initialize
-:PROPERTIES:
-:ID: 08af337e-61f3-4dce-bbf8-bab10c8d9793
-:END:
-
-#+begin_src emacs-lisp
-(defvar eshell--default:aliases nil)
-
-(defhook! enable-aliases (eshell-alias-load-hook)
-  "Initialize eshell aliases."
-  (setq eshell--default:aliases eshell-command-aliases-list
-        eshell-command-aliases-list
-        (append eshell-command-aliases-list
-                eshell:aliases)))
-
-(void-add-advice #'eshell-write-aliases-list :override #'ignore)
-#+end_src
-
 *** shrink-path
 :PROPERTIES:
 :ID: eef8ea28-4de2-44ab-a09d-26f58c0a75ac
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "bennya/shrink-path.el"
+:PACKAGE:  "shrink-path"
+:LOCAL-REPO: "shrink-path.el"
 :END:
 
 #+begin_src emacs-lisp
-(use-package! shrink-path
-  :commands shrink-path-file)
+(void-autoload #'shrink-path-file)
 #+end_src
 
 ** command-log-mode
@@ -6106,9 +6268,14 @@ aliases.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     lewang/command-log-mode
-:PACKAGE:  command-log-mode
-:LOCAL-REPO: command-log-mode
+:REPO:     "lewang/command-log-mode"
+:PACKAGE:  "command-log-mode"
+:LOCAL-REPO: "command-log-mode"
+:END:
+
+*** init
+:PROPERTIES:
+:ID:       4bb025cf-5933-46ed-abc6-7f1d40a7faa5
 :END:
 
 *** command-log-mode
@@ -6131,6 +6298,7 @@ you on a side window.
 ** recentf
 :PROPERTIES:
 :ID: f26bedb3-a172-4543-afd0-4c47f5872d15
+:TYPE:     built-in
 :END:
 
 =recentf= is a built-in program that tracks the files you've opened recently
@@ -6138,6 +6306,28 @@ persistently. This is a great idea because these are the files you'll likely
 revisit. In practice, I look at this list of files in addition to the buffers I
 already have open using a [[f26bedb3-a172-4543-afd0-4c47f5872d15][completion-framework]]. Because of this I rarely
 have to set out to look for a file with =dired=.
+
+*** init
+:PROPERTIES:
+:ID:       3e25c6a3-6a0f-47a4-a63f-ceca6476cc59
+:END:
+
+#+begin_src emacs-lisp
+(-each '(easymenu tree-widget timer)
+  #'idle-require)
+
+(before-call )
+#+end_src
+
+*** settings
+:PROPERTIES:
+:ID:       3b9ab738-de00-40d4-93be-b2c84bfaac5c
+:END:
+
+*** cleanup after save
+:PROPERTIES:
+:ID:       8b682202-b948-4e6a-ac64-089726f7d84e
+:END:
 
 *** recentf
 :PROPERTIES:
@@ -6180,6 +6370,28 @@ have to set out to look for a file with =dired=.
 
 ** saveplace
 :PROPERTIES:
+:ID:       41cb3357-9b4b-4205-987d-ff72f9a35df3
+:TYPE:     built-in
+:END:
+
+*** init
+:PROPERTIES:
+:ID:       196ad7bd-f1eb-4de5-8a51-b5bef062fff9
+:END:
+
+*** recenter cursor
+:PROPERTIES:
+:ID:       dda57b64-b645-4eda-be54-9dda4af35404
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! recenter-on-load (:after-while save-place-find-file-hook)
+  "Recenter on cursor when loading a saved place."
+  (when buffer-file-name (ignore-errors (recenter))))
+#+end_src
+
+*** saveplace
+:PROPERTIES:
 :ID: 6da42724-3137-4d70-9aed-9a978357679f
 :END:
 
@@ -6194,13 +6406,25 @@ again, you are taken to the location you left off. This is very convenient.
   (save-place-file . (concat VOID-DATA-DIR "saveplace"))
   (save-place-limit . nil)
   :config
-  (save-place-mode)
-  (defadvice! recenter-on-load (:after-while save-place-find-file-hook)
-    "Recenter on cursor when loading a saved place."
-    (when buffer-file-name (ignore-errors (recenter)))))
+  (save-place-mode))
 #+end_src
 
 ** savehist
+:PROPERTIES:
+:ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
+:END:
+
+*** init
+:PROPERTIES:
+:ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
+:END:
+
+#+begin_src emacs-lisp
+(idle-require 'custom)
+(void-add-hook 'emacs-startup-hook #'savehist-mode)
+#+end_src
+
+*** savehist
 :PROPERTIES:
 :ID: 23867595-32fd-4270-97bd-3101cc681f00
 :END:
@@ -6214,17 +6438,25 @@ again, you are taken to the location you left off. This is very convenient.
   (savehist-autosave-interval . nil)
   (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
   (savehist-file . (concat VOID-DATA-DIR "savehist")))
+#+end_src
 
+*** unpropertize kill ring
+:PROPERTIES:
+:ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
+:END:
+
+#+begin_src emacs-lisp
 (defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
   "Remove text properties from `kill-ring'."
   (setq kill-ring
-        (mapcar (lambda (it) (when (stringp it) (substring-no-properties it)))
-                (-non-nil kill-ring))))
+        (--map (when (stringp it) (substring-no-properties it))
+               (-non-nil kill-ring))))
 #+end_src
 
 ** bookmarks
 :PROPERTIES:
 :ID: e1a569f8-d27a-4e0c-924a-3b123c62b6a2
+:TYPE:     built-in
 :END:
 
 [[info:emacs#Bookmarks][Bookmarks]] persistently store file locations. I use [[https://github.com/emacsmirror/bookmark-plus][bookmark-plus]] an increadibly
@@ -6246,9 +6478,9 @@ read this [[https://emacs.stackexchange.com/questions/51853/retracing-steps-with
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     skeeto/elfeed
-:PACKAGE:  elfeed
-:LOCAL-REPO: elfeed
+:REPO:     "skeeto/elfeed"
+:PACKAGE:  "elfeed"
+:LOCAL-REPO: "elfeed"
 :END:
 
 *** elfeed
@@ -6309,6 +6541,7 @@ in time to see older posts.
 *** dired
 :PROPERTIES:
 :ID: 4021c260-0529-4a65-a3c4-4651cc33c6ae
+:TYPE:     built-in
 :END:
 
 **** dired
@@ -6374,6 +6607,12 @@ kill it.
 *** ranger
 :PROPERTIES:
 :ID: 7504cab0-ddd9-4069-b6bb-9a5f3161cace
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "ralesi/ranger.el"
+:PACKAGE:  "ranger"
+:LOCAL-REPO: "ranger.el"
 :END:
 
 [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
@@ -6504,7 +6743,7 @@ As it's name suggests [[https://github.com/iqbalansari/restart-emacs][restart-em
 that restarts emacs. I haven't tested this in EXWM mode.
 
 #+begin_src emacs-lisp
-(use-package! restart-emacs :commands restart-emacs)
+(void-autoload 'restart-emacs restart-emacs)
 #+end_src
 
 ** version control
@@ -6512,9 +6751,15 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :ID: d99a378c-449f-4a0d-9b88-dd77d5a41bb1
 :END:
 
-*** auto-commit
+*** git-auto-commit-mode
 :PROPERTIES:
-:ID:       36b71eb7-b71d-47a0-ad0a-5d62825fffa3
+:ID:       00a518e9-56ae-4c0b-b2cd-518fb4c5d201
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "ryuslash/git-auto-commit-mode"
+:PACKAGE:  "git-auto-commit-mode"
+:LOCAL-REPO: "git-auto-commit-mode"
 :END:
 
 To avoid losing information. You should commit often in git--like every 10
@@ -6522,15 +6767,46 @@ seconds or so. Obviously doing this manually on the command line (or even on
 [[id:d6088ed3-417a-44e8-822b-ce4743f497d0][magit]]) every time is a pain. This package commits your changes every time
 you save your file--which for me is all the time because I use [[id:bd455e73-4035-49b9-bbdf-3d59d4906c97][super-save]].
 
+**** TODO ensure
+:PROPERTIES:
+:ID:       bb97e0f6-4381-4191-a20e-229ef544d539
+:END:
+
+#+begin_src emacs-lisp
+(void-system-ensure-for-package )
+#+end_src
+
+**** commands
+:PROPERTIES:
+:ID:       626a59e6-2426-4a75-ae3f-4e5a31a75014
+:END:
+
+**** settings
+:PROPERTIES:
+:ID:       8a46cee4-624c-4440-8b99-c6b34d356a6b
+:END:
+
+#+begin_src emacs-lisp
+(setq gac-automatically-push-p nil)
+(setq gac-ask-for-summary nil)
+(setq gac-default-message #'gac:commit-message)
+(setq gac-commit-additional-flag "-S")
+#+end_src
+
+**** toggle summary
+:PROPERTIES:
+:ID:       50641d0a-0908-4207-bcb9-8e7437e75159
+:END:
+
+**** auto-commit
+:PROPERTIES:
+:ID:       36b71eb7-b71d-47a0-ad0a-5d62825fffa3
+:END:
+
 #+begin_src emacs-lisp
 (use-package! git-auto-commit-mode
   :system-ensure git
-  :commands git-auto-commit-mode
-  :setq
-  (gac-automatically-push-p . nil)
-  (gac-ask-for-summary . nil)
-  (gac-default-message . #'gac:commit-message)
-  (gac-commit-additional-flag . "-S"))
+  :commands git-auto-commit-mode)
 #+end_src
 
 **** commit message
@@ -6563,6 +6839,13 @@ address later.
 *** magit
 :PROPERTIES:
 :ID:       d6088ed3-417a-44e8-822b-ce4743f497d0
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("lisp/magit" "lisp/magit*.el" "lisp/git-rebase.el" "Documentation/magit.texi" "Documentation/AUTHORS.md" "LICENSE" (:exclude "lisp/magit-libgit.el") "magit-pkg.el")
+:HOST:     github
+:REPO:     "magit/magit"
+:PACKAGE:  "magit"
+:LOCAL-REPO: "magit"
 :END:
 
 **** transient
@@ -6634,6 +6917,12 @@ address later.
 *** git-gutter
 :PROPERTIES:
 :ID: 96f0c876-533c-4b1a-a4c1-7b6c9bf58c03
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "emacsorphanage/git-gutter"
+:PACKAGE:  "git-gutter"
+:LOCAL-REPO: "git-gutter"
 :END:
 
 #+begin_src emacs-lisp
@@ -6656,14 +6945,33 @@ address later.
       (server-start))))
 #+end_src
 
+** autorevert
+:PROPERTIES:
+:ID:       6655c984-3528-4f02-b2ef-1899063ae434
+:END:
+
+*** init
+:PROPERTIES:
+:ID:       85fbb390-41b0-474b-b529-922c802b1384
+:END:
+
+#+begin_src emacs-lisp
+(void-load-on-call :after (list #'switch-to-buffer #'find-file))
+#+end_src
+
+*** maybe
+:PROPERTIES:
+:ID:       ea240e46-3980-4ea0-b94f-8496033eceaf
+:END:
+
 ** TODO autorevert                                                    :disabled:
 :PROPERTIES:
 :ID: 1d7c8bac-e523-4251-bb3c-b85f592fbfc3
+:TYPE:     built-in
 :END:
 
 #+begin_src emacs-lisp
 (use-feature! autorevert
-  :after-call switch-to-buffer find-file
   :setq
   (auto-revert-verbose . t)
   (auto-revert-use-notify . nil)
@@ -6711,6 +7019,11 @@ address later.
 
 **** password-store
 :PROPERTIES:
+:ID:       52693bb0-ce70-4203-aafb-d459d8e047cb
+:END:
+
+***** password-store
+:PROPERTIES:
 :ID:       8dd647c8-ebda-47e1-a8ba-0544c1b75d23
 :END:
 
@@ -6719,7 +7032,7 @@ address later.
   :ensure pass)
 #+end_src
 
-**** get password
+***** get password
 :PROPERTIES:
 :ID: 52d9423c-32fb-4538-9e69-537e458b52d5
 :END:
@@ -6781,9 +7094,9 @@ I do not like dealing with the command line. I want real elisp code please.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     kanru/uuidgen-el
-:PACKAGE:  uuidgen
-:LOCAL-REPO: uuidgen-el
+:REPO:     "kanru/uuidgen-el"
+:PACKAGE:  "uuidgen"
+:LOCAL-REPO: "uuidgen-el"
 :END:
 
 ** xr
@@ -6791,10 +7104,10 @@ I do not like dealing with the command line. I want real elisp code please.
 :ID: 75c56163-9ce1-4726-969a-350fcc56395f
 :TYPE:     git
 :HOST:     github
-:REPO:     emacs-straight/xr
-:FILES:    (* (:exclude .git))
-:PACKAGE:  xr
-:LOCAL-REPO: xr
+:REPO:     "emacs-straight/xr"
+:FILES:    ("*" (:exclude ".git"))
+:PACKAGE:  "xr"
+:LOCAL-REPO: "xr"
 :END:
 
 This package is the inverse of =rx=. It takes a regular expression and returns the
@@ -6811,11 +7124,11 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :ID:       63343f9d-6b19-43de-8302-d1344d571949
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (lisp/*.el README (build Makefile) (build server) (:exclude lisp/tablist.el lisp/tablist-filter.el) pdf-tools-pkg.el)
+:FILES:    ("lisp/*.el" "README" ("build" "Makefile") ("build" "server") (:exclude "lisp/tablist.el" "lisp/tablist-filter.el") "pdf-tools-pkg.el")
 :HOST:     github
-:REPO:     politza/pdf-tools
-:PACKAGE:  pdf-tools
-:LOCAL-REPO: pdf-tools
+:REPO:     "politza/pdf-tools"
+:PACKAGE:  "pdf-tools"
+:LOCAL-REPO: "pdf-tools"
 :END:
 
 *** pdf-tools
@@ -6881,12 +7194,22 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     jorgenschaefer/circe
-:PACKAGE:  circe
-:LOCAL-REPO: circe
+:REPO:     "jorgenschaefer/circe"
+:PACKAGE:  "circe"
+:LOCAL-REPO: "circe"
 :END:
 
-** peristent scratch
+** persistent scratch
+:PROPERTIES:
+:ID:       ec2a603c-d68b-4811-88d8-2baeccdbba26
+:END:
+
+*** init
+:PROPERTIES:
+:ID:       09e3ace6-80e2-4ebc-8f53-70c2f0145b31
+:END:
+
+*** peristent scratch
 :PROPERTIES:
 :ID: 8180d63f-1c0c-4a03-8dbc-9a99bf0c9f0b
 :END:
@@ -6935,9 +7258,9 @@ on the buffer you'd like to edit.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     skuro/plantuml-mode
-:PACKAGE:  plantuml-mode
-:LOCAL-REPO: plantuml-mode
+:REPO:     "skuro/plantuml-mode"
+:PACKAGE:  "plantuml-mode"
+:LOCAL-REPO: "plantuml-mode"
 :END:
 
 *** plantuml
@@ -6966,9 +7289,9 @@ on the buffer you'd like to edit.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     bbatsov/super-save
-:PACKAGE:  super-save
-:LOCAL-REPO: super-save
+:REPO:     "bbatsov/super-save"
+:PACKAGE:  "super-save"
+:LOCAL-REPO: "super-save"
 :END:
 
 The default auto-saving feature in emacs saves after a certain number of
@@ -7004,7 +7327,35 @@ Saving files like this reduces the likelihood of user delays.
 :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
 :END:
 
-** TODO csv
+** csv-mode
+:PROPERTIES:
+:ID:       b6f5b8b6-522e-4817-b3f8-ca6dbc50a2e2
+:TYPE:     git
+:HOST:     github
+:REPO:     "emacs-straight/csv-mode"
+:FILES:    ("*" (:exclude ".git"))
+:PACKAGE:  "csv-mode"
+:LOCAL-REPO: "csv-mode"
+:END:
+
+*** align
+:PROPERTIES:
+:ID:       c8999694-08ec-4882-96fa-7e2f09204518
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'csv-mode-hook #'csv-align-mode)
+#+end_src
+
+*** add to mode list
+:PROPERTIES:
+:ID:       bb7d7cc9-8ee0-4e07-ae44-074305098a85
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+*** TODO csv
 :PROPERTIES:
 :ID:       e5b591e4-a261-4a36-90d0-b370cda73a47
 :END:
@@ -7270,11 +7621,11 @@ The change to this function."
 :ID: 228fb805-620d-4519-822f-f633540f7b58
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (:defaults bin buttercup-pkg.el)
+:FILES:    (:defaults "bin" "buttercup-pkg.el")
 :HOST:     github
-:REPO:     jorgenschaefer/emacs-buttercup
-:PACKAGE:  buttercup
-:LOCAL-REPO: emacs-buttercup
+:REPO:     "jorgenschaefer/emacs-buttercup"
+:PACKAGE:  "buttercup"
+:LOCAL-REPO: "emacs-buttercup"
 :END:
 
 [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is an emacs debugging suite.
@@ -7320,9 +7671,9 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     joddie/macrostep
-:PACKAGE:  macrostep
-:LOCAL-REPO: macrostep
+:REPO:     "joddie/macrostep"
+:PACKAGE:  "macrostep"
+:LOCAL-REPO: "macrostep"
 :END:
 
 ***** commands
@@ -8813,6 +9164,17 @@ diary/journal using =org-mode=.
 
 *** helpful
 :PROPERTIES:
+:ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "Wilfred/helpful"
+:PACKAGE:  "helpful"
+:LOCAL-REPO: "helpful"
+:END:
+
+**** helpful
+:PROPERTIES:
 :ID: 25270809-b64e-4b9a-b0c2-95ffd047280c
 :END:
 
@@ -8835,7 +9197,19 @@ in a better format.
   ([remap describe-key]      . helpful-key))
 #+end_src
 
-*** elisp demos
+*** elisp-demos
+:PROPERTIES:
+:ID:       81d22037-cd3e-4766-a8cc-6062e36deb1b
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults "*.org" "elisp-demos-pkg.el")
+:HOST:     github
+:REPO:     "xuchunyang/elisp-demos"
+:PACKAGE:  "elisp-demos"
+:LOCAL-REPO: "elisp-demos"
+:END:
+
+**** elisp demos
 :PROPERTIES:
 :ID: d1164fd9-bfc6-4436-a249-136a63c76e40
 :END:
@@ -8860,7 +9234,13 @@ pleasing Emacs configuration can have. Ugliness really can take its toll.
 
 ** which-key
 :PROPERTIES:
-:ID: 79d530ab-ab32-459e-853c-b1ec9eee37ef
+:ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "justbur/emacs-which-key"
+:PACKAGE:  "which-key"
+:LOCAL-REPO: "emacs-which-key"
 :END:
 
 Emacs is full of so many keybindings, that it can be difficult to keep track of
@@ -8871,28 +9251,66 @@ this [[github:][which-key]] displays key binding sequences in the minibuffer as 
 them ([[][]] and [[][]] are screenshots of this in action). By doing this
 you can "discover" the commands as you go along.
 
+*** init
+:PROPERTIES:
+:ID:       c4aedc23-0be3-46fe-b046-32b5f0738c6b
+:END:
+
+**** hooks
+:PROPERTIES:
+:ID:       e6626cde-d243-4aac-a61c-2897e43b7e73
+:END:
+
 #+begin_src emacs-lisp
-(use-package! which-key
-  :hook emacs-startup
-  :setq
-  (which-key-sort-uppercase-first . nil)
-  (which-key-max-display-columns . nil)
-  (which-key-add-column-padding . 1)
-  (which-key-min-display-lines . 6)
-  (which-key-side-window-slot . -10)
-  (which-key-sort-order . #'which-key-prefix-then-key-order)
-  (which-key-popup-type . 'minibuffer)
-  (which-key-idle-delay . 0.8)
-  :config
-  (defhook! set-line-spacing (which-key-init-buffer-hook)
-    (setq line-spacing 3))
-  (which-key-add-key-based-replacements void-leader-key "<leader>")
-  (which-key-add-key-based-replacements void-localleader-key "<localleader>"))
+(void-add-hook 'emacs-startup-hook #'which-key-mode)
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       a4b5878c-1b3f-4d85-9403-7ed8cc52433f
+:END:
+
+#+begin_src emacs-lisp
+(setq which-key-sort-uppercase-first nil)
+(setq which-key-max-display-columns nil)
+(setq which-key-add-column-padding 1)
+(setq which-key-min-display-lines 6)
+(setq which-key-side-window-slot -10)
+(setq which-key-sort-order #'which-key-prefix-then-key-order)
+(setq which-key-popup-type 'minibuffer)
+(setq which-key-idle-delay 0.8)
+#+end_src
+
+*** set line spacing
+:PROPERTIES:
+:ID:       6abb35f4-c648-4bed-b59a-5a0636857fd8
+:END:
+
+#+begin_src emacs-lisp
+(defhook! set-line-spacing (which-key-init-buffer-hook)
+  (setq line-spacing 3))
+#+end_src
+
+*** leader keys
+:PROPERTIES:
+:ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
+:END:
+
+#+begin_src emacs-lisp
+(which-key-add-key-based-replacements void-leader-key "<leader>")
+(which-key-add-key-based-replacements void-localleader-key "<localleader>")
 #+end_src
 
 ** dashboard
 :PROPERTIES:
 :ID: 20926522-b78b-4bca-b70e-9ef4213c4344
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults "banners" "dashboard-pkg.el")
+:HOST:     github
+:REPO:     "emacs-dashboard/emacs-dashboard"
+:PACKAGE:  "dashboard"
+:LOCAL-REPO: "emacs-dashboard"
 :END:
 
 [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
@@ -8904,24 +9322,42 @@ buffer and I've wanted to have the scratch buffer start off with
 =emacs-lisp-mode=, but I don't want it to trigger =company=, =yasnippet=, etc. on
 startup. If I start my emacs with =dashboard= I can avoid this.
 
-*** dashboard
+*** init
 :PROPERTIES:
-:ID: 9de45782-1683-40ef-aff2-95c0dbaa4ba7
+:ID:       de94c9a8-fc05-46ec-ac06-510f1014e02d
+:END:
+
+**** require
+:PROPERTIES:
+:ID:       73d00f99-4b70-44d1-8359-01bd2c94b330
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dashboard
-  :demand t
-  :hook (window-setup . dashboard-insert-startupify-lists)
-  :init
-  (defadvice! open-dashboard-instead (:override void-initial-buffer)
-    (if void-debug-p (get-buffer "*Messages*")
-      (get-buffer-create "*dashboard*")))
-  :setq
-  (dashboard-items . nil)
-  (dashboard-startup-banner . 2)
-  (dashboard-center-content . t)
-  (initial-buffer-choice . #'void-initial-buffer))
+(require 'dashboard)
+(void-add-hook 'window-setup-hook #'dashboard-insert-startupify-lists)
+#+end_src
+
+**** open dashboard at startup
+:PROPERTIES:
+:ID:       1bcc371e-61fa-480e-bdae-4a999d3b10c9
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! open-dashboard-instead (:override void-initial-buffer)
+  (if void-debug-p (get-buffer "*Messages*")
+    (get-buffer-create "*dashboard*")))
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       f5434534-e767-4416-848a-8912bae0ede1
+:END:
+
+#+begin_src emacs-lisp
+(dashboard-items . nil)
+(dashboard-startup-banner . 2)
+(dashboard-center-content . t)
+(initial-buffer-choice . #'void-initial-buffer)
 #+end_src
 
 *** dashboard-init-info
@@ -9009,6 +9445,12 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 ** feebleline
 :PROPERTIES:
 :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "tautologyclub/feebleline"
+:PACKAGE:  "feebleline"
+:LOCAL-REPO: "feebleline"
 :END:
 
 Feebleline replaces the typical emacs modeline with text printed out to
@@ -9023,17 +9465,21 @@ it's just excess information you don't need to know unless you're visiting the
 buffer. Better is a global modeline that displays the information from the
 buffer displayed in the currently selected window.
 
-*** feebleline
+*** init
+:PROPERTIES:
+:ID:       e0a819d7-1d30-4602-9539-e882f37b7bc2
+:END:
+
+**** feebleline
 :PROPERTIES:
 :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
 :END:
 
 #+begin_src emacs-lisp
-(use-package! feebleline
-  :hook window-setup-hook)
+(void-add-hook 'window-setup-hook #'feebleline-mode)
 #+end_src
 
-*** modeline display
+**** modeline display
 :PROPERTIES:
 :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
 :END:
@@ -9308,6 +9754,13 @@ the mode line.
 ** all-the-icons
 :PROPERTIES:
 :ID: 6a7c7438-42c0-4833-9398-fa9fd58515d1
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults "data" "all-the-icons-pkg.el")
+:HOST:     github
+:REPO:     "domtronn/all-the-icons.el"
+:PACKAGE:  "all-the-icons"
+:LOCAL-REPO: "all-the-icons.el"
 :END:
 
 A little bit of decoration and spice can go a long way. As its name suggests,
@@ -9315,7 +9768,12 @@ A little bit of decoration and spice can go a long way. As its name suggests,
 a few). In practice I use these icons to (1) make things look nicer and more
 colorful and (2) enhance readability of plain text.
 
-*** install all the icons if not installed
+*** init
+:PROPERTIES:
+:ID:       554b6b2f-45f8-422f-bf01-e6da66e1ac39
+:END:
+
+**** install all the icons if not installed
 :PROPERTIES:
 :ID: 1cda0692-8f42-4bb3-b11d-da52e2004a55
 :END:
@@ -9347,7 +9805,7 @@ VOID install. For writing this code I referenced the body of
         (all-the-icons-install-fonts :ignore-prompt)))))
 #+end_src
 
-*** boostrap
+**** boostrap
 :PROPERTIES:
 :ID: a13cf0ec-14e2-4d4b-b313-65fe68f0655b
 :END:
