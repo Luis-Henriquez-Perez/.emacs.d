@@ -280,6 +280,57 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** s
+:PROPERTIES:
+:ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("s.el" "s-pkg.el")
+:HOST:     github
+:REPO:     "magnars/s.el"
+:PACKAGE:  "s"
+:LOCAL-REPO: "s.el"
+:COMMIT:   43ba8b563bee3426cead0e6d4ddc09398e1a349d
+:END:
+
+#+begin_src emacs-lisp
+(require 's)
+#+end_src
+
+*** dash
+:PROPERTIES:
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("dash.el" "dash.texi" "dash-pkg.el")
+:HOST:     github
+:REPO:     "magnars/dash.el"
+:PACKAGE:  "dash"
+:LOCAL-REPO: "dash.el"
+:COMMIT:   0f238a9a466879ee96e5db0482019453718f342d
+:END:
+
+Dash is an excellent functional list manipulation library. If I did not use it
+as a dependency, I'd end up rewriting many of its functions.
+
+:PROPERTIES:
+:ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
+:END:
+
+**** init
+:PROPERTIES:
+:ID:       4be107b5-b756-4372-9f74-655bda941b75
+:END:
+
+#+begin_src emacs-lisp
+(require 'dash)
+(require 'dash-functional)
+#+end_src
+
+**** set font lock
+:PROPERTIES:
+:ID:       ed2dd8e0-1084-4ac9-8f4c-41a7002261ef
+:END:
+
 *** org-ml
 :PROPERTIES:
 :ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
@@ -919,7 +970,7 @@ switched. In my opinion, the unique part of the function name being first is
 more consistent with =defun=.
 
 #+begin_src emacs-lisp
-(defmacro! define-advice! (name args &rest body)
+(defmacro define-advice! (name args &rest body)
   "A wrapper around `define-advice'.
 The only difference is that this switches the order the arguments have to be
 passed in.
@@ -928,9 +979,9 @@ passed in.
   (declare (indent 2) (doc-string 3) (debug (sexp sexp body)))
   (unless (listp args)
     (signal 'wrong-type-argument (list #'listp args)))
-  (-let (((where lambda-args fn props) args))
-    `(aprog1 (defun void--<name>-advice ,lambda-args
-               ,@body)
+  (-let (((where lambda-args fn props) args)
+         (advice-name (intern (format "void--%s-advice" name))))
+    `(aprog1 (defun ,name ,lambda-args ,@body)
        (void-add-advice #',fn ,where it ,props))))
 #+end_src
 
@@ -1175,45 +1226,51 @@ SYM is a symbol that stores a list."
                 )))
 #+end_src
 
-*** load-on-call
+*** loading on call
+:PROPERTIES:
+:ID:       fa6583aa-5e7c-4212-be8a-b90b4c08aa31
+:END:
+
+**** load-on-call
 :PROPERTIES:
 :ID:       324e707b-2f44-4168-a846-037f5401dedb
 :END:
 
-I want a shorthand for advices.
+I want a shorthand for advices that involve package loading.
 
 #+begin_src emacs-lisp
-(defun void-load-on-call (package where functions)
-  "Load packages before FUNCTIONS are called."
-  (fset ' `(lambda () (require ',package)))
-  (void-add-advice () :before nil t))
+(defun void--load-on-call (package where functions)
+  "Load packages FUNCTIONS are called."
+  (alet (fset (void-symbol-intern 'void--load- package)
+              `(lambda () (require ',package)))
+    (-each functions
+      (-partial #'void-add-advice it where))))
+#+end_src
+
+**** load before call
+:PROPERTIES:
+:ID:       cc0e92bc-cd6d-4994-82ea-eb065fc3ad89
+:END:
+
+#+begin_src emacs-lisp
+(defun void-load-before-call (package functions)
+  (void--load-before-call package :before functions))
+#+end_src
+
+**** load after call
+:PROPERTIES:
+:ID:       b0b294d0-15ac-42d9-9e4c-fd9da8a95206
+:END:
+
+#+begin_src emacs-lisp
+(defun void-load-after-call (package functions)
+  (void--load-after-call package :after functions))
 #+end_src
 
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
 :END:
-
-*** print output when installing a package
-:PROPERTIES:
-:ID:       428aa579-bbd6-4169-9bca-8da581e0b81d
-:END:
-
-For debugging reasons, it's nice to know when a package was successfully
-installed or not. Therefore, I advise straight to log this information for me.
-
-#+begin_src emacs-lisp
-(defadvice! print-output-on-debug (:around straight-use-package)
-  "Log whether package is intalled or not if `void-debug-p' is non-nil."
-  (alet (or (car-safe (car <args>)) (car <args>))
-    (if (called-interactively-p)
-        (apply <orig-fn> <args>)
-      (condition-case err
-          (progn (apply <orig-fn> <args>)
-                 (void-log "✓ installed %s" it))
-        (error
-         (void-log "✕ failed to install %s because of %s" it err))))))
-#+end_src
 
 *** built-in
 :PROPERTIES:
@@ -1592,40 +1649,6 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :ID: 6e4be80e-8149-424d-a801-d7871bfe8fc8
 :END:
 
-**** dash
-:PROPERTIES:
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("dash.el" "dash.texi" "dash-pkg.el")
-:HOST:     github
-:REPO:     "magnars/dash.el"
-:PACKAGE:  "dash"
-:LOCAL-REPO: "dash.el"
-:COMMIT:   0f238a9a466879ee96e5db0482019453718f342d
-:END:
-
-Dash is an excellent functional list manipulation library. If I did not use it
-as a dependency, I'd end up rewriting many of its functions.
-
-:PROPERTIES:
-:ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
-:END:
-
-***** init
-:PROPERTIES:
-:ID:       4be107b5-b756-4372-9f74-655bda941b75
-:END:
-
-#+begin_src emacs-lisp
-(require 'dash)
-(require 'dash-functional)
-#+end_src
-
-***** set font lock
-:PROPERTIES:
-:ID:       ed2dd8e0-1084-4ac9-8f4c-41a7002261ef
-:END:
-
 **** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
@@ -1746,23 +1769,6 @@ make a difference. That's why.
               ,@shared-args
               :prefix void-localleader-short-key
               :non-normal-prefix void-localleader-short-alt-key))))
-#+end_src
-
-**** s
-:PROPERTIES:
-:ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("s.el" "s-pkg.el")
-:HOST:     github
-:REPO:     "magnars/s.el"
-:PACKAGE:  "s"
-:LOCAL-REPO: "s.el"
-:COMMIT:   43ba8b563bee3426cead0e6d4ddc09398e1a349d
-:END:
-
-#+begin_src emacs-lisp
-(require 's)
 #+end_src
 
 **** gcmh
@@ -5868,15 +5874,6 @@ larger text objects. It's saves me keystrokes.
 :COMMIT:   c0806c1903c5a0e4c69b6615cdc3366470a9b8ca
 :END:
 
-**** load before
-:PROPERTIES:
-:ID:       d36e9447-2134-49cb-973d-c3a8c695f8ac
-:END:
-
-#+begin_src emacs-lisp
-(void-load-on-call :before 'undo-tree)
-#+end_src
-
 **** settings
 :PROPERTIES:
 :ID:       85230cf3-d90a-426a-b3dd-7cb3b27e8218
@@ -6996,7 +6993,7 @@ address later.
 :END:
 
 #+begin_src emacs-lisp
-(void-load-on-call :after (list #'switch-to-buffer #'find-file))
+(void-load-before-call 'autorevert (list #'switch-to-buffer #'find-file))
 #+end_src
 
 *** maybe
