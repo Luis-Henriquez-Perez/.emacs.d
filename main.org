@@ -2473,7 +2473,7 @@ require loads.
 (setq idle-require-idle-delay 10)
 #+end_src
 
-***** TODO make idle require use void-log                             :disabled:
+***** make idle require use void-log                                  :disabled:
 :PROPERTIES:
 :ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
 :END:
