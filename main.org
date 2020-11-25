@@ -1155,19 +1155,12 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
-*** load-on-call
+*** autoload
 :PROPERTIES:
-:ID:       324e707b-2f44-4168-a846-037f5401dedb
+:ID:       e648ce0e-bb00-452d-9498-236c65e3a873
 :END:
 
-I want a shorthand for advices.
-
 #+begin_src emacs-lisp
-(defun void-load-on-call (package where functions)
-  "Load packages before FUNCTIONS are called."
-  (fset ' `(lambda () (require ',package)))
-  (void-add-advice () :before nil t))
-
 ;; Logic for autoloading is this.
 (defun void-autoload (package fn)
   "Autoload functions."
@@ -1180,6 +1173,20 @@ I want a shorthand for advices.
                 (require package)
                 (call-interactively #',name)
                 )))
+#+end_src
+
+*** load-on-call
+:PROPERTIES:
+:ID:       324e707b-2f44-4168-a846-037f5401dedb
+:END:
+
+I want a shorthand for advices.
+
+#+begin_src emacs-lisp
+(defun void-load-on-call (package where functions)
+  "Load packages before FUNCTIONS are called."
+  (fset ' `(lambda () (require ',package)))
+  (void-add-advice () :before nil t))
 #+end_src
 
 ** Packages
