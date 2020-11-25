@@ -1219,11 +1219,6 @@ from pulling (or failing to pull) in autoloaded macros/features.
   nil)
 #+end_src
 
-**** anaphoric macros
-:PROPERTIES:
-:ID:       001dde5a-bb43-4ce8-82ef-806e37ba7f6e
-:END:
-
 **** list mutation
 :PROPERTIES:
 :ID:       d9f77404-5c29-4305-ae53-e409e1b06b99
