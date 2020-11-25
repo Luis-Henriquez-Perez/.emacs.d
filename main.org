@@ -3570,7 +3570,6 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
-
 (setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
 #+end_src
 
