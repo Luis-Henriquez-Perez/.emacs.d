@@ -3911,6 +3911,13 @@ therefore, has the most support (in the form of setup blogs and packages).
 (mu4e-compose-signature-auto-include . t)
 (mu4e-compose-format-flowed . t)
 (mu4e-get-mail-command . "mbsync -a")
+(mu4e-index-cleanup . t)
+(mu4e-index-lazy-check . nil)
+(mu4e-update-interval . 180)
+(mu4e-headers-auto-update . t)
+(mu4e-context-policy . 'pick-first)
+(mu4e-compose-context-policy . 'ask-if-none)
+(mu4e-confirm-quit . nil)
 #+end_src
 
 *** mu4e
@@ -3925,13 +3932,6 @@ therefore, has the most support (in the form of setup blogs and packages).
   :load-path "/usr/share/emacs/site-lisp/mu4e/"
   :commands mu4e
   :setq
-  (mu4e-index-cleanup . t)
-  (mu4e-index-lazy-check . nil)
-  (mu4e-update-interval . 180)
-  (mu4e-headers-auto-update . t)
-  (mu4e-context-policy . 'pick-first)
-  (mu4e-compose-context-policy . 'ask-if-none)
-  (mu4e-confirm-quit . nil)
   (mu4e-header-fields . '((:human-date . 12)
                           (:flags . 4)
                           (:from . 25)
