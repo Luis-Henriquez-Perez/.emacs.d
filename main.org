@@ -1234,6 +1234,9 @@ SYM is a symbol that stores a list."
 Instead of loading all features on startup, we want to load features only when
 we need them--just in time. And by "just in time" I mean at the last possible
 moment or in practice just before a function that uses this feature is called.
+While I could use =defadvice!= for defining these advices, doing this would
+quickly become repetative because it's something that is done so often in
+package configuration.
 
 **** load-on-call
 :PROPERTIES:
