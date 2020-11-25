@@ -5289,6 +5289,12 @@ We want escape to be a general "quit everything".
 :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
 :END:
 
+Sometimes we don't have access to a convenient escape key--I mean that caps-lock
+is not bound to escape. Or, perhaps, we might find it faster or preferable to
+press =jk= really quickly to invoke escape.
+
+This is better than evil escape as it only binds in insert.
+
 ****** init
 :PROPERTIES:
 :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
@@ -5325,12 +5331,6 @@ We want escape to be a general "quit everything".
 :PROPERTIES:
 :ID:       33fa6402-f56e-4bea-a9b5-bd5a6f44792f
 :END:
-
-Sometimes we don't have access to a convenient escape key--I mean that caps-lock
-is not bound to escape. Or, perhaps, we might find it faster or preferable to
-press =jk= really quickly to invoke escape.
-
-This is better than evil escape as it only binds in insert.
 
 #+begin_src emacs-lisp
 (use-package! key-chord
