@@ -1212,7 +1212,8 @@ SYM is a symbol that stores a list."
 :END:
 
 Emacs has a built-in [[][autoloading facility]]. I don't use that because it
-involves. Autoloading can be done in elisp.
+involves. Autoloading can be done in elisp. You define a dummy function which
+unbinds itself, loads the specified package, then calls the real function.
 
 #+begin_src emacs-lisp
 ;; Logic for autoloading is this.
