@@ -2447,7 +2447,7 @@ of the Emacs frame are recorded after they expire.
 (void-add-hook 'emacs-startup-hook #'idle-require-mode)
 #+end_src
 
-**** settings
+***** settings
 :PROPERTIES:
 :ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
 :END:
