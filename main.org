@@ -4504,6 +4504,8 @@ option that would prompt you for the file name.
 :END:
 
 #+begin_src emacs-lisp
+(alet '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
+  (void-autoload 'escr it))
 #+end_src
 
 *** settings
@@ -4521,7 +4523,7 @@ option that would prompt you for the file name.
 
 #+begin_src emacs-lisp
 (use-package! escr
-  :commands (escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
+  :commands
   :setq
   (escr-screenshot-quality . 10)
   (escr-screenshot-directory . VOID-SCREENSHOT-DIR))
