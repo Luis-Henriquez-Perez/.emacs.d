@@ -4241,29 +4241,6 @@ plain text webpages. Of course, the main limitation is that w3m will typically
 only display text based web pages well--not ones with lots of interactive
 javascript code.
 
-*** traversing
-:PROPERTIES:
-:ID: aded77d8-8088-4aad-b0b9-bb5a45d343f2
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal w3m-mode-map
-  "o" #'w3m-search
-  "O" #'w3m-search-new-session
-  ;; Jump to a link with avy in the current session.
-  "f" #'ace-link-w3m
-  "F" #'ace-link-open-new-session
-  ;; Delete the current emacs-w3m buffer and switch to the previous one.
-  "D" #'w3m-delete-buffer
-  ;; Move through tabs.
-  "J" #'w3m-tab-move-right
-  "K" #'w3m-tab-move-left
-  ;; Move back COUNT pages in the history.
-  "H" #'w3m-view-previous-page
-  ;; Move forward COUNT pages in history.
-  "L" #'w3m-view-next-page)
-#+end_src
-
 * Multimedia
 :PROPERTIES:
 :ID: 20a915a0-8525-413c-bd68-f1d5c14ce3da
