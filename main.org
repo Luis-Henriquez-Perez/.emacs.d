@@ -4712,6 +4712,13 @@ necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypressio
 ** highlight-numbers
 :PROPERTIES:
 :ID:       373d8428-5ac4-480c-82b3-44d9013ed97a
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "Fanael/highlight-numbers"
+:PACKAGE:  "highlight-numbers"
+:LOCAL-REPO: "highlight-numbers"
+:COMMIT:   8b4744c7f46c72b1d3d599d4fb75ef8183dee307
 :END:
 
 What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is pretty self explanatory: it highlights numbers.
@@ -4870,6 +4877,13 @@ it. It's pretty smart and very convenient.
 *** ialign
 :PROPERTIES:
 :ID: 55570266-36e8-426e-aef6-5005bce6d73b
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "mkcms/interactive-align"
+:PACKAGE:  "ialign"
+:LOCAL-REPO: "interactive-align"
+:COMMIT:   eca40b8b59ea713dba21b18f5b047a6c086b91dc
 :END:
 
 Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regular expressions to align text.
