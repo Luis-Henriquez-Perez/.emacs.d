@@ -6991,7 +6991,8 @@ address later.
 :END:
 
 #+begin_src emacs-lisp
-(void-load-before-call 'autorevert (list #'switch-to-buffer #'find-file))
+(alet (list #'switch-to-buffer #'find-file)
+  (void-load-before-call 'autorevert it))
 #+end_src
 
 *** maybe
