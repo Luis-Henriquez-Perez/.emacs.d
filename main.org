@@ -1401,15 +1401,13 @@ Emacs starts up with a default screen. Note that it doesn't seem this feature is
 provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 
 #+begin_src emacs-lisp
-(use-feature! startup
-  :pre-setq
-  (inhibit-startup-screen . t)
-  (inhibit-default-init . t)
-  (inhibit-startup-buffer-menu . t)
-  (initial-major-mode . 'fundamental-mode)
-  (initial-scratch-message . nil)
-  (initial-buffer-choice . #'void-initial-buffer)
-  (inhibit-startup-echo-area-message . user-login-name))
+(setq inhibit-startup-screen t)
+(setq inhibit-default-init t)
+(setq inhibit-startup-buffer-menu t)
+(setq initial-major-mode 'fundamental-mode)
+(setq initial-scratch-message nil)
+(setq initial-buffer-choice #'void-initial-buffer)
+(setq inhibit-startup-echo-area-message user-login-name)
 #+end_src
 
 **** paren
