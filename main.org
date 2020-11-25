@@ -5295,8 +5295,10 @@ We want escape to be a general "quit everything".
 :END:
 
 #+begin_src emacs-lisp
-(void-load-before-call 'keychord
-                       (list #'evil-insert-state #'evil-emacs-state))
+(--each (list #'evil-insert-state #'evil-emacs-state)
+  (void-load-before-call 'keychord it))
+;; (void-load-before-call 'keychord
+;;                        (list #'evil-insert-state #'evil-emacs-state))
 #+end_src
 
 ****** be quiet when turning on
