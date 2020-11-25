@@ -4553,8 +4553,10 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 :END:
 
 #+begin_src emacs-lisp
-(--each (list #'hs-minor-mode #'hs-toggle-hiding #'hs-already-hidden-p)
-  (void-load-on-call 'hideshow it))
+(void-load-on-call 'hideshow
+                   (list #'hs-minor-mode
+                         #'hs-toggle-hiding
+                         #'hs-already-hidden-p))
 #+end_src
 
 *** hooks
