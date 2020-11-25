@@ -5262,6 +5262,12 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 *** plural
 :PROPERTIES:
 :ID:       bf2ed9b7-144c-4d4b-92ae-74c93dfc6db5
+:TYPE:     git
+:HOST:     github
+:REPO:     "emacsmirror/plural"
+:PACKAGE:  "plural"
+:LOCAL-REPO: "plural"
+:COMMIT:   b91ce1594783c51dabeadbbcbb9caa00aaaa1353
 :END:
 
 This package determines whether a noun is plural and provides a function to
