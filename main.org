@@ -5264,6 +5264,13 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :ID:       bf2ed9b7-144c-4d4b-92ae-74c93dfc6db5
 :END:
 
+This package determines whether a noun is plural and provides a function to
+convert a singular noun to a plural one. For example ~(plural-pluralize
+"goose")~ returns ~"geese"~.
+
+My intended use for this package is to help automate prompts, docstrings or the
+like that concern N number of things, where N could be 1 or more things.
+
 **** commands
 :PROPERTIES:
 :ID:       8c8ce3ab-e7b1-492c-b891-8b4b304baaca
@@ -5276,13 +5283,6 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :PROPERTIES:
 :ID:       71162148-f2ee-4f38-a2bf-eede4ed17762
 :END:
-
-This package determines whether a noun is plural and provides a function to
-convert a singular noun to a plural one. For example ~(plural-pluralize
-"goose")~ returns ~"geese"~.
-
-My intended use for this package is to help automate prompts, docstrings or the
-like that concern N number of things, where N could be 1 or more things.
 
 #+begin_src emacs-lisp
 (use-package plural
