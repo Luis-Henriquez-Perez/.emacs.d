@@ -1428,13 +1428,10 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 :END:
 
 #+begin_src emacs-lisp
-;; Not windows.
-(use-feature! select
-  :setq
-  (selection-coding-system . 'utf-8)
-  (select-enable-clipboard . t)
-  (select-enable-primary . t)
-  (x-select-request-type . '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+(setq selection-coding-system 'utf-8)
+(setq select-enable-clipboard t)
+(setq select-enable-primary t)
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+end_src
 
 **** simple
