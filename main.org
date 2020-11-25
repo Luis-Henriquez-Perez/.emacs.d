@@ -4439,17 +4439,19 @@ javascript code.
 I'm using "multimedia" here as an umbrella term for non-text sources of
 information such as music, videos, images, and gifs.
 
-** youtube
+** ytel
 :PROPERTIES:
-:ID: 10642631-365c-46b4-ad29-e28e509aa1ae
+:ID:       6bf0b85c-212d-406d-b4b5-7720ccc274ba
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "gRastello/ytel"
+:PACKAGE:  "ytel"
+:LOCAL-REPO: "ytel"
+:COMMIT:   d80c7964ec66589d5580fc13773e94f1834ab76f
 :END:
 
 *** ytel
-:PROPERTIES:
-:ID:       6bf0b85c-212d-406d-b4b5-7720ccc274ba
-:END:
-
-**** ytel
 :PROPERTIES:
 :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
 :END:
@@ -4465,7 +4467,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 (void-system-ensure 'ytel '(youtube-dl curl))
 #+end_src
 
-**** watch video
+*** watch video
 :PROPERTIES:
 :ID:       547c6d1d-c8a5-42b3-8000-029228923304
 :END:
@@ -4483,7 +4485,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
   (message "Starting streaming..."))
 #+end_src
 
-**** download music
+*** download music
 :PROPERTIES:
 :ID:       7c28f457-3a63-45a7-87bc-dc5232a5a5cd
 :END:
