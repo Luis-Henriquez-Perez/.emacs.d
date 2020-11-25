@@ -1438,6 +1438,7 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 **** simple
 :PROPERTIES:
 :ID: 89df102a-a2c9-4ece-9acc-ed90e8064ed8
+:TYPE:     built-in
 :END:
 
 #+begin_src emacs-lisp
@@ -1907,6 +1908,13 @@ make a difference. That's why.
 **** gcmh
 :PROPERTIES:
 :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "koral/gcmh"
+:PACKAGE:  "gcmh"
+:LOCAL-REPO: "gcmh"
+:COMMIT:   84c43a4c0b41a595ac6e299fa317d2831813e580
 :END:
 
 ***** init
@@ -1929,9 +1937,16 @@ make a difference. That's why.
 (setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
 #+end_src
 
-**** shutup
+**** shut-up
 :PROPERTIES:
 :ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "cask/shut-up"
+:PACKAGE:  "shut-up"
+:LOCAL-REPO: "shut-up"
+:COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
 :END:
 
 ***** aliases
@@ -1945,13 +1960,6 @@ make a difference. That's why.
 ***** shut-up
 :PROPERTIES:
 :ID:       23d602fa-57f6-4119-90b4-de7c2a22676c
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "cask/shut-up"
-:PACKAGE:  "shut-up"
-:LOCAL-REPO: "shut-up"
-:COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
 :END:
 
 ****** aliases
