@@ -3898,6 +3898,21 @@ it's [[explicit support]] for multiple accounts. =mu4e= comes bundled with =mu=.
 significant advantage of using it is it's the most popular option and,
 therefore, has the most support (in the form of setup blogs and packages).
 
+*** settings
+:PROPERTIES:
+:ID:       11a37383-0316-49fa-900e-c06f830c0e3f
+:END:
+
+#+begin_src emacs-lisp
+(mu4e-completing-read-function . #'completing-read)
+(mu4e-view-show-addresses . t)
+(mu4e-view-show-images . t)
+(mu4e-view-image-max-width . 800)
+(mu4e-compose-signature-auto-include . t)
+(mu4e-compose-format-flowed . t)
+(mu4e-get-mail-command . "mbsync -a")
+#+end_src
+
 *** mu4e
 :PROPERTIES:
 :ID: 565eff90-8626-4ec8-a576-4ff3dfb307ae
@@ -3910,13 +3925,6 @@ therefore, has the most support (in the form of setup blogs and packages).
   :load-path "/usr/share/emacs/site-lisp/mu4e/"
   :commands mu4e
   :setq
-  (mu4e-completing-read-function . #'completing-read)
-  (mu4e-view-show-addresses . t)
-  (mu4e-view-show-images . t)
-  (mu4e-view-image-max-width . 800)
-  (mu4e-compose-signature-auto-include . t)
-  (mu4e-compose-format-flowed . t)
-  (mu4e-get-mail-command . "mbsync -a")
   (mu4e-index-cleanup . t)
   (mu4e-index-lazy-check . nil)
   (mu4e-update-interval . 180)
