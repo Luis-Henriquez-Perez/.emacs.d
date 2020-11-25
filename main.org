@@ -1231,7 +1231,8 @@ SYM is a symbol that stores a list."
 :ID:       fa6583aa-5e7c-4212-be8a-b90b4c08aa31
 :END:
 
-To be efficient
+Instead of loading all features on startup, we want to load features only when
+we need them--just in time. Theh purpose of =load-before-call=
 
 **** load-on-call
 :PROPERTIES:
