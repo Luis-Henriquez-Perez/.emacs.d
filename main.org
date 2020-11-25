@@ -5310,6 +5310,11 @@ We want escape to be a general "quit everything".
 (quiet! (key-chord-mode 1))
 #+end_src
 
+******
+:PROPERTIES:
+:ID:       738065e2-d607-4672-b44e-1fff5ed249bc
+:END:
+
 ***** keychord integration
 :PROPERTIES:
 :ID:       33fa6402-f56e-4bea-a9b5-bd5a6f44792f
