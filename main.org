@@ -3538,7 +3538,6 @@ Emacs's text editing capabilities on it.
             #'buffer-expose-dired-buffers #'buffer-expose-stars
             #'buffer-expose-current-mode)
   (void-autoload 'buffer-expose it))
-
 #+end_src
 
 *** setq
