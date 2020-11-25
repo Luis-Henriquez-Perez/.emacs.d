@@ -5923,6 +5923,7 @@ larger text objects. It's saves me keystrokes.
 :REPO:     "ideasman42/emacs-undo-fu"
 :PACKAGE:  "undo-fu"
 :LOCAL-REPO: "emacs-undo-fu"
+:COMMIT:   c0806c1903c5a0e4c69b6615cdc3366470a9b8ca
 :END:
 
 **** load before
@@ -5967,6 +5968,13 @@ larger text objects. It's saves me keystrokes.
 *** undo-fu-session
 :PROPERTIES:
 :ID:       12a36a4e-65df-4dd3-be35-d84dd76651a4
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "ideasman42/emacs-undo-fu-session"
+:PACKAGE:  "undo-fu-session"
+:LOCAL-REPO: "emacs-undo-fu-session"
+:COMMIT:   56cdd3538a058c6916bdf2d9010c2179f2505829
 :END:
 
 * Utility
