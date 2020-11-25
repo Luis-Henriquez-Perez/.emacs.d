@@ -4489,9 +4489,9 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
-cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or [[https://www.reddit.com/r/emacs/][emacs-reddit]] or
-even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or often not
-utilized at all).
+cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or
+[[https://www.reddit.com/r/emacs/][emacs-reddit]] or even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or
+often not utilized at all).
 
 There are three screenshot packages I know of [[https://github.com/emacsmirror/screenshot][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[https://github.com/atykhonov/escr][escr]]. But
 they all have their downsides. Screenshot's main command, =screenshot=, assumes
