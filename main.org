@@ -2481,12 +2481,13 @@ start loading.
 ()
 #+end_src
 
-***** increase gc-cons-threshold during idle loading
+***** increase gc-cons-threshold during idle loading                  :disabled:
 :PROPERTIES:
 :ID:       275c3488-8192-476c-97b8-6c6643f54d2e
 :END:
 
 #+begin_src emacs-lisp
+(void-add-advice)
 #+end_src
 
 **** =tty=
