@@ -5207,16 +5207,27 @@ very useful to me.
 :ID:       f3c7b015-c3c4-4898-9f64-834435cdae2f
 :END:
 
-*** autocapitalize
+*** auto-capitalize
 :PROPERTIES:
-:ID: 35c7c4c0-5009-43d6-8c34-43d6111ceb28
+:ID:       4ddfacc1-a25e-466e-ab6b-2a5ec306f3be
+:TYPE:     git
+:HOST:     github
+:REPO:     "emacsmirror/auto-capitalize"
+:PACKAGE:  "auto-capitalize"
+:LOCAL-REPO: "auto-capitalize"
+:COMMIT:   0ee14c76d5771aaa84a004463f8b8b3a195c2fd8
 :END:
 
 [[https://github.com/emacsmirror/auto-capitalize][auto-capitalize]] automatically capitalizes the first word of a sentence for me.
 It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capitalize-words]].
 
+**** autocapitalize
+:PROPERTIES:
+:ID: 35c7c4c0-5009-43d6-8c34-43d6111ceb28
+:END:
+
 #+begin_src emacs-lisp
-(auto-capitalize-words . '("I" "English"))
+(setq auto-capitalize-words . '("I" "English"))
 #+end_src
 
 *** powerthesaurus
