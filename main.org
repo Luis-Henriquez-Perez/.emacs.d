@@ -6304,7 +6304,7 @@ you on a side window.
 :END:
 
 #+begin_src emacs-lisp
-:commands command-log-mode global-command-log-mode
+(void-autoload 'command-log-mode '(command-log-mode global-command-log-mode))
 #+end_src
 
 *** settings
