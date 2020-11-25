@@ -5310,10 +5310,16 @@ We want escape to be a general "quit everything".
 (quiet! (key-chord-mode 1))
 #+end_src
 
-******
+****** keychord bindings
 :PROPERTIES:
 :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
 :END:
+
+#+begin_src emacs-lisp
+(general-def :states '(visual insert)
+  (general-chord "jk") 'evil-force-normal-state
+  (general-chord "kj") 'evil-force-normal-state)
+#+end_src
 
 ***** keychord integration
 :PROPERTIES:
@@ -5330,10 +5336,7 @@ This is better than evil escape as it only binds in insert.
 (use-package! key-chord
   :after-call evil-insert-state evil-emacs-state
   :config
-  (quiet! (key-chord-mode 1))
-  (general-def :states '(visual insert)
-    (general-chord "jk") 'evil-force-normal-state
-    (general-chord "kj") 'evil-force-normal-state))
+  )
 #+end_src
 
 **** saving
