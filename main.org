@@ -9910,3 +9910,16 @@ graphical interface but.
   (if (display-graphic-p) (apply <orig-fn> <args>) ""))
 #+end_src
 
+** zone
+:PROPERTIES:
+:ID:       6fd9cfb6-9500-4446-a530-46d6f7a78a4a
+:TYPE:     built-in
+:END:
+
+*** init
+:PROPERTIES:
+:ID:       a570f63a-3ec0-4571-81ed-767801d2b49a
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
