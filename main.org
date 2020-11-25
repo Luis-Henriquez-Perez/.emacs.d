@@ -443,7 +443,7 @@ customizing emacs.
 [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
 structures. It was built for.
 
-*** ts
+*** ts.el
 :PROPERTIES:
 :ID:       64d19467-a878-449c-8402-88892c25ac9a
 :TYPE:     git
