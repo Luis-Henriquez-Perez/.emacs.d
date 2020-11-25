@@ -1172,6 +1172,10 @@ I want a shorthand for advices.
 (defun void-autoload (package fn)
   "Autoload functions."
   (fset name `(lambda (&rest args)
+                ;; find the base advice.
+                (-each (list (void-advice-true-name name) ())
+                  #'fmakunbound)
+                ;; find all functions aliased.
                 (fmakunbound #',name)
                 (require package)
                 (call-interactively #',name)
