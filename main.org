@@ -1369,7 +1369,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(setq custom-file "/dev/null")
+(setq custom-file null-device)
 (setq custom-theme-directory (concat VOID-LOCAL-DIR "themes/"))
 #+end_src
 
