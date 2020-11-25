@@ -1248,6 +1248,7 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 **** loaddefs
 :PROPERTIES:
 :ID:       5af4faf8-47e3-4db2-9d13-47fc828b8fca
+:TYPE:     built-in
 :END:
 
 These are *extremely* important lines if you use an external program as I do
