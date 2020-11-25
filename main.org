@@ -3470,6 +3470,13 @@ windows).
 *** exwm-edit
 :PROPERTIES:
 :ID: 1a167827-b791-4a69-a90e-c2d30bd83abb
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "agzam/exwm-edit"
+:PACKAGE:  "exwm-edit"
+:LOCAL-REPO: "exwm-edit"
+:COMMIT:   2fd9426922c8394ec8d21c50dcc20b7d03af21e4
 :END:
 
 The dream is to do all text editing in Emacs. This package is a big step towards
@@ -3481,7 +3488,7 @@ saying that when the text is in an emacs buffer, you can use the full-force of
 Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
-(use-package! exwm-edit :after exwm)
+(after! exwm (require 'exwm-edit))
 #+end_src
 
 *** exwm-firefox
