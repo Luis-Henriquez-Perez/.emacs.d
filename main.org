@@ -3979,7 +3979,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 (mu4e-headers-trash-mark     . (cons "T" (all-the-icons-faicon "trash")))
 #+end_src
 
-*** org mu4e
+*** org-mu4e
 :PROPERTIES:
 :ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
 :END:
