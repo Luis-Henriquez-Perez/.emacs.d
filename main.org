@@ -3820,6 +3820,18 @@ of things that we actually want at this moment.
   (prescient-save-file . (concat VOID-DATA-DIR "prescient-save-file")))
 #+end_src
 
+*** selectrum-prescient
+:PROPERTIES:
+:ID:       70668ed8-9c83-42d2-8dce-d8f7de923569
+:flavor:   melpa
+:files:    ("selectrum-prescient.el" "selectrum-prescient-pkg.el")
+:package:  "selectrum-prescient"
+:local-repo: "prescient.el"
+:type:     git
+:repo:     "raxod502/prescient.el"
+:host:     github
+:END:
+
 *** selectrum prescient
 :PROPERTIES:
 :ID:       5215a4ad-67cd-4c02-ac79-e4ace589c253
