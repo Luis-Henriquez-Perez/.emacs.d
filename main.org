@@ -1310,9 +1310,7 @@ think you want to use =smtp=.
 :END:
 
 #+begin_src emacs-lisp
-;; This is where `->>' and `thread-first' come from.
-(use-feature! subr-x
-  :demand t)
+(require 'subr-x)
 #+end_src
 
 **** ffap
