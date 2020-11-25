@@ -2444,7 +2444,9 @@ of the Emacs frame are recorded after they expire.
 :COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
 :END:
 
-
+Idle require is a tool for loading autoload functions, files or features during
+idle time. The reason for doing this is to ensure that in emacs loading of big
+packages like org-mode is snappy
 
 ***** init
 :PROPERTIES:
