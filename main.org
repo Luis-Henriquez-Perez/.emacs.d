@@ -4790,6 +4790,7 @@ great idea! It makes it really easy to see which parentheses go together.
 :REPO:     "Malabarba/aggressive-indent-mode"
 :PACKAGE:  "aggressive-indent"
 :LOCAL-REPO: "aggressive-indent-mode"
+:COMMIT:   b0ec0047aaae071ad1647159613166a253410a63
 :END:
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
@@ -4819,6 +4820,7 @@ it. It's pretty smart and very convenient.
 :REPO:     "lewang/ws-butler"
 :PACKAGE:  "ws-butler"
 :LOCAL-REPO: "ws-butler"
+:COMMIT:   52321b99be69aa1b661da7743c4421a30d8b6bcb
 :END:
 
 **** init
@@ -4871,6 +4873,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :REPO:     "Fuco1/smartparens"
 :PACKAGE:  "smartparens"
 :LOCAL-REPO: "smartparens"
+:COMMIT:   c59bfef7e8f1687ac77b0afaaaed86d8051d3de1
 :END:
 
 **** init
@@ -4945,6 +4948,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :REPO:     "noctuid/lispyville"
 :PACKAGE:  "lispyville"
 :LOCAL-REPO: "lispyville"
+:COMMIT:   0f13f26cd6aa71f9fd852186ad4a00c4294661cd
 :END:
 
 [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
@@ -5061,6 +5065,7 @@ Sometimes =evil-normal-state= enters visual state.
 :REPO:     "abo-abo/lispy"
 :PACKAGE:  "lispy"
 :LOCAL-REPO: "lispy"
+:COMMIT:   41f5574aefb69930d9bdcbe4e0cf642005369765
 :END:
 
 For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
@@ -5119,6 +5124,7 @@ very useful to me.
 :REPO:     "emacsmirror/spell-number"
 :PACKAGE:  "spell-number"
 :LOCAL-REPO: "spell-number"
+:COMMIT:   3ce612dce14326b2304f5272e86b10c16102acce
 :END:
 
 #+begin_src emacs-lisp
@@ -5139,6 +5145,7 @@ very useful to me.
 :REPO:     "davidshepherd7/aggressive-fill-paragraph-mode"
 :PACKAGE:  "aggressive-fill-paragraph"
 :LOCAL-REPO: "aggressive-fill-paragraph-mode"
+:COMMIT:   2d65d925318006e2f6fa261ad192fbc2d212877b
 :END:
 
 #+begin_src emacs-lisp
@@ -5245,6 +5252,7 @@ like that concern N number of things, where N could be 1 or more things.
 :REPO:     "emacs-evil/evil"
 :PACKAGE:  "evil"
 :LOCAL-REPO: "evil"
+:COMMIT:   32b2783d2cb7e093ac284fa6af9ceed8e4418826
 :END:
 
 [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
@@ -5751,6 +5759,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :REPO:     "bling/evil-visualstar"
 :PACKAGE:  "evil-visualstar"
 :LOCAL-REPO: "evil-visualstar"
+:COMMIT:   06c053d8f7381f91c53311b1234872ca96ced752
 :END:
 
 *** evil-visualstar
@@ -5779,6 +5788,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :REPO:     "magnars/expand-region.el"
 :PACKAGE:  "expand-region"
 :LOCAL-REPO: "expand-region.el"
+:COMMIT:   ea6b4cbb9985ddae532bd2faf9bb00570c9f2781
 :END:
 
 *** expand-region
@@ -5816,6 +5826,7 @@ larger text objects. It's saves me keystrokes.
 :REPO:     "abo-abo/avy"
 :PACKAGE:  "avy"
 :LOCAL-REPO: "avy"
+:COMMIT:   bbf1e7339eba06784dfe86643bb0fbddf5bb0342
 :END:
 
 [[https://github.com/abo-abo/avy][Avy]]
