@@ -4253,7 +4253,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 (setq ytel-invidious-api-url "https://invidious.snopyta.org")
 
-(void-system-ensure 'ytel '(youtube-dl curl))
+(void-system-ensure-package 'ytel '(youtube-dl curl))
 #+end_src
 
 *** watch video
