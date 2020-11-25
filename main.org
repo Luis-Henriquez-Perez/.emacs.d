@@ -4386,7 +4386,7 @@ functions. Engine mode seems to only be useful for binding keys.
   "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s")
 #+end_src
 
-** w3m
+** emacs-w3m
 :PROPERTIES:
 :ID: e5e13423-bc70-49b0-969e-94897c798d54
 :TYPE:     git
