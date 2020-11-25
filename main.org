@@ -4517,6 +4517,24 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
 
+*** ensure mpv is available
+:PROPERTIES:
+:ID:       259e8bfb-a896-4e8b-8c3b-e120d4f141b4
+:END:
+
+#+begin_src emacs-lisp
+(void-system-ensure)
+#+end_src
+
+*** commands
+:PROPERTIES:
+:ID:       a59fba5b-8687-4416-8ce8-a05dec352e0c
+:END:
+
+#+begin_src emacs-lisp
+(void-autoload)
+#+end_src
+
 *** settings
 :PROPERTIES:
 :ID:       3861c03d-b08e-463b-a28e-e88c191993fc
