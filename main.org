@@ -911,6 +911,7 @@ appropriate name to target.
 #+begin_src emacs-lisp
 (defun void/add-advice ()
   ""
+  (interactive)
   )
 #+end_src
 
