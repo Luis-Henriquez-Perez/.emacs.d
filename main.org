@@ -1373,16 +1373,14 @@ Don't ping things that look like domain names.
 (setq custom-theme-directory (concat VOID-LOCAL-DIR "themes/"))
 #+end_src
 
-**** url cache
+**** url
 :PROPERTIES:
 :ID: e4b5bfce-1111-48b2-bfee-da754974aa46
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! url
-  :setq
-  (url-cache-directory . (concat VOID-DATA-DIR "url/cache/"))
-  (url-configuration-directory . (concat VOID-DATA-DIR "url/configuration/")))
+(setq url-cache-directory (concat VOID-DATA-DIR "url/cache/"))
+(setq url-configuration-directory (concat VOID-DATA-DIR "url/configuration/"))
 #+end_src
 
 **** bytecomp
@@ -1391,10 +1389,8 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! bytecomp
-  :setq
-  (byte-compile-verbose . void-debug-p)
-  (byte-compile-warnings . '(not free-vars unresolved noruntime lexical make-local)))
+(setq byte-compile-verbose void-debug-p)
+(setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
 #+end_src
 
 **** compile
@@ -1403,11 +1399,9 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! compile
-  :setq-default
-  (compilation-always-kill . t)
-  (compilation-ask-about-save . nil)
-  (compilation-scroll-output . 'first-error))
+(setq compilation-always-kill . t)
+(setq compilation-ask-about-save . nil)
+(setq compilation-scroll-output . 'first-error)
 #+end_src
 
 **** uniquify
