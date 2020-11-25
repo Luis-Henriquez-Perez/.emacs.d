@@ -1368,21 +1368,25 @@ installed or not. Therefore, I advise straight to log this information for me.
 
 **** calc
 :PROPERTIES:
+:ID:       98c0a8c7-2dc1-4285-9b7b-146bbc2867ae
+:END:
+
+***** calc
+:PROPERTIES:
 :ID:       a9617132-5112-4099-bc99-3abee4919bc7
+:TYPE:     built-in
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! calc
-  :custom
-  (math-additional-units
-   '((GiB "1024 * MiB" "Giga Byte")
-     (MiB "1024 * KiB" "Mega Byte")
-     (KiB "1024 * B" "Kilo Byte")
-     (B nil "Byte")
-     (Gib "1024 * Mib" "Giga Bit")
-     (Mib "1024 * Kib" "Mega Bit")
-     (Kib "1024 * b" "Kilo Bit")
-     (b "B / 8" "Bit"))))
+(general-setq math-additional-units
+              '((GiB "1024 * MiB" "Giga Byte")
+                (MiB "1024 * KiB" "Mega Byte")
+                (KiB "1024 * B" "Kilo Byte")
+                (B nil "Byte")
+                (Gib "1024 * Mib" "Giga Bit")
+                (Mib "1024 * Kib" "Mega Bit")
+                (Kib "1024 * b" "Kilo Bit")
+                (b "B / 8" "Bit")))
 #+end_src
 
 **** vc-hook
