@@ -1059,7 +1059,8 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 :END:
 
 There are some advices that I tend to use over and over again which do not lend
-themselves to
+themselves to =defadvice!= which is designed for the one-time declaration of an
+advice.
 
 ***** boost gc-cons-threshold
 :PROPERTIES:
