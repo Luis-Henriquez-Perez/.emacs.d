@@ -1236,8 +1236,9 @@ unbinds itself, loads the specified package, then calls the real function.
 
 #+begin_src emacs-lisp
 (defun void-autoload (package fn)
-  "Autoload FN."
+  "Create a function that can be called."
   (fset name `(lambda (&rest args)
+                (interactive)
                 ;; find the base advice.
                 (-each (list (void-advice-true-name name) ())
                   #'fmakunbound)
