@@ -3677,6 +3677,15 @@ of things that we actually want at this moment.
 :COMMIT:   e56eeef6e11909ccd62aa7250867dce803706d2c
 :END:
 
+**** init
+:PROPERTIES:
+:ID:       9702810e-2013-4c41-ba12-0b55de6ceb38
+:END:
+
+#+begin_src emacs-lisp
+(void-load-on-call 'orderless ')
+#+end_src
+
 **** orderless
 :PROPERTIES:
 :ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
