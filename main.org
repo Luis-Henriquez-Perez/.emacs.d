@@ -4069,17 +4069,21 @@ therefore, has the most support (in the form of setup blogs and packages).
 :END:
 
 #+begin_src emacs-lisp
-(use-package! mu4e
-  :straight nil
-  :system-ensure mu
-  :load-path "/usr/share/emacs/site-lisp/mu4e/"
-  :commands mu4e
-  :setq
-  (mu4e-header-fields . '((:human-date . 12)
-                          (:flags . 4)
-                          (:from . 25)
-                          (:subject)))
-  (mu4e-html2text-command . (if (executable-find "w3m") "w3m -dump -T text/html" #'mu4e-shr2text)))
+(setq mu4e-header-fields '((:human-date . 12)
+                           (:flags . 4)
+                           (:from . 25)
+                           (:subject)))
+
+(setq mu4e-html2text-command
+      (if (executable-find "w3m") "w3m -dump -T text/html" #'mu4e-shr2text))
+
+;; (use-package! mu4e
+;;   :straight nil
+;;   :system-ensure mu
+;;   :load-path "/usr/share/emacs/site-lisp/mu4e/"
+;;   :commands mu4e
+;;   :setq
+;;   )
 #+end_src
 
 *** TODO setup mu4e
