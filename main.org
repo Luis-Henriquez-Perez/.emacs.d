@@ -5216,8 +5216,7 @@ very useful to me.
 It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capitalize-words]].
 
 #+begin_src emacs-lisp
-(use-package! auto-capitalize
-  :setq (auto-capitalize-words . '("I" "English")))
+(auto-capitalize-words . '("I" "English"))
 #+end_src
 
 *** powerthesaurus
