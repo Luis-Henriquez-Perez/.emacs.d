@@ -3205,14 +3205,6 @@ use a typical window manager, you have to.
 
 *** init
 :PROPERTIES:
-:ID:       cc51646a-ab29-4544-ae69-5968d43491a3
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-*** hide the modeline
-:PROPERTIES:
 :ID:       581b8529-00a0-4935-9363-60dba9dbe5f4
 :END:
 
