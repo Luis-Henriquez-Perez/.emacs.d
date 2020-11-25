@@ -7426,6 +7426,18 @@ Saving files like this reduces the likelihood of user delays.
 (setq super-save-auto-save-when-idle t)
 #+end_src
 
+** goto-chg
+:PROPERTIES:
+:ID:       443c36b7-f75f-41cb-91e5-b474f7f5ff7d
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "emacs-evil/goto-chg"
+:PACKAGE:  "goto-chg"
+:LOCAL-REPO: "goto-chg"
+:COMMIT:   5c057c8623abadf7fd57ce625843435d231f2739
+:END:
+
 * Languages
 :PROPERTIES:
 :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
