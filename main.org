@@ -863,7 +863,7 @@ Advice name is of the form FN@ADVICE."
 :ID:       3ab8947c-15f0-4fb7-bd75-f0baabc20ec1
 :END:
 
-***** adding advice
+***** helper
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
 :END:
@@ -901,6 +901,17 @@ appropriate name to target.
   (dolist (hook hooks)
     (dolist (fn functions)
       (void--add-advice hook fn))))
+#+end_src
+
+***** interactively
+:PROPERTIES:
+:ID:       f9c9bf89-56ca-43c5-816d-88311e9b9bad
+:END:
+
+#+begin_src emacs-lisp
+(defun void/add-advice ()
+  ""
+  )
 #+end_src
 
 **** advice action
