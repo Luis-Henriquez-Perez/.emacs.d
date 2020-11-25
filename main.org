@@ -5277,6 +5277,7 @@ like that concern N number of things, where N could be 1 or more things.
 :END:
 
 #+begin_src emacs-lisp
+(void-autoload)
 #+end_src
 
 **** plural
