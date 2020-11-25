@@ -1389,8 +1389,7 @@ installed or not. Therefore, I advise straight to log this information for me.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr-x
-  :demand t)
+(require 'subr-x)
 #+end_src
 
 **** startup
