@@ -1558,18 +1558,20 @@ as a dependency, I'd end up rewriting many of its functions.
 :ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
 :END:
 
-#+begin_src emacs-lisp
-(require 'dash)
-#+end_src
-
-**** dash-functional
+***** init
 :PROPERTIES:
 :ID:       4be107b5-b756-4372-9f74-655bda941b75
 :END:
 
 #+begin_src emacs-lisp
+(require 'dash)
 (require 'dash-functional)
 #+end_src
+
+***** set font lock
+:PROPERTIES:
+:ID:       ed2dd8e0-1084-4ac9-8f4c-41a7002261ef
+:END:
 
 **** general
 :PROPERTIES:
