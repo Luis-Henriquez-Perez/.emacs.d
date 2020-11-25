@@ -2465,7 +2465,7 @@ of big packages like org-mode is snappy.
 :END:
 
 When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
-start loading.
+start loading. [[][]] is the break between
 
 #+begin_src emacs-lisp
 (setq idle-require-load-break 2)
