@@ -4538,15 +4538,6 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-autoload-commands (package commands)
-  "Autoload COMMANDS for package."
-  (--each commands
-    (unless (foundp it)
-      (autoload it (symbol-name package)))))
-
-(defun void-ensure-system-package-on-load (package &rest system-packages)
-  )
-
 (use-package! emms
   :system-ensure mpv
   :commands (emms emms-play-directory emms-play-file)
