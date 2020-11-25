@@ -1395,6 +1395,7 @@ installed or not. Therefore, I advise straight to log this information for me.
 **** startup
 :PROPERTIES:
 :ID: 9725b7e0-54b8-4ab4-aa00-d950345d0aea
+:TYPE:     built-in
 :END:
 
 Emacs starts up with a default screen. Note that it doesn't seem this feature is
