@@ -3984,6 +3984,10 @@ therefore, has the most support (in the form of setup blogs and packages).
 :ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
 :END:
 
+Mu4e's org integration lets you write emails in org mode and convert it to html
+before sending--very interesting indeed. I have yet to explore this feature but
+it is definitely on my list of things to try out.
+
 **** init
 :PROPERTIES:
 :ID:       47c8d5d8-575f-4b73-9247-38f32cb706fd
@@ -4001,19 +4005,8 @@ therefore, has the most support (in the form of setup blogs and packages).
 :ID: 9045b0f5-af8c-481e-914e-a19c4bbf2941
 :END:
 
-Mu4e's org integration lets you write emails in org mode and convert it to html
-before sending--very interesting indeed. I have yet to explore this feature but
-it is definitely on my list of things to try out.
-
 #+begin_src emacs-lisp
-(use-package! org-mu4e
-  :hook (mu4e-compose-mode . org-mu4e-compose-org-mode)
-  :setq
-  :config
-  ;; Only render to html once. If the first send fails for whatever reason,
-  ;; org-mu4e would do so each time you try again.
-  (defhook! org-mu4e-render-html-only-once (message-send-hook)
-    (setq-local org-mu4e-convert-to-html nil)))
+(use-package! org-mu4e)
 #+end_src
 
 *** multiple accounts
