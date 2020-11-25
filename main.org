@@ -4661,16 +4661,19 @@ capturing the prompt for the filename (like in [[][this example]]).
       (run-with-timer 1 nil it))))
 #+end_src
 
-** gifs
+** gif-screencast
 :PROPERTIES:
 :ID: 28387a67-7037-47ce-97c9-c35d77f7cb22
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "Ambrevar/emacs-gif-screencast"
+:PACKAGE:  "gif-screencast"
+:LOCAL-REPO: "emacs-gif-screencast"
+:COMMIT:   e39786458fb30e2e9683094c75c6c2cef537d9c4
 :END:
 
 This package allows for the creation of gifs from within emacs.
-
-#+begin_src emacs-lisp
-(use-package! gif-screencast)
-#+end_src
 
 ** keypression                                                        :disabled:
 :PROPERTIES:
