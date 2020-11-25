@@ -1224,62 +1224,6 @@ from pulling (or failing to pull) in autoloaded macros/features.
 :ID:       001dde5a-bb43-4ce8-82ef-806e37ba7f6e
 :END:
 
-***** pair value extraction
-:PROPERTIES:
-:ID: e546a63f-eb75-4b72-9392-2a6041f87f50
-:END:
-
-When extracting one value from a plist, alist or another lisp data structure at
-a time, it often suffices to use =plist-get=, =alist-get= or whatever function
-is used to get a particular value based on the structure. Sometimes, however, we
-need to get and use many values from the data structure. And in these cases it
-becomes repetative to have to do ~(plist-get plist key)~ all the time.
-
-****** with-structure!
-:PROPERTIES:
-:ID: c88dac35-9345-49f5-bdb5-e856071e6764
-:END:
-
-#+begin_src emacs-lisp
-(defmacro with-structure! (structure fn &rest body)
-  "Access items from STRUCTURE.
-FN is a function that accepts two arguments, the structure and a symbol name. FN
-should return the value of structure for that symbol.
-BODY contains any number of `<NAME>' where NAME refers to the name of the symbol."
-  (declare (indent 2))
-  (let* ((symbols (->> (flatten-list body)
-                       (-filter #'void-anaphoric-symbol-p)
-                       (-uniq)))
-         (names (-map #'void-anaphoric-true-symbol symbols))
-         (structure-sym (make-symbol "structure")))
-    `(let* ((,structure-sym ,structure)
-            ,@(--map `(,it (funcall ,fn ,structure-sym ',it))
-                     (-zip #'list symbols names)))
-       ,@body)))
-#+end_src
-
-****** with-plist!
-:PROPERTIES:
-:ID: f84e30a9-b725-415e-b1df-7b4489913d2c
-:END:
-
-#+begin_src emacs-lisp
-(defmacro with-plist! (plist &rest body)
-  (declare (indent 1))
-  `(with-structure! ,plist #'plist-get ,@body))
-#+end_src
-
-****** with-alist!
-:PROPERTIES:
-:ID: d594c666-0ec1-4c72-9159-5ddea9702d03
-:END:
-
-#+begin_src emacs-lisp
-(defmacro with-alist! (alist &rest body)
-  (declare (indent 1))
-  `(with-structure! ,alist (lambda (key) (alist-get key alist)) ,@body))
-#+end_src
-
 **** list mutation
 :PROPERTIES:
 :ID:       d9f77404-5c29-4305-ae53-e409e1b06b99
