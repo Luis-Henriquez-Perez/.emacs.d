@@ -2446,8 +2446,8 @@ of the Emacs frame are recorded after they expire.
 
 Idle require is a tool for loading autoload functions, files or features during
 idle time. The way to use this is to idle-require many small packages that
-individually don't take too much time is to ensure that in emacs loading of big
-packages like org-mode is snappy.
+individually don't take too much time. This helps ensure that in emacs loading
+of big packages like org-mode is snappy.
 
 ***** init
 :PROPERTIES:
