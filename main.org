@@ -2487,7 +2487,7 @@ start loading.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-advice)
+(void-add-advice #'idle-require-load-next #'void--boost-garbage-collection)
 #+end_src
 
 **** =tty=
