@@ -3596,10 +3596,10 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(selectrum-fix-minibuffer-height . t)
-(selectrum-should-sort-p . t)
-(selectrum-count-style . nil)
-(selectrum-num-candidates-displayed . 15)
+(setq selectrum-fix-minibuffer-height t)
+(setq selectrum-should-sort-p t)
+(setq selectrum-count-style nil)
+(setq selectrum-num-candidates-displayed 15)
 #+end_src
 
 *** ensure certain functions dont sort
