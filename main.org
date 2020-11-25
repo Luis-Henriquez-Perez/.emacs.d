@@ -3357,16 +3357,24 @@ functions which open external linux applications.
 (use-package! exwm
   :hook (exwm-mode . hide-mode-line-mode)
   :before-call browse-url
-  :setq (exwm-replace . nil)
-  :config
-  (exwm-init)
-  ;; Enable the clipboard.
-  (require 'exwm-systemtray)
-  (exwm-systemtray-enable))
+  :setq (exwm-replace . nil))
 
 (defhook! setup-hide-mode-line (exwm-mode-hook)
   (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
   (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
+#+end_src
+
+*** start it
+:PROPERTIES:
+:ID:       bcfbb2b7-527d-4fdb-97f2-6d824bc9e94c
+:END:
+
+#+begin_src emacs-lisp
+(after! exwm
+  (exwm-init)
+  ;; Enable the clipboard.
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable))
 #+end_src
 
 *** org capture from an exwm buffer
