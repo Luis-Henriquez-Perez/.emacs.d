@@ -3984,6 +3984,14 @@ therefore, has the most support (in the form of setup blogs and packages).
 :ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
 :END:
 
+**** init
+:PROPERTIES:
+:ID:       47c8d5d8-575f-4b73-9247-38f32cb706fd
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** org mu4e
 :PROPERTIES:
 :ID: 9045b0f5-af8c-481e-914e-a19c4bbf2941
@@ -3995,7 +4003,6 @@ it is definitely on my list of things to try out.
 
 #+begin_src emacs-lisp
 (use-package! org-mu4e
-  :disabled t
   :hook (mu4e-compose-mode . org-mu4e-compose-org-mode)
   :setq
   (org-mu4e-link-query-in-headers-mode . nil)
