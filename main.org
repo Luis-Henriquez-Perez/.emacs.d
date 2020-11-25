@@ -2453,7 +2453,6 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(setq idle-update-delay 7)
 (setq idle-require-load-break 2)
 #+end_src
 
