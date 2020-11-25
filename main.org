@@ -1058,6 +1058,8 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 :ID:       d5743200-e27c-4702-833b-6690613cadb5
 :END:
 
+There are some advices that I tend to use over and over again.
+
 ***** boost gc-cons-threshold
 :PROPERTIES:
 :ID:       41e763bd-215f-4176-95c1-f41261864671
