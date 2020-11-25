@@ -4572,7 +4572,7 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 :END:
 
 #+begin_src emacs-lisp
-:setq (hs-hide-comments-when-hiding-all . nil)
+(setq hs-hide-comments-when-hiding-all nil)
 #+end_src
 
 ** rainbow-delimiters
