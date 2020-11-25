@@ -1150,17 +1150,6 @@ I want a shorthand for advices.
                 )))
 #+end_src
 
-*** create alist
-:PROPERTIES:
-:ID:       efc32e52-25da-4acb-ac86-81834d046ed9
-:END:
-
-#+begin_src emacs-lisp
-(defun void-alist (&rest key-values)
-  ""
-  ())
-#+end_src
-
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
