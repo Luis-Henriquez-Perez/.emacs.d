@@ -3990,6 +3990,10 @@ therefore, has the most support (in the form of setup blogs and packages).
 :END:
 
 #+begin_src emacs-lisp
+(void-add-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+
+(setq org-mu4e-link-query-in-headers-mode nil)
+(setq org-mu4e-convert-to-html t)
 #+end_src
 
 **** org mu4e
@@ -4005,8 +4009,6 @@ it is definitely on my list of things to try out.
 (use-package! org-mu4e
   :hook (mu4e-compose-mode . org-mu4e-compose-org-mode)
   :setq
-  (org-mu4e-link-query-in-headers-mode . nil)
-  (org-mu4e-convert-to-html . t)
   :config
   ;; Only render to html once. If the first send fails for whatever reason,
   ;; org-mu4e would do so each time you try again.
