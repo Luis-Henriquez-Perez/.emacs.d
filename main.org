@@ -3904,20 +3904,20 @@ therefore, has the most support (in the form of setup blogs and packages).
 :END:
 
 #+begin_src emacs-lisp
-(mu4e-completing-read-function . #'completing-read)
-(mu4e-view-show-addresses . t)
-(mu4e-view-show-images . t)
-(mu4e-view-image-max-width . 800)
-(mu4e-compose-signature-auto-include . t)
-(mu4e-compose-format-flowed . t)
-(mu4e-get-mail-command . "mbsync -a")
-(mu4e-index-cleanup . t)
-(mu4e-index-lazy-check . nil)
-(mu4e-update-interval . 180)
-(mu4e-headers-auto-update . t)
-(mu4e-context-policy . 'pick-first)
-(mu4e-compose-context-policy . 'ask-if-none)
-(mu4e-confirm-quit . nil)
+(setq mu4e-completing-read-function #'completing-read)
+(setq mu4e-view-show-addresses t)
+(setq mu4e-view-show-images t)
+(setq mu4e-view-image-max-width 800)
+(setq mu4e-compose-signature-auto-include t)
+(setq mu4e-compose-format-flowed t)
+(setq mu4e-get-mail-command "mbsync -a")
+(setq mu4e-index-cleanup t)
+(setq mu4e-index-lazy-check nil)
+(setq mu4e-update-interval 180)
+(setq mu4e-headers-auto-update t)
+(setq mu4e-context-policy 'pick-first)
+(setq mu4e-compose-context-policy 'ask-if-none)
+(setq mu4e-confirm-quit nil)
 #+end_src
 
 *** mu4e
