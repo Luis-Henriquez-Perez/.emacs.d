@@ -1078,7 +1078,7 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 
 #+begin_src emacs-lisp
 (defun void--use-void-log (orign-fn &rest args)
-  (noflet ((message (&rest argz) (void-log argz)))
+  (noflet ((message (&rest args) (void-log args)))
     (apply orign-fn args)))
 #+end_src
 
