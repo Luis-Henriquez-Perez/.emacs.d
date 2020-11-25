@@ -1081,6 +1081,8 @@ add them.
 :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
 :END:
 
+Packages like [[][]] come with their own output.
+
 #+begin_src emacs-lisp
 (defun void--use-void-log (orign-fn &rest args)
   (noflet ((message (&rest args) (void-log args)))
