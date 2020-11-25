@@ -3692,8 +3692,10 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(void-load-on-call 'orderless
-                   (list #'orderless-filter #'orderless-highlight-matches))
+(--each (list #'orderless-filter #'orderless-highlight-matches)
+  (void-autoload 'orderless it))
+;; (void-autoload 'orderless
+;;                (list #'orderless-filter #'orderless-highlight-matches))
 #+end_src
 
 **** use orderless filters
