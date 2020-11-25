@@ -1232,7 +1232,7 @@ SYM is a symbol that stores a list."
 :END:
 
 Instead of loading all features on startup, we want to load features only when
-we need them--just in time. The purpose of =load-before-call=
+we need them--just in time.
 
 **** load-on-call
 :PROPERTIES:
