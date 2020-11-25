@@ -2447,12 +2447,12 @@ of the Emacs frame are recorded after they expire.
 (void-add-hook 'emacs-startup-hook #'idle-require-mode)
 #+end_src
 
-***** settings
+**** settings
 :PROPERTIES:
 :ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
 :END:
 
-When emacs goes idle [[][]]
+When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds,
 
 #+begin_src emacs-lisp
 (setq idle-require-load-break 2)
