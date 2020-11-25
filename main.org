@@ -1083,20 +1083,19 @@ from pulling (or failing to pull) in autoloaded macros/features.
 (defmacro after! (features &rest body)
   "Wrapper around `with-eval-after-load'."
   (declare (indent defun) (debug t))
-  (pcase (car-safe features)
-    ('or
-     (macroexp-progn
-      (--map `(after! ,it ,@body) (cdr features))))
-    ('and
-     (void-wrap-form (--map `(after! ,it) (cdr features))
-                     (macroexp-progn body)))
-    ((guard (listp features))
-     `(after! ,(cons 'and features) ,@body))
-    ((pred symbolp)
-     `(if (featurep ',features)
-          ,(macroexp-progn body)
-        (eval-after-load! ,features ,@body)))
-    (_ (error "Invalid argument."))))
+  (cond ((eq 'or it)
+         (macroexp-progn
+          (--map `(after! ,it ,@body) (cdr features))))
+        ((eq 'and it)
+         (void-wrap-form (--map `(after! ,it) (cdr features))
+                         (macroexp-progn body)))
+        ((lisp features)
+         `(after! ,(cons 'and features) ,@body))
+        ((symbolp features)
+         `(if (featurep ',features)
+              ,(macroexp-progn body)
+            (eval-after-load! ,features ,@body)))
+        (t (error "Invalid argument."))))
 #+end_src
 
 *** macros
