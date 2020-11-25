@@ -3534,13 +3534,11 @@ Emacs's text editing capabilities on it.
 :END:
 
 #+begin_src emacs-lisp
-(void-autoload (list ))
-buffer-expose
-buffer-expose-no-stars
-buffer-expose-major-mode
-buffer-expose-dired-buffers
-buffer-expose-stars
-buffer-expose-current-mode
+(alet (list #'buffer-expose #'buffer-expose-no-stars #'buffer-expose-major-mode
+            #'buffer-expose-dired-buffers #'buffer-expose-stars
+            #'buffer-expose-current-mode)
+  (void-autoload 'buffer-expose it))
+
 #+end_src
 
 *** setq
