@@ -4511,6 +4511,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :REPO:     "https://git.savannah.gnu.org/git/emms.git"
 :PACKAGE:  "emms"
 :LOCAL-REPO: "emms"
+:COMMIT:   94019bb34c56341e66b14c41ff706273e039f525
 :END:
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
@@ -4759,6 +4760,7 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 :REPO:     "Fanael/rainbow-delimiters"
 :PACKAGE:  "rainbow-delimiters"
 :LOCAL-REPO: "rainbow-delimiters"
+:COMMIT:   f43d48a24602be3ec899345a3326ed0247b960c6
 :END:
 
 *** init
