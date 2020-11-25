@@ -3981,6 +3981,11 @@ therefore, has the most support (in the form of setup blogs and packages).
 
 *** org mu4e
 :PROPERTIES:
+:ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
+:END:
+
+**** org mu4e
+:PROPERTIES:
 :ID: 9045b0f5-af8c-481e-914e-a19c4bbf2941
 :END:
 
