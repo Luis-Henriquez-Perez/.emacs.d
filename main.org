@@ -1540,6 +1540,16 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :END:
 
 **** dash
+:PROPERTIES:
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("dash.el" "dash.texi" "dash-pkg.el")
+:HOST:     github
+:REPO:     "magnars/dash.el"
+:PACKAGE:  "dash"
+:LOCAL-REPO: "dash.el"
+:COMMIT:   0f238a9a466879ee96e5db0482019453718f342d
+:END:
 
 Dash is an excellent functional list manipulation library. If I did not use it
 as a dependency, I'd end up rewriting many of its functions.
