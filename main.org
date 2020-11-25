@@ -3503,6 +3503,7 @@ Emacs's text editing capabilities on it.
 
 #+begin_src emacs-lisp
 (void-add-hook 'exwm-manage-finish-hook #'exwm-firefox-evil-activate-if-firefox)
+(void-autoload 'exwm-firefox 'exwm-firefox-evil-activate-if-firefox)
 #+end_src
 
 **** add appropriate prefix keys
