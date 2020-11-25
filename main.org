@@ -1256,7 +1256,7 @@ These are *extremely* important lines if you use an external program as I do
 think you want to use =smtp=.
 
 #+begin_src emacs-lisp
-(setq-default disabled-command-function . nil)
+(setq-default disabled-command-function nil)
 #+end_src
 
 **** files
