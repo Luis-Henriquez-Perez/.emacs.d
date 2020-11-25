@@ -5282,16 +5282,24 @@ like that concern N number of things, where N could be 1 or more things.
 
 **** plural
 :PROPERTIES:
+:ID:       55e3bd54-336f-4a9f-be87-fa16b4549c94
+:END:
+
+#+begin_src emacs-lisp
+(push (cons (rx bos "is" eos) "are") plural-knowledge)
+(push (cons (rx bos "thas" eos) "those") plural-knowledge)
+(push (cons (rx bos "this" eos) "these") plural-knowledge)
+#+end_src
+
+**** plural
+:PROPERTIES:
 :ID:       71162148-f2ee-4f38-a2bf-eede4ed17762
 :END:
 
 #+begin_src emacs-lisp
 (use-package plural
   :commands (plural-make-plural)
-  :config
-  (push (cons (rx bos "is" eos) "are") plural-knowledge)
-  (push (cons (rx bos "thas" eos) "those") plural-knowledge)
-  (push (cons (rx bos "this" eos) "these") plural-knowledge))
+  :config)
 #+end_src
 
 ** evil
