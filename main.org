@@ -1001,6 +1001,11 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 :END:
 
 #+begin_src emacs-lisp
+(defun void--boost-gargbage-collection-advice (orign-fn &rest args)
+  "Boost garbage collection for the duration of ORIGN-FN."
+  (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+        (gc-cons-percentage VOID-GC-CONS-PERCENTAGE-MAX))
+    (apply orign-fn args)))
 #+end_src
 
 ***** use =void-log= instead of =message=
