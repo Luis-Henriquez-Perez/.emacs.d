@@ -3684,20 +3684,8 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (void-load-on-call 'orderless ')
-#+end_src
 
-**** orderless
-:PROPERTIES:
-:ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
-:END:
-
-#+begin_src emacs-lisp
-(use-package! orderless
-  :before-call (orderless-filter orderless-highlight-matches)
-  :init
-  (after! selectrum
-    (setq selectrum-refine-candidates-function #'orderless-filter)
-    (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)))
+:before-call (orderless-filter orderless-highlight-matches)
 #+end_src
 
 **** stop selectrum filtering and highlight
