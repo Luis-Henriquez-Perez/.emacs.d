@@ -1236,7 +1236,8 @@ we need them--just in time. And by "just in time" I mean at the last possible
 moment or in practice just before a function that uses this feature is called.
 While I could use =defadvice!= for defining these advices, doing this would
 quickly become repetative because it's something that is done so often in
-package configuration.
+package configuration. The function =before-call= and =after-call= provide a fast
+and convenient way to do this.
 
 **** load-on-call
 :PROPERTIES:
