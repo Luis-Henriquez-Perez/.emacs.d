@@ -3961,26 +3961,22 @@ therefore, has the most support (in the form of setup blogs and packages).
 
 *** mu4e headers
 :PROPERTIES:
-:ID: 8b59c5bb-180c-461e-9b1a-4a0c95cb7671
+:ID:       8bc93633-f3a0-494d-ae61-c05f6490cd87
 :END:
 
 #+begin_src emacs-lisp
-(use-package! mu4e-headers
-  :straight nil
-  :after mu4e
-  :setq
-  (mu4e-use-fancy-chars . t)
-  (mu4e-headers-draft-mark     . (cons "D" (all-the-icons-faicon "pencil")))
-  (mu4e-headers-flagged-mark   . (cons "F" (all-the-icons-faicon "flag")))
-  (mu4e-headers-new-mark       . (cons "N" (all-the-icons-material "fiber_new")))
-  (mu4e-headers-passed-mark    . (cons "P" (all-the-icons-faicon "arrow-right")))
-  (mu4e-headers-seen-mark      . (cons "S" (all-the-icons-faicon "eye")))
-  (mu4e-headers-attach-mark    . (cons "a" (all-the-icons-material "attach_file")))
-  (mu4e-headers-replied-mark   . (cons "R" (all-the-icons-faicon "reply")))
-  (mu4e-headers-unread-mark    . (cons "u" (all-the-icons-faicon "eye-slash")))
-  (mu4e-headers-encrypted-mark . (cons "x" (all-the-icons-octicon "lock")))
-  (mu4e-headers-signed-mark    . (cons "s" (all-the-icons-faicon "certificate")))
-  (mu4e-headers-trash-mark     . (cons "T" (all-the-icons-faicon "trash"))))
+(mu4e-use-fancy-chars . t)
+(mu4e-headers-draft-mark     . (cons "D" (all-the-icons-faicon "pencil")))
+(mu4e-headers-flagged-mark   . (cons "F" (all-the-icons-faicon "flag")))
+(mu4e-headers-new-mark       . (cons "N" (all-the-icons-material "fiber_new")))
+(mu4e-headers-passed-mark    . (cons "P" (all-the-icons-faicon "arrow-right")))
+(mu4e-headers-seen-mark      . (cons "S" (all-the-icons-faicon "eye")))
+(mu4e-headers-attach-mark    . (cons "a" (all-the-icons-material "attach_file")))
+(mu4e-headers-replied-mark   . (cons "R" (all-the-icons-faicon "reply")))
+(mu4e-headers-unread-mark    . (cons "u" (all-the-icons-faicon "eye-slash")))
+(mu4e-headers-encrypted-mark . (cons "x" (all-the-icons-octicon "lock")))
+(mu4e-headers-signed-mark    . (cons "s" (all-the-icons-faicon "certificate")))
+(mu4e-headers-trash-mark     . (cons "T" (all-the-icons-faicon "trash")))
 #+end_src
 
 *** org mu4e
