@@ -1124,6 +1124,15 @@ I want a shorthand for advices.
   "Load packages before FUNCTIONS are called."
   (fset ' `(lambda () (require ',package)))
   (void-add-advice () :before nil t))
+
+;; Logic for autoloading is this.
+(defun void-autoload (package fn)
+  "Autoload functions."
+  (fset name `(lambda (&rest args)
+                (fmakunbound #',name)
+                (require package)
+                (call-interactively #',name)
+                )))
 #+end_src
 
 ** Packages
