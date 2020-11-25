@@ -4112,18 +4112,18 @@ therefore, has the most support (in the form of setup blogs and packages).
 :END:
 
 #+begin_src emacs-lisp
-(mu4e-use-fancy-chars . t)
-(mu4e-headers-draft-mark     . (cons "D" (all-the-icons-faicon "pencil")))
-(mu4e-headers-flagged-mark   . (cons "F" (all-the-icons-faicon "flag")))
-(mu4e-headers-new-mark       . (cons "N" (all-the-icons-material "fiber_new")))
-(mu4e-headers-passed-mark    . (cons "P" (all-the-icons-faicon "arrow-right")))
-(mu4e-headers-seen-mark      . (cons "S" (all-the-icons-faicon "eye")))
-(mu4e-headers-attach-mark    . (cons "a" (all-the-icons-material "attach_file")))
-(mu4e-headers-replied-mark   . (cons "R" (all-the-icons-faicon "reply")))
-(mu4e-headers-unread-mark    . (cons "u" (all-the-icons-faicon "eye-slash")))
-(mu4e-headers-encrypted-mark . (cons "x" (all-the-icons-octicon "lock")))
-(mu4e-headers-signed-mark    . (cons "s" (all-the-icons-faicon "certificate")))
-(mu4e-headers-trash-mark     . (cons "T" (all-the-icons-faicon "trash")))
+(setq mu4e-use-fancy-chars t)
+(setq mu4e-headers-draft-mark     (cons "D" (all-the-icons-faicon "pencil")))
+(setq mu4e-headers-flagged-mark   (cons "F" (all-the-icons-faicon "flag")))
+(setq mu4e-headers-new-mark       (cons "N" (all-the-icons-material "fiber_new")))
+(setq mu4e-headers-passed-mark    (cons "P" (all-the-icons-faicon "arrow-right")))
+(setq mu4e-headers-seen-mark      (cons "S" (all-the-icons-faicon "eye")))
+(setq mu4e-headers-attach-mark    (cons "a" (all-the-icons-material "attach_file")))
+(setq mu4e-headers-replied-mark   (cons "R" (all-the-icons-faicon "reply")))
+(setq mu4e-headers-unread-mark    (cons "u" (all-the-icons-faicon "eye-slash")))
+(setq mu4e-headers-encrypted-mark (cons "x" (all-the-icons-octicon "lock")))
+(setq mu4e-headers-signed-mark    (cons "s" (all-the-icons-faicon "certificate")))
+(setq mu4e-headers-trash-mark     (cons "T" (all-the-icons-faicon "trash")))
 #+end_src
 
 *** org-mu4e
