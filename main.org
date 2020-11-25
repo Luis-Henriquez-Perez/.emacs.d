@@ -4249,7 +4249,7 @@ information such as music, videos, images, and gifs.
 YouTube search results into a buffer and manipulate them with emacs lisp.
 
 #+begin_src emacs-lisp
-(void-autoload #'ytel 'ytel)
+(void-autoload 'ytel #'ytel)
 
 (setq ytel-invidious-api-url "https://invidious.snopyta.org")
 
