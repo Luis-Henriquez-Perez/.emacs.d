@@ -2479,7 +2479,7 @@ require loads.
 :END:
 
 #+begin_src emacs-lisp
-()
+(advice-add #'idle-require-load-next :around #'void--use-void-log)
 #+end_src
 
 ***** increase gc-cons-threshold during idle loading                  :disabled:
