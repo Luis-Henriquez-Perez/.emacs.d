@@ -3688,6 +3688,17 @@ of things that we actually want at this moment.
 :before-call (orderless-filter orderless-highlight-matches)
 #+end_src
 
+**** orderless
+:PROPERTIES:
+:ID:       2c707079-0dfe-4909-81af-0d5fa215cff4
+:END:
+
+#+begin_src emacs-lisp
+(use-package! orderless
+  :init
+  (after! selectrum))
+#+end_src
+
 **** stop selectrum filtering and highlight
 :PROPERTIES:
 :ID:       a6720cdc-9d51-463b-9ffe-f9341c6bd967
