@@ -1206,10 +1206,12 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
-*** autoload
+*** autoloading
 :PROPERTIES:
 :ID:       e648ce0e-bb00-452d-9498-236c65e3a873
 :END:
+
+Emacs has a built-in [[][autoloading facility]]. I don't use that because it is
 
 #+begin_src emacs-lisp
 ;; Logic for autoloading is this.
