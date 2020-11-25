@@ -5349,10 +5349,8 @@ This is better than evil escape as it only binds in insert.
 :END:
 
 #+begin_src emacs-lisp
-(--each (list #'evil-insert-state #'evil-emacs-state)
+(alet (list #'evil-insert-state #'evil-emacs-state)
   (void-load-before-call 'keychord it))
-;; (void-load-before-call 'keychord
-;;                        (list #'evil-insert-state #'evil-emacs-state))
 #+end_src
 
 ****** be quiet when turning on
