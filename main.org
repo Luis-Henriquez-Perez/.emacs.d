@@ -1425,6 +1425,7 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 **** clipboard
 :PROPERTIES:
 :ID: 60abb076-89b1-439b-8198-831b2df47782
+:TYPE:     built-in
 :END:
 
 #+begin_src emacs-lisp
