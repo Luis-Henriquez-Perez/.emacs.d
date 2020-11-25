@@ -309,6 +309,19 @@ structures. It was built for.
 
 =ts= is a time package.
 
+*** ht
+:PROPERTIES:
+:ID:       dc6ceb3b-8946-4649-8164-38bc5e4d2ab5
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("ht.el" "ht-pkg.el")
+:HOST:     github
+:REPO:     "Wilfred/ht.el"
+:PACKAGE:  "ht"
+:LOCAL-REPO: "ht.el"
+:COMMIT:   fff8c43f0e03d5b98deb9f988522b839ce2ca253
+:END:
+
 *** macro writing tools
 :PROPERTIES:
 :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
