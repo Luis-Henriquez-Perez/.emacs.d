@@ -452,6 +452,7 @@ structures. It was built for.
 :repo:     "alphapapa/ts.el"
 :package:  "ts"
 :local-repo: "ts.el"
+:COMMIT:   df48734ef046547c1aa0de0f4c07d11964ef1f7f
 :END:
 
 =ts= is a time package.
