@@ -4240,7 +4240,7 @@ information such as music, videos, images, and gifs.
 :COMMIT:   d80c7964ec66589d5580fc13773e94f1834ab76f
 :END:
 
-*** ytel
+*** init
 :PROPERTIES:
 :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
 :END:
