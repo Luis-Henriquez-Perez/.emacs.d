@@ -1266,31 +1266,30 @@ think you want to use =smtp=.
 **** files
 :PROPERTIES:
 :ID: 2a7862da-c863-416b-a976-4cf7840a8712
+:TYPE:     built-in
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! files
-  :setq-default
-  ;; Disable second, case-insensitive pass over `auto-mode-alist'.
-  (auto-mode-case-fold . nil)
-  ;; Whether to add a newline automatically at the end of the file.
-  ;; Whether confirmation is requested before visiting a new file or buffer.
-  (confirm-nonexistent-file-or-buffer . nil)
-  ;; How to ask for confirmation when leaving Emacs.
-  (confirm-kill-emacs . #'y-or-n-p)
-  (require-final-newline . nil)
-  (trash-directory . (expand-file-name "Trash" "~"))
-  (auto-save-default . nil)
-  (auto-save-interval . 300)
-  (auto-save-timeout . 30)
-  (backup-directory-alist . (list (cons ".*" (concat VOID-DATA-DIR "backup/"))))
-  (make-backup-files . nil)
-  (version-control . nil)
-  (kept-old-versions . 2)
-  (kept-new-versions . 2)
-  (delete-old-versions . t)
-  (backup-by-copying . t)
-  (backup-by-copying-when-linked . t))
+;; Disable second, case-insensitive pass over `auto-mode-alist'.
+(setq-default auto-mode-case-fold nil)
+;; Whether to add a newline automatically at the end of the file.
+;; Whether confirmation is requested before visiting a new file or buffer.
+(setq-default confirm-nonexistent-file-or-buffer nil)
+;; How to ask for confirmation when leaving Emacs.
+(setq-default confirm-kill-emacs #'y-or-n-p)
+(setq-default require-final-newline nil)
+(setq-default trash-directory (expand-file-name "Trash" "~"))
+(setq-default auto-save-default nil)
+(setq-default auto-save-interval 300)
+(setq-default auto-save-timeout 30)
+(setq-default backup-directory-alist (list (cons ".*" (concat VOID-DATA-DIR "backup/"))))
+(setq-default make-backup-files nil)
+(setq-default version-control nil)
+(setq-default kept-old-versions 2)
+(setq-default kept-new-versions 2)
+(setq-default delete-old-versions t)
+(setq-default backup-by-copying t)
+(setq-default backup-by-copying-when-linked t)
 #+end_src
 
 **** subr
