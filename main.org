@@ -1211,7 +1211,8 @@ SYM is a symbol that stores a list."
 :ID:       e648ce0e-bb00-452d-9498-236c65e3a873
 :END:
 
-Emacs has a built-in [[][autoloading facility]]. I don't use that because it is
+Emacs has a built-in [[][autoloading facility]]. I don't use that because it
+involves. Autoloading can be done in elisp.
 
 #+begin_src emacs-lisp
 ;; Logic for autoloading is this.
