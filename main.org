@@ -437,6 +437,7 @@ customizing emacs.
 :REPO:     "ndwarshuis/org-ml"
 :PACKAGE:  "org-ml"
 :LOCAL-REPO: "org-ml"
+:COMMIT:   93e13bfc74e0c68d3c12a9d1405f91ce86a3d331
 :END:
 
 [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
@@ -448,9 +449,9 @@ structures. It was built for.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     alphapapa/ts.el
-:PACKAGE:  ts
-:LOCAL-REPO: ts.el
+:repo:     "alphapapa/ts.el"
+:package:  "ts"
+:local-repo: "ts.el"
 :END:
 
 =ts= is a time package.
