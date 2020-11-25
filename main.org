@@ -4000,13 +4000,16 @@ it is definitely on my list of things to try out.
 (setq org-mu4e-convert-to-html t)
 #+end_src
 
-**** org mu4e
+**** hook
 :PROPERTIES:
-:ID: 9045b0f5-af8c-481e-914e-a19c4bbf2941
+:ID:       fcdbaa17-20c6-4322-baed-27df5a0ad9a2
 :END:
 
 #+begin_src emacs-lisp
-(use-package! org-mu4e)
+;; Only render to html once. If the first send fails for whatever reason,
+;; org-mu4e would do so each time you try again.
+(defhook! org-mu4e-render-html-only-once (message-send-hook)
+  (setq-local org-mu4e-convert-to-html nil))
 #+end_src
 
 *** multiple accounts
