@@ -4687,6 +4687,12 @@ This package allows for the creation of gifs from within emacs.
 ** keypression                                                        :disabled:
 :PROPERTIES:
 :ID: 1943c432-4d47-43a5-ba92-2f17205bbae0
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "chuntaro/emacs-keypression"
+:PACKAGE:  "keypression"
+:LOCAL-REPO: "emacs-keypression"
 :END:
 
 [[https://github.com/chuntaro/emacs-keypression][keypression]] is displays keypresses from within Emacs--no external tools
