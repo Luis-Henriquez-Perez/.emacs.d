@@ -1216,9 +1216,8 @@ involves. Autoloading can be done in elisp. You define a dummy function which
 unbinds itself, loads the specified package, then calls the real function.
 
 #+begin_src emacs-lisp
-;; Logic for autoloading is this.
 (defun void-autoload (package fn)
-  "Autoload functions."
+  "Autoload FN."
   (fset name `(lambda (&rest args)
                 ;; find the base advice.
                 (-each (list (void-advice-true-name name) ())
