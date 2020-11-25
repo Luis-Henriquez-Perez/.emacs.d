@@ -846,7 +846,7 @@ appropriate name to target.
 
 #+begin_src emacs-lisp
 (defun void-add-advice (hooks functions where)
-  "docstring"
+  "Advise TARGETS with Void ADVICES."
   (dolist (hook hooks)
     (dolist (fn functions)
       (void--add-advice hook fn))))
