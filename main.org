@@ -5291,17 +5291,6 @@ like that concern N number of things, where N could be 1 or more things.
 (push (cons (rx bos "this" eos) "these") plural-knowledge)
 #+end_src
 
-**** plural
-:PROPERTIES:
-:ID:       71162148-f2ee-4f38-a2bf-eede4ed17762
-:END:
-
-#+begin_src emacs-lisp
-(use-package plural
-  :commands (plural-make-plural)
-  :config)
-#+end_src
-
 ** evil
 :PROPERTIES:
 :ID: 73366b3e-7438-4abf-a661-ed1553b1b8df
