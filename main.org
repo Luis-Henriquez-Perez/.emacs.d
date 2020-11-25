@@ -1156,6 +1156,9 @@ I want a shorthand for advices.
 :END:
 
 #+begin_src emacs-lisp
+(defun void-alist (&rest key-values)
+  ""
+  ())
 #+end_src
 
 ** Packages
