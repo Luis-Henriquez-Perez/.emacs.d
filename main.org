@@ -3910,6 +3910,7 @@ Orderless will do this."
 :REPO:     "company-mode/company-mode"
 :PACKAGE:  "company"
 :LOCAL-REPO: "company-mode"
+:COMMIT:   dd925936f7c0bf00319c81e8caea1b3db63bb8b5
 :END:
 
 *** company
@@ -4360,7 +4361,7 @@ available to us only a web search away.
 :HOST:     github
 :BRANCH:   "main"
 :REPO:     "hrs/engine-mode"
-:COMMIT:   e0910f1
+:COMMIT:   e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1
 :TYPE:     git
 :PACKAGE:  "engine-mode"
 :LOCAL-REPO: "engine-mode"
