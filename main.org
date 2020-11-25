@@ -1015,7 +1015,8 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 
 #+begin_src emacs-lisp
 (defun void--use-void-log (orign-fn &rest args)
-  "")
+  ""
+  (noflet ()))
 #+end_src
 
 *** with-os!
