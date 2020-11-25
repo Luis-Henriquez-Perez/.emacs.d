@@ -4555,6 +4555,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :package:  "escr"
 :type:     git
 :local-repo: "escr"
+:commit:   fc9dcdd98fcd7c9482f31032779fcd9e574016c0
 :END:
 
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
