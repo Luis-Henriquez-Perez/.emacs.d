@@ -1598,6 +1598,14 @@ handle all bindings. [[https://github.com/noctuid/general.el.git][general]] prov
 
 #+begin_src emacs-lisp
 (require 'general)
+#+end_src
+
+***** unbind keys
+:PROPERTIES:
+:ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
+:END:
+
+#+begin_src emacs-lisp
 (general-auto-unbind-keys)
 #+end_src
 
