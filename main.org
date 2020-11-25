@@ -5773,6 +5773,13 @@ Why not just go to the end of the ="= like any other around operator?
 *** evil-surround
 :PROPERTIES:
 :ID:       bc9899a4-654e-4bf6-89bd-557a72c713a8
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "emacs-evil/evil-surround"
+:PACKAGE:  "evil-surround"
+:LOCAL-REPO: "evil-surround"
+:COMMIT:   346d4d85fcf1f9517e9c4991c1efe68b4130f93a
 :END:
 
 **** hooks
@@ -5787,6 +5794,13 @@ Why not just go to the end of the ="= like any other around operator?
 *** evil-matchit
 :PROPERTIES:
 :ID: 30ff273a-253b-4cdc-8e86-22e5705f44c1
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "redguardtoo/evil-matchit"
+:PACKAGE:  "evil-matchit"
+:LOCAL-REPO: "evil-matchit"
+:COMMIT:   539192328ec521796c3f2bd8c1ac1a1b0e4f08f9
 :END:
 
 #+begin_src emacs-lisp
@@ -5796,6 +5810,13 @@ Why not just go to the end of the ="= like any other around operator?
 *** evil-exchange
 :PROPERTIES:
 :ID: d1c40ac0-d143-4e27-847b-d3d8e72a552a
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "Dewdrops/evil-exchange"
+:PACKAGE:  "evil-exchange"
+:LOCAL-REPO: "evil-exchange"
+:COMMIT:   3030e21ee16a42dfce7f7cf86147b778b3f5d8c1
 :END:
 
 Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swap two regions of text.
@@ -5822,7 +5843,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :COMMIT:   06c053d8f7381f91c53311b1234872ca96ced752
 :END:
 
-*** evil-visualstar
+**** evil-visualstar
 :PROPERTIES:
 :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
 :END:
