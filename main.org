@@ -1797,9 +1797,10 @@ as a dependency, I'd end up rewriting many of its functions.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     noctuid/general.el
-:PACKAGE:  general
-:LOCAL-REPO: general.el
+:REPO:     "noctuid/general.el"
+:PACKAGE:  "general"
+:LOCAL-REPO: "general.el"
+:COMMIT:   a0b17d207badf462311b2eef7c065b884462cb7c
 :END:
 
 There are numerous keybinding functions in Emacs; and they all look a little
@@ -1909,11 +1910,12 @@ make a difference. That's why.
 :ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (s.el s-pkg.el)
+:FILES:    ("s.el" "s-pkg.el")
 :HOST:     github
-:REPO:     magnars/s.el
-:PACKAGE:  s
-:LOCAL-REPO: s.el
+:REPO:     "magnars/s.el"
+:PACKAGE:  "s"
+:LOCAL-REPO: "s.el"
+:COMMIT:   43ba8b563bee3426cead0e6d4ddc09398e1a349d
 :END:
 
 #+begin_src emacs-lisp
@@ -1964,9 +1966,10 @@ make a difference. That's why.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     cask/shut-up
-:PACKAGE:  shut-up
-:LOCAL-REPO: shut-up
+:REPO:     "cask/shut-up"
+:PACKAGE:  "shut-up"
+:LOCAL-REPO: "shut-up"
+:COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
 :END:
 
 ****** aliases
@@ -1985,9 +1988,10 @@ make a difference. That's why.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     github
-:REPO:     dacap/keyfreq
-:PACKAGE:  keyfreq
-:LOCAL-REPO: keyfreq
+:REPO:     "dacap/keyfreq"
+:PACKAGE:  "keyfreq"
+:LOCAL-REPO: "keyfreq"
+:COMMIT:   e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4
 :END:
 
 #+begin_src emacs-lisp
@@ -2000,9 +2004,10 @@ make a difference. That's why.
 :TYPE:     git
 :FLAVOR:   melpa
 :HOST:     gitlab
-:REPO:     jabranham/system-packages
-:PACKAGE:  system-packages
-:LOCAL-REPO: system-packages
+:REPO:     "jabranham/system-packages"
+:PACKAGE:  "system-packages"
+:LOCAL-REPO: "system-packages"
+:COMMIT:   92c58d98bc7282df9fd6f24436a105f5f518cde9
 :END:
 
 ***** settings
@@ -2052,11 +2057,12 @@ make a difference. That's why.
 :ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
 :TYPE:     git
 :FLAVOR:   melpa
-:FILES:    (request.el request-pkg.el)
+:FILES:    ("request.el" "request-pkg.el")
 :HOST:     github
-:REPO:     tkf/emacs-request
-:PACKAGE:  request
-:LOCAL-REPO: emacs-request
+:REPO:     "tkf/emacs-request"
+:PACKAGE:  "request"
+:LOCAL-REPO: "emacs-request"
+:COMMIT:   0183da84cb45eb94da996cd2eab714ef0d7504cc
 :END:
 
 #+begin_src emacs-lisp
@@ -3068,7 +3074,7 @@ instead of windows).
 :REPO:     "abo-abo/ace-window"
 :HOST:     github
 :TYPE:     git
-:COMMIT:   c7cb315
+:COMMIT:   c7cb315c14e36fded5ac4096e158497ae974bec9
 :FLAVOR:   melpa
 :PACKAGE:  "ace-window"
 :LOCAL-REPO: "ace-window"
@@ -3117,6 +3123,7 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 :REPO:     "pashinin/workgroups2"
 :PACKAGE:  "workgroups2"
 :LOCAL-REPO: "workgroups2"
+:COMMIT:   737306531f6834227eee2f63b197a23401003d23
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
@@ -3296,6 +3303,7 @@ Somtimes I might want to adjust this.
 :REPO:     "emacsorphanage/transpose-frame"
 :PACKAGE:  "transpose-frame"
 :LOCAL-REPO: "transpose-frame"
+:COMMIT:   12e523d70ff78cc8868097b56120848befab5dbc
 :END:
 
 https://www.emacswiki.org/emacs/TransposeFrame
@@ -3310,10 +3318,11 @@ https://www.emacswiki.org/emacs/TransposeFrame
 :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
 :TYPE:     git
 :HOST:     github
-:REPO:     emacs-straight/exwm
-:FILES:    (* (:exclude .git))
-:PACKAGE:  exwm
-:LOCAL-REPO: exwm
+:REPO:     "emacs-straight/exwm"
+:FILES:    ("*" (:exclude ".git"))
+:PACKAGE:  "exwm"
+:LOCAL-REPO: "exwm"
+:COMMIT:   45ac28cc9cffe910c3b70979bc321a1a60e002ea
 :END:
 
 [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
@@ -3593,6 +3602,7 @@ Emacs's text editing capabilities on it.
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "buffer-expose"
 :LOCAL-REPO: "buffer-expose"
+:COMMIT:   3f8e0c52d85397e59b6081c8c3e71a55d610c56d
 :END:
 
 *** TODO commands
@@ -3668,6 +3678,7 @@ of things that we actually want at this moment.
 :REPO:     "joaotavora/yasnippet"
 :PACKAGE:  "yasnippet"
 :LOCAL-REPO: "yasnippet"
+:COMMIT:   5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6
 :END:
 
 **** init
@@ -3735,6 +3746,7 @@ of things that we actually want at this moment.
 :REPO:     "AndreaCrotti/yasnippet-snippets"
 :PACKAGE:  "yasnippet-snippets"
 :LOCAL-REPO: "yasnippet-snippets"
+:COMMIT:   7716da98b773f3e25a8a1b1949e24b4f3e855d17
 :END:
 
 **** init
@@ -3757,6 +3769,7 @@ of things that we actually want at this moment.
 :REPO:     "raxod502/selectrum"
 :PACKAGE:  "selectrum"
 :LOCAL-REPO: "selectrum"
+:COMMIT:   1ef55328dfba7abc653f7de695c34e2fbbef8ec9
 :END:
 
 *** init
@@ -3808,6 +3821,7 @@ of things that we actually want at this moment.
 :REPO:     "raxod502/prescient.el"
 :PACKAGE:  "prescient"
 :LOCAL-REPO: "prescient.el"
+:COMMIT:   41443e1c9f794b569dafdad4c0b64a608df64b99
 :END:
 
 **** prescient
@@ -3832,6 +3846,7 @@ of things that we actually want at this moment.
 :type:     git
 :repo:     "raxod502/prescient.el"
 :host:     github
+:COMMIT:   41443e1c9f794b569dafdad4c0b64a608df64b99
 :END:
 
 **** selectrum prescient
@@ -3855,6 +3870,7 @@ of things that we actually want at this moment.
 :REPO:     "oantolin/orderless"
 :PACKAGE:  "orderless"
 :LOCAL-REPO: "orderless"
+:COMMIT:   e56eeef6e11909ccd62aa7250867dce803706d2c
 :END:
 
 **** orderless
