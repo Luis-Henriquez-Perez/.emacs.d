@@ -3096,8 +3096,10 @@ https://www.emacswiki.org/emacs/TransposeFrame
 
 #+begin_src emacs-lisp
 (void-autoload 'transpose-frame
-               (list #'transpose-frame #'flip-frame
-                     #'flop-frame #'rotate-frame
+               (list #'transpose-frame
+                     #'flip-frame
+                     #'flop-frame
+                     #'rotate-frame
                      #'rotate-frame-clockwise))
 #+end_src
 
