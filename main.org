@@ -5373,18 +5373,6 @@ This is better than evil escape as it only binds in insert.
   (general-chord "kj") 'evil-force-normal-state)
 #+end_src
 
-***** keychord integration
-:PROPERTIES:
-:ID:       33fa6402-f56e-4bea-a9b5-bd5a6f44792f
-:END:
-
-#+begin_src emacs-lisp
-(use-package! key-chord
-  :after-call evil-insert-state evil-emacs-state
-  :config
-  )
-#+end_src
-
 **** saving
 :PROPERTIES:
 :ID: 8181807e-9811-427c-beec-f380d91040f9
