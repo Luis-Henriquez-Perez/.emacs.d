@@ -3218,6 +3218,10 @@ use a typical window manager, you have to.
 
 #+begin_src emacs-lisp
 (void-add-hook 'exwm-mode #'hide-mode-line-mode)
+
+(void-load-before-call 'exwm (list #'browse-url))
+
+(setq exwm-replace nil)
 #+end_src
 
 *** settings
@@ -3237,11 +3241,6 @@ startup time. Instead of loading =EXWM= immediately, I add advises to the
 functions which open external linux applications.
 
 #+begin_src emacs-lisp
-(use-package! exwm
-  :hook (exwm-mode . hide-mode-line-mode)
-  :before-call browse-url
-  :setq (exwm-replace . nil))
-
 (defhook! setup-hide-mode-line (exwm-mode-hook)
   (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
   (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
