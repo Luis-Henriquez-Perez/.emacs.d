@@ -2887,7 +2887,7 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 :END:
 
 #+begin_src emacs-lisp
-(void-autoload '(ace-window ace-swap-window))
+(void-autoload 'ace-window '(ace-window ace-swap-window))
 #+end_src
 
 *** settings
