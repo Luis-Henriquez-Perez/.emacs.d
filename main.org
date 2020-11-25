@@ -1058,7 +1058,7 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 :ID:       d5743200-e27c-4702-833b-6690613cadb5
 :END:
 
-There are some advices that I tend to use over and over again. It would be
+There are some advices that I tend to use over and over again
 
 ***** boost gc-cons-threshold
 :PROPERTIES:
