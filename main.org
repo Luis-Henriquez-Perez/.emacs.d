@@ -5982,6 +5982,7 @@ larger text objects. It's saves me keystrokes.
 :REPO:     "muffinmad/emacs-find-file-rg"
 :PACKAGE:  "find-file-rg"
 :LOCAL-REPO: "emacs-find-file-rg"
+:COMMIT:   ed556e092a92e325f335554ab193cef2d8fec009
 :END:
 
 *** find-file-rg
@@ -6142,11 +6143,19 @@ This replaces the default popup window at the bottom of eshell. By using the
 :REPO:     "xuchunyang/eshell-z"
 :PACKAGE:  "eshell-z"
 :LOCAL-REPO: "eshell-z"
+:COMMIT:   337cb241e17bd472bd3677ff166a0800f684213c
 :END:
 
 ***** eshell-z
 :PROPERTIES:
 :ID: 497798a0-7b62-4779-bf15-f67500528f03
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "xuchunyang/eshell-z"
+:PACKAGE:  "eshell-z"
+:LOCAL-REPO: "eshell-z"
+:COMMIT:   337cb241e17bd472bd3677ff166a0800f684213c
 :END:
 
 #+begin_src emacs-lisp
@@ -6328,6 +6337,7 @@ Each element of the list is an abbreviated.")
 :REPO:     "bennya/shrink-path.el"
 :PACKAGE:  "shrink-path"
 :LOCAL-REPO: "shrink-path.el"
+:COMMIT:   c14882c8599aec79a6e8ef2d06454254bb3e1e41
 :END:
 
 #+begin_src emacs-lisp
@@ -6343,6 +6353,7 @@ Each element of the list is an abbreviated.")
 :REPO:     "lewang/command-log-mode"
 :PACKAGE:  "command-log-mode"
 :LOCAL-REPO: "command-log-mode"
+:COMMIT:   af600e6b4129c8115f464af576505ea8e789db27
 :END:
 
 [[https://github.com/lewang/command-log-mode][command-log-mode]] keeps track of all the commands you run and displays them to
@@ -6554,6 +6565,7 @@ read this [[https://emacs.stackexchange.com/questions/51853/retracing-steps-with
 :REPO:     "skeeto/elfeed"
 :PACKAGE:  "elfeed"
 :LOCAL-REPO: "elfeed"
+:COMMIT:   7b2b6fadaa498fef2ba212a50da4a8afa2a5d305
 :END:
 
 *** elfeed
@@ -6686,6 +6698,7 @@ kill it.
 :REPO:     "ralesi/ranger.el"
 :PACKAGE:  "ranger"
 :LOCAL-REPO: "ranger.el"
+:COMMIT:   caf75f0060e503af078c7e5bb50d9aaa508e6f3e
 :END:
 
 [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
@@ -6833,6 +6846,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :REPO:     "ryuslash/git-auto-commit-mode"
 :PACKAGE:  "git-auto-commit-mode"
 :LOCAL-REPO: "git-auto-commit-mode"
+:COMMIT:   df07899acdb3f9c114b72fdab77107c924b3172c
 :END:
 
 To avoid losing information. You should commit often in git--like every 10
@@ -6919,6 +6933,7 @@ address later.
 :REPO:     "magit/magit"
 :PACKAGE:  "magit"
 :LOCAL-REPO: "magit"
+:COMMIT:   87a63353df0ad8ac661ac1b93c59d40669b65ffc
 :END:
 
 **** transient
@@ -6996,6 +7011,7 @@ address later.
 :REPO:     "emacsorphanage/git-gutter"
 :PACKAGE:  "git-gutter"
 :LOCAL-REPO: "git-gutter"
+:COMMIT:   db0e794fa97e4c902bbdf51b234cb68c993c71ae
 :END:
 
 #+begin_src emacs-lisp
@@ -7170,6 +7186,7 @@ I do not like dealing with the command line. I want real elisp code please.
 :REPO:     "kanru/uuidgen-el"
 :PACKAGE:  "uuidgen"
 :LOCAL-REPO: "uuidgen-el"
+:COMMIT:   b50e6fef2de4199a8f207b46588c2cb3890ddd85
 :END:
 
 ** xr
@@ -7181,6 +7198,7 @@ I do not like dealing with the command line. I want real elisp code please.
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "xr"
 :LOCAL-REPO: "xr"
+:COMMIT:   3cdf1129474cebd223d9313eff52be936ba2556a
 :END:
 
 This package is the inverse of =rx=. It takes a regular expression and returns the
@@ -7202,6 +7220,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :REPO:     "politza/pdf-tools"
 :PACKAGE:  "pdf-tools"
 :LOCAL-REPO: "pdf-tools"
+:COMMIT:   c510442ab89c8a9e9881230eeb364f4663f59e76
 :END:
 
 *** pdf-tools
@@ -7270,6 +7289,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :REPO:     "jorgenschaefer/circe"
 :PACKAGE:  "circe"
 :LOCAL-REPO: "circe"
+:COMMIT:   d98986ce933c380b47d727beea8bad81bda65dc9
 :END:
 
 ** persistent scratch
@@ -7334,6 +7354,7 @@ on the buffer you'd like to edit.
 :REPO:     "skuro/plantuml-mode"
 :PACKAGE:  "plantuml-mode"
 :LOCAL-REPO: "plantuml-mode"
+:COMMIT:   5889166b6cfe94a37532ea27fc8de13be2ebfd02
 :END:
 
 *** plantuml
@@ -7365,6 +7386,7 @@ on the buffer you'd like to edit.
 :REPO:     "bbatsov/super-save"
 :PACKAGE:  "super-save"
 :LOCAL-REPO: "super-save"
+:COMMIT:   886b5518c8a8b4e1f5e59c332d5d80d95b61201d
 :END:
 
 The default auto-saving feature in emacs saves after a certain number of
@@ -7409,6 +7431,7 @@ Saving files like this reduces the likelihood of user delays.
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "csv-mode"
 :LOCAL-REPO: "csv-mode"
+:COMMIT:   635337407c44c1c3e9f7052afda7e27cf8a05c14
 :END:
 
 *** align
@@ -7699,6 +7722,7 @@ The change to this function."
 :REPO:     "jorgenschaefer/emacs-buttercup"
 :PACKAGE:  "buttercup"
 :LOCAL-REPO: "emacs-buttercup"
+:COMMIT:   f6f93353405cda51ad2778ae9247f77265b7cbfb
 :END:
 
 [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is an emacs debugging suite.
@@ -7747,6 +7771,7 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 :REPO:     "joddie/macrostep"
 :PACKAGE:  "macrostep"
 :LOCAL-REPO: "macrostep"
+:COMMIT:   424e3734a1ee526a1bd7b5c3cd1d3ef19d184267
 :END:
 
 ***** commands
@@ -9244,6 +9269,7 @@ diary/journal using =org-mode=.
 :REPO:     "Wilfred/helpful"
 :PACKAGE:  "helpful"
 :LOCAL-REPO: "helpful"
+:COMMIT:   584ecc887bb92133119f93a6716cdf7af0b51dca
 :END:
 
 **** helpful
@@ -9280,6 +9306,7 @@ in a better format.
 :REPO:     "xuchunyang/elisp-demos"
 :PACKAGE:  "elisp-demos"
 :LOCAL-REPO: "elisp-demos"
+:COMMIT:   05047654fbd342cb2463ec8ea562e4bba53c7be2
 :END:
 
 **** elisp demos
@@ -9314,6 +9341,7 @@ pleasing Emacs configuration can have. Ugliness really can take its toll.
 :REPO:     "justbur/emacs-which-key"
 :PACKAGE:  "which-key"
 :LOCAL-REPO: "emacs-which-key"
+:COMMIT:   c011b268196b8356c70f668506a1133086bc9477
 :END:
 
 Emacs is full of so many keybindings, that it can be difficult to keep track of
@@ -9384,6 +9412,7 @@ you can "discover" the commands as you go along.
 :REPO:     "emacs-dashboard/emacs-dashboard"
 :PACKAGE:  "dashboard"
 :LOCAL-REPO: "emacs-dashboard"
+:COMMIT:   2cebc69e3d4b82569daa732b9114787d7018304b
 :END:
 
 [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
@@ -9524,6 +9553,7 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 :REPO:     "tautologyclub/feebleline"
 :PACKAGE:  "feebleline"
 :LOCAL-REPO: "feebleline"
+:COMMIT:   b2f2db25cac77817bf0c49ea2cea6383556faea0
 :END:
 
 Feebleline replaces the typical emacs modeline with text printed out to
@@ -9834,6 +9864,7 @@ the mode line.
 :REPO:     "domtronn/all-the-icons.el"
 :PACKAGE:  "all-the-icons"
 :LOCAL-REPO: "all-the-icons.el"
+:COMMIT:   6917b08f64dd8487e23769433d6cb9ba11f4152f
 :END:
 
 A little bit of decoration and spice can go a long way. As its name suggests,
