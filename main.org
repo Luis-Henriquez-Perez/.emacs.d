@@ -2454,7 +2454,7 @@ of the Emacs frame are recorded after they expire.
 
 #+begin_src emacs-lisp
 (setq idle-require-load-break 2)
-(setq idle-require-idle-delay 7)
+(setq idle-require-idle-delay 5)
 #+end_src
 
 ***** TODO make idle require use void-log                             :disabled:
