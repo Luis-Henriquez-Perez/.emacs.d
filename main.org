@@ -2435,6 +2435,13 @@ of the Emacs frame are recorded after they expire.
 **** idle-require
 :PROPERTIES:
 :ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "nschum/idle-require.el"
+:PACKAGE:  "idle-require"
+:LOCAL-REPO: "idle-require.el"
+:COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
 :END:
 
 ***** init
