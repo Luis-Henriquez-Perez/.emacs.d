@@ -1000,10 +1000,16 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 :ID:       41e763bd-215f-4176-95c1-f41261864671
 :END:
 
-*****
+#+begin_src emacs-lisp
+#+end_src
+
+***** use =void-log= instead of =message=
 :PROPERTIES:
 :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 *** with-os!
 :PROPERTIES:
