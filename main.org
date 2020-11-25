@@ -4104,37 +4104,6 @@ If there is no match, return POSSIBLE-NAME."
     (cl-pushnew it mu4e-contexts)))
 #+end_src
 
-*** bindings
-:PROPERTIES:
-:ID: 6b7e8206-24aa-485f-87e0-98a997936205
-:END:
-
-#+begin_src emacs-lisp
-(general-def 'normal mu4e-headers-mode-map
-  "q" #'kill-buffer-and-window
-  "i" #'ignore
-  "I" #'ignore
-  "D" #'mu4e-headers-mark-for-delete
-  "F" #'mu4e-headers-mark-for-flag
-  "u" #'mu4e-headers-mark-for-unmark
-  "x" #'mu4e-mark-execute-all
-  "t" #'mu4e-headers-mark-for-trash
-  "c" #'mu4e-compose
-  "o" #'org-mu4e-compose-org-mode
-  "s" #'mu4e-headers-search
-  "r" #'mu4e-compose-reply
-  "RET" #'mu4e-headers-view-message)
-
-(general-def 'normal mu4e-view-mode-map
-  "q" #'kill-buffer-and-window)
-
-(define-localleader-key! mu4e-compose-mode-map
-  "s" (list :def #'message-send-and-exit :which-key "send and exit")
-  "d" (list :def #'message-kill-buffer :which-key "kill buffer")
-  "S" (list :def #'message-dont-send :which-key "save draft")
-  "a" (list #'mail-add-attachment :which-key "attach"))
-#+end_src
-
 *** truncate lines in messages
 :PROPERTIES:
 :ID: e6addd49-6aa4-4b9e-8e50-4f0ea43aedb7
@@ -9849,6 +9818,37 @@ graphical interface but.
 :PROPERTIES:
 :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
 :END:
+
+** bindings
+:PROPERTIES:
+:ID: 6b7e8206-24aa-485f-87e0-98a997936205
+:END:
+
+#+begin_src emacs-lisp
+(general-def 'normal mu4e-headers-mode-map
+  "q" #'kill-buffer-and-window
+  "i" #'ignore
+  "I" #'ignore
+  "D" #'mu4e-headers-mark-for-delete
+  "F" #'mu4e-headers-mark-for-flag
+  "u" #'mu4e-headers-mark-for-unmark
+  "x" #'mu4e-mark-execute-all
+  "t" #'mu4e-headers-mark-for-trash
+  "c" #'mu4e-compose
+  "o" #'org-mu4e-compose-org-mode
+  "s" #'mu4e-headers-search
+  "r" #'mu4e-compose-reply
+  "RET" #'mu4e-headers-view-message)
+
+(general-def 'normal mu4e-view-mode-map
+  "q" #'kill-buffer-and-window)
+
+(define-localleader-key! mu4e-compose-mode-map
+  "s" (list :def #'message-send-and-exit :which-key "send and exit")
+  "d" (list :def #'message-kill-buffer :which-key "kill buffer")
+  "S" (list :def #'message-dont-send :which-key "save draft")
+  "a" (list #'mail-add-attachment :which-key "attach"))
+#+end_src
 
 ** keybindings
 :PROPERTIES:
