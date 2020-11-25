@@ -1243,7 +1243,7 @@ I want a shorthand for advices that involve package loading.
   "Load packages FUNCTIONS are called."
   (alet (fset (void-symbol-intern 'void--load- package)
               `(lambda () (require ',package)))
-    (-partial #'void-add-advice it functions)))
+    (void-add-advice it functions)))
 #+end_src
 
 **** load before call
