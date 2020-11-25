@@ -3724,10 +3724,13 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (after! selectrum
-  (defadvice! dont-sort-with-selectrum (:around void/goto-line void/set-font void/switch-buffer)
-    (if (bound-and-true-p selectrum-mode)
-        (let (selectrum-should-sort-p) (apply <orig-fn> <args>))
-      (apply <orig-fn> <args>))))
+  (alet '(list #'void/goto-line #'void/set-font #'void/switch-buffer)
+    (void-add-advice it :around #'selectrum::dont-sort-with-selectrum-advice)))
+
+(defun selectrum::dont-sort-with-selectrum-advice (orig-fn &rest args)
+  (if (bound-and-true-p selectrum-mode)
+      (let (selectrum-should-sort-p) (apply orig-fn args))
+    (apply orig-fn args)))
 #+end_src
 
 *** prescient
