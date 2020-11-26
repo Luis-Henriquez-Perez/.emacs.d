@@ -4926,12 +4926,10 @@ very useful to me.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! spell-number
-  :setq
-  (spelln-language . 'english-us)
-  (spelln-country . 'united-states)
-  (spelln-period-character . ?,)
-  (spelln-decimal-character . ?.))
+(setq spelln-language 'english-us)
+(setq spelln-country 'united-states)
+(setq spelln-period-character ?,)
+(setq spelln-decimal-character ?.)
 #+end_src
 
 *** aggressive-fill-paragraph
