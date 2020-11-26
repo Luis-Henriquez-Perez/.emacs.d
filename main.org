@@ -5000,15 +5000,10 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 #+begin_src emacs-lisp
 (alet (list #'powerthesaurus-lookup-word-at-point
             #'power-thesaurus-lookup-word-dwim)
-  (void-autoload 'powerthesaurus))
+  (void-autoload 'powerthesaurus it))
 #+end_src
 
 *** define-it
-:PROPERTIES:
-:ID:       97a0e6f4-3f38-495e-9dd9-3b518676de2a
-:END:
-
-**** define-it
 :PROPERTIES:
 :ID: 9ddc66c9-87be-43d1-8366-1bdb40718892
 :TYPE:     git
