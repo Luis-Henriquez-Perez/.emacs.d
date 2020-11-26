@@ -5648,20 +5648,8 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :COMMIT:   ea6b4cbb9985ddae532bd2faf9bb00570c9f2781
 :END:
 
-*** expand-region
-:PROPERTIES:
-:ID: 417c9c53-a776-4779-9afc-1eaa35a145c6
-:END:
-
 [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
 larger text objects. It's saves me keystrokes.
-
-#+begin_src emacs-lisp
-(use-package! expand-region
-  :commands
-  :init
-  :config)
-#+end_src
 
 *** expand region
 :PROPERTIES:
