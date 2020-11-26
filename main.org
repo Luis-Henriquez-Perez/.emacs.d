@@ -5667,11 +5667,19 @@ larger text objects. It's saves me keystrokes.
   (general-def 'visual
     "V" #'er/contract-region
     "v" #'er/expand-region)
-  :config
-  (defadvice! quit-expand-region (:before evil-escape)
-    "Properly abort an expand-region region."
-    (when (memq last-command '(er/expand-region er/contract-region))
-      (er/contract-region 0))))
+  :config)
+#+end_src
+
+*** quit expand region
+:PROPERTIES:
+:ID:       0dc7bb0d-a0ef-450a-b129-9c8d80cb6a0e
+:END:
+
+#+begin_src emacs-lisp
+(defadvice! quit-expand-region (:before evil-escape)
+  "Properly abort an expand-region region."
+  (when (memq last-command '(er/expand-region er/contract-region))
+    (er/contract-region 0)))
 #+end_src
 
 ** avy
