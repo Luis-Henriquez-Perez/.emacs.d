@@ -5659,15 +5659,25 @@ larger text objects. It's saves me keystrokes.
 #+begin_src emacs-lisp
 (use-package! expand-region
   :commands
-  er/expand-region
-  er/contract-region
-  er/mark-symbol
-  er/mark-word
   :init
   (general-def 'visual
     "V" #'er/contract-region
     "v" #'er/expand-region)
   :config)
+#+end_src
+
+*** autoload commands
+:PROPERTIES:
+:ID:       23d68159-bb65-45b7-96e5-48cb1dfca946
+:END:
+
+#+begin_src emacs-lisp
+(list
+ er/expand-region
+ er/contract-region
+ er/mark-symbol
+ er/mark-word)
+(void-autoload 'expand-region )
 #+end_src
 
 *** quit expand region
