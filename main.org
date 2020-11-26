@@ -4562,11 +4562,11 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 great idea! It makes it really easy to see which parentheses go together.
 
 #+begin_src emacs-lisp
-(use-package! rainbow-delimiters-mode
-  :hook (prog-mode-hook reb-mode-hook))
+;; (use-package! rainbow-delimiters-mode
+;;   :hook (prog-mode-hook reb-mode-hook))
+(void-add-hook '(prog-mode-hook reb-mode-hook) #'rainbow-delimiters-mode)
+(void-autoload 'rainbow-delimiters #'rainbow-delimiters-mode)
 
-;; (void-add-hook '(prog-mode-hook reb-mode-hook) #'rainbow-delimiters-mode)
-;; (void-autoload 'rainbow-delimiters #'rainbow-delimiters-mode)
 (setq rainbow-delimiters-max-face-count 9)
 #+end_src
 
