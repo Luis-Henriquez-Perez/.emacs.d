@@ -3526,11 +3526,6 @@ of things that we actually want at this moment.
 :COMMIT:   7716da98b773f3e25a8a1b1949e24b4f3e855d17
 :END:
 
-**** init
-:PROPERTIES:
-:ID:       4a32b503-c39d-4030-8c6e-d391ef101772
-:END:
-
 #+begin_src emacs-lisp
 (after! yasnippet
   (awhen (-first (-partial #'s-contains-p "yasnippet-snippets") load-path)
