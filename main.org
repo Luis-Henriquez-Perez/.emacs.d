@@ -4388,8 +4388,8 @@ option that would prompt you for the file name.
 :END:
 
 #+begin_src emacs-lisp
-(escr-screenshot-quality . 10)
-(escr-screenshot-directory . VOID-SCREENSHOT-DIR)
+(setq escr-screenshot-quality 10)
+(setq escr-screenshot-directory VOID-SCREENSHOT-DIR)
 #+end_src
 
 *** function for geting screenshot filename
