@@ -3845,12 +3845,12 @@ Orderless will do this."
 :COMMIT:   dd925936f7c0bf00319c81e8caea1b3db63bb8b5
 :END:
 
-*** company
+*** init
 :PROPERTIES:
 :ID:       0f670007-165b-4a2d-ac35-97eab9ada739
 :END:
 
-**** init
+**** hooks
 :PROPERTIES:
 :ID:       5e5393d9-9f58-45be-9ecc-1bc9f0316379
 :END:
@@ -3887,19 +3887,6 @@ Orderless will do this."
   [backtab] #'company-select-previous
   "C-k"     #'company-select-previous
   "C-j"     #'company-select-next)
-#+end_src
-
-**** company
-:PROPERTIES:
-:ID: 89fcd613-f7ea-461b-a91c-0d9a0ae28093
-:END:
-
-[[https://github.com/company-mode/company-mode][company]] offers code completion.
-
-#+begin_src emacs-lisp
-(use-package! company
-  :hook prog-mode
-  :bind )
 #+end_src
 
 *** backends
