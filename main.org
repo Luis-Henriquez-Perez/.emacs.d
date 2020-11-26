@@ -5106,6 +5106,28 @@ and provides facilities for writing custom extensions. Also see our page on
 
 #+end_src
 
+**** settings
+:PROPERTIES:
+:ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
+:END:
+
+#+begin_src emacs-lisp
+(setq evil-want-C-w-in-emacs-state         nil)
+(setq evil-want-visual-char-semi-exclusive t)
+;; Whether the cursor can move past the end of the line.
+(setq evil-move-beyond-eol                 nil)
+(setq evil-magic                           t)
+(setq evil-echo-state                      nil)
+(setq evil-indent-convert-tabs             t)
+(setq evil-ex-search-vim-style-regexp      t)
+(setq evil-ex-substitute-global            t)
+(setq evil-ex-visual-char-range            t)
+(setq evil-insert-skip-empty-lines         t)
+(setq evil-mode-line-format                nil)
+(setq evil-respect-visual-line-mode        t)
+(setq evil-symbol-word-search              t)
+#+end_src
+
 **** evil
 :PROPERTIES:
 :ID: 7dba80e1-58d6-46d2-a0e3-64c535e556e2
@@ -5121,22 +5143,7 @@ and provides facilities for writing custom extensions. Also see our page on
   ;; (evil-want-minibuffer    . t)
   :pre-setq
   (evil-want-keybinding                 . nil)
-  :setq
-  (evil-want-C-w-in-emacs-state         . nil)
-  (evil-want-visual-char-semi-exclusive . t)
-  ;; Whether the cursor can move past the end of the line.
-  (evil-move-beyond-eol                 . nil)
-  (evil-magic                           . t)
-  (evil-echo-state                      . nil)
-  (evil-indent-convert-tabs             . t)
-  (evil-ex-search-vim-style-regexp      . t)
-  (evil-ex-substitute-global            . t)
-  (evil-ex-visual-char-range            . t)
-  (evil-insert-skip-empty-lines         . t)
-  (evil-mode-line-format                . nil)
-  (evil-respect-visual-line-mode        . t)
-  (evil-symbol-word-search              . t)
-  (shift-select-mode                    . nil))
+  :setq)
 #+end_src
 
 **** cursors
