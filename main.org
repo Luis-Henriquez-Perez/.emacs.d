@@ -1305,7 +1305,7 @@ I want a shorthand for advices that involve package loading.
 #+begin_src emacs-lisp
 (defun void-prompt-for-system-package (package system-packages)
   ""
-  (alet (void--ensure-packages-installed-for-%)
+  (alet (void-symbol-intern 'void--ensure-packages-installed-for- package)
     (void-add-advice it :around )
     )
   )
