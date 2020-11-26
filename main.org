@@ -5103,7 +5103,6 @@ and provides facilities for writing custom extensions. Also see our page on
 (void-add-hook 'window-setup-hook #'evil-mode)
 
 (general-setq evil-want-C-u-scroll t)
-
 #+end_src
 
 **** settings
