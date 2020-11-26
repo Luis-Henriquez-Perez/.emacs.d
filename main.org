@@ -3973,6 +3973,14 @@ worth quoting here:
 *** company-prescient
 :PROPERTIES:
 :ID: df21548a-c262-4802-8e76-71a3135789cb
+:FLAVOR:   melpa
+:FILES:    ("company-prescient.el" "company-prescient-pkg.el")
+:PACKAGE:  "company-prescient"
+:LOCAL-REPO: "prescient.el"
+:TYPE:     git
+:REPO:     "raxod502/prescient.el"
+:HOST:     github
+:COMMIT:   41443e1c9f794b569dafdad4c0b64a608df64b99
 :END:
 
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
