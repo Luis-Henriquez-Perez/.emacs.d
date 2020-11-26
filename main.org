@@ -3509,7 +3509,7 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(after! smartparens
+(after! (smartparens yasnippet)
   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
 #+end_src
 
