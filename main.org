@@ -4615,33 +4615,23 @@ it. It's pretty smart and very convenient.
 :COMMIT:   52321b99be69aa1b661da7743c4421a30d8b6bcb
 :END:
 
+[[https://github.com/lewang/ws-butler][ws-butler]] cleans up whitespace.
+
 **** init
 :PROPERTIES:
-:ID:       fc23d1b2-c174-4159-bb3f-e63895fb100f
+:ID: 7e0c30ea-a109-4176-a92b-4a1de4922032
 :END:
+
+#+begin_src emacs-lisp
+(void-add-hook #'prog-mode-hook #'ws-butler-mode)
+#+end_src
 
 **** exempt modes
 :PROPERTIES:
 :ID:       eada4f60-aad8-471f-8f5a-43fed5d32295
 :END:
 
-**** ws-butler
-:PROPERTIES:
-:ID: 7e0c30ea-a109-4176-a92b-4a1de4922032
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "lewang/ws-butler"
-:PACKAGE:  "ws-butler"
-:LOCAL-REPO: "ws-butler"
-:COMMIT:   52321b99be69aa1b661da7743c4421a30d8b6bcb
-:END:
-
-[[https://github.com/lewang/ws-butler][ws-butler]] cleans up whitespace.
-
 #+begin_src emacs-lisp
-(void-add-hook #'prog-mode-hook #'ws-butler-mode)
-
 (append! ws-butler-global-exempt-modes
   '(special-mode comint-mode term-mode eshell-mode))
 #+end_src
