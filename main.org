@@ -4953,16 +4953,21 @@ very useful to me.
 :ID:       864ab561-f3f6-4fdf-8b85-009a90f1b1f5
 :END:
 
-**** spell check
+**** spell-fu
 :PROPERTIES:
 :ID: fc68d949-246f-43bf-85c2-7fbb947af7e9
+:HOST:     gitlab
+:REPO:     "ideasman42/emacs-spell-fu"
+:PACKAGE:  "spell-fu"
+:TYPE:     git
+:LOCAL-REPO: "emacs-spell-fu"
+:COMMIT:   a7db58747131dca2eee0e0757c3d254d391ddd1c
 :END:
 
 #+begin_src emacs-lisp
-(use-package! spell-fu
-  :straight (:host gitlab :repo "ideasman42/emacs-spell-fu")
-  :commands spell-fu-mode
-  :setq (spell-fu-directory . (concat VOID-DATA-DIR "spell-fu/")))
+(void-autoload 'spell-fu)
+
+(setq spell-fu-directory (concat VOID-DATA-DIR "spell-fu/"))
 #+end_src
 
 **** directory
