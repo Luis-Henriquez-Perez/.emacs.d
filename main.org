@@ -3044,8 +3044,8 @@ Somtimes I might want to adjust this.
 https://www.emacswiki.org/emacs/TransposeFrame
 
 #+begin_src emacs-lisp
-(--each (list #'transpose-frame #'flip-frame #'flop-frame
-              #'rotate-frame #'rotate-frame-clockwise)
+(alet (list #'transpose-frame #'flip-frame #'flop-frame
+            #'rotate-frame #'rotate-frame-clockwise)
   (void-autoload 'transpose-frame it))
 #+end_src
 
