@@ -3876,10 +3876,18 @@ Orderless will do this."
 (setq company-require-match 'never)
 #+end_src
 
-**** company bindings
+**** bindings
 :PROPERTIES:
-:ID:       ae4d3667-10c1-4bb5-b322-da7a52587888
+:ID:       ba170d95-7d86-4827-af6b-dc5fd4c1b7e5
 :END:
+
+#+begin_src emacs-lisp
+(general-def company-active-map
+  [tab] company-select-next
+  [backtab] company-select-previous
+  "C-k"     company-select-previous
+  "C-j"     company-select-next)
+#+end_src
 
 **** company
 :PROPERTIES:
@@ -3891,11 +3899,7 @@ Orderless will do this."
 #+begin_src emacs-lisp
 (use-package! company
   :hook prog-mode
-  :bind (:map company-active-map
-         ([tab] . company-select-next)
-         ([backtab] . company-select-previous)
-         ("C-k"     . company-select-previous)
-         ("C-j"     . company-select-next)))
+  :bind )
 #+end_src
 
 *** backends
