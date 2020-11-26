@@ -2927,7 +2927,7 @@ that it's not a lisp object; implying that it is not.
 :END:
 
 #+begin_src emacs-lisp
-(after! feebleline
+(after! (feebleline all-the-icons)
   (defun feebleline:current-workgroup ()
     (when (bound-and-true-p workgroups-mode)
       (format "%s %s"
