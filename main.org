@@ -4759,7 +4759,14 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 #+begin_src emacs-lisp
 (void-autoload 'lispyville (list #'lispyville-comment-or-uncomment-line))
 (void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
+#+end_src
 
+**** remaps
+:PROPERTIES:
+:ID:       42702529-99ad-4cfa-9c04-f91fc553f5ce
+:END:
+
+#+begin_src emacs-lisp
 (general-def
   [remap evil-yank]                 . lispyville-yank
   [remap evil-delete]               . lispyville-delete
