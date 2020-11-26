@@ -1308,7 +1308,8 @@ I want a shorthand for advices that involve package loading.
   (alet (void-symbol-intern 'void--ensure-packages-installed-for- package)
     (if (-all-p #'system-packages-package-installed-p system-packages)
         nil
-      ()
+      (yes-or-no-p "Packages %s are not installed. Continue loading %s anyway? ")
+      (completing-read )
       )
     (void-add-advice it :around )
     )
