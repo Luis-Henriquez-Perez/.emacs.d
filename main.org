@@ -3970,7 +3970,7 @@ worth quoting here:
     t))
 #+end_src
 
-*** company prescient
+*** company-prescient
 :PROPERTIES:
 :ID: df21548a-c262-4802-8e76-71a3135789cb
 :END:
