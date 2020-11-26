@@ -4945,7 +4945,7 @@ very useful to me.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! aggressive-fill-paragraph)
+(add-hook 'prog-mode-hook #'aggressive-fill-paragraph-mode)
 #+end_src
 
 *** spell check
