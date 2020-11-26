@@ -5014,17 +5014,23 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :ID:       97a0e6f4-3f38-495e-9dd9-3b518676de2a
 :END:
 
-**** dictionary
+**** define-it
 :PROPERTIES:
 :ID: 9ddc66c9-87be-43d1-8366-1bdb40718892
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "jcs-elpa/define-it"
+:PACKAGE:  "define-it"
+:LOCAL-REPO: "define-it"
+:COMMIT:   8df0505babf930bafe3fd28d472cc325637f886b
 :END:
 
 #+begin_src emacs-lisp
-(use-package! define-it
-  :commands define-it define-it-at-point
-  :setq
-  (define-it-output-choice . 'view)
-  (define-it-show-google-translate . nil))
+(void-autoload 'define-it '(define-it define-it-at-point))
+
+(setq define-it-output-choice 'view)
+(setq define-it-show-google-translate nil)
 #+end_src
 
 *** plural
