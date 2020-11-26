@@ -67,10 +67,11 @@ time.
 
 #+begin_src emacs-lisp
 (defun void-restore-gc-cons-threshold ()
-  "Restore `gc-cons-threshold' to `VOID-GC-CONS-PERCENTAGE' after 7 idle seconds."
-  (void-log "Restoring...gc-cons-threshold: %d -> %d | gc-cons-percentage %.2f -> %.2f"
+  "Restore any changes to garbage collection after 7 idle seconds."
+  (void-log "Restoring...gc-cons-threshold: %d -> %d"
             gc-cons-threshold
-            VOID-GC-CONS-THRESHOLD
+            VOID-GC-CONS-THRESHOLD)
+  (void-log "gc-cons-percentage %.2f -> %.2f"
             gc-cons-percentage
             VOID-GC-CONS-PERCENTAGE)
   (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD)
