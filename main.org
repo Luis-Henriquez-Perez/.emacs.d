@@ -3883,10 +3883,10 @@ Orderless will do this."
 
 #+begin_src emacs-lisp
 (general-def company-active-map
-  [tab] company-select-next
-  [backtab] company-select-previous
-  "C-k"     company-select-previous
-  "C-j"     company-select-next)
+  [tab]     #'company-select-next
+  [backtab] #'company-select-previous
+  "C-k"     #'company-select-previous
+  "C-j"     #'company-select-next)
 #+end_src
 
 **** company
