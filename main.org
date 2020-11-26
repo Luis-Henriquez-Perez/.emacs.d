@@ -2890,14 +2890,6 @@ use emacs's built-in serialization of window configs. Usually, it is better to
 use something that's built-in. However, emacs's serialization has the drawback
 that it's not a lisp object; implying that it is not.
 
-*** commands
-:PROPERTIES:
-:ID:       9d07b39b-4eea-4ecd-af19-b452ede30088
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 *** settings
 :PROPERTIES:
 :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
