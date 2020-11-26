@@ -3598,10 +3598,9 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! selectrum-prescient
-  :hook selectrum-mode-hook
-  :setq
-  (selectrum-preprocess-candidates-function . #'selectrum-prescient--preprocess))
+(void-add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
+
+(setq selectrum-preprocess-candidates-function #'selectrum-prescient--preprocess)
 #+end_src
 
 *** orderless
