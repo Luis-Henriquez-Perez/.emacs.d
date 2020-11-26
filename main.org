@@ -4872,6 +4872,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 (void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
+(void-autoload 'lispy #'lispy-mode)
 #+end_src
 
 **** settings
