@@ -5101,7 +5101,14 @@ and provides facilities for writing custom extensions. Also see our page on
 #+begin_src emacs-lisp
 (require 'evil)
 (void-add-hook 'window-setup-hook #'evil-mode)
+#+end_src
 
+**** custom
+:PROPERTIES:
+:ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
+:END:
+
+#+begin_src emacs-lisp
 (general-setq evil-want-C-u-scroll t)
 #+end_src
 
@@ -5125,24 +5132,6 @@ and provides facilities for writing custom extensions. Also see our page on
 (setq evil-mode-line-format                nil)
 (setq evil-respect-visual-line-mode        t)
 (setq evil-symbol-word-search              t)
-#+end_src
-
-**** evil
-:PROPERTIES:
-:ID: 7dba80e1-58d6-46d2-a0e3-64c535e556e2
-:END:
-
-#+begin_src emacs-lisp
-(use-package! evil
-  :custom
-  ;; (evil-want-C-d-scroll    . t)
-  ;; (evil-want-C-w-delete    . t)
-  ;; (evil-want-Y-yank-to-eol . t)
-  ;; (evil-overriding-maps    . nil)
-  ;; (evil-want-minibuffer    . t)
-  :pre-setq
-  (evil-want-keybinding                 . nil)
-  :setq)
 #+end_src
 
 **** cursors
