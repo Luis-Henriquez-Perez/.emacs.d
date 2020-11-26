@@ -5093,6 +5093,16 @@ like that concern N number of things, where N could be 1 or more things.
 and provides facilities for writing custom extensions. Also see our page on
 [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
 
+**** init
+:PROPERTIES:
+:ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
+:END:
+
+#+begin_src emacs-lisp
+(require 'evil)
+(void-add-hook 'window-setup-hook #'evil-mode)
+#+end_src
+
 **** evil
 :PROPERTIES:
 :ID: 7dba80e1-58d6-46d2-a0e3-64c535e556e2
