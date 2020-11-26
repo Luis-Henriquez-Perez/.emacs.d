@@ -1304,7 +1304,7 @@ I want a shorthand for advices that involve package loading.
 
 #+begin_src emacs-lisp
 (defun void-prompt-for-system-package (package system-packages)
-  ""
+  "Make sure package has system packages it requires."
   (alet (void-symbol-intern 'void--ensure-packages-installed-for- package)
     (if (-all-p #'system-packages-package-installed-p system-packages)
         nil
