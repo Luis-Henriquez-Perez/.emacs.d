@@ -2958,7 +2958,7 @@ makes emacs feel like a window manager with gaps.
 :END:
 
 #+begin_src emacs-lisp
-(general-setq window-divider-default-places  t)
+(general-setq window-divider-default-places t)
 (general-setq window-divider-default-bottom-width 4)
 (general-setq window-divider-default-right-width  4)
 #+end_src
