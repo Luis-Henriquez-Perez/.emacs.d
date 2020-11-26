@@ -4625,19 +4625,25 @@ it. It's pretty smart and very convenient.
 :ID:       eada4f60-aad8-471f-8f5a-43fed5d32295
 :END:
 
-**** ws-bulter
+**** ws-butler
 :PROPERTIES:
 :ID: 7e0c30ea-a109-4176-a92b-4a1de4922032
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "lewang/ws-butler"
+:PACKAGE:  "ws-butler"
+:LOCAL-REPO: "ws-butler"
+:COMMIT:   52321b99be69aa1b661da7743c4421a30d8b6bcb
 :END:
 
 [[https://github.com/lewang/ws-butler][ws-butler]] cleans up whitespace.
 
 #+begin_src emacs-lisp
-(use-package! ws-butler
-  :hook (prog-mode org-mode)
-  :config
-  (append! ws-butler-global-exempt-modes
-    '(special-mode comint-mode term-mode eshell-mode)))
+(void-add-hook #'prog-mode-hook #'ws-butler-mode)
+
+(append! ws-butler-global-exempt-modes
+  '(special-mode comint-mode term-mode eshell-mode))
 #+end_src
 
 *** ialign
