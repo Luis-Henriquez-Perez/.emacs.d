@@ -4762,17 +4762,18 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 (void-autoload 'lispyville (list #'lispyville-comment-or-uncomment-line))
 (void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
 
-[remap evil-yank]                 . lispyville-yank
-[remap evil-delete]               . lispyville-delete
-[remap evil-change]               . lispyville-change
-[remap evil-yank-line]            . lispyville-yank-line
-[remap evil-delete-line]          . lispyville-delete-line
-[remap evil-change-line]          . lispyville-change-line
-[remap evil-delete-char]          . lispyville-delete-char-or-splice
-[remap evil-delete-backward-char] . lispyville-delete-char-or-splice-backwards
-[remap evil-substitute]           . lispyville-substitute
-[remap evil-change-whole-line]    . lispyville-change-whole-line
-[remap evil-join]                 . lispyville-join
+(general-def
+  [remap evil-yank]                 . lispyville-yank
+  [remap evil-delete]               . lispyville-delete
+  [remap evil-change]               . lispyville-change
+  [remap evil-yank-line]            . lispyville-yank-line
+  [remap evil-delete-line]          . lispyville-delete-line
+  [remap evil-change-line]          . lispyville-change-line
+  [remap evil-delete-char]          . lispyville-delete-char-or-splice
+  [remap evil-delete-backward-char] . lispyville-delete-char-or-splice-backwards
+  [remap evil-substitute]           . lispyville-substitute
+  [remap evil-change-whole-line]    . lispyville-change-whole-line
+  [remap evil-join]                 . lispyville-join)
 #+end_src
 
 **** inner text objects
