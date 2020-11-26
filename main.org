@@ -1297,6 +1297,20 @@ I want a shorthand for advices that involve package loading.
   (void--load-after-call package :after functions))
 #+end_src
 
+*** ensure system package
+:PROPERTIES:
+:ID:       5ec9bd00-55cd-4d21-bc2e-f6812aa30676
+:END:
+
+#+begin_src emacs-lisp
+(defun void-prompt-for-system-package (package system-packages)
+  ""
+  (alet (void--ensure-packages-installed-for-%)
+    (void-add-advice it :around )
+    )
+  )
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
