@@ -64,7 +64,7 @@ restored]] after package loading slows down.
 Restore gc-cons-threshold (after a 7 second delay). I got this from [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el#L283][doom]]. We
 don't do it immediately because packages are still being lazy loaded at this
 time. In the future I'd like to base the time when this restoration will take
-place on some number
+place on something other than arbitrary number.
 
 #+begin_src emacs-lisp
 (defun void-restore-gc-cons-threshold ()
