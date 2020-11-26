@@ -1311,6 +1311,15 @@ I want a shorthand for advices that involve package loading.
   )
 #+end_src
 
+*** before load hook
+:PROPERTIES:
+:ID:       aba2646d-ef7c-4e8b-a81e-48d541d8338a
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-before-load-hook nil "Hook run before loading a feature.")
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
