@@ -4998,9 +4998,9 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :END:
 
 #+begin_src emacs-lisp
-(void-autoload 'powerthesaurus
-               (list #'powerthesaurus-lookup-word-at-point
-                     #'power-thesaurus-lookup-word-dwim))
+(alet (list #'powerthesaurus-lookup-word-at-point
+            #'power-thesaurus-lookup-word-dwim)
+  (void-autoload 'powerthesaurus))
 #+end_src
 
 *** define-it
