@@ -3850,6 +3850,20 @@ Orderless will do this."
 :ID:       0f670007-165b-4a2d-ac35-97eab9ada739
 :END:
 
+**** init
+:PROPERTIES:
+:ID:       5e5393d9-9f58-45be-9ecc-1bc9f0316379
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'prog-mode-hook #'company-mode)
+#+end_src
+
+**** company bindings
+:PROPERTIES:
+:ID:       ae4d3667-10c1-4bb5-b322-da7a52587888
+:END:
+
 **** company
 :PROPERTIES:
 :ID: 89fcd613-f7ea-461b-a91c-0d9a0ae28093
@@ -3864,17 +3878,7 @@ Orderless will do this."
          ([tab] . company-select-next)
          ([backtab] . company-select-previous)
          ("C-k"     . company-select-previous)
-         ("C-j"     . company-select-next))
-  :setq
-  (company-frontends . '(company-pseudo-tooltip-frontend))
-  (company-tooltip-align-annotations . t)
-  (company-show-numbers . t)
-  (company-dabbrev-downcase . nil)
-  (company-idle-delay . 0.15)
-  (company-tooltip-limit . 14)
-  (company-minimum-prefix-length . 1)
-  (company-minimum-prefix-length . 1)
-  (company-require-match . 'never))
+         ("C-j"     . company-select-next)))
 #+end_src
 
 *** backends
