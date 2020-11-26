@@ -1316,7 +1316,8 @@ I want a shorthand for advices that involve package loading.
 :ID:       aba2646d-ef7c-4e8b-a81e-48d541d8338a
 :END:
 
-I want to control the loading of a feature. Specifically, I want to.
+I want to control the loading of a feature. Specifically, I want to make it so
+the feature won't load under certain conditions.
 
 #+begin_src emacs-lisp
 (defvar void-before-load-hook nil "Hook run before loading a feature.")
