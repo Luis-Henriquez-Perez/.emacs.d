@@ -1306,6 +1306,10 @@ I want a shorthand for advices that involve package loading.
 (defun void-prompt-for-system-package (package system-packages)
   ""
   (alet (void-symbol-intern 'void--ensure-packages-installed-for- package)
+    (if (-all-p #'system-packages-package-installed-p system-packages)
+        nil
+      ()
+      )
     (void-add-advice it :around )
     )
   )
