@@ -4464,9 +4464,7 @@ This package allows for the creation of gifs from within emacs.
 necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypression/images/screencast.gif][looks]] pretty professional!
 
 #+begin_src emacs-lisp
-(use-package! keypression
-  :straight (:host github :repo "chuntaro/emacs-keypression")
-  :setq (keypression-frame-justify . 'keypression-right-justified))
+(setq keypression-frame-justify 'keypression-right-justified)
 #+end_src
 
 * Text Editing
