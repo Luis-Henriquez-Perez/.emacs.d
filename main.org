@@ -1318,6 +1318,11 @@ I want a shorthand for advices that involve package loading.
 
 #+begin_src emacs-lisp
 (defvar void-before-load-hook nil "Hook run before loading a feature.")
+
+(defadvice! run-before-load-hook (:around require)
+  "Run `void-before-load-hook'."
+  (awhen (run-hook-with-args )
+    (apply <orig-fn> <args>)))
 #+end_src
 
 ** Packages
