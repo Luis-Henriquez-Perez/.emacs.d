@@ -2857,32 +2857,11 @@ an alternative package for this, [[https://github.com/dimitri/switch-window][swi
 is that the characters used for switching to a window are *really* easy to see,
 but you can't see the buffer contents. That's a no-go for me I need to see them.
 
-*** commands
-:PROPERTIES:
-:ID:       b25171b9-15e2-40b3-9f44-d207d63efab6
-:END:
-
 #+begin_src emacs-lisp
 (void-autoload 'ace-window '(ace-window ace-swap-window))
-#+end_src
-
-*** settings
-:PROPERTIES:
-:ID:       b6717e75-96a8-415c-9c33-52821476d44c
-:END:
-
-#+begin_src emacs-lisp
+(general-def [remap other-window] #'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 (setq aw-background t)
-#+end_src
-
-*** bindings
-:PROPERTIES:
-:ID:       eaaafeb8-0aa3-4c10-8b9f-6283d4e75e7f
-:END:
-
-#+begin_src emacs-lisp
-(general-def [remap other-window] #'ace-window)
 #+end_src
 
 ** workgroups2
