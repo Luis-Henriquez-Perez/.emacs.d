@@ -3092,11 +3092,6 @@ use a typical window manager, you have to.
 (setq exwm-replace nil)
 #+end_src
 
-*** settings
-:PROPERTIES:
-:ID:       d99af013-45ac-454c-bac5-3970b287d5e6
-:END:
-
 *** exwm
 :PROPERTIES:
 :ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
