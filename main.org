@@ -3859,6 +3859,23 @@ Orderless will do this."
 (void-add-hook 'prog-mode-hook #'company-mode)
 #+end_src
 
+**** settings
+:PROPERTIES:
+:ID:       5b7962d9-0a43-4efc-b8ad-3f638f6abff3
+:END:
+
+#+begin_src emacs-lisp
+(setq company-frontends '(company-pseudo-tooltip-frontend))
+(setq company-tooltip-align-annotations t)
+(setq company-show-numbers t)
+(setq company-dabbrev-downcase nil)
+(setq company-idle-delay 0.15)
+(setq company-tooltip-limit 14)
+(setq company-minimum-prefix-length 1)
+(setq company-minimum-prefix-length 1)
+(setq company-require-match 'never)
+#+end_src
+
 **** company bindings
 :PROPERTIES:
 :ID:       ae4d3667-10c1-4bb5-b322-da7a52587888
