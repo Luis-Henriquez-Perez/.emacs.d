@@ -5101,6 +5101,9 @@ and provides facilities for writing custom extensions. Also see our page on
 #+begin_src emacs-lisp
 (require 'evil)
 (void-add-hook 'window-setup-hook #'evil-mode)
+
+(general-setq evil-want-C-u-scroll t)
+
 #+end_src
 
 **** evil
@@ -5110,10 +5113,7 @@ and provides facilities for writing custom extensions. Also see our page on
 
 #+begin_src emacs-lisp
 (use-package! evil
-  :demand t
-  :hook window-setup
   :custom
-  (evil-want-C-u-scroll    t)
   ;; (evil-want-C-d-scroll    . t)
   ;; (evil-want-C-w-delete    . t)
   ;; (evil-want-Y-yank-to-eol . t)
