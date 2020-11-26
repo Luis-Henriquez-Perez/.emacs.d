@@ -67,7 +67,7 @@ time.
 
 #+begin_src emacs-lisp
 (defun void-restore-gc-cons-threshold ()
-  "Restore any changes to garbage collection after 7 idle seconds."
+  "Restore any changes to garbage collection."
   (void-log "Restoring...gc-cons-threshold: %d -> %d"
             gc-cons-threshold
             VOID-GC-CONS-THRESHOLD)
