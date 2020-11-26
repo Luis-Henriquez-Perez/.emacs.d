@@ -4449,7 +4449,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 
 This package allows for the creation of gifs from within emacs.
 
-** keypression                                                        :disabled:
+** keypression
 :PROPERTIES:
 :ID: 1943c432-4d47-43a5-ba92-2f17205bbae0
 :TYPE:     git
