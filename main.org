@@ -2904,7 +2904,6 @@ that it's not a lisp object; implying that it is not.
 :END:
 
 #+begin_src emacs-lisp
-(setq wg-mode-line-display-on nil)
 (setq wg-flag-modified nil)
 (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
 #+end_src
@@ -2915,6 +2914,7 @@ that it's not a lisp object; implying that it is not.
 :END:
 
 #+begin_src emacs-lisp
+(setq wg-mode-line-display-on nil)
 (advice-add #'wg-change-modeline :override #'ignore)
 #+end_src
 
