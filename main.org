@@ -4986,11 +4986,6 @@ very useful to me.
 [[https://github.com/emacsmirror/auto-capitalize][auto-capitalize]] automatically capitalizes the first word of a sentence for me.
 It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capitalize-words]].
 
-**** autocapitalize
-:PROPERTIES:
-:ID: 35c7c4c0-5009-43d6-8c34-43d6111ceb28
-:END:
-
 #+begin_src emacs-lisp
 (void-add-hook '(text-mode-hook org-mode-hook) #'auto-capitalize-mode)
 (void-autoload 'auto-capitalize #'auto-capitalize-mode)
