@@ -4329,11 +4329,11 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :END:
 
 #+begin_src emacs-lisp
-(void-system-ensure-package 'emms)
-(use-package! emms
-  :system-ensure mpv
-  :commands (emms emms-play-directory emms-play-file)
-  :trigger emms-player-mpv)
+(void-system-ensure-package 'emms 'mpv)
+
+(void-autoload 'emms (list #'emms-play-directory #'emms-play-file))
+
+(void-load-before-call 'package 'emms-player-mpv)
 #+end_src
 
 *** quitting
