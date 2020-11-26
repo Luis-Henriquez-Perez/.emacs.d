@@ -9767,15 +9767,18 @@ In terminals these icons will not display correctly. I usually use emacs as a
 graphical interface but.
 
 #+begin_src emacs-lisp
-(defadvice! disable-all-the-icons-in-tty (:around
-                                          all-the-icons-octicon
-                                          all-the-icons-material
-                                          all-the-icons-faicon
-                                          all-the-icons-fileicon
-                                          all-the-icons-wicon
-                                          all-the-icons-alltheicon)
-  "Disable icons in tty."
+(defun void--disable-icons-in-tty-advice ()
+  ""
   (if (display-graphic-p) (apply <orig-fn> <args>) ""))
+
+(alet ()
+  all-the-icons-octicon
+  all-the-icons-material
+  all-the-icons-faicon
+  all-the-icons-fileicon
+  all-the-icons-wicon
+  all-the-icons-alltheicon
+  (void-add-advice it #'void--disable-icons-in-tty-advice))
 #+end_src
 
 ** zone
