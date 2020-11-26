@@ -3574,10 +3574,9 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! prescient
-  :hook (selectrum-mode-hook . prescient-persist-mode)
-  :setq
-  (prescient-save-file . (concat VOID-DATA-DIR "prescient-save-file")))
+(void-add-hook 'selectrum-mode-hook #'prescient-persist-mode)
+
+(setq prescient-save-file (concat VOID-DATA-DIR "prescient-save-file"))
 #+end_src
 
 *** selectrum-prescient
