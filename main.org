@@ -3491,8 +3491,7 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (defhook! create-yasnippet-dirs-maybe (yas-minor-mode-hook)
-  (--each yas-snippet-dirs
-    (mkdir it t)))
+  (--each yas-snippet-dirs (mkdir it t)))
 #+end_src
 
 **** delete yasnippet prompt
