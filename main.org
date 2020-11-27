@@ -128,6 +128,11 @@ Assumes vc is git which is fine because straight only uses git right now."
   ())
 #+end_src
 
+**** package.el
+:PROPERTIES:
+:ID:       e3cd0263-ff76-46b7-9c85-86fa8abb25f6
+:END:
+
 *** required packages
 :PROPERTIES:
 :ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
