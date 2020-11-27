@@ -3,6 +3,143 @@
 :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
 :END:
 
+** Package Management
+:PROPERTIES:
+:ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
+:END:
+
+This headine contains code related to the initialization of packages.
+
+*** package managers
+:PROPERTIES:
+:ID:       8c5d69ee-cec5-4154-9d71-79168954574b
+:END:
+
+There are several package mangers possible to use with emacs. One of the nice
+things about abstracting package configuration with =use-package= is that you can
+change the package manager easily.
+
+**** straight.el
+:PROPERTIES:
+:ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
+:END:
+
+[[straight][straight.el]] is a package manager that strives to make emacs configurations
+completely reproducable.
+
+***** straight
+:PROPERTIES:
+:ID:       9dff9894-667c-4e74-9624-8aee533f8f70
+:END:
+
+#+begin_src emacs-lisp
+(defun straight:set-vars ()
+  (setq straight-use-package-version 'straight)
+  (setq straight-use-package-by-default t)
+  (setq straight-enable-package-integration t)
+  (setq straight-disable-autoloads nil)
+  (setq straight-cache-autoloads t)
+  (setq straight-check-for-modifications nil)
+  (setq straight-enable-package-integration nil)
+  (setq straight-recipes-emacsmirror-use-mirror t))
+#+end_src
+
+***** customize straight directory
+:PROPERTIES:
+:ID: 843cc8b9-edff-42f7-a767-65a59aa38fbc
+:END:
+
+The path of the straight directory within emacs is hardcoded into
+straight so we need to trick it into thinking =VOID-PACKAGES-DIR= is the
+our emacs directory. This needs to be done before bootstraping
+straight, else the straight directory will be created anyway. I got
+this from Doom's straight branch.
+
+#+begin_src emacs-lisp
+(defun straight:use-packages-dir-a (orig-fn &rest args)
+  "Use `VOID-PACKAGES-DIR' for straight directory."
+  (let ((user-emacs-directory VOID-PACKAGES-DIR))
+    (apply orig-fn args)))
+
+(advice-add #'straight--emacs-dir :around #'straight:use-packages-dir-a)
+#+end_src
+
+***** bootstrap code
+:PROPERTIES:
+:ID: 7816be80-4db8-4219-b7d1-9a6b1ea96035
+:END:
+
+This code initializes straight if it's not already installed.
+
+#+begin_src emacs-lisp
+(defun straight:load-fn ()
+  "Initialize `straight.el'."
+  (defvar bootstrap-version)
+  (let* ((user-emacs-directory VOID-PACKAGES-DIR)
+         (bootstrap-file
+          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+         (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage)))
+#+end_src
+
+***** utility functions
+:PROPERTIES:
+:ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
+:END:
+
+Straight is very minimal.
+
+****** package homepage
+:PROPERTIES:
+:ID:       0edcf34d-a368-4e86-9365-1402f23befbb
+:END:
+
+This function gets me the homepage of a package.
+
+#+begin_src emacs-lisp
+(defun straight:get-package-homepage (package)
+  "Return the homepage for recipe.
+Assumes vc is git which is fine because straight only uses git right now."
+  (let* ((recipe (straight-recipes-retrieve package straight-recipe-repositories))
+         (repo (plist-get (cdr recipe) :repo))
+         (host (plist-get (cdr recipe) :host)))
+    (straight-vc-git--encode-url repo host)))
+
+(defun straight/goto-homepage ()
+  (interactive)
+  (browse-url (straight:get-package-homepage (symbol-at-point))))
+#+end_src
+
+****** go to readme
+:PROPERTIES:
+:ID:       4d5c4f2e-4f28-4a19-9470-97a398ccb224
+:END:
+
+#+begin_src emacs-lisp
+(defun straight/goto-readme-dir ()
+  "Go to the directory in ranger or dired."
+  ())
+#+end_src
+
+*** required packages
+:PROPERTIES:
+:ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
+:END:
+
+#+begin_src emacs-lisp
+(unless (bound-and-true-p void-package-load-paths)
+  (straight:set-vars)
+  (straight:load-fn)
+  (mapc #'straight-use-package void-package-recipe-alist))
+#+end_src
+
 ** Init
 :PROPERTIES:
 :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
@@ -332,6 +469,7 @@ as a dependency, I'd end up rewriting many of its functions.
 :END:
 
 #+begin_src emacs-lisp
+(void-add-hook 'emacs-lisp-mode-hook #'dash-enable-font-lock nil nil t)
 #+end_src
 
 *** org-ml
@@ -377,6 +515,20 @@ structures. It was built for.
 :END:
 
 =ht= is a library for working with hash tables.
+
+*** pcache
+:PROPERTIES:
+:ID:       8eb3aa7f-9bfc-44a1-b9df-877ce2b93995
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "sigma/pcache"
+:PACKAGE:  "pcache"
+:LOCAL-REPO: "pcache"
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 *** macro writing tools
 :PROPERTIES:
@@ -2485,7 +2637,8 @@ be.
 (defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
   "Tangle if `void-needs-tangling-p' returns t."
   (when (void-needs-tangling-p)
-    (void/tangle-org-file)))
+    (alet (concat VOID-LOCAL-DIR "main.el")
+      (org-babel-tangle-file VOID-MAIN-ORG-FILE it))))
 #+end_src
 
 ***** tangle asynchronously upon saving
@@ -6319,6 +6472,11 @@ again, you are taken to the location you left off. This is very convenient.
 :ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
 :END:
 
+=savehist= is a built-in feature for saving the minibuffer-history to a file--the
+[[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
+variables which may or may not be related to minibuffer history. You add the
+ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
+
 *** init
 :PROPERTIES:
 :ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
@@ -6326,23 +6484,14 @@ again, you are taken to the location you left off. This is very convenient.
 
 #+begin_src emacs-lisp
 (idle-require 'custom)
+(savehist-mode 1)
 (void-add-hook 'emacs-startup-hook #'savehist-mode)
-#+end_src
 
-*** savehist
-:PROPERTIES:
-:ID: 23867595-32fd-4270-97bd-3101cc681f00
-:END:
-
-#+begin_src emacs-lisp
-(use-feature! savehist
-  :idle-require custom
-  :hook emacs-startup
-  :setq
-  (savehist-save-minibuffer-history . t)
-  (savehist-autosave-interval . nil)
-  (savehist-additional-variables . '(kill-ring search-ring regexp-search-ring))
-  (savehist-file . (concat VOID-DATA-DIR "savehist")))
+(setq savehist-save-minibuffer-history t)
+(setq savehist-autosave-interval nil)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(push 'void-package-load-paths savehist-additional-variables)
+(setq savehist-file (concat VOID-DATA-DIR "savehist"))
 #+end_src
 
 *** unpropertize kill ring
@@ -9673,6 +9822,18 @@ see it if it's running low and my laptop's not charging.
                (emms-track-name)
                (f-base))
       (s-truncate 25 it))))
+#+end_src
+
+** spinner
+:PROPERTIES:
+:ID:       991fcc99-667a-4bdb-a3ae-a14fd6001c4f
+:END:
+
+This package provides a framework for defining progress bars or spinners. This
+is useful whenever there's a process.
+
+#+begin_src emacs-lisp
+(use-package! spinner)
 #+end_src
 
 ** hide-mode-line
