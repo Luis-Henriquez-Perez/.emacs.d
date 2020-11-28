@@ -1468,6 +1468,16 @@ This is a hook designed to run just before a package is loaded.
 :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
 :END:
 
+**** package autoload
+:PROPERTIES:
+:ID:       93e8c19b-2306-4e7f-9b43-3418e07a1b9c
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-package-autoloads nil "")
+
+#+end_src
+
 **** hook that
 :PROPERTIES:
 :ID:       da32e049-e980-47af-b8d9-d3c644702229
@@ -1491,10 +1501,9 @@ involves. Autoloading can be done in elisp. You define a dummy function which
 unbinds itself, loads the specified package, then calls the real function.
 
 #+begin_src emacs-lisp
-(defvar void-package-autoloads nil "")
-
 (defun void-autoload (package fn)
   "Create a function that can be called."
+  (ht-update void-)
   (fset name `(lambda (&rest args)
                 ;; will trigger the before-load hook.
                 (unless cancelled
