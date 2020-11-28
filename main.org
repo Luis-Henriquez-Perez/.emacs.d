@@ -5852,9 +5852,11 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 (alet (list #'evil-visualstar/begin-search-backward
             #'evil-visualstar/begin-search-forward)
   (void-autoload 'evil-visualstart it)
-  (bind-keys :package evil-visualstar :map evil-visual-state-map
-             ("#" . evil-visualstar/begin-search-backward)
-             ("*" . evil-visualstar/begin-search-forward)))
+  (general-def
+    :package evil-visualstar
+    :map evil-visual-state-map
+    "#" evil-visualstar/begin-search-backward
+    "*" evil-visualstar/begin-search-forward))
 #+end_src
 
 ** expand-region
