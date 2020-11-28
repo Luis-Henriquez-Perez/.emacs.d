@@ -1453,7 +1453,7 @@ SYM is a symbol that stores a list."
 :ID:       68bc3955-7f01-42fa-ad16-8422f318dd92
 :END:
 
-This is a hook designed.
+This is a hook designed to run before a package is loaded.
 
 #+begin_src emacs-lisp
 (defvar void-before-load-hook nil "Hook run just before a feature is loaded.")
