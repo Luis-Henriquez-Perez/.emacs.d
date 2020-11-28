@@ -1470,8 +1470,9 @@ unbinds itself, loads the specified package, then calls the real function.
   "Create a function that can be called."
   (fset name `(lambda (&rest args)
                 ;; will trigger the before-load hook.
-                (require package)
-                (funcall #',fn ,args))))
+                (unless cancelled
+                  (require package)
+                  (funcall #',fn ,args)))))
 
 (defhook! remove-and-unbind-autoloads (before-load-hook)
   "Hook run before feature is loaded."
