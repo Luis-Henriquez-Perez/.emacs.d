@@ -572,6 +572,10 @@ structures. It was built for.
 
 =ht= is a library for working with hash tables.
 
+#+begin_src emacs-lisp
+(require 'ht)
+#+end_src
+
 *** pcache
 :PROPERTIES:
 :ID:       8eb3aa7f-9bfc-44a1-b9df-877ce2b93995
