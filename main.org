@@ -1134,7 +1134,7 @@ appropriate name to target.
 #+begin_src emacs-lisp
 (defun void-remove-advice (advice)
   "Remove advice."
-  (advice-remove advice (advice-name advice)))
+  (advice-remove (void-advised-fn advice) advice))
 #+end_src
 
 **** advice action
