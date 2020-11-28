@@ -1468,7 +1468,20 @@ This is a hook designed to run just before a package is loaded.
 :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
 :END:
 
-*** autoloading
+**** hook that
+:PROPERTIES:
+:ID:       da32e049-e980-47af-b8d9-d3c644702229
+:END:
+
+#+begin_src emacs-lisp
+(defhook! remove-and-unbind-autoloads (before-load-hook)
+  "Hook run before feature is loaded."
+  (--each (ht-get void-package-autoloads package)
+    (fmakunbound it))
+  (ht-remove void-package-autoloads package))
+#+end_src
+
+**** autoloading
 :PROPERTIES:
 :ID:       e648ce0e-bb00-452d-9498-236c65e3a873
 :END:
@@ -1487,12 +1500,6 @@ unbinds itself, loads the specified package, then calls the real function.
                 (unless cancelled
                   (require package)
                   (funcall #',fn ,args)))))
-
-(defhook! remove-and-unbind-autoloads (before-load-hook)
-  "Hook run before feature is loaded."
-  (--each (ht-get void-package-autoloads package)
-    (fmakunbound it))
-  (ht-remove void-package-autoloads package))
 #+end_src
 
 *** loading on call
