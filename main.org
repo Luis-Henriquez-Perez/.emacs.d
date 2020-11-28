@@ -6957,6 +6957,8 @@ address later.
                (org-element-property :raw-value it)
                (format "Change at \"%s\".\n" it))))
       (format "Update %s" (f-base file))))
+
+(void-load-before-call 'org-ml #'gac:commit-message)
 #+end_src
 
 *** magit
