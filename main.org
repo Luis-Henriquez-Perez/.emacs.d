@@ -1126,6 +1126,17 @@ appropriate name to target.
   )
 #+end_src
 
+**** remove advice
+:PROPERTIES:
+:ID:       3d13ea95-44aa-4261-8480-5ae9701d533d
+:END:
+
+#+begin_src emacs-lisp
+(defun void-remove-advice (advice)
+  "Remove advice."
+  (advice-remove advice (advice-name advice)))
+#+end_src
+
 **** advice action
 :PROPERTIES:
 :ID:       f15279e9-cd0c-4a74-bc74-389d14a4b82a
