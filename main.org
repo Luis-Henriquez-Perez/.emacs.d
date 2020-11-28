@@ -1210,7 +1210,8 @@ should expire."
 :END:
 
 This section pertains to [[helpfn:defadvice!][defadvice!]], a replacement for [[helpfn:define-advice][define-advice]] that
-provides a declarative way to define advices.
+provides a declarative way to define advices. This should be used for one-time
+advices that.
 
 ***** define-advice!
 :PROPERTIES:
