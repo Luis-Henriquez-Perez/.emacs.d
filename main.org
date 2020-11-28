@@ -174,18 +174,13 @@ Assumes vc is git which is fine because straight only uses git right now."
               (push (split-string it (rx (or white "\n")) t) recipes)
               (mapcar (lambda (it) (if (string= (seq-elt it -1) ":")
                                        (intern (seq-subseq it 0 -1))
-                                     ()))
+                                     (format ())))
                       it)
               ;; (push it recipes)
               )
             ))))
     (s-truncate 50 (car recipes))))
 #+end_src
-
-**** package.el
-:PROPERTIES:
-:ID:       e3cd0263-ff76-46b7-9c85-86fa8abb25f6
-:END:
 
 *** install packages
 :PROPERTIES:
@@ -2595,6 +2590,9 @@ of big packages like org-mode is snappy.
 #+begin_src emacs-lisp
 (require 'idle-require)
 (void-add-hook 'emacs-startup-hook #'idle-require-mode)
+
+;; (use-package! idle-require
+;;   :hook emacs-startup-hook)
 #+end_src
 
 ***** settings
@@ -2611,19 +2609,26 @@ require loads.
 (setq idle-require-idle-delay 10)
 #+end_src
 
-***** make idle require use void-log                                  :disabled:
+***** make idle require use void-log
 :PROPERTIES:
 :ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
 :END:
+
+=idle-require= messages us to tell us when a package is being idle required and
+when it has finished idle-requiring packages. I don't want to see the message
+unless I'm debugging.
 
 #+begin_src emacs-lisp
 (void-add-advice #'idle-require-load-next :around #'void--use-void-log)
 #+end_src
 
-***** increase gc-cons-threshold during idle loading                  :disabled:
+***** increase gc-cons-threshold during idle loading
 :PROPERTIES:
 :ID:       275c3488-8192-476c-97b8-6c6643f54d2e
 :END:
+
+Since we're evaluating a good amount of lisp expressions, we should boost
+garbage collection during this time.
 
 #+begin_src emacs-lisp
 (void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection)
@@ -7063,56 +7068,6 @@ address later.
       (setq server-name name))
     (unless (server-running-p)
       (server-start))))
-#+end_src
-
-** autorevert
-:PROPERTIES:
-:ID:       6655c984-3528-4f02-b2ef-1899063ae434
-:END:
-
-*** init
-:PROPERTIES:
-:ID:       85fbb390-41b0-474b-b529-922c802b1384
-:END:
-
-#+begin_src emacs-lisp
-(alet (list #'switch-to-buffer #'find-file)
-  (void-load-before-call 'autorevert it))
-#+end_src
-
-*** maybe
-:PROPERTIES:
-:ID:       ea240e46-3980-4ea0-b94f-8496033eceaf
-:END:
-
-** TODO autorevert                                                    :disabled:
-:PROPERTIES:
-:ID: 1d7c8bac-e523-4251-bb3c-b85f592fbfc3
-:TYPE:     built-in
-:END:
-
-#+begin_src emacs-lisp
-(use-feature! autorevert
-  :setq
-  (auto-revert-verbose . t)
-  (auto-revert-use-notify . nil)
-  (auto-revert-stop-on-user-input . nil)
-  (revert-without-query . (list "."))
-  :config
-  (defun auto-revert-buffer-maybe ()
-    (unless (or (bound-and-true-p auto-revert-mode)
-                (active-minibuffer-window))
-      (auto-revert-handler)))
-
-  (defhook! auto-revert-buffer-maybe (void-after-switch-buffer-hook)
-    "Auto revert current buffer, if necessary."
-    (auto-revert-buffer-maybe))
-
-  (defhook! auto-revert-auto-revert-visible-buffers (focus-in-hook after-save-hook)
-    "Auto revert stale buffers in visible windows, if necessary."
-    (--each (-uniq (mapcar #'window-buffer (window-list)))
-      (with-current-buffer it
-        (auto-revert-buffer-maybe)))))
 #+end_src
 
 ** security
