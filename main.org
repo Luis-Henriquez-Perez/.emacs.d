@@ -1436,6 +1436,15 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
+*** defhookvar!
+:PROPERTIES:
+:ID:       68bc3955-7f01-42fa-ad16-8422f318dd92
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-before-load-hook ())
+#+end_src
+
 *** autoloading
 :PROPERTIES:
 :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
