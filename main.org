@@ -1503,7 +1503,7 @@ unbinds itself, loads the specified package, then calls the real function.
 #+begin_src emacs-lisp
 (defun void-autoload (package fn)
   "Create a function that can be called."
-  (ht-update void-package-autoloads)
+  (ht-set package void-package-autoloads)
   (fset name `(lambda (&rest args)
                 ;; will trigger the before-load hook.
                 (unless cancelled
