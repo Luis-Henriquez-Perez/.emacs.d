@@ -979,6 +979,17 @@ function, change it to a hook.
       (void--add-hook var hook depth local expire-fn))))
 #+end_src
 
+**** removing hooks
+:PROPERTIES:
+:ID:       99708d72-a8d4-42ba-b6ae-ba692fbafec8
+:END:
+
+#+begin_src emacs-lisp
+(defun void-remove-hook (hook)
+  "Remove a void hook."
+  (remove-hook (void-hook-var hook) hook))
+#+end_src
+
 **** defhook!
 :PROPERTIES:
 :ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
