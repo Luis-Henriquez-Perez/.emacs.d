@@ -1507,6 +1507,10 @@ I am using my own autoload system that is purely emacs lisp.
 :ID:       da32e049-e980-47af-b8d9-d3c644702229
 :END:
 
+I put this code in a hook instead of [[][]] because there may be other ways that
+said package ends up getting loaded besides calling one of the autoload
+functions.
+
 #+begin_src emacs-lisp
 (defhook! remove-and-unbind-autoloads (before-load-hook)
   "Hook run before feature is loaded."
@@ -1528,12 +1532,13 @@ unbinds itself, loads the specified package, then calls the real function.
 (defun void-autoload (package fn)
   "Create a function that can be called."
   ;; add function to hash table.
-  (ht-set void-package-autoloads package
-          (cons fn (ht-get void-package-autoloads package)))
-  (fset fn `(lambda (&rest args)
-              ;; will trigger the before-load hook.
-              (require package)
-              (funcall #',fn ,args))))
+  (unless (fboundp fn)
+    (ht-set void-package-autoloads package
+            (cons fn (ht-get void-package-autoloads package)))
+    (fset fn `(lambda (&rest args)
+                ;; will trigger the before-load hook.
+                (require package)
+                (funcall #',fn ,args)))))
 #+end_src
 
 *** loading on call
