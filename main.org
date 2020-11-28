@@ -1469,6 +1469,8 @@ This is a hook designed to run just before a package is loaded.
 :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
 :END:
 
+I am using my own autoload system that is purely emacs lisp.
+
 **** package autoload
 :PROPERTIES:
 :ID:       93e8c19b-2306-4e7f-9b43-3418e07a1b9c
