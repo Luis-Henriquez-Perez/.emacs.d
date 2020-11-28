@@ -1490,9 +1490,9 @@ unbinds itself, loads the specified package, then calls the real function.
 
 (defhook! remove-and-unbind-autoloads (before-load-hook)
   "Hook run before feature is loaded."
-  (--each (alist-get package void-package-autoload-alist)
-    (void-advice-remove it)
-    (fmakunbound it)))
+  (--each (ht-get void-package-autoloads package)
+    (fmakunbound it))
+  (ht-remove void-package-autoloads package))
 #+end_src
 
 *** loading on call
