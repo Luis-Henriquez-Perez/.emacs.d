@@ -5764,9 +5764,8 @@ Why not just go to the end of the ="= like any other around operator?
 :END:
 
 #+begin_src emacs-lisp
-(use-package! auto-yasnippet
-  :config (advice-add #'aya-expand :after #'evil-insert-state)
-  :setq (aya-persist-snippets-dir . (concat VOID-LOCAL-DIR "auto-snippets/")))
+(void-add-advice 'aya-expand :after #'evil-insert-state)
+(setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
 #+end_src
 
 *** evil-surround
