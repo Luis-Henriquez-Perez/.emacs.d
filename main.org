@@ -1504,6 +1504,7 @@ unbinds itself, loads the specified package, then calls the real function.
 #+begin_src emacs-lisp
 (defun void-autoload (package fn)
   "Create a function that can be called."
+  ;; add function to hash table.
   (ht-set void-package-autoloads package
           (cons fn (ht-get void-package-autoloads package)))
   (fset fn `(lambda (&rest args)
