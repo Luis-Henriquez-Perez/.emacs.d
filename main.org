@@ -159,7 +159,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 #+begin_src emacs-lisp
 (defun void-generate-recipes-from-org-file ()
-  "Return recipes needed."
+  "Return recipes needed for loading packages."
   (let* ((recipes nil)
          (org-file (concat user-emacs-directory "main.org"))
          (el-file (concat user-emacs-directory "main.el"))
