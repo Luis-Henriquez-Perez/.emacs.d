@@ -1442,7 +1442,7 @@ SYM is a symbol that stores a list."
 :END:
 
 #+begin_src emacs-lisp
-(defvar void-before-load-hook ())
+(defvar void-before-load-hook nil "Hook run just before a feature is loaded.")
 #+end_src
 
 *** autoloading
