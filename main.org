@@ -1451,6 +1451,7 @@ unbinds itself, loads the specified package, then calls the real function.
 (defun void-autoload (package fn)
   "Create a function that can be called."
   (fset name `(lambda (&rest args)
+                ;; will trigger the before-load hook.
                 (require package)
                 (funcall #',fn ,args))))
 
