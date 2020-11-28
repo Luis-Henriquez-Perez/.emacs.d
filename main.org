@@ -1446,18 +1446,19 @@ involves. Autoloading can be done in elisp. You define a dummy function which
 unbinds itself, loads the specified package, then calls the real function.
 
 #+begin_src emacs-lisp
+(defvar void-package-autoload-alist nil "")
+
 (defun void-autoload (package fn)
   "Create a function that can be called."
   (fset name `(lambda (&rest args)
-                (interactive)
-                ;; find the base advice.
-                (-each (list (void-advice-true-name name) ())
-                  #'fmakunbound)
-                ;; find all functions aliased.
-                (fmakunbound #',name)
                 (require package)
-                (call-interactively #',name)
-                )))
+                (funcall #',fn ,args))))
+
+(defhook! before-load-hook ()
+  "Hook run before feature is loaded."
+  (--each (alist-get package void-package-autoload-alist)
+    (void-advice-remove it)
+    (fmakunbound it)))
 #+end_src
 
 *** loading on call
