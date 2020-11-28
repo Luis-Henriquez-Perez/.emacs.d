@@ -1089,6 +1089,8 @@ Advice name is of the form FN@ADVICE."
 :ID:       3ab8947c-15f0-4fb7-bd75-f0baabc20ec1
 :END:
 
+Since adding an advice to multiple functions is done frequently.
+
 ***** helper
 :PROPERTIES:
 :ID:       4750f4dc-053b-4062-bd6c-aeeed6cdbcd9
