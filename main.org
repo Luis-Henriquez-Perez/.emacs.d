@@ -3687,6 +3687,16 @@ of things that we actually want at this moment.
 :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
 :END:
 
+*** autoyasnippet
+:PROPERTIES:
+:ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
+:END:
+
+#+begin_src emacs-lisp
+(void-add-advice 'aya-expand :after #'evil-insert-state)
+(setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
+#+end_src
+
 *** yasnippet
 :PROPERTIES:
 :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
@@ -5758,16 +5768,6 @@ Why not just go to the end of the ="= like any other around operator?
 (after! evil (evil-set-initial-state 'debugger-mode 'emacs))
 #+end_src
 
-***** autoyasnippet
-:PROPERTIES:
-:ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
-:END:
-
-#+begin_src emacs-lisp
-(void-add-advice 'aya-expand :after #'evil-insert-state)
-(setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
-#+end_src
-
 *** evil-surround
 :PROPERTIES:
 :ID:       bc9899a4-654e-4bf6-89bd-557a72c713a8
@@ -5849,13 +5849,14 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 [[https://github.com/bling/evil-visualstar][evil-visualstar]]
 
 #+begin_src emacs-lisp
-(use-package! evil-visualstar
-  :commands
-  evil-visualstar/begin-search-backward
-  evil-visualstar/begin-search-forward
-  :bind (:map evil-visual-state-map
-         ("#" . evil-visualstar/begin-search-backward)
-         ("*" . evil-visualstar/begin-search-forward)))
+;; (with-package! evil-visualstart
+;;                (void-autoload ))
+(alet (list #'evil-visualstar/begin-search-backward
+            #'evil-visualstar/begin-search-forward)
+  (void-autoload 'evil-visualstart it)
+  (bind-keys :package evil-visualstar :map evil-visual-state-map
+             ("#" . evil-visualstar/begin-search-backward)
+             ("*" . evil-visualstar/begin-search-forward)))
 #+end_src
 
 ** expand-region
