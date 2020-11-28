@@ -174,12 +174,9 @@ Assumes vc is git which is fine because straight only uses git right now."
               (push (split-string it (rx (or white "\n")) t) recipes)
               (mapcar (lambda (it) (if (string= (seq-elt it -1) ":")
                                        (intern (seq-subseq it 0 -1))
-                                     (format ())))
-                      it)
-              ;; (push it recipes)
-              )
-            ))))
-    (s-truncate 50 (car recipes))))
+                                     ;; convert it to lisp form.
+                                     ()))
+                      it))))))))
 #+end_src
 
 *** install packages
