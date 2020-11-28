@@ -128,21 +128,77 @@ Assumes vc is git which is fine because straight only uses git right now."
   ())
 #+end_src
 
+****** get package list based on my org file
+:PROPERTIES:
+:ID:       fc52bcb2-034e-48cf-b9eb-7ea7aace66a3
+:END:
+
+******* property regexp
+:PROPERTIES:
+:ID:       a23d43d4-3e20-4a55-85e6-4a036ca6a33e
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-property-drawer-regexp
+  (rx (seq bol (zero-or-more (any "\11 "))
+           ":PROPERTIES:" (zero-or-more (any "\11 "))
+           "\n" (group (*\? (zero-or-more (any "\11 "))
+                            ":" (one-or-more (not (syntax whitespace)))
+                            ":" (opt " " (zero-or-more nonl))
+                            (zero-or-more (any "\11 "))
+                            "\n"))
+           (zero-or-more (any "\11 "))
+           ":END:" (zero-or-more (any "\11 "))
+           eol)))
+#+end_src
+
+******* get recipes
+:PROPERTIES:
+:ID:       8a7408f7-9a04-4b11-8313-ee0cf854452d
+:END:
+
+#+begin_src emacs-lisp
+(defun void-generate-recipes-from-org-file ()
+  "Return recipes needed."
+  (let* ((recipes nil)
+         (org-file (concat user-emacs-directory "main.org"))
+         (el-file (concat user-emacs-directory "main.el"))
+         (regexp void-property-drawer-regexp))
+    (with-current-buffer (or (get-file-buffer org-file)
+                             (create-file-buffer org-file))
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward regexp nil t)
+          (let ((it (match-string-no-properties 1)))
+            (when (and it (string-match-p "PACKAGE" it))
+              (push (split-string it (rx (or white "\n")) t) recipes)
+              (mapcar (lambda (it) (if (string= (seq-elt it -1) ":")
+                                       (intern (seq-subseq it 0 -1))
+                                     ()))
+                      it)
+              ;; (push it recipes)
+              )
+            ))))
+    (s-truncate 50 (car recipes))))
+#+end_src
+
 **** package.el
 :PROPERTIES:
 :ID:       e3cd0263-ff76-46b7-9c85-86fa8abb25f6
 :END:
 
-*** required packages
+*** install packages
 :PROPERTIES:
-:ID: 453cc36d-9174-4b63-b3f2-4d1dd7e3521d
+:ID:       6a346ca2-fa00-4339-b343-e594fe6125e6
 :END:
 
 #+begin_src emacs-lisp
 (unless (bound-and-true-p void-package-load-paths)
-  (straight:set-vars)
-  (straight:load-fn)
-  (mapc #'straight-use-package void-package-recipe-alist))
+  (let ((gc-cons-threshold most-positive-fixnum)
+        (gc-cons-percentage 0.9))
+    (straight:set-vars)
+    (straight:load-fn)
+    (mapc #'straight-use-package (void-generate-package-recipes))))
 #+end_src
 
 ** Init
