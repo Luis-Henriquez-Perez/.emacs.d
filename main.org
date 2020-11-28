@@ -1149,6 +1149,9 @@ appropriate name to target.
 :ID:       3d13ea95-44aa-4261-8480-5ae9701d533d
 :END:
 
+Since we can get the advisee from the advise name, or remove advice only needs
+one argument--the advice to remove.
+
 #+begin_src emacs-lisp
 (defun void-remove-advice (advice)
   "Remove advice."
