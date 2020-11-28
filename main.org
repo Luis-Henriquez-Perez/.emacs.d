@@ -1123,6 +1123,7 @@ appropriate name to target.
 (defun void/add-advice ()
   ""
   (interactive)
+  (completing-read )
   )
 #+end_src
 
