@@ -1469,7 +1469,7 @@ unbinds itself, loads the specified package, then calls the real function.
                 (require package)
                 (funcall #',fn ,args))))
 
-(defhook! before-load-hook ()
+(defhook! remove-and-unbind-autoloads (before-load-hook)
   "Hook run before feature is loaded."
   (--each (alist-get package void-package-autoload-alist)
     (void-advice-remove it)
