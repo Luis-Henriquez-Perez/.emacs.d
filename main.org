@@ -1478,7 +1478,7 @@ involves. Autoloading can be done in elisp. You define a dummy function which
 unbinds itself, loads the specified package, then calls the real function.
 
 #+begin_src emacs-lisp
-(defvar void-package-autoload-alist nil "")
+(defvar void-package-autoloads nil "")
 
 (defun void-autoload (package fn)
   "Create a function that can be called."
