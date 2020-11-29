@@ -2669,9 +2669,6 @@ of big packages like org-mode is snappy.
 #+begin_src emacs-lisp
 (require 'idle-require)
 (void-add-hook 'emacs-startup-hook #'idle-require-mode)
-
-;; (use-package! idle-require
-;;   :hook emacs-startup-hook)
 #+end_src
 
 ***** settings
