@@ -120,7 +120,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 :END:
 
 To avoid loading org mode, I statched the property drawer regexp from its source
-code and use it to
+code and use it to get the package recipes in my org file.
 
 #+begin_src emacs-lisp
 (defvar void-property-drawer-regexp
