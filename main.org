@@ -136,7 +136,9 @@ Assumes vc is git which is fine because straight only uses git right now."
 :ID:       8a7408f7-9a04-4b11-8313-ee0cf854452d
 :END:
 
-A straight recipe is represented as a plist in lisp.
+A straight recipe is represented as a plist in lisp. And in this config I signal
+a heading corresponds to a package by putting the keys and values of the package
+recipe as properties of the headline.
 
 #+begin_src emacs-lisp
 (defun void-generate-recipes-from-org-file ()
