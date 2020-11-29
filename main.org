@@ -176,6 +176,8 @@ completely reproducible as one file.
 This is where I actually install all of my packages in one go.
 
 #+begin_src emacs-lisp
+(append load-path
+        )
 (unless (bound-and-true-p void-package-load-paths)
   (straight:initialize)
   (let ((old-load-path load-path))
