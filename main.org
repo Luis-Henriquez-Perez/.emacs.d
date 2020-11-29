@@ -6264,12 +6264,10 @@ This replaces the default popup window at the bottom of eshell. By using the
 :END:
 
 #+begin_src emacs-lisp
-(use-package! eshell-z
-  :after eshell
-  :commands eshell/z
-  :setq (eshell:z-file . (expand-file-name "z" eshell-directory-name))
-  :config
-  (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name))
+(after! eshell
+  (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name)
+  (setq eshell:z-file . (expand-file-name "z" eshell-directory-name))
+  (void-autoload 'eshell-z #'eshell-z))
 #+end_src
 
 **** eshell-up
