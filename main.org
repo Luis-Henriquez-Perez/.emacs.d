@@ -6612,7 +6612,6 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 
 #+begin_src emacs-lisp
 (idle-require 'custom)
-(savehist-mode 1)
 (void-add-hook 'emacs-startup-hook #'savehist-mode)
 
 (setq savehist-save-minibuffer-history t)
