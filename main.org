@@ -6587,6 +6587,7 @@ location you left off at in a particular buffer. When you visit that buffer
 again, you are taken to the location you left off. This is very convenient.
 
 #+begin_src emacs-lisp
+(void-load-after-call #'after-find-file #'saveplace)
 (use-feature! saveplace
   :after-call after-find-file
   :setq
