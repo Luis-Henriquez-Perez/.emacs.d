@@ -3357,9 +3357,7 @@ use a typical window manager, you have to.
 
 #+begin_src emacs-lisp
 (void-add-hook 'exwm-mode #'hide-mode-line-mode)
-
 (void-load-before-call 'exwm (list #'browse-url))
-
 (setq exwm-replace nil)
 #+end_src
 
