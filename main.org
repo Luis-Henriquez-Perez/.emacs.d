@@ -182,6 +182,7 @@ code and use it to get the package recipes in my org file.
 
 #+begin_src emacs-lisp
 (defun void-prop-string-to-recipe (string)
+  "Convert a property list string into a plist."
   (seq-map-indexed (lambda (elt i)
                      (if (cl-evenp i)
                          (intern elt)
