@@ -6719,6 +6719,7 @@ in time to see older posts.
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'top)
 (setq dired-hide-details-hide-symlink-targets nil)
+(setq dired-clean-confirm-killing-deleted-buffers nil)
 #+end_src
 
 **** sort directories first
@@ -6754,18 +6755,6 @@ in time to see older posts.
 
 (after! dired
   (add-to-list 'find-file-not-found-functions 'dired:create-non-existent-directory-h nil #'eq))
-#+end_src
-
-**** dont confirm killing buffers
-:PROPERTIES:
-:ID:       1b8f9331-33af-4496-9ec2-24357c954c43
-:END:
-
-When you trash or delete a buffer, dired asks you to confirm whether you want to
-kill it.
-
-#+begin_src emacs-lisp
-(setq dired-clean-confirm-killing-deleted-buffers nil)
 #+end_src
 
 *** ranger
