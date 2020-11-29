@@ -1437,7 +1437,7 @@ When VOID is performing computationally intensive operations,
 
 (setq gcmh-idle-delay 10)
 (setq gcmh-verbose void-debug-p)
-(setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+(setq gcmh-high-cons-threshold ())
 
 (gcmh-mode 1)
 #+end_src
