@@ -22,7 +22,10 @@ This headine contains code related to the initialization of packages.
 :END:
 
 #+begin_src emacs-lisp
-(persistent-soft)
+;; guess straight directory.
+()
+(require 'pcache)
+(pcache-get )
 #+end_src
 
 *** savehist
