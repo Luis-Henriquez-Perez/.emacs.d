@@ -173,6 +173,8 @@ completely reproducible as one file.
 :ID:       6a346ca2-fa00-4339-b343-e594fe6125e6
 :END:
 
+This is where I actually install all of my packages in one go.
+
 #+begin_src emacs-lisp
 (unless (bound-and-true-p void-package-load-paths)
   (let ((gc-cons-threshold most-positive-fixnum)
