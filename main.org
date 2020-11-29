@@ -292,12 +292,8 @@ customizing emacs.
 :COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
 :END:
 
-**** aliases
-:PROPERTIES:
-:ID:       6da042bf-916f-4af4-a41e-53800f5950f9
-:END:
-
 #+begin_src emacs-lisp
+(require 'shut-up)
 (defalias 'shut-up! 'shut-up)
 #+end_src
 
