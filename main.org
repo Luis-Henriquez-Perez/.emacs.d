@@ -6500,8 +6500,7 @@ have to set out to look for a file with =dired=.
 :END:
 
 #+begin_src emacs-lisp
-(-each '(easymenu tree-widget timer)
-  #'idle-require)
+(-each '(easymenu tree-widget timer) #'idle-require)
 
 (before-call )
 #+end_src
