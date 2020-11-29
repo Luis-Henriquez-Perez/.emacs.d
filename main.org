@@ -64,9 +64,7 @@ This code initializes straight if it's not already installed.
 (defun straight:load-fn ()
   "Initialize `straight.el'."
   (defvar bootstrap-version)
-  (let* ((user-emacs-directory VOID-PACKAGES-DIR)
-         (bootstrap-file
-          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+  (let* ((bootstrap-file (concat VOID-PACKAGES-DIR "straight/repos/straight.el/bootstrap.el"))
          (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
