@@ -114,7 +114,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 (defun straight:install-fn (recipe)
   (straight-use-package recipe)
   ;; After installing, set the package to the correct commit.
-  (when (plist-get :commit recipe)
+  (when-let (commit (plist-get :commit recipe))
     (unless (straight-vc-commit-present-p recipe commit)
       (straight-vc-fetch-from-remote recipe))
     (straight-vc-check-out-commit recipe commit)))
