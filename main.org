@@ -199,9 +199,8 @@ completely reproducible as one file.
         (while (re-search-forward regexp nil t)
           (let ((match (match-string-no-properties 1)))
             (when (and match (string-match-p "PACKAGE" match))
-              (push (mapcar (lambda (it) (if (string= (seq-elt it -1) ":")
+              (push (mapcar (lambda (it) (if (string= (seq-elt it 0) ":")
                                              (intern (seq-subseq it 0 -1))
-                                           ;; convert it to lisp form.
                                            (read-from-string it)))
                             (split-string match (rx (or white "\n")) t))
                     recipes))))))
