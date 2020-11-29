@@ -119,6 +119,9 @@ Assumes vc is git which is fine because straight only uses git right now."
 :ID:       a23d43d4-3e20-4a55-85e6-4a036ca6a33e
 :END:
 
+To avoid loading org mode, I statched the property drawer regexp from its source
+code and use it to
+
 #+begin_src emacs-lisp
 (defvar void-property-drawer-regexp
   (rx (seq bol (zero-or-more (any "\11 "))
