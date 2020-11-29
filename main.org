@@ -212,7 +212,8 @@ completely reproducible as one file.
 :ID:       6a346ca2-fa00-4339-b343-e594fe6125e6
 :END:
 
-This is where I actually install all of my packages in one go.
+This is where I actually install all of my packages in one go. To save time
+installing packages, I try to access
 
 #+begin_src emacs-lisp
 (setq load-path
