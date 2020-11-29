@@ -180,7 +180,8 @@ This is where I actually install all of my packages in one go.
       (append (eval-when-compile
                 (if (bound-and-true-p void-package-load-paths)
                     void-package-load-paths
-                  (let ((old-load-path load-path))
+                  (let ((old-load-path load-path)
+                        (load-path load-path))
                     (straight:initialize)
                     (mapc #'straight-use-package (void-generate-package-recipes))
                     (cl-set-difference load-path old-load-path))))
