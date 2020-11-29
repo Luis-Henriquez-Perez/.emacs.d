@@ -10,6 +10,45 @@
 
 This headine contains code related to the initialization of packages.
 
+*** savehist
+:PROPERTIES:
+:ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
+:END:
+
+=savehist= is a built-in feature for saving the minibuffer-history to a file--the
+[[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
+variables which may or may not be related to minibuffer history. You add the
+ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
+
+**** init
+:PROPERTIES:
+:ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
+:END:
+
+#+begin_src emacs-lisp
+(idle-require 'custom)
+(void-add-hook 'emacs-startup-hook #'savehist-mode)
+
+(setq savehist-save-minibuffer-history t)
+(setq savehist-autosave-interval nil)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(push 'void-package-load-paths savehist-additional-variables)
+(setq savehist-file (concat VOID-DATA-DIR "savehist"))
+#+end_src
+
+**** unpropertize kill ring
+:PROPERTIES:
+:ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
+:END:
+
+#+begin_src emacs-lisp
+(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
+  "Remove text properties from `kill-ring'."
+  (setq kill-ring
+        (--map (when (stringp it) (substring-no-properties it))
+               (-non-nil kill-ring))))
+#+end_src
+
 *** straight.el
 :PROPERTIES:
 :ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
@@ -6490,45 +6529,6 @@ again, you are taken to the location you left off. This is very convenient.
 (setq save-place-limit nil)
 
 (after! save-place (save-place-mode))
-#+end_src
-
-** savehist
-:PROPERTIES:
-:ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
-:END:
-
-=savehist= is a built-in feature for saving the minibuffer-history to a file--the
-[[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
-variables which may or may not be related to minibuffer history. You add the
-ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
-
-*** init
-:PROPERTIES:
-:ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
-:END:
-
-#+begin_src emacs-lisp
-(idle-require 'custom)
-(void-add-hook 'emacs-startup-hook #'savehist-mode)
-
-(setq savehist-save-minibuffer-history t)
-(setq savehist-autosave-interval nil)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(push 'void-package-load-paths savehist-additional-variables)
-(setq savehist-file (concat VOID-DATA-DIR "savehist"))
-#+end_src
-
-*** unpropertize kill ring
-:PROPERTIES:
-:ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
-:END:
-
-#+begin_src emacs-lisp
-(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
-  "Remove text properties from `kill-ring'."
-  (setq kill-ring
-        (--map (when (stringp it) (substring-no-properties it))
-               (-non-nil kill-ring))))
 #+end_src
 
 ** bookmarks
