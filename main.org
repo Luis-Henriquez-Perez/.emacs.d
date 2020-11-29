@@ -1420,44 +1420,6 @@ When VOID is performing computationally intensive operations,
   "The default value for `gc-cons-percentage'.")
 #+end_src
 
-**** boost gc threshold
-:PROPERTIES:
-:ID: eac7cfbb-6576-4506-8118-5bfda151654b
-:END:
-
-Here I boost the gc-cons-threshold for my current emacs session. It [[id:d49bef67-0a1e-4026-838c-217b0d6ecad5][will be
-restored]] after package loading slows down.
-
-#+begin_src emacs-lisp
-(setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
-(setq gc-cons-percentage VOID-GC-CONS-PERCENTAGE-MAX)
-#+end_src
-
-**** restore threshold after delay
-:PROPERTIES:
-:ID: d49bef67-0a1e-4026-838c-217b0d6ecad5
-:END:
-
-Restore gc-cons-threshold (after a 7 second delay). I got this from [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el#L283][doom]]. We
-don't do it immediately because packages are still being lazy loaded at this
-time. In the future I'd like to base the time when this restoration will take
-place on something other than arbitrary number.
-
-#+begin_src emacs-lisp
-(defun void-restore-gc-cons-threshold ()
-  "Restore any changes to garbage collection."
-  (void-log "Restoring...gc-cons-threshold: %d -> %d"
-            gc-cons-threshold
-            VOID-GC-CONS-THRESHOLD)
-  (void-log "gc-cons-percentage %.2f -> %.2f"
-            gc-cons-percentage
-            VOID-GC-CONS-PERCENTAGE)
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD)
-  (setq gc-cons-percentage VOID-GC-CONS-PERCENTAGE))
-
-(run-with-idle-timer 7 nil #'void-restore-gc-cons-threshold)
-#+end_src
-
 **** gcmh
 :PROPERTIES:
 :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
