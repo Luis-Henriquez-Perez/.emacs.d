@@ -1476,7 +1476,9 @@ place on something other than arbitrary number.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'emacs-startup-hook #'gcmh-mode)
+(require 'gcmh)
+(gcmh-mode 1)
+;; (void-add-hook 'emacs-startup-hook #'gcmh-mode)
 #+end_src
 
 ***** settings
