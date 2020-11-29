@@ -6588,13 +6588,11 @@ again, you are taken to the location you left off. This is very convenient.
 
 #+begin_src emacs-lisp
 (void-load-after-call #'after-find-file #'saveplace)
-(use-feature! saveplace
-  :after-call after-find-file
-  :setq
-  (save-place-file . (concat VOID-DATA-DIR "saveplace"))
-  (save-place-limit . nil)
-  :config
-  (save-place-mode))
+
+(setq save-place-file (concat VOID-DATA-DIR "saveplace"))
+(setq save-place-limit nil)
+
+(after! save-place (save-place-mode))
 #+end_src
 
 ** savehist
