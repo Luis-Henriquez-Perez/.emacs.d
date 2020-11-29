@@ -1,14 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-;; The primary goal of this file is to tangle [[file:main.org][main.org]] if it
-;; hasn't been tangled already.
-
-;; * Startup Optimizations
-
-;; ** Built-in Libraries
-
-;; *** cl
-
 (defconst void-src-block-regexp
   (concat
    ;; (1) indentation                 (2) lang
