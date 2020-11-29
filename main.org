@@ -10,24 +10,6 @@
 
 This headine contains code related to the initialization of packages.
 
-*** pcache
-:PROPERTIES:
-:ID:       8eb3aa7f-9bfc-44a1-b9df-877ce2b93995
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "sigma/pcache"
-:PACKAGE:  "pcache"
-:LOCAL-REPO: "pcache"
-:END:
-
-#+begin_src emacs-lisp
-;; guess straight directory.
-(cl-flet ((symbol-function #'make-directory) #'ignore)
-  (when (require 'pcache void-straight-dir "pcache" t)
-    (pcache-get 'void-packages)))
-#+end_src
-
 *** savehist
 :PROPERTIES:
 :ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
