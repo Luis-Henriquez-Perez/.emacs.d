@@ -1410,6 +1410,14 @@ When VOID is performing computationally intensive operations,
 
 (defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
   "The default value for `gc-cons-threshold'.")
+
+(defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
+  "The upper limit for `gc-cons-percentage'.
+When VOID is performing computationally intensive operations,
+`gc-cons-percentage' is set to this value.")
+
+(defconst VOID-GC-CONS-PERCENTAGE 0.1
+  "The default value for `gc-cons-percentage'.")
 #+end_src
 
 **** boost gc threshold
