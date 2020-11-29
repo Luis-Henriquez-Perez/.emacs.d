@@ -179,10 +179,7 @@ This is where I actually install all of my packages in one go.
 (if (bound-and-true-p void-package-load-paths)
     (setq load-path (append void-package-load-paths load-path))
   (straight:initialize)
-  (let ((old-load-path load-path))
-    (mapc #'straight-use-package (void-generate-package-recipes))
-    ;; Packages should have been added to the load-path.
-    (cl-set-difference load-path old-load-path)))
+  (mapc #'straight-use-package (void-generate-package-recipes)))
 #+end_src
 
 ** Library
