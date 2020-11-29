@@ -112,7 +112,8 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 =straight= actually has two sources of truth: the recipes you specify in your init
 file and the lockfile. The lockfile is a file that contains an alist of packages
-and their commit (or revision).
+and their commit (or revision). To actually reproduce the state of your emacs
+configuration after you install your packages, you call [[helpfn:straight-thaw-versions][straight-thaw-versions]].
 
 #+begin_src emacs-lisp
 (defun straight:install-fn (recipe)
