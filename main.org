@@ -1482,7 +1482,7 @@ This is a hook designed to run just before a package is loaded.
     (apply <orig-fn> <args>)))
 #+end_src
 
-*** autoloading
+*** autoload
 :PROPERTIES:
 :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
 :END:
