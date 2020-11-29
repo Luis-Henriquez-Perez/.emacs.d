@@ -109,6 +109,17 @@ Assumes vc is git which is fine because straight only uses git right now."
 :ID:       5ca4b13a-14ab-4e7a-ab27-aab08b4f4994
 :END:
 
+**** required packages
+:PROPERTIES:
+:ID:       1d639bb6-7ba2-472b-9ae8-16cdaebed246
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-required-packages
+  '(idle-require dash dash-functional ht general dashboard)
+  "Packages needed for void.")
+#+end_src
+
 **** get package list based on my org file
 :PROPERTIES:
 :ID:       fc52bcb2-034e-48cf-b9eb-7ea7aace66a3
