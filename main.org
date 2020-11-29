@@ -1511,6 +1511,7 @@ functions.
 #+begin_src emacs-lisp
 (defhook! remove-and-unbind-autoloads (before-load-hook)
   "Hook run before feature is loaded."
+  (void-log "Removing autoloads from package")
   (--each (ht-get void-package-autoloads package)
     (fmakunbound it))
   (ht-remove void-package-autoloads package))
