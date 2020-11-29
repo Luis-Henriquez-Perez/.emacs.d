@@ -6710,7 +6710,7 @@ in time to see older posts.
 :TYPE:     built-in
 :END:
 
-**** dired
+**** settings
 :PROPERTIES:
 :ID: 55109eeb-8e59-4d15-926e-fbe42ed28056
 :END:
