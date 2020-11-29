@@ -213,7 +213,7 @@ completely reproducible as one file.
 :END:
 
 This is where I actually install all of my packages in one go. To save time
-installing packages, I try to access. The =eval-when-compile=
+installing packages, I try to access. The =eval-when-compile= makes it so that
 
 #+begin_src emacs-lisp
 (setq load-path
