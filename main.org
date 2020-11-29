@@ -157,7 +157,8 @@ I wrote this file such that the configure of each package has a headline that
 contains the recipe of that package as org properties. This way I don't have to
 maintain a separate file of recipes and each recipe is closely tied to the
 configuration of each package. Additionally, this signals to the reader that
-this is indeed an emacs package. And finally, this allows me to do
+this is indeed an emacs package. And finally, this allows me to install all my
+packages all at once
 
 ***** property regexp
 :PROPERTIES:
