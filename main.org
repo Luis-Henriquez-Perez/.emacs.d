@@ -202,8 +202,7 @@ This is where I actually install all of my packages in one go. To save time
 installing packages, I try to access.
 
 #+begin_src emacs-lisp
-(defvar void-package-recipes
-  (void-generate-package-recipes)
+(defvar void-package-recipes (void-generate-package-recipes)
   "Package recipes.")
 
 (defvar void-package-load-paths
