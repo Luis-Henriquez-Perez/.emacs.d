@@ -27,7 +27,7 @@ change the package manager easily.
 [[straight][straight.el]] is a package manager that strives to make emacs configurations
 completely reproducable.
 
-***** straight
+***** variables
 :PROPERTIES:
 :ID:       9dff9894-667c-4e74-9624-8aee533f8f70
 :END:
