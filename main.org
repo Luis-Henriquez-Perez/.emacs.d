@@ -6690,12 +6690,12 @@ in time to see older posts.
 #+begin_src emacs-lisp
 (void-autoload 'elfeed #'elfeed)
 
-(elfeed-search-filter         . "@1-year-old")
-(elfeed-db-directory          . (concat VOID-DATA-DIR "elfeed/db/"))
-(elfeed-enclosure-default-dir . (concat VOID-DATA-DIR "elfeed/enclosures/"))
-(elfeed-show-entry-switch     . #'pop-to-buffer)
-(elfeed-show-entry-delete     . #'elfeed-kill-buffer)
-(shr-max-image-proportion     . 0.8)
+(setq elfeed-search-filter         "@1-year-old")
+(setq elfeed-db-directory          (concat VOID-DATA-DIR "elfeed/db/"))
+(setq elfeed-enclosure-default-dir (concat VOID-DATA-DIR "elfeed/enclosures/"))
+(setq elfeed-show-entry-switch     #'pop-to-buffer)
+(setq elfeed-show-entry-delete     #'elfeed-kill-buffer)
+(setq shr-max-image-proportion     0.8)
 #+end_src
 
 **** elfeed org
