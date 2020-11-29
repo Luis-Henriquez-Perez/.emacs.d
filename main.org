@@ -1101,7 +1101,6 @@ settings that should favors particular operating systems over others.
   "If OS is current system's operating system, execute body.
 OS can be either `mac', `linux' or `windows'(unquoted)."
   (declare (indent defun))
-  (setq os (if (listp os) os (list os)))
   (when (funcall (cond ((eq :not (car-safe os)) (lambda (a b) (not (member a b))))
                        (t #'member))
                  (pcase system-type
@@ -1109,7 +1108,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                    (`gnu/linux 'linux)
                    (`(cygwin windows-nt ms-dos) 'windows)
                    (_ nil))
-                 os)
+                 (-list os))
     `(progn ,@body)))
 #+end_src
 
