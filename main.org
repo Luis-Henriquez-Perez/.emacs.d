@@ -33,15 +33,14 @@ completely reproducable.
 :END:
 
 #+begin_src emacs-lisp
-(defun straight:set-vars ()
-  (setq straight-use-package-version 'straight)
-  (setq straight-use-package-by-default t)
-  (setq straight-enable-package-integration t)
-  (setq straight-disable-autoloads nil)
-  (setq straight-cache-autoloads t)
-  (setq straight-check-for-modifications nil)
-  (setq straight-enable-package-integration nil)
-  (setq straight-recipes-emacsmirror-use-mirror t))
+(setq straight-use-package-version 'straight)
+(setq straight-use-package-by-default t)
+(setq straight-enable-package-integration t)
+(setq straight-disable-autoloads nil)
+(setq straight-cache-autoloads t)
+(setq straight-check-for-modifications nil)
+(setq straight-enable-package-integration nil)
+(setq straight-recipes-emacsmirror-use-mirror t)
 #+end_src
 
 ***** customize straight directory
