@@ -176,12 +176,15 @@ completely reproducible as one file.
 This is where I actually install all of my packages in one go.
 
 #+begin_src emacs-lisp
-(if (bound-and-true-p void-package-load-paths)
-    (setq load-path (append void-package-load-paths load-path))
-  (let ((old-load-path load-path))
-    (straight:initialize)
-    (mapc #'straight-use-package (void-generate-package-recipes))
-    (setq void-package-load-paths (cl-set-difference load-path old-load-path))))
+(setq load-path
+      (append (eval-when-compile
+                (if (bound-and-true-p void-package-load-paths)
+                    void-package-load-paths
+                  (let ((old-load-path load-path))
+                    (straight:initialize)
+                    (mapc #'straight-use-package (void-generate-package-recipes))
+                    (cl-set-difference load-path old-load-path))))
+              load-path))
 #+end_src
 
 ** Library
