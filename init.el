@@ -33,6 +33,6 @@ This function is designed to just do one thing and be fast at doing it."
       (with-temp-file el-file
         (insert code)))))
 
-(let ((gc-cons-threshold most-positive-fixnum))
+(let ((gc-cons-threshold (* 256 1024 1024)))
   (void-tangle-org-file-maybe)
   (load (concat user-emacs-directory "/.local/main.el")))
