@@ -6716,11 +6716,9 @@ in time to see older posts.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! dired
-  :setq
-  (dired-recursive-copies . 'always)
-  (dired-recursive-deletes . 'top)
-  (dired-hide-details-hide-symlink-targets . nil))
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'top)
+(setq dired-hide-details-hide-symlink-targets nil)
 #+end_src
 
 **** sort directories first
