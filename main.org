@@ -195,6 +195,250 @@ This is where I actually install all of my packages in one go.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** request
+:PROPERTIES:
+:ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("request.el" "request-pkg.el")
+:HOST:     github
+:REPO:     "tkf/emacs-request"
+:PACKAGE:  "request"
+:LOCAL-REPO: "emacs-request"
+:COMMIT:   0183da84cb45eb94da996cd2eab714ef0d7504cc
+:END:
+
+#+begin_src emacs-lisp
+(setq request-storage-directory . (concat VOID-DATA-DIR "request"))
+#+end_src
+
+*** system-packages
+:PROPERTIES:
+:ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "jabranham/system-packages"
+:PACKAGE:  "system-packages"
+:LOCAL-REPO: "system-packages"
+:COMMIT:   92c58d98bc7282df9fd6f24436a105f5f518cde9
+:END:
+
+**** settings
+:PROPERTIES:
+:ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
+:END:
+
+#+begin_src emacs-lisp
+(setq system-packages-noconfirm t)
+#+end_src
+
+**** popup
+:PROPERTIES:
+:ID:       69631be9-ce8f-4f65-b112-229bf1722621
+:END:
+
+#+begin_src emacs-lisp
+(push '("\\*system-packages"
+        (display-buffer-at-bottom)
+        (window-height . 0.5))
+      display-buffer-alist)
+#+end_src
+
+**** use yay for arch
+:PROPERTIES:
+:ID:       2fc48e66-83f3-4e35-8b2c-ef9113cb9b45
+:END:
+
+#+begin_src emacs-lisp
+;; If we're in arch and we have yay intalled, use that.
+(after! system-packages
+  (when (and (eq system-packages-package-manager 'pacman)
+             (system-packages-package-installed-p "yay"))
+    (alet (alist-get 'pacman system-packages-supported-package-managers)
+      (push `(yay
+              ;; yay doesn't want sudo passed in (I believe it uses a fakeroot environment)
+              (default-sudo . nil)
+              ,@(-map (-lambda ((action . command))
+                        (cons action (s-replace "pacman" "yay" command)))
+                      (cdr it)))
+            system-packages-supported-package-managers))
+    (setq system-packages-package-manager 'yay)))
+#+end_src
+
+*** keyfreq
+:PROPERTIES:
+:ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "dacap/keyfreq"
+:PACKAGE:  "keyfreq"
+:LOCAL-REPO: "keyfreq"
+:COMMIT:   e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
+#+end_src
+
+*** shut-up
+:PROPERTIES:
+:ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "cask/shut-up"
+:PACKAGE:  "shut-up"
+:LOCAL-REPO: "shut-up"
+:COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
+:END:
+
+**** aliases
+:PROPERTIES:
+:ID:       d1e16f01-e967-4e31-873d-1fbd1845c951
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+**** shut-up
+:PROPERTIES:
+:ID:       23d602fa-57f6-4119-90b4-de7c2a22676c
+:END:
+
+***** aliases
+:PROPERTIES:
+:ID:       6da042bf-916f-4af4-a41e-53800f5950f9
+:END:
+
+#+begin_src emacs-lisp
+(defalias 'shut-up! 'shut-up)
+(defalias 'quiet! 'shut-up)
+#+end_src
+
+*** general
+:PROPERTIES:
+:ID: 706f35fc-f840-4a51-998f-abcd54c5d314
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "noctuid/general.el"
+:PACKAGE:  "general"
+:LOCAL-REPO: "general.el"
+:COMMIT:   a0b17d207badf462311b2eef7c065b884462cb7c
+:END:
+
+There are numerous keybinding functions in Emacs; and they all look a little
+different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set-key][local-set-key]], [[helpfn:define-key][define-key]] and the list goes
+on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
+[[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
+handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
+
+**** general
+:PROPERTIES:
+:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
+:END:
+
+#+begin_src emacs-lisp
+(require 'general)
+#+end_src
+
+**** unbind keys
+:PROPERTIES:
+:ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
+:END:
+
+#+begin_src emacs-lisp
+(general-auto-unbind-keys)
+#+end_src
+
+**** prefix bindings
+:PROPERTIES:
+:ID: b0b5b51c-155e-46fc-a80a-0d45a32440ba
+:END:
+
+A popular strategy to mitigate the mental load of remembering many keybindings
+is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacemacs][spacemacs]]).
+
+***** leader Keys
+:PROPERTIES:
+:ID: 143211d6-b868-4ffb-a5d0-25a77dee401f
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-leader-key "SPC"
+  "The evil leader prefix key.")
+
+(defvar void-leader-alt-key "M-SPC"
+  "The leader prefix key used for Insert and Emacs states.")
+#+end_src
+
+***** localleader keys
+:PROPERTIES:
+:ID: 45941bcb-209f-4aa3-829a-dee4e3ef2464
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-localleader-key "SPC m"
+  "The localleader prefix key for major-mode specific commands.")
+
+(defvar void-localleader-alt-key "C-SPC m"
+  "The localleader prefix key for major-mode specific commands.")
+
+(defvar void-localleader-short-key ","
+  "A shorter alternative `void-localleader-key'.")
+
+(defvar void-localleader-short-alt-key "M-,"
+  "A short non-normal  `void-localleader-key'.")
+#+end_src
+
+***** definers
+:PROPERTIES:
+:ID: 6444d218-1627-48bd-9b5c-7bfffb17d912
+:END:
+
+As I've mentioned =general= uses the function =general-define-key= as a generic
+do-all key binder. Sometimes though we have keys that we want to bind with
+specific arguments to =general-define-key= pretty often. A typical example of
+this is binding =leader= or =localleader= keys like [[https://github.com/syl20bnr/spacemacs][spacemacs]].
+
+#+begin_src emacs-lisp
+(general-create-definer define-leader-key!
+  :prefix void-leader-key
+  :non-normal-prefix void-leader-alt-key
+  :keymaps 'override
+  :states '(normal motion insert emacs))
+#+end_src
+
+***** localleader
+:PROPERTIES:
+:ID:       e4770eae-adf5-4216-9016-5ec4bc465e03
+:END:
+
+There's pros and cons to the =SPC m= binding. The main pro is that it's
+consistent with =SPC=. With the leader and the localleader, this means that you
+can reach any binding from just =SPC=. This means that you can discover all
+bindings from just one root binding. This is a nice property to have. On the
+other hand, bindings can get a bit long. That one extra character can really
+make a difference. That's why.
+
+#+begin_src emacs-lisp
+(defmacro define-localleader-key! (&rest args)
+  (declare (indent defun))
+  (let ((shared-args '(:keymaps 'override :states '(normal motion insert emacs))))
+    `(progn (general-def
+              ,@args
+              ,@shared-args
+              :prefix void-localleader-key
+              :non-normal-prefix void-localleader-alt-key)
+            (general-def
+              ,@args
+              ,@shared-args
+              :prefix void-localleader-short-key
+              :non-normal-prefix void-localleader-short-alt-key))))
+#+end_src
+
 *** minibuffer
 :PROPERTIES:
 :ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
@@ -2503,255 +2747,6 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 #+begin_src emacs-lisp
 (use-feature! nsm
   :setq (nsm-settings-file . (concat VOID-DATA-DIR "network-settings.data")))
-#+end_src
-
-*** external libraries
-:PROPERTIES:
-:ID: 6e4be80e-8149-424d-a801-d7871bfe8fc8
-:END:
-
-**** general
-:PROPERTIES:
-:ID: 706f35fc-f840-4a51-998f-abcd54c5d314
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "noctuid/general.el"
-:PACKAGE:  "general"
-:LOCAL-REPO: "general.el"
-:COMMIT:   a0b17d207badf462311b2eef7c065b884462cb7c
-:END:
-
-There are numerous keybinding functions in Emacs; and they all look a little
-different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set-key][local-set-key]], [[helpfn:define-key][define-key]] and the list goes
-on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
-[[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
-handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
-
-***** general
-:PROPERTIES:
-:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
-:END:
-
-#+begin_src emacs-lisp
-(require 'general)
-#+end_src
-
-***** unbind keys
-:PROPERTIES:
-:ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
-:END:
-
-#+begin_src emacs-lisp
-(general-auto-unbind-keys)
-#+end_src
-
-***** prefix bindings
-:PROPERTIES:
-:ID: b0b5b51c-155e-46fc-a80a-0d45a32440ba
-:END:
-
-A popular strategy to mitigate the mental load of remembering many keybindings
-is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacemacs][spacemacs]]).
-
-****** leader Keys
-:PROPERTIES:
-:ID: 143211d6-b868-4ffb-a5d0-25a77dee401f
-:END:
-
-#+begin_src emacs-lisp
-(defvar void-leader-key "SPC"
-  "The evil leader prefix key.")
-
-(defvar void-leader-alt-key "M-SPC"
-  "The leader prefix key used for Insert and Emacs states.")
-#+end_src
-
-****** localleader keys
-:PROPERTIES:
-:ID: 45941bcb-209f-4aa3-829a-dee4e3ef2464
-:END:
-
-#+begin_src emacs-lisp
-(defvar void-localleader-key "SPC m"
-  "The localleader prefix key for major-mode specific commands.")
-
-(defvar void-localleader-alt-key "C-SPC m"
-  "The localleader prefix key for major-mode specific commands.")
-
-(defvar void-localleader-short-key ","
-  "A shorter alternative `void-localleader-key'.")
-
-(defvar void-localleader-short-alt-key "M-,"
-  "A short non-normal  `void-localleader-key'.")
-#+end_src
-
-****** definers
-:PROPERTIES:
-:ID: 6444d218-1627-48bd-9b5c-7bfffb17d912
-:END:
-
-As I've mentioned =general= uses the function =general-define-key= as a generic
-do-all key binder. Sometimes though we have keys that we want to bind with
-specific arguments to =general-define-key= pretty often. A typical example of
-this is binding =leader= or =localleader= keys like [[https://github.com/syl20bnr/spacemacs][spacemacs]].
-
-#+begin_src emacs-lisp
-(general-create-definer define-leader-key!
-  :prefix void-leader-key
-  :non-normal-prefix void-leader-alt-key
-  :keymaps 'override
-  :states '(normal motion insert emacs))
-#+end_src
-
-****** localleader
-:PROPERTIES:
-:ID:       e4770eae-adf5-4216-9016-5ec4bc465e03
-:END:
-
-There's pros and cons to the =SPC m= binding. The main pro is that it's
-consistent with =SPC=. With the leader and the localleader, this means that you
-can reach any binding from just =SPC=. This means that you can discover all
-bindings from just one root binding. This is a nice property to have. On the
-other hand, bindings can get a bit long. That one extra character can really
-make a difference. That's why.
-
-#+begin_src emacs-lisp
-(defmacro define-localleader-key! (&rest args)
-  (declare (indent defun))
-  (let ((shared-args '(:keymaps 'override :states '(normal motion insert emacs))))
-    `(progn (general-def
-              ,@args
-              ,@shared-args
-              :prefix void-localleader-key
-              :non-normal-prefix void-localleader-alt-key)
-            (general-def
-              ,@args
-              ,@shared-args
-              :prefix void-localleader-short-key
-              :non-normal-prefix void-localleader-short-alt-key))))
-#+end_src
-
-**** shut-up
-:PROPERTIES:
-:ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "cask/shut-up"
-:PACKAGE:  "shut-up"
-:LOCAL-REPO: "shut-up"
-:COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
-:END:
-
-***** aliases
-:PROPERTIES:
-:ID:       d1e16f01-e967-4e31-873d-1fbd1845c951
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-***** shut-up
-:PROPERTIES:
-:ID:       23d602fa-57f6-4119-90b4-de7c2a22676c
-:END:
-
-****** aliases
-:PROPERTIES:
-:ID:       6da042bf-916f-4af4-a41e-53800f5950f9
-:END:
-
-#+begin_src emacs-lisp
-(defalias 'shut-up! 'shut-up)
-(defalias 'quiet! 'shut-up)
-#+end_src
-
-**** keyfreq
-:PROPERTIES:
-:ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "dacap/keyfreq"
-:PACKAGE:  "keyfreq"
-:LOCAL-REPO: "keyfreq"
-:COMMIT:   e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4
-:END:
-
-#+begin_src emacs-lisp
-(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
-#+end_src
-
-**** system-packages
-:PROPERTIES:
-:ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     gitlab
-:REPO:     "jabranham/system-packages"
-:PACKAGE:  "system-packages"
-:LOCAL-REPO: "system-packages"
-:COMMIT:   92c58d98bc7282df9fd6f24436a105f5f518cde9
-:END:
-
-***** settings
-:PROPERTIES:
-:ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
-:END:
-
-#+begin_src emacs-lisp
-(setq system-packages-noconfirm t)
-#+end_src
-
-***** popup
-:PROPERTIES:
-:ID:       69631be9-ce8f-4f65-b112-229bf1722621
-:END:
-
-#+begin_src emacs-lisp
-(push '("\\*system-packages"
-        (display-buffer-at-bottom)
-        (window-height . 0.5))
-      display-buffer-alist)
-#+end_src
-
-***** use yay for arch
-:PROPERTIES:
-:ID:       2fc48e66-83f3-4e35-8b2c-ef9113cb9b45
-:END:
-
-#+begin_src emacs-lisp
-;; If we're in arch and we have yay intalled, use that.
-(after! system-packages
-  (when (and (eq system-packages-package-manager 'pacman)
-             (system-packages-package-installed-p "yay"))
-    (alet (alist-get 'pacman system-packages-supported-package-managers)
-      (push `(yay
-              ;; yay doesn't want sudo passed in (I believe it uses a fakeroot environment)
-              (default-sudo . nil)
-              ,@(-map (-lambda ((action . command))
-                        (cons action (s-replace "pacman" "yay" command)))
-                      (cdr it)))
-            system-packages-supported-package-managers))
-    (setq system-packages-package-manager 'yay)))
-#+end_src
-
-**** request
-:PROPERTIES:
-:ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("request.el" "request-pkg.el")
-:HOST:     github
-:REPO:     "tkf/emacs-request"
-:PACKAGE:  "request"
-:LOCAL-REPO: "emacs-request"
-:COMMIT:   0183da84cb45eb94da996cd2eab714ef0d7504cc
-:END:
-
-#+begin_src emacs-lisp
-(setq request-storage-directory . (concat VOID-DATA-DIR "request"))
 #+end_src
 
 ** UI
