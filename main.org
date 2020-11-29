@@ -39,11 +39,10 @@ completely reproducable.
 :ID: 843cc8b9-edff-42f7-a767-65a59aa38fbc
 :END:
 
-The path of the straight directory within emacs is hardcoded into
-straight so we need to trick it into thinking =VOID-PACKAGES-DIR= is the
-our emacs directory. This needs to be done before bootstraping
-straight, else the straight directory will be created anyway. I got
-this from Doom's straight branch.
+The path of the straight directory within emacs is hardcoded into straight so we
+need to trick it into thinking =VOID-PACKAGES-DIR= is the our emacs directory.
+This needs to be done before bootstraping straight, else the straight directory
+will be created anyway. I got this from Doom's straight branch.
 
 #+begin_src emacs-lisp
 (defun straight:use-packages-dir-a (orig-fn &rest args)
