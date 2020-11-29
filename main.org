@@ -224,7 +224,7 @@ installing packages, I try to access. The =eval-when-compile= makes it so that.
                         (load-path load-path))
                     (straight:initialize)
                     (mapc #'straight-use-package (void-generate-package-recipes))
-                    (cl-set-difference load-path old-load-path))))
+                    (setq void-package-load-paths (cl-set-difference load-path old-load-path)))))
               load-path))
 #+end_src
 
