@@ -107,17 +107,6 @@ Assumes vc is git which is fine because straight only uses git right now."
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 #+end_src
 
-***** go to readme
-:PROPERTIES:
-:ID:       4d5c4f2e-4f28-4a19-9470-97a398ccb224
-:END:
-
-#+begin_src emacs-lisp
-(defun straight/goto-readme-dir ()
-  "Go to the directory in ranger or dired."
-  ())
-#+end_src
-
 ***** get package list based on my org file
 :PROPERTIES:
 :ID:       fc52bcb2-034e-48cf-b9eb-7ea7aace66a3
