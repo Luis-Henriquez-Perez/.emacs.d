@@ -439,41 +439,6 @@ make a difference. That's why.
               :non-normal-prefix void-localleader-short-alt-key))))
 #+end_src
 
-*** minibuffer
-:PROPERTIES:
-:ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
-:END:
-
-[[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
-entering and exiting the minibuffer (respectively). In the minibuffer I'll be
-primarily doing searches for variables and functions. There are alot of
-variables and functions so this can certainly get computationally expensive. To
-keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
-the minibuffer, and restore it to it's original value a few seconds after it's closed.
-
-It would take me forever to guess the name =minibuffer-setup-hook= from the
-variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
-know what the hook to enter the minibuffer was, I'd probably
-=minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
-It'd take me forever to guess =startup=. Note that the only tricky thing about
-this example.
-
-At first I thought of =entry= but after more thought I realized
-hook variables use action verbs in their names not nouns. So the =exit= in
-=minibuffer-exit-hook= is actually the verb =exit= not the noun.
-
-#+begin_src emacs-lisp
-(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
-
-(defhook! boost-garbage-collection (minibuffer-enter-hook)
-  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
-
-(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
-  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
-#+end_src
-
 *** idle-require
 :PROPERTIES:
 :ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
@@ -1741,6 +1706,41 @@ A big contributor to long startup times is the garbage collector. When
 performing a large number of calculations, it can make a big difference to
 increase the [[helpvar:gc-cons-threshold][gc-cons-threshold]], or the /number of bytes of consing between
 garbage collections/. The default value is usually too low for modern machines.
+
+**** minibuffer
+:PROPERTIES:
+:ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
+:END:
+
+[[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
+entering and exiting the minibuffer (respectively). In the minibuffer I'll be
+primarily doing searches for variables and functions. There are alot of
+variables and functions so this can certainly get computationally expensive. To
+keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
+the minibuffer, and restore it to it's original value a few seconds after it's closed.
+
+It would take me forever to guess the name =minibuffer-setup-hook= from the
+variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
+know what the hook to enter the minibuffer was, I'd probably
+=minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
+It'd take me forever to guess =startup=. Note that the only tricky thing about
+this example.
+
+At first I thought of =entry= but after more thought I realized
+hook variables use action verbs in their names not nouns. So the =exit= in
+=minibuffer-exit-hook= is actually the verb =exit= not the noun.
+
+#+begin_src emacs-lisp
+(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
+
+(defhook! boost-garbage-collection (minibuffer-enter-hook)
+  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
+  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
+#+end_src
 
 **** gc cons threshold
 :PROPERTIES:
