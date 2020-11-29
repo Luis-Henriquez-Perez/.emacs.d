@@ -10,16 +10,7 @@
 
 This headine contains code related to the initialization of packages.
 
-*** package managers
-:PROPERTIES:
-:ID:       8c5d69ee-cec5-4154-9d71-79168954574b
-:END:
-
-There are several package mangers possible to use with emacs. One of the nice
-things about abstracting package configuration with =use-package= is that you can
-change the package manager easily.
-
-**** straight.el
+*** straight.el
 :PROPERTIES:
 :ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
 :END:
@@ -27,7 +18,7 @@ change the package manager easily.
 [[straight][straight.el]] is a package manager that strives to make emacs configurations
 completely reproducable.
 
-***** variables
+**** variables
 :PROPERTIES:
 :ID:       9dff9894-667c-4e74-9624-8aee533f8f70
 :END:
@@ -43,7 +34,7 @@ completely reproducable.
 (setq straight-recipes-emacsmirror-use-mirror t)
 #+end_src
 
-***** customize straight directory
+**** customize straight directory
 :PROPERTIES:
 :ID: 843cc8b9-edff-42f7-a767-65a59aa38fbc
 :END:
@@ -63,7 +54,7 @@ this from Doom's straight branch.
 (advice-add #'straight--emacs-dir :around #'straight:use-packages-dir-a)
 #+end_src
 
-***** bootstrap code
+**** bootstrap code
 :PROPERTIES:
 :ID: 7816be80-4db8-4219-b7d1-9a6b1ea96035
 :END:
@@ -88,14 +79,14 @@ This code initializes straight if it's not already installed.
     (load bootstrap-file nil 'nomessage)))
 #+end_src
 
-***** utility functions
+**** utility functions
 :PROPERTIES:
 :ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
 :END:
 
 Straight is very minimal.
 
-****** package homepage
+***** package homepage
 :PROPERTIES:
 :ID:       0edcf34d-a368-4e86-9365-1402f23befbb
 :END:
@@ -116,7 +107,7 @@ Assumes vc is git which is fine because straight only uses git right now."
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 #+end_src
 
-****** go to readme
+***** go to readme
 :PROPERTIES:
 :ID:       4d5c4f2e-4f28-4a19-9470-97a398ccb224
 :END:
@@ -127,12 +118,12 @@ Assumes vc is git which is fine because straight only uses git right now."
   ())
 #+end_src
 
-****** get package list based on my org file
+***** get package list based on my org file
 :PROPERTIES:
 :ID:       fc52bcb2-034e-48cf-b9eb-7ea7aace66a3
 :END:
 
-******* property regexp
+****** property regexp
 :PROPERTIES:
 :ID:       a23d43d4-3e20-4a55-85e6-4a036ca6a33e
 :END:
@@ -151,7 +142,7 @@ Assumes vc is git which is fine because straight only uses git right now."
            eol)))
 #+end_src
 
-******* get recipes
+****** get recipes
 :PROPERTIES:
 :ID:       8a7408f7-9a04-4b11-8313-ee0cf854452d
 :END:
