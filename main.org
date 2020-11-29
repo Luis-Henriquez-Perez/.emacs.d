@@ -154,7 +154,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 :END:
 
 I wrote this file such that the configure of each package has a headline that
-contains
+contains the recipe of that package as org properties.
 
 ***** property regexp
 :PROPERTIES:
