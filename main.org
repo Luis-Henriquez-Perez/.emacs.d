@@ -5944,15 +5944,16 @@ larger text objects. It's saves me keystrokes.
 :END:
 
 #+begin_src emacs-lisp
-(avy-keys . (list
-             ;; homerow keys in alternating order.
-             ?a ?j ?s ?k ?d ?l ?f ?\;
-             ;; middle homerow keys
-             ?g ?h
-             ;; keys above homerow in alternating order
-             ?t ?y ?r ?u ?e ?i ?w ?o ?q ?p
-             ;; keys below homerow
-             ?b ?n ?v ?m ?c ?, ?x ?. ?z ?/))
+(setq avy-keys
+      (list
+       ;; homerow keys in alternating order.
+       ?a ?j ?s ?k ?d ?l ?f ?\;
+       ;; middle homerow keys
+       ?g ?h
+       ;; keys above homerow in alternating order
+       ?t ?y ?r ?u ?e ?i ?w ?o ?q ?p
+       ;; keys below homerow
+       ?b ?n ?v ?m ?c ?, ?x ?. ?z ?/))
 #+end_src
 
 *** bootstrap
