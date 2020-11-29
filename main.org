@@ -6829,19 +6829,20 @@ inspired file manager]] of also called =ranger=.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! ranger
-  :commands deer ranger
-  :setq
-  (ranger-override-dired-mode . t)
-  (ranger-cleanup-eagerly . t)
-  (ranger-cleanup-on-disable . t)
-  (ranger-omit-regexp . "^\.DS_Store$")
-  (ranger-excluded-extensions . '("mkv" "iso" "mp4"))
-  (ranger-deer-show-details . nil)
-  (ranger-max-preview-size . 10)
-  (ranger-modify-header . t)
-  (ranger-hide-cursor . t)
-  (ranger-dont-show-binary . t))
+(void-autoload 'ranger (list #'deer #'ranger))
+
+(after! ranger
+  (setq ranger-override-dired-mode t)
+  (setq ranger-cleanup-eagerly t)
+  (setq ranger-cleanup-on-disable t)
+  (setq ranger-omit-regexp "^.DS_Store$")
+  (setq ranger-excluded-extensions
+        '("mkv" "iso" "mp4"))
+  (setq ranger-deer-show-details nil)
+  (setq ranger-max-preview-size 10)
+  (setq ranger-modify-header t)
+  (setq ranger-hide-cursor t)
+  (setq ranger-dont-show-binary t))
 
 (setq image-dired-dir (concat VOID-DATA-DIR "image-dir"))
 (setq dired-omit-verbose nil)
