@@ -110,6 +110,10 @@ Assumes vc is git which is fine because straight only uses git right now."
 :ID:       e63813c4-f321-4544-94f3-96b46cd38cf4
 :END:
 
+=straight= actually has two sources of truth: the recipes you specify in your init
+file and the lockfile. The lockfile is a file that contains an alist of packages
+and their commit (or revision).
+
 #+begin_src emacs-lisp
 (defun straight:install-fn (recipe)
   (straight-use-package recipe)
