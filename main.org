@@ -3026,7 +3026,7 @@ a new theme.
   (apply <orig-fn> <args>))
 #+end_src
 
-** general commands
+** Commands
 :PROPERTIES:
 :ID:       14fd249d-b972-472c-b57e-4e53a80b22dc
 :END:
