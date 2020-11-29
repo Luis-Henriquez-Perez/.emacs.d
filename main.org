@@ -114,7 +114,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 :ID:       fc52bcb2-034e-48cf-b9eb-7ea7aace66a3
 :END:
 
-**** property regexp
+***** property regexp
 :PROPERTIES:
 :ID:       a23d43d4-3e20-4a55-85e6-4a036ca6a33e
 :END:
@@ -133,7 +133,7 @@ Assumes vc is git which is fine because straight only uses git right now."
            eol)))
 #+end_src
 
-**** get recipes
+***** get recipes
 :PROPERTIES:
 :ID:       8a7408f7-9a04-4b11-8313-ee0cf854452d
 :END:
