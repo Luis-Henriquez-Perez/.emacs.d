@@ -104,12 +104,12 @@ Assumes vc is git which is fine because straight only uses git right now."
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 #+end_src
 
-*** install packages
+*** package installation
 :PROPERTIES:
-:ID:       ad016357-f54c-4d4c-8378-3eb450ae0a08
+:ID:       5ca4b13a-14ab-4e7a-ab27-aab08b4f4994
 :END:
 
-*** get package list based on my org file
+**** get package list based on my org file
 :PROPERTIES:
 :ID:       fc52bcb2-034e-48cf-b9eb-7ea7aace66a3
 :END:
@@ -165,7 +165,7 @@ completely reproducible.
                       it))))))))
 #+end_src
 
-*** install packages
+**** install packages
 :PROPERTIES:
 :ID:       6a346ca2-fa00-4339-b343-e594fe6125e6
 :END:
