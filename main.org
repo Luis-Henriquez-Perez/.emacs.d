@@ -177,14 +177,12 @@ This is where I actually install all of my packages in one go.
 
 #+begin_src emacs-lisp
 (unless (bound-and-true-p void-package-load-paths)
-  (let ((gc-cons-threshold most-positive-fixnum)
-        (gc-cons-percentage 0.9))
-    (straight:set-vars)
-    (straight:load-fn)
-    (let ((old-load-path load-path))
-      (mapc #'straight-use-package (void-generate-package-recipes))
-      ;; Packages should have been added to the load-path.
-      (-difference load-path old-load-path))))
+  (straight:set-vars)
+  (straight:load-fn)
+  (let ((old-load-path load-path))
+    (mapc #'straight-use-package (void-generate-package-recipes))
+    ;; Packages should have been added to the load-path.
+    (-difference load-path old-load-path)))
 #+end_src
 
 ** Library
