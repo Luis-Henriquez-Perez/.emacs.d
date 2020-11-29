@@ -177,8 +177,7 @@ This is where I actually install all of my packages in one go.
 
 #+begin_src emacs-lisp
 (unless (bound-and-true-p void-package-load-paths)
-  (straight:set-vars)
-  (straight:load-fn)
+  (straight:initialize)
   (let ((old-load-path load-path))
     (mapc #'straight-use-package (void-generate-package-recipes))
     ;; Packages should have been added to the load-path.
