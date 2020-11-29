@@ -175,6 +175,20 @@ code and use it to get the package recipes in my org file.
            eol)))
 #+end_src
 
+***** convert a string to a property list
+:PROPERTIES:
+:ID:       fa5a9b8e-fd68-4f8e-9a7a-15a0d28f012d
+:END:
+
+#+begin_src emacs-lisp
+(defun void-prop-string-to-recipe (string)
+  (seq-map-indexed (lambda (elt i)
+                     (if (cl-evenp i)
+                         (intern elt)
+                       (car (read-from-string elt))))
+                   (s-split ":\\(?:[[:space:]]\\|\n\\)+\\|\n" string t)))
+#+end_src
+
 ***** get recipes
 :PROPERTIES:
 :ID:       8a7408f7-9a04-4b11-8313-ee0cf854452d
