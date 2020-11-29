@@ -1606,6 +1606,555 @@ This function is meant to be used as the value of `initial-buffer-choice'."
     (get-buffer "*scratch*")))
 #+end_src
 
+** Initialize
+:PROPERTIES:
+:ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
+:END:
+
+*** defined in c source code
+:PROPERTIES:
+:ID:       873e6820-52f0-4b70-9992-ccb1610eb266
+:END:
+
+**** default settings
+:PROPERTIES:
+:ID: 8d578668-9b0b-4117-bf93-f556e970527b
+:END:
+
+#+begin_src emacs-lisp
+(setq-default fringe-indicator-alist
+              (delq (assq 'continuation fringe-indicator-alist)
+                    fringe-indicator-alist))
+(setq-default highlight-nonselected-windows nil)
+(setq-default indicate-buffer-boundaries nil)
+(setq-default inhibit-compacting-font-caches t)
+(setq-default max-mini-window-height 0.3)
+(setq-default mode-line-default-help-echo nil)
+(setq-default mouse-yank-at-point t)
+(setq-default resize-mini-windows 'grow-only)
+(setq-default show-help-function nil)
+(setq-default use-dialog-box nil)
+(setq-default visible-cursor t)
+(setq-default x-stretch-cursor nil)
+(setq-default ring-bell-function #'ignore)
+(setq-default visible-bell nil)
+(setq-default window-resize-pixelwise t)
+(setq-default frame-resize-pixelwise t)
+#+end_src
+
+**** compilation
+:PROPERTIES:
+:ID: 65c83b28-9bee-48fe-856a-f9c38f28c817
+:END:
+
+#+begin_src emacs-lisp
+;; Non-nil means load prefers the newest version of a file.
+(setq-default load-prefer-newer t)
+#+end_src
+
+**** all
+:PROPERTIES:
+:ID:       276d0193-5a46-4034-b145-f235178678d6
+:END:
+
+#+begin_src emacs-lisp
+;; File name in which to write a list of all auto save file names.
+(setq auto-save-list-file-name (concat VOID-DATA-DIR "autosave"))
+;; Directory of score files for games which come with GNU Emacs.
+(setq shared-game-score-directory (concat VOID-DATA-DIR "shared-game-score/"))
+
+(setq-default cursor-in-non-selected-windows nil)
+
+(setq highlight-nonselected-windows nil)
+
+;; When non-nil, accelerate scrolling operations.
+(setq fast-but-imprecise-scrolling t)
+
+(setq-default frame-inhibit-implied-resize t)
+
+;; Non-nil means use lockfiles to avoid editing collisions.
+(setq-default create-lockfiles nil)
+;; Non-nil says by default do auto-saving of every file-visiting buffer.
+(setq-default history-length 500)
+;; Specifies whether to use the system's trash can.
+(setq-default delete-by-moving-to-trash t)
+
+;; Disabling bidirectional text provides a small performance boost. Bidirectional
+;; text is useful for languages that read right to left.
+(setq-default bidi-display-reordering 'left-to-right)
+(setq-default bidi-paragraph-direction 'left-to-right)
+
+;; Non-nil means echo keystrokes after this many seconds. A value of zero means
+;; don't echo at all.
+(setq-default echo-keystrokes 0)
+
+;; Template for displaying mode line for current buffer.
+(setq-default mode-line-format nil)
+
+(setq-default locale-coding-system VOID-DEFAULT-CODING-SYSTEM)
+(setq-default buffer-file-coding-system VOID-DEFAULT-CODING-SYSTEM)
+#+end_src
+
+**** scrolling
+:PROPERTIES:
+:ID: 21e56e37-5ff8-40d8-9f27-c3a3ab37dfb8
+:END:
+
+#+begin_src emacs-lisp
+(setq-default hscroll-margin 2)
+(setq-default hscroll-step 1)
+(setq-default scroll-conservatively 1001)
+(setq-default scroll-margin 0)
+(setq-default scroll-preserve-screen-position t)
+#+end_src
+
+***** spacing
+:PROPERTIES:
+:ID: 8b3f38f9-b789-43e3-b2c5-5152a67d2803
+:END:
+
+#+begin_src emacs-lisp
+(setq-default fill-column 80)
+(setq-default sentence-end-double-space nil)
+(setq-default tab-width 4)
+#+end_src
+
+***** line wrapping
+:PROPERTIES:
+:ID: e1564e28-d2ab-4649-b18b-24c27b897256
+:END:
+
+#+begin_src emacs-lisp
+(setq-default word-wrap t)
+(setq-default indicate-empty-lines nil)
+(setq-default indent-tabs-mode nil)
+(setq-default truncate-lines t)
+(setq-default truncate-partial-width-windows 50)
+#+end_src
+
+***** other
+:PROPERTIES:
+:ID: cd0aa7ad-97bc-48ec-9a09-8af56cbf6157
+:END:
+
+#+begin_src emacs-lisp
+;; Non-nil means reorder bidirectional text for display in the visual order.
+;; Disabling this gives Emacs a tiny performance boost.
+(setq-default bidi-display-reordering nil)
+(setq-default cursor-in-non-selected-windows nil)
+(setq-default display-line-numbers-width 3)
+(setq-default enable-recursive-minibuffers t)
+(setq-default frame-inhibit-implied-resize t)
+#+end_src
+
+**** printing
+:PROPERTIES:
+:ID: 2dfce297-0f01-4576-ae5d-bb5856591ecb
+:END:
+
+When eval and replacing expressions, I want the printed result to express all
+newlines in strings as =\n= as opposed to an actual newline. In fact, in general I
+want any character to be expressed in =backslash + number or character= form. It
+makes the strings more readable and easier to deal with.
+
+Furthermore, I'd like printed lisp expressions to express quoted forms the way I
+write them, with a ='= as opposed to the literal =(quote ...)=.
+
+There comes a point when output is too long, or too nested to be usable. It's ok
+to abbreviate it at this point.
+
+#+begin_src emacs-lisp
+(setq-default print-escape-newlines t)
+(setq-default print-escape-multibyte t)
+(setq-default print-escape-control-characters t)
+(setq-default print-escape-nonascii t)
+(setq-default print-length nil)
+(setq-default print-level nil)
+(setq-default print-quoted t)
+(setq-default print-escape-newlines t)
+#+end_src
+
+*** void specific funtions
+:PROPERTIES:
+:ID: 1b49e07a-466f-41da-8b31-18c28421cf62
+:END:
+
+**** windows
+:PROPERTIES:
+:ID: 039a9070-2ba3-4e01-abd4-7bdb49cc5a3d
+:END:
+
+***** split-right-and-focus
+:PROPERTIES:
+:ID: 6cb60d94-723b-48e5-850a-3483e78f6647
+:END:
+
+#+begin_src emacs-lisp
+(defun void/window-split-right-and-focus ()
+  "Split window right and select the window created with the split."
+  (interactive)
+  (select-window (split-window-right)))
+#+end_src
+
+***** split-below-and-focus
+:PROPERTIES:
+:ID: d6a4a81f-007d-4b7e-97a3-e0bba3ff97a4
+:END:
+
+#+begin_src emacs-lisp
+(defun void/window-split-below-and-focus ()
+  "Split window below and select the window created with the split."
+  (interactive)
+  (select-window (split-window-below)))
+#+end_src
+
+**** all
+:PROPERTIES:
+:ID: e97267e8-fca8-4bf2-9899-7ec694e8a767
+:END:
+
+***** quit emacs without hook
+:PROPERTIES:
+:ID: b82f721c-39f5-4d41-bb0f-d4c391238eb4
+:END:
+
+Sometimes something goes wrong with [[helpvar:kill-emacs-hook][kill-emacs-hook]] and because of that I can't
+close emacs. For that reason, I have this function.
+
+#+begin_src emacs-lisp
+(defun void/kill-emacs-no-hook ()
+  "Kill emacs, ignoring `kill-emacs-hook'."
+  (interactive)
+  (when (yes-or-no-p "Quit without `kill-emacs-hook'?")
+    (let (kill-emacs-hook) (kill-emacs))))
+#+end_src
+
+***** quit emacs brutally
+:PROPERTIES:
+:ID: 8753217c-4722-4183-bbb3-049707a37e54
+:END:
+
+I've never had to use this. But better be safe than sorry.
+
+#+begin_src emacs-lisp
+(defun void/kill-emacs-brutally ()
+  "Tell an external process to kill emacs."
+  (interactive)
+  (when (yes-or-no-p "Do you want to BRUTALLY kill emacs?")
+    (call-process "kill" nil nil nil "-9" (number-to-string (emacs-pid)))))
+#+end_src
+
+***** new emacs instance
+:PROPERTIES:
+:ID: eaf80ec3-2bd4-4f05-8a9c-fa525894a6fe
+:END:
+
+#+begin_src emacs-lisp
+(defun void/open-emacs-instance ()
+  "Open a new emacs instance in debug-mode."
+  (interactive)
+  (cond ((eq system-type 'darwin)
+         (start-process-shell-command
+          "emacs"
+          nil "open -n /Applications/Emacs.app --args --debug-init"))
+        ((eq system-type 'gnu/linux)
+         (start-process "emacs" nil "emacs" "--debug-init"))))
+#+end_src
+
+***** kill all process of program
+:PROPERTIES:
+:ID: 913952e2-3727-4b38-aefc-4618c2771730
+:END:
+
+#+begin_src emacs-lisp
+(defun void/kill-emacs-processes ()
+  (interactive)
+  (let ((count 1) (process "emacs"))
+    (kill-process process)
+    (while (ignore-errors (kill-process process))
+      (setq process (format "emacs<%d>" count))
+      (cl-incf count))
+    (message "killed %d processes" count)))
+#+end_src
+
+***** qutebrowser
+:PROPERTIES:
+:ID: 77bace13-5af8-4974-981a-e07bf271182f
+:END:
+
+#+begin_src emacs-lisp
+(defun void/open-qutebrowser ()
+  "Open qutebrowser."
+  (interactive)
+  (start-process "qutebrowser" nil "qutebrowser"))
+#+end_src
+
+**** messages buffer
+:PROPERTIES:
+:ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
+:END:
+
+In Emacs, messages. The messages buffer is where messages displayed at the bottom
+of the Emacs frame are recorded after they expire.
+
+#+begin_src emacs-lisp
+(defun void/switch-to-messages ()
+  (interactive)
+  (select-window (display-buffer (get-buffer "*Messages*"))))
+#+end_src
+
+**** main org file
+:PROPERTIES:
+:ID: fb605553-f234-410a-b27e-697dc667831b
+:END:
+
+#+begin_src emacs-lisp
+(defun void/switch-to-main-org-file ()
+  (interactive)
+  (find-file (concat VOID-EMACS-DIR "main.org")))
+#+end_src
+
+**** main todo file
+:PROPERTIES:
+:ID: 2accd21d-7316-4fa5-bd8f-8f40935ed621
+:END:
+
+#+begin_src emacs-lisp
+(defun void/switch-to-capture-file ()
+  (interactive)
+  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
+#+end_src
+
+**** turn on debug-mode
+:PROPERTIES:
+:ID: c1ac481a-6ebd-49ce-a930-3b0593283aee
+:END:
+
+#+begin_src emacs-lisp
+(defun void/enable-debug-mode ()
+  (interactive)
+  (setq void-debug-p t))
+#+end_src
+
+**** switch to init file
+:PROPERTIES:
+:ID: 50c5e173-d737-4264-bac5-f13190d468dc
+:END:
+
+#+begin_src emacs-lisp
+(defun void/switch-to-init-org-file ()
+  "Switch to Void's init.el file."
+  (interactive)
+  (switch-to-buffer VOID-INIT-FILE))
+#+end_src
+
+**** quit emacs no prompt
+:PROPERTIES:
+:ID: d530718a-2b42-4e9b-8d7d-7813e0ae6381
+:END:
+
+#+begin_src emacs-lisp
+(defun void/quit-emacs-no-prompt ()
+  "Quit emacs without prompting."
+  (interactive)
+  (let (confirm-kill-emacs)
+    (kill-emacs)))
+#+end_src
+
+*** post init
+:PROPERTIES:
+:ID: 0f1da89a-2278-4493-ba62-e2a334204be6
+:END:
+
+**** idle-require
+:PROPERTIES:
+:ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "nschum/idle-require.el"
+:PACKAGE:  "idle-require"
+:LOCAL-REPO: "idle-require.el"
+:COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
+:END:
+
+Idle require is a tool for loading autoload functions, files or features during
+idle time. The way to use this is to idle-require many small packages that
+individually don't take too much time. This helps ensure that in emacs loading
+of big packages like org-mode is snappy.
+
+***** init
+:PROPERTIES:
+:ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
+:END:
+
+#+begin_src emacs-lisp
+(require 'idle-require)
+(void-add-hook 'emacs-startup-hook #'idle-require-mode)
+#+end_src
+
+***** settings
+:PROPERTIES:
+:ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
+:END:
+
+When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
+start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
+require loads.
+
+#+begin_src emacs-lisp
+(setq idle-require-load-break 2)
+(setq idle-require-idle-delay 10)
+#+end_src
+
+***** make idle require use void-log
+:PROPERTIES:
+:ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
+:END:
+
+=idle-require= messages us to tell us when a package is being idle required and
+when it has finished idle-requiring packages. I don't want to see the message
+unless I'm debugging.
+
+#+begin_src emacs-lisp
+(void-add-advice #'idle-require-load-next :around #'void--use-void-log)
+#+end_src
+
+***** increase gc-cons-threshold during idle loading
+:PROPERTIES:
+:ID:       275c3488-8192-476c-97b8-6c6643f54d2e
+:END:
+
+Since we're evaluating a good amount of lisp expressions, we should boost
+garbage collection during this time.
+
+#+begin_src emacs-lisp
+(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection)
+#+end_src
+
+**** =tty=
+:PROPERTIES:
+:ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
+:END:
+
+When running emacs in terminal tty is *tremendously* slow.
+
+#+begin_src emacs-lisp
+(unless (display-graphic-p)
+  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
+  (defhook! init-tty (window-setup-hook)
+    (advice-remove #'tty-run-terminal-initialization #'ignore)
+    (tty-run-terminal-initialization (selected-frame) nil t)))
+#+end_src
+
+**** minibuffer
+:PROPERTIES:
+:ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
+:END:
+
+[[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
+entering and exiting the minibuffer (respectively). In the minibuffer I'll be
+primarily doing searches for variables and functions. There are alot of
+variables and functions so this can certainly get computationally expensive. To
+keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
+the minibuffer, and restore it to it's original value a few seconds after it's closed.
+
+It would take me forever to guess the name =minibuffer-setup-hook= from the
+variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
+know what the hook to enter the minibuffer was, I'd probably
+=minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
+It'd take me forever to guess =startup=. Note that the only tricky thing about
+this example.
+
+At first I thought of =entry= but after more thought I realized
+hook variables use action verbs in their names not nouns. So the =exit= in
+=minibuffer-exit-hook= is actually the verb =exit= not the noun.
+
+#+begin_src emacs-lisp
+(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
+
+(defhook! boost-garbage-collection (minibuffer-enter-hook)
+  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
+  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
+#+end_src
+
+**** tangling
+:PROPERTIES:
+:ID: 3288c787-4b5c-4f0c-9d18-6f18afaf2b99
+:END:
+
+***** tangle hook
+:PROPERTIES:
+:ID: 549999d7-901b-4ab4-bdbe-81514b756ced
+:END:
+
+Void tangles itself just before quitting if [[helpfn:void-needs-tangling-p][void-needs-tangling-p]] returns true.
+I tangle before quitting so I don't have to do it before startup. It's
+preferable for quitting emacs to be slightly slower than for emacs startup to
+be.
+
+#+begin_src emacs-lisp
+(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
+  "Tangle if `void-needs-tangling-p' returns t."
+  (when (void-needs-tangling-p)
+    (alet (concat VOID-LOCAL-DIR "main.el")
+      (org-babel-tangle-file VOID-MAIN-ORG-FILE it))))
+#+end_src
+
+***** tangle asynchronously upon saving
+:PROPERTIES:
+:ID: 00298d4e-6b18-4203-874f-f5a877a5cabf
+:END:
+
+This is another attempt to keep my =main.el= file in sync as much as possible with
+[[helpvar:VOID-README-FILE][void-main-org-file]]. ~void-tangle-on-save-h~ is called whenever a buffer is being
+saved to a file. The reason why I use ~cl-letf~ to temporarily override [[helpfn:load][load]] is
+because ~VOID-INIT-FILE~ already contains all the code I need so I don't want it
+to waste time loading ~void-main-elisp-file~.
+
+#+begin_src emacs-lisp
+(defhook! tangle-maybe (after-save-hook)
+  "Tangle `VOID-MAIN-ORG-FILE' asynchronously when it is saved."
+  (when (and (require 'async nil t)
+             (string= (file-truename VOID-MAIN-ORG-FILE)
+                      (or (buffer-file-name (current-buffer)) ""))
+             (void-needs-tangling-p))
+    (async-start
+     (lambda ()
+       (let ((old-fn (symbol-function 'load))
+             (user-init-file (concat user-emacs-directory "init.el")))
+         (require 'cl)
+         (cl-letf (((symbol-function 'load)
+                    (lambda (file &rest args)
+                      (when (string= user-init-file file)
+                        (apply old-fn file args)))))
+           (load user-init-file))))
+     (lambda (_)
+       (void-log
+        (concat (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
+                " tangling `VOID-MAIN-ORG-FILE'."))))))
+#+end_src
+
+*** prevent emacs from killing certain buffers
+:PROPERTIES:
+:ID:       ae935cf5-7322-499c-96d7-20209d9b6641
+:END:
+
+I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
+to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
+
+#+begin_src emacs-lisp
+(defhook! lock-certain-buffers (after-init-hook)
+  "Prevent certain buffers from being killed."
+  (--each (list "*scratch*" "*Messages*")
+    (with-current-buffer it
+      (emacs-lock-mode 'kill))))
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
@@ -2262,555 +2811,6 @@ make a difference. That's why.
 
 #+begin_src emacs-lisp
 (setq request-storage-directory . (concat VOID-DATA-DIR "request"))
-#+end_src
-
-** Initialize
-:PROPERTIES:
-:ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
-:END:
-
-*** defined in c source code
-:PROPERTIES:
-:ID:       873e6820-52f0-4b70-9992-ccb1610eb266
-:END:
-
-**** default settings
-:PROPERTIES:
-:ID: 8d578668-9b0b-4117-bf93-f556e970527b
-:END:
-
-#+begin_src emacs-lisp
-(setq-default fringe-indicator-alist
-              (delq (assq 'continuation fringe-indicator-alist)
-                    fringe-indicator-alist))
-(setq-default highlight-nonselected-windows nil)
-(setq-default indicate-buffer-boundaries nil)
-(setq-default inhibit-compacting-font-caches t)
-(setq-default max-mini-window-height 0.3)
-(setq-default mode-line-default-help-echo nil)
-(setq-default mouse-yank-at-point t)
-(setq-default resize-mini-windows 'grow-only)
-(setq-default show-help-function nil)
-(setq-default use-dialog-box nil)
-(setq-default visible-cursor t)
-(setq-default x-stretch-cursor nil)
-(setq-default ring-bell-function #'ignore)
-(setq-default visible-bell nil)
-(setq-default window-resize-pixelwise t)
-(setq-default frame-resize-pixelwise t)
-#+end_src
-
-**** compilation
-:PROPERTIES:
-:ID: 65c83b28-9bee-48fe-856a-f9c38f28c817
-:END:
-
-#+begin_src emacs-lisp
-;; Non-nil means load prefers the newest version of a file.
-(setq-default load-prefer-newer t)
-#+end_src
-
-**** all
-:PROPERTIES:
-:ID:       276d0193-5a46-4034-b145-f235178678d6
-:END:
-
-#+begin_src emacs-lisp
-;; File name in which to write a list of all auto save file names.
-(setq auto-save-list-file-name (concat VOID-DATA-DIR "autosave"))
-;; Directory of score files for games which come with GNU Emacs.
-(setq shared-game-score-directory (concat VOID-DATA-DIR "shared-game-score/"))
-
-(setq-default cursor-in-non-selected-windows nil)
-
-(setq highlight-nonselected-windows nil)
-
-;; When non-nil, accelerate scrolling operations.
-(setq fast-but-imprecise-scrolling t)
-
-(setq-default frame-inhibit-implied-resize t)
-
-;; Non-nil means use lockfiles to avoid editing collisions.
-(setq-default create-lockfiles nil)
-;; Non-nil says by default do auto-saving of every file-visiting buffer.
-(setq-default history-length 500)
-;; Specifies whether to use the system's trash can.
-(setq-default delete-by-moving-to-trash t)
-
-;; Disabling bidirectional text provides a small performance boost. Bidirectional
-;; text is useful for languages that read right to left.
-(setq-default bidi-display-reordering 'left-to-right)
-(setq-default bidi-paragraph-direction 'left-to-right)
-
-;; Non-nil means echo keystrokes after this many seconds. A value of zero means
-;; don't echo at all.
-(setq-default echo-keystrokes 0)
-
-;; Template for displaying mode line for current buffer.
-(setq-default mode-line-format nil)
-
-(setq-default locale-coding-system VOID-DEFAULT-CODING-SYSTEM)
-(setq-default buffer-file-coding-system VOID-DEFAULT-CODING-SYSTEM)
-#+end_src
-
-**** scrolling
-:PROPERTIES:
-:ID: 21e56e37-5ff8-40d8-9f27-c3a3ab37dfb8
-:END:
-
-#+begin_src emacs-lisp
-(setq-default hscroll-margin 2)
-(setq-default hscroll-step 1)
-(setq-default scroll-conservatively 1001)
-(setq-default scroll-margin 0)
-(setq-default scroll-preserve-screen-position t)
-#+end_src
-
-***** spacing
-:PROPERTIES:
-:ID: 8b3f38f9-b789-43e3-b2c5-5152a67d2803
-:END:
-
-#+begin_src emacs-lisp
-(setq-default fill-column 80)
-(setq-default sentence-end-double-space nil)
-(setq-default tab-width 4)
-#+end_src
-
-***** line wrapping
-:PROPERTIES:
-:ID: e1564e28-d2ab-4649-b18b-24c27b897256
-:END:
-
-#+begin_src emacs-lisp
-(setq-default word-wrap t)
-(setq-default indicate-empty-lines nil)
-(setq-default indent-tabs-mode nil)
-(setq-default truncate-lines t)
-(setq-default truncate-partial-width-windows 50)
-#+end_src
-
-***** other
-:PROPERTIES:
-:ID: cd0aa7ad-97bc-48ec-9a09-8af56cbf6157
-:END:
-
-#+begin_src emacs-lisp
-;; Non-nil means reorder bidirectional text for display in the visual order.
-;; Disabling this gives Emacs a tiny performance boost.
-(setq-default bidi-display-reordering nil)
-(setq-default cursor-in-non-selected-windows nil)
-(setq-default display-line-numbers-width 3)
-(setq-default enable-recursive-minibuffers t)
-(setq-default frame-inhibit-implied-resize t)
-#+end_src
-
-**** printing
-:PROPERTIES:
-:ID: 2dfce297-0f01-4576-ae5d-bb5856591ecb
-:END:
-
-When eval and replacing expressions, I want the printed result to express all
-newlines in strings as =\n= as opposed to an actual newline. In fact, in general I
-want any character to be expressed in =backslash + number or character= form. It
-makes the strings more readable and easier to deal with.
-
-Furthermore, I'd like printed lisp expressions to express quoted forms the way I
-write them, with a ='= as opposed to the literal =(quote ...)=.
-
-There comes a point when output is too long, or too nested to be usable. It's ok
-to abbreviate it at this point.
-
-#+begin_src emacs-lisp
-(setq-default print-escape-newlines t)
-(setq-default print-escape-multibyte t)
-(setq-default print-escape-control-characters t)
-(setq-default print-escape-nonascii t)
-(setq-default print-length nil)
-(setq-default print-level nil)
-(setq-default print-quoted t)
-(setq-default print-escape-newlines t)
-#+end_src
-
-*** void specific funtions
-:PROPERTIES:
-:ID: 1b49e07a-466f-41da-8b31-18c28421cf62
-:END:
-
-**** windows
-:PROPERTIES:
-:ID: 039a9070-2ba3-4e01-abd4-7bdb49cc5a3d
-:END:
-
-***** split-right-and-focus
-:PROPERTIES:
-:ID: 6cb60d94-723b-48e5-850a-3483e78f6647
-:END:
-
-#+begin_src emacs-lisp
-(defun void/window-split-right-and-focus ()
-  "Split window right and select the window created with the split."
-  (interactive)
-  (select-window (split-window-right)))
-#+end_src
-
-***** split-below-and-focus
-:PROPERTIES:
-:ID: d6a4a81f-007d-4b7e-97a3-e0bba3ff97a4
-:END:
-
-#+begin_src emacs-lisp
-(defun void/window-split-below-and-focus ()
-  "Split window below and select the window created with the split."
-  (interactive)
-  (select-window (split-window-below)))
-#+end_src
-
-**** all
-:PROPERTIES:
-:ID: e97267e8-fca8-4bf2-9899-7ec694e8a767
-:END:
-
-***** quit emacs without hook
-:PROPERTIES:
-:ID: b82f721c-39f5-4d41-bb0f-d4c391238eb4
-:END:
-
-Sometimes something goes wrong with [[helpvar:kill-emacs-hook][kill-emacs-hook]] and because of that I can't
-close emacs. For that reason, I have this function.
-
-#+begin_src emacs-lisp
-(defun void/kill-emacs-no-hook ()
-  "Kill emacs, ignoring `kill-emacs-hook'."
-  (interactive)
-  (when (yes-or-no-p "Quit without `kill-emacs-hook'?")
-    (let (kill-emacs-hook) (kill-emacs))))
-#+end_src
-
-***** quit emacs brutally
-:PROPERTIES:
-:ID: 8753217c-4722-4183-bbb3-049707a37e54
-:END:
-
-I've never had to use this. But better be safe than sorry.
-
-#+begin_src emacs-lisp
-(defun void/kill-emacs-brutally ()
-  "Tell an external process to kill emacs."
-  (interactive)
-  (when (yes-or-no-p "Do you want to BRUTALLY kill emacs?")
-    (call-process "kill" nil nil nil "-9" (number-to-string (emacs-pid)))))
-#+end_src
-
-***** new emacs instance
-:PROPERTIES:
-:ID: eaf80ec3-2bd4-4f05-8a9c-fa525894a6fe
-:END:
-
-#+begin_src emacs-lisp
-(defun void/open-emacs-instance ()
-  "Open a new emacs instance in debug-mode."
-  (interactive)
-  (cond ((eq system-type 'darwin)
-         (start-process-shell-command
-          "emacs"
-          nil "open -n /Applications/Emacs.app --args --debug-init"))
-        ((eq system-type 'gnu/linux)
-         (start-process "emacs" nil "emacs" "--debug-init"))))
-#+end_src
-
-***** kill all process of program
-:PROPERTIES:
-:ID: 913952e2-3727-4b38-aefc-4618c2771730
-:END:
-
-#+begin_src emacs-lisp
-(defun void/kill-emacs-processes ()
-  (interactive)
-  (let ((count 1) (process "emacs"))
-    (kill-process process)
-    (while (ignore-errors (kill-process process))
-      (setq process (format "emacs<%d>" count))
-      (cl-incf count))
-    (message "killed %d processes" count)))
-#+end_src
-
-***** qutebrowser
-:PROPERTIES:
-:ID: 77bace13-5af8-4974-981a-e07bf271182f
-:END:
-
-#+begin_src emacs-lisp
-(defun void/open-qutebrowser ()
-  "Open qutebrowser."
-  (interactive)
-  (start-process "qutebrowser" nil "qutebrowser"))
-#+end_src
-
-**** messages buffer
-:PROPERTIES:
-:ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
-:END:
-
-In Emacs, messages. The messages buffer is where messages displayed at the bottom
-of the Emacs frame are recorded after they expire.
-
-#+begin_src emacs-lisp
-(defun void/switch-to-messages ()
-  (interactive)
-  (select-window (display-buffer (get-buffer "*Messages*"))))
-#+end_src
-
-**** main org file
-:PROPERTIES:
-:ID: fb605553-f234-410a-b27e-697dc667831b
-:END:
-
-#+begin_src emacs-lisp
-(defun void/switch-to-main-org-file ()
-  (interactive)
-  (find-file (concat VOID-EMACS-DIR "main.org")))
-#+end_src
-
-**** main todo file
-:PROPERTIES:
-:ID: 2accd21d-7316-4fa5-bd8f-8f40935ed621
-:END:
-
-#+begin_src emacs-lisp
-(defun void/switch-to-capture-file ()
-  (interactive)
-  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
-#+end_src
-
-**** turn on debug-mode
-:PROPERTIES:
-:ID: c1ac481a-6ebd-49ce-a930-3b0593283aee
-:END:
-
-#+begin_src emacs-lisp
-(defun void/enable-debug-mode ()
-  (interactive)
-  (setq void-debug-p t))
-#+end_src
-
-**** switch to init file
-:PROPERTIES:
-:ID: 50c5e173-d737-4264-bac5-f13190d468dc
-:END:
-
-#+begin_src emacs-lisp
-(defun void/switch-to-init-org-file ()
-  "Switch to Void's init.el file."
-  (interactive)
-  (switch-to-buffer VOID-INIT-FILE))
-#+end_src
-
-**** quit emacs no prompt
-:PROPERTIES:
-:ID: d530718a-2b42-4e9b-8d7d-7813e0ae6381
-:END:
-
-#+begin_src emacs-lisp
-(defun void/quit-emacs-no-prompt ()
-  "Quit emacs without prompting."
-  (interactive)
-  (let (confirm-kill-emacs)
-    (kill-emacs)))
-#+end_src
-
-*** post init
-:PROPERTIES:
-:ID: 0f1da89a-2278-4493-ba62-e2a334204be6
-:END:
-
-**** idle-require
-:PROPERTIES:
-:ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "nschum/idle-require.el"
-:PACKAGE:  "idle-require"
-:LOCAL-REPO: "idle-require.el"
-:COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
-:END:
-
-Idle require is a tool for loading autoload functions, files or features during
-idle time. The way to use this is to idle-require many small packages that
-individually don't take too much time. This helps ensure that in emacs loading
-of big packages like org-mode is snappy.
-
-***** init
-:PROPERTIES:
-:ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
-:END:
-
-#+begin_src emacs-lisp
-(require 'idle-require)
-(void-add-hook 'emacs-startup-hook #'idle-require-mode)
-#+end_src
-
-***** settings
-:PROPERTIES:
-:ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
-:END:
-
-When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
-start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
-require loads.
-
-#+begin_src emacs-lisp
-(setq idle-require-load-break 2)
-(setq idle-require-idle-delay 10)
-#+end_src
-
-***** make idle require use void-log
-:PROPERTIES:
-:ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
-:END:
-
-=idle-require= messages us to tell us when a package is being idle required and
-when it has finished idle-requiring packages. I don't want to see the message
-unless I'm debugging.
-
-#+begin_src emacs-lisp
-(void-add-advice #'idle-require-load-next :around #'void--use-void-log)
-#+end_src
-
-***** increase gc-cons-threshold during idle loading
-:PROPERTIES:
-:ID:       275c3488-8192-476c-97b8-6c6643f54d2e
-:END:
-
-Since we're evaluating a good amount of lisp expressions, we should boost
-garbage collection during this time.
-
-#+begin_src emacs-lisp
-(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection)
-#+end_src
-
-**** =tty=
-:PROPERTIES:
-:ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
-:END:
-
-When running emacs in terminal tty is *tremendously* slow.
-
-#+begin_src emacs-lisp
-(unless (display-graphic-p)
-  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
-  (defhook! init-tty (window-setup-hook)
-    (advice-remove #'tty-run-terminal-initialization #'ignore)
-    (tty-run-terminal-initialization (selected-frame) nil t)))
-#+end_src
-
-**** minibuffer
-:PROPERTIES:
-:ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
-:END:
-
-[[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
-entering and exiting the minibuffer (respectively). In the minibuffer I'll be
-primarily doing searches for variables and functions. There are alot of
-variables and functions so this can certainly get computationally expensive. To
-keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
-the minibuffer, and restore it to it's original value a few seconds after it's closed.
-
-It would take me forever to guess the name =minibuffer-setup-hook= from the
-variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
-know what the hook to enter the minibuffer was, I'd probably
-=minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
-It'd take me forever to guess =startup=. Note that the only tricky thing about
-this example.
-
-At first I thought of =entry= but after more thought I realized
-hook variables use action verbs in their names not nouns. So the =exit= in
-=minibuffer-exit-hook= is actually the verb =exit= not the noun.
-
-#+begin_src emacs-lisp
-(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
-
-(defhook! boost-garbage-collection (minibuffer-enter-hook)
-  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
-
-(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
-  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
-#+end_src
-
-**** tangling
-:PROPERTIES:
-:ID: 3288c787-4b5c-4f0c-9d18-6f18afaf2b99
-:END:
-
-***** tangle hook
-:PROPERTIES:
-:ID: 549999d7-901b-4ab4-bdbe-81514b756ced
-:END:
-
-Void tangles itself just before quitting if [[helpfn:void-needs-tangling-p][void-needs-tangling-p]] returns true.
-I tangle before quitting so I don't have to do it before startup. It's
-preferable for quitting emacs to be slightly slower than for emacs startup to
-be.
-
-#+begin_src emacs-lisp
-(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
-  "Tangle if `void-needs-tangling-p' returns t."
-  (when (void-needs-tangling-p)
-    (alet (concat VOID-LOCAL-DIR "main.el")
-      (org-babel-tangle-file VOID-MAIN-ORG-FILE it))))
-#+end_src
-
-***** tangle asynchronously upon saving
-:PROPERTIES:
-:ID: 00298d4e-6b18-4203-874f-f5a877a5cabf
-:END:
-
-This is another attempt to keep my =main.el= file in sync as much as possible with
-[[helpvar:VOID-README-FILE][void-main-org-file]]. ~void-tangle-on-save-h~ is called whenever a buffer is being
-saved to a file. The reason why I use ~cl-letf~ to temporarily override [[helpfn:load][load]] is
-because ~VOID-INIT-FILE~ already contains all the code I need so I don't want it
-to waste time loading ~void-main-elisp-file~.
-
-#+begin_src emacs-lisp
-(defhook! tangle-maybe (after-save-hook)
-  "Tangle `VOID-MAIN-ORG-FILE' asynchronously when it is saved."
-  (when (and (require 'async nil t)
-             (string= (file-truename VOID-MAIN-ORG-FILE)
-                      (or (buffer-file-name (current-buffer)) ""))
-             (void-needs-tangling-p))
-    (async-start
-     (lambda ()
-       (let ((old-fn (symbol-function 'load))
-             (user-init-file (concat user-emacs-directory "init.el")))
-         (require 'cl)
-         (cl-letf (((symbol-function 'load)
-                    (lambda (file &rest args)
-                      (when (string= user-init-file file)
-                        (apply old-fn file args)))))
-           (load user-init-file))))
-     (lambda (_)
-       (void-log
-        (concat (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
-                " tangling `VOID-MAIN-ORG-FILE'."))))))
-#+end_src
-
-*** prevent emacs from killing certain buffers
-:PROPERTIES:
-:ID:       ae935cf5-7322-499c-96d7-20209d9b6641
-:END:
-
-I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
-to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
-
-#+begin_src emacs-lisp
-(defhook! lock-certain-buffers (after-init-hook)
-  "Prevent certain buffers from being killed."
-  (--each (list "*scratch*" "*Messages*")
-    (with-current-buffer it
-      (emacs-lock-mode 'kill))))
 #+end_src
 
 ** UI
