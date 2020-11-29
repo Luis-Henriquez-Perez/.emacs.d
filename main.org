@@ -199,7 +199,7 @@ completely reproducible as one file.
         (while (re-search-forward regexp nil t)
           (let ((match (match-string-no-properties 1)))
             (when (and match (string-match-p "PACKAGE" match))
-              (push it recipes))))))
+              (push match recipes))))))
     recipes))
 #+end_src
 
