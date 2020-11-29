@@ -180,6 +180,9 @@ code and use it to get the package recipes in my org file.
 :ID:       fa5a9b8e-fd68-4f8e-9a7a-15a0d28f012d
 :END:
 
+When I read the property lists from my org file, they'll be strings. This
+function will convert them to a plist.
+
 #+begin_src emacs-lisp
 (defun void-prop-string-to-recipe (string)
   "Convert a property list string into a plist."
