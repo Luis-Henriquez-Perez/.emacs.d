@@ -105,6 +105,21 @@ Assumes vc is git which is fine because straight only uses git right now."
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 #+end_src
 
+**** straight-install-fn
+:PROPERTIES:
+:ID:       e63813c4-f321-4544-94f3-96b46cd38cf4
+:END:
+
+#+begin_src emacs-lisp
+(defun straight:install-fn (recipe)
+  (straight-use-package recipe)
+  ;; After installing, set the package to the correct commit.
+  (when (plist-get :commit recipe)
+    (unless (straight-vc-commit-present-p recipe commit)
+      (straight-vc-fetch-from-remote recipe))
+    (straight-vc-check-out-commit recipe commit)))
+#+end_src
+
 *** package installation
 :PROPERTIES:
 :ID:       5ca4b13a-14ab-4e7a-ab27-aab08b4f4994
