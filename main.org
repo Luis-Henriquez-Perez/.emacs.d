@@ -4860,17 +4860,6 @@ it. It's pretty smart and very convenient.
 (void-add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 #+end_src
 
-*** electric indent
-:PROPERTIES:
-:ID: 4f7e6aa4-be34-4cdd-a2a8-63df24da44a1
-:END:
-
-#+begin_src emacs-lisp
-(use-package! electric
-  :config
-  (electric-indent-mode -1))
-#+end_src
-
 *** ws-butler
 :PROPERTIES:
 :ID:       caf0335b-923c-4427-af2b-d398af1700f7
