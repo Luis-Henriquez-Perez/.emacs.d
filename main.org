@@ -187,190 +187,13 @@ This is where I actually install all of my packages in one go.
       (-difference load-path old-load-path))))
 #+end_src
 
-** Init
+** Library
 :PROPERTIES:
-:ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
+:ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
 :END:
 
-*** gc cons threshold
-:PROPERTIES:
-:ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
-:END:
-
-A big contributor to long startup times is the garbage collector. When
-performing a large number of calculations, it can make a big difference to
-increase the [[helpvar:gc-cons-threshold][gc-cons-threshold]], or the /number of bytes of consing between
-garbage collections/. The default value is usually too low for modern machines.
-
-**** gc cons threshold
-:PROPERTIES:
-:ID: e15d257f-1b0f-421e-8b34-076b1d20e493
-:END:
-
-#+begin_src emacs-lisp
-(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
-  "The upper limit for `gc-cons-threshold'.
-When VOID is performing computationally intensive operations,
-`gc-cons-threshold' is set to this value.")
-
-(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
-  "The default value for `gc-cons-threshold'.")
-
-(defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
-  "The upper limit for `gc-cons-percentage'.
-When VOID is performing computationally intensive operations,
-`gc-cons-percentage' is set to this value.")
-
-(defconst VOID-GC-CONS-PERCENTAGE 0.1
-  "The default value for `gc-cons-percentage'.")
-#+end_src
-
-**** boost gc threshold
-:PROPERTIES:
-:ID: eac7cfbb-6576-4506-8118-5bfda151654b
-:END:
-
-Here I boost the gc-cons-threshold for my current emacs session. It [[id:d49bef67-0a1e-4026-838c-217b0d6ecad5][will be
-restored]] after package loading slows down.
-
-#+begin_src emacs-lisp
-(setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
-(setq gc-cons-percentage VOID-GC-CONS-PERCENTAGE-MAX)
-#+end_src
-
-**** restore threshold after delay
-:PROPERTIES:
-:ID: d49bef67-0a1e-4026-838c-217b0d6ecad5
-:END:
-
-Restore gc-cons-threshold (after a 7 second delay). I got this from [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el#L283][doom]]. We
-don't do it immediately because packages are still being lazy loaded at this
-time. In the future I'd like to base the time when this restoration will take
-place on something other than arbitrary number.
-
-#+begin_src emacs-lisp
-(defun void-restore-gc-cons-threshold ()
-  "Restore any changes to garbage collection."
-  (void-log "Restoring...gc-cons-threshold: %d -> %d"
-            gc-cons-threshold
-            VOID-GC-CONS-THRESHOLD)
-  (void-log "gc-cons-percentage %.2f -> %.2f"
-            gc-cons-percentage
-            VOID-GC-CONS-PERCENTAGE)
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD)
-  (setq gc-cons-percentage VOID-GC-CONS-PERCENTAGE))
-
-(run-with-idle-timer 7 nil #'void-restore-gc-cons-threshold)
-#+end_src
-
-*** directories
-:PROPERTIES:
-:ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
-:END:
-
-**** core directories and files
-:PROPERTIES:
-:ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
-:END:
-
-This headline contains constant variables that store important directories and
-files.
-
-***** top level
-:PROPERTIES:
-:ID: 48bf884a-de27-45f8-a5b1-94567815942d
-:END:
-
-These are important files and directories that I end up referring to often in my
-code.
-
-#+begin_src emacs-lisp
-(defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
-  "Path to `user-emacs-directory'.")
-
-(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
-  "Path to the elisp file that bootstraps Void startup.")
-
-(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
-  "Path to the Org file that when that Void.")
-
-(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
-  "Directory where any multimedia describing VOID should go.
- These could screenshots are for detailing any problems, interesting behaviors or features.")
-
-(defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
-  "Path to the file that contains all of Void's tests.")
-#+end_src
-
-***** org
-:PROPERTIES:
-:ID:       c88f95cd-f5bd-4c69-8679-7e42c52e9a36
-:END:
-
-#+begin_src emacs-lisp
-(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
-  "Path where Void's org files go.")
-
-(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
-  "File where all org captures will go.")
-#+end_src
-
-***** hidden
-:PROPERTIES:
-:ID: d46d573b-1d17-4d0b-9b49-9049dbb6f7c1
-:END:
-
-#+begin_src emacs-lisp
-(defconst VOID-LOCAL-DIR (concat VOID-EMACS-DIR ".local/")
-  "Path to the directory for local Emacs files.
-Files that need to exist, but I don't typically want to see go here.")
-
-(defconst VOID-DATA-DIR (concat VOID-LOCAL-DIR "data/")
-  "Path to the directory where Void data files are stored.")
-
-(defconst VOID-PACKAGES-DIR (concat VOID-LOCAL-DIR "packages/")
-  "Path to the directory where packages are stored.")
-#+end_src
-
-**** system directories
-:PROPERTIES:
-:ID:       f3bdd353-b0ff-48fd-a2f2-295ccfa139ab
-:END:
-
-These are directories I have on my system.
-
-#+begin_src emacs-lisp
-(defconst VOID-DOWNLOAD-DIR (expand-file-name "~/Downloads/")
-  "Directory where downloads should go.")
-
-(defconst VOID-MULTIMEDIA-DIR (expand-file-name "~/Multimedia/")
-  "Directory where multimedia should go.")
-
-(defconst VOID-VIDEO-DIR (concat VOID-MULTIMEDIA-DIR "Videos/")
-  "Directory where videos should go.")
-
-(defconst VOID-MUSIC-DIR (concat VOID-MULTIMEDIA-DIR "Music/")
-  "Directory where music should go.")
-
-(defconst VOID-ALERT-SOUNDS (concat VOID-MULTIMEDIA-DIR "Alert Sounds/")
-  "Directory where alert sounds should go.")
-
-(defconst VOID-EMAIL-DIR (expand-file-name "~/.mail/")
-  "Directories where emails are stored.")
-#+end_src
-
-**** ensure directories exist
-:PROPERTIES:
-:ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
-:END:
-
-I create the directories that don't exist. But I assume they already exist if
-Void is compiled.
-
-#+begin_src emacs-lisp
-(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
-  (make-directory dir t))
-#+end_src
+This headline contains all the the helper functions and macros I defined for
+customizing emacs.
 
 *** message logging
 :PROPERTIES:
@@ -417,52 +240,6 @@ Accept the same arguments as `message'."
                                  format-string)
                args)))))
 #+end_src
-
-*** default coding system
-:PROPERTIES:
-:ID:       4c55a0d4-dbd7-4405-b944-3b68d8a069f2
-:END:
-
-#+begin_src emacs-lisp
-(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8
-  "Default text encoding.")
-#+end_src
-
-*** UTF-8
-:PROPERTIES:
-:ID: dd0fc702-67a7-404c-849e-22804663308d
-:END:
-
-I set =utf-8= as the default encoding for everything except the clipboard on
-windows. Window clipboard encoding could be wider than =utf-8=, so we let
-Emacs/the OS decide what encoding to use.
-
-#+begin_src emacs-lisp
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))
-#+end_src
-
-*** initial buffer choice
-:PROPERTIES:
-:ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
-:END:
-
-#+begin_src emacs-lisp
-(defun void-initial-buffer ()
-  "Return the initial buffer to be displayed.
-This function is meant to be used as the value of `initial-buffer-choice'."
-  (if void-debug-p
-      (get-buffer "*Messages*")
-    (get-buffer "*scratch*")))
-#+end_src
-
-** Library
-:PROPERTIES:
-:ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
-:END:
-
-This headline contains all the the helper functions and macros I defined for
-customizing emacs.
 
 *** s
 :PROPERTIES:
@@ -1604,6 +1381,229 @@ If any function returns non-nil, the feature will not be loaded.")
   "Run `void-before-load-hook'."
   (awhen (run-hook-with-args )
     (apply <orig-fn> <args>)))
+#+end_src
+
+** Init
+:PROPERTIES:
+:ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
+:END:
+
+*** gc cons threshold
+:PROPERTIES:
+:ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
+:END:
+
+A big contributor to long startup times is the garbage collector. When
+performing a large number of calculations, it can make a big difference to
+increase the [[helpvar:gc-cons-threshold][gc-cons-threshold]], or the /number of bytes of consing between
+garbage collections/. The default value is usually too low for modern machines.
+
+**** gc cons threshold
+:PROPERTIES:
+:ID: e15d257f-1b0f-421e-8b34-076b1d20e493
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
+  "The upper limit for `gc-cons-threshold'.
+When VOID is performing computationally intensive operations,
+`gc-cons-threshold' is set to this value.")
+
+(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
+  "The default value for `gc-cons-threshold'.")
+
+(defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
+  "The upper limit for `gc-cons-percentage'.
+When VOID is performing computationally intensive operations,
+`gc-cons-percentage' is set to this value.")
+
+(defconst VOID-GC-CONS-PERCENTAGE 0.1
+  "The default value for `gc-cons-percentage'.")
+#+end_src
+
+**** boost gc threshold
+:PROPERTIES:
+:ID: eac7cfbb-6576-4506-8118-5bfda151654b
+:END:
+
+Here I boost the gc-cons-threshold for my current emacs session. It [[id:d49bef67-0a1e-4026-838c-217b0d6ecad5][will be
+restored]] after package loading slows down.
+
+#+begin_src emacs-lisp
+(setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+(setq gc-cons-percentage VOID-GC-CONS-PERCENTAGE-MAX)
+#+end_src
+
+**** restore threshold after delay
+:PROPERTIES:
+:ID: d49bef67-0a1e-4026-838c-217b0d6ecad5
+:END:
+
+Restore gc-cons-threshold (after a 7 second delay). I got this from [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el#L283][doom]]. We
+don't do it immediately because packages are still being lazy loaded at this
+time. In the future I'd like to base the time when this restoration will take
+place on something other than arbitrary number.
+
+#+begin_src emacs-lisp
+(defun void-restore-gc-cons-threshold ()
+  "Restore any changes to garbage collection."
+  (void-log "Restoring...gc-cons-threshold: %d -> %d"
+            gc-cons-threshold
+            VOID-GC-CONS-THRESHOLD)
+  (void-log "gc-cons-percentage %.2f -> %.2f"
+            gc-cons-percentage
+            VOID-GC-CONS-PERCENTAGE)
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD)
+  (setq gc-cons-percentage VOID-GC-CONS-PERCENTAGE))
+
+(run-with-idle-timer 7 nil #'void-restore-gc-cons-threshold)
+#+end_src
+
+*** directories
+:PROPERTIES:
+:ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
+:END:
+
+**** core directories and files
+:PROPERTIES:
+:ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
+:END:
+
+This headline contains constant variables that store important directories and
+files.
+
+***** top level
+:PROPERTIES:
+:ID: 48bf884a-de27-45f8-a5b1-94567815942d
+:END:
+
+These are important files and directories that I end up referring to often in my
+code.
+
+#+begin_src emacs-lisp
+(defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
+  "Path to `user-emacs-directory'.")
+
+(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
+  "Path to the elisp file that bootstraps Void startup.")
+
+(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
+  "Path to the Org file that when that Void.")
+
+(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
+  "Directory where any multimedia describing VOID should go.
+ These could screenshots are for detailing any problems, interesting behaviors or features.")
+
+(defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
+  "Path to the file that contains all of Void's tests.")
+#+end_src
+
+***** org
+:PROPERTIES:
+:ID:       c88f95cd-f5bd-4c69-8679-7e42c52e9a36
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
+  "Path where Void's org files go.")
+
+(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
+  "File where all org captures will go.")
+#+end_src
+
+***** hidden
+:PROPERTIES:
+:ID: d46d573b-1d17-4d0b-9b49-9049dbb6f7c1
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-LOCAL-DIR (concat VOID-EMACS-DIR ".local/")
+  "Path to the directory for local Emacs files.
+Files that need to exist, but I don't typically want to see go here.")
+
+(defconst VOID-DATA-DIR (concat VOID-LOCAL-DIR "data/")
+  "Path to the directory where Void data files are stored.")
+
+(defconst VOID-PACKAGES-DIR (concat VOID-LOCAL-DIR "packages/")
+  "Path to the directory where packages are stored.")
+#+end_src
+
+**** system directories
+:PROPERTIES:
+:ID:       f3bdd353-b0ff-48fd-a2f2-295ccfa139ab
+:END:
+
+These are directories I have on my system.
+
+#+begin_src emacs-lisp
+(defconst VOID-DOWNLOAD-DIR (expand-file-name "~/Downloads/")
+  "Directory where downloads should go.")
+
+(defconst VOID-MULTIMEDIA-DIR (expand-file-name "~/Multimedia/")
+  "Directory where multimedia should go.")
+
+(defconst VOID-VIDEO-DIR (concat VOID-MULTIMEDIA-DIR "Videos/")
+  "Directory where videos should go.")
+
+(defconst VOID-MUSIC-DIR (concat VOID-MULTIMEDIA-DIR "Music/")
+  "Directory where music should go.")
+
+(defconst VOID-ALERT-SOUNDS (concat VOID-MULTIMEDIA-DIR "Alert Sounds/")
+  "Directory where alert sounds should go.")
+
+(defconst VOID-EMAIL-DIR (expand-file-name "~/.mail/")
+  "Directories where emails are stored.")
+#+end_src
+
+**** ensure directories exist
+:PROPERTIES:
+:ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
+:END:
+
+I create the directories that don't exist. But I assume they already exist if
+Void is compiled.
+
+#+begin_src emacs-lisp
+(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
+  (make-directory dir t))
+#+end_src
+
+*** default coding system
+:PROPERTIES:
+:ID:       4c55a0d4-dbd7-4405-b944-3b68d8a069f2
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8
+  "Default text encoding.")
+#+end_src
+
+*** UTF-8
+:PROPERTIES:
+:ID: dd0fc702-67a7-404c-849e-22804663308d
+:END:
+
+I set =utf-8= as the default encoding for everything except the clipboard on
+windows. Window clipboard encoding could be wider than =utf-8=, so we let
+Emacs/the OS decide what encoding to use.
+
+#+begin_src emacs-lisp
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))
+#+end_src
+
+*** initial buffer choice
+:PROPERTIES:
+:ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
+:END:
+
+#+begin_src emacs-lisp
+(defun void-initial-buffer ()
+  "Return the initial buffer to be displayed.
+This function is meant to be used as the value of `initial-buffer-choice'."
+  (if void-debug-p
+      (get-buffer "*Messages*")
+    (get-buffer "*scratch*")))
 #+end_src
 
 ** Packages
