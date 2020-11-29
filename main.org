@@ -294,25 +294,11 @@ customizing emacs.
 
 **** aliases
 :PROPERTIES:
-:ID:       d1e16f01-e967-4e31-873d-1fbd1845c951
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-**** shut-up
-:PROPERTIES:
-:ID:       23d602fa-57f6-4119-90b4-de7c2a22676c
-:END:
-
-***** aliases
-:PROPERTIES:
 :ID:       6da042bf-916f-4af4-a41e-53800f5950f9
 :END:
 
 #+begin_src emacs-lisp
 (defalias 'shut-up! 'shut-up)
-(defalias 'quiet! 'shut-up)
 #+end_src
 
 *** general
