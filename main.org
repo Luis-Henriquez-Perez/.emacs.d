@@ -5833,13 +5833,12 @@ Why not just go to the end of the ="= like any other around operator?
 Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swap two regions of text.
 
 #+begin_src emacs-lisp
-(use-package! evil-exchange
-  :commands evil-exchange
-  :init
-  (general-def 'normal
-    :prefix "g"
-    "X" (list :def #'evil-exchange-cancel :wk "cancel")
-    "x" (list :def #'evil-exchange :wk "exchange")))
+(void-autoload 'evil-exchange (list #'evil-exchange))
+
+(general-def 'normal
+  :prefix "g"
+  "X" (list :def #'evil-exchange-cancel :wk "cancel")
+  "x" (list :def #'evil-exchange :wk "exchange"))
 #+end_src
 
 *** evil-visualstar
