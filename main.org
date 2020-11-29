@@ -1470,26 +1470,14 @@ place on something other than arbitrary number.
 :COMMIT:   84c43a4c0b41a595ac6e299fa317d2831813e580
 :END:
 
-***** init
-:PROPERTIES:
-:ID:       2566c5a9-a4aa-4c4b-a975-b454cd852984
-:END:
-
 #+begin_src emacs-lisp
 (require 'gcmh)
-(gcmh-mode 1)
-;; (void-add-hook 'emacs-startup-hook #'gcmh-mode)
-#+end_src
 
-***** settings
-:PROPERTIES:
-:ID:       60995ab2-ce84-41b9-b24f-aa41aaaeac1d
-:END:
-
-#+begin_src emacs-lisp
 (setq gcmh-idle-delay 10)
 (setq gcmh-verbose void-debug-p)
 (setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
+
+(gcmh-mode 1)
 #+end_src
 
 *** directories
