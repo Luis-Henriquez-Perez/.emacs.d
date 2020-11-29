@@ -23,9 +23,10 @@ This headine contains code related to the initialization of packages.
 
 #+begin_src emacs-lisp
 ;; guess straight directory.
-(let )
-(require 'pcache)
-(pcache-get )
+(cl-flet ((symbol-function #'make-directory) #'ignore)
+  (require 'pcache))
+
+(pcache-get)
 #+end_src
 
 *** savehist
