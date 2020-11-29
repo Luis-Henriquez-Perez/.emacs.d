@@ -195,6 +195,107 @@ This is where I actually install all of my packages in one go.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** minibuffer
+:PROPERTIES:
+:ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
+:END:
+
+[[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
+entering and exiting the minibuffer (respectively). In the minibuffer I'll be
+primarily doing searches for variables and functions. There are alot of
+variables and functions so this can certainly get computationally expensive. To
+keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
+the minibuffer, and restore it to it's original value a few seconds after it's closed.
+
+It would take me forever to guess the name =minibuffer-setup-hook= from the
+variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
+know what the hook to enter the minibuffer was, I'd probably
+=minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
+It'd take me forever to guess =startup=. Note that the only tricky thing about
+this example.
+
+At first I thought of =entry= but after more thought I realized
+hook variables use action verbs in their names not nouns. So the =exit= in
+=minibuffer-exit-hook= is actually the verb =exit= not the noun.
+
+#+begin_src emacs-lisp
+(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
+
+(defhook! boost-garbage-collection (minibuffer-enter-hook)
+  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
+  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
+#+end_src
+
+*** idle-require
+:PROPERTIES:
+:ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "nschum/idle-require.el"
+:PACKAGE:  "idle-require"
+:LOCAL-REPO: "idle-require.el"
+:COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
+:END:
+
+Idle require is a tool for loading autoload functions, files or features during
+idle time. The way to use this is to idle-require many small packages that
+individually don't take too much time. This helps ensure that in emacs loading
+of big packages like org-mode is snappy.
+
+**** init
+:PROPERTIES:
+:ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
+:END:
+
+#+begin_src emacs-lisp
+(require 'idle-require)
+(void-add-hook 'emacs-startup-hook #'idle-require-mode)
+#+end_src
+
+**** settings
+:PROPERTIES:
+:ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
+:END:
+
+When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
+start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
+require loads.
+
+#+begin_src emacs-lisp
+(setq idle-require-load-break 2)
+(setq idle-require-idle-delay 10)
+#+end_src
+
+**** make idle require use void-log
+:PROPERTIES:
+:ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
+:END:
+
+=idle-require= messages us to tell us when a package is being idle required and
+when it has finished idle-requiring packages. I don't want to see the message
+unless I'm debugging.
+
+#+begin_src emacs-lisp
+(void-add-advice #'idle-require-load-next :around #'void--use-void-log)
+#+end_src
+
+**** increase gc-cons-threshold during idle loading
+:PROPERTIES:
+:ID:       275c3488-8192-476c-97b8-6c6643f54d2e
+:END:
+
+Since we're evaluating a good amount of lisp expressions, we should boost
+garbage collection during this time.
+
+#+begin_src emacs-lisp
+(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection)
+#+end_src
+
 *** message logging
 :PROPERTIES:
 :ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
@@ -1939,78 +2040,7 @@ of the Emacs frame are recorded after they expire.
     (kill-emacs)))
 #+end_src
 
-*** post init
-:PROPERTIES:
-:ID: 0f1da89a-2278-4493-ba62-e2a334204be6
-:END:
-
-**** idle-require
-:PROPERTIES:
-:ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "nschum/idle-require.el"
-:PACKAGE:  "idle-require"
-:LOCAL-REPO: "idle-require.el"
-:COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
-:END:
-
-Idle require is a tool for loading autoload functions, files or features during
-idle time. The way to use this is to idle-require many small packages that
-individually don't take too much time. This helps ensure that in emacs loading
-of big packages like org-mode is snappy.
-
-***** init
-:PROPERTIES:
-:ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
-:END:
-
-#+begin_src emacs-lisp
-(require 'idle-require)
-(void-add-hook 'emacs-startup-hook #'idle-require-mode)
-#+end_src
-
-***** settings
-:PROPERTIES:
-:ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
-:END:
-
-When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
-start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
-require loads.
-
-#+begin_src emacs-lisp
-(setq idle-require-load-break 2)
-(setq idle-require-idle-delay 10)
-#+end_src
-
-***** make idle require use void-log
-:PROPERTIES:
-:ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
-:END:
-
-=idle-require= messages us to tell us when a package is being idle required and
-when it has finished idle-requiring packages. I don't want to see the message
-unless I'm debugging.
-
-#+begin_src emacs-lisp
-(void-add-advice #'idle-require-load-next :around #'void--use-void-log)
-#+end_src
-
-***** increase gc-cons-threshold during idle loading
-:PROPERTIES:
-:ID:       275c3488-8192-476c-97b8-6c6643f54d2e
-:END:
-
-Since we're evaluating a good amount of lisp expressions, we should boost
-garbage collection during this time.
-
-#+begin_src emacs-lisp
-(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection)
-#+end_src
-
-**** =tty=
+*** =tty=
 :PROPERTIES:
 :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
 :END:
@@ -2025,47 +2055,12 @@ When running emacs in terminal tty is *tremendously* slow.
     (tty-run-terminal-initialization (selected-frame) nil t)))
 #+end_src
 
-**** minibuffer
-:PROPERTIES:
-:ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
-:END:
-
-[[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
-entering and exiting the minibuffer (respectively). In the minibuffer I'll be
-primarily doing searches for variables and functions. There are alot of
-variables and functions so this can certainly get computationally expensive. To
-keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
-the minibuffer, and restore it to it's original value a few seconds after it's closed.
-
-It would take me forever to guess the name =minibuffer-setup-hook= from the
-variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
-know what the hook to enter the minibuffer was, I'd probably
-=minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
-It'd take me forever to guess =startup=. Note that the only tricky thing about
-this example.
-
-At first I thought of =entry= but after more thought I realized
-hook variables use action verbs in their names not nouns. So the =exit= in
-=minibuffer-exit-hook= is actually the verb =exit= not the noun.
-
-#+begin_src emacs-lisp
-(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
-
-(defhook! boost-garbage-collection (minibuffer-enter-hook)
-  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
-
-(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
-  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
-#+end_src
-
-**** tangling
+*** tangling
 :PROPERTIES:
 :ID: 3288c787-4b5c-4f0c-9d18-6f18afaf2b99
 :END:
 
-***** tangle hook
+**** tangle hook
 :PROPERTIES:
 :ID: 549999d7-901b-4ab4-bdbe-81514b756ced
 :END:
@@ -2083,7 +2078,7 @@ be.
       (org-babel-tangle-file VOID-MAIN-ORG-FILE it))))
 #+end_src
 
-***** tangle asynchronously upon saving
+**** tangle asynchronously upon saving
 :PROPERTIES:
 :ID: 00298d4e-6b18-4203-874f-f5a877a5cabf
 :END:
