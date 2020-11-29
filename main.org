@@ -1606,11 +1606,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
     (get-buffer "*scratch*")))
 #+end_src
 
-** Initialize
-:PROPERTIES:
-:ID:       6e1d0ef3-5a9b-4db4-b8f7-110e96f2d23e
-:END:
-
 *** defined in c source code
 :PROPERTIES:
 :ID:       873e6820-52f0-4b70-9992-ccb1610eb266
