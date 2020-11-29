@@ -8,46 +8,9 @@
 :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
 :END:
 
-This headine contains code related to the initialization of packages.
-
-*** savehist
-:PROPERTIES:
-:ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
-:END:
-
-=savehist= is a built-in feature for saving the minibuffer-history to a file--the
-[[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
-variables which may or may not be related to minibuffer history. You add the
-ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
-
-**** init
-:PROPERTIES:
-:ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
-:END:
-
-#+begin_src emacs-lisp
-(idle-require 'custom)
-(void-add-hook 'emacs-startup-hook #'savehist-mode)
-
-(setq savehist-save-minibuffer-history t)
-(setq savehist-autosave-interval nil)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(push 'void-package-load-paths savehist-additional-variables)
-(setq savehist-file (concat VOID-DATA-DIR "savehist"))
-#+end_src
-
-**** unpropertize kill ring
-:PROPERTIES:
-:ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
-:END:
-
-#+begin_src emacs-lisp
-(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
-  "Remove text properties from `kill-ring'."
-  (setq kill-ring
-        (--map (when (stringp it) (substring-no-properties it))
-               (-non-nil kill-ring))))
-#+end_src
+The purpose of this headline is to set up the package manager and install all of
+my packages so the rest of the file can assume the packages are already
+installed.
 
 *** straight.el
 :PROPERTIES:
@@ -100,16 +63,15 @@ will be created anyway. I got this from Doom's straight branch.
 This code initializes straight if it's not already installed.
 
 #+begin_src emacs-lisp
-(defun straight:load-fn ()
+(defun straight:initialize ()
   "Initialize `straight.el'."
   (defvar bootstrap-version)
-  (let* ((bootstrap-file (concat VOID-PACKAGES-DIR "straight/repos/straight.el/bootstrap.el"))
+  (let* ((url "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el")
+         (bootstrap-file (concat VOID-PACKAGES-DIR "straight/repos/straight.el/bootstrap.el"))
          (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
+          (url-retrieve-synchronously url 'silent 'inhibit-cookies)
         (goto-char (point-max))
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage)))
@@ -120,7 +82,7 @@ This code initializes straight if it's not already installed.
 :ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
 :END:
 
-Straight is very minimal.
+Straight is very minimal, it lacks.
 
 ***** package homepage
 :PROPERTIES:
@@ -165,8 +127,10 @@ packages all at once at the start of my config.
 :ID:       a23d43d4-3e20-4a55-85e6-4a036ca6a33e
 :END:
 
-To avoid loading org mode, I statched the property drawer regexp from its source
-code and use it to get the package recipes in my org file.
+To avoid loading org mode, I snatched the property drawer regexp from its source
+code and use it to get the package recipes in my org file. I modified it so that
+the keys between the property block delimiters were in their own group. This
+makes it easier to acces them.
 
 #+begin_src emacs-lisp
 (defvar void-property-drawer-regexp
@@ -189,7 +153,7 @@ code and use it to get the package recipes in my org file.
 
 When I read the property lists from my org file, they'll be strings. This
 function will convert them to a plist which is what =straight-use-package= needs
-to install it.
+as an argument.
 
 #+begin_src emacs-lisp
 (defun void-prop-string-to-recipe (string)
@@ -235,19 +199,21 @@ completely reproducible as one file.
 :END:
 
 This is where I actually install all of my packages in one go. To save time
-installing packages, I try to access. The =eval-when-compile= makes it so that.
+installing packages, I try to access.
 
 #+begin_src emacs-lisp
-(setq load-path
-      (append (eval-when-compile
-                (if (bound-and-true-p void-package-load-paths)
-                    void-package-load-paths
-                  (let ((old-load-path load-path)
-                        (load-path load-path))
-                    (straight:initialize)
-                    (mapc #'straight-use-package (void-generate-package-recipes))
-                    (setq void-package-load-paths (cl-set-difference load-path old-load-path)))))
-              load-path))
+(defvar void-package-recipes
+  (void-generate-package-recipes)
+  "Package recipes.")
+
+(defvar void-package-load-paths
+  (let ((old-load-path load-path)
+        (load-path load-path))
+    (straight:initialize)
+    (mapc #'straight-use-package void-package-recipes)
+    (seq-difference load-path old-load-path)))
+
+(setq load-path (append void-package-load-paths load-path))
 #+end_src
 
 ** Library
@@ -6037,6 +6003,45 @@ larger text objects. It's saves me keystrokes.
 :PROPERTIES:
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
 :END:
+
+** savehist
+:PROPERTIES:
+:ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
+:END:
+
+=savehist= is a built-in feature for saving the minibuffer-history to a file--the
+[[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
+variables which may or may not be related to minibuffer history. You add the
+ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
+
+*** init
+:PROPERTIES:
+:ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
+:END:
+
+#+begin_src emacs-lisp
+(idle-require 'custom)
+(void-add-hook 'emacs-startup-hook #'savehist-mode)
+
+(setq savehist-save-minibuffer-history t)
+(setq savehist-autosave-interval nil)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(push 'void-package-load-paths savehist-additional-variables)
+(setq savehist-file (concat VOID-DATA-DIR "savehist"))
+#+end_src
+
+*** unpropertize kill ring
+:PROPERTIES:
+:ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
+:END:
+
+#+begin_src emacs-lisp
+(defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
+  "Remove text properties from `kill-ring'."
+  (setq kill-ring
+        (--map (when (stringp it) (substring-no-properties it))
+               (-non-nil kill-ring))))
+#+end_src
 
 ** find-file-rg
 :PROPERTIES:
