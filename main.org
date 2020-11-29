@@ -5929,13 +5929,13 @@ larger text objects. It's saves me keystrokes.
 :END:
 
 #+begin_src emacs-lisp
-(avy-background . t)
+(setq avy-background t)
 ;; Jump only on current window.
-(avy-all-windows . nil)
+(setq avy-all-windows nil)
 ;; Use avy keys.
-(avy-keys-alist . nil)
+(setq avy-keys-alist nil)
 
-(avy-style . 'at)
+(setq avy-style 'at)
 #+end_src
 
 *** avy keys
