@@ -573,20 +573,6 @@ structures. It was built for.
 (require 'ht)
 #+end_src
 
-*** pcache
-:PROPERTIES:
-:ID:       8eb3aa7f-9bfc-44a1-b9df-877ce2b93995
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "sigma/pcache"
-:PACKAGE:  "pcache"
-:LOCAL-REPO: "pcache"
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 *** macro writing tools
 :PROPERTIES:
 :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
