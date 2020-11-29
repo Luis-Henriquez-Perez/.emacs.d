@@ -144,7 +144,7 @@ code and use it to get the package recipes in my org file.
 A straight recipe is represented as a plist in lisp. And in this config I signal
 a heading corresponds to a package by putting the keys and values of the package
 recipe as properties of the headline. That way, my main org file can be
-completely reproducible.
+completely reproducible as one file.
 
 #+begin_src emacs-lisp
 (defun void-generate-recipes-from-org-file ()
