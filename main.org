@@ -6098,11 +6098,11 @@ larger text objects. It's saves me keystrokes.
 =find-file-rg= is a package that uses [[https://github.com/BurntSushi/ripgrep][ripgrep]] to find files.
 
 #+begin_src emacs-lisp
-(use-package! find-file-rg
-  :system-ensure rg
-  :bind
-  (([remap find-file]          . find-file-rg)
-   ([remap find-file-at-point] . find-file-rg-at-point)))
+(void-system-ensure 'find-file-rg #'rg)
+
+(general-def
+  [remap find-file]          . find-file-rg
+  [remap find-file-at-point] . find-file-rg-at-point)
 #+end_src
 
 ** eshell
