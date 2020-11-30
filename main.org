@@ -283,6 +283,128 @@ installing packages, I try to access.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** general
+:PROPERTIES:
+:ID: 706f35fc-f840-4a51-998f-abcd54c5d314
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "noctuid/general.el"
+:PACKAGE:  "general"
+:LOCAL-REPO: "general.el"
+:COMMIT:   "a0b17d207badf462311b2eef7c065b884462cb7c"
+:END:
+
+There are numerous keybinding functions in Emacs; and they all look a little
+different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set-key][local-set-key]], [[helpfn:define-key][define-key]] and the list goes
+on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
+[[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
+handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
+
+**** general
+:PROPERTIES:
+:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
+:END:
+
+#+begin_src emacs-lisp
+(require 'general)
+#+end_src
+
+**** unbind keys
+:PROPERTIES:
+:ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
+:END:
+
+#+begin_src emacs-lisp
+(general-auto-unbind-keys)
+#+end_src
+
+**** prefix bindings
+:PROPERTIES:
+:ID: b0b5b51c-155e-46fc-a80a-0d45a32440ba
+:END:
+
+A popular strategy to mitigate the mental load of remembering many keybindings
+is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacemacs][spacemacs]]).
+
+***** leader Keys
+:PROPERTIES:
+:ID: 143211d6-b868-4ffb-a5d0-25a77dee401f
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-leader-key "SPC"
+  "The evil leader prefix key.")
+
+(defvar void-leader-alt-key "M-SPC"
+  "The leader prefix key used for Insert and Emacs states.")
+#+end_src
+
+***** localleader keys
+:PROPERTIES:
+:ID: 45941bcb-209f-4aa3-829a-dee4e3ef2464
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-localleader-key "SPC m"
+  "The localleader prefix key for major-mode specific commands.")
+
+(defvar void-localleader-alt-key "C-SPC m"
+  "The localleader prefix key for major-mode specific commands.")
+
+(defvar void-localleader-short-key ","
+  "A shorter alternative `void-localleader-key'.")
+
+(defvar void-localleader-short-alt-key "M-,"
+  "A short non-normal  `void-localleader-key'.")
+#+end_src
+
+***** definers
+:PROPERTIES:
+:ID: 6444d218-1627-48bd-9b5c-7bfffb17d912
+:END:
+
+As I've mentioned =general= uses the function =general-define-key= as a generic
+do-all key binder. Sometimes though we have keys that we want to bind with
+specific arguments to =general-define-key= pretty often. A typical example of
+this is binding =leader= or =localleader= keys like [[https://github.com/syl20bnr/spacemacs][spacemacs]].
+
+#+begin_src emacs-lisp
+(general-create-definer define-leader-key!
+  :prefix void-leader-key
+  :non-normal-prefix void-leader-alt-key
+  :keymaps 'override
+  :states '(normal motion insert emacs))
+#+end_src
+
+***** localleader
+:PROPERTIES:
+:ID:       e4770eae-adf5-4216-9016-5ec4bc465e03
+:END:
+
+There's pros and cons to the =SPC m= binding. The main pro is that it's
+consistent with =SPC=. With the leader and the localleader, this means that you
+can reach any binding from just =SPC=. This means that you can discover all
+bindings from just one root binding. This is a nice property to have. On the
+other hand, bindings can get a bit long. That one extra character can really
+make a difference. That's why.
+
+#+begin_src emacs-lisp
+(defmacro define-localleader-key! (&rest args)
+  (declare (indent defun))
+  (let ((shared-args '(:keymaps 'override :states '(normal motion insert emacs))))
+    `(progn (general-def
+              ,@args
+              ,@shared-args
+              :prefix void-localleader-key
+              :non-normal-prefix void-localleader-alt-key)
+            (general-def
+              ,@args
+              ,@shared-args
+              :prefix void-localleader-short-key
+              :non-normal-prefix void-localleader-short-alt-key))))
+#+end_src
+
 *** dash
 :PROPERTIES:
 :TYPE:     git
@@ -1299,128 +1421,6 @@ from pulling (or failing to pull) in autoloaded macros/features.
 #+begin_src emacs-lisp
 (require 'shut-up)
 (defalias 'shut-up! 'shut-up)
-#+end_src
-
-*** general
-:PROPERTIES:
-:ID: 706f35fc-f840-4a51-998f-abcd54c5d314
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "noctuid/general.el"
-:PACKAGE:  "general"
-:LOCAL-REPO: "general.el"
-:COMMIT:   "a0b17d207badf462311b2eef7c065b884462cb7c"
-:END:
-
-There are numerous keybinding functions in Emacs; and they all look a little
-different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set-key][local-set-key]], [[helpfn:define-key][define-key]] and the list goes
-on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
-[[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
-handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
-
-**** general
-:PROPERTIES:
-:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
-:END:
-
-#+begin_src emacs-lisp
-(require 'general)
-#+end_src
-
-**** unbind keys
-:PROPERTIES:
-:ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
-:END:
-
-#+begin_src emacs-lisp
-(general-auto-unbind-keys)
-#+end_src
-
-**** prefix bindings
-:PROPERTIES:
-:ID: b0b5b51c-155e-46fc-a80a-0d45a32440ba
-:END:
-
-A popular strategy to mitigate the mental load of remembering many keybindings
-is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacemacs][spacemacs]]).
-
-***** leader Keys
-:PROPERTIES:
-:ID: 143211d6-b868-4ffb-a5d0-25a77dee401f
-:END:
-
-#+begin_src emacs-lisp
-(defvar void-leader-key "SPC"
-  "The evil leader prefix key.")
-
-(defvar void-leader-alt-key "M-SPC"
-  "The leader prefix key used for Insert and Emacs states.")
-#+end_src
-
-***** localleader keys
-:PROPERTIES:
-:ID: 45941bcb-209f-4aa3-829a-dee4e3ef2464
-:END:
-
-#+begin_src emacs-lisp
-(defvar void-localleader-key "SPC m"
-  "The localleader prefix key for major-mode specific commands.")
-
-(defvar void-localleader-alt-key "C-SPC m"
-  "The localleader prefix key for major-mode specific commands.")
-
-(defvar void-localleader-short-key ","
-  "A shorter alternative `void-localleader-key'.")
-
-(defvar void-localleader-short-alt-key "M-,"
-  "A short non-normal  `void-localleader-key'.")
-#+end_src
-
-***** definers
-:PROPERTIES:
-:ID: 6444d218-1627-48bd-9b5c-7bfffb17d912
-:END:
-
-As I've mentioned =general= uses the function =general-define-key= as a generic
-do-all key binder. Sometimes though we have keys that we want to bind with
-specific arguments to =general-define-key= pretty often. A typical example of
-this is binding =leader= or =localleader= keys like [[https://github.com/syl20bnr/spacemacs][spacemacs]].
-
-#+begin_src emacs-lisp
-(general-create-definer define-leader-key!
-  :prefix void-leader-key
-  :non-normal-prefix void-leader-alt-key
-  :keymaps 'override
-  :states '(normal motion insert emacs))
-#+end_src
-
-***** localleader
-:PROPERTIES:
-:ID:       e4770eae-adf5-4216-9016-5ec4bc465e03
-:END:
-
-There's pros and cons to the =SPC m= binding. The main pro is that it's
-consistent with =SPC=. With the leader and the localleader, this means that you
-can reach any binding from just =SPC=. This means that you can discover all
-bindings from just one root binding. This is a nice property to have. On the
-other hand, bindings can get a bit long. That one extra character can really
-make a difference. That's why.
-
-#+begin_src emacs-lisp
-(defmacro define-localleader-key! (&rest args)
-  (declare (indent defun))
-  (let ((shared-args '(:keymaps 'override :states '(normal motion insert emacs))))
-    `(progn (general-def
-              ,@args
-              ,@shared-args
-              :prefix void-localleader-key
-              :non-normal-prefix void-localleader-alt-key)
-            (general-def
-              ,@args
-              ,@shared-args
-              :prefix void-localleader-short-key
-              :non-normal-prefix void-localleader-short-alt-key))))
 #+end_src
 
 *** idle-require
