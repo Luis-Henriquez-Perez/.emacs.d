@@ -2562,9 +2562,8 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! server
-  :setq
-  (server-auth-dir . (concat VOID-DATA-DIR "server/")))
+(after! server
+  (setq server-auth-dir (concat VOID-DATA-DIR "server/")))
 #+end_src
 
 **** tramp
