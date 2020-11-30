@@ -2406,10 +2406,8 @@ to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! vc-hooks
-  :setq
-  (vc-follow-link . t)
-  (vc-follow-symlinks . t))
+(setq vc-follow-link t)
+(setq vc-follow-symlinks t)
 #+end_src
 
 **** subr-x
