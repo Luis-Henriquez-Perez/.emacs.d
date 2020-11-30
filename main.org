@@ -283,6 +283,52 @@ installing packages, I try to access.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** message logging
+:PROPERTIES:
+:ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
+:END:
+
+Its not uncommon for the *Messages* buffer to become full of messages.
+
+**** debug-p
+:PROPERTIES:
+:ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
+:END:
+
+[[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
+is to serve as an indicator of whether the current Void instance is run for
+debugging. When Void is set up for debugging it prints out many messages about
+what its doing via [[hfn:void-log][void-log]].
+
+#+begin_src emacs-lisp
+(defvar void-debug-p (or (getenv "DEBUG") init-file-debug)
+  "When non-nil print debug messages.
+The --debug-init flag and setting the DEBUG envar will enable this at startup.")
+#+end_src
+
+**** logging
+:PROPERTIES:
+:ID: 84ded5f7-382e-4f59-af9e-ccb157ef5c42
+:END:
+
+The purpose of ~void-log~ is to distinguish regular messages from messages that
+pertain specifically to Void, and to help debug Void functionality. When Void is
+=void-debug= is non-nil, void-specific messages are logged in the =*messages*=
+buffer.
+
+#+begin_src emacs-lisp
+(defun void-log (format-string &rest args)
+  "Log to *Messages* if `void-debug-p' is on.
+Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
+Accept the same arguments as `message'."
+  (when void-debug-p
+    (let ((inhibit-message (active-minibuffer-window)))
+      (when void-debug-p
+        (apply #'message (concat (propertize "VOID " 'face 'font-lock-comment-face)
+                                 format-string)
+               args)))))
+#+end_src
+
 *** dash
 :PROPERTIES:
 :TYPE:     git
@@ -1441,52 +1487,6 @@ garbage collection during this time.
 
 #+begin_src emacs-lisp
 (void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection)
-#+end_src
-
-*** message logging
-:PROPERTIES:
-:ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
-:END:
-
-Its not uncommon for the *Messages* buffer to become full of messages.
-
-**** debug-p
-:PROPERTIES:
-:ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
-:END:
-
-[[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
-is to serve as an indicator of whether the current Void instance is run for
-debugging. When Void is set up for debugging it prints out many messages about
-what its doing via [[hfn:void-log][void-log]].
-
-#+begin_src emacs-lisp
-(defvar void-debug-p (or (getenv "DEBUG") init-file-debug)
-  "When non-nil print debug messages.
-The --debug-init flag and setting the DEBUG envar will enable this at startup.")
-#+end_src
-
-**** logging
-:PROPERTIES:
-:ID: 84ded5f7-382e-4f59-af9e-ccb157ef5c42
-:END:
-
-The purpose of ~void-log~ is to distinguish regular messages from messages that
-pertain specifically to Void, and to help debug Void functionality. When Void is
-=void-debug= is non-nil, void-specific messages are logged in the =*messages*=
-buffer.
-
-#+begin_src emacs-lisp
-(defun void-log (format-string &rest args)
-  "Log to *Messages* if `void-debug-p' is on.
-Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
-Accept the same arguments as `message'."
-  (when void-debug-p
-    (let ((inhibit-message (active-minibuffer-window)))
-      (when void-debug-p
-        (apply #'message (concat (propertize "VOID " 'face 'font-lock-comment-face)
-                                 format-string)
-               args)))))
 #+end_src
 
 *** org-ml
