@@ -828,23 +828,6 @@ Packages like [[][]] come with their own output.
     (apply orign-fn args)))
 #+end_src
 
-*** request
-:PROPERTIES:
-:ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("request.el" "request-pkg.el")
-:HOST:     github
-:REPO:     "tkf/emacs-request"
-:PACKAGE:  "request"
-:LOCAL-REPO: "emacs-request"
-:COMMIT:   "0183da84cb45eb94da996cd2eab714ef0d7504cc"
-:END:
-
-#+begin_src emacs-lisp
-(setq request-storage-directory (concat VOID-DATA-DIR "request"))
-#+end_src
-
 *** system-packages
 :PROPERTIES:
 :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
@@ -6060,6 +6043,23 @@ larger text objects. It's saves me keystrokes.
 :PROPERTIES:
 :ID: 15266577-fc6e-4ec7-8277-3a94b6f4f926
 :END:
+
+** request
+:PROPERTIES:
+:ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("request.el" "request-pkg.el")
+:HOST:     github
+:REPO:     "tkf/emacs-request"
+:PACKAGE:  "request"
+:LOCAL-REPO: "emacs-request"
+:COMMIT:   "0183da84cb45eb94da996cd2eab714ef0d7504cc"
+:END:
+
+#+begin_src emacs-lisp
+(setq request-storage-directory (concat VOID-DATA-DIR "request"))
+#+end_src
 
 ** savehist
 :PROPERTIES:
