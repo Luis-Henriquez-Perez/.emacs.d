@@ -828,6 +828,75 @@ Packages like [[][]] come with their own output.
     (apply orign-fn args)))
 #+end_src
 
+*** eval-after-load!
+:PROPERTIES:
+:ID:       8d831084-539b-4072-a86a-b55afb09bf02
+:END:
+
+If an =eval-after-load= block contains an error and it is triggered by a
+feature, the error will keep raised everytime you load that feature.
+Furthermore, this could interfere with the loading of other things. So I catch
+the error and print it out.
+
+#+begin_src emacs-lisp
+(defmacro eval-after-load! (feature &rest body)
+  "A wrapper around `eval-after-load!' with error catching."
+  (declare (indent defun))
+  `(eval-after-load ',feature
+     '(with-no-warnings
+        (condition-case error
+            (progn ,@body)
+          (error
+           (message "Error in `eval-after-load': %S" error))))))
+#+end_src
+
+*** after!
+:PROPERTIES:
+:ID: b31cd42d-cc57-492d-afae-d7d5e353e931
+:END:
+
+The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
+[[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
+been loaded.
+
+We intentionally avoid with-eval-after-load to prevent eager macro expansion
+from pulling (or failing to pull) in autoloaded macros/features.
+
+#+begin_src emacs-lisp
+(defmacro after! (features &rest body)
+  "Wrapper around `with-eval-after-load'."
+  (declare (indent defun) (debug t))
+  (cond ((eq 'or it)
+         (macroexp-progn
+          (--map `(after! ,it ,@body) (cdr features))))
+        ((eq 'and it)
+         (void-wrap-form (--map `(after! ,it) (cdr features))
+                         (macroexp-progn body)))
+        ((lisp features)
+         `(after! ,(cons 'and features) ,@body))
+        ((symbolp features)
+         `(if (featurep ',features)
+              ,(macroexp-progn body)
+            (eval-after-load! ,features ,@body)))
+        (t (error "Invalid argument."))))
+#+end_src
+
+*** keyfreq
+:PROPERTIES:
+:ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "dacap/keyfreq"
+:PACKAGE:  "keyfreq"
+:LOCAL-REPO: "keyfreq"
+:COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
+#+end_src
+
 *** system-packages
 :PROPERTIES:
 :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
@@ -880,22 +949,6 @@ Packages like [[][]] come with their own output.
                       (cdr it)))
             system-packages-supported-package-managers))
     (setq system-packages-package-manager 'yay)))
-#+end_src
-
-*** keyfreq
-:PROPERTIES:
-:ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "dacap/keyfreq"
-:PACKAGE:  "keyfreq"
-:LOCAL-REPO: "keyfreq"
-:COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
-:END:
-
-#+begin_src emacs-lisp
-(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
 #+end_src
 
 *** shut-up
@@ -1473,59 +1526,6 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                    (_ nil))
                  (-list os))
     `(progn ,@body)))
-#+end_src
-
-*** eval-after-load!
-:PROPERTIES:
-:ID:       8d831084-539b-4072-a86a-b55afb09bf02
-:END:
-
-If an =eval-after-load= block contains an error and it is triggered by a
-feature, the error will keep raised everytime you load that feature.
-Furthermore, this could interfere with the loading of other things. So I catch
-the error and print it out.
-
-#+begin_src emacs-lisp
-(defmacro eval-after-load! (feature &rest body)
-  "A wrapper around `eval-after-load!' with error catching."
-  (declare (indent defun))
-  `(eval-after-load ',feature
-     '(with-no-warnings
-        (condition-case error
-            (progn ,@body)
-          (error
-           (message "Error in `eval-after-load': %S" error))))))
-#+end_src
-
-*** after!
-:PROPERTIES:
-:ID: b31cd42d-cc57-492d-afae-d7d5e353e931
-:END:
-
-The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
-[[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
-been loaded.
-
-We intentionally avoid with-eval-after-load to prevent eager macro expansion
-from pulling (or failing to pull) in autoloaded macros/features.
-
-#+begin_src emacs-lisp
-(defmacro after! (features &rest body)
-  "Wrapper around `with-eval-after-load'."
-  (declare (indent defun) (debug t))
-  (cond ((eq 'or it)
-         (macroexp-progn
-          (--map `(after! ,it ,@body) (cdr features))))
-        ((eq 'and it)
-         (void-wrap-form (--map `(after! ,it) (cdr features))
-                         (macroexp-progn body)))
-        ((lisp features)
-         `(after! ,(cons 'and features) ,@body))
-        ((symbolp features)
-         `(if (featurep ',features)
-              ,(macroexp-progn body)
-            (eval-after-load! ,features ,@body)))
-        (t (error "Invalid argument."))))
 #+end_src
 
 *** macros
