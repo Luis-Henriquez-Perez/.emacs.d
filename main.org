@@ -200,6 +200,8 @@ as an argument.
 
 #+begin_src emacs-lisp
 (defun void-straight-property-list (plist)
+  (mapcar (lambda (it) (if (keywordp it) (intern (downcase)))))
+  (cl-)
   (cons (intern (plist-get plist :package)) plist))
 #+end_src
 
