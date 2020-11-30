@@ -246,6 +246,8 @@ installing packages, I try to access.
 (defvar void-package-recipes (void-get-package-recipes)
   "Package recipes.")
 
+(dolist (i 10) (message "%d %S" i void-package-recipes))
+
 (defvar void-package-load-paths
   (let ((old-load-path load-path)
         (load-path load-path))
@@ -255,6 +257,8 @@ installing packages, I try to access.
   "Package load-paths.")
 
 (setq load-path (append void-package-load-paths load-path))
+
+(dolist (i 10) (message "%d %s" i load-path))
 #+end_src
 
 ** Library
