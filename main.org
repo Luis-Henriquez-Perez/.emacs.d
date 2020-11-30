@@ -270,6 +270,7 @@ installing packages, I try to access.
           (load-path load-path))
       (straight:initialize)
       (mapc #'straight:install-fn void-package-recipes)
+      (mapc #'require '(dash s ht anaphora))
       ;; (mapc #'require void-essential-packages)
       (cl-set-difference load-path old-load-path)))
   "Package load-paths.")
