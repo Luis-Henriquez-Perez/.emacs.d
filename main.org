@@ -248,18 +248,18 @@ installing packages, I try to access.
 
 (dotimes (i 10) (message "%d %S" i void-package-recipes))
 
-(defvar void-package-load-paths
-  (let ((old-load-path load-path)
-        (load-path load-path))
-    (straight:initialize)
-    (mapc #'straight:install-fn void-package-recipes)
-    (require 'seq)
-    (seq-difference load-path old-load-path))
-  "Package load-paths.")
+;; (defvar void-package-load-paths
+;;   (let ((old-load-path load-path)
+;;         (load-path load-path))
+;;     (straight:initialize)
+;;     (mapc #'straight:install-fn void-package-recipes)
+;;     (require 'seq)
+;;     (seq-difference load-path old-load-path))
+;;   "Package load-paths.")
 
-(setq load-path (append void-package-load-paths load-path))
+;; (setq load-path (append void-package-load-paths load-path))
 
-(dotimes (i 10) (message "%d %s" i load-path))
+;; (dotimes (i 10) (message "%d %s" i load-path))
 #+end_src
 
 ** Library
