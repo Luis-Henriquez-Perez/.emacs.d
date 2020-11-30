@@ -192,7 +192,7 @@ as an argument.
                      (if (cl-evenp i)
                          (intern (downcase elt))
                        (car (read-from-string elt))))
-                   (s-split ":\\(?:[[:space:]]\\|\n\\)+\\|\n" string t)))
+                   (split-string string ":\\(?:[[:space:]]\\|\n\\)+\\|\n" t)))
 #+end_src
 
 ***** convert property list to proper straight format
