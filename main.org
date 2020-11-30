@@ -8437,8 +8437,7 @@ though is in need of an update. It didn't work out of the box (see [[id:b358f324
 and [[id:a3e62e0a-452b-429c-9558-139e7b83cf80][hl overlay fix]]).
 
 #+begin_src emacs-lisp
-(use-package! hide-lines
-  :commands hide-lines hide-lines-matching)
+(void-autoload 'hide-lines (list #'hide-lines #'hide-lines-matching))
 #+end_src
 
 ****** =hl= overlay fix
