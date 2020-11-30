@@ -216,7 +216,7 @@ recipe as properties of the headline. That way, my main org file can be
 completely reproducible as one file.
 
 #+begin_src emacs-lisp
-(defun void-get-package-recipes (org-file)
+(defun void-get-package-recipes ()
   "Return a list of recipes from org file."
   (let* ((recipes nil)
          (org-file (concat VOID-EMACS-DIR "main.el"))
