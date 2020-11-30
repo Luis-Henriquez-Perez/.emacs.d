@@ -10066,10 +10066,11 @@ graphical interface but.
 #+begin_src emacs-lisp
 (general-def 'normal
   "f" #'avy-goto-char
-  "w" #'void/evil-beginning-of-word
-  "W" #'void/evil-beginning-of-WORD
-  "e" #'void/evil-end-of-word
-  "E" #'void/evil-end-of-WORD)
+  ;; "w" #'void/evil-beginning-of-word
+  ;; "W" #'void/evil-beginning-of-WORD
+  ;; "e" #'void/evil-end-of-word
+  ;; "E" #'void/evil-end-of-WORD
+  )
 #+end_src
 
 *** replace evil folding commands to outline folding
