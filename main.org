@@ -134,7 +134,8 @@ where that controls the setup of my files--my init file.
 :ID:       5ca4b13a-14ab-4e7a-ab27-aab08b4f4994
 :END:
 
-This headline is about actually installing all of the packages I use.
+This headline is about actually installing all of the packages I use. I do this
+by searching through my org file for
 
 **** get package list based on my org file
 :PROPERTIES:
