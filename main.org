@@ -2572,11 +2572,10 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! tramp
-  :setq
-  (tramp-backup-directory-alist . backup-directory-alist)
-  (tramp-auto-save-directory . (concat VOID-DATA-DIR "tramp-auto-save/"))
-  (tramp-persistency-file-name . (concat VOID-DATA-DIR "tramp-persistency.el")))
+(after! tramp
+  (setq tramp-backup-directory-alist backup-directory-alist)
+  (setq tramp-auto-save-directory (concat VOID-DATA-DIR "tramp-auto-save/"))
+  (setq tramp-persistency-file-name (concat VOID-DATA-DIR "tramp-persistency.el")))
 #+end_src
 
 **** desktop
