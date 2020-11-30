@@ -216,9 +216,10 @@ recipe as properties of the headline. That way, my main org file can be
 completely reproducible as one file.
 
 #+begin_src emacs-lisp
-(defun void-fetch-recipes (org-file)
+(defun void-get-package-recipes (org-file)
   "Return a list of recipes from org file."
   (let* ((recipes nil)
+         (org-file (concat VOID-EMACS-DIR "main.el"))
          (regexp void-property-drawer-regexp))
     (with-current-buffer (or (get-file-buffer org-file)
                              (create-file-buffer org-file))
@@ -240,7 +241,7 @@ This is where I actually install all of my packages in one go. To save time
 installing packages, I try to access.
 
 #+begin_src emacs-lisp
-(defvar void-package-recipes (void-generate-package-recipes)
+(defvar void-package-recipes (void-get-package-recipes)
   "Package recipes.")
 
 (defvar void-package-load-paths
