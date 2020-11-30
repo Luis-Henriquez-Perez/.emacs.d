@@ -188,7 +188,7 @@ as an argument.
   "Convert a property list string into a plist."
   (seq-map-indexed (lambda (elt i)
                      (if (cl-evenp i)
-                         (intern elt)
+                         (intern (downcase elt))
                        (car (read-from-string elt))))
                    (s-split ":\\(?:[[:space:]]\\|\n\\)+\\|\n" string t)))
 #+end_src
