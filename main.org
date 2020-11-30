@@ -283,6 +283,278 @@ installing packages, I try to access.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** macro writing tools
+:PROPERTIES:
+:ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
+:END:
+
+**** get keywords arguments in macro
+:PROPERTIES:
+:ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
+:END:
+
+Following past examples (such as), I initially opted for allowing keyword
+arguments in the "function args" part of defun-like macros. This is fine when
+there's only one keyword argument, but any more and it starts to get crowded. It
+doesn't help that emacs functions tend towards longer names due to a lack of
+namespaces. Therefore, I support keyword args in the function body.
+
+#+begin_src emacs-lisp
+(defun void--keyword-macro-args (body)
+  "Return list of (docstring KEYWORD-ARGS BODY)."
+  (list (when (stringp (car body)) (pop body))
+        (--unfold (when (keywordp (car it))
+                    (cons (cons (pop body) (pop body))
+                          body))
+                  body)
+        body))
+#+end_src
+
+**** format macro
+:PROPERTIES:
+:ID:       c2f43f84-e400-45ed-9e96-7b8d38133810
+:END:
+
+The purpose of this macro is to fascillitate the creating of cut paste keywords
+so often used in macros. Let me explain. Often you want a macro to be a
+"front-end" so-to-speak for defining functions and variables that usually follow
+a naming scheme. In the macro body we end up with many ~(intern (format
+"foo-%s-baz" var))~ forms. This macro allows you to write this as ~foo-<var>-baz~
+instead.
+
+***** convert a keyword into its equivalent
+:PROPERTIES:
+:ID:       aa083f01-a4de-4ce8-bbcc-7f493adad227
+:END:
+
+#+begin_src emacs-lisp
+(defun void--anaphoric-format (symbol)
+  "Return the form that will replace."
+  (if-let ((regexp VOID-ANAPHORIC-SYMBOL-REGEXP)
+           (string (and (symbolp symbol) (symbol-name symbol)))
+           (symbols (--map (nth 1 it) (s-match-strings-all regexp string)))
+           (format-string (s-replace-regexp regexp "%s" string)))
+      `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))
+    symbol))
+#+end_src
+
+***** defmacro!
+:PROPERTIES:
+:ID:       7cd61cb8-22be-460d-b4f4-da6c82435958
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defmacro! (name args &rest body)
+  "Like `defmacro' but allows for anaphoric formatting."
+  (-let [(docstring _ body) (void--keyword-macro-args body)]
+    `(defmacro ,name ,args
+       ,docstring
+       ,@(-tree-map #'void--anaphoric-format body))))
+#+end_src
+
+**** symbols
+:PROPERTIES:
+:ID: 2cdf8ab1-4e59-4128-a8a4-e5519ca0f4bf
+:END:
+
+Conversion between symbols, keywords, and strings are prevalent in
+macro-writing.
+
+***** symbol intern
+:PROPERTIES:
+:ID: 659e8389-84c5-4ac4-a9ba-7dd40599191d
+:END:
+
+#+begin_src emacs-lisp
+(defun void-symbol-intern (&rest args)
+  "Return ARGS as a symbol."
+  (declare (pure t) (side-effect-free t))
+  (intern (apply #'void-to-string args)))
+#+end_src
+
+***** keyword intern
+:PROPERTIES:
+:ID: f2668044-13b2-46e7-bf84-fcf998591e37
+:END:
+
+#+begin_src emacs-lisp
+(defun void-keyword-intern (&rest args)
+  "Return ARGS as a keyword."
+  (declare (pure t) (side-effect-free t))
+  (apply #'void-symbol-intern ":" args))
+#+end_src
+
+***** keyword name
+:PROPERTIES:
+:ID: fb867938-d62b-42fc-bf07-092f10b64f22
+:END:
+
+#+begin_src emacs-lisp
+(defun void-keyword-name (keyword)
+  "Return the name of the KEYWORD without the prepended `:'."
+  (declare (pure t) (side-effect-free t))
+  (substring-no-properties (void-to-string keyword) 1))
+#+end_src
+
+***** convert to string
+:PROPERTIES:
+:ID: 4ef52875-4ce6-4940-8b7e-13c96bedcb3d
+:END:
+
+#+begin_src emacs-lisp
+(defun void-to-string (&rest args)
+  "Return ARGS as a string."
+  (declare (pure t) (side-effect-free t))
+  (with-output-to-string
+    (dolist (a args) (princ a))))
+#+end_src
+
+**** wrap-form
+:PROPERTIES:
+:ID:       48e48c0f-7bb3-45c9-b4af-2da0ce84b64e
+:END:
+
+When writing macros in lisp it is not uncommon to need to write a macro that can
+nest a form within some number of other forms (for an example, see [[id][after!]]). This
+macro makes this problem much easier.
+
+#+begin_src emacs-lisp
+(defun void-wrap-form (wrappers form)
+  "Wrap FORM with each wrapper in WRAPPERS.
+WRAPPERS are a list of forms to wrap around FORM."
+  (declare (pure t) (side-effect-free t))
+  (setq wrappers (reverse wrappers))
+  (if (consp wrappers)
+      (void-wrap-form (cdr wrappers)
+                      (append (car wrappers)
+                              (list form)))
+    form))
+#+end_src
+
+**** anaphora
+:PROPERTIES:
+:ID:       9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df
+:END:
+
+Anaphora refers to the ability to refer to. I have decided it is best to use
+=<>= to denote the symbol referred to by anaphoric macros because it is easy to
+type (assuming parentheses completion), because such a symbol uncommon in lisp.
+A key advantage to this is that there is a consistent "syntax" for anaphoric
+variables as opposed to using =it=. A consequence of this is that you have more
+flexibility to name variables. Additionally, I like that it looks like a slot or
+placeholder.
+
+https://en.wikipedia.org/wiki/Anaphoric_macro
+
+***** anaphoric symbol regexp
+:PROPERTIES:
+:ID:       40c97bd5-dab1-44df-86f7-90274d5a8ea0
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-ANAPHORIC-SYMBOL-REGEXP
+  (eval-when-compile (rx "<" (group (1+ (not (any white ">" "<")))) ">"))
+  "Regular expression that matches an anaphoric symbol.")
+#+end_src
+
+***** anaphoric symbol
+:PROPERTIES:
+:ID:       db8169ba-1630-42fe-9ab7-e29c110a18c3
+:END:
+
+#+begin_src emacs-lisp
+(defun void-anaphoric-symbol-p (obj)
+  "Return non-nil if OBJ is an anaphoric symbol."
+  (and (symbolp obj)
+       (string-match-p VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name obj))))
+#+end_src
+
+***** true anaphora name
+:PROPERTIES:
+:ID:       2833cd75-9c85-4c0e-9523-4489d387150a
+:END:
+
+#+begin_src emacs-lisp
+(defun void-anaphoric-true-symbol (symbol)
+  "Return the symbol that corresponds to the anaphoric symbol."
+  (save-match-data
+    (string-match VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name symbol))
+    (intern (match-string 1 (symbol-name symbol)))))
+#+end_src
+
+***** body symbols
+:PROPERTIES:
+:ID:       2bae458e-404a-48e7-b57e-ce7f543f6e6d
+:END:
+
+#+begin_src emacs-lisp
+(defun void-anaphoric-symbols (body)
+  "Return all the anaphoric symbols in body."
+  (->> (-flatten body)
+    (-filter #'void-anaphoric-symbol-p)
+    (-uniq)))
+#+end_src
+
+***** all anaphoric symbols in obj
+:PROPERTIES:
+:ID:       e0c0eb8c-52b3-4411-ab0b-06255490dacf
+:END:
+
+#+begin_src emacs-lisp
+(defun void-anaphoric-symbols-in-obj (obj)
+  "Return a list of anaphoric symbols in OBJ."
+  (s-match-strings-all VOID-ANAPHORIC-SYMBOL-REGEXP (void-to-string obj)))
+#+end_src
+
+**** with-symbols!
+:PROPERTIES:
+:ID:       0ba70f30-f1a8-4a5d-acf9-07db9931bd54
+:END:
+
+#+begin_src emacs-lisp
+(defmacro with-symbols! (names &rest body)
+  "Bind each variable in NAMES to a unique symbol and evaluate BODY."
+  (declare (indent defun))
+  `(let ,(-map (lambda (symbol) `(,symbol (make-symbol ,(symbol-name symbol)))) names)
+     ,@body))
+#+end_src
+
+**** once-only!
+:PROPERTIES:
+:ID:       23c10e2a-6ccc-42dc-a898-29ab39a1f79c
+:END:
+
+#+begin_src emacs-lisp
+(defmacro once-only! (bindings &rest body)
+  "Rebind symbols according to BINDINGS and evaluate BODY.
+
+Each of BINDINGS must be either a symbol naming the variable to be
+rebound or of the form:
+
+  (SYMBOL INITFORM)
+
+where INITFORM is guaranteed to be evaluated only once.
+
+Bare symbols in BINDINGS are equivalent to:
+
+  (SYMBOL SYMBOL)"
+  (declare (indent defun))
+  (let* ((bind-fn (lambda (bind)
+                    (if (consp bind)
+                        (cons (car bind) (cadr bind))
+                      (cons bind bind))))
+         (names-and-forms (-map bind-fn bindings))
+         (names (-map #'car names-and-forms))
+         (forms (-map #'cdr names-and-forms))
+         (symbols (--map (make-symbol (symbol-name it)) names)))
+    `(with-symbols! ,symbols
+       (list 'let
+             (-zip-with #'list (list ,@symbols) (list ,@forms))
+             ,(cl-list* 'let
+                        (-zip-with #'list names symbols)
+                        body)))))
+#+end_src
+
 *** dash
 :PROPERTIES:
 :TYPE:     git
@@ -1230,278 +1502,6 @@ structures. It was built for.
 :END:
 
 =ts= is a time package.
-
-*** macro writing tools
-:PROPERTIES:
-:ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
-:END:
-
-**** get keywords arguments in macro
-:PROPERTIES:
-:ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
-:END:
-
-Following past examples (such as), I initially opted for allowing keyword
-arguments in the "function args" part of defun-like macros. This is fine when
-there's only one keyword argument, but any more and it starts to get crowded. It
-doesn't help that emacs functions tend towards longer names due to a lack of
-namespaces. Therefore, I support keyword args in the function body.
-
-#+begin_src emacs-lisp
-(defun void--keyword-macro-args (body)
-  "Return list of (docstring KEYWORD-ARGS BODY)."
-  (list (when (stringp (car body)) (pop body))
-        (--unfold (when (keywordp (car it))
-                    (cons (cons (pop body) (pop body))
-                          body))
-                  body)
-        body))
-#+end_src
-
-**** format macro
-:PROPERTIES:
-:ID:       c2f43f84-e400-45ed-9e96-7b8d38133810
-:END:
-
-The purpose of this macro is to fascillitate the creating of cut paste keywords
-so often used in macros. Let me explain. Often you want a macro to be a
-"front-end" so-to-speak for defining functions and variables that usually follow
-a naming scheme. In the macro body we end up with many ~(intern (format
-"foo-%s-baz" var))~ forms. This macro allows you to write this as ~foo-<var>-baz~
-instead.
-
-***** convert a keyword into its equivalent
-:PROPERTIES:
-:ID:       aa083f01-a4de-4ce8-bbcc-7f493adad227
-:END:
-
-#+begin_src emacs-lisp
-(defun void--anaphoric-format (symbol)
-  "Return the form that will replace."
-  (if-let ((regexp VOID-ANAPHORIC-SYMBOL-REGEXP)
-           (string (and (symbolp symbol) (symbol-name symbol)))
-           (symbols (--map (nth 1 it) (s-match-strings-all regexp string)))
-           (format-string (s-replace-regexp regexp "%s" string)))
-      `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))
-    symbol))
-#+end_src
-
-***** defmacro!
-:PROPERTIES:
-:ID:       7cd61cb8-22be-460d-b4f4-da6c82435958
-:END:
-
-#+begin_src emacs-lisp
-(defmacro defmacro! (name args &rest body)
-  "Like `defmacro' but allows for anaphoric formatting."
-  (-let [(docstring _ body) (void--keyword-macro-args body)]
-    `(defmacro ,name ,args
-       ,docstring
-       ,@(-tree-map #'void--anaphoric-format body))))
-#+end_src
-
-**** symbols
-:PROPERTIES:
-:ID: 2cdf8ab1-4e59-4128-a8a4-e5519ca0f4bf
-:END:
-
-Conversion between symbols, keywords, and strings are prevalent in
-macro-writing.
-
-***** symbol intern
-:PROPERTIES:
-:ID: 659e8389-84c5-4ac4-a9ba-7dd40599191d
-:END:
-
-#+begin_src emacs-lisp
-(defun void-symbol-intern (&rest args)
-  "Return ARGS as a symbol."
-  (declare (pure t) (side-effect-free t))
-  (intern (apply #'void-to-string args)))
-#+end_src
-
-***** keyword intern
-:PROPERTIES:
-:ID: f2668044-13b2-46e7-bf84-fcf998591e37
-:END:
-
-#+begin_src emacs-lisp
-(defun void-keyword-intern (&rest args)
-  "Return ARGS as a keyword."
-  (declare (pure t) (side-effect-free t))
-  (apply #'void-symbol-intern ":" args))
-#+end_src
-
-***** keyword name
-:PROPERTIES:
-:ID: fb867938-d62b-42fc-bf07-092f10b64f22
-:END:
-
-#+begin_src emacs-lisp
-(defun void-keyword-name (keyword)
-  "Return the name of the KEYWORD without the prepended `:'."
-  (declare (pure t) (side-effect-free t))
-  (substring-no-properties (void-to-string keyword) 1))
-#+end_src
-
-***** convert to string
-:PROPERTIES:
-:ID: 4ef52875-4ce6-4940-8b7e-13c96bedcb3d
-:END:
-
-#+begin_src emacs-lisp
-(defun void-to-string (&rest args)
-  "Return ARGS as a string."
-  (declare (pure t) (side-effect-free t))
-  (with-output-to-string
-    (dolist (a args) (princ a))))
-#+end_src
-
-**** wrap-form
-:PROPERTIES:
-:ID:       48e48c0f-7bb3-45c9-b4af-2da0ce84b64e
-:END:
-
-When writing macros in lisp it is not uncommon to need to write a macro that can
-nest a form within some number of other forms (for an example, see [[id][after!]]). This
-macro makes this problem much easier.
-
-#+begin_src emacs-lisp
-(defun void-wrap-form (wrappers form)
-  "Wrap FORM with each wrapper in WRAPPERS.
-WRAPPERS are a list of forms to wrap around FORM."
-  (declare (pure t) (side-effect-free t))
-  (setq wrappers (reverse wrappers))
-  (if (consp wrappers)
-      (void-wrap-form (cdr wrappers)
-                      (append (car wrappers)
-                              (list form)))
-    form))
-#+end_src
-
-**** anaphora
-:PROPERTIES:
-:ID:       9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df
-:END:
-
-Anaphora refers to the ability to refer to. I have decided it is best to use
-=<>= to denote the symbol referred to by anaphoric macros because it is easy to
-type (assuming parentheses completion), because such a symbol uncommon in lisp.
-A key advantage to this is that there is a consistent "syntax" for anaphoric
-variables as opposed to using =it=. A consequence of this is that you have more
-flexibility to name variables. Additionally, I like that it looks like a slot or
-placeholder.
-
-https://en.wikipedia.org/wiki/Anaphoric_macro
-
-***** anaphoric symbol regexp
-:PROPERTIES:
-:ID:       40c97bd5-dab1-44df-86f7-90274d5a8ea0
-:END:
-
-#+begin_src emacs-lisp
-(defconst VOID-ANAPHORIC-SYMBOL-REGEXP
-  (eval-when-compile (rx "<" (group (1+ (not (any white ">" "<")))) ">"))
-  "Regular expression that matches an anaphoric symbol.")
-#+end_src
-
-***** anaphoric symbol
-:PROPERTIES:
-:ID:       db8169ba-1630-42fe-9ab7-e29c110a18c3
-:END:
-
-#+begin_src emacs-lisp
-(defun void-anaphoric-symbol-p (obj)
-  "Return non-nil if OBJ is an anaphoric symbol."
-  (and (symbolp obj)
-       (string-match-p VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name obj))))
-#+end_src
-
-***** true anaphora name
-:PROPERTIES:
-:ID:       2833cd75-9c85-4c0e-9523-4489d387150a
-:END:
-
-#+begin_src emacs-lisp
-(defun void-anaphoric-true-symbol (symbol)
-  "Return the symbol that corresponds to the anaphoric symbol."
-  (save-match-data
-    (string-match VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name symbol))
-    (intern (match-string 1 (symbol-name symbol)))))
-#+end_src
-
-***** body symbols
-:PROPERTIES:
-:ID:       2bae458e-404a-48e7-b57e-ce7f543f6e6d
-:END:
-
-#+begin_src emacs-lisp
-(defun void-anaphoric-symbols (body)
-  "Return all the anaphoric symbols in body."
-  (->> (-flatten body)
-    (-filter #'void-anaphoric-symbol-p)
-    (-uniq)))
-#+end_src
-
-***** all anaphoric symbols in obj
-:PROPERTIES:
-:ID:       e0c0eb8c-52b3-4411-ab0b-06255490dacf
-:END:
-
-#+begin_src emacs-lisp
-(defun void-anaphoric-symbols-in-obj (obj)
-  "Return a list of anaphoric symbols in OBJ."
-  (s-match-strings-all VOID-ANAPHORIC-SYMBOL-REGEXP (void-to-string obj)))
-#+end_src
-
-**** with-symbols!
-:PROPERTIES:
-:ID:       0ba70f30-f1a8-4a5d-acf9-07db9931bd54
-:END:
-
-#+begin_src emacs-lisp
-(defmacro with-symbols! (names &rest body)
-  "Bind each variable in NAMES to a unique symbol and evaluate BODY."
-  (declare (indent defun))
-  `(let ,(-map (lambda (symbol) `(,symbol (make-symbol ,(symbol-name symbol)))) names)
-     ,@body))
-#+end_src
-
-**** once-only!
-:PROPERTIES:
-:ID:       23c10e2a-6ccc-42dc-a898-29ab39a1f79c
-:END:
-
-#+begin_src emacs-lisp
-(defmacro once-only! (bindings &rest body)
-  "Rebind symbols according to BINDINGS and evaluate BODY.
-
-Each of BINDINGS must be either a symbol naming the variable to be
-rebound or of the form:
-
-  (SYMBOL INITFORM)
-
-where INITFORM is guaranteed to be evaluated only once.
-
-Bare symbols in BINDINGS are equivalent to:
-
-  (SYMBOL SYMBOL)"
-  (declare (indent defun))
-  (let* ((bind-fn (lambda (bind)
-                    (if (consp bind)
-                        (cons (car bind) (cadr bind))
-                      (cons bind bind))))
-         (names-and-forms (-map bind-fn bindings))
-         (names (-map #'car names-and-forms))
-         (forms (-map #'cdr names-and-forms))
-         (symbols (--map (make-symbol (symbol-name it)) names)))
-    `(with-symbols! ,symbols
-       (list 'let
-             (-zip-with #'list (list ,@symbols) (list ,@forms))
-             ,(cl-list* 'let
-                        (-zip-with #'list names symbols)
-                        body)))))
-#+end_src
 
 *** with-os!
 :PROPERTIES:
