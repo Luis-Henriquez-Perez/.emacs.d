@@ -1740,26 +1740,6 @@ I want a shorthand for advices that involve package loading.
   )
 #+end_src
 
-*** before load hook
-:PROPERTIES:
-:ID:       aba2646d-ef7c-4e8b-a81e-48d541d8338a
-:END:
-
-I want to control the loading of a feature. Specifically, I want to make it so
-the feature won't load under certain conditions.
-
-#+begin_src emacs-lisp
-(defvar void-before-load-hook nil
-  "Hook run before loading a feature.
-Functions in this hook take one argument, the feature being required.
-If any function returns non-nil, the feature will not be loaded.")
-
-(defadvice! run-before-load-hook (:around require)
-  "Run `void-before-load-hook'."
-  (awhen (run-hook-with-args )
-    (apply <orig-fn> <args>)))
-#+end_src
-
 *** toggle
 :PROPERTIES:
 :ID:       f8cc6974-283e-4314-91d5-43458d900fa6
