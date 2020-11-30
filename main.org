@@ -357,6 +357,15 @@ as a dependency, I'd end up rewriting many of its functions.
 (require 'ht)
 #+end_src
 
+*** anaphora
+:PROPERTIES:
+:ID:       1c47bd8a-15f1-4b1c-9574-23547d27d968
+:END:
+
+#+begin_src emacs-lisp
+(require 'anaphora)
+#+end_src
+
 *** macro writing tools
 :PROPERTIES:
 :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
