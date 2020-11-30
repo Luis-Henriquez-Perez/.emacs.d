@@ -218,9 +218,9 @@ completely reproducible as one file.
 #+begin_src emacs-lisp
 (defun void-get-package-recipes ()
   "Return a list of recipes from org file."
-  (let* ((recipes nil)
-         (org-file (concat VOID-EMACS-DIR "main.org"))
-         (regexp void-property-drawer-regexp))
+  (let ((recipes nil)
+        (org-file (concat VOID-EMACS-DIR "main.org"))
+        (regexp void-property-drawer-regexp))
     (with-current-buffer (or (get-file-buffer org-file)
                              (create-file-buffer org-file))
       (save-excursion
