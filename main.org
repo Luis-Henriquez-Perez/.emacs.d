@@ -253,6 +253,7 @@ installing packages, I try to access.
         (load-path load-path))
     (straight:initialize)
     (mapc #'straight:install-fn void-package-recipes)
+    (require 'seq)
     (seq-difference load-path old-load-path))
   "Package load-paths.")
 
