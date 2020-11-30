@@ -223,14 +223,13 @@ completely reproducible as one file.
   (let ((recipes nil)
         (org-file (concat user-emacs-directory "main.org"))
         (regexp void-property-drawer-regexp))
-    (with-current-buffer (or (get-file-buffer org-file)
-                             (create-file-buffer org-file))
-      (save-excursion
-        (goto-char (point-min))
-        (while (re-search-forward regexp nil t)
-          (let ((match (match-string-no-properties 1)))
-            (when (and match (string-match-p "PACKAGE" match))
-              (push (void-property-string-to-recipe match) recipes))))))
+    (with-temp-buffer
+      (insert-file-contents-literally org-file)
+      (goto-char (point-min))
+      (while (re-search-forward regexp nil t)
+        (let ((match (match-string-no-properties 1)))
+          (when (and match (string-match-p "PACKAGE" match))
+            (push (void-property-string-to-recipe match) recipes)))))
     recipes))
 #+end_src
 
