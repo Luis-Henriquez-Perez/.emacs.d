@@ -2584,11 +2584,10 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! desktop
-  :setq
-  (desktop-dirname . (concat VOID-DATA-DIR "desktop"))
-  (desktop-base-file-name . "autosave")
-  (desktop-base-lock-name . "autosave-lock"))
+(after! desktop
+  (setq desktop-dirname (concat VOID-DATA-DIR "desktop"))
+  (setq desktop-base-file-name "autosave")
+  (setq desktop-base-lock-name "autosave-lock"))
 #+end_src
 
 **** cus-edit
