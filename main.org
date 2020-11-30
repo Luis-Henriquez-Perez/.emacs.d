@@ -2637,9 +2637,8 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! uniquify
-  :setq-default
-  (uniquify-buffer-name-style . 'forward))
+(after! uniquify
+  (setq-default uniquify-buffer-name-style 'forward))
 #+end_src
 
 **** ansi-color
