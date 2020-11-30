@@ -269,7 +269,7 @@ installing packages, I try to access.
         (load-path load-path))
     (straight:initialize)
     (mapc #'straight:install-fn void-package-recipes)
-    (mapc #'require void-essential-packages)
+    ;; (mapc #'require void-essential-packages)
     (cl-set-difference load-path old-load-path))
   "Package load-paths.")
 
@@ -284,7 +284,12 @@ installing packages, I try to access.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
-*** general
+*** essential libraries
+:PROPERTIES:
+:ID:       18602d49-dcc3-47c3-8579-62f7a7b7a83a
+:END:
+
+**** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
 :TYPE:     git
@@ -406,7 +411,7 @@ make a difference. That's why.
               :non-normal-prefix void-localleader-short-alt-key))))
 #+end_src
 
-*** dash
+**** dash
 :PROPERTIES:
 :TYPE:     git
 :FLAVOR:   melpa
@@ -444,7 +449,7 @@ as a dependency, I'd end up rewriting many of its functions.
 '(void-add-hook 'emacs-lisp-mode-hook #'dash-enable-font-lock nil nil t)
 #+end_src
 
-*** s
+**** s
 :PROPERTIES:
 :ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
 :TYPE:     git
@@ -461,7 +466,7 @@ as a dependency, I'd end up rewriting many of its functions.
 (require 's)
 #+end_src
 
-*** ht
+**** ht
 :PROPERTIES:
 :ID:       dc6ceb3b-8946-4649-8164-38bc5e4d2ab5
 :TYPE:     git
@@ -480,7 +485,7 @@ as a dependency, I'd end up rewriting many of its functions.
 (require 'ht)
 #+end_src
 
-*** anaphora
+**** anaphora
 :PROPERTIES:
 :ID:       1c47bd8a-15f1-4b1c-9574-23547d27d968
 :TYPE:     git
