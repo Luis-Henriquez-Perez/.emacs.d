@@ -1074,11 +1074,11 @@ appropriate name to target.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-add-advice (hooks functions where)
+(defun void-add-advice (symbols where advices &optional props expire-fn)
   "Advise TARGETS with Void ADVICES."
-  (dolist (hook (-list hooks))
-    (dolist (fn (-list functions))
-      (void--add-advice hook fn))))
+  (dolist (symbol (-list symbols))
+    (dolist (advice (-list advices))
+      (void--add-advice symbol where advice props expire-fn))))
 #+end_src
 
 ***** interactively
