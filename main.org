@@ -28,7 +28,7 @@ completely reproducable.
 #+begin_src emacs-lisp
 (defvar VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
 
-(require 'cl)
+(require 'cl-lib)
 (require 'seq)
 
 (setq straight-base-dir VOID-PACKAGES-DIR)
