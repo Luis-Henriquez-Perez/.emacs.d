@@ -2775,17 +2775,6 @@ easy backwards usage previous version of emacs (25 and 26) I include.
     (menu-bar-mode -1)))
 #+end_src
 
-*** fullscreen
-:PROPERTIES:
-:ID: f0aad350-7da3-4350-8041-45bc5372ef7e
-:END:
-
-By default start emacs as fullscreen.
-
-#+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-#+end_src
-
 *** font
 :PROPERTIES:
 :ID: 893a1c9b-985b-4da8-9d9b-73028be5a2db
