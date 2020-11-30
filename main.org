@@ -199,7 +199,7 @@ as an argument.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-straight-property-list (plist)
+(defun void-prop-list-to-recipe (plist)
   (cons (intern (plist-get plist :package)) plist))
 #+end_src
 
