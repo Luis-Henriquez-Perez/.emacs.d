@@ -199,8 +199,10 @@ as an argument.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-property-plist-to-recipe (plist)
-  (cons (intern (plist-get plist :package)) plist))
+(defun void-property-string-to-recipe (string)
+  (let ((plist (void-property-string-to-plist string)))
+    (cons (intern (plist-get plist :package))
+          plist)))
 #+end_src
 
 ***** get recipes
