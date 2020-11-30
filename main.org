@@ -1739,6 +1739,11 @@ If any function returns non-nil, the feature will not be loaded.")
     (apply <orig-fn> <args>)))
 #+end_src
 
+*** toggle
+:PROPERTIES:
+:ID:       f8cc6974-283e-4314-91d5-43458d900fa6
+:END:
+
 ** Init
 :PROPERTIES:
 :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
@@ -8616,13 +8621,10 @@ hindsight, using this function is even easier than using ~window-beg~ and
 [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
 
 #+begin_src emacs-lisp
-(use-package! org-superstar
-  :hook org-mode
-  :pre-setq
-  (org-superstar-headline-bullets-list . (list "◉" "○" "▷"))
-  :setq
-  (org-superstar-special-todo-items . t)
-  (org-superstar-leading-bullet . ?\s))
+(void-add-hook 'org-mode-hook #'org-superstar-mode)
+
+(setq org-superstar-special-todo-items t)
+(setq org-superstar-leading-bullet ?\s)
 #+end_src
 
 *** links
