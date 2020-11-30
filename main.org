@@ -8604,13 +8604,14 @@ hindsight, using this function is even easier than using ~window-beg~ and
 [[package:org-fancy-priorities][org-fancy-priorities]] is a package that displays org priorities with an icon.
 
 #+begin_src emacs-lisp
-(use-package! org-fancy-priorities
-  :hook org-mode
-  :setq
-  (org-fancy-priorities-list . (list (all-the-icons-material "priority_high")
-                                     (all-the-icons-octicon "arrow-up")
-                                     (all-the-icons-octicon "arrow-down")
-                                     (all-the-icons-material "low_priority"))))
+(void-add-hook 'org-mode-hook #'org-fancy-priorities-mode)
+
+(after! all-the-icons
+  (alet (list (all-the-icons-material "priority_high")
+              (all-the-icons-octicon "arrow-up")
+              (all-the-icons-octicon "arrow-down")
+              (all-the-icons-material "low_priority"))
+    (setq org-fancy-priorities-list it)))
 #+end_src
 
 **** org-superstar
