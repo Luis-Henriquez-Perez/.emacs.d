@@ -281,6 +281,23 @@ installing packages, I try to access.
 :ID:       18602d49-dcc3-47c3-8579-62f7a7b7a83a
 :END:
 
+**** shut-up
+:PROPERTIES:
+:ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "cask/shut-up"
+:PACKAGE:  "shut-up"
+:LOCAL-REPO: "shut-up"
+:COMMIT:   "081d6b01e3ba0e60326558e545c4019219e046ce"
+:END:
+
+#+begin_src emacs-lisp
+(require 'shut-up)
+(defalias 'shut-up! 'shut-up)
+#+end_src
+
 **** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
@@ -1410,23 +1427,6 @@ from pulling (or failing to pull) in autoloaded macros/features.
                       (cdr it)))
             system-packages-supported-package-managers))
     (setq system-packages-package-manager 'yay)))
-#+end_src
-
-*** shut-up
-:PROPERTIES:
-:ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "cask/shut-up"
-:PACKAGE:  "shut-up"
-:LOCAL-REPO: "shut-up"
-:COMMIT:   "081d6b01e3ba0e60326558e545c4019219e046ce"
-:END:
-
-#+begin_src emacs-lisp
-(require 'shut-up)
-(defalias 'shut-up! 'shut-up)
 #+end_src
 
 *** idle-require
