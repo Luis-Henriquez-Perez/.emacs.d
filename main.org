@@ -2469,16 +2469,16 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! simple
-  :popup ("\\*Messages"
-          (display-buffer-at-bottom)
-          (window-height . 0.5))
-  :setq-default
-  (idle-update-delay . 1)
-  (blink-matching-paren . t)
-  (delete-trailing-lines . nil)
-  :setq
-  (mail-user-agent . 'mu4e-user-agent))
+(push ("\\*Messages"
+       (display-buffer-at-bottom)
+       (window-height . 0.5))
+      display-buffer-alist)
+
+(setq-default idle-update-delay 1)
+(setq-default blink-matching-paren t)
+(setq-default delete-trailing-lines nil)
+
+(setq mail-user-agent . 'mu4e-user-agent)
 #+end_src
 
 **** loaddefs
