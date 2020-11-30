@@ -188,7 +188,6 @@ as an argument.
 #+begin_src emacs-lisp
 (defun void-property-string-to-plist (string)
   "Convert a property list string into a plist."
-  (require 'seq)
   (seq-map-indexed (lambda (elt i)
                      (if (cl-evenp i)
                          (intern (downcase elt))
