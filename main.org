@@ -26,6 +26,8 @@ completely reproducable.
 :END:
 
 #+begin_src emacs-lisp
+(defvar VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
+
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
 (setq straight-enable-package-integration t)
