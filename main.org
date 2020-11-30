@@ -250,8 +250,6 @@ installing packages, I try to access.
 (defvar void-package-recipes (void-get-package-recipes)
   "Package recipes.")
 
-(dotimes (i 10) (message "%d %S" i (nth i void-package-recipes)))
-
 (defvar void-package-load-paths
   (let ((old-load-path load-path)
         (load-path load-path))
@@ -261,8 +259,6 @@ installing packages, I try to access.
   "Package load-paths.")
 
 (setq load-path (append void-package-load-paths load-path))
-
-(dotimes (i 10) (message "%d %s" i (nth i load-path)))
 #+end_src
 
 ** Library
