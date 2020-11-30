@@ -1205,7 +1205,7 @@ from pulling (or failing to pull) in autoloaded macros/features.
         ((eq 'and features)
          (void-wrap-form (--map `(after! ,it) (cdr features))
                          (macroexp-progn body)))
-        ((lisp features)
+        ((listp features)
          `(after! ,(cons 'and features) ,@body))
         ((symbolp features)
          `(if (featurep ',features)
