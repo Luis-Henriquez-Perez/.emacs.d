@@ -276,14 +276,6 @@ installing packages, I try to access.
 (setq load-path (append void-package-load-paths load-path))
 #+end_src
 
-** Library
-:PROPERTIES:
-:ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
-:END:
-
-This headline contains all the the helper functions and macros I defined for
-customizing emacs.
-
 *** essential libraries
 :PROPERTIES:
 :ID:       18602d49-dcc3-47c3-8579-62f7a7b7a83a
@@ -499,6 +491,14 @@ as a dependency, I'd end up rewriting many of its functions.
 #+begin_src emacs-lisp
 (require 'anaphora)
 #+end_src
+
+** Library
+:PROPERTIES:
+:ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
+:END:
+
+This headline contains all the the helper functions and macros I defined for
+customizing emacs.
 
 *** message logging
 :PROPERTIES:
