@@ -360,6 +360,12 @@ as a dependency, I'd end up rewriting many of its functions.
 *** anaphora
 :PROPERTIES:
 :ID:       1c47bd8a-15f1-4b1c-9574-23547d27d968
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "rolandwalker/anaphora"
+:PACKAGE:  "anaphora"
+:LOCAL-REPO: "anaphora"
 :END:
 
 #+begin_src emacs-lisp
