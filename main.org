@@ -2833,11 +2833,6 @@ By default start emacs as fullscreen.
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
-*** hooks
-:PROPERTIES:
-:ID: ede94ae4-1c73-4435-81ba-e28070225b99
-:END:
-
 *** font
 :PROPERTIES:
 :ID: 893a1c9b-985b-4da8-9d9b-73028be5a2db
