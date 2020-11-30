@@ -210,11 +210,9 @@ recipe as properties of the headline. That way, my main org file can be
 completely reproducible as one file.
 
 #+begin_src emacs-lisp
-(defun void-generate-recipes-from-org-file ()
-  "Return recipes needed for loading packages."
+(defun void-org-property-lists (org-file)
+  "Return a list of org properties converted to lists."
   (let* ((recipes nil)
-         (org-file (concat user-emacs-directory "main.org"))
-         (el-file (concat user-emacs-directory "main.el"))
          (regexp void-property-drawer-regexp))
     (with-current-buffer (or (get-file-buffer org-file)
                              (create-file-buffer org-file))
