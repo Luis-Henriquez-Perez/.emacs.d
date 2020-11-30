@@ -227,7 +227,7 @@ completely reproducible as one file.
         (while (re-search-forward regexp nil t)
           (let ((match (match-string-no-properties 1)))
             (when (and match (string-match-p "PACKAGE" match))
-              (push (void-prop-string-to-list match) recipes))))))
+              (push (void-prop-string-to-recipe match) recipes))))))
     recipes))
 #+end_src
 
