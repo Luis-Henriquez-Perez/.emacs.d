@@ -1199,10 +1199,10 @@ from pulling (or failing to pull) in autoloaded macros/features.
 (defmacro after! (features &rest body)
   "Wrapper around `with-eval-after-load'."
   (declare (indent defun) (debug t))
-  (cond ((eq 'or it)
+  (cond ((eq 'or features)
          (macroexp-progn
           (--map `(after! ,it ,@body) (cdr features))))
-        ((eq 'and it)
+        ((eq 'and features)
          (void-wrap-form (--map `(after! ,it) (cdr features))
                          (macroexp-progn body)))
         ((lisp features)
