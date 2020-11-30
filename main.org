@@ -258,7 +258,7 @@ customizing emacs.
 :REPO:     "tkf/emacs-request"
 :PACKAGE:  "request"
 :LOCAL-REPO: "emacs-request"
-:COMMIT:   0183da84cb45eb94da996cd2eab714ef0d7504cc
+:COMMIT:   "0183da84cb45eb94da996cd2eab714ef0d7504cc"
 :END:
 
 #+begin_src emacs-lisp
