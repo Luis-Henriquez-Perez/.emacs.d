@@ -12,6 +12,16 @@ The purpose of this headline is to set up the package manager and install all of
 my packages so the rest of the file can assume the packages are already
 installed.
 
+*** preliminary requirements
+:PROPERTIES:
+:ID:       315cd01c-7339-460d-85bd-fc3f09d89dfc
+:END:
+
+#+begin_src emacs-lisp
+(require 'seq)
+(require 'cl-lib)
+#+end_src
+
 *** directory where packages will be installed
 :PROPERTIES:
 :ID:       5e5d2a12-1270-402d-a8c2-d24207755335
