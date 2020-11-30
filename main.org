@@ -297,7 +297,7 @@ customizing emacs.
 :END:
 
 #+begin_src emacs-lisp
-(setq request-storage-directory . (concat VOID-DATA-DIR "request"))
+(setq request-storage-directory (concat VOID-DATA-DIR "request"))
 #+end_src
 
 *** system-packages
