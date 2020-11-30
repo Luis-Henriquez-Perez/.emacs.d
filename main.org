@@ -261,16 +261,17 @@ This is where I actually install all of my packages in one go. To save time
 installing packages, I try to access.
 
 #+begin_src emacs-lisp
-(defvar void-package-recipes (void-get-package-recipes)
+(defvar void-package-recipes (eval-when-compile (void-get-package-recipes))
   "Package recipes.")
 
 (defvar void-package-load-paths
-  (let ((old-load-path load-path)
-        (load-path load-path))
-    (straight:initialize)
-    (mapc #'straight:install-fn void-package-recipes)
-    ;; (mapc #'require void-essential-packages)
-    (cl-set-difference load-path old-load-path))
+  (eval-when-compile
+    (let ((old-load-path load-path)
+          (load-path load-path))
+      (straight:initialize)
+      (mapc #'straight:install-fn void-package-recipes)
+      ;; (mapc #'require void-essential-packages)
+      (cl-set-difference load-path old-load-path)))
   "Package load-paths.")
 
 (setq load-path (append void-package-load-paths load-path))
