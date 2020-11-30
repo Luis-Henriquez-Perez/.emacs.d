@@ -8613,9 +8613,15 @@ hindsight, using this function is even easier than using ~window-beg~ and
                                      (all-the-icons-material "low_priority"))))
 #+end_src
 
-**** org superstar
+**** org-superstar
 :PROPERTIES:
 :ID: c43700f5-ff24-46b2-aed5-a12f8d8bb347
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "integral-dw/org-superstar-mode"
+:PACKAGE:  "org-superstar"
+:LOCAL-REPO: "org-superstar-mode"
 :END:
 
 [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
