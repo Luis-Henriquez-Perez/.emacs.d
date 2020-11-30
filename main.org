@@ -4546,7 +4546,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 (setq emms-directory (concat VOID-DATA-DIR "emms/"))
 (setq emms-seek-seconds 5)
 (setq emms-player-list '(emms-player-mpv))
-(setq emms-source-file-default-directory VOID-MUSIC-DIR)
+(setq emms-source-file-default-directory "~/Multimedia/music")
 (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 (setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
 (setq mpc-host "127.0.0.1:6600")
