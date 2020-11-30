@@ -274,7 +274,7 @@ customizing emacs.
 :REPO:     "jabranham/system-packages"
 :PACKAGE:  "system-packages"
 :LOCAL-REPO: "system-packages"
-:COMMIT:   92c58d98bc7282df9fd6f24436a105f5f518cde9
+:COMMIT:   "92c58d98bc7282df9fd6f24436a105f5f518cde9"
 :END:
 
 **** settings
@@ -328,7 +328,7 @@ customizing emacs.
 :REPO:     "dacap/keyfreq"
 :PACKAGE:  "keyfreq"
 :LOCAL-REPO: "keyfreq"
-:COMMIT:   e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4
+:COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
 :END:
 
 #+begin_src emacs-lisp
@@ -344,7 +344,7 @@ customizing emacs.
 :REPO:     "cask/shut-up"
 :PACKAGE:  "shut-up"
 :LOCAL-REPO: "shut-up"
-:COMMIT:   081d6b01e3ba0e60326558e545c4019219e046ce
+:COMMIT:   "081d6b01e3ba0e60326558e545c4019219e046ce"
 :END:
 
 #+begin_src emacs-lisp
@@ -361,7 +361,7 @@ customizing emacs.
 :REPO:     "noctuid/general.el"
 :PACKAGE:  "general"
 :LOCAL-REPO: "general.el"
-:COMMIT:   a0b17d207badf462311b2eef7c065b884462cb7c
+:COMMIT:   "a0b17d207badf462311b2eef7c065b884462cb7c"
 :END:
 
 There are numerous keybinding functions in Emacs; and they all look a little
@@ -483,7 +483,7 @@ make a difference. That's why.
 :REPO:     "nschum/idle-require.el"
 :PACKAGE:  "idle-require"
 :LOCAL-REPO: "idle-require.el"
-:COMMIT:   33592bb098223b4432d7a35a1d65ab83f47c1ec1
+:COMMIT:   "33592bb098223b4432d7a35a1d65ab83f47c1ec1"
 :END:
 
 Idle require is a tool for loading autoload functions, files or features during
@@ -596,7 +596,7 @@ Accept the same arguments as `message'."
 :REPO:     "magnars/s.el"
 :PACKAGE:  "s"
 :LOCAL-REPO: "s.el"
-:COMMIT:   43ba8b563bee3426cead0e6d4ddc09398e1a349d
+:COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
 :END:
 
 #+begin_src emacs-lisp
@@ -612,7 +612,7 @@ Accept the same arguments as `message'."
 :REPO:     "magnars/dash.el"
 :PACKAGE:  "dash"
 :LOCAL-REPO: "dash.el"
-:COMMIT:   0f238a9a466879ee96e5db0482019453718f342d
+:COMMIT:   "0f238a9a466879ee96e5db0482019453718f342d"
 :END:
 
 Dash is an excellent functional list manipulation library. If I did not use it
@@ -650,7 +650,7 @@ as a dependency, I'd end up rewriting many of its functions.
 :REPO:     "ndwarshuis/org-ml"
 :PACKAGE:  "org-ml"
 :LOCAL-REPO: "org-ml"
-:COMMIT:   93e13bfc74e0c68d3c12a9d1405f91ce86a3d331
+:COMMIT:   "93e13bfc74e0c68d3c12a9d1405f91ce86a3d331"
 :END:
 
 [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
@@ -665,7 +665,7 @@ structures. It was built for.
 :repo:     "alphapapa/ts.el"
 :package:  "ts"
 :local-repo: "ts.el"
-:COMMIT:   df48734ef046547c1aa0de0f4c07d11964ef1f7f
+:COMMIT:   "df48734ef046547c1aa0de0f4c07d11964ef1f7f"
 :END:
 
 =ts= is a time package.
@@ -680,7 +680,7 @@ structures. It was built for.
 :REPO:     "Wilfred/ht.el"
 :PACKAGE:  "ht"
 :LOCAL-REPO: "ht.el"
-:COMMIT:   fff8c43f0e03d5b98deb9f988522b839ce2ca253
+:COMMIT:   "fff8c43f0e03d5b98deb9f988522b839ce2ca253"
 :END:
 
 =ht= is a library for working with hash tables.
@@ -1809,7 +1809,7 @@ When VOID is performing computationally intensive operations,
 :REPO:     "koral/gcmh"
 :PACKAGE:  "gcmh"
 :LOCAL-REPO: "gcmh"
-:COMMIT:   84c43a4c0b41a595ac6e299fa317d2831813e580
+:COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
 :END:
 
 #+begin_src emacs-lisp
@@ -3092,7 +3092,7 @@ instead of windows).
 :REPO:     "abo-abo/ace-window"
 :HOST:     github
 :TYPE:     git
-:COMMIT:   c7cb315c14e36fded5ac4096e158497ae974bec9
+:COMMIT:   "c7cb315c14e36fded5ac4096e158497ae974bec9"
 :FLAVOR:   melpa
 :PACKAGE:  "ace-window"
 :LOCAL-REPO: "ace-window"
@@ -3120,7 +3120,7 @@ but you can't see the buffer contents. That's a no-go for me I need to see them.
 :REPO:     "pashinin/workgroups2"
 :PACKAGE:  "workgroups2"
 :LOCAL-REPO: "workgroups2"
-:COMMIT:   737306531f6834227eee2f63b197a23401003d23
+:COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
@@ -3297,7 +3297,7 @@ Somtimes I might want to adjust this.
 :REPO:     "emacsorphanage/transpose-frame"
 :PACKAGE:  "transpose-frame"
 :LOCAL-REPO: "transpose-frame"
-:COMMIT:   12e523d70ff78cc8868097b56120848befab5dbc
+:COMMIT:   "12e523d70ff78cc8868097b56120848befab5dbc"
 :END:
 
 https://www.emacswiki.org/emacs/TransposeFrame
@@ -3317,7 +3317,7 @@ https://www.emacswiki.org/emacs/TransposeFrame
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "exwm"
 :LOCAL-REPO: "exwm"
-:COMMIT:   45ac28cc9cffe910c3b70979bc321a1a60e002ea
+:COMMIT:   "45ac28cc9cffe910c3b70979bc321a1a60e002ea"
 :END:
 
 [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
@@ -3548,7 +3548,7 @@ windows).
 :REPO:     "agzam/exwm-edit"
 :PACKAGE:  "exwm-edit"
 :LOCAL-REPO: "exwm-edit"
-:COMMIT:   2fd9426922c8394ec8d21c50dcc20b7d03af21e4
+:COMMIT:   "2fd9426922c8394ec8d21c50dcc20b7d03af21e4"
 :END:
 
 The dream is to do all text editing in Emacs. This package is a big step towards
@@ -3597,7 +3597,7 @@ Emacs's text editing capabilities on it.
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "buffer-expose"
 :LOCAL-REPO: "buffer-expose"
-:COMMIT:   3f8e0c52d85397e59b6081c8c3e71a55d610c56d
+:COMMIT:   "3f8e0c52d85397e59b6081c8c3e71a55d610c56d"
 :END:
 
 *** TODO commands
@@ -3680,7 +3680,7 @@ of things that we actually want at this moment.
 :REPO:     "joaotavora/yasnippet"
 :PACKAGE:  "yasnippet"
 :LOCAL-REPO: "yasnippet"
-:COMMIT:   5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6
+:COMMIT:   "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"
 :END:
 
 **** init
@@ -3746,7 +3746,7 @@ of things that we actually want at this moment.
 :REPO:     "AndreaCrotti/yasnippet-snippets"
 :PACKAGE:  "yasnippet-snippets"
 :LOCAL-REPO: "yasnippet-snippets"
-:COMMIT:   7716da98b773f3e25a8a1b1949e24b4f3e855d17
+:COMMIT:   "7716da98b773f3e25a8a1b1949e24b4f3e855d17"
 :END:
 
 #+begin_src emacs-lisp
@@ -3764,7 +3764,7 @@ of things that we actually want at this moment.
 :REPO:     "raxod502/selectrum"
 :PACKAGE:  "selectrum"
 :LOCAL-REPO: "selectrum"
-:COMMIT:   1ef55328dfba7abc653f7de695c34e2fbbef8ec9
+:COMMIT:   "1ef55328dfba7abc653f7de695c34e2fbbef8ec9"
 :END:
 
 *** init
@@ -3819,7 +3819,7 @@ of things that we actually want at this moment.
 :REPO:     "raxod502/prescient.el"
 :PACKAGE:  "prescient"
 :LOCAL-REPO: "prescient.el"
-:COMMIT:   41443e1c9f794b569dafdad4c0b64a608df64b99
+:COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
 :END:
 
 **** prescient
@@ -3843,7 +3843,7 @@ of things that we actually want at this moment.
 :type:     git
 :repo:     "raxod502/prescient.el"
 :host:     github
-:COMMIT:   41443e1c9f794b569dafdad4c0b64a608df64b99
+:COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
 :END:
 
 **** selectrum prescient
@@ -3866,7 +3866,7 @@ of things that we actually want at this moment.
 :REPO:     "oantolin/orderless"
 :PACKAGE:  "orderless"
 :LOCAL-REPO: "orderless"
-:COMMIT:   e56eeef6e11909ccd62aa7250867dce803706d2c
+:COMMIT:   "e56eeef6e11909ccd62aa7250867dce803706d2c"
 :END:
 
 **** init
@@ -3913,7 +3913,7 @@ Orderless will do this."
 :REPO:     "company-mode/company-mode"
 :PACKAGE:  "company"
 :LOCAL-REPO: "company-mode"
-:COMMIT:   dd925936f7c0bf00319c81e8caea1b3db63bb8b5
+:COMMIT:   "dd925936f7c0bf00319c81e8caea1b3db63bb8b5"
 :END:
 
 *** init
@@ -4051,7 +4051,7 @@ worth quoting here:
 :TYPE:     git
 :REPO:     "raxod502/prescient.el"
 :HOST:     github
-:COMMIT:   41443e1c9f794b569dafdad4c0b64a608df64b99
+:COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
 :END:
 
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
@@ -4372,7 +4372,7 @@ available to us only a web search away.
 :HOST:     github
 :BRANCH:   "main"
 :REPO:     "hrs/engine-mode"
-:COMMIT:   e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1
+:COMMIT:   "e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1"
 :TYPE:     git
 :PACKAGE:  "engine-mode"
 :LOCAL-REPO: "engine-mode"
@@ -4407,7 +4407,7 @@ functions. Engine mode seems to only be useful for binding keys.
 :REPO:     "emacs-w3m/emacs-w3m"
 :PACKAGE:  "w3m"
 :LOCAL-REPO: "emacs-w3m"
-:COMMIT:   a4edf91ba14d39b6a1a2724ad275e941b1f00235
+:COMMIT:   "a4edf91ba14d39b6a1a2724ad275e941b1f00235"
 :END:
 
 [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
@@ -4438,7 +4438,7 @@ information such as music, videos, images, and gifs.
 :REPO:     "gRastello/ytel"
 :PACKAGE:  "ytel"
 :LOCAL-REPO: "ytel"
-:COMMIT:   d80c7964ec66589d5580fc13773e94f1834ab76f
+:COMMIT:   "d80c7964ec66589d5580fc13773e94f1834ab76f"
 :END:
 
 *** init
@@ -4502,7 +4502,7 @@ YouTube search results into a buffer and manipulate them with emacs lisp.
 :REPO:     "https://git.savannah.gnu.org/git/emms.git"
 :PACKAGE:  "emms"
 :LOCAL-REPO: "emms"
-:COMMIT:   94019bb34c56341e66b14c41ff706273e039f525
+:COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
 :END:
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
@@ -4661,7 +4661,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 :REPO:     "Ambrevar/emacs-gif-screencast"
 :PACKAGE:  "gif-screencast"
 :LOCAL-REPO: "emacs-gif-screencast"
-:COMMIT:   e39786458fb30e2e9683094c75c6c2cef537d9c4
+:COMMIT:   "e39786458fb30e2e9683094c75c6c2cef537d9c4"
 :END:
 
 This package allows for the creation of gifs from within emacs.
@@ -4698,7 +4698,7 @@ necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypressio
 :REPO:     "Fanael/highlight-numbers"
 :PACKAGE:  "highlight-numbers"
 :LOCAL-REPO: "highlight-numbers"
-:COMMIT:   8b4744c7f46c72b1d3d599d4fb75ef8183dee307
+:COMMIT:   "8b4744c7f46c72b1d3d599d4fb75ef8183dee307"
 :END:
 
 What [[https://github.com/Fanael/highlight-numbers][highlight-numbers]] does is pretty self explanatory: it highlights numbers.
@@ -4767,7 +4767,7 @@ Org Mode. The feature responsible for doing this is [[][hide-lines]].
 :REPO:     "Fanael/rainbow-delimiters"
 :PACKAGE:  "rainbow-delimiters"
 :LOCAL-REPO: "rainbow-delimiters"
-:COMMIT:   f43d48a24602be3ec899345a3326ed0247b960c6
+:COMMIT:   "f43d48a24602be3ec899345a3326ed0247b960c6"
 :END:
 
 *** init
@@ -4799,7 +4799,7 @@ great idea! It makes it really easy to see which parentheses go together.
 :REPO:     "Malabarba/aggressive-indent-mode"
 :PACKAGE:  "aggressive-indent"
 :LOCAL-REPO: "aggressive-indent-mode"
-:COMMIT:   b0ec0047aaae071ad1647159613166a253410a63
+:COMMIT:   "b0ec0047aaae071ad1647159613166a253410a63"
 :END:
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
@@ -4818,7 +4818,7 @@ it. It's pretty smart and very convenient.
 :REPO:     "lewang/ws-butler"
 :PACKAGE:  "ws-butler"
 :LOCAL-REPO: "ws-butler"
-:COMMIT:   52321b99be69aa1b661da7743c4421a30d8b6bcb
+:COMMIT:   "52321b99be69aa1b661da7743c4421a30d8b6bcb"
 :END:
 
 [[https://github.com/lewang/ws-butler][ws-butler]] cleans up whitespace.
@@ -4851,7 +4851,7 @@ it. It's pretty smart and very convenient.
 :REPO:     "mkcms/interactive-align"
 :PACKAGE:  "ialign"
 :LOCAL-REPO: "interactive-align"
-:COMMIT:   eca40b8b59ea713dba21b18f5b047a6c086b91dc
+:COMMIT:   "eca40b8b59ea713dba21b18f5b047a6c086b91dc"
 :END:
 
 Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regular expressions to align text.
@@ -4874,7 +4874,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :REPO:     "Fuco1/smartparens"
 :PACKAGE:  "smartparens"
 :LOCAL-REPO: "smartparens"
-:COMMIT:   c59bfef7e8f1687ac77b0afaaaed86d8051d3de1
+:COMMIT:   "c59bfef7e8f1687ac77b0afaaaed86d8051d3de1"
 :END:
 
 **** init
@@ -4949,7 +4949,7 @@ Package [[https://github.com/mkcms/interactive-align][ialign]] lets me use regul
 :REPO:     "noctuid/lispyville"
 :PACKAGE:  "lispyville"
 :LOCAL-REPO: "lispyville"
-:COMMIT:   0f13f26cd6aa71f9fd852186ad4a00c4294661cd
+:COMMIT:   "0f13f26cd6aa71f9fd852186ad4a00c4294661cd"
 :END:
 
 [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
@@ -5065,7 +5065,7 @@ Sometimes =evil-normal-state= enters visual state.
 :REPO:     "abo-abo/lispy"
 :PACKAGE:  "lispy"
 :LOCAL-REPO: "lispy"
-:COMMIT:   41f5574aefb69930d9bdcbe4e0cf642005369765
+:COMMIT:   "41f5574aefb69930d9bdcbe4e0cf642005369765"
 :END:
 
 For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
@@ -5125,7 +5125,7 @@ very useful to me.
 :REPO:     "emacsmirror/spell-number"
 :PACKAGE:  "spell-number"
 :LOCAL-REPO: "spell-number"
-:COMMIT:   3ce612dce14326b2304f5272e86b10c16102acce
+:COMMIT:   "3ce612dce14326b2304f5272e86b10c16102acce"
 :END:
 
 #+begin_src emacs-lisp
@@ -5144,7 +5144,7 @@ very useful to me.
 :REPO:     "davidshepherd7/aggressive-fill-paragraph-mode"
 :PACKAGE:  "aggressive-fill-paragraph"
 :LOCAL-REPO: "aggressive-fill-paragraph-mode"
-:COMMIT:   2d65d925318006e2f6fa261ad192fbc2d212877b
+:COMMIT:   "2d65d925318006e2f6fa261ad192fbc2d212877b"
 :END:
 
 #+begin_src emacs-lisp
@@ -5164,7 +5164,7 @@ very useful to me.
 :PACKAGE:  "spell-fu"
 :TYPE:     git
 :LOCAL-REPO: "emacs-spell-fu"
-:COMMIT:   a7db58747131dca2eee0e0757c3d254d391ddd1c
+:COMMIT:   "a7db58747131dca2eee0e0757c3d254d391ddd1c"
 :END:
 
 #+begin_src emacs-lisp
@@ -5186,7 +5186,7 @@ very useful to me.
 :REPO:     "emacsmirror/auto-capitalize"
 :PACKAGE:  "auto-capitalize"
 :LOCAL-REPO: "auto-capitalize"
-:COMMIT:   0ee14c76d5771aaa84a004463f8b8b3a195c2fd8
+:COMMIT:   "0ee14c76d5771aaa84a004463f8b8b3a195c2fd8"
 :END:
 
 [[https://github.com/emacsmirror/auto-capitalize][auto-capitalize]] automatically capitalizes the first word of a sentence for me.
@@ -5218,7 +5218,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :REPO:     "jcs-elpa/define-it"
 :PACKAGE:  "define-it"
 :LOCAL-REPO: "define-it"
-:COMMIT:   8df0505babf930bafe3fd28d472cc325637f886b
+:COMMIT:   "8df0505babf930bafe3fd28d472cc325637f886b"
 :END:
 
 #+begin_src emacs-lisp
@@ -5236,7 +5236,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 :REPO:     "emacsmirror/plural"
 :PACKAGE:  "plural"
 :LOCAL-REPO: "plural"
-:COMMIT:   b91ce1594783c51dabeadbbcbb9caa00aaaa1353
+:COMMIT:   "b91ce1594783c51dabeadbbcbb9caa00aaaa1353"
 :END:
 
 This package determines whether a noun is plural and provides a function to
@@ -5281,7 +5281,7 @@ like that concern N number of things, where N could be 1 or more things.
 :REPO:     "emacs-evil/evil"
 :PACKAGE:  "evil"
 :LOCAL-REPO: "evil"
-:COMMIT:   32b2783d2cb7e093ac284fa6af9ceed8e4418826
+:COMMIT:   "32b2783d2cb7e093ac284fa6af9ceed8e4418826"
 :END:
 
 [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
@@ -5739,7 +5739,7 @@ Why not just go to the end of the ="= like any other around operator?
 :REPO:     "emacs-evil/evil-surround"
 :PACKAGE:  "evil-surround"
 :LOCAL-REPO: "evil-surround"
-:COMMIT:   346d4d85fcf1f9517e9c4991c1efe68b4130f93a
+:COMMIT:   "346d4d85fcf1f9517e9c4991c1efe68b4130f93a"
 :END:
 
 **** hooks
@@ -5760,7 +5760,7 @@ Why not just go to the end of the ="= like any other around operator?
 :REPO:     "redguardtoo/evil-matchit"
 :PACKAGE:  "evil-matchit"
 :LOCAL-REPO: "evil-matchit"
-:COMMIT:   539192328ec521796c3f2bd8c1ac1a1b0e4f08f9
+:COMMIT:   "539192328ec521796c3f2bd8c1ac1a1b0e4f08f9"
 :END:
 
 #+begin_src emacs-lisp
@@ -5776,7 +5776,7 @@ Why not just go to the end of the ="= like any other around operator?
 :REPO:     "Dewdrops/evil-exchange"
 :PACKAGE:  "evil-exchange"
 :LOCAL-REPO: "evil-exchange"
-:COMMIT:   3030e21ee16a42dfce7f7cf86147b778b3f5d8c1
+:COMMIT:   "3030e21ee16a42dfce7f7cf86147b778b3f5d8c1"
 :END:
 
 Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swap two regions of text.
@@ -5799,7 +5799,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :REPO:     "bling/evil-visualstar"
 :PACKAGE:  "evil-visualstar"
 :LOCAL-REPO: "evil-visualstar"
-:COMMIT:   06c053d8f7381f91c53311b1234872ca96ced752
+:COMMIT:   "06c053d8f7381f91c53311b1234872ca96ced752"
 :END:
 
 **** evil-visualstar
@@ -5830,7 +5830,7 @@ Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swa
 :REPO:     "magnars/expand-region.el"
 :PACKAGE:  "expand-region"
 :LOCAL-REPO: "expand-region.el"
-:COMMIT:   ea6b4cbb9985ddae532bd2faf9bb00570c9f2781
+:COMMIT:   "ea6b4cbb9985ddae532bd2faf9bb00570c9f2781"
 :END:
 
 [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
@@ -5881,7 +5881,7 @@ larger text objects. It's saves me keystrokes.
 :REPO:     "abo-abo/avy"
 :PACKAGE:  "avy"
 :LOCAL-REPO: "avy"
-:COMMIT:   bbf1e7339eba06784dfe86643bb0fbddf5bb0342
+:COMMIT:   "bbf1e7339eba06784dfe86643bb0fbddf5bb0342"
 :END:
 
 [[https://github.com/abo-abo/avy][Avy]]
@@ -5978,7 +5978,7 @@ larger text objects. It's saves me keystrokes.
 :REPO:     "ideasman42/emacs-undo-fu"
 :PACKAGE:  "undo-fu"
 :LOCAL-REPO: "emacs-undo-fu"
-:COMMIT:   c0806c1903c5a0e4c69b6615cdc3366470a9b8ca
+:COMMIT:   "c0806c1903c5a0e4c69b6615cdc3366470a9b8ca"
 :END:
 
 **** settings
@@ -6020,7 +6020,7 @@ larger text objects. It's saves me keystrokes.
 :REPO:     "ideasman42/emacs-undo-fu-session"
 :PACKAGE:  "undo-fu-session"
 :LOCAL-REPO: "emacs-undo-fu-session"
-:COMMIT:   56cdd3538a058c6916bdf2d9010c2179f2505829
+:COMMIT:   "56cdd3538a058c6916bdf2d9010c2179f2505829"
 :END:
 
 * Utility
@@ -6076,7 +6076,7 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 :REPO:     "muffinmad/emacs-find-file-rg"
 :PACKAGE:  "find-file-rg"
 :LOCAL-REPO: "emacs-find-file-rg"
-:COMMIT:   ed556e092a92e325f335554ab193cef2d8fec009
+:COMMIT:   "ed556e092a92e325f335554ab193cef2d8fec009"
 :END:
 
 *** find-file-rg
@@ -6237,7 +6237,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 :REPO:     "xuchunyang/eshell-z"
 :PACKAGE:  "eshell-z"
 :LOCAL-REPO: "eshell-z"
-:COMMIT:   337cb241e17bd472bd3677ff166a0800f684213c
+:COMMIT:   "337cb241e17bd472bd3677ff166a0800f684213c"
 :END:
 
 ***** eshell-z
@@ -6249,7 +6249,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 :REPO:     "xuchunyang/eshell-z"
 :PACKAGE:  "eshell-z"
 :LOCAL-REPO: "eshell-z"
-:COMMIT:   337cb241e17bd472bd3677ff166a0800f684213c
+:COMMIT:   "337cb241e17bd472bd3677ff166a0800f684213c"
 :END:
 
 #+begin_src emacs-lisp
@@ -6429,7 +6429,7 @@ Each element of the list is an abbreviated.")
 :REPO:     "bennya/shrink-path.el"
 :PACKAGE:  "shrink-path"
 :LOCAL-REPO: "shrink-path.el"
-:COMMIT:   c14882c8599aec79a6e8ef2d06454254bb3e1e41
+:COMMIT:   "c14882c8599aec79a6e8ef2d06454254bb3e1e41"
 :END:
 
 #+begin_src emacs-lisp
@@ -6445,7 +6445,7 @@ Each element of the list is an abbreviated.")
 :REPO:     "lewang/command-log-mode"
 :PACKAGE:  "command-log-mode"
 :LOCAL-REPO: "command-log-mode"
-:COMMIT:   af600e6b4129c8115f464af576505ea8e789db27
+:COMMIT:   "af600e6b4129c8115f464af576505ea8e789db27"
 :END:
 
 [[https://github.com/lewang/command-log-mode][command-log-mode]] keeps track of all the commands you run and displays them to
@@ -6611,7 +6611,7 @@ read this [[https://emacs.stackexchange.com/questions/51853/retracing-steps-with
 :REPO:     "skeeto/elfeed"
 :PACKAGE:  "elfeed"
 :LOCAL-REPO: "elfeed"
-:COMMIT:   7b2b6fadaa498fef2ba212a50da4a8afa2a5d305
+:COMMIT:   "7b2b6fadaa498fef2ba212a50da4a8afa2a5d305"
 :END:
 
 *** elfeed
@@ -6730,7 +6730,7 @@ in time to see older posts.
 :REPO:     "ralesi/ranger.el"
 :PACKAGE:  "ranger"
 :LOCAL-REPO: "ranger.el"
-:COMMIT:   caf75f0060e503af078c7e5bb50d9aaa508e6f3e
+:COMMIT:   "caf75f0060e503af078c7e5bb50d9aaa508e6f3e"
 :END:
 
 [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
@@ -6879,7 +6879,7 @@ that restarts emacs. I haven't tested this in EXWM mode.
 :REPO:     "ryuslash/git-auto-commit-mode"
 :PACKAGE:  "git-auto-commit-mode"
 :LOCAL-REPO: "git-auto-commit-mode"
-:COMMIT:   df07899acdb3f9c114b72fdab77107c924b3172c
+:COMMIT:   "df07899acdb3f9c114b72fdab77107c924b3172c"
 :END:
 
 To avoid losing information. You should commit often in git--like every 10
@@ -6968,7 +6968,7 @@ address later.
 :REPO:     "magit/magit"
 :PACKAGE:  "magit"
 :LOCAL-REPO: "magit"
-:COMMIT:   87a63353df0ad8ac661ac1b93c59d40669b65ffc
+:COMMIT:   "87a63353df0ad8ac661ac1b93c59d40669b65ffc"
 :END:
 
 **** transient
@@ -7046,7 +7046,7 @@ address later.
 :REPO:     "emacsorphanage/git-gutter"
 :PACKAGE:  "git-gutter"
 :LOCAL-REPO: "git-gutter"
-:COMMIT:   db0e794fa97e4c902bbdf51b234cb68c993c71ae
+:COMMIT:   "db0e794fa97e4c902bbdf51b234cb68c993c71ae"
 :END:
 
 #+begin_src emacs-lisp
@@ -7172,7 +7172,7 @@ I do not like dealing with the command line. I want real elisp code please.
 :REPO:     "kanru/uuidgen-el"
 :PACKAGE:  "uuidgen"
 :LOCAL-REPO: "uuidgen-el"
-:COMMIT:   b50e6fef2de4199a8f207b46588c2cb3890ddd85
+:COMMIT:   "b50e6fef2de4199a8f207b46588c2cb3890ddd85"
 :END:
 
 ** xr
@@ -7184,7 +7184,7 @@ I do not like dealing with the command line. I want real elisp code please.
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "xr"
 :LOCAL-REPO: "xr"
-:COMMIT:   3cdf1129474cebd223d9313eff52be936ba2556a
+:COMMIT:   "3cdf1129474cebd223d9313eff52be936ba2556a"
 :END:
 
 This package is the inverse of =rx=. It takes a regular expression and returns the
@@ -7206,7 +7206,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :REPO:     "politza/pdf-tools"
 :PACKAGE:  "pdf-tools"
 :LOCAL-REPO: "pdf-tools"
-:COMMIT:   c510442ab89c8a9e9881230eeb364f4663f59e76
+:COMMIT:   "c510442ab89c8a9e9881230eeb364f4663f59e76"
 :END:
 
 *** pdf-tools
@@ -7275,7 +7275,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 :REPO:     "jorgenschaefer/circe"
 :PACKAGE:  "circe"
 :LOCAL-REPO: "circe"
-:COMMIT:   d98986ce933c380b47d727beea8bad81bda65dc9
+:COMMIT:   "d98986ce933c380b47d727beea8bad81bda65dc9"
 :END:
 
 ** persistent scratch
@@ -7340,7 +7340,7 @@ on the buffer you'd like to edit.
 :REPO:     "skuro/plantuml-mode"
 :PACKAGE:  "plantuml-mode"
 :LOCAL-REPO: "plantuml-mode"
-:COMMIT:   5889166b6cfe94a37532ea27fc8de13be2ebfd02
+:COMMIT:   "5889166b6cfe94a37532ea27fc8de13be2ebfd02"
 :END:
 
 *** plantuml
@@ -7372,7 +7372,7 @@ on the buffer you'd like to edit.
 :REPO:     "bbatsov/super-save"
 :PACKAGE:  "super-save"
 :LOCAL-REPO: "super-save"
-:COMMIT:   886b5518c8a8b4e1f5e59c332d5d80d95b61201d
+:COMMIT:   "886b5518c8a8b4e1f5e59c332d5d80d95b61201d"
 :END:
 
 The default auto-saving feature in emacs saves after a certain number of
@@ -7412,7 +7412,7 @@ Saving files like this reduces the likelihood of user delays.
 :REPO:     "emacs-evil/goto-chg"
 :PACKAGE:  "goto-chg"
 :LOCAL-REPO: "goto-chg"
-:COMMIT:   5c057c8623abadf7fd57ce625843435d231f2739
+:COMMIT:   "5c057c8623abadf7fd57ce625843435d231f2739"
 :END:
 
 * Languages
@@ -7429,7 +7429,7 @@ Saving files like this reduces the likelihood of user delays.
 :FILES:    ("*" (:exclude ".git"))
 :PACKAGE:  "csv-mode"
 :LOCAL-REPO: "csv-mode"
-:COMMIT:   635337407c44c1c3e9f7052afda7e27cf8a05c14
+:COMMIT:   "635337407c44c1c3e9f7052afda7e27cf8a05c14"
 :END:
 
 *** align
@@ -7720,7 +7720,7 @@ The change to this function."
 :REPO:     "jorgenschaefer/emacs-buttercup"
 :PACKAGE:  "buttercup"
 :LOCAL-REPO: "emacs-buttercup"
-:COMMIT:   f6f93353405cda51ad2778ae9247f77265b7cbfb
+:COMMIT:   "f6f93353405cda51ad2778ae9247f77265b7cbfb"
 :END:
 
 [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is an emacs debugging suite.
@@ -7769,7 +7769,7 @@ from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with
 :REPO:     "joddie/macrostep"
 :PACKAGE:  "macrostep"
 :LOCAL-REPO: "macrostep"
-:COMMIT:   424e3734a1ee526a1bd7b5c3cd1d3ef19d184267
+:COMMIT:   "424e3734a1ee526a1bd7b5c3cd1d3ef19d184267"
 :END:
 
 ***** commands
@@ -9267,7 +9267,7 @@ diary/journal using =org-mode=.
 :REPO:     "Wilfred/helpful"
 :PACKAGE:  "helpful"
 :LOCAL-REPO: "helpful"
-:COMMIT:   584ecc887bb92133119f93a6716cdf7af0b51dca
+:COMMIT:   "584ecc887bb92133119f93a6716cdf7af0b51dca"
 :END:
 
 **** helpful
@@ -9304,7 +9304,7 @@ in a better format.
 :REPO:     "xuchunyang/elisp-demos"
 :PACKAGE:  "elisp-demos"
 :LOCAL-REPO: "elisp-demos"
-:COMMIT:   05047654fbd342cb2463ec8ea562e4bba53c7be2
+:COMMIT:   "05047654fbd342cb2463ec8ea562e4bba53c7be2"
 :END:
 
 **** elisp demos
@@ -9339,7 +9339,7 @@ pleasing Emacs configuration can have. Ugliness really can take its toll.
 :REPO:     "justbur/emacs-which-key"
 :PACKAGE:  "which-key"
 :LOCAL-REPO: "emacs-which-key"
-:COMMIT:   c011b268196b8356c70f668506a1133086bc9477
+:COMMIT:   "c011b268196b8356c70f668506a1133086bc9477"
 :END:
 
 Emacs is full of so many keybindings, that it can be difficult to keep track of
@@ -9410,7 +9410,7 @@ you can "discover" the commands as you go along.
 :REPO:     "emacs-dashboard/emacs-dashboard"
 :PACKAGE:  "dashboard"
 :LOCAL-REPO: "emacs-dashboard"
-:COMMIT:   2cebc69e3d4b82569daa732b9114787d7018304b
+:COMMIT:   "2cebc69e3d4b82569daa732b9114787d7018304b"
 :END:
 
 [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
@@ -9551,7 +9551,7 @@ declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 :REPO:     "tautologyclub/feebleline"
 :PACKAGE:  "feebleline"
 :LOCAL-REPO: "feebleline"
-:COMMIT:   b2f2db25cac77817bf0c49ea2cea6383556faea0
+:COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
 :END:
 
 Feebleline replaces the typical emacs modeline with text printed out to
@@ -9874,7 +9874,7 @@ the mode line.
 :REPO:     "domtronn/all-the-icons.el"
 :PACKAGE:  "all-the-icons"
 :LOCAL-REPO: "all-the-icons.el"
-:COMMIT:   6917b08f64dd8487e23769433d6cb9ba11f4152f
+:COMMIT:   "6917b08f64dd8487e23769433d6cb9ba11f4152f"
 :END:
 
 A little bit of decoration and spice can go a long way. As its name suggests,
