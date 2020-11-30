@@ -1600,22 +1600,6 @@ SYM is a symbol that stores a list."
   `(setq ,sym (nconc ,sym ,@lists)))
 #+end_src
 
-*** run before load
-:PROPERTIES:
-:ID:       68bc3955-7f01-42fa-ad16-8422f318dd92
-:END:
-
-This is a hook designed to run just before a package is loaded.
-
-#+begin_src emacs-lisp
-(defvar void-before-load-hook nil
-  "Hook run just before a feature is loaded.")
-
-(defadvice! run-void-before-load-hook (:around require)
-  (when (run-hooks void-before-load-hook)
-    (apply <orig-fn> <args>)))
-#+end_src
-
 *** autoload
 :PROPERTIES:
 :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
@@ -1720,30 +1704,6 @@ I want a shorthand for advices that involve package loading.
 (defun void-load-after-call (package functions)
   (void--load-after-call package :after functions))
 #+end_src
-
-*** ensure system package
-:PROPERTIES:
-:ID:       5ec9bd00-55cd-4d21-bc2e-f6812aa30676
-:END:
-
-#+begin_src emacs-lisp
-(defun void-prompt-for-system-package (package system-packages)
-  "Make sure package has system packages it requires."
-  (alet (void-symbol-intern 'void--ensure-packages-installed-for- package)
-    (if (-all-p #'system-packages-package-installed-p system-packages)
-        nil
-      (yes-or-no-p "System packages %s are not installed. Continue loading %s anyway? ")
-      (completing-read )
-      )
-    (void-add-advice it :around )
-    )
-  )
-#+end_src
-
-*** toggle
-:PROPERTIES:
-:ID:       f8cc6974-283e-4314-91d5-43458d900fa6
-:END:
 
 ** Init
 :PROPERTIES:
