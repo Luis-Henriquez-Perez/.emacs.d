@@ -211,7 +211,7 @@ completely reproducible as one file.
 
 #+begin_src emacs-lisp
 (defun void-org-property-lists (org-file)
-  "Return a list of org properties converted to lists."
+  "Return a list of org properties from `org-file'."
   (let* ((recipes nil)
          (regexp void-property-drawer-regexp))
     (with-current-buffer (or (get-file-buffer org-file)
