@@ -283,6 +283,162 @@ installing packages, I try to access.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** hooks
+:PROPERTIES:
+:ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
+:END:
+
+One of the most common ways to customize Emacs is via [[info:elisp#Hooks][hooks]]. Hooks are variables
+containing functions (also referred to as hooks). The functions in hooks are run
+after certain events, such as starting and quitting emacs. Their purpose is to
+fascillitate customization of what happens before or after particular events.
+
+In this headline, I strive to establish a common naming convention for
+Void-defined hooks, so I can clearly distinguish them from pre-defined hooks.
+
+**** hook-p
+:PROPERTIES:
+:ID:       1995a309-e1d3-40e5-b6b1-fbcd81dda0bb
+:END:
+
+#+begin_src emacs-lisp
+(defun void-hook-p (fn)
+  "Return non-nil if FN is a Void hook."
+  (s-matches-p "\\`[^[:space:]]+&[^[:space:]]+\\'"
+               (symbol-name fn)))
+#+end_src
+
+**** hook variable
+:PROPERTIES:
+:ID:       77f45347-3688-438d-8674-39e6d476a2d1
+:END:
+
+A useful consequence of the hook naming convention is I can determine precisely
+which hook variable a function resides in based on looking at the name
+(=emacs-startup-hook&do-something= would be a hook in =emacs-starup-hook= for
+example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]].
+
+#+begin_src emacs-lisp
+(defun void-hook-var (hook-fn)
+  "Return the hook variable HOOK-FN is in.
+HOOK-FN is a function named with Void naming conventions."
+  (->> (symbol-name hook-fn)
+       (s-match (rx (group (1+ anything)) "&"))
+       (nth 1)
+       (intern)))
+#+end_src
+
+**** hook name
+:PROPERTIES:
+:ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
+:END:
+
+This function is to help produce names that abide by hook naming conventions.
+
+#+begin_src emacs-lisp
+(defun void-hook-name (var hook)
+  "Return a hook name that meets Void naming conventions."
+  (funcall (-partial #'void-symbol-intern var '&)
+           (or (->> (symbol-name hook)
+                    (s-match "void--\\([^[:space:]]+\\)-hook")
+                    (nth 1))
+               hook)))
+#+end_src
+
+**** hook action
+:PROPERTIES:
+:ID:       fa705f26-31f0-43c3-80a6-6741e74ab0ea
+:END:
+
+#+begin_src emacs-lisp
+(defun void-hook-action (hook)
+  "Return the action for hook."
+  (->> (symbol-name hook)
+       (s-match (rx "&" (group (1+ (not (any "&" white)))) eos))
+       (nth 1)))
+#+end_src
+
+**** adding hooks
+:PROPERTIES:
+:ID:       882bc5d2-a0e2-4ea7-b9d2-ab64b3407f82
+:END:
+
+***** internal helper
+:PROPERTIES:
+:ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
+:END:
+
+Add a hook that follow naming conventions. When adding a hook, if it is a void
+function, change it to a hook.
+
+#+begin_src emacs-lisp
+(defun void--add-hook (var hook &optional depth local expire-fn)
+  (let* ((new-hook (void-hook-name var hook))
+         (hook-log (void-symbol-intern new-hook '@ 'log-on-debug)))
+    (defalias new-hook hook)
+    (add-hook var new-hook depth local)
+    (fset hook-log
+          `(lambda (&rest _)
+             (alet ,(void-hook-action new-hook)
+               (void-log "& %s -> %s" ',var it))))
+    (advice-add new-hook :before hook-log)
+    (when expire-fn
+      (->> (void-expire-advice hook expire-fn t)
+           (advice-add new-hook :around)))))
+#+end_src
+
+***** adding hooks
+:PROPERTIES:
+:ID:       10dcca8f-7dd0-45da-a413-43608c098b10
+:END:
+
+#+begin_src emacs-lisp
+(defun void-add-hook (vars hooks &optional depth local expire-fn)
+  "Alias HOOK to match Void naming conventions and add it to VAR."
+  (dolist (var (-list vars))
+    (dolist (hook (-list hooks))
+      (void--add-hook var hook depth local expire-fn))))
+#+end_src
+
+**** removing hooks
+:PROPERTIES:
+:ID:       99708d72-a8d4-42ba-b6ae-ba692fbafec8
+:END:
+
+#+begin_src emacs-lisp
+(defun void-remove-hook (hook)
+  "Remove a void hook."
+  (remove-hook (void-hook-var hook) hook))
+#+end_src
+
+**** defhook!
+:PROPERTIES:
+:ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
+:END:
+
+=defhook= provides a declarative way declare hook functions. It uses a familiar
+defun-like syntax.
+
+#+begin_src emacs-lisp
+(defmacro defhook! (name args &rest body)
+  "Define a hook function and attatch it to HOOK and HOOKS.
+DEPTH and LOCAL are the same as in `add-hook'. BODY is the body of the hook
+function.
+
+\(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
+  (declare (doc-string 3))
+  (-let* ((hooks (-take-while (-not #'keywordp) args))
+          (local (plist-get hooks :local))
+          (depth (or (plist-get hooks :append) (plist-get hooks :depth)))
+          ((docstring _ body) (void--keyword-macro-args body))
+          (hook-name (void-symbol-intern 'void-- name '-hook)))
+    `(progn
+       ,@(-map (lambda (hook)
+                 `(aprog1 (defun ,hook-name (&rest _) ,docstring ,@body)
+                    (void-add-hook ',hook it ,depth ,local)))
+               hooks))))
+#+end_src
+
 *** advice
 :PROPERTIES:
 :ID:       19b9021d-f310-485b-9258-4df19423c082
@@ -596,162 +752,6 @@ Packages like [[][]] come with their own output.
 (defun void--use-void-log (orign-fn &rest args)
   (noflet ((message (&rest args) (void-log args)))
     (apply orign-fn args)))
-#+end_src
-
-*** hooks
-:PROPERTIES:
-:ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
-:END:
-
-One of the most common ways to customize Emacs is via [[info:elisp#Hooks][hooks]]. Hooks are variables
-containing functions (also referred to as hooks). The functions in hooks are run
-after certain events, such as starting and quitting emacs. Their purpose is to
-fascillitate customization of what happens before or after particular events.
-
-In this headline, I strive to establish a common naming convention for
-Void-defined hooks, so I can clearly distinguish them from pre-defined hooks.
-
-**** hook-p
-:PROPERTIES:
-:ID:       1995a309-e1d3-40e5-b6b1-fbcd81dda0bb
-:END:
-
-#+begin_src emacs-lisp
-(defun void-hook-p (fn)
-  "Return non-nil if FN is a Void hook."
-  (s-matches-p "\\`[^[:space:]]+&[^[:space:]]+\\'"
-               (symbol-name fn)))
-#+end_src
-
-**** hook variable
-:PROPERTIES:
-:ID:       77f45347-3688-438d-8674-39e6d476a2d1
-:END:
-
-A useful consequence of the hook naming convention is I can determine precisely
-which hook variable a function resides in based on looking at the name
-(=emacs-startup-hook&do-something= would be a hook in =emacs-starup-hook= for
-example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]].
-
-#+begin_src emacs-lisp
-(defun void-hook-var (hook-fn)
-  "Return the hook variable HOOK-FN is in.
-HOOK-FN is a function named with Void naming conventions."
-  (->> (symbol-name hook-fn)
-       (s-match (rx (group (1+ anything)) "&"))
-       (nth 1)
-       (intern)))
-#+end_src
-
-**** hook name
-:PROPERTIES:
-:ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
-:END:
-
-This function is to help produce names that abide by hook naming conventions.
-
-#+begin_src emacs-lisp
-(defun void-hook-name (var hook)
-  "Return a hook name that meets Void naming conventions."
-  (funcall (-partial #'void-symbol-intern var '&)
-           (or (->> (symbol-name hook)
-                    (s-match "void--\\([^[:space:]]+\\)-hook")
-                    (nth 1))
-               hook)))
-#+end_src
-
-**** hook action
-:PROPERTIES:
-:ID:       fa705f26-31f0-43c3-80a6-6741e74ab0ea
-:END:
-
-#+begin_src emacs-lisp
-(defun void-hook-action (hook)
-  "Return the action for hook."
-  (->> (symbol-name hook)
-       (s-match (rx "&" (group (1+ (not (any "&" white)))) eos))
-       (nth 1)))
-#+end_src
-
-**** adding hooks
-:PROPERTIES:
-:ID:       882bc5d2-a0e2-4ea7-b9d2-ab64b3407f82
-:END:
-
-***** internal helper
-:PROPERTIES:
-:ID:       aaf7ab9a-0648-4f1b-b30e-85ce0acac602
-:END:
-
-Add a hook that follow naming conventions. When adding a hook, if it is a void
-function, change it to a hook.
-
-#+begin_src emacs-lisp
-(defun void--add-hook (var hook &optional depth local expire-fn)
-  (let* ((new-hook (void-hook-name var hook))
-         (hook-log (void-symbol-intern new-hook '@ 'log-on-debug)))
-    (defalias new-hook hook)
-    (add-hook var new-hook depth local)
-    (fset hook-log
-          `(lambda (&rest _)
-             (alet ,(void-hook-action new-hook)
-               (void-log "& %s -> %s" ',var it))))
-    (advice-add new-hook :before hook-log)
-    (when expire-fn
-      (->> (void-expire-advice hook expire-fn t)
-           (advice-add new-hook :around)))))
-#+end_src
-
-***** adding hooks
-:PROPERTIES:
-:ID:       10dcca8f-7dd0-45da-a413-43608c098b10
-:END:
-
-#+begin_src emacs-lisp
-(defun void-add-hook (vars hooks &optional depth local expire-fn)
-  "Alias HOOK to match Void naming conventions and add it to VAR."
-  (dolist (var (-list vars))
-    (dolist (hook (-list hooks))
-      (void--add-hook var hook depth local expire-fn))))
-#+end_src
-
-**** removing hooks
-:PROPERTIES:
-:ID:       99708d72-a8d4-42ba-b6ae-ba692fbafec8
-:END:
-
-#+begin_src emacs-lisp
-(defun void-remove-hook (hook)
-  "Remove a void hook."
-  (remove-hook (void-hook-var hook) hook))
-#+end_src
-
-**** defhook!
-:PROPERTIES:
-:ID:       4daf2baf-ea7f-41f5-9f86-63168089149a
-:END:
-
-=defhook= provides a declarative way declare hook functions. It uses a familiar
-defun-like syntax.
-
-#+begin_src emacs-lisp
-(defmacro defhook! (name args &rest body)
-  "Define a hook function and attatch it to HOOK and HOOKS.
-DEPTH and LOCAL are the same as in `add-hook'. BODY is the body of the hook
-function.
-
-\(NAME (HOOK &REST HOOKS &OPTIONAL DEPTH LOCAL) &rest BODY)"
-  (declare (doc-string 3))
-  (-let* ((hooks (-take-while (-not #'keywordp) args))
-          (local (plist-get hooks :local))
-          (depth (or (plist-get hooks :append) (plist-get hooks :depth)))
-          ((docstring _ body) (void--keyword-macro-args body))
-          (hook-name (void-symbol-intern 'void-- name '-hook)))
-    `(progn
-       ,@(-map (lambda (hook)
-                 `(aprog1 (defun ,hook-name (&rest _) ,docstring ,@body)
-                    (void-add-hook ',hook it ,depth ,local)))
-               hooks))))
 #+end_src
 
 *** ht
