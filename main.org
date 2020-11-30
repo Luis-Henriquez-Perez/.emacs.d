@@ -2478,7 +2478,7 @@ provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
 (setq-default blink-matching-paren t)
 (setq-default delete-trailing-lines nil)
 
-(setq mail-user-agent . 'mu4e-user-agent)
+(setq mail-user-agent 'mu4e-user-agent)
 #+end_src
 
 **** loaddefs
