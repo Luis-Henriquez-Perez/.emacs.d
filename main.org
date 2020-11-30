@@ -195,9 +195,8 @@ as an argument.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-straight-property-list ()
-  ""
-  )
+(defun void-straight-property-list (plist)
+  (cons (intern (plist-get plist :package)) plist))
 #+end_src
 
 ***** get recipes
