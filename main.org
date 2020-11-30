@@ -283,6 +283,61 @@ installing packages, I try to access.
 This headline contains all the the helper functions and macros I defined for
 customizing emacs.
 
+*** s
+:PROPERTIES:
+:ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("s.el" "s-pkg.el")
+:HOST:     github
+:REPO:     "magnars/s.el"
+:PACKAGE:  "s"
+:LOCAL-REPO: "s.el"
+:COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
+:END:
+
+#+begin_src emacs-lisp
+(require 's)
+#+end_src
+
+*** dash
+:PROPERTIES:
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("dash.el" "dash.texi" "dash-pkg.el")
+:HOST:     github
+:REPO:     "magnars/dash.el"
+:PACKAGE:  "dash"
+:LOCAL-REPO: "dash.el"
+:COMMIT:   "0f238a9a466879ee96e5db0482019453718f342d"
+:END:
+
+Dash is an excellent functional list manipulation library. If I did not use it
+as a dependency, I'd end up rewriting many of its functions.
+
+:PROPERTIES:
+:ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
+:END:
+
+**** load
+:PROPERTIES:
+:ID:       4be107b5-b756-4372-9f74-655bda941b75
+:END:
+
+#+begin_src emacs-lisp
+(require 'dash)
+(require 'dash-functional)
+#+end_src
+
+**** set font lock
+:PROPERTIES:
+:ID:       ed2dd8e0-1084-4ac9-8f4c-41a7002261ef
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'emacs-lisp-mode-hook #'dash-enable-font-lock nil nil t)
+#+end_src
+
 *** request
 :PROPERTIES:
 :ID:       d9644e3d-fc9b-4fb4-a46c-f68134f3c301
@@ -507,61 +562,6 @@ make a difference. That's why.
               ,@shared-args
               :prefix void-localleader-short-key
               :non-normal-prefix void-localleader-short-alt-key))))
-#+end_src
-
-*** s
-:PROPERTIES:
-:ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("s.el" "s-pkg.el")
-:HOST:     github
-:REPO:     "magnars/s.el"
-:PACKAGE:  "s"
-:LOCAL-REPO: "s.el"
-:COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
-:END:
-
-#+begin_src emacs-lisp
-(require 's)
-#+end_src
-
-*** dash
-:PROPERTIES:
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("dash.el" "dash.texi" "dash-pkg.el")
-:HOST:     github
-:REPO:     "magnars/dash.el"
-:PACKAGE:  "dash"
-:LOCAL-REPO: "dash.el"
-:COMMIT:   "0f238a9a466879ee96e5db0482019453718f342d"
-:END:
-
-Dash is an excellent functional list manipulation library. If I did not use it
-as a dependency, I'd end up rewriting many of its functions.
-
-:PROPERTIES:
-:ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
-:END:
-
-**** load
-:PROPERTIES:
-:ID:       4be107b5-b756-4372-9f74-655bda941b75
-:END:
-
-#+begin_src emacs-lisp
-(require 'dash)
-(require 'dash-functional)
-#+end_src
-
-**** set font lock
-:PROPERTIES:
-:ID:       ed2dd8e0-1084-4ac9-8f4c-41a7002261ef
-:END:
-
-#+begin_src emacs-lisp
-(void-add-hook 'emacs-lisp-mode-hook #'dash-enable-font-lock nil nil t)
 #+end_src
 
 *** idle-require
