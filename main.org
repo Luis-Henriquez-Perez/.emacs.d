@@ -3188,7 +3188,6 @@ that it's not a lisp object; implying that it is not.
 (after! (feebleline all-the-icons)
   (defun feebleline:current-workgroup ()
     (when (bound-and-true-p workgroups-mode)
-      ;; (all-the-icons-material "work")
       (wg-workgroup-name (wg-current-workgroup)))))
 #+end_src
 
