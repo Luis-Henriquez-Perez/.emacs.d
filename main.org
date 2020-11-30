@@ -128,11 +128,12 @@ where that controls the setup of my files--my init file.
   "Function that."
   (straight-use-package recipe)
   ;; After installing, set the package to the correct commit.
-  (when (straight--repository-is-available-p recipe)
-    (when-let (commit (plist-get :commit recipe))
-      (unless (straight-vc-commit-present-p recipe commit)
-        (straight-vc-fetch-from-remote recipe))
-      (straight-vc-check-out-commit recipe commit))))
+  ;; (when (straight--repository-is-available-p recipe)
+  ;;   (when-let (commit (plist-get :commit recipe))
+  ;;     (unless (straight-vc-commit-present-p recipe commit)
+  ;;       (straight-vc-fetch-from-remote recipe))
+  ;;     (straight-vc-check-out-commit recipe commit)))
+  )
 #+end_src
 
 *** package installation
