@@ -2530,10 +2530,8 @@ think you want to use =smtp=.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! subr
-  :init
-  (fset #'yes-or-no-p #'y-or-n-p)
-  (fset #'display-startup-echo-area-message #'ignore))
+(fset #'yes-or-no-p #'y-or-n-p)
+(fset #'display-startup-echo-area-message #'ignore)
 #+end_src
 
 **** subr-x
