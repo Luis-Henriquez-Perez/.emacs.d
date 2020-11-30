@@ -136,7 +136,7 @@ where that controls the setup of my files--my init file.
 
 This headline is about actually installing all of the packages I use. I do this
 by searching through my org file for heading properties that correspond to emacs
-packages. Then
+packages. Then, I convert their properties.
 
 **** get package list based on my org file
 :PROPERTIES:
