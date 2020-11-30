@@ -2552,9 +2552,8 @@ think you want to use =smtp=.
 Don't ping things that look like domain names.
 
 #+begin_src emacs-lisp
-(use-feature! ffap
-  :setq
-  (ffap-machine-p-known . 'reject))
+(after! ffap
+  (setq ffap-machine-p-known 'reject))
 #+end_src
 
 **** server
