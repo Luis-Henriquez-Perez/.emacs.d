@@ -31,6 +31,7 @@ completely reproducable.
 (require 'cl)
 (require 'seq)
 
+(setq straight-base-dir VOID-PACKAGES-DIR)
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
 (setq straight-enable-package-integration t)
