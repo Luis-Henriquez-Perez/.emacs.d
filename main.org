@@ -12,6 +12,15 @@ The purpose of this headline is to set up the package manager and install all of
 my packages so the rest of the file can assume the packages are already
 installed.
 
+*** directory where packages will be installed
+:PROPERTIES:
+:ID:       5e5d2a12-1270-402d-a8c2-d24207755335
+:END:
+
+#+begin_src emacs-lisp
+(defvar VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
+#+end_src
+
 *** straight.el
 :PROPERTIES:
 :ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
@@ -26,11 +35,6 @@ completely reproducable.
 :END:
 
 #+begin_src emacs-lisp
-(defvar VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
-
-(require 'cl-lib)
-(require 'seq)
-
 (setq straight-base-dir VOID-PACKAGES-DIR)
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
