@@ -22,6 +22,17 @@ installed.
 (require 'cl-lib)
 #+end_src
 
+*** functions that need to be compiled
+:PROPERTIES:
+:ID:       4b6e2892-e242-44e6-87f9-02e030eb6205
+:END:
+
+#+begin_src emacs-lisp
+(defmacro edefun! (&rest args)
+  (declare (indent defun))
+  `(eval-and-compile (defun ,@args)))
+#+end_src
+
 *** directory where packages will be installed
 :PROPERTIES:
 :ID:       5e5d2a12-1270-402d-a8c2-d24207755335
