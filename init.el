@@ -175,7 +175,7 @@ Assumes vc is git which is fine because straight only uses git right now."
                      (if (cl-evenp i)
                          (intern (downcase elt))
                        (car (read-from-string elt))))
-                   (split-string string (rx (or ";; " "\n" (1+ white) (seq eow ":"))) t)))
+                   (split-string string (rx (or ";; " "\n" (seq eow ":" (1+ white)))) t)))
 
 ;; ***** convert property list to proper straight format
 ;; :PROPERTIES:
