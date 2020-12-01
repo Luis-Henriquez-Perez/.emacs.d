@@ -2223,9 +2223,9 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :TYPE:     built-in
 ;; :END:
 
-(push ("\\*Messages"
-       (display-buffer-at-bottom)
-       (window-height . 0.5))
+(push '("\\*Messages"
+        (display-buffer-at-bottom)
+        (window-height . 0.5))
       display-buffer-alist)
 
 (setq-default idle-update-delay 1)
