@@ -2356,9 +2356,9 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       913aa4f2-e42b-4b74-a2d4-e87b1738a5bd
 ;; :END:
 
-(setq compilation-always-kill . t)
-(setq compilation-ask-about-save . nil)
-(setq compilation-scroll-output . 'first-error)
+(setq compilation-always-kill t)
+(setq compilation-ask-about-save nil)
+(setq compilation-scroll-output 'first-error)
 
 ;; **** uniquify
 ;; :PROPERTIES:
