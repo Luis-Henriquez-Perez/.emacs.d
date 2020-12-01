@@ -197,7 +197,7 @@ function will convert them to a plist which is what =straight-use-package= needs
 as an argument.
 
 #+begin_src emacs-lisp
-(defun void-property-string-to-plist (string)
+(edefun! void-property-string-to-plist (string)
   "Convert a property list string into a plist."
   (seq-map-indexed (lambda (elt i)
                      (if (cl-evenp i)
@@ -212,7 +212,7 @@ as an argument.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-property-string-to-recipe (string)
+(edefun! void-property-string-to-recipe (string)
   (let ((plist (void-property-string-to-plist string)))
     (cons (intern (plist-get plist :package))
           plist)))
@@ -229,7 +229,7 @@ recipe as properties of the headline. That way, my main org file can be
 completely reproducible as one file.
 
 #+begin_src emacs-lisp
-(defun void-get-package-recipes ()
+(edefun! void-get-package-recipes ()
   "Return a list of recipes from org file."
   (let ((recipes nil)
         (org-file (concat user-emacs-directory "main.org"))
