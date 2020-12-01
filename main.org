@@ -75,7 +75,7 @@ completely reproducable.
 This code initializes straight if it's not already installed.
 
 #+begin_src emacs-lisp
-(defun straight:initialize ()
+(edefun! straight:initialize ()
   "Initialize `straight.el'."
   (defvar bootstrap-version)
   (let* ((url "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el")
@@ -130,7 +130,7 @@ I would prefer having only one souce of truth--the recipes; and only one place
 where that controls the setup of my files--my init file.
 
 #+begin_src emacs-lisp
-(defun straight:install-fn (recipe)
+(edefun! straight:install-fn (recipe)
   "Function that."
   (straight-use-package recipe)
   ;; After installing, set the package to the correct commit.
