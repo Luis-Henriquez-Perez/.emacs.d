@@ -154,9 +154,9 @@ Assumes vc is git which is fine because straight only uses git right now."
       (rx (seq bol
                ";; :PROPERTIES:"
                "\n"
-               (group (*? ";; :" (one-or-more (not (syntax whitespace)))
-                          (1+ white)
-                          (one-or-more (not (syntax whitespace)))
+               (group (*? bol ";; :" (one-or-more (not (syntax whitespace)))
+                          (1+ "\s")
+                          (one-or-more nonl)
                           "\n"))
                ";; :END:")))
 
@@ -175,7 +175,7 @@ Assumes vc is git which is fine because straight only uses git right now."
                      (if (cl-evenp i)
                          (intern (downcase elt))
                        (car (read-from-string elt))))
-                   (split-string string ":\\(?:[[:space:]]\\|\n\\)+\\|\n" t)))
+                   (split-string string (rx (or ";; " "\n" (1+ white) (seq eow ":"))) t)))
 
 ;; ***** convert property list to proper straight format
 ;; :PROPERTIES:
@@ -208,9 +208,7 @@ Assumes vc is git which is fine because straight only uses git right now."
       (while (re-search-forward regexp nil t)
         (let ((match (match-string-no-properties 1)))
           (when (and match (string-match-p "PACKAGE" match))
-            (push match recipes)
-            ;; (push (void-property-string-to-recipe match) recipes)
-            ))))
+            (push (void-property-string-to-recipe match) recipes)))))
     recipes))
 
 ;; **** install packages
@@ -274,21 +272,21 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; [[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
 ;; handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
 
-;; **** general
+;; ***** general
 ;; :PROPERTIES:
 ;; :ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
 ;; :END:
 
 (require 'general)
 
-;; **** unbind keys
+;; ***** unbind keys
 ;; :PROPERTIES:
 ;; :ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
 ;; :END:
 
 (general-auto-unbind-keys)
 
-;; **** prefix bindings
+;; ***** prefix bindings
 ;; :PROPERTIES:
 ;; :ID: b0b5b51c-155e-46fc-a80a-0d45a32440ba
 ;; :END:
