@@ -75,7 +75,7 @@
 ;; :ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
 ;; :END:
 
-;; Straight is very minimal, it lacks.
+;; Straight is very minimal. It lacks utility functions.
 
 ;; ***** package homepage
 ;; :PROPERTIES:
@@ -391,7 +391,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 (require 'dash)
 (require 'dash-functional)
 
-;; **** set font lock
+;; ***** set font lock
 ;; :PROPERTIES:
 ;; :ID:       ed2dd8e0-1084-4ac9-8f4c-41a7002261ef
 ;; :END:
@@ -1172,6 +1172,8 @@ Instead, arguments are accessed via anaphoric variables.
 ;; I set a variable I want it enabled globally. When there comes a case in which I
 ;; don't want that I'll use [[helpfn:setq][setq]].
 ;;
+;; For this reason I use =set!= as a replacement for =setq=.
+;;
 ;; [[https://opensource.com/article/20/3/variables-emacs][This articla]] provides
 ;; a brilliant synopsis of emacs variables.
 
@@ -1259,7 +1261,7 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
 ;; :END:
 
-(setq system-packages-noconfirm t)
+(set! system-packages-noconfirm t)
 
 ;; **** popup
 ;; :PROPERTIES:
@@ -1288,7 +1290,7 @@ Instead, arguments are accessed via anaphoric variables.
                         (cons action (s-replace "pacman" "yay" command)))
                       (cdr it)))
             system-packages-supported-package-managers))
-    (setq system-packages-package-manager 'yay)))
+    (set! system-packages-package-manager 'yay)))
 
 ;; *** idle-require
 ;; :PROPERTIES:
@@ -1324,8 +1326,8 @@ Instead, arguments are accessed via anaphoric variables.
 ;; start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
 ;; require loads.
 
-(setq idle-require-load-break 2)
-(setq idle-require-idle-delay 10)
+(set! idle-require-load-break 2)
+(set! idle-require-idle-delay 10)
 
 ;; **** make idle require use void-log
 ;; :PROPERTIES:
