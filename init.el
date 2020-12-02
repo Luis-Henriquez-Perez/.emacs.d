@@ -115,12 +115,12 @@ Assumes vc is git which is fine because straight only uses git right now."
   "Function that."
   (straight-use-package recipe)
   ;; After installing, set the package to the correct commit.
-  ;; (when (straight--repository-is-available-p recipe)
-  ;;   (when-let (commit (plist-get :commit recipe))
-  ;;     (unless (straight-vc-commit-present-p recipe commit)
-  ;;       (straight-vc-fetch-from-remote recipe))
-  ;;     (straight-vc-check-out-commit recipe commit)))
-  )
+  (when-let ((local-repo (plist-get (cdr recipe :local-repo)))
+             (commit (plist-get (cdr recipe :commit))))
+    (when (file-exists-p (straight--repos-dir local-repo))
+      (unless (straight-vc-commit-present-p recipe commit)
+        (straight-vc-fetch-from-remote recipe))
+      (straight-vc-check-out-commit recipe commit))))
 
 ;; *** package installation
 ;; :PROPERTIES:
