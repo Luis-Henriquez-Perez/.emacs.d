@@ -1162,24 +1162,24 @@ Instead, arguments are accessed via anaphoric variables.
   (noflet ((message (&rest args) (void-log args)))
           (apply orign-fn args)))
 
-;; *** set!
+;; *** setq
 
 ;; Some variables in emacs have [[][custom setters]]. I don't want to have to figure out
 ;; which ones do and do not have these setters. This macro sets the custom setter
 ;; of there is any.
-;;
+
 ;; There's also the issue of global versus buffer-local variables. In general, when
 ;; I set a variable I want it enabled globally. When there comes a case in which I
 ;; don't want that I'll use [[helpfn:setq][setq]].
-;;
-;; For this reason I use =set!= as a replacement for =setq=.
-;;
-;; [[https://opensource.com/article/20/3/variables-emacs][This articla]] provides
+
+;; For this reason I use =setq= as a replacement for =setq=.
+
+;; [[https://opensource.com/article/20/3/variables-emacs][This article]] provides
 ;; a brilliant synopsis of emacs variables.
 
 (defmacro set! (sym val)
   "Account for."
-  `(funcall (or (get ',sym 'custom-set) 'setq-default) ',sym ,val))
+  `(funcall (or (get ',sym 'custom-set) 'set) ',sym ,val))
 
 ;; *** eval-after-load!
 ;; :PROPERTIES:
