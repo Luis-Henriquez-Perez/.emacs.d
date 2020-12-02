@@ -227,7 +227,6 @@ Assumes vc is git which is fine because straight only uses git right now."
         (load-path load-path))
     (straight:initialize)
     (mapc #'straight:install-fn void-package-recipes)
-    (mapc #'require '(dash s ht anaphora))
     (cl-set-difference load-path old-load-path))
   "Package load-paths.")
 
