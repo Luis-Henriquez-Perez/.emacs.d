@@ -10,7 +10,7 @@
 
 ;; The purpose of this headline is to set up the package manager and install all of
 ;; my packages so the rest of the file can assume the packages are already
-;; installed.
+;; installed. The idea is to separate package installation and package configuration.
 
 ;; *** preliminary requirements
 ;; :PROPERTIES:
@@ -32,8 +32,11 @@
 ;; :ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
 ;; :END:
 
-;; [[straight][straight.el]] is a package manager that strives to make emacs configurations
-;; completely reproducable.
+;; [[straight][straight.el]] is a package manager that installs packages by cloning their git
+;; repositories from online and building them from source. A consequence of this is
+;; that you have the history of every installed emacs package locally. Another
+;; consequence is that you can completely reproduce the state of your emacs on
+;; another machine by installing the same packages with the same versions.
 
 ;; **** variables
 ;; :PROPERTIES:
