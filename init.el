@@ -228,7 +228,6 @@ Assumes vc is git which is fine because straight only uses git right now."
     (straight:initialize)
     (mapc #'straight:install-fn void-package-recipes)
     (mapc #'require '(dash s ht anaphora))
-    ;; (mapc #'require void-essential-packages)
     (cl-set-difference load-path old-load-path))
   "Package load-paths.")
 
@@ -379,11 +378,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; Dash is an excellent functional list manipulation library. If I did not use it
 ;; as a dependency, I'd end up rewriting many of its functions.
 
-;; :PROPERTIES:
-;; :ID:       7d37ae8b-d319-4077-ae7a-aa463d8ec68d
-;; :END:
-
-;; **** load
+;; ***** load
 ;; :PROPERTIES:
 ;; :ID:       4be107b5-b756-4372-9f74-655bda941b75
 ;; :END:
@@ -1261,7 +1256,7 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
 ;; :END:
 
-(set! system-packages-noconfirm t)
+(setq system-packages-noconfirm t)
 
 ;; **** popup
 ;; :PROPERTIES:
@@ -1290,7 +1285,7 @@ Instead, arguments are accessed via anaphoric variables.
                         (cons action (s-replace "pacman" "yay" command)))
                       (cdr it)))
             system-packages-supported-package-managers))
-    (set! system-packages-package-manager 'yay)))
+    (setq system-packages-package-manager 'yay)))
 
 ;; *** idle-require
 ;; :PROPERTIES:
@@ -1326,8 +1321,8 @@ Instead, arguments are accessed via anaphoric variables.
 ;; start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
 ;; require loads.
 
-(set! idle-require-load-break 2)
-(set! idle-require-idle-delay 10)
+(setq idle-require-load-break 2)
+(setq idle-require-idle-delay 10)
 
 ;; **** make idle require use void-log
 ;; :PROPERTIES:
@@ -1886,7 +1881,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq-default enable-recursive-minibuffers t)
 (setq-default frame-inhibit-implied-resize t)
 
-;; **** printing
+                                        ;general-setq; **** printing
 ;; :PROPERTIES:
 ;; :ID: 2dfce297-0f01-4576-ae5d-bb5856591ecb
 ;; :END:
@@ -2205,7 +2200,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :TYPE:     built-in
 ;; :END:
 
-(setq-default show-paren-delay 0)
+(setq show-paren-delay 0)
 (void-add-hook 'prog-mode-hook #'show-paren-mode)
 
 ;; **** clipboard
@@ -2230,9 +2225,9 @@ This function is meant to be used as the value of `initial-buffer-choice'."
         (window-height . 0.5))
       display-buffer-alist)
 
-(setq-default idle-update-delay 1)
-(setq-default blink-matching-paren t)
-(setq-default delete-trailing-lines nil)
+(setq idle-update-delay 1)
+(setq blink-matching-paren t)
+(setq delete-trailing-lines nil)
 
 (setq mail-user-agent 'mu4e-user-agent)
 
@@ -2246,7 +2241,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; ([[https://wiki.archlinux.org/index.php/Msmtp][msmtp]]) to send your email. If you don't set these variables, emacs will
 ;; think you want to use =smtp=.
 
-(setq-default disabled-command-function nil)
+(setq disabled-command-function nil)
 
 ;; **** files
 ;; :PROPERTIES:
@@ -2255,25 +2250,25 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 ;; Disable second, case-insensitive pass over `auto-mode-alist'.
-(setq-default auto-mode-case-fold nil)
+(setq auto-mode-case-fold nil)
 ;; Whether to add a newline automatically at the end of the file.
 ;; Whether confirmation is requested before visiting a new file or buffer.
-(setq-default confirm-nonexistent-file-or-buffer nil)
+(setq confirm-nonexistent-file-or-buffer nil)
 ;; How to ask for confirmation when leaving Emacs.
-(setq-default confirm-kill-emacs #'y-or-n-p)
-(setq-default require-final-newline nil)
-(setq-default trash-directory (expand-file-name "Trash" "~"))
-(setq-default auto-save-default nil)
-(setq-default auto-save-interval 300)
-(setq-default auto-save-timeout 30)
-(setq-default backup-directory-alist (list (cons ".*" (concat VOID-DATA-DIR "backup/"))))
-(setq-default make-backup-files nil)
-(setq-default version-control nil)
-(setq-default kept-old-versions 2)
-(setq-default kept-new-versions 2)
-(setq-default delete-old-versions t)
-(setq-default backup-by-copying t)
-(setq-default backup-by-copying-when-linked t)
+(setq confirm-kill-emacs #'y-or-n-p)
+(setq require-final-newline nil)
+(setq trash-directory (expand-file-name "Trash" "~"))
+(setq auto-save-default nil)
+(setq auto-save-interval 300)
+(setq auto-save-timeout 30)
+(setq backup-directory-alist (list (cons ".*" (concat VOID-DATA-DIR "backup/"))))
+(setq make-backup-files nil)
+(setq version-control nil)
+(setq kept-old-versions 2)
+(setq kept-new-versions 2)
+(setq delete-old-versions t)
+(setq backup-by-copying t)
+(setq backup-by-copying-when-linked t)
 
 ;; **** subr
 ;; :PROPERTIES:
@@ -2368,69 +2363,57 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 (after! uniquify
-  (setq-default uniquify-buffer-name-style 'forward))
+  (setq uniquify-buffer-name-style 'forward))
 
 ;; **** ansi-color
 ;; :PROPERTIES:
 ;; :ID:       5feaab76-e5c1-450c-94a6-8fdfb95ddb94
 ;; :END:
 
-(use-feature! ansi-color
-  :setq-default
-  (ansi-color-for-comint-mode . t))
+(after! ansi-color
+  (setq ansi-color-for-comint-mode t))
 
 ;; **** image mode
 ;; :PROPERTIES:
 ;; :ID:       32e2118a-c92b-4e8d-b2db-048428462783
 ;; :END:
 
-(use-feature! image-mode
-  :setq
+(after! image-mode
   ;; Non-nil means animated images loop forever, rather than playing once.
-  (image-animate-loop . t))
+  (setq image-animate-loop t))
 
 ;; **** window
 ;; :PROPERTIES:
 ;; :ID:       af27cd7e-2096-4f6d-a749-63e4c38d136c
 ;; :END:
 
-(use-feature! window
-  :setq-default
-  (split-width-threshold . 160))
-
-;; **** paragraphs
-;; :PROPERTIES:
-;; :ID:       f289ade4-ad16-4f6a-8868-1f9b7af5ddca
-;; :END:
-
-(use-feature! paragraphs)
+(after! window
+  (setq split-width-threshold 160))
 
 ;; **** indent
 ;; :PROPERTIES:
 ;; :ID:       a5d97d4d-3af9-4fde-ae14-953ad4d28edd
 ;; :END:
 
-(use-feature! indent
-  :setq-default
-  (tab-always-indent . t))
+(after! indent
+  (setq tab-always-indent t))
 
 ;; **** mouse
 ;; :PROPERTIES:
 ;; :ID:       d0d6de11-50fa-4ae2-ad4b-69712f3e2c54
 ;; :END:
 
-(use-feature! mouse
-  :setq-default
-  (mouse-yank-at-point . t))
+
+(setq mouse-yank-at-point t)
 
 ;; **** calendar
 ;; :PROPERTIES:
 ;; :ID:       4ad7e704-f490-40e4-b2bc-8a30a10a7bb7
 ;; :END:
 
-(use-feature! calendar
-  :pre-setq (diary-file . (concat VOID-DATA-DIR "diary"))
-  :config
+(setq diary-file (concat VOID-DATA-DIR "diary"))
+
+(after! calendar
   (require 'f)
   (unless (f-exists-p diary-file)
     (f-touch diary-file)))
@@ -2440,8 +2423,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       e48e925e-1f1e-4c79-8652-c92aafe06290
 ;; :END:
 
-(use-feature! mule-cmds
-  :init (prefer-coding-system VOID-DEFAULT-CODING-SYSTEM))
+(setq prefer-coding-system VOID-DEFAULT-CODING-SYSTEM)
 
 ;; **** gv
 ;; :PROPERTIES:
@@ -2451,8 +2433,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; =gv= is what contains the code for the =setf= macro.
 ;; https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-plist-get
 
-(use-feature! gv
-  :config
+(after! gv
   (gv-define-simple-setter plist-get plist-put))
 
 ;; **** nsm
@@ -2460,8 +2441,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       0ca7fc66-5312-4c69-a87d-7607292c7a2a
 ;; :END:
 
-(use-feature! nsm
-  :setq (nsm-settings-file . (concat VOID-DATA-DIR "network-settings.data")))
+(setq nsm-settings-file (concat VOID-DATA-DIR "network-settings.data"))
 
 ;; ** UI
 ;; :PROPERTIES:
@@ -2738,9 +2718,9 @@ the buffer. If a recentf path is selected, find the file of the recentf path."
 ;; :ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
 ;; :END:
 
-(general-setq window-divider-default-places t)
-(general-setq window-divider-default-bottom-width 4)
-(general-setq window-divider-default-right-width  4)
+(setq window-divider-default-places t)
+(setq window-divider-default-bottom-width 4)
+(setq window-divider-default-right-width  4)
 
 ;; *** color
 ;; :PROPERTIES:
@@ -3347,6 +3327,20 @@ Orderless will do this."
   (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
         (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
     (apply <orig-fn> <args>)))
+
+;; *** consult
+;; :PROPERTIES:
+;; :ID:       44120178-95c3-44f1-a3a2-bd69b0d03e70
+;; :END:
+
+;; (use-package! consult
+;;   :straight (:host github :repo "minad/consult"))
+(setq consult-preview-theme nil)
+(setq consult-preview-outline nil)
+(setq consult-preview-buffer nil)
+(setq consult-preview-line nil)
+
+;; (alet (void-autoload 'consult it))
 
 ;; ** company
 ;; :PROPERTIES:
@@ -6461,18 +6455,18 @@ Each element of the list is an abbreviated.")
 ;; :ID:       4c452dea-a404-4443-9ecc-189c940d201e
 ;; :END:
 
-(use-package! plantuml-mode
-  :system-ensure plantuml
-  :init
-  (after! org
-    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-    (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
-  :setq
-  (plantuml-executable-path . (executable-find "plantuml"))
-  (plantuml-jar-path . "/usr/share/java/plantuml/plantuml.jar")
-  (plantuml-default-exec-mode . 'jar)
-  (org-plantuml-jar-path . "/usr/share/java/plantuml/plantuml.jar")
-  (org-plantuml-executable-path . (executable-find "plantuml")))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+
+(after! org
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
+
+;; (void-system-ensure)
+
+(setq plantuml-executable-path (executable-find "plantuml"))
+(setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
+(setq plantuml-default-exec-mode 'jar)
+(setq org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar")
+(setq org-plantuml-executable-path (executable-find "plantuml"))
 
 ;; ** super-save
 ;; :PROPERTIES:
@@ -6620,12 +6614,12 @@ Each element of the list is an abbreviated.")
 ;; the value of [[helpvar:lisp-indent-function][lisp-indent-function]]. This works for indenting a quoted list
 ;; properly, but at the expense of changing the way that many other elisp forms are
 ;; indented. Common Lisp's indentation is different from Elisp's. Others recommend
-;; using [[https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L12-L94][Fuco1's lisp indent function hack]]. This also is not ideal. For one thing it
-;; only works for quoted lists with keywords but not generic symbols. Another thing
-;; is that the change should really be occurring in [[helpfn:calculate-lisp-indent][calculate-lisp-indent]].
-;; ~calculate-lisp-indent~ is a function that returns what the indentation should be
-;; for the line at point. Since Fuco1 did not modify ~calculate-lisp-indent~ the
-;; *wrong* indentation still returned by this function and the modified
+;; using [[https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L12-L94][Fuco1's lisp indent function hack]]. This also is not ideal. For one thing
+;; it only works for quoted lists with keywords but not generic symbols. Another
+;; thing is that the change should really be occurring in [[helpfn:calculate-lisp-indent][calculate-lisp-indent]].
+;; ~calculate-lisp-indent~ is a function that returns what the indentation should
+;; be for the line at point. Since Fuco1 did not modify ~calculate-lisp-indent~ the
+;; wrong indentation still returned by this function and the modified
 ;; ~lisp-indent-function~ just cleans up the mess. Better is just fixing the source
 ;; of the problem. You can check out a more in-depth explanation looking at my
 ;; [[https://www.reddit.com/r/emacs/comments/d7x7x8/finally_fixing_indentation_of_quoted_lists/][reddit-post]] or looking at an answer I gave to [[https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned][this question]].
@@ -6840,11 +6834,27 @@ The change to this function."
 ;; It colors certain comments like org headings, and adds function for convertion
 ;; from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with =outshine= in mind.
 
-(use-package! outshine
-  :hook emacs-lisp-mode
-  :config
-  (general-def '(normal) emacs-lisp-mode-map
-    "TAB" #'outline-toggle-children))
+(void-add-hook 'emacs-lisp-mode-hook #'outshine-mode)
+
+(defun outshine:dwim-next-line ()
+  (interactive)
+  (if (outline-on-heading-p)
+      (outline-next-visible-heading 1)
+    (call-interactively #'evil-next-line)))
+
+(defun outshine:dwim-previous-line ()
+  (interactive)
+  (if (outline-on-heading-p)
+      (outline-previous-visible-heading 1)
+    (call-interactively #'evil-previous-line)))
+
+;; TODO: make outshine-mode-map take precedence over normal/elisp-mode maps.
+;; TODO: better binding system so I can advise instead of make wrappers.
+(general-def '(normal) emacs-lisp-mode-map
+  "TAB" #'outshine-toggle-children
+  "j" #'outshine:dwim-next-line
+  "k" #'outshine:dwim-previous-line
+  "b" (lambda () (interactive) (outline-back-to-heading)))
 
 ;; **** macrostep
 ;; :PROPERTIES:
@@ -7518,7 +7528,7 @@ Push the overlay into `hide-lines-invisible-areas'."
 ;; :ID: 86437909-e4df-48ae-9e2f-bf364e92cc86
 ;; :END:
 
-(setq-default org-startup-folded 'fold)
+(setq org-startup-folded 'fold)
 
 (defadvice! hide-all-property-drawers (:override org-set-startup-visibility)
   "Completely hide all text properties."
@@ -8103,12 +8113,11 @@ same key as the one(s) being added."
 ;; =org-journal= is a package that provides functions to maintain a simple
 ;; diary/journal using =org-mode=.
 
-(use-package! org-journal
-  :commands org-journal-new-entry
-  :setq
-  (org-journal-file-type . 'yearly)
-  (org-journal-dir . (concat VOID-ORG-DIR "journal/"))
-  (org-journal-find-file . 'find-file))
+(void-autoload 'org-journal #'org-journal-new-entry)
+
+(setq org-journal-file-type 'yearly)
+(setq org-journal-dir (concat VOID-ORG-DIR "journal/"))
+(setq org-journal-find-file 'find-file)
 
 ;; ** lua
 ;; :PROPERTIES:
@@ -8148,21 +8157,21 @@ same key as the one(s) being added."
 ;; :ID:       da68dfd0-62c5-4101-a7f3-7b13df760670
 ;; :END:
 
-(use-feature! tex
-  :mode ("\\.tex\\'" . LaTeX-mode)
-  :hook (LaTex-mode . visual-line-mode)
-  :setq
-  (TeX-parse-self . t)
-  (TeX-auto-save . t)
-  ;; use hidden dirs for auctex files
-  (TeX-auto-local . ".auctex-auto")
-  (TeX-style-local . ".auctex-style")
-  (TeX-source-correlate-mode . t)
-  (TeX-source-correlate-method . 'synctex)
-  ;; don't start the emacs server when correlating sources
-  (TeX-source-correlate-start-server . nil)
-  ;; automatically insert braces after sub/superscript in math mode
-  (TeX-electric-sub-and-superscript . t))
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . LaTeX-mode))
+
+(void-add-hook 'LaTeX-mode-hook #'visual-line-mode)
+
+(setq TeX-parse-self t)
+(setq TeX-auto-save t)
+;; use hidden dirs for auctex files
+(setq TeX-auto-local ".auctex-auto")
+(setq TeX-style-local ".auctex-style")
+(setq TeX-source-correlate-mode t)
+(setq TeX-source-correlate-method 'synctex)
+;; don't start the emacs server when correlating sources
+(setq TeX-source-correlate-start-server nil)
+;; automatically insert braces after sub/superscript in math mode
+(setq TeX-electric-sub-and-superscript t)
 
 ;; *** auctex
 ;; :PROPERTIES:
@@ -8178,7 +8187,7 @@ same key as the one(s) being added."
 
 (use-package! adaptive-wrap
   :hook (LaTeX-mode . adaptive-wrap-prefix-mode)
-  :setq-default (adaptive-wrap-extra-indent . 0))
+  :setq (adaptive-wrap-extra-indent . 0))
 
 ;; *** preview pane
 ;; :PROPERTIES:
@@ -8376,10 +8385,10 @@ same key as the one(s) being added."
 ;; :ID:       f5434534-e767-4416-848a-8912bae0ede1
 ;; :END:
 
-(dashboard-items . nil)
-(dashboard-startup-banner . 2)
-(dashboard-center-content . t)
-(initial-buffer-choice . #'void-initial-buffer)
+(setq dashboard-items nil)
+(setq dashboard-startup-banner 2)
+(setq dashboard-center-content t)
+(setq initial-buffer-choice #'void-initial-buffer)
 
 ;; *** dashboard-init-info
 ;; :PROPERTIES:
