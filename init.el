@@ -104,7 +104,6 @@ Assumes vc is git which is fine because straight only uses git right now."
   (interactive)
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 
-
 ;; **** straight-install-fn
 ;; :PROPERTIES:
 ;; :ID:       e63813c4-f321-4544-94f3-96b46cd38cf4
@@ -247,6 +246,14 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 (setq load-path (append void-package-load-paths load-path))
 
+;; ** Library
+;; :PROPERTIES:
+;; :ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
+;; :END:
+
+;; This headline contains all the the helper functions and macros I defined for
+;; customizing emacs.
+
 ;; *** essential libraries
 ;; :PROPERTIES:
 ;; :ID:       18602d49-dcc3-47c3-8579-62f7a7b7a83a
@@ -344,14 +351,6 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :END:
 
 (require 'anaphora)
-
-;; ** Library
-;; :PROPERTIES:
-;; :ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
-;; :END:
-
-;; This headline contains all the the helper functions and macros I defined for
-;; customizing emacs.
 
 ;; *** message logging
 ;; :PROPERTIES:
@@ -1716,167 +1715,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq-default print-quoted t)
 (setq-default print-escape-newlines t)
 
-;; *** void specific funtions
-;; :PROPERTIES:
-;; :ID: 1b49e07a-466f-41da-8b31-18c28421cf62
-;; :END:
-
-;; **** windows
-;; :PROPERTIES:
-;; :ID: 039a9070-2ba3-4e01-abd4-7bdb49cc5a3d
-;; :END:
-
-;; ***** split-right-and-focus
-;; :PROPERTIES:
-;; :ID: 6cb60d94-723b-48e5-850a-3483e78f6647
-;; :END:
-
-(defun void/window-split-right-and-focus ()
-  "Split window right and select the window created with the split."
-  (interactive)
-  (select-window (split-window-right)))
-
-;; ***** split-below-and-focus
-;; :PROPERTIES:
-;; :ID: d6a4a81f-007d-4b7e-97a3-e0bba3ff97a4
-;; :END:
-
-(defun void/window-split-below-and-focus ()
-  "Split window below and select the window created with the split."
-  (interactive)
-  (select-window (split-window-below)))
-
-;; **** all
-;; :PROPERTIES:
-;; :ID: e97267e8-fca8-4bf2-9899-7ec694e8a767
-;; :END:
-
-;; ***** quit emacs without hook
-;; :PROPERTIES:
-;; :ID: b82f721c-39f5-4d41-bb0f-d4c391238eb4
-;; :END:
-
-;; Sometimes something goes wrong with [[helpvar:kill-emacs-hook][kill-emacs-hook]] and because of that I can't
-;; close emacs. For that reason, I have this function.
-
-(defun void/kill-emacs-no-hook ()
-  "Kill emacs, ignoring `kill-emacs-hook'."
-  (interactive)
-  (when (yes-or-no-p "Quit without `kill-emacs-hook'?")
-    (let (kill-emacs-hook) (kill-emacs))))
-
-;; ***** quit emacs brutally
-;; :PROPERTIES:
-;; :ID: 8753217c-4722-4183-bbb3-049707a37e54
-;; :END:
-
-;; I've never had to use this. But better be safe than sorry.
-
-(defun void/kill-emacs-brutally ()
-  "Tell an external process to kill emacs."
-  (interactive)
-  (when (yes-or-no-p "Do you want to BRUTALLY kill emacs?")
-    (call-process "kill" nil nil nil "-9" (number-to-string (emacs-pid)))))
-
-;; ***** new emacs instance
-;; :PROPERTIES:
-;; :ID: eaf80ec3-2bd4-4f05-8a9c-fa525894a6fe
-;; :END:
-
-(defun void/open-emacs-instance ()
-  "Open a new emacs instance in debug-mode."
-  (interactive)
-  (cond ((eq system-type 'darwin)
-         (start-process-shell-command
-          "emacs"
-          nil "open -n /Applications/Emacs.app --args --debug-init"))
-        ((eq system-type 'gnu/linux)
-         (start-process "emacs" nil "emacs" "--debug-init"))))
-
-;; ***** kill all process of program
-;; :PROPERTIES:
-;; :ID: 913952e2-3727-4b38-aefc-4618c2771730
-;; :END:
-
-(defun void/kill-emacs-processes ()
-  (interactive)
-  (let ((count 1) (process "emacs"))
-    (kill-process process)
-    (while (ignore-errors (kill-process process))
-      (setq process (format "emacs<%d>" count))
-      (cl-incf count))
-    (message "killed %d processes" count)))
-
-;; ***** qutebrowser
-;; :PROPERTIES:
-;; :ID: 77bace13-5af8-4974-981a-e07bf271182f
-;; :END:
-
-(defun void/open-qutebrowser ()
-  "Open qutebrowser."
-  (interactive)
-  (start-process "qutebrowser" nil "qutebrowser"))
-
-;; **** messages buffer
-;; :PROPERTIES:
-;; :ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
-;; :END:
-
-;; In Emacs, messages. The messages buffer is where messages displayed at the bottom
-;; of the Emacs frame are recorded after they expire.
-
-(defun void/switch-to-messages ()
-  (interactive)
-  (select-window (display-buffer (get-buffer "*Messages*"))))
-
-;; **** main org file
-;; :PROPERTIES:
-;; :ID: fb605553-f234-410a-b27e-697dc667831b
-;; :END:
-
-(defun void/switch-to-main-org-file ()
-  (interactive)
-  (find-file (concat VOID-EMACS-DIR "main.org")))
-
-;; **** main todo file
-;; :PROPERTIES:
-;; :ID: 2accd21d-7316-4fa5-bd8f-8f40935ed621
-;; :END:
-
-(defun void/switch-to-capture-file ()
-  (interactive)
-  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
-
-;; **** turn on debug-mode
-;; :PROPERTIES:
-;; :ID: c1ac481a-6ebd-49ce-a930-3b0593283aee
-;; :END:
-
-(defun void/enable-debug-mode ()
-  (interactive)
-  (setq void-debug-p t))
-
-;; **** switch to init file
-;; :PROPERTIES:
-;; :ID: 50c5e173-d737-4264-bac5-f13190d468dc
-;; :END:
-
-(defun void/switch-to-init-org-file ()
-  "Switch to Void's init.el file."
-  (interactive)
-  (switch-to-buffer VOID-INIT-FILE))
-
-;; **** quit emacs no prompt
-;; :PROPERTIES:
-;; :ID: d530718a-2b42-4e9b-8d7d-7813e0ae6381
-;; :END:
-
-(defun void/quit-emacs-no-prompt ()
-  "Quit emacs without prompting."
-  (interactive)
-  (let (confirm-kill-emacs)
-    (kill-emacs)))
-
 ;; *** =tty=
 ;; :PROPERTIES:
 ;; :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
@@ -2292,6 +2130,148 @@ is called.")
   "Apply an existing xfont to all graphical frames."
   (interactive)
   (set-frame-font (completing-read "Choose font: " (x-list-fonts "*")) nil t))
+
+;; *** void specific funtions
+;; :PROPERTIES:
+;; :ID: 1b49e07a-466f-41da-8b31-18c28421cf62
+;; :END:
+
+;; **** windows
+;; :PROPERTIES:
+;; :ID: 039a9070-2ba3-4e01-abd4-7bdb49cc5a3d
+;; :END:
+
+;; ***** split-right-and-focus
+;; :PROPERTIES:
+;; :ID: 6cb60d94-723b-48e5-850a-3483e78f6647
+;; :END:
+
+(defun void/window-split-right-and-focus ()
+  "Split window right and select the window created with the split."
+  (interactive)
+  (select-window (split-window-right)))
+
+;; ***** split-below-and-focus
+;; :PROPERTIES:
+;; :ID: d6a4a81f-007d-4b7e-97a3-e0bba3ff97a4
+;; :END:
+
+(defun void/window-split-below-and-focus ()
+  "Split window below and select the window created with the split."
+  (interactive)
+  (select-window (split-window-below)))
+
+;; **** all
+;; :PROPERTIES:
+;; :ID: e97267e8-fca8-4bf2-9899-7ec694e8a767
+;; :END:
+
+;; ***** quit emacs without hook
+;; :PROPERTIES:
+;; :ID: b82f721c-39f5-4d41-bb0f-d4c391238eb4
+;; :END:
+
+;; Sometimes something goes wrong with [[helpvar:kill-emacs-hook][kill-emacs-hook]] and because of that I can't
+;; close emacs. For that reason, I have this function.
+
+(defun void/kill-emacs-no-hook ()
+  "Kill emacs, ignoring `kill-emacs-hook'."
+  (interactive)
+  (when (yes-or-no-p "Quit without `kill-emacs-hook'?")
+    (let (kill-emacs-hook) (kill-emacs))))
+
+;; ***** quit emacs brutally
+;; :PROPERTIES:
+;; :ID: 8753217c-4722-4183-bbb3-049707a37e54
+;; :END:
+
+;; I've never had to use this. But better be safe than sorry.
+
+(defun void/kill-emacs-brutally ()
+  "Tell an external process to kill emacs."
+  (interactive)
+  (when (yes-or-no-p "Do you want to BRUTALLY kill emacs?")
+    (call-process "kill" nil nil nil "-9" (number-to-string (emacs-pid)))))
+
+;; ***** new emacs instance
+;; :PROPERTIES:
+;; :ID: eaf80ec3-2bd4-4f05-8a9c-fa525894a6fe
+;; :END:
+
+(defun void/open-emacs-instance ()
+  "Open a new emacs instance in debug-mode."
+  (interactive)
+  (cond ((eq system-type 'darwin)
+         (start-process-shell-command
+          "emacs"
+          nil "open -n /Applications/Emacs.app --args --debug-init"))
+        ((eq system-type 'gnu/linux)
+         (start-process "emacs" nil "emacs" "--debug-init"))))
+
+;; ***** kill all process of program
+;; :PROPERTIES:
+;; :ID: 913952e2-3727-4b38-aefc-4618c2771730
+;; :END:
+
+(defun void/kill-emacs-processes ()
+  (interactive)
+  (let ((count 1) (process "emacs"))
+    (kill-process process)
+    (while (ignore-errors (kill-process process))
+      (setq process (format "emacs<%d>" count))
+      (cl-incf count))
+    (message "killed %d processes" count)))
+
+;; ***** qutebrowser
+;; :PROPERTIES:
+;; :ID: 77bace13-5af8-4974-981a-e07bf271182f
+;; :END:
+
+(defun void/open-qutebrowser ()
+  "Open qutebrowser."
+  (interactive)
+  (start-process "qutebrowser" nil "qutebrowser"))
+
+;; **** messages buffer
+;; :PROPERTIES:
+;; :ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
+;; :END:
+
+;; In Emacs, messages. The messages buffer is where messages displayed at the bottom
+;; of the Emacs frame are recorded after they expire.
+
+(defun void/switch-to-messages ()
+  (interactive)
+  (select-window (display-buffer (get-buffer "*Messages*"))))
+
+;; **** main todo file
+;; :PROPERTIES:
+;; :ID: 2accd21d-7316-4fa5-bd8f-8f40935ed621
+;; :END:
+
+(defun void/switch-to-capture-file ()
+  (interactive)
+  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
+
+;; **** turn on debug-mode
+;; :PROPERTIES:
+;; :ID: c1ac481a-6ebd-49ce-a930-3b0593283aee
+;; :END:
+
+(defun void/enable-debug-mode ()
+  (interactive)
+  (setq void-debug-p t))
+
+;; **** quit emacs no prompt
+;; :PROPERTIES:
+;; :ID: d530718a-2b42-4e9b-8d7d-7813e0ae6381
+;; :END:
+
+(defun void/quit-emacs-no-prompt ()
+  "Quit emacs without prompting."
+  (interactive)
+  (let (confirm-kill-emacs)
+    (kill-emacs)))
 
 ;; *** switch to scratch buffer
 ;; :PROPERTIES:
