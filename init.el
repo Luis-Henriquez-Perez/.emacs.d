@@ -184,57 +184,6 @@ Files that need to exist, but I don't typically want to see go here.")
 
 (defconst VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
 
-;; *** UTF-8
-;; :PROPERTIES:
-;; :ID: dd0fc702-67a7-404c-849e-22804663308d
-;; :END:
-
-;; I set =utf-8= as the default encoding for everything except the clipboard on
-;; windows. Window clipboard encoding could be wider than =utf-8=, so we let
-;; Emacs/the OS decide what encoding to use.
-
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))
-
-;; *** initial buffer choice
-;; :PROPERTIES:
-;; :ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
-;; :END:
-
-(defun void-initial-buffer ()
-  "Return the initial buffer to be displayed.
-This function is meant to be used as the value of `initial-buffer-choice'."
-  (if void-debug-p
-      (get-buffer "*Messages*")
-    (get-buffer "*scratch*")))
-
-;; *** disable terminal initialization
-;; :PROPERTIES:
-;; :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
-;; :END:
-
-;; When running emacs in terminal tty is *tremendously* slow.
-
-(unless (display-graphic-p)
-  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
-  (defhook! init-tty (window-setup-hook)
-    (advice-remove #'tty-run-terminal-initialization #'ignore)
-    (tty-run-terminal-initialization (selected-frame) nil t)))
-
-;; *** prevent emacs from killing certain buffers
-;; :PROPERTIES:
-;; :ID:       ae935cf5-7322-499c-96d7-20209d9b6641
-;; :END:
-
-;; I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
-;; to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
-
-(defhook! lock-certain-buffers (after-init-hook)
-  "Prevent certain buffers from being killed."
-  (--each (list "*scratch*" "*Messages*")
-    (with-current-buffer it
-      (emacs-lock-mode 'kill))))
-
 ;; ** Package Management
 ;; :PROPERTIES:
 ;; :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
@@ -1832,7 +1781,7 @@ SYM is a symbol that stores a list."
 (setq nsm-settings-file (concat VOID-DATA-DIR "network-settings.data"))
 
 
-;; ** UI
+;; ** Miscellaneous
 ;; :PROPERTIES:
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
@@ -1909,6 +1858,87 @@ is called.")
   "Disable old themes before loading new ones."
   (mapc #'disable-theme custom-enabled-themes)
   (apply <orig-fn> <args>))
+
+;; *** disable terminal initialization
+;; :PROPERTIES:
+;; :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
+;; :END:
+
+;; When running emacs in terminal tty is *tremendously* slow.
+
+(unless (display-graphic-p)
+  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
+  (defhook! init-tty (window-setup-hook)
+    (advice-remove #'tty-run-terminal-initialization #'ignore)
+    (tty-run-terminal-initialization (selected-frame) nil t)))
+
+;; *** prevent emacs from killing certain buffers
+;; :PROPERTIES:
+;; :ID:       ae935cf5-7322-499c-96d7-20209d9b6641
+;; :END:
+
+;; I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
+;; to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
+
+(defhook! lock-certain-buffers (after-init-hook)
+  "Prevent certain buffers from being killed."
+  (--each (list "*scratch*" "*Messages*")
+    (with-current-buffer it
+      (emacs-lock-mode 'kill))))
+
+;; *** initial buffer choice
+;; :PROPERTIES:
+;; :ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
+;; :END:
+
+(defun void-initial-buffer ()
+  "Return the initial buffer to be displayed.
+This function is meant to be used as the value of `initial-buffer-choice'."
+  (if void-debug-p
+      (get-buffer "*Messages*")
+    (get-buffer "*scratch*")))
+
+;; *** UTF-8
+;; :PROPERTIES:
+;; :ID: dd0fc702-67a7-404c-849e-22804663308d
+;; :END:
+
+;; I set =utf-8= as the default encoding for everything except the clipboard on
+;; windows. Window clipboard encoding could be wider than =utf-8=, so we let
+;; Emacs/the OS decide what encoding to use.
+
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))
+
+;; *** aliases
+;; :PROPERTIES:
+;; :ID:       da7229b6-27a4-41b6-aa3a-07935b97d181
+;; :END:
+
+;; **** atom predicate
+;; :PROPERTIES:
+;; :ID:       d6e83bfb-aaac-4dcb-89e9-8f9b4ca92db7
+;; :END:
+
+;; =atom= is perhaps the only type predicate not to end in =p=.
+
+(defalias 'atom 'atomp)
+
+;; **** prefixed-core
+;; :PROPERTIES:
+;; :ID:       14b63dc9-1d95-4bd7-8b29-8b2b33bd1e69
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/prefixed-core"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "prefixed-core"
+;; :LOCAL-REPO: "prefixed-core"
+;; :END:
+
+;; This package defines numerous aliases to existing commands in an attempt to make
+;; commands more discoverable and naming schemes more consistent.
+
+(require 'prefixed-core)
 
 ;; ** Commands
 ;; :PROPERTIES:
@@ -2076,36 +2106,6 @@ is called.")
   "Pop scratch."
   (interactive)
   (pop-to-buffer "*scratch*"))
-
-;; ** aliases
-;; :PROPERTIES:
-;; :ID:       da7229b6-27a4-41b6-aa3a-07935b97d181
-;; :END:
-
-;; *** atom predicate
-;; :PROPERTIES:
-;; :ID:       d6e83bfb-aaac-4dcb-89e9-8f9b4ca92db7
-;; :END:
-
-;; =atom= is perhaps the only type predicate not to end in =p=.
-
-(defalias 'atom 'atomp)
-
-;; *** prefixed-core
-;; :PROPERTIES:
-;; :ID:       14b63dc9-1d95-4bd7-8b29-8b2b33bd1e69
-;; :TYPE:     git
-;; :HOST:     github
-;; :REPO:     "emacs-straight/prefixed-core"
-;; :FILES:    ("*" (:exclude ".git"))
-;; :PACKAGE:  "prefixed-core"
-;; :LOCAL-REPO: "prefixed-core"
-;; :END:
-
-;; This package defines numerous aliases to existing commands in an attempt to make
-;; commands more discoverable and naming schemes more consistent.
-
-(require 'prefixed-core)
 
 
 ;; * Window Management
