@@ -2722,6 +2722,15 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :COMMIT:   "1ef55328dfba7abc653f7de695c34e2fbbef8ec9"
 ;; :END:
 
+;; Selectrum is another completion framework. It distinguishes itself from the rest
+;; by striving to work with the built-in emacs [[helpfn:completing-read][completing-read]] instead of
+;; replacing it like [[][helm]] and [[][ivy]] do.
+;;
+;; Because helm and ivy replace the existing framework, it means that whenever you
+;; want a command be capable of using all of helm or ivy's features, you need to
+;; define it their way. Otherwise, there's no guarantee their features will work.
+;; You'll be able to do a basic thing like choosing a single candidate.
+
 ;; *** init
 ;; :PROPERTIES:
 ;; :ID:       6e670980-7794-4505-a285-184416a5b377
