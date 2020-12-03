@@ -133,14 +133,16 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :ID:       5ca4b13a-14ab-4e7a-ab27-aab08b4f4994
 ;; :END:
 
-;; This headline is about actually installing all of the packages I use. I do this
-;; by searching through my org file for heading properties that correspond to emacs
-;; packages. Then, I convert their properties. My reasoning is that org mode
-;; already stores a lot of text metadata; I already have IDs for example on all my
-;; headlines. Storing package information as well would make it clear when a
-;; headline denotes the configuration of a package. And, it would put all that
-;; configuration in one place, allowing me to focus on the maintenance of one file
-;; as opposed to two.
+;; This headline is about installing all of the packages I use. I do this by
+;; searching through my init file for heading properties that correspond to emacs
+;; packages. Then, I convert the properties to recipes. This is rather unorthodox.
+;; However, I reason that storing package information as well would make it clear
+;; when a headline denotes the configuration of a package. And, it would put all
+;; that configuration in one place, allowing me to focus on the maintenance of only
+;; one file as opposed to two. Finally, doing this would fascillitate installing
+;; all my packages at once; and doing that, allows me to easizly optimize package
+;; installation via caching and evaling during compilation.
+;;
 
 ;; **** get package list based on my org file
 ;; :PROPERTIES:
@@ -330,23 +332,6 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; =s= is an api for strings inspired by [[][dash]].
 
 (require 's)
-
-;; **** ht
-;; :PROPERTIES:
-;; :ID:       dc6ceb3b-8946-4649-8164-38bc5e4d2ab5
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    ("ht.el" "ht-pkg.el")
-;; :HOST:     github
-;; :REPO:     "Wilfred/ht.el"
-;; :PACKAGE:  "ht"
-;; :LOCAL-REPO: "ht.el"
-;; :COMMIT:   "fff8c43f0e03d5b98deb9f988522b839ce2ca253"
-;; :END:
-
-;; =ht= is a library for working with hash tables.
-
-(require 'ht)
 
 ;; **** anaphora
 ;; :PROPERTIES:
