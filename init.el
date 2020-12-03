@@ -264,6 +264,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :LOCAL-REPO: "shut-up"
 ;; :COMMIT:   "081d6b01e3ba0e60326558e545c4019219e046ce"
 ;; :END:
+
 ;; This package provides a macro named =shut-up= that as its name suggests, silences
 ;; output of any forms within it. Emacs itself and many emacs packages spew
 ;; messages. While these messages can be nice to know, more often than not I get it
@@ -284,8 +285,13 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :COMMIT:   "0f238a9a466879ee96e5db0482019453718f342d"
 ;; :END:
 
-;; Dash is functional list manipulation library. It's used as a dependency of very
-;; many packages.
+;; Dash is functional list manipulation library. Many of the functions it has are
+;; already found in some form or another in emacs in features such as =cl-lib= and
+;; =seq= and =subr=, but dash has some very convenient functions and macros over emacs
+;; such as =-let=. Moreover, a lot of work has been put into making it's functions
+;; efficient; some are even more efficient than built-in cl functions.
+;; Additionally, it's already used as a dependency of very many packages so I'll
+;; likely end up loading it anyway.
 
 (require 'dash)
 
@@ -315,6 +321,8 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :LOCAL-REPO: "s.el"
 ;; :COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
 ;; :END:
+
+;; =s= is an api for strings inspired by [[][dash]].
 
 (require 's)
 
