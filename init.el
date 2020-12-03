@@ -1251,13 +1251,19 @@ Instead, arguments are accessed via anaphoric variables.
 (defmacro eval-after-load! (feature &rest body)
   "A wrapper around `eval-after-load!' with error catching."
   (declare (indent defun))
-  )
+  `(eval-after-load ',feature
+     '(condition-case error
+          (progn ,@body)
+        (error
+         (message "Error in `eval-after-load': %S" error)))))
 
 ;; *** after!
 ;; :PROPERTIES:
 ;; :ID: b31cd42d-cc57-492d-afae-d7d5e353e931
 ;; :END:
 
+;; =after!= is yet another wrapper around == that takes multiple arguments.
+;;
 ;; The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
 ;; [[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
 ;; been loaded.
@@ -1279,11 +1285,6 @@ Instead, arguments are accessed via anaphoric variables.
         ((symbolp features)
          `(if (featurep ',features)
               ,(macroexp-progn body)
-            (eval-after-load ',feature
-              '(condition-case error
-                   (progn ,@body)
-                 (error
-                  (message "Error in `eval-after-load': %S" error))))
             (eval-after-load! ,features ,@body)))
         (t (error "Invalid argument."))))
 
