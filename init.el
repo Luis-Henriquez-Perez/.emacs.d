@@ -288,7 +288,7 @@ Assumes vc is git which is fine because straight only uses git right now."
        (if (zerop (% i 2))
            (intern (downcase elt))
          (car (read-from-string elt)))
-       (setq i (+ 1 i)))
+       (setq i (1+ i)))
      parts)))
 
 ;; ***** convert property list to proper straight format
