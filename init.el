@@ -8,7 +8,7 @@
 ;; :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
 ;; :END:
 
-;; *** gc cons threshold
+;; *** garbage collection
 ;; :PROPERTIES:
 ;; :ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
 ;; :END:
@@ -19,6 +19,31 @@
 ;; increasing the value of [[helpvar:gc-cons-threshold][gc-cons-threshold]], the number of bytes of consing
 ;; between garbage collections, typically makes a notable difference in user
 ;; startup time.
+
+;; **** gcmh
+;; :PROPERTIES:
+;; :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     gitlab
+;; :REPO:     "koral/gcmh"
+;; :PACKAGE:  "gcmh"
+;; :LOCAL-REPO: "gcmh"
+;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
+;; :END:
+
+;; =gcmh= does three things. It reduces garbage collection by setting, it adds a hook
+;; telling Emacs to gargbage collect during idle time, and it tells Emacs to
+;; garbage collect more frequently when it's idle.
+
+(require 'gcmh)
+
+(setq gcmh-idle-delay 10)
+(setq gcmh-verbose void-debug-p)
+(setq gcmh-high-cons-threshold (* 64 1024 1024))
+(setq gcmh-low-cons-threshold (* 16 1024 1024))
+
+(gcmh-mode 1)
 
 ;; **** minibuffer
 ;; :PROPERTIES:
@@ -53,53 +78,12 @@
   "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
   (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
 
-;; **** gc cons threshold
-;; :PROPERTIES:
-;; :ID: e15d257f-1b0f-421e-8b34-076b1d20e493
-;; :END:
-
-(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
-  "The upper limit for `gc-cons-threshold'.
-When VOID is performing computationally intensive operations,
-`gc-cons-threshold' is set to this value.")
-
-(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
-  "The default value for `gc-cons-threshold'.")
-
-(defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
-  "The upper limit for `gc-cons-percentage'.
-When VOID is performing computationally intensive operations,
-`gc-cons-percentage' is set to this value.")
-
-(defconst VOID-GC-CONS-PERCENTAGE 0.1
-  "The default value for `gc-cons-percentage'.")
-
-;; **** gcmh
-;; :PROPERTIES:
-;; :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     gitlab
-;; :REPO:     "koral/gcmh"
-;; :PACKAGE:  "gcmh"
-;; :LOCAL-REPO: "gcmh"
-;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
-;; :END:
-
-;; =gcmh= is a package that boosts the ==.
-
-(require 'gcmh)
-
-(setq gcmh-idle-delay 10)
-(setq gcmh-verbose void-debug-p)
-(setq gcmh-high-cons-threshold (* 16 1024 1024))
-
-(void-add-hook 'emacs-startup-hook #'gcmh-mode)
-
 ;; *** directories
 ;; :PROPERTIES:
 ;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
 ;; :END:
+
+;; I store common.
 
 ;; **** core directories and files
 ;; :PROPERTIES:
@@ -226,112 +210,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (if void-debug-p
       (get-buffer "*Messages*")
     (get-buffer "*scratch*")))
-
-;; *** defined in c source code
-;; :PROPERTIES:
-;; :ID:       873e6820-52f0-4b70-9992-ccb1610eb266
-;; :END:
-
-;; **** default settings
-;; :PROPERTIES:
-;; :ID: 8d578668-9b0b-4117-bf93-f556e970527b
-;; :END:
-
-(setq-default fringe-indicator-alist
-              (delq (assq 'continuation fringe-indicator-alist)
-                    fringe-indicator-alist))
-(setq-default highlight-nonselected-windows nil)
-(setq-default indicate-buffer-boundaries nil)
-(setq-default inhibit-compacting-font-caches t)
-(setq-default max-mini-window-height 0.3)
-(setq-default mode-line-default-help-echo nil)
-(setq-default mouse-yank-at-point t)
-(setq-default resize-mini-windows 'grow-only)
-(setq-default show-help-function nil)
-(setq-default use-dialog-box nil)
-(setq-default visible-cursor t)
-(setq-default x-stretch-cursor nil)
-(setq-default ring-bell-function #'ignore)
-(setq-default visible-bell nil)
-(setq-default window-resize-pixelwise t)
-(setq-default frame-resize-pixelwise t)
-
-;; **** compilation
-;; :PROPERTIES:
-;; :ID: 65c83b28-9bee-48fe-856a-f9c38f28c817
-;; :END:
-
-;; Non-nil means load prefers the newest version of a file.
-(setq-default load-prefer-newer t)
-
-;; **** scrolling
-;; :PROPERTIES:
-;; :ID: 21e56e37-5ff8-40d8-9f27-c3a3ab37dfb8
-;; :END:
-
-(setq-default hscroll-margin 2)
-(setq-default hscroll-step 1)
-(setq-default scroll-conservatively 1001)
-(setq-default scroll-margin 0)
-(setq-default scroll-preserve-screen-position t)
-
-;; ***** spacing
-;; :PROPERTIES:
-;; :ID: 8b3f38f9-b789-43e3-b2c5-5152a67d2803
-;; :END:
-
-(setq-default fill-column 80)
-(setq-default sentence-end-double-space nil)
-(setq-default tab-width 4)
-
-;; ***** line wrapping
-;; :PROPERTIES:
-;; :ID: e1564e28-d2ab-4649-b18b-24c27b897256
-;; :END:
-
-(setq-default word-wrap t)
-(setq-default indicate-empty-lines nil)
-(setq-default indent-tabs-mode nil)
-(setq-default truncate-lines t)
-(setq-default truncate-partial-width-windows 50)
-
-;; ***** other
-;; :PROPERTIES:
-;; :ID: cd0aa7ad-97bc-48ec-9a09-8af56cbf6157
-;; :END:
-
-;; Non-nil means reorder bidirectional text for display in the visual order.
-;; Disabling this gives Emacs a tiny performance boost.
-(setq-default bidi-display-reordering nil)
-(setq-default cursor-in-non-selected-windows nil)
-(setq-default display-line-numbers-width 3)
-(setq-default enable-recursive-minibuffers t)
-(setq-default frame-inhibit-implied-resize t)
-
-                                        ;general-setq; **** printing
-;; :PROPERTIES:
-;; :ID: 2dfce297-0f01-4576-ae5d-bb5856591ecb
-;; :END:
-
-;; When eval and replacing expressions, I want the printed result to express all
-;; newlines in strings as =\n= as opposed to an actual newline. In fact, in general I
-;; want any character to be expressed in =backslash + number or character= form. It
-;; makes the strings more readable and easier to deal with.
-
-;; Furthermore, I'd like printed lisp expressions to express quoted forms the way I
-;; write them, with a ='= as opposed to the literal =(quote ...)=.
-
-;; There comes a point when output is too long, or too nested to be usable. It's ok
-;; to abbreviate it at this point.
-
-(setq-default print-escape-newlines t)
-(setq-default print-escape-multibyte t)
-(setq-default print-escape-control-characters t)
-(setq-default print-escape-nonascii t)
-(setq-default print-length nil)
-(setq-default print-level nil)
-(setq-default print-quoted t)
-(setq-default print-escape-newlines t)
 
 ;; *** =tty=
 ;; :PROPERTIES:
@@ -695,7 +573,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
 ;; :END:
 
-;; =s= is an api for strings inspired by [[id][dash]].
+;; =s= is an api for strings inspired by [[id:704fc35f-0ad0-4eb3-9eb5-d8335465dbd8][dash]].
 
 (require 's)
 
@@ -808,6 +686,9 @@ Accept the same arguments as `message'."
 ;; :PROPERTIES:
 ;; :ID: f2668044-13b2-46e7-bf84-fcf998591e37
 ;; :END:
+
+;; Sometimes I want to create a keyword by interning a string or a symbol. This
+;; commands saves me having to add the colon at the beginning before interning.
 
 (defun void-keyword-intern (&rest args)
   "Return ARGS as a keyword."
@@ -1064,10 +945,10 @@ function.
           ((docstring _ body) (void--keyword-macro-args body))
           (hook-name (void-symbol-intern 'void-- name '-hook)))
     `(progn
-       ,@(-map (lambda (hook)
-                 `(aprog1 (defun ,hook-name (&rest _) ,docstring ,@body)
-                    (void-add-hook ',hook it ,depth ,local)))
-               hooks))))
+       ,@(mapcar (lambda (hook)
+                   `(aprog1 (defun ,hook-name (&rest _) ,docstring ,@body)
+                      (void-add-hook ',hook it ,depth ,local)))
+                 hooks))))
 
 ;; *** advice
 ;; :PROPERTIES:
@@ -2209,6 +2090,30 @@ is called.")
   (interactive)
   (pop-to-buffer "*scratch*"))
 
+;; ** aliases
+;; :PROPERTIES:
+;; :ID:       da7229b6-27a4-41b6-aa3a-07935b97d181
+;; :END:
+
+;; *** atom predicate
+;; :PROPERTIES:
+;; :ID:       d6e83bfb-aaac-4dcb-89e9-8f9b4ca92db7
+;; :END:
+
+;; *** prefixed-core
+;; :PROPERTIES:
+;; :ID:       14b63dc9-1d95-4bd7-8b29-8b2b33bd1e69
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/prefixed-core"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "prefixed-core"
+;; :LOCAL-REPO: "prefixed-core"
+;; :END:
+
+;; This package defines numerous aliases to existing commands in an attempt to.
+
+(require 'prefixed-core)
 
 ;; * Window Management
 ;; ;; :PROPERTIES:
