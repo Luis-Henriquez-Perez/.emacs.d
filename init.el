@@ -17,7 +17,7 @@
 ;; less performant especially when performing a large number of calculations,
 ;; because it spends resources garbage collecting when it doesn't have to. Indeed,
 ;; increasing the value of [[helpvar:gc-cons-threshold][gc-cons-threshold]], the number of bytes of consing
-;; between garbage collections, typically makes a notable difference in user
+;; between garbage collections, is known to make a notable difference in user
 ;; startup time.
 
 ;; **** gcmh
@@ -72,26 +72,24 @@
 
 (defhook! boost-garbage-collection (minibuffer-enter-hook)
   "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+  (setq gc-cons-threshold ))
 
 (defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
   "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold ))))
 
 ;; *** directories
 ;; :PROPERTIES:
 ;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
 ;; :END:
 
-;; I store certain important directories in variables.
+;; I store certain important directories in variables so that I can easily
+;; reference them in the future.
 
 ;; **** core directories and files
 ;; :PROPERTIES:
 ;; :ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
 ;; :END:
-
-;; This headline contains constant variables that store important directories and
-;; files.
 
 ;; ***** top level
 ;; :PROPERTIES:
@@ -636,7 +634,7 @@ Accept the same arguments as `message'."
 
 ;; These are tools that are specifically designed to help me write macros.
 
-;; **** get keywords arguments in macro
+;; **** macro keyword arguments
 ;; :PROPERTIES:
 ;; :ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
 ;; :END:
@@ -1242,7 +1240,7 @@ Instead, arguments are accessed via anaphoric variables.
 ;; =eval-after-load= is a macro that evaluates a lisp form after a file or feature
 ;; has been loaded. It's syntax is a bit terse because you need to quote the
 ;; feature as well as the form to be evaluated.
-;;
+
 ;; Also, if an =eval-after-load= block contains an error and it is triggered by a
 ;; feature, the error will happening. I think it might be that because the form was
 ;; not successfully evaluated =eval-after-load= does not realize it should stop
@@ -1264,7 +1262,7 @@ Instead, arguments are accessed via anaphoric variables.
 
 ;; =after!= is yet another wrapper around == that can accept multiple features or
 ;; even a specification of features using =and= or =or=.
-;;
+
 ;; The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
 ;; [[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
 ;; been loaded.
@@ -2091,6 +2089,10 @@ is called.")
 ;; :ID:       d6e83bfb-aaac-4dcb-89e9-8f9b4ca92db7
 ;; :END:
 
+;; =atom= is perhaps the only type predicate not to end in =p=.
+
+(defalias 'atom 'atomp)
+
 ;; *** prefixed-core
 ;; :PROPERTIES:
 ;; :ID:       14b63dc9-1d95-4bd7-8b29-8b2b33bd1e69
@@ -2102,9 +2104,11 @@ is called.")
 ;; :LOCAL-REPO: "prefixed-core"
 ;; :END:
 
-;; This package defines numerous aliases to existing commands in an attempt to.
+;; This package defines numerous aliases to existing commands in an attempt to make
+;; commands more discoverable and naming schemes more consistent.
 
 (require 'prefixed-core)
+
 
 ;; * Window Management
 ;; ;; :PROPERTIES:
