@@ -2842,6 +2842,10 @@ Prescient.
 ;; :ID:       44120178-95c3-44f1-a3a2-bd69b0d03e70
 ;; :END:
 
+;; **** Don't preview anything
+
+;; Many consult
+
 (setq consult-preview-theme nil)
 (setq consult-preview-outline nil)
 (setq consult-preview-buffer nil)
