@@ -2773,6 +2773,8 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
 ;; :END:
 
+Prescient.
+
 (void-add-hook 'selectrum-mode-hook #'prescient-persist-mode)
 
 (setq prescient-save-file (concat VOID-DATA-DIR "prescient-save-file"))
