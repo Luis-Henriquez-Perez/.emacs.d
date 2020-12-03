@@ -201,7 +201,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
       (get-buffer "*Messages*")
     (get-buffer "*scratch*")))
 
-;; *** =tty=
+;; *** disable terminal initialization
 ;; :PROPERTIES:
 ;; :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
 ;; :END:
