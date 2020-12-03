@@ -1690,7 +1690,7 @@ SYM is a symbol that stores a list."
 ;; :ID:       e48e925e-1f1e-4c79-8652-c92aafe06290
 ;; :END:
 
-(setq prefer-coding-system VOID-DEFAULT-CODING-SYSTEM)
+;; (setq prefer-coding-system VOID-DEFAULT-CODING-SYSTEM)
 
 ;; *** gv
 ;; :PROPERTIES:
