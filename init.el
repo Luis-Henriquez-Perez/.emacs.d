@@ -3,6 +3,363 @@
 ;; :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
 ;; :END:
 
+;; ** Init
+;; :PROPERTIES:
+;; :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
+;; :END:
+
+;; *** gc cons threshold
+;; :PROPERTIES:
+;; :ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
+;; :END:
+
+;; Emacs garbage collects too frequently for most modern machines. This makes emacs
+;; less performant especially when performing a large number of calculations,
+;; because it spends resources garbage collecting when it doesn't have to. Indeed,
+;; increasing the value of [[helpvar:gc-cons-threshold][gc-cons-threshold]], the number of bytes of consing
+;; between garbage collections, typically makes a notable difference in user
+;; startup time.
+
+;; **** minibuffer
+;; :PROPERTIES:
+;; :ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
+;; :END:
+
+;; [[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
+;; entering and exiting the minibuffer (respectively). In the minibuffer I'll be
+;; primarily doing searches for variables and functions. There are alot of
+;; variables and functions so this can certainly get computationally expensive. To
+;; keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
+;; the minibuffer, and restore it to it's original value a few seconds after it's closed.
+
+;; It would take me forever to guess the name =minibuffer-setup-hook= from the
+;; variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
+;; know what the hook to enter the minibuffer was, I'd probably
+;; =minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
+;; It'd take me forever to guess =startup=. Note that the only tricky thing about
+;; this example.
+
+;; At first I thought of =entry= but after more thought I realized
+;; hook variables use action verbs in their names not nouns. So the =exit= in
+;; =minibuffer-exit-hook= is actually the verb =exit= not the noun.
+
+(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
+
+(defhook! boost-garbage-collection (minibuffer-enter-hook)
+  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
+  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
+
+;; **** gc cons threshold
+;; :PROPERTIES:
+;; :ID: e15d257f-1b0f-421e-8b34-076b1d20e493
+;; :END:
+
+(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
+  "The upper limit for `gc-cons-threshold'.
+When VOID is performing computationally intensive operations,
+`gc-cons-threshold' is set to this value.")
+
+(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
+  "The default value for `gc-cons-threshold'.")
+
+(defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
+  "The upper limit for `gc-cons-percentage'.
+When VOID is performing computationally intensive operations,
+`gc-cons-percentage' is set to this value.")
+
+(defconst VOID-GC-CONS-PERCENTAGE 0.1
+  "The default value for `gc-cons-percentage'.")
+
+;; **** gcmh
+;; :PROPERTIES:
+;; :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     gitlab
+;; :REPO:     "koral/gcmh"
+;; :PACKAGE:  "gcmh"
+;; :LOCAL-REPO: "gcmh"
+;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
+;; :END:
+
+;; =gcmh= is a package that boosts the ==.
+
+(require 'gcmh)
+
+(setq gcmh-idle-delay 10)
+(setq gcmh-verbose void-debug-p)
+(setq gcmh-high-cons-threshold (* 16 1024 1024))
+
+(void-add-hook 'emacs-startup-hook #'gcmh-mode)
+
+;; *** directories
+;; :PROPERTIES:
+;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
+;; :END:
+
+;; **** core directories and files
+;; :PROPERTIES:
+;; :ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
+;; :END:
+
+;; This headline contains constant variables that store important directories and
+;; files.
+
+;; ***** top level
+;; :PROPERTIES:
+;; :ID: 48bf884a-de27-45f8-a5b1-94567815942d
+;; :END:
+
+;; These are important files and directories that I end up referring to often in my
+;; code.
+
+(defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
+  "Path to `user-emacs-directory'.")
+
+(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
+  "Path to the elisp file that bootstraps Void startup.")
+
+(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
+  "Path to the Org file that when that Void.")
+
+(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
+  "Directory where any multimedia describing VOID should go.
+ These could screenshots are for detailing any problems, interesting behaviors or features.")
+
+(defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
+  "Path to the file that contains all of Void's tests.")
+
+;; ***** org
+;; :PROPERTIES:
+;; :ID:       c88f95cd-f5bd-4c69-8679-7e42c52e9a36
+;; :END:
+
+(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
+  "Path where Void's org files go.")
+
+(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
+  "File where all org captures will go.")
+
+;; ***** hidden
+;; :PROPERTIES:
+;; :ID: d46d573b-1d17-4d0b-9b49-9049dbb6f7c1
+;; :END:
+
+(defconst VOID-LOCAL-DIR (concat VOID-EMACS-DIR ".local/")
+  "Path to the directory for local Emacs files.
+Files that need to exist, but I don't typically want to see go here.")
+
+(defconst VOID-DATA-DIR (concat VOID-LOCAL-DIR "data/")
+  "Path to the directory where Void data files are stored.")
+
+(defconst VOID-PACKAGES-DIR (concat VOID-LOCAL-DIR "packages/")
+  "Path to the directory where packages are stored.")
+
+;; **** system directories
+;; :PROPERTIES:
+;; :ID:       f3bdd353-b0ff-48fd-a2f2-295ccfa139ab
+;; :END:
+
+;; These are directories I have on my system.
+
+(defconst VOID-DOWNLOAD-DIR (expand-file-name "~/Downloads/")
+  "Directory where downloads should go.")
+
+(defconst VOID-MULTIMEDIA-DIR (expand-file-name "~/Multimedia/")
+  "Directory where multimedia should go.")
+
+(defconst VOID-VIDEO-DIR (concat VOID-MULTIMEDIA-DIR "Videos/")
+  "Directory where videos should go.")
+
+(defconst VOID-MUSIC-DIR (concat VOID-MULTIMEDIA-DIR "Music/")
+  "Directory where music should go.")
+
+(defconst VOID-ALERT-SOUNDS (concat VOID-MULTIMEDIA-DIR "Alert Sounds/")
+  "Directory where alert sounds should go.")
+
+(defconst VOID-EMAIL-DIR (expand-file-name "~/.mail/")
+  "Directories where emails are stored.")
+
+;; **** ensure directories exist
+;; :PROPERTIES:
+;; :ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
+;; :END:
+
+;; I create the directories that don't exist. But I assume they already exist if
+;; Void is compiled.
+
+(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
+  (make-directory dir t))
+
+;; *** default coding system
+;; :PROPERTIES:
+;; :ID:       4c55a0d4-dbd7-4405-b944-3b68d8a069f2
+;; :END:
+
+(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8
+  "Default text encoding.")
+
+;; *** UTF-8
+;; :PROPERTIES:
+;; :ID: dd0fc702-67a7-404c-849e-22804663308d
+;; :END:
+
+;; I set =utf-8= as the default encoding for everything except the clipboard on
+;; windows. Window clipboard encoding could be wider than =utf-8=, so we let
+;; Emacs/the OS decide what encoding to use.
+
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))
+
+;; *** initial buffer choice
+;; :PROPERTIES:
+;; :ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
+;; :END:
+
+(defun void-initial-buffer ()
+  "Return the initial buffer to be displayed.
+This function is meant to be used as the value of `initial-buffer-choice'."
+  (if void-debug-p
+      (get-buffer "*Messages*")
+    (get-buffer "*scratch*")))
+
+;; *** defined in c source code
+;; :PROPERTIES:
+;; :ID:       873e6820-52f0-4b70-9992-ccb1610eb266
+;; :END:
+
+;; **** default settings
+;; :PROPERTIES:
+;; :ID: 8d578668-9b0b-4117-bf93-f556e970527b
+;; :END:
+
+(setq-default fringe-indicator-alist
+              (delq (assq 'continuation fringe-indicator-alist)
+                    fringe-indicator-alist))
+(setq-default highlight-nonselected-windows nil)
+(setq-default indicate-buffer-boundaries nil)
+(setq-default inhibit-compacting-font-caches t)
+(setq-default max-mini-window-height 0.3)
+(setq-default mode-line-default-help-echo nil)
+(setq-default mouse-yank-at-point t)
+(setq-default resize-mini-windows 'grow-only)
+(setq-default show-help-function nil)
+(setq-default use-dialog-box nil)
+(setq-default visible-cursor t)
+(setq-default x-stretch-cursor nil)
+(setq-default ring-bell-function #'ignore)
+(setq-default visible-bell nil)
+(setq-default window-resize-pixelwise t)
+(setq-default frame-resize-pixelwise t)
+
+;; **** compilation
+;; :PROPERTIES:
+;; :ID: 65c83b28-9bee-48fe-856a-f9c38f28c817
+;; :END:
+
+;; Non-nil means load prefers the newest version of a file.
+(setq-default load-prefer-newer t)
+
+;; **** scrolling
+;; :PROPERTIES:
+;; :ID: 21e56e37-5ff8-40d8-9f27-c3a3ab37dfb8
+;; :END:
+
+(setq-default hscroll-margin 2)
+(setq-default hscroll-step 1)
+(setq-default scroll-conservatively 1001)
+(setq-default scroll-margin 0)
+(setq-default scroll-preserve-screen-position t)
+
+;; ***** spacing
+;; :PROPERTIES:
+;; :ID: 8b3f38f9-b789-43e3-b2c5-5152a67d2803
+;; :END:
+
+(setq-default fill-column 80)
+(setq-default sentence-end-double-space nil)
+(setq-default tab-width 4)
+
+;; ***** line wrapping
+;; :PROPERTIES:
+;; :ID: e1564e28-d2ab-4649-b18b-24c27b897256
+;; :END:
+
+(setq-default word-wrap t)
+(setq-default indicate-empty-lines nil)
+(setq-default indent-tabs-mode nil)
+(setq-default truncate-lines t)
+(setq-default truncate-partial-width-windows 50)
+
+;; ***** other
+;; :PROPERTIES:
+;; :ID: cd0aa7ad-97bc-48ec-9a09-8af56cbf6157
+;; :END:
+
+;; Non-nil means reorder bidirectional text for display in the visual order.
+;; Disabling this gives Emacs a tiny performance boost.
+(setq-default bidi-display-reordering nil)
+(setq-default cursor-in-non-selected-windows nil)
+(setq-default display-line-numbers-width 3)
+(setq-default enable-recursive-minibuffers t)
+(setq-default frame-inhibit-implied-resize t)
+
+                                        ;general-setq; **** printing
+;; :PROPERTIES:
+;; :ID: 2dfce297-0f01-4576-ae5d-bb5856591ecb
+;; :END:
+
+;; When eval and replacing expressions, I want the printed result to express all
+;; newlines in strings as =\n= as opposed to an actual newline. In fact, in general I
+;; want any character to be expressed in =backslash + number or character= form. It
+;; makes the strings more readable and easier to deal with.
+
+;; Furthermore, I'd like printed lisp expressions to express quoted forms the way I
+;; write them, with a ='= as opposed to the literal =(quote ...)=.
+
+;; There comes a point when output is too long, or too nested to be usable. It's ok
+;; to abbreviate it at this point.
+
+(setq-default print-escape-newlines t)
+(setq-default print-escape-multibyte t)
+(setq-default print-escape-control-characters t)
+(setq-default print-escape-nonascii t)
+(setq-default print-length nil)
+(setq-default print-level nil)
+(setq-default print-quoted t)
+(setq-default print-escape-newlines t)
+
+;; *** =tty=
+;; :PROPERTIES:
+;; :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
+;; :END:
+
+;; When running emacs in terminal tty is *tremendously* slow.
+
+(unless (display-graphic-p)
+  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
+  (defhook! init-tty (window-setup-hook)
+    (advice-remove #'tty-run-terminal-initialization #'ignore)
+    (tty-run-terminal-initialization (selected-frame) nil t)))
+
+;; *** prevent emacs from killing certain buffers
+;; :PROPERTIES:
+;; :ID:       ae935cf5-7322-499c-96d7-20209d9b6641
+;; :END:
+
+;; I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
+;; to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
+
+(defhook! lock-certain-buffers (after-init-hook)
+  "Prevent certain buffers from being killed."
+  (--each (list "*scratch*" "*Messages*")
+    (with-current-buffer it
+      (emacs-lock-mode 'kill))))
+
 ;; ** Package Management
 ;; :PROPERTIES:
 ;; :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
@@ -297,13 +654,13 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :COMMIT:   "0f238a9a466879ee96e5db0482019453718f342d"
 ;; :END:
 
-;; Dash is functional list manipulation library. Many of the functions it has are
-;; already found in some form or another in emacs in features such as =cl-lib= and
-;; =seq= and =subr=, but dash has some very convenient functions and macros over emacs
-;; such as =-let=. Moreover, a lot of work has been put into making it's functions
-;; efficient; some are even more efficient than built-in cl functions.
-;; Additionally, it's already used as a dependency of very many packages so I'll
-;; likely end up loading it anyway.
+;; Dash is rich list manipulation library. Many of the functions it has are already
+;; found in some form or another in emacs in features such as =cl-lib= and =seq= and
+;; =subr=, but dash has some very convenient functions and macros over emacs (such as
+;; =-let)=. Moreover, a lot of work has been put into making it's functions efficient;
+;; some are even more efficient than built-in cl functions. Additionally, it's
+;; already used as a dependency of very many packages so I'll likely end up loading
+;; it anyway.
 
 (require 'dash)
 
@@ -318,6 +675,10 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :REPO:     "magnars/dash.el"
 ;; :HOST:     github
 ;; :END:
+
+;; =dash-functional= provides "function combinators". These are functions that take
+;; one or more functions as arguments and return a function. One example of this is
+;; emacs's [[helpfn:apply-partially][apply-partially]]. These functions can help.
 
 (require 'dash-functional)
 
@@ -334,7 +695,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
 ;; :END:
 
-;; =s= is an api for strings inspired by [[][dash]].
+;; =s= is an api for strings inspired by [[id][dash]].
 
 (require 's)
 
@@ -348,6 +709,10 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :PACKAGE:  "anaphora"
 ;; :LOCAL-REPO: "anaphora"
 ;; :END:
+
+;; It's common to want to refer to the thing you're operating on in lisp and in
+;; many other languages. In lisp this often requires assigning the variable a name.
+;; But if you're only.
 
 (require 'anaphora)
 
@@ -454,6 +819,10 @@ Accept the same arguments as `message'."
 ;; :ID: fb867938-d62b-42fc-bf07-092f10b64f22
 ;; :END:
 
+;; Calling [[helpfn:symbol-name][symbol-name]] on a keyword returns the keyword as a string. However often we
+;; don't want the prepended colon on they keyword. This function is for that
+;; occasion.
+
 (defun void-keyword-name (keyword)
   "Return the name of the KEYWORD without the prepended `:'."
   (declare (pure t) (side-effect-free t))
@@ -463,6 +832,9 @@ Accept the same arguments as `message'."
 ;; :PROPERTIES:
 ;; :ID: 4ef52875-4ce6-4940-8b7e-13c96bedcb3d
 ;; :END:
+
+;; This function is for converting something to a string, no questions asked. I use
+;; it when I don't want to be bothered with details and just want a string.
 
 (defun void-to-string (&rest args)
   "Return ARGS as a string."
@@ -702,7 +1074,12 @@ function.
 ;; :ID:       19b9021d-f310-485b-9258-4df19423c082
 ;; :END:
 
-;; [[info:elisp#Advising Functions][Advising]] is one of the most powerful ways to customize emacs's behavior. In this
+;; [[info:elisp#Advising Functions][Advising]] is one of the most powerful ways to customize emacs's behavior.
+
+;; I want to name advices so that they can be distinguished from other functions. I
+;; also want to be able to deduce the function being advised from the name.
+
+;;  In this
 ;; headline I provide a macro to concisely define functions that are specifically
 ;; intended to advise other functions and to ensure that these functions are named
 ;; properly. All user-defined advising functions should have the format
@@ -923,11 +1300,11 @@ Instead, arguments are accessed via anaphoric variables.
                          '(&rest <args>))))
     `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
        (ignore <args>)
-       (cl-progv (->> (alet (help-function-arglist #',target t)
-                        ;; kind of a hack...
-                        (if (eq t it) nil it))
-                      (--remove (s-starts-with-p "@" (symbol-name it)))
-                      (--map (intern (format "<%s>" (symbol-name it)))))
+       (cl-progv (thread-last (alet (help-function-arglist #',target t)
+                                ;; kind of a hack...
+                                (if (eq t it) nil it))
+                   (--remove (s-starts-with-p "@" (symbol-name it)))
+                   (--map (intern (format "<%s>" (symbol-name it)))))
            <args>
          ,@body))))
 
@@ -1045,6 +1422,8 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
 ;; :END:
 
+;; =keyfreq= records.
+
 (void-add-hook 'emacs-startup-hook #'keyfreq-mode)
 
 ;; *** system-packages
@@ -1058,6 +1437,11 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :LOCAL-REPO: "system-packages"
 ;; :COMMIT:   "92c58d98bc7282df9fd6f24436a105f5f518cde9"
 ;; :END:
+
+;; =system-packages= provides an api for installing system packages. This api strives
+;; to abstract package installation on different operating systems. Unfortunately,
+;; it does not include an interactive function that uses [[helpfn:completing-read][completing-read]] to list
+;; packages
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -1082,6 +1466,7 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :END:
 
 ;; If we're in arch and we have yay intalled, use that.
+
 (after! system-packages
   (when (and (eq system-packages-package-manager 'pacman)
              (system-packages-package-installed-p "yay"))
@@ -1152,35 +1537,6 @@ Instead, arguments are accessed via anaphoric variables.
 ;; garbage collection during this time.
 
 (void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection-advice)
-
-;; *** org-ml
-;; :PROPERTIES:
-;; :ID:       8bac9361-2c29-4e17-b6e2-10ec679a5e24
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "ndwarshuis/org-ml"
-;; :PACKAGE:  "org-ml"
-;; :LOCAL-REPO: "org-ml"
-;; :COMMIT:   "93e13bfc74e0c68d3c12a9d1405f91ce86a3d331"
-;; :END:
-
-;; [[https://github.com/ndwarshuis/org-ml.git][org ml]] is a functional library for programmatically generating org mode
-;; structures. It was built for.
-
-;; *** ts
-;; :PROPERTIES:
-;; :ID:       64d19467-a878-449c-8402-88892c25ac9a
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :repo:     "alphapapa/ts.el"
-;; :package:  "ts"
-;; :local-repo: "ts.el"
-;; :COMMIT:   "df48734ef046547c1aa0de0f4c07d11964ef1f7f"
-;; :END:
-
-;; =ts= is a time package.
 
 ;; *** with-os!
 ;; :PROPERTIES:
@@ -1254,38 +1610,7 @@ SYM is a symbol that stores a list."
   (declare (indent 1))
   `(setq ,sym (nconc ,sym ,@lists)))
 
-;; *** autoload
-;; :PROPERTIES:
-;; :ID:       56bf4e09-1ce4-406c-a18f-e93ba8c4ad39
-;; :END:
-
-;; I am using my own simple autoload system that is purely emacs lisp.
-
-;; **** package autoload
-;; :PROPERTIES:
-;; :ID:       93e8c19b-2306-4e7f-9b43-3418e07a1b9c
-;; :END:
-
-(defvar void-package-autoloads (ht-create)
-  "A hash-table mapping packages to a list of its autoloads.")
-
-;; **** hook that
-;; :PROPERTIES:
-;; :ID:       da32e049-e980-47af-b8d9-d3c644702229
-;; :END:
-
-;; I put this code in a hook instead of [[][]] because there may be other ways that
-;; said package ends up getting loaded besides calling one of the autoload
-;; functions.
-
-(defhook! remove-and-unbind-autoloads (before-load-hook)
-  "Hook run before feature is loaded."
-  (void-log "Removing autoloads from package")
-  (--each (ht-get void-package-autoloads package)
-    (fmakunbound it))
-  (ht-remove void-package-autoloads package))
-
-;; **** autoloading
+;; *** autoloading
 ;; :PROPERTIES:
 ;; :ID:       e648ce0e-bb00-452d-9498-236c65e3a873
 ;; :END:
@@ -1298,8 +1623,6 @@ SYM is a symbol that stores a list."
   "Create a function that can be called."
   ;; add function to hash table.
   (unless (fboundp fn)
-    (ht-set void-package-autoloads package
-            (cons fn (ht-get void-package-autoloads package)))
     (fset fn `(lambda (&rest args)
                 ;; will trigger the before-load hook.
                 (require package)
@@ -1347,416 +1670,19 @@ SYM is a symbol that stores a list."
 (defun void-load-after-call (package functions)
   (void--load-after-call package :after functions))
 
-;; ** Init
-;; :PROPERTIES:
-;; :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
-;; :END:
 
-;; *** gc cons threshold
-;; :PROPERTIES:
-;; :ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
-;; :END:
-
-;; A big contributor to long startup times is the garbage collector. When
-;; performing a large number of calculations, it can make a big difference to
-;; increase the [[helpvar:gc-cons-threshold][gc-cons-threshold]], or the /number of bytes of consing between
-;; garbage collections/. The default value is usually too low for modern machines.
-
-;; **** minibuffer
-;; :PROPERTIES:
-;; :ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
-;; :END:
-
-;; [[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
-;; entering and exiting the minibuffer (respectively). In the minibuffer I'll be
-;; primarily doing searches for variables and functions. There are alot of
-;; variables and functions so this can certainly get computationally expensive. To
-;; keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
-;; the minibuffer, and restore it to it's original value a few seconds after it's closed.
-
-;; It would take me forever to guess the name =minibuffer-setup-hook= from the
-;; variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
-;; know what the hook to enter the minibuffer was, I'd probably
-;; =minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
-;; It'd take me forever to guess =startup=. Note that the only tricky thing about
-;; this example.
-
-;; At first I thought of =entry= but after more thought I realized
-;; hook variables use action verbs in their names not nouns. So the =exit= in
-;; =minibuffer-exit-hook= is actually the verb =exit= not the noun.
-
-(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
-
-(defhook! boost-garbage-collection (minibuffer-enter-hook)
-  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
-
-(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
-  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))))
-
-;; **** gc cons threshold
-;; :PROPERTIES:
-;; :ID: e15d257f-1b0f-421e-8b34-076b1d20e493
-;; :END:
-
-(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
-  "The upper limit for `gc-cons-threshold'.
-When VOID is performing computationally intensive operations,
-`gc-cons-threshold' is set to this value.")
-
-(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
-  "The default value for `gc-cons-threshold'.")
-
-(defconst VOID-GC-CONS-PERCENTAGE-MAX 0.6
-  "The upper limit for `gc-cons-percentage'.
-When VOID is performing computationally intensive operations,
-`gc-cons-percentage' is set to this value.")
-
-(defconst VOID-GC-CONS-PERCENTAGE 0.1
-  "The default value for `gc-cons-percentage'.")
-
-;; **** gcmh
-;; :PROPERTIES:
-;; :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     gitlab
-;; :REPO:     "koral/gcmh"
-;; :PACKAGE:  "gcmh"
-;; :LOCAL-REPO: "gcmh"
-;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
-;; :END:
-
-(require 'gcmh)
-
-(setq gcmh-idle-delay 10)
-(setq gcmh-verbose void-debug-p)
-(setq gcmh-high-cons-threshold (* 16 1024 1024))
-
-(void-add-hook 'emacs-startup-hook #'gcmh-mode)
-
-;; *** directories
-;; :PROPERTIES:
-;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
-;; :END:
-
-;; **** core directories and files
-;; :PROPERTIES:
-;; :ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
-;; :END:
-
-;; This headline contains constant variables that store important directories and
-;; files.
-
-;; ***** top level
-;; :PROPERTIES:
-;; :ID: 48bf884a-de27-45f8-a5b1-94567815942d
-;; :END:
-
-;; These are important files and directories that I end up referring to often in my
-;; code.
-
-(defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
-  "Path to `user-emacs-directory'.")
-
-(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
-  "Path to the elisp file that bootstraps Void startup.")
-
-(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
-  "Path to the Org file that when that Void.")
-
-(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
-  "Directory where any multimedia describing VOID should go.
- These could screenshots are for detailing any problems, interesting behaviors or features.")
-
-(defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
-  "Path to the file that contains all of Void's tests.")
-
-;; ***** org
-;; :PROPERTIES:
-;; :ID:       c88f95cd-f5bd-4c69-8679-7e42c52e9a36
-;; :END:
-
-(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
-  "Path where Void's org files go.")
-
-(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
-  "File where all org captures will go.")
-
-;; ***** hidden
-;; :PROPERTIES:
-;; :ID: d46d573b-1d17-4d0b-9b49-9049dbb6f7c1
-;; :END:
-
-(defconst VOID-LOCAL-DIR (concat VOID-EMACS-DIR ".local/")
-  "Path to the directory for local Emacs files.
-Files that need to exist, but I don't typically want to see go here.")
-
-(defconst VOID-DATA-DIR (concat VOID-LOCAL-DIR "data/")
-  "Path to the directory where Void data files are stored.")
-
-(defconst VOID-PACKAGES-DIR (concat VOID-LOCAL-DIR "packages/")
-  "Path to the directory where packages are stored.")
-
-;; **** system directories
-;; :PROPERTIES:
-;; :ID:       f3bdd353-b0ff-48fd-a2f2-295ccfa139ab
-;; :END:
-
-;; These are directories I have on my system.
-
-(defconst VOID-DOWNLOAD-DIR (expand-file-name "~/Downloads/")
-  "Directory where downloads should go.")
-
-(defconst VOID-MULTIMEDIA-DIR (expand-file-name "~/Multimedia/")
-  "Directory where multimedia should go.")
-
-(defconst VOID-VIDEO-DIR (concat VOID-MULTIMEDIA-DIR "Videos/")
-  "Directory where videos should go.")
-
-(defconst VOID-MUSIC-DIR (concat VOID-MULTIMEDIA-DIR "Music/")
-  "Directory where music should go.")
-
-(defconst VOID-ALERT-SOUNDS (concat VOID-MULTIMEDIA-DIR "Alert Sounds/")
-  "Directory where alert sounds should go.")
-
-(defconst VOID-EMAIL-DIR (expand-file-name "~/.mail/")
-  "Directories where emails are stored.")
-
-;; **** ensure directories exist
-;; :PROPERTIES:
-;; :ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
-;; :END:
-
-;; I create the directories that don't exist. But I assume they already exist if
-;; Void is compiled.
-
-(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
-  (make-directory dir t))
-
-;; *** default coding system
-;; :PROPERTIES:
-;; :ID:       4c55a0d4-dbd7-4405-b944-3b68d8a069f2
-;; :END:
-
-(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8
-  "Default text encoding.")
-
-;; *** UTF-8
-;; :PROPERTIES:
-;; :ID: dd0fc702-67a7-404c-849e-22804663308d
-;; :END:
-
-;; I set =utf-8= as the default encoding for everything except the clipboard on
-;; windows. Window clipboard encoding could be wider than =utf-8=, so we let
-;; Emacs/the OS decide what encoding to use.
-
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))
-
-;; *** initial buffer choice
-;; :PROPERTIES:
-;; :ID:       8eb302a6-cbc0-40ed-a046-b4c2d3dbc997
-;; :END:
-
-(defun void-initial-buffer ()
-  "Return the initial buffer to be displayed.
-This function is meant to be used as the value of `initial-buffer-choice'."
-  (if void-debug-p
-      (get-buffer "*Messages*")
-    (get-buffer "*scratch*")))
-
-;; *** defined in c source code
-;; :PROPERTIES:
-;; :ID:       873e6820-52f0-4b70-9992-ccb1610eb266
-;; :END:
-
-;; **** default settings
-;; :PROPERTIES:
-;; :ID: 8d578668-9b0b-4117-bf93-f556e970527b
-;; :END:
-
-(setq-default fringe-indicator-alist
-              (delq (assq 'continuation fringe-indicator-alist)
-                    fringe-indicator-alist))
-(setq-default highlight-nonselected-windows nil)
-(setq-default indicate-buffer-boundaries nil)
-(setq-default inhibit-compacting-font-caches t)
-(setq-default max-mini-window-height 0.3)
-(setq-default mode-line-default-help-echo nil)
-(setq-default mouse-yank-at-point t)
-(setq-default resize-mini-windows 'grow-only)
-(setq-default show-help-function nil)
-(setq-default use-dialog-box nil)
-(setq-default visible-cursor t)
-(setq-default x-stretch-cursor nil)
-(setq-default ring-bell-function #'ignore)
-(setq-default visible-bell nil)
-(setq-default window-resize-pixelwise t)
-(setq-default frame-resize-pixelwise t)
-
-;; **** compilation
-;; :PROPERTIES:
-;; :ID: 65c83b28-9bee-48fe-856a-f9c38f28c817
-;; :END:
-
-;; Non-nil means load prefers the newest version of a file.
-(setq-default load-prefer-newer t)
-
-;; **** all
-;; :PROPERTIES:
-;; :ID:       276d0193-5a46-4034-b145-f235178678d6
-;; :END:
-
-;; File name in which to write a list of all auto save file names.
-(setq auto-save-list-file-name (concat VOID-DATA-DIR "autosave"))
-;; Directory of score files for games which come with GNU Emacs.
-(setq shared-game-score-directory (concat VOID-DATA-DIR "shared-game-score/"))
-
-(setq-default cursor-in-non-selected-windows nil)
-
-(setq highlight-nonselected-windows nil)
-
-;; When non-nil, accelerate scrolling operations.
-(setq fast-but-imprecise-scrolling t)
-
-(setq-default frame-inhibit-implied-resize t)
-
-;; Non-nil means use lockfiles to avoid editing collisions.
-(setq-default create-lockfiles nil)
-;; Non-nil says by default do auto-saving of every file-visiting buffer.
-(setq-default history-length 500)
-;; Specifies whether to use the system's trash can.
-(setq-default delete-by-moving-to-trash t)
-
-;; Disabling bidirectional text provides a small performance boost. Bidirectional
-;; text is useful for languages that read right to left.
-(setq-default bidi-display-reordering 'left-to-right)
-(setq-default bidi-paragraph-direction 'left-to-right)
-
-;; Non-nil means echo keystrokes after this many seconds. A value of zero means
-;; don't echo at all.
-(setq-default echo-keystrokes 0)
-
-;; Template for displaying mode line for current buffer.
-(setq-default mode-line-format nil)
-
-(setq-default locale-coding-system VOID-DEFAULT-CODING-SYSTEM)
-(setq-default buffer-file-coding-system VOID-DEFAULT-CODING-SYSTEM)
-
-;; **** scrolling
-;; :PROPERTIES:
-;; :ID: 21e56e37-5ff8-40d8-9f27-c3a3ab37dfb8
-;; :END:
-
-(setq-default hscroll-margin 2)
-(setq-default hscroll-step 1)
-(setq-default scroll-conservatively 1001)
-(setq-default scroll-margin 0)
-(setq-default scroll-preserve-screen-position t)
-
-;; ***** spacing
-;; :PROPERTIES:
-;; :ID: 8b3f38f9-b789-43e3-b2c5-5152a67d2803
-;; :END:
-
-(setq-default fill-column 80)
-(setq-default sentence-end-double-space nil)
-(setq-default tab-width 4)
-
-;; ***** line wrapping
-;; :PROPERTIES:
-;; :ID: e1564e28-d2ab-4649-b18b-24c27b897256
-;; :END:
-
-(setq-default word-wrap t)
-(setq-default indicate-empty-lines nil)
-(setq-default indent-tabs-mode nil)
-(setq-default truncate-lines t)
-(setq-default truncate-partial-width-windows 50)
-
-;; ***** other
-;; :PROPERTIES:
-;; :ID: cd0aa7ad-97bc-48ec-9a09-8af56cbf6157
-;; :END:
-
-;; Non-nil means reorder bidirectional text for display in the visual order.
-;; Disabling this gives Emacs a tiny performance boost.
-(setq-default bidi-display-reordering nil)
-(setq-default cursor-in-non-selected-windows nil)
-(setq-default display-line-numbers-width 3)
-(setq-default enable-recursive-minibuffers t)
-(setq-default frame-inhibit-implied-resize t)
-
-                                        ;general-setq; **** printing
-;; :PROPERTIES:
-;; :ID: 2dfce297-0f01-4576-ae5d-bb5856591ecb
-;; :END:
-
-;; When eval and replacing expressions, I want the printed result to express all
-;; newlines in strings as =\n= as opposed to an actual newline. In fact, in general I
-;; want any character to be expressed in =backslash + number or character= form. It
-;; makes the strings more readable and easier to deal with.
-
-;; Furthermore, I'd like printed lisp expressions to express quoted forms the way I
-;; write them, with a ='= as opposed to the literal =(quote ...)=.
-
-;; There comes a point when output is too long, or too nested to be usable. It's ok
-;; to abbreviate it at this point.
-
-(setq-default print-escape-newlines t)
-(setq-default print-escape-multibyte t)
-(setq-default print-escape-control-characters t)
-(setq-default print-escape-nonascii t)
-(setq-default print-length nil)
-(setq-default print-level nil)
-(setq-default print-quoted t)
-(setq-default print-escape-newlines t)
-
-;; *** =tty=
-;; :PROPERTIES:
-;; :ID: 63e351ad-9ef6-4034-9fca-861881c74d6a
-;; :END:
-
-;; When running emacs in terminal tty is *tremendously* slow.
-
-(unless (display-graphic-p)
-  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
-  (defhook! init-tty (window-setup-hook)
-    (advice-remove #'tty-run-terminal-initialization #'ignore)
-    (tty-run-terminal-initialization (selected-frame) nil t)))
-
-;; *** prevent emacs from killing certain buffers
-;; :PROPERTIES:
-;; :ID:       ae935cf5-7322-499c-96d7-20209d9b6641
-;; :END:
-
-;; I never want the =*scratch*= and =*Messages*= buffer to be killed. I owe this idea
-;; to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
-
-(defhook! lock-certain-buffers (after-init-hook)
-  "Prevent certain buffers from being killed."
-  (--each (list "*scratch*" "*Messages*")
-    (with-current-buffer it
-      (emacs-lock-mode 'kill))))
 
 ;; ** Packages
 ;; :PROPERTIES:
 ;; :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
 ;; :END:
 
-;; *** built-in
-;; :PROPERTIES:
-;; :ID: 40367976-12a0-4ccd-9aff-4df144a73edf
-;; :END:
-
-;; **** calc
+;; *** calc
 ;; :PROPERTIES:
 ;; :ID:       98c0a8c7-2dc1-4285-9b7b-146bbc2867ae
 ;; :END:
 
-;; **** vc-hook
+;; *** vc-hook
 ;; :PROPERTIES:
 ;; :ID:       a8dcb1f6-05a0-46cb-95b5-1d0cd0ad4467
 ;; :END:
@@ -1764,14 +1690,14 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq vc-follow-link t)
 (setq vc-follow-symlinks t)
 
-;; **** subr-x
+;; *** subr-x
 ;; :PROPERTIES:
 ;; :ID:       ee3ad1b5-920a-4337-9874-79e066ed53fe
 ;; :END:
 
 (require 'subr-x)
 
-;; **** startup
+;; *** startup
 ;; :PROPERTIES:
 ;; :ID: 9725b7e0-54b8-4ab4-aa00-d950345d0aea
 ;; :TYPE:     built-in
@@ -1788,7 +1714,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq initial-buffer-choice #'void-initial-buffer)
 (setq inhibit-startup-echo-area-message user-login-name)
 
-;; **** paren
+;; *** paren
 ;; :PROPERTIES:
 ;; :ID: 8ba80d6f-292e-4d44-acfe-d7b7ba939fa4
 ;; :TYPE:     built-in
@@ -1797,7 +1723,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq show-paren-delay 0)
 (void-add-hook 'prog-mode-hook #'show-paren-mode)
 
-;; **** clipboard
+;; *** clipboard
 ;; :PROPERTIES:
 ;; :ID: 60abb076-89b1-439b-8198-831b2df47782
 ;; :TYPE:     built-in
@@ -1808,7 +1734,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq select-enable-primary t)
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-;; **** simple
+;; *** simple
 ;; :PROPERTIES:
 ;; :ID: 89df102a-a2c9-4ece-9acc-ed90e8064ed8
 ;; :TYPE:     built-in
@@ -1825,7 +1751,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 (setq mail-user-agent 'mu4e-user-agent)
 
-;; **** loaddefs
+;; *** loaddefs
 ;; :PROPERTIES:
 ;; :ID:       5af4faf8-47e3-4db2-9d13-47fc828b8fca
 ;; :TYPE:     built-in
@@ -1837,7 +1763,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 (setq disabled-command-function nil)
 
-;; **** files
+;; *** files
 ;; :PROPERTIES:
 ;; :ID: 2a7862da-c863-416b-a976-4cf7840a8712
 ;; :TYPE:     built-in
@@ -1864,7 +1790,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq backup-by-copying t)
 (setq backup-by-copying-when-linked t)
 
-;; **** subr
+;; *** subr
 ;; :PROPERTIES:
 ;; :ID:       61603f44-780e-4456-88c6-7ffe1e5c7197
 ;; :END:
@@ -1873,14 +1799,14 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (fset #'yes-or-no-p #'y-or-n-p)
   (fset #'display-startup-echo-area-message #'ignore))
 
-;; **** subr-x
+;; *** subr-x
 ;; :PROPERTIES:
 ;; :ID:       1ed0ba00-e5a1-4642-9ed5-a52f4b917a4d
 ;; :END:
 
 (require 'subr-x)
 
-;; **** ffap
+;; *** ffap
 ;; :PROPERTIES:
 ;; :ID: b1229201-a5ac-45c7-91fa-7a6b39bbb879
 ;; :END:
@@ -1890,7 +1816,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! ffap
   (setq ffap-machine-p-known 'reject))
 
-;; **** server
+;; *** server
 ;; :PROPERTIES:
 ;; :ID: 3ddeb65c-9df6-4ede-9644-eb106b3ba1dd
 ;; :END:
@@ -1898,7 +1824,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! server
   (setq server-auth-dir (concat VOID-DATA-DIR "server/")))
 
-;; **** tramp
+;; *** tramp
 ;; :PROPERTIES:
 ;; :ID: 3af0a4d6-bd08-4fe2-bc5c-79b1b811fc6b
 ;; :END:
@@ -1908,7 +1834,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (setq tramp-auto-save-directory (concat VOID-DATA-DIR "tramp-auto-save/"))
   (setq tramp-persistency-file-name (concat VOID-DATA-DIR "tramp-persistency.el")))
 
-;; **** desktop
+;; *** desktop
 ;; :PROPERTIES:
 ;; :ID: 3a6b72e7-57c8-42f0-a8d7-1bbde72de9bd
 ;; :END:
@@ -1918,7 +1844,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (setq desktop-base-file-name "autosave")
   (setq desktop-base-lock-name "autosave-lock"))
 
-;; **** cus-edit
+;; *** cus-edit
 ;; :PROPERTIES:
 ;; :ID: 8bd5683d-91e1-4c1b-a8a5-3b39921e995d
 ;; :END:
@@ -1926,7 +1852,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq custom-file null-device)
 (setq custom-theme-directory (concat VOID-LOCAL-DIR "themes/"))
 
-;; **** url
+;; *** url
 ;; :PROPERTIES:
 ;; :ID: e4b5bfce-1111-48b2-bfee-da754974aa46
 ;; :END:
@@ -1934,7 +1860,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq url-cache-directory (concat VOID-DATA-DIR "url/cache/"))
 (setq url-configuration-directory (concat VOID-DATA-DIR "url/configuration/"))
 
-;; **** bytecomp
+;; *** bytecomp
 ;; :PROPERTIES:
 ;; :ID:       6b375bfb-a8c3-473c-8dbd-530e692a15ab
 ;; :END:
@@ -1942,7 +1868,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq byte-compile-verbose void-debug-p)
 (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
 
-;; **** compile
+;; *** compile
 ;; :PROPERTIES:
 ;; :ID:       913aa4f2-e42b-4b74-a2d4-e87b1738a5bd
 ;; :END:
@@ -1951,7 +1877,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq compilation-ask-about-save nil)
 (setq compilation-scroll-output 'first-error)
 
-;; **** uniquify
+;; *** uniquify
 ;; :PROPERTIES:
 ;; :ID:       9ba2726b-3fef-4e9b-9387-a80ab09bdb7d
 ;; :END:
@@ -1959,7 +1885,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! uniquify
   (setq uniquify-buffer-name-style 'forward))
 
-;; **** ansi-color
+;; *** ansi-color
 ;; :PROPERTIES:
 ;; :ID:       5feaab76-e5c1-450c-94a6-8fdfb95ddb94
 ;; :END:
@@ -1967,7 +1893,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! ansi-color
   (setq ansi-color-for-comint-mode t))
 
-;; **** image mode
+;; *** image mode
 ;; :PROPERTIES:
 ;; :ID:       32e2118a-c92b-4e8d-b2db-048428462783
 ;; :END:
@@ -1976,7 +1902,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   ;; Non-nil means animated images loop forever, rather than playing once.
   (setq image-animate-loop t))
 
-;; **** window
+;; *** window
 ;; :PROPERTIES:
 ;; :ID:       af27cd7e-2096-4f6d-a749-63e4c38d136c
 ;; :END:
@@ -1984,7 +1910,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! window
   (setq split-width-threshold 160))
 
-;; **** indent
+;; *** indent
 ;; :PROPERTIES:
 ;; :ID:       a5d97d4d-3af9-4fde-ae14-953ad4d28edd
 ;; :END:
@@ -1992,7 +1918,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! indent
   (setq tab-always-indent t))
 
-;; **** mouse
+;; *** mouse
 ;; :PROPERTIES:
 ;; :ID:       d0d6de11-50fa-4ae2-ad4b-69712f3e2c54
 ;; :END:
@@ -2000,7 +1926,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 (setq mouse-yank-at-point t)
 
-;; **** calendar
+;; *** calendar
 ;; :PROPERTIES:
 ;; :ID:       4ad7e704-f490-40e4-b2bc-8a30a10a7bb7
 ;; :END:
@@ -2012,14 +1938,14 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (unless (f-exists-p diary-file)
     (f-touch diary-file)))
 
-;; **** mule-cmds
+;; *** mule-cmds
 ;; :PROPERTIES:
 ;; :ID:       e48e925e-1f1e-4c79-8652-c92aafe06290
 ;; :END:
 
 (setq prefer-coding-system VOID-DEFAULT-CODING-SYSTEM)
 
-;; **** gv
+;; *** gv
 ;; :PROPERTIES:
 ;; :ID:       84cc5883-a303-453e-af91-644d4544e3f9
 ;; :END:
@@ -2030,12 +1956,13 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (after! gv
   (gv-define-simple-setter plist-get plist-put))
 
-;; **** nsm
+;; *** nsm
 ;; :PROPERTIES:
 ;; :ID:       0ca7fc66-5312-4c69-a87d-7607292c7a2a
 ;; :END:
 
 (setq nsm-settings-file (concat VOID-DATA-DIR "network-settings.data"))
+
 
 ;; ** UI
 ;; :PROPERTIES:
@@ -2408,9 +2335,9 @@ is called.")
 ;; ;; :ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
 ;; ;; :END:
 
-;; (setq window-divider-default-places t)
-;; (setq window-divider-default-bottom-width 4)
-;; (setq window-divider-default-right-width  4)
+;; (custom-set-default 'window-divider-default-places t)
+;; (custom-set-default 'window-divider-default-bottom-width 4)
+;; (custom-set-default 'window-divider-default-right-width  4)
 
 ;; ;; *** color
 ;; ;; :PROPERTIES:
