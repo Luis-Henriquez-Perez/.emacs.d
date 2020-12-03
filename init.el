@@ -1520,8 +1520,6 @@ SYM is a symbol that stores a list."
 ;; :ID:       324e707b-2f44-4168-a846-037f5401dedb
 ;; :END:
 
-;; I want a shorthand for advices that involve package loading.
-
 (defun void--load-on-call (package where functions)
   "Load packages FUNCTIONS are called."
   (alet (fset (void-symbol-intern 'void--load- package)
