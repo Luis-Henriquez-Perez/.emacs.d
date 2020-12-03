@@ -83,7 +83,7 @@
 ;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
 ;; :END:
 
-;; I store common.
+;; I store certain important directories in variables.
 
 ;; **** core directories and files
 ;; :PROPERTIES:
