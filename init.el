@@ -1239,20 +1239,23 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :ID:       8d831084-539b-4072-a86a-b55afb09bf02
 ;; :END:
 
-;; If an =eval-after-load= block contains an error and it is triggered by a
-;; feature, the error will keep raised everytime you load that feature.
-;; Furthermore, this could interfere with the loading of other things. So I catch
-;; the error and print it out.
+;; =eval-after-load= is a macro that evaluates a lisp form after a file or feature
+;; has been loaded. It's syntax is a bit terse because you need to quote the
+;; feature as well as the form to be evaluated.
+;;
+;; Also, if an =eval-after-load= block contains an error and it is triggered by a
+;; feature, the error will happening. I think it might be that because the form was
+;; not successfully evaluated =eval-after-load= does not realize it should stop
+;; loading it. To remedy this I wrap the block with [[][condition-case]].
 
 (defmacro eval-after-load! (feature &rest body)
   "A wrapper around `eval-after-load!' with error catching."
   (declare (indent defun))
   `(eval-after-load ',feature
-     '(with-no-warnings
-        (condition-case error
-            (progn ,@body)
-          (error
-           (message "Error in `eval-after-load': %S" error))))))
+     '(condition-case error
+          (progn ,@body)
+        (error
+         (message "Error in `eval-after-load': %S" error)))))
 
 ;; *** after!
 ;; :PROPERTIES:
