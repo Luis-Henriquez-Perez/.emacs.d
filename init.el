@@ -47,11 +47,12 @@
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
 (setq straight-enable-package-integration t)
-(setq straight-disable-autoloads nil)
-(setq straight-cache-autoloads t)
+(setq straight-disable-autoloads t)
+(setq straight-cache-autoloads nil)
 (setq straight-check-for-modifications nil)
 (setq straight-enable-package-integration nil)
 (setq straight-recipes-emacsmirror-use-mirror t)
+
 
 ;; **** bootstrap code
 ;; :PROPERTIES:
@@ -86,7 +87,10 @@
 ;; :ID:       0edcf34d-a368-4e86-9365-1402f23befbb
 ;; :END:
 
-;; This function gets me the homepage of a package.
+;; Very often you'll want to go visit the homepage of a package you've installed.
+;; Either you'll want to checkout the readme, see new changes firsthand, or create
+;; an issue about a bug, or even suggest a feature. That's why having a function to
+;; quickly access a package homepage is a must.
 
 (defun straight:get-package-homepage (package)
   "Return the homepage for recipe.
@@ -99,6 +103,7 @@ Assumes vc is git which is fine because straight only uses git right now."
 (defun straight/goto-homepage ()
   (interactive)
   (browse-url (straight:get-package-homepage (symbol-at-point))))
+
 
 ;; **** straight-install-fn
 ;; :PROPERTIES:
