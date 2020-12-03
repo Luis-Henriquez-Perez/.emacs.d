@@ -83,6 +83,40 @@ Instead of using a typical modeline such as.
 :ID:       3d62076f-d326-418d-92ed-def9eb70f1fe
 :END:
 
+* Why not use an org-mode config?
+:PROPERTIES:
+:ID:       104a3cd5-fb60-40cc-9085-b05dd01e2e52
+:END:
+
+** it is more complicated
+:PROPERTIES:
+:ID:       a9e88014-8725-49f2-81f6-81b9c9a40234
+:END:
+
+* Why not use-package?
+:PROPERTIES:
+:ID:       23c009fa-77c5-480c-bb6d-88d2930eb76a
+:END:
+
+I've struggled a lot in the past on whether to use =use-package= or not.
+Ultimately, I decided it's not a good idea for me.
+
+** not idiomatic
+:PROPERTIES:
+:ID:       4deb1f18-92dc-4c7e-a45b-1243c46422e9
+:END:
+
+=use-package= essentially creates a DSL specifically for package configuration.
+The problem with a DSL is precisely the fact that it's not lisp.
+
+** undeterminate usage
+:PROPERTIES:
+:ID:       3421773c-d17c-4729-a90f-dcf129395c85
+:END:
+
+For some packages, it would be possible but undesirable for me to wrap in an
+entire use-package block.
+
 * Struggles
 :PROPERTIES:
 :ID:       1abb5289-5ee2-4766-bfb3-a80246b42571
