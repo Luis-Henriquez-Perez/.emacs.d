@@ -2728,8 +2728,13 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;;
 ;; Because helm and ivy replace the existing framework, it means that whenever you
 ;; want a command be capable of using all of helm or ivy's features, you need to
-;; define it their way. Otherwise, there's no guarantee their features will work.
-;; You'll be able to do a basic thing like choosing a single candidate.
+;; define it their way. Otherwise, there's no guarantee their features will work at
+;; least any features besides the basic choosing of a single candidate. That's a
+;; big reason why there are [[][so many]] helm and ivy packages: many of those
+;; packages are just ivy and helm wrappers around existing commands.
+;;
+;; In contrast, any command defined via completing-read should work consistently with
+;; selectrum and its provided features.
 
 ;; *** init
 ;; :PROPERTIES:
