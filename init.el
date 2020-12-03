@@ -53,7 +53,6 @@
 (setq straight-enable-package-integration nil)
 (setq straight-recipes-emacsmirror-use-mirror t)
 
-
 ;; **** bootstrap code
 ;; :PROPERTIES:
 ;; :ID: 7816be80-4db8-4219-b7d1-9a6b1ea96035
