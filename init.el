@@ -284,7 +284,7 @@ Assumes vc is git which is fine because straight only uses git right now."
          (i 0)
          (parts (split-string string regexp t)))
     (mapcar
-     (lambda ()
+     (lambda (elt)
        (if (zerop (% i 2))
            (intern (downcase elt))
          (car (read-from-string elt)))
