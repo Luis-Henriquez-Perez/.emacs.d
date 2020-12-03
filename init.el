@@ -2724,7 +2724,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; Selectrum is another completion framework. It distinguishes itself from the rest
 ;; by striving to work with the built-in emacs [[helpfn:completing-read][completing-read]] instead of
-;; replacing it like [[https://github.com/emacs-helm/helm][helm]] and [[][ivy]] do.
+;; replacing it like [[https://github.com/emacs-helm/helm][helm]] and [[https://github.com/emacs-helm/helm][ivy]] do.
 ;;
 ;; Because helm and ivy replace the existing framework, it means that whenever you
 ;; want a command be capable of using all of helm or ivy's features, you need to
