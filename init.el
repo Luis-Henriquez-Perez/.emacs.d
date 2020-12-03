@@ -2625,90 +2625,90 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; of things that we actually want at this moment.
 
 ;; ** snippets
-;; :PROPERTIES:
-;; :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
-;; :END:
+;; ;; :PROPERTIES:
+;; ;; :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
+;; ;; :END:
 
-;; *** autoyasnippet
-;; :PROPERTIES:
-;; :ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
-;; :END:
+;; ;; *** autoyasnippet
+;; ;; :PROPERTIES:
+;; ;; :ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
+;; ;; :END:
 
-(void-add-advice 'aya-expand :after #'evil-insert-state)
-(setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
+;; (void-add-advice 'aya-expand :after #'evil-insert-state)
+;; (setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
 
-;; *** yasnippet
-;; :PROPERTIES:
-;; :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    ("yasnippet.el" "snippets" "yasnippet-pkg.el")
-;; :HOST:     github
-;; :REPO:     "joaotavora/yasnippet"
-;; :PACKAGE:  "yasnippet"
-;; :LOCAL-REPO: "yasnippet"
-;; :COMMIT:   "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"
-;; :END:
+;; ;; *** yasnippet
+;; ;; :PROPERTIES:
+;; ;; :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
+;; ;; :TYPE:     git
+;; ;; :FLAVOR:   melpa
+;; ;; :FILES:    ("yasnippet.el" "snippets" "yasnippet-pkg.el")
+;; ;; :HOST:     github
+;; ;; :REPO:     "joaotavora/yasnippet"
+;; ;; :PACKAGE:  "yasnippet"
+;; ;; :LOCAL-REPO: "yasnippet"
+;; ;; :COMMIT:   "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"
+;; ;; :END:
 
-;; **** init
-;; :PROPERTIES:
-;; :ID:       9ccba3e4-072e-4838-9461-b962740f02c6
-;; :END:
+;; ;; **** init
+;; ;; :PROPERTIES:
+;; ;; :ID:       9ccba3e4-072e-4838-9461-b962740f02c6
+;; ;; :END:
 
-(void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
-(void-autoload 'yasnippet #'yas-minor-mode-on)
-(setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
+;; (void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
+;; (void-autoload 'yasnippet #'yas-minor-mode-on)
+;; (setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
 
-;; **** settings
-;; :PROPERTIES:
-;; :ID:       eeebeb45-18a3-41ab-a540-3fc67e272b89
-;; :END:
+;; ;; **** settings
+;; ;; :PROPERTIES:
+;; ;; :ID:       eeebeb45-18a3-41ab-a540-3fc67e272b89
+;; ;; :END:
 
-(setq yas-verbosity (if void-debug-p 3 0))
-(setq yas-indent-line 'auto)
-(setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
-(setq yas-use-menu nil)
-(setq yas-triggers-in-field t)
+;; (setq yas-verbosity (if void-debug-p 3 0))
+;; (setq yas-indent-line 'auto)
+;; (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
+;; (setq yas-use-menu nil)
+;; (setq yas-triggers-in-field t)
 
-;; **** ensure each yasnippet directory
-;; :PROPERTIES:
-;; :ID:       0dae1585-e454-4740-b8c6-bad7bf1e4bb0
-;; :END:
+;; ;; **** ensure each yasnippet directory
+;; ;; :PROPERTIES:
+;; ;; :ID:       0dae1585-e454-4740-b8c6-bad7bf1e4bb0
+;; ;; :END:
 
-(defhook! create-yasnippet-dirs-maybe (yas-minor-mode-hook)
-  (--each yas-snippet-dirs (mkdir it t)))
+;; (defhook! create-yasnippet-dirs-maybe (yas-minor-mode-hook)
+;;   (--each yas-snippet-dirs (mkdir it t)))
 
-;; **** delete yasnippet prompt
-;; :PROPERTIES:
-;; :ID:       c66234de-3bd7-48bd-a518-538002fbaa6c
-;; :END:
+;; ;; **** delete yasnippet prompt
+;; ;; :PROPERTIES:
+;; ;; :ID:       c66234de-3bd7-48bd-a518-538002fbaa6c
+;; ;; :END:
 
-(delq #'yas-dropdown-prompt yas-prompt-functions)
+;; (delq #'yas-dropdown-prompt yas-prompt-functions)
 
-;; **** dont interfere with yasnippet
-;; :PROPERTIES:
-;; :ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
-;; :END:
+;; ;; **** dont interfere with yasnippet
+;; ;; :PROPERTIES:
+;; ;; :ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
+;; ;; :END:
 
-(after! (smartparens yasnippet)
-  (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
+;; (after! (smartparens yasnippet)
+;;   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
 
-;; *** yasnippet-snippets
-;; :PROPERTIES:
-;; :ID:       006e4191-a61f-4886-86db-024180a5fb1c
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el")
-;; :HOST:     github
-;; :REPO:     "AndreaCrotti/yasnippet-snippets"
-;; :PACKAGE:  "yasnippet-snippets"
-;; :LOCAL-REPO: "yasnippet-snippets"
-;; :COMMIT:   "7716da98b773f3e25a8a1b1949e24b4f3e855d17"
-;; :END:
+;; ;; *** yasnippet-snippets
+;; ;; :PROPERTIES:
+;; ;; :ID:       006e4191-a61f-4886-86db-024180a5fb1c
+;; ;; :TYPE:     git
+;; ;; :FLAVOR:   melpa
+;; ;; :FILES:    ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el")
+;; ;; :HOST:     github
+;; ;; :REPO:     "AndreaCrotti/yasnippet-snippets"
+;; ;; :PACKAGE:  "yasnippet-snippets"
+;; ;; :LOCAL-REPO: "yasnippet-snippets"
+;; ;; :COMMIT:   "7716da98b773f3e25a8a1b1949e24b4f3e855d17"
+;; ;; :END:
 
-(after! yasnippet
-  (awhen (-first (-partial #'s-contains-p "yasnippet-snippets") load-path)
-    (push it yas-snippet-dirs)))
+;; (after! yasnippet
+;;   (awhen (-first (-partial #'s-contains-p "yasnippet-snippets") load-path)
+;;     (push it yas-snippet-dirs)))
 
 ;; ** selectrum
 ;; :PROPERTIES:
@@ -2727,33 +2727,21 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       6e670980-7794-4505-a285-184416a5b377
 ;; :END:
 
-;; **** hook
-;; :PROPERTIES:
-;; :ID:       c12c2919-adf7-44ad-8175-b92bb8905f74
-;; :END:
-
 (void-add-hook 'emacs-startup-hook #'selectrum-mode)
-
-;; **** settings
-;; :PROPERTIES:
-;; :ID:       29cf793e-2b4c-4e33-822c-cc8b9ab2f713
-;; :END:
-
 (setq selectrum-fix-minibuffer-height t)
 (setq selectrum-should-sort-p t)
 (setq selectrum-count-style nil)
 (setq selectrum-num-candidates-displayed 15)
 
-;; *** ensure certain functions dont sort
+;; *** advice for disable
 ;; :PROPERTIES:
 ;; :ID:       1e39a4d2-8d4a-4413-a86e-3f92547cff14
 ;; :END:
 
-(after! selectrum
-  (alet '(list #'void/goto-line #'void/set-font #'void/switch-buffer)
-    (void-add-advice it :around #'selectrum::dont-sort-with-selectrum-advice)))
+;; For most functions, sorting their candidates is good. This is advice
+;; specifically designed to disable selectrum sorting.
 
-(defun selectrum::dont-sort-with-selectrum-advice (orig-fn &rest args)
+(defun selectrum::disable-selectrum-sorting-advice (orig-fn &rest args)
   (if (bound-and-true-p selectrum-mode)
       (let (selectrum-should-sort-p) (apply orig-fn args))
     (apply orig-fn args)))
@@ -2771,11 +2759,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
 ;; :END:
 
-;; **** prescient
-;; :PROPERTIES:
-;; :ID:       e8c77d62-9c28-4193-9c60-f1148b55f96e
-;; :END:
-
 (void-add-hook 'selectrum-mode-hook #'prescient-persist-mode)
 
 (setq prescient-save-file (concat VOID-DATA-DIR "prescient-save-file"))
@@ -2791,11 +2774,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :repo:     "raxod502/prescient.el"
 ;; :host:     github
 ;; :COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
-;; :END:
-
-;; **** selectrum prescient
-;; :PROPERTIES:
-;; :ID:       5215a4ad-67cd-4c02-ac79-e4ace589c253
 ;; :END:
 
 (void-add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
@@ -2848,152 +2826,150 @@ Orderless will do this."
 ;; :ID:       44120178-95c3-44f1-a3a2-bd69b0d03e70
 ;; :END:
 
-;; (use-package! consult
-;;   :straight (:host github :repo "minad/consult"))
 (setq consult-preview-theme nil)
 (setq consult-preview-outline nil)
 (setq consult-preview-buffer nil)
 (setq consult-preview-line nil)
 
-;; (alet (void-autoload 'consult it))
 
 ;; ** company
-;; :PROPERTIES:
-;; :ID: 436d68f7-09f1-470a-a730-fd79d9c183ee
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "company-mode/company-mode"
-;; :PACKAGE:  "company"
-;; :LOCAL-REPO: "company-mode"
-;; :COMMIT:   "dd925936f7c0bf00319c81e8caea1b3db63bb8b5"
-;; :END:
+;; ;; :PROPERTIES:
+;; ;; :ID: 436d68f7-09f1-470a-a730-fd79d9c183ee
+;; ;; :TYPE:     git
+;; ;; :FLAVOR:   melpa
+;; ;; :HOST:     github
+;; ;; :REPO:     "company-mode/company-mode"
+;; ;; :PACKAGE:  "company"
+;; ;; :LOCAL-REPO: "company-mode"
+;; ;; :COMMIT:   "dd925936f7c0bf00319c81e8caea1b3db63bb8b5"
+;; ;; :END:
 
-;; *** init
-;; :PROPERTIES:
-;; :ID:       0f670007-165b-4a2d-ac35-97eab9ada739
-;; :END:
+;; ;; *** init
+;; ;; :PROPERTIES:
+;; ;; :ID:       0f670007-165b-4a2d-ac35-97eab9ada739
+;; ;; :END:
 
-;; **** hooks
-;; :PROPERTIES:
-;; :ID:       5e5393d9-9f58-45be-9ecc-1bc9f0316379
-;; :END:
+;; ;; **** hooks
+;; ;; :PROPERTIES:
+;; ;; :ID:       5e5393d9-9f58-45be-9ecc-1bc9f0316379
+;; ;; :END:
 
-(void-add-hook 'prog-mode-hook #'company-mode)
+;; (void-add-hook 'prog-mode-hook #'company-mode)
 
-;; **** settings
-;; :PROPERTIES:
-;; :ID:       5b7962d9-0a43-4efc-b8ad-3f638f6abff3
-;; :END:
+;; ;; **** settings
+;; ;; :PROPERTIES:
+;; ;; :ID:       5b7962d9-0a43-4efc-b8ad-3f638f6abff3
+;; ;; :END:
 
-(setq company-frontends '(company-pseudo-tooltip-frontend))
-(setq company-tooltip-align-annotations t)
-(setq company-show-numbers t)
-(setq company-dabbrev-downcase nil)
-(setq company-idle-delay 0.15)
-(setq company-tooltip-limit 14)
-(setq company-minimum-prefix-length 1)
-(setq company-minimum-prefix-length 1)
-(setq company-require-match 'never)
+;; (setq company-frontends '(company-pseudo-tooltip-frontend))
+;; (setq company-tooltip-align-annotations t)
+;; (setq company-show-numbers t)
+;; (setq company-dabbrev-downcase nil)
+;; (setq company-idle-delay 0.15)
+;; (setq company-tooltip-limit 14)
+;; (setq company-minimum-prefix-length 1)
+;; (setq company-minimum-prefix-length 1)
+;; (setq company-require-match 'never)
 
-;; **** bindings
-;; :PROPERTIES:
-;; :ID:       ba170d95-7d86-4827-af6b-dc5fd4c1b7e5
-;; :END:
+;; ;; **** bindings
+;; ;; :PROPERTIES:
+;; ;; :ID:       ba170d95-7d86-4827-af6b-dc5fd4c1b7e5
+;; ;; :END:
 
-(general-def company-active-map
-  [tab]     #'company-select-next
-  [backtab] #'company-select-previous
-  "C-k"     #'company-select-previous
-  "C-j"     #'company-select-next)
+;; (general-def company-active-map
+;;   [tab]     #'company-select-next
+;;   [backtab] #'company-select-previous
+;;   "C-k"     #'company-select-previous
+;;   "C-j"     #'company-select-next)
 
-;; *** backends
-;; :PROPERTIES:
-;; :ID: 976f3260-992a-44ee-af91-5eff0b398b20
-;; :END:
+;; ;; *** backends
+;; ;; :PROPERTIES:
+;; ;; :ID: 976f3260-992a-44ee-af91-5eff0b398b20
+;; ;; :END:
 
-;; [[helpvar:company-backends][company-backends]] is what you have to keep in mind when you're using
-;; company. According to its documentation, =company-backends= contain
-;; individual backends or groups of backends. This is important so it's
-;; worth quoting here:
+;; ;; [[helpvar:company-backends][company-backends]] is what you have to keep in mind when you're using
+;; ;; company. According to its documentation, =company-backends= contain
+;; ;; individual backends or groups of backends. This is important so it's
+;; ;; worth quoting here:
 
-;; **** backends-alist
-;; :PROPERTIES:
-;; :ID: 1ca376a2-e92f-4b77-8a91-3c2d00c0c5b7
-;; :END:
+;; ;; **** backends-alist
+;; ;; :PROPERTIES:
+;; ;; :ID: 1ca376a2-e92f-4b77-8a91-3c2d00c0c5b7
+;; ;; :END:
 
-(defvar company:backend-alist
-  '((text-mode :derived (company-dabbrev company-yasnippet company-ispell))
-    (prog-mode :derived ((:separate company-capf company-yasnippet)))
-    (conf-mode :derived (company-capf company-dabbrev-code company-yasnippet))
-    (org-mode  :only (company-yasnippet)))
-  "An alist matching modes to company backends.")
+;; (defvar company:backend-alist
+;;   '((text-mode :derived (company-dabbrev company-yasnippet company-ispell))
+;;     (prog-mode :derived ((:separate company-capf company-yasnippet)))
+;;     (conf-mode :derived (company-capf company-dabbrev-code company-yasnippet))
+;;     (org-mode  :only (company-yasnippet)))
+;;   "An alist matching modes to company backends.")
 
-;; **** initialize a backend
-;; :PROPERTIES:
-;; :ID: 24288386-3600-4a23-90d1-d38f9862aca0
-;; :END:
+;; ;; **** initialize a backend
+;; ;; :PROPERTIES:
+;; ;; :ID: 24288386-3600-4a23-90d1-d38f9862aca0
+;; ;; :END:
 
-(defhook! setup-backends (after-change-major-mode-hook :local t)
-  "Set `company-backends' for the current buffer."
-  (when (and (bound-and-true-p company-mode)
-             (not (eq major-mode 'fundamental-mode)))
-    (set (make-local-variable 'company-backends) (company--backends+))))
+;; (defhook! setup-backends (after-change-major-mode-hook :local t)
+;;   "Set `company-backends' for the current buffer."
+;;   (when (and (bound-and-true-p company-mode)
+;;              (not (eq major-mode 'fundamental-mode)))
+;;     (set (make-local-variable 'company-backends) (company--backends+))))
 
-;; **** get backends
-;; :PROPERTIES:
-;; :ID: 985f9898-2608-4aa2-8ee9-98a178a4d5e5
-;; :END:
+;; ;; **** get backends
+;; ;; :PROPERTIES:
+;; ;; :ID: 985f9898-2608-4aa2-8ee9-98a178a4d5e5
+;; ;; :END:
 
-(defun company--backends+ ()
-  "Compute company backends."
-  (or
-   (-when-let (((mode type backends) (assoc major-mode company:backend-alist)))
-     (when (eq type :only) backends))
-   (-mapcat (-lambda ((mode type backends))
-              (when (or (and (eq type :derived) (derived-mode-p mode))
-                        (and (eq type :exact)
-                             (or (eq major-mode mode)
-                                 (and (boundp mode) (symbol-value mode)))))
-                backends))
-            company:backend-alist)))
+;; (defun company--backends+ ()
+;;   "Compute company backends."
+;;   (or
+;;    (-when-let (((mode type backends) (assoc major-mode company:backend-alist)))
+;;      (when (eq type :only) backends))
+;;    (-mapcat (-lambda ((mode type backends))
+;;               (when (or (and (eq type :derived) (derived-mode-p mode))
+;;                         (and (eq type :exact)
+;;                              (or (eq major-mode mode)
+;;                                  (and (boundp mode) (symbol-value mode)))))
+;;                 backends))
+;;             company:backend-alist)))
 
-;; **** local hook
-;; :PROPERTIES:
-;; :ID: 49a1e8e6-c557-4a9c-9a3a-a1aa60f90924
-;; :END:
+;; ;; **** local hook
+;; ;; :PROPERTIES:
+;; ;; :ID: 49a1e8e6-c557-4a9c-9a3a-a1aa60f90924
+;; ;; :END:
 
-(after! company
-  (put 'company:init-backends-h 'permanent-local-hook t))
+;; (after! company
+;;   (put 'company:init-backends-h 'permanent-local-hook t))
 
-;; *** close company on escape
-;; :PROPERTIES:
-;; :ID: 750cc608-865e-4f69-a7b2-826fc66a7b71
-;; :END:
+;; ;; *** close company on escape
+;; ;; :PROPERTIES:
+;; ;; :ID: 750cc608-865e-4f69-a7b2-826fc66a7b71
+;; ;; :END:
 
-(defhook! close-tooltip (void-escape-hook)
-  "Close company tooltip."
-  (when (and (boundp 'company-mode)
-             (eq company-mode t))
-    (company-abort)
-    t))
+;; (defhook! close-tooltip (void-escape-hook)
+;;   "Close company tooltip."
+;;   (when (and (boundp 'company-mode)
+;;              (eq company-mode t))
+;;     (company-abort)
+;;     t))
 
-;; *** company-prescient
-;; :PROPERTIES:
-;; :ID: df21548a-c262-4802-8e76-71a3135789cb
-;; :FLAVOR:   melpa
-;; :FILES:    ("company-prescient.el" "company-prescient-pkg.el")
-;; :PACKAGE:  "company-prescient"
-;; :LOCAL-REPO: "prescient.el"
-;; :TYPE:     git
-;; :REPO:     "raxod502/prescient.el"
-;; :HOST:     github
-;; :COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
-;; :END:
+;; ;; *** company-prescient
+;; ;; :PROPERTIES:
+;; ;; :ID: df21548a-c262-4802-8e76-71a3135789cb
+;; ;; :FLAVOR:   melpa
+;; ;; :FILES:    ("company-prescient.el" "company-prescient-pkg.el")
+;; ;; :PACKAGE:  "company-prescient"
+;; ;; :LOCAL-REPO: "prescient.el"
+;; ;; :TYPE:     git
+;; ;; :REPO:     "raxod502/prescient.el"
+;; ;; :HOST:     github
+;; ;; :COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
+;; ;; :END:
 
-;; [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
+;; ;; [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
 
-(void-add-hook 'company-mode-hook #'company-prescient-mode)
+;; (void-add-hook 'company-mode-hook #'company-prescient-mode)
+
 
 ;; * Email
 ;; ;; :PROPERTIES:
