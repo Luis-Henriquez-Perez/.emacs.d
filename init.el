@@ -2781,45 +2781,45 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq selectrum-preprocess-candidates-function #'selectrum-prescient--preprocess)
 
 ;; *** orderless
-;; :PROPERTIES:
-;; :ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "oantolin/orderless"
-;; :PACKAGE:  "orderless"
-;; :LOCAL-REPO: "orderless"
-;; :COMMIT:   "e56eeef6e11909ccd62aa7250867dce803706d2c"
-;; :END:
+;; ;; :PROPERTIES:
+;; ;; :ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
+;; ;; :TYPE:     git
+;; ;; :FLAVOR:   melpa
+;; ;; :HOST:     github
+;; ;; :REPO:     "oantolin/orderless"
+;; ;; :PACKAGE:  "orderless"
+;; ;; :LOCAL-REPO: "orderless"
+;; ;; :COMMIT:   "e56eeef6e11909ccd62aa7250867dce803706d2c"
+;; ;; :END:
 
-;; **** init
-;; :PROPERTIES:
-;; :ID:       9702810e-2013-4c41-ba12-0b55de6ceb38
-;; :END:
+;; ;; **** init
+;; ;; :PROPERTIES:
+;; ;; :ID:       9702810e-2013-4c41-ba12-0b55de6ceb38
+;; ;; :END:
 
-(alet (list #'orderless-filter #'orderless-highlight-matches)
-  (void-autoload 'orderless it))
+;; (alet (list #'orderless-filter #'orderless-highlight-matches)
+;;   (void-autoload 'orderless it))
 
-;; **** use orderless filters
-;; :PROPERTIES:
-;; :ID:       02b92dca-f879-43ad-89a5-fcf8902ff0b6
-;; :END:
+;; ;; **** use orderless filters
+;; ;; :PROPERTIES:
+;; ;; :ID:       02b92dca-f879-43ad-89a5-fcf8902ff0b6
+;; ;; :END:
 
-(after! selectrum
-  (setq selectrum-refine-candidates-function #'orderless-filter)
-  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
+;; (after! selectrum
+;;   (setq selectrum-refine-candidates-function #'orderless-filter)
+;;   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
 
-;; **** stop selectrum filtering and highlight
-;; :PROPERTIES:
-;; :ID:       a6720cdc-9d51-463b-9ffe-f9341c6bd967
-;; :END:
+;; ;; **** stop selectrum filtering and highlight
+;; ;; :PROPERTIES:
+;; ;; :ID:       a6720cdc-9d51-463b-9ffe-f9341c6bd967
+;; ;; :END:
 
-(defadvice! orderless:inhibit-filtering-and-highlighting (:around selectrum-prescient-mode)
-  "Don't let `selectrum-prescient' filter or highlight.
-Orderless will do this."
-  (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
-        (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
-    (apply <orig-fn> <args>)))
+;; (defadvice! orderless:inhibit-filtering-and-highlighting (:around selectrum-prescient-mode)
+;;   "Don't let `selectrum-prescient' filter or highlight.
+;; Orderless will do this."
+;;   (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
+;;         (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
+;;     (apply <orig-fn> <args>)))
 
 ;; *** consult
 ;; :PROPERTIES:
