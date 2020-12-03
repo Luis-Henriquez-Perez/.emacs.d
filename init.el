@@ -1262,7 +1262,8 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :ID: b31cd42d-cc57-492d-afae-d7d5e353e931
 ;; :END:
 
-;; =after!= is yet another wrapper around == that takes multiple arguments.
+;; =after!= is yet another wrapper around == that can accept multiple features or
+;; even a specification of features using =and= or =or=.
 ;;
 ;; The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
 ;; [[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
