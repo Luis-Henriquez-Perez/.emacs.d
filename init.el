@@ -1118,11 +1118,11 @@ Instead, arguments are accessed via anaphoric variables.
                          '(&rest <args>))))
     `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
        (ignore <args>)
-       (cl-progv (thread-last (alet (help-function-arglist #',target t)
-                                ;; kind of a hack...
-                                (if (eq t it) nil it))
-                   (--remove (s-starts-with-p "@" (symbol-name it)))
-                   (--map (intern (format "<%s>" (symbol-name it)))))
+       (cl-progv (->> (alet (help-function-arglist #',target t)
+                        ;; kind of a hack...
+                        (if (eq t it) nil it))
+                      (--remove (s-starts-with-p "@" (symbol-name it)))
+                      (--map (intern (format "<%s>" (symbol-name it)))))
            <args>
          ,@body))))
 
