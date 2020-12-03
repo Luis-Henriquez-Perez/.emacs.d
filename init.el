@@ -177,6 +177,13 @@ Files that need to exist, but I don't typically want to see go here.")
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
   (make-directory dir t))
 
+;; **** directory where packages will be installed
+;; :PROPERTIES:
+;; :ID:       5e5d2a12-1270-402d-a8c2-d24207755335
+;; :END:
+
+(defconst VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
+
 ;; *** UTF-8
 ;; :PROPERTIES:
 ;; :ID: dd0fc702-67a7-404c-849e-22804663308d
@@ -236,21 +243,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; The purpose of this headline is to set up the package manager and install all of
 ;; my packages so the rest of the file can assume the packages are already
 ;; installed. The idea is to separate package installation and package configuration.
-
-;; *** preliminary requirements
-;; :PROPERTIES:
-;; :ID:       315cd01c-7339-460d-85bd-fc3f09d89dfc
-;; :END:
-
-(require 'seq)
-(require 'cl-lib)
-
-;; *** directory where packages will be installed
-;; :PROPERTIES:
-;; :ID:       5e5d2a12-1270-402d-a8c2-d24207755335
-;; :END:
-
-(defconst VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
 
 ;; *** straight.el
 ;; :PROPERTIES:
@@ -409,11 +401,16 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 (defun void-property-string-to-plist (string)
   "Convert a property list string into a plist."
-  (seq-map-indexed (lambda (elt i)
-                     (if (cl-evenp i)
-                         (intern (downcase elt))
-                       (car (read-from-string elt))))
-                   (split-string string (rx (or ";; " "\n" (seq eow ":" (1+ white)))) t)))
+  (let* ((regexp (rx (or ";; " "\n" (seq eow ":" (1+ white)))))
+         (i 0)
+         (parts (split-string string regexp t)))
+    (mapcar
+     (lambda ()
+       (if (zerop (% i 2))
+           (intern (downcase elt))
+         (car (read-from-string elt)))
+       (setq i (+ 1 i)))
+     parts)))
 
 ;; ***** convert property list to proper straight format
 ;; :PROPERTIES:
@@ -465,7 +462,8 @@ Assumes vc is git which is fine because straight only uses git right now."
         (load-path load-path))
     (straight:initialize)
     (mapc #'straight:install-fn void-package-recipes)
-    (cl-set-difference load-path old-load-path))
+    (require 'dash)
+    (-difference load-path old-load-path))
   "Package load-paths.")
 
 (setq load-path (append void-package-load-paths load-path))
