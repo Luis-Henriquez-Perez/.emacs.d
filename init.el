@@ -142,7 +142,6 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; one file as opposed to two. Finally, doing this would fascillitate installing
 ;; all my packages at once; and doing that, allows me to easizly optimize package
 ;; installation via caching and evaling during compilation.
-;;
 
 ;; **** get package list based on my org file
 ;; :PROPERTIES:
