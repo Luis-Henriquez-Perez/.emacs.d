@@ -2841,7 +2841,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq consult-preview-buffer nil)
 (setq consult-preview-line nil)
 
-
 ;; ** company
 ;; ;; :PROPERTIES:
 ;; ;; :ID: 436d68f7-09f1-470a-a730-fd79d9c183ee
