@@ -1251,11 +1251,7 @@ Instead, arguments are accessed via anaphoric variables.
 (defmacro eval-after-load! (feature &rest body)
   "A wrapper around `eval-after-load!' with error catching."
   (declare (indent defun))
-  `(eval-after-load ',feature
-     '(condition-case error
-          (progn ,@body)
-        (error
-         (message "Error in `eval-after-load': %S" error)))))
+  )
 
 ;; *** after!
 ;; :PROPERTIES:
@@ -1283,6 +1279,11 @@ Instead, arguments are accessed via anaphoric variables.
         ((symbolp features)
          `(if (featurep ',features)
               ,(macroexp-progn body)
+            (eval-after-load ',feature
+              '(condition-case error
+                   (progn ,@body)
+                 (error
+                  (message "Error in `eval-after-load': %S" error))))
             (eval-after-load! ,features ,@body)))
         (t (error "Invalid argument."))))
 
