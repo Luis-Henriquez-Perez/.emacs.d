@@ -1409,6 +1409,16 @@ SYM is a symbol that stores a list."
 
 
 
+;; ** Keybindings
+;; :PROPERTIES:
+;; :ID:       d8b4c0d8-d4c2-4c41-99d0-d11604b88148
+;; :END:
+
+;; *** binding macro
+;; :PROPERTIES:
+;; :ID:       71fce500-90f3-4652-932f-b13621423ab1
+;; :END:
+
 ;; ** Packages
 ;; :PROPERTIES:
 ;; :ID:       d5c0d112-319d-4271-a819-eb786a64bfc6
