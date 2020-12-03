@@ -35,9 +35,6 @@
 (defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "main.org")
-  "Path to the Org file that when that Void.")
-
 (defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
   "Directory where any multimedia describing VOID should go.
  These could screenshots are for detailing any problems, interesting behaviors or features.")
@@ -106,13 +103,6 @@ Files that need to exist, but I don't typically want to see go here.")
 
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
   (make-directory dir t))
-
-;; **** directory where packages will be installed
-;; :PROPERTIES:
-;; :ID:       5e5d2a12-1270-402d-a8c2-d24207755335
-;; :END:
-
-(defconst VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
 
 ;; ** Package Management
 ;; :PROPERTIES:
@@ -1794,11 +1784,11 @@ SYM is a symbol that stores a list."
 
 (defhook! boost-garbage-collection (minibuffer-enter-hook)
   "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold ))
+  (setq gc-cons-threshold gcmh-high-cons-threshold))
 
 (defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
   "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold ))))
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold gcmh-high-cons-threshold))))
 
 ;; *** theme
 ;; :PROPERTIES:
