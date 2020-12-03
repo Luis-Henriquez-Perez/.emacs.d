@@ -1301,7 +1301,7 @@ Instead, arguments are accessed via anaphoric variables.
 ;; :COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
 ;; :END:
 
-;; =keyfreq= records.
+;; =keyfreq= records the frequency of key strokes.
 
 (void-add-hook 'emacs-startup-hook #'keyfreq-mode)
 
