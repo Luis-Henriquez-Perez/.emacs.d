@@ -25,7 +25,7 @@
 ;; :ID:       5e5d2a12-1270-402d-a8c2-d24207755335
 ;; :END:
 
-(defvar VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
+(defconst VOID-PACKAGES-DIR (concat user-emacs-directory ".local/packages/"))
 
 ;; *** straight.el
 ;; :PROPERTIES:
