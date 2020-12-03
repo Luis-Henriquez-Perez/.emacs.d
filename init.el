@@ -401,6 +401,8 @@ Accept the same arguments as `message'."
 ;; :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
 ;; :END:
 
+;; These are tools that are specifically designed to help me write macros.
+
 ;; **** get keywords arguments in macro
 ;; :PROPERTIES:
 ;; :ID:       dc7a63e6-041b-4855-b206-6d72ef732de1
@@ -420,44 +422,6 @@ Accept the same arguments as `message'."
                           body))
                   body)
         body))
-
-;; **** format macro
-;; :PROPERTIES:
-;; :ID:       c2f43f84-e400-45ed-9e96-7b8d38133810
-;; :END:
-
-;; The purpose of this macro is to fascillitate the creating of cut paste keywords
-;; so often used in macros. Let me explain. Often you want a macro to be a
-;; "front-end" so-to-speak for defining functions and variables that usually follow
-;; a naming scheme. In the macro body we end up with many ~(intern (format
-;; "foo-%s-baz" var))~ forms. This macro allows you to write this as ~foo-<var>-baz~
-;; instead.
-
-;; ***** convert a keyword into its equivalent
-;; :PROPERTIES:
-;; :ID:       aa083f01-a4de-4ce8-bbcc-7f493adad227
-;; :END:
-
-(defun void--anaphoric-format (symbol)
-  "Return the form that will replace."
-  (if-let ((regexp VOID-ANAPHORIC-SYMBOL-REGEXP)
-           (string (and (symbolp symbol) (symbol-name symbol)))
-           (symbols (--map (nth 1 it) (s-match-strings-all regexp string)))
-           (format-string (s-replace-regexp regexp "%s" string)))
-      `(,'\, (intern (format ,format-string ,@(-map #'intern symbols))))
-    symbol))
-
-;; ***** defmacro!
-;; :PROPERTIES:
-;; :ID:       7cd61cb8-22be-460d-b4f4-da6c82435958
-;; :END:
-
-(defmacro defmacro! (name args &rest body)
-  "Like `defmacro' but allows for anaphoric formatting."
-  (-let [(docstring _ body) (void--keyword-macro-args body)]
-    `(defmacro ,name ,args
-       ,docstring
-       ,@(-tree-map #'void--anaphoric-format body))))
 
 ;; **** symbols
 ;; :PROPERTIES:
@@ -593,50 +557,7 @@ WRAPPERS are a list of forms to wrap around FORM."
   "Return a list of anaphoric symbols in OBJ."
   (s-match-strings-all VOID-ANAPHORIC-SYMBOL-REGEXP (void-to-string obj)))
 
-;; **** with-symbols!
-;; :PROPERTIES:
-;; :ID:       0ba70f30-f1a8-4a5d-acf9-07db9931bd54
-;; :END:
 
-(defmacro with-symbols! (names &rest body)
-  "Bind each variable in NAMES to a unique symbol and evaluate BODY."
-  (declare (indent defun))
-  `(let ,(-map (lambda (symbol) `(,symbol (make-symbol ,(symbol-name symbol)))) names)
-     ,@body))
-
-;; **** once-only!
-;; :PROPERTIES:
-;; :ID:       23c10e2a-6ccc-42dc-a898-29ab39a1f79c
-;; :END:
-
-(defmacro once-only! (bindings &rest body)
-  "Rebind symbols according to BINDINGS and evaluate BODY.
-
-Each of BINDINGS must be either a symbol naming the variable to be
-rebound or of the form:
-
-  (SYMBOL INITFORM)
-
-where INITFORM is guaranteed to be evaluated only once.
-
-Bare symbols in BINDINGS are equivalent to:
-
-  (SYMBOL SYMBOL)"
-  (declare (indent defun))
-  (let* ((bind-fn (lambda (bind)
-                    (if (consp bind)
-                        (cons (car bind) (cadr bind))
-                      (cons bind bind))))
-         (names-and-forms (-map bind-fn bindings))
-         (names (-map #'car names-and-forms))
-         (forms (-map #'cdr names-and-forms))
-         (symbols (--map (make-symbol (symbol-name it)) names)))
-    `(with-symbols! ,symbols
-       (list 'let
-             (-zip-with #'list (list ,@symbols) (list ,@forms))
-             ,(cl-list* 'let
-                        (-zip-with #'list names symbols)
-                        body)))))
 
 ;; *** hooks
 ;; :PROPERTIES:
