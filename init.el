@@ -179,14 +179,6 @@ Files that need to exist, but I don't typically want to see go here.")
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
   (make-directory dir t))
 
-;; *** default coding system
-;; :PROPERTIES:
-;; :ID:       4c55a0d4-dbd7-4405-b944-3b68d8a069f2
-;; :END:
-
-(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8
-  "Default text encoding.")
-
 ;; *** UTF-8
 ;; :PROPERTIES:
 ;; :ID: dd0fc702-67a7-404c-849e-22804663308d
@@ -1442,12 +1434,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
                  (-list os))
     `(progn ,@body)))
 
-;; *** macros
-;; :PROPERTIES:
-;; :ID:       f27aa611-a2bd-4b76-85ce-72feb1e9f19f
-;; :END:
-
-;; **** ignore!
+;; *** ignore!
 ;; :PROPERTIES:
 ;; :ID: 0597956f-d40c-4c2b-9adf-5ece8c5b38de
 ;; :END:
@@ -1456,7 +1443,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   "Do nothing and return nil."
   nil)
 
-;; **** list mutation
+;; *** list mutation
 ;; :PROPERTIES:
 ;; :ID:       d9f77404-5c29-4305-ae53-e409e1b06b99
 ;; :END:
