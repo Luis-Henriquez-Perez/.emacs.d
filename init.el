@@ -2807,7 +2807,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 (after! selectrum
   (setq selectrum-refine-candidates-function #'orderless-filter)
-  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)))
+  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
 
 ;; **** stop selectrum filtering and highlight
 ;; :PROPERTIES:
