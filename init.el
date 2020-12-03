@@ -8,76 +8,6 @@
 ;; :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
 ;; :END:
 
-;; *** garbage collection
-;; :PROPERTIES:
-;; :ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
-;; :END:
-
-;; Emacs garbage collects too frequently for most modern machines. This makes emacs
-;; less performant especially when performing a large number of calculations,
-;; because it spends resources garbage collecting when it doesn't have to. Indeed,
-;; increasing the value of [[helpvar:gc-cons-threshold][gc-cons-threshold]], the number of bytes of consing
-;; between garbage collections, is known to make a notable difference in user
-;; startup time.
-
-;; **** gcmh
-;; :PROPERTIES:
-;; :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     gitlab
-;; :REPO:     "koral/gcmh"
-;; :PACKAGE:  "gcmh"
-;; :LOCAL-REPO: "gcmh"
-;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
-;; :END:
-
-;; =gcmh= does three things. It reduces garbage collection by setting, it adds a hook
-;; telling Emacs to gargbage collect during idle time, and it tells Emacs to
-;; garbage collect more frequently when it's idle.
-
-(require 'gcmh)
-
-(setq gcmh-idle-delay 10)
-(setq gcmh-verbose void-debug-p)
-(setq gcmh-high-cons-threshold (* 64 1024 1024))
-(setq gcmh-low-cons-threshold (* 16 1024 1024))
-
-(gcmh-mode 1)
-
-;; **** minibuffer
-;; :PROPERTIES:
-;; :ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
-;; :END:
-
-;; [[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
-;; entering and exiting the minibuffer (respectively). In the minibuffer I'll be
-;; primarily doing searches for variables and functions. There are alot of
-;; variables and functions so this can certainly get computationally expensive. To
-;; keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
-;; the minibuffer, and restore it to it's original value a few seconds after it's closed.
-
-;; It would take me forever to guess the name =minibuffer-setup-hook= from the
-;; variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
-;; know what the hook to enter the minibuffer was, I'd probably
-;; =minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
-;; It'd take me forever to guess =startup=. Note that the only tricky thing about
-;; this example.
-
-;; At first I thought of =entry= but after more thought I realized
-;; hook variables use action verbs in their names not nouns. So the =exit= in
-;; =minibuffer-exit-hook= is actually the verb =exit= not the noun.
-
-(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
-
-(defhook! boost-garbage-collection (minibuffer-enter-hook)
-  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold ))
-
-(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
-  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold ))))
-
 ;; *** directories
 ;; :PROPERTIES:
 ;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
@@ -1799,6 +1729,76 @@ SYM is a symbol that stores a list."
     (tool-bar-mode -1)
     (scroll-bar-mode -1)
     (menu-bar-mode -1)))
+
+;; *** garbage collection
+;; :PROPERTIES:
+;; :ID: 27ad0de3-620d-48f3-aa32-dfdd0324a979
+;; :END:
+
+;; Emacs garbage collects too frequently for most modern machines. This makes emacs
+;; less performant especially when performing a large number of calculations,
+;; because it spends resources garbage collecting when it doesn't have to. Indeed,
+;; increasing the value of [[helpvar:gc-cons-threshold][gc-cons-threshold]], the number of bytes of consing
+;; between garbage collections, is known to make a notable difference in user
+;; startup time.
+
+;; **** gcmh
+;; :PROPERTIES:
+;; :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     gitlab
+;; :REPO:     "koral/gcmh"
+;; :PACKAGE:  "gcmh"
+;; :LOCAL-REPO: "gcmh"
+;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
+;; :END:
+
+;; =gcmh= does three things. It reduces garbage collection by setting, it adds a hook
+;; telling Emacs to gargbage collect during idle time, and it tells Emacs to
+;; garbage collect more frequently when it's idle.
+
+(require 'gcmh)
+
+(setq gcmh-idle-delay 10)
+(setq gcmh-verbose void-debug-p)
+(setq gcmh-high-cons-threshold (* 64 1024 1024))
+(setq gcmh-low-cons-threshold (* 16 1024 1024))
+
+(gcmh-mode 1)
+
+;; **** minibuffer
+;; :PROPERTIES:
+;; :ID: 83f47b4d-a0e2-4275-9c1a-7e317fdc4e41
+;; :END:
+
+;; [[helpvar:minibuffer-setup-hook][minibuffer-setup-hook]] and [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]] are the hooks run just before
+;; entering and exiting the minibuffer (respectively). In the minibuffer I'll be
+;; primarily doing searches for variables and functions. There are alot of
+;; variables and functions so this can certainly get computationally expensive. To
+;; keep things snappy I increase boost the [[helpvar:gc-cons-threshold][gc-cons-threshold]] just before I enter
+;; the minibuffer, and restore it to it's original value a few seconds after it's closed.
+
+;; It would take me forever to guess the name =minibuffer-setup-hook= from the
+;; variable [[helpvar:minibuffer-exit-hook][minibuffer-exit-hook]]. If I knew the name =minibuffer-exit-hook= but did not
+;; know what the hook to enter the minibuffer was, I'd probably
+;; =minibuffer-enter-hook= because [[https://www.wordhippo.com/what-is/the-opposite-of/exit.html]["enter" is one of the main antonyms of "exit"]].
+;; It'd take me forever to guess =startup=. Note that the only tricky thing about
+;; this example.
+
+;; At first I thought of =entry= but after more thought I realized
+;; hook variables use action verbs in their names not nouns. So the =exit= in
+;; =minibuffer-exit-hook= is actually the verb =exit= not the noun.
+
+(defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
+
+(defhook! boost-garbage-collection (minibuffer-enter-hook)
+  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
+  (setq gc-cons-threshold ))
+
+(defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
+  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
+  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold ))))
 
 ;; *** theme
 ;; :PROPERTIES:
