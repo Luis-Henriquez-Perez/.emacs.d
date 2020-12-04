@@ -4277,7 +4277,9 @@ Orderless will do this."
 ;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
 ;; :END:
 
-;; Evil differentiates what state you're in based on the cursor color.
+;; Changing the cursor shape and color depending on the state is a convenient and
+;; asthetically pleasing way of determining which state you're in. Some add some
+;; modeline indicator for this but I find that the cursor suffices.
 
 (defhook! setup-cursor (evil-mode-hook)
   "Initialize the default cursor shape and size."
@@ -4886,6 +4888,7 @@ Orderless will do this."
 ;; ;; ;; :LOCAL-REPO: "emacs-undo-fu-session"
 ;; ;; ;; :COMMIT:   "56cdd3538a058c6916bdf2d9010c2179f2505829"
 ;; ;; ;; :END:
+
 
 ;; * Utility
 ;; ;; :PROPERTIES:
