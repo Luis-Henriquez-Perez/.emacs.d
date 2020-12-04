@@ -2750,7 +2750,7 @@ Orderless will do this."
 (setq dashboard-items nil)
 (setq dashboard-startup-banner 2)
 (setq dashboard-center-content t)
-(setq initial-buffer-choice #'void-initial-buffer)
+;; (setq initial-buffer-choice #'void-initial-buffer)
 
 ;; *** dashboard-init-info
 ;; :PROPERTIES:
