@@ -2291,7 +2291,9 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq wg-flag-modified nil)
 (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
 
-;; *** workgroup
+;; *** workgroups
+
+(autoload #'wg-switch-workgroup)
 
 ;; *** ignore changing the modeline
 ;; :PROPERTIES:
