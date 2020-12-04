@@ -8156,16 +8156,15 @@ Orderless will do this."
 ;; I'm not one of them. I rarely ever need to use a specific line number or column
 ;; number when editing text. To me they are just distracting eye-candy.
 
-(after! feebleline
-  (setq feebleline-msg-functions
-        '((feebleline:mode-icon :fmt "%2s")
-          (feebleline-file-or-buffer-name :face font-lock-keyword-face)
-          (feebleline-git-branch :face feebleline-git-face)
-          (feebleline:emms-track-status-indicator)
-          (feebleline:emms-current-track)
-          (feebleline:current-workgroup :align right)
-          (feebleline:dwim-battery-info :align right)
-          (feebleline:msg-display-time :align right))))
+(setq feebleline-msg-functions
+      '((feebleline:mode-icon :fmt "%2s")
+        (feebleline-file-or-buffer-name :face font-lock-keyword-face)
+        (feebleline-git-branch :face feebleline-git-face)
+        (feebleline:emms-track-status-indicator)
+        (feebleline:emms-current-track)
+        (feebleline:current-workgroup :align right)
+        (feebleline:dwim-battery-info :align right)
+        (feebleline:msg-display-time :align right)))
 
 ;; *** whether to display icons
 ;; :PROPERTIES:
