@@ -1956,11 +1956,9 @@ is called.")
 (defun void-initial-buffer ()
   "Return the initial buffer to be displayed.
 This function is meant to be used as the value of `initial-buffer-choice'."
-  (get-buffer "*scratch*")
-  ;; (if void-debug-p
-  ;;     (get-buffer "*Messages*")
-  ;;   (get-buffer "*scratch*"))
-  )
+  (if void-debug-p
+      (get-buffer "*Messages*")
+    (get-buffer "*scratch*")))
 
 ;; *** UTF-8
 ;; :PROPERTIES:
@@ -2750,7 +2748,7 @@ Orderless will do this."
 (setq dashboard-items nil)
 (setq dashboard-startup-banner 2)
 (setq dashboard-center-content t)
-;; (setq initial-buffer-choice #'void-initial-buffer)
+(setq initial-buffer-choice #'void-initial-buffer)
 
 ;; *** dashboard-init-info
 ;; :PROPERTIES:
