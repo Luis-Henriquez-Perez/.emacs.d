@@ -4230,6 +4230,7 @@ Orderless will do this."
 ;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
 ;; :END:
 
+(autoload #'evil-mode "evil" nil t nil)
 (void-add-hook 'window-setup-hook #'evil-mode)
 
 ;; **** custom
