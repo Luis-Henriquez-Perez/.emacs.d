@@ -3125,570 +3125,570 @@ Orderless will do this."
 
 
 ;; * Email
-;; ;; :PROPERTIES:
-;; ;; :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
-;; ;; :END:
+;; :PROPERTIES:
+;; :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
+;; :END:
 
-;; ;; In today's world communication is largely done via emails. Whether at work or at
-;; ;; school it's common to receive emails every day. In fact, you hear of people that
-;; ;; have 20,000+ emails in a particular account. Unsurprisingly, when we're getting
-;; ;; so many emails, it's easy to become overwhelmed. Fortunately, there are numerous
-;; ;; ways to read and send emails in Emacs.
+;; In today's world communication is largely done via emails. Whether at work or at
+;; school it's common to receive emails every day. In fact, you hear of people that
+;; have 20,000+ emails in a particular account. Unsurprisingly, when we're getting
+;; so many emails, it's easy to become overwhelmed. Fortunately, there are numerous
+;; ways to read and send emails in Emacs.
 
-;; ;; ** built-in settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       f2f187ab-caef-4fa6-85e7-628f76e3da41
-;; ;; :END:
+;; ** built-in settings
+;; :PROPERTIES:
+;; :ID:       f2f187ab-caef-4fa6-85e7-628f76e3da41
+;; :END:
 
-;; ;; *** sendmail
-;; ;; :PROPERTIES:
-;; ;; :ID:       48c3332f-975d-4f22-94a8-4ccd394ca82a
-;; ;; :END:
+;; *** sendmail
+;; :PROPERTIES:
+;; :ID:       48c3332f-975d-4f22-94a8-4ccd394ca82a
+;; :END:
 
-;; (use-feature! sendmail
+(use-feature! sendmail
+  :setq
+  (send-mail-function . #'sendmail-send-it)
+  (sendmail-program . (executable-find "msmtp"))
+  (mail-specify-envelope-from . t))
+
+;; *** smtpmail
+;; :PROPERTIES:
+;; :ID: 4dc1e0a6-5441-4b3e-8b75-ed3626a59154
+;; :END:
+
+(use-feature! smtpmail
+  :disabled t
+  :setq
+  (smtp-default-mail-server . "mail.example.com")
+  (smtp-smtp-server . "mail.example.com")
+  (smtpmail-smtp-service . 587)
+  (smtpmail-debug-info . t))
+
+;; *** message
+;; :PROPERTIES:
+;; :ID:       4cf38804-18d6-470c-a9c3-e3327f2bebf9
+;; :END:
+
+(use-feature! message
+  :setq
+  (message-signature . user-full-name)
+  (message-sendmail-envelope-from . 'header)
+  (message-send-mail-function . #'sendmail-send-it)
+  (message-kill-buffer-on-exit . t))
+
+;; ** mu4e
+;; :PROPERTIES:
+;; :ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
+;; :END:
+
+;; The most popular emacs mail client is =mu4e=. And, there is good reason why. =mu4e=
+;; has many juicy features. Overall, =mu4e= is definitely a great mail client.
+;; However, it's not all roses and rainbows; it does have a few annoying quicks.
+;; One is that unlike virtually all other emacs packages it does not come decoupled
+;; from =mu=. Another is that it is hard to set up multiple accounts properly despite
+;; it's [[explicit support]] for multiple accounts. =mu4e= comes bundled with =mu=. A
+;; significant advantage of using it is it's the most popular option and,
+;; therefore, has the most support (in the form of setup blogs and packages).
+
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       11a37383-0316-49fa-900e-c06f830c0e3f
+;; :END:
+
+(setq mu4e-completing-read-function #'completing-read)
+(setq mu4e-view-show-addresses t)
+(setq mu4e-view-show-images t)
+(setq mu4e-view-image-max-width 800)
+(setq mu4e-compose-signature-auto-include t)
+(setq mu4e-compose-format-flowed t)
+(setq mu4e-get-mail-command "mbsync -a")
+(setq mu4e-index-cleanup t)
+(setq mu4e-index-lazy-check nil)
+(setq mu4e-update-interval 180)
+(setq mu4e-headers-auto-update t)
+(setq mu4e-context-policy 'pick-first)
+(setq mu4e-compose-context-policy 'ask-if-none)
+(setq mu4e-confirm-quit nil)
+
+;; *** mu4e
+;; :PROPERTIES:
+;; :ID: 565eff90-8626-4ec8-a576-4ff3dfb307ae
+;; :END:
+
+(setq mu4e-header-fields '((:human-date . 12)
+                           (:flags . 4)
+                           (:from . 25)
+                           (:subject)))
+
+(setq mu4e-html2text-command
+      (if (executable-find "w3m") "w3m -dump -T text/html" #'mu4e-shr2text))
+
+;; (use-package! mu4e
+;;   :straight nil
+;;   :system-ensure mu
+;;   :load-path "/usr/share/emacs/site-lisp/mu4e/"
+;;   :commands mu4e
 ;;   :setq
-;;   (send-mail-function . #'sendmail-send-it)
-;;   (sendmail-program . (executable-find "msmtp"))
-;;   (mail-specify-envelope-from . t))
+;;   )
 
-;; ;; *** smtpmail
-;; ;; :PROPERTIES:
-;; ;; :ID: 4dc1e0a6-5441-4b3e-8b75-ed3626a59154
-;; ;; :END:
+;; *** TODO setup mu4e
+;; :PROPERTIES:
+;; :ID:       8ed2fe81-eda9-4343-a6e1-0a6a725866a4
+;; :END:
 
-;; (use-feature! smtpmail
-;;   :disabled t
-;;   :setq
-;;   (smtp-default-mail-server . "mail.example.com")
-;;   (smtp-smtp-server . "mail.example.com")
-;;   (smtpmail-smtp-service . 587)
-;;   (smtpmail-debug-info . t))
+(defun mu4e/init ()
+  "Initialize mu4e."
+  (interactive)
+  (require 'password-store)
+  (let ((email-dirs (--map (concat VOID-EMAIL-DIR it) (pass:email-list))))
+    (when (or (not (-all-p #'f-exists-p email-dirs))
+              (-some-p #'f-empty-p email-dirs))
+      (message "creating directories that don't exist.")
+      (--each email-dirs (mkdir it t))
+      (shell-command (format "mu init -m %s" VOID-EMAIL-DIR))
+      (message "Updating mail...")
+      (mu4e-update-mail-and-index t))))
 
-;; ;; *** message
-;; ;; :PROPERTIES:
-;; ;; :ID:       4cf38804-18d6-470c-a9c3-e3327f2bebf9
-;; ;; :END:
+;; *** mu4e headers
+;; :PROPERTIES:
+;; :ID:       8bc93633-f3a0-494d-ae61-c05f6490cd87
+;; :END:
 
-;; (use-feature! message
-;;   :setq
-;;   (message-signature . user-full-name)
-;;   (message-sendmail-envelope-from . 'header)
-;;   (message-send-mail-function . #'sendmail-send-it)
-;;   (message-kill-buffer-on-exit . t))
+(setq mu4e-use-fancy-chars t)
+(after! (mu4e all-the-icons)
+  (setq mu4e-headers-draft-mark     (cons "D" (all-the-icons-faicon "pencil")))
+  (setq mu4e-headers-flagged-mark   (cons "F" (all-the-icons-faicon "flag")))
+  (setq mu4e-headers-new-mark       (cons "N" (all-the-icons-material "fiber_new")))
+  (setq mu4e-headers-passed-mark    (cons "P" (all-the-icons-faicon "arrow-right")))
+  (setq mu4e-headers-seen-mark      (cons "S" (all-the-icons-faicon "eye")))
+  (setq mu4e-headers-attach-mark    (cons "a" (all-the-icons-material "attach_file")))
+  (setq mu4e-headers-replied-mark   (cons "R" (all-the-icons-faicon "reply")))
+  (setq mu4e-headers-unread-mark    (cons "u" (all-the-icons-faicon "eye-slash")))
+  (setq mu4e-headers-encrypted-mark (cons "x" (all-the-icons-octicon "lock")))
+  (setq mu4e-headers-signed-mark    (cons "s" (all-the-icons-faicon "certificate")))
+  (setq mu4e-headers-trash-mark     (cons "T" (all-the-icons-faicon "trash"))))
 
-;; ;; ** mu4e
-;; ;; :PROPERTIES:
-;; ;; :ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
-;; ;; :END:
+;; *** org-mu4e
+;; :PROPERTIES:
+;; :ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
+;; :END:
 
-;; ;; The most popular emacs mail client is =mu4e=. And, there is good reason why. =mu4e=
-;; ;; has many juicy features. Overall, =mu4e= is definitely a great mail client.
-;; ;; However, it's not all roses and rainbows; it does have a few annoying quicks.
-;; ;; One is that unlike virtually all other emacs packages it does not come decoupled
-;; ;; from =mu=. Another is that it is hard to set up multiple accounts properly despite
-;; ;; it's [[explicit support]] for multiple accounts. =mu4e= comes bundled with =mu=. A
-;; ;; significant advantage of using it is it's the most popular option and,
-;; ;; therefore, has the most support (in the form of setup blogs and packages).
+;; Mu4e's org integration lets you write emails in org mode and convert it to html
+;; before sending--very interesting indeed. I have yet to explore this feature but
+;; it is definitely on my list of things to try out.
 
-;; ;; *** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       11a37383-0316-49fa-900e-c06f830c0e3f
-;; ;; :END:
+;; **** init
+;; :PROPERTIES:
+;; :ID:       47c8d5d8-575f-4b73-9247-38f32cb706fd
+;; :END:
 
-;; (setq mu4e-completing-read-function #'completing-read)
-;; (setq mu4e-view-show-addresses t)
-;; (setq mu4e-view-show-images t)
-;; (setq mu4e-view-image-max-width 800)
-;; (setq mu4e-compose-signature-auto-include t)
-;; (setq mu4e-compose-format-flowed t)
-;; (setq mu4e-get-mail-command "mbsync -a")
-;; (setq mu4e-index-cleanup t)
-;; (setq mu4e-index-lazy-check nil)
-;; (setq mu4e-update-interval 180)
-;; (setq mu4e-headers-auto-update t)
-;; (setq mu4e-context-policy 'pick-first)
-;; (setq mu4e-compose-context-policy 'ask-if-none)
-;; (setq mu4e-confirm-quit nil)
+(void-add-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
 
-;; ;; *** mu4e
-;; ;; :PROPERTIES:
-;; ;; :ID: 565eff90-8626-4ec8-a576-4ff3dfb307ae
-;; ;; :END:
+(setq org-mu4e-link-query-in-headers-mode nil)
+(setq org-mu4e-convert-to-html t)
 
-;; (setq mu4e-header-fields '((:human-date . 12)
-;;                            (:flags . 4)
-;;                            (:from . 25)
-;;                            (:subject)))
+;; **** hook
+;; :PROPERTIES:
+;; :ID:       fcdbaa17-20c6-4322-baed-27df5a0ad9a2
+;; :END:
 
-;; (setq mu4e-html2text-command
-;;       (if (executable-find "w3m") "w3m -dump -T text/html" #'mu4e-shr2text))
+;; Only render to html once. If the first send fails for whatever reason,
+;; org-mu4e would do so each time you try again.
+(defhook! org-mu4e-render-html-only-once (message-send-hook)
+  (setq-local org-mu4e-convert-to-html nil))
 
-;; ;; (use-package! mu4e
-;; ;;   :straight nil
-;; ;;   :system-ensure mu
-;; ;;   :load-path "/usr/share/emacs/site-lisp/mu4e/"
-;; ;;   :commands mu4e
-;; ;;   :setq
-;; ;;   )
+;; *** multiple accounts
+;; :PROPERTIES:
+;; :ID: ad6de3a4-674c-490f-841e-19b8f891cd65
+;; :END:
 
-;; ;; *** TODO setup mu4e
-;; ;; :PROPERTIES:
-;; ;; :ID:       8ed2fe81-eda9-4343-a6e1-0a6a725866a4
-;; ;; :END:
+;; Mu4e certainly gave me some trouble setting up multiple accounts despite [its
+;; attempt] to make this easy. I have one directory =~/.mail= where which stores all
+;; my mail. The subdirectories of =~/.mail= correspond to my individual email
+;; accounts. Until I set multiple accounts correctly it keeps prompting me to
+;; create folders (such as =sent/=) in the =~/.mail= directory. I think part of the
+;; reason I spent so much time setting this up is because.
 
-;; (defun mu4e/init ()
-;;   "Initialize mu4e."
-;;   (interactive)
-;;   (require 'password-store)
-;;   (let ((email-dirs (--map (concat VOID-EMAIL-DIR it) (pass:email-list))))
-;;     (when (or (not (-all-p #'f-exists-p email-dirs))
-;;               (-some-p #'f-empty-p email-dirs))
-;;       (message "creating directories that don't exist.")
-;;       (--each email-dirs (mkdir it t))
-;;       (shell-command (format "mu init -m %s" VOID-EMAIL-DIR))
-;;       (message "Updating mail...")
-;;       (mu4e-update-mail-and-index t))))
+;; **** return the list of emails with credentials
+;; :PROPERTIES:
+;; :ID:       3f7b1728-b855-447f-9f15-43bd79a94c14
+;; :END:
 
-;; ;; *** mu4e headers
-;; ;; :PROPERTIES:
-;; ;; :ID:       8bc93633-f3a0-494d-ae61-c05f6490cd87
-;; ;; :END:
+(defun pass:email-list ()
+  "Return a list of emails."
+  (->> (password-store-list)
+       (--map (elt (s-match "email/\\(.*\\)" it) 1))
+       (-non-nil)))
 
-;; (setq mu4e-use-fancy-chars t)
-;; (after! (mu4e all-the-icons)
-;;   (setq mu4e-headers-draft-mark     (cons "D" (all-the-icons-faicon "pencil")))
-;;   (setq mu4e-headers-flagged-mark   (cons "F" (all-the-icons-faicon "flag")))
-;;   (setq mu4e-headers-new-mark       (cons "N" (all-the-icons-material "fiber_new")))
-;;   (setq mu4e-headers-passed-mark    (cons "P" (all-the-icons-faicon "arrow-right")))
-;;   (setq mu4e-headers-seen-mark      (cons "S" (all-the-icons-faicon "eye")))
-;;   (setq mu4e-headers-attach-mark    (cons "a" (all-the-icons-material "attach_file")))
-;;   (setq mu4e-headers-replied-mark   (cons "R" (all-the-icons-faicon "reply")))
-;;   (setq mu4e-headers-unread-mark    (cons "u" (all-the-icons-faicon "eye-slash")))
-;;   (setq mu4e-headers-encrypted-mark (cons "x" (all-the-icons-octicon "lock")))
-;;   (setq mu4e-headers-signed-mark    (cons "s" (all-the-icons-faicon "certificate")))
-;;   (setq mu4e-headers-trash-mark     (cons "T" (all-the-icons-faicon "trash"))))
+;; **** return the stuff as a plist
+;; :PROPERTIES:
+;; :ID:       8129ca16-8641-4f2f-a4b6-03477d5b78f3
+;; :END:
 
-;; ;; *** org-mu4e
-;; ;; :PROPERTIES:
-;; ;; :ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
-;; ;; :END:
+(defun pass:email-account-plist (email)
+  "Return a plist of the relevant values of an email."
+  (shut-up!
+    (->> (cdr (password-store-parse-entry email))
+         (mapcar #'car)
+         (--mapcat (list (intern it)
+                         (password-store-get-field (concat "email/" email) it))))))
 
-;; ;; Mu4e's org integration lets you write emails in org mode and convert it to html
-;; ;; before sending--very interesting indeed. I have yet to explore this feature but
-;; ;; it is definitely on my list of things to try out.
+;; **** mu4e folder name alist
+;; :PROPERTIES:
+;; :ID:       2ef07842-e321-4fff-ae73-f19c41d263a4
+;; :END:
 
-;; ;; **** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       47c8d5d8-575f-4b73-9247-38f32cb706fd
-;; ;; :END:
+;; Mu4e keeps prompting you for the sent, trash, and drafts directory if you do not
+;; assign the corresponding mu4e variables. The way certain email servers name
+;; their directories varies. For example, outlook names its sent directory as =Sent
+;; Items=.
 
-;; (void-add-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+(defun mu4e:guess-folder (base-dir possible-name &rest other-possible-names)
+  "Return the first file in BASE-DIR that matches POSSIBLE-NAME or any POSSIBLE-NAMES.
+If there is no match, return POSSIBLE-NAME."
+  (alet (or (--first (-some-p (-cut s-contains-p <> it t)
+                              (cons possible-name other-possible-names))
+                     (cddr (directory-files base-dir)))
+            possible-name)
+    (format "/%s/%s" (f-filename base-dir) it)))
 
-;; (setq org-mu4e-link-query-in-headers-mode nil)
-;; (setq org-mu4e-convert-to-html t)
+;; **** set up contexts for single account
+;; :PROPERTIES:
+;; :ID:       66d460d7-9647-4c29-8348-eb7b3d571630
+;; :END:
 
-;; ;; **** hook
-;; ;; :PROPERTIES:
-;; ;; :ID:       fcdbaa17-20c6-4322-baed-27df5a0ad9a2
-;; ;; :END:
+(defun mu4e::account-context (email)
+  "Return an mu4e account context for specified EMAIL."
+  (let* ((base-dir (concat VOID-EMAIL-DIR email "/"))
+         (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
+         (account (pass:email-account-plist email))
+         (out-host (plist-get 'out-host account))
+         (out-port (plist-get 'out-port account)))
+    (alet `((mu4e-sent-folder      . ,(mu4e:guess-folder base-dir "sent"))
+            (mu4e-drafts-folder    . ,(mu4e:guess-folder base-dir "draft"))
+            (mu4e-trash-folder     . ,(mu4e:guess-folder base-dir "trash" "delete" "junk"))
+            (user-email-address    . ,email)
+            (smtpmail-smtp-server  . ,out-host)
+            (smtpmail-smtp-user    . ,base-dir)
+            (smtpmail-smtp-service . ,out-port))
+      (make-mu4e-context :name name :vars it))))
 
-;; ;; Only render to html once. If the first send fails for whatever reason,
-;; ;; org-mu4e would do so each time you try again.
-;; (defhook! org-mu4e-render-html-only-once (message-send-hook)
-;;   (setq-local org-mu4e-convert-to-html nil))
+;; **** multiple contexts
+;; :PROPERTIES:
+;; :ID: e56b64ac-ed36-4689-b8f4-8711c1f4f79f
+;; :END:
 
-;; ;; *** multiple accounts
-;; ;; :PROPERTIES:
-;; ;; :ID: ad6de3a4-674c-490f-841e-19b8f891cd65
-;; ;; :END:
+(defadvice! setup-contexts (:before mu4e)
+  "Initiaize context for each email account."
+  (require 'password-store)
+  (--each (-map #'mu4e::account-context (pass:email-list))
+    (cl-pushnew it mu4e-contexts)))
 
-;; ;; Mu4e certainly gave me some trouble setting up multiple accounts despite [its
-;; ;; attempt] to make this easy. I have one directory =~/.mail= where which stores all
-;; ;; my mail. The subdirectories of =~/.mail= correspond to my individual email
-;; ;; accounts. Until I set multiple accounts correctly it keeps prompting me to
-;; ;; create folders (such as =sent/=) in the =~/.mail= directory. I think part of the
-;; ;; reason I spent so much time setting this up is because.
+;; *** truncate lines in messages
+;; :PROPERTIES:
+;; :ID: e6addd49-6aa4-4b9e-8e50-4f0ea43aedb7
+;; :END:
 
-;; ;; **** return the list of emails with credentials
-;; ;; :PROPERTIES:
-;; ;; :ID:       3f7b1728-b855-447f-9f15-43bd79a94c14
-;; ;; :END:
-
-;; (defun pass:email-list ()
-;;   "Return a list of emails."
-;;   (->> (password-store-list)
-;;        (--map (elt (s-match "email/\\(.*\\)" it) 1))
-;;        (-non-nil)))
-
-;; ;; **** return the stuff as a plist
-;; ;; :PROPERTIES:
-;; ;; :ID:       8129ca16-8641-4f2f-a4b6-03477d5b78f3
-;; ;; :END:
-
-;; (defun pass:email-account-plist (email)
-;;   "Return a plist of the relevant values of an email."
-;;   (shut-up!
-;;     (->> (cdr (password-store-parse-entry email))
-;;          (mapcar #'car)
-;;          (--mapcat (list (intern it)
-;;                          (password-store-get-field (concat "email/" email) it))))))
-
-;; ;; **** mu4e folder name alist
-;; ;; :PROPERTIES:
-;; ;; :ID:       2ef07842-e321-4fff-ae73-f19c41d263a4
-;; ;; :END:
-
-;; ;; Mu4e keeps prompting you for the sent, trash, and drafts directory if you do not
-;; ;; assign the corresponding mu4e variables. The way certain email servers name
-;; ;; their directories varies. For example, outlook names its sent directory as =Sent
-;; ;; Items=.
-
-;; (defun mu4e:guess-folder (base-dir possible-name &rest other-possible-names)
-;;   "Return the first file in BASE-DIR that matches POSSIBLE-NAME or any POSSIBLE-NAMES.
-;; If there is no match, return POSSIBLE-NAME."
-;;   (alet (or (--first (-some-p (-cut s-contains-p <> it t)
-;;                               (cons possible-name other-possible-names))
-;;                      (cddr (directory-files base-dir)))
-;;             possible-name)
-;;     (format "/%s/%s" (f-filename base-dir) it)))
-
-;; ;; **** set up contexts for single account
-;; ;; :PROPERTIES:
-;; ;; :ID:       66d460d7-9647-4c29-8348-eb7b3d571630
-;; ;; :END:
-
-;; (defun mu4e::account-context (email)
-;;   "Return an mu4e account context for specified EMAIL."
-;;   (let* ((base-dir (concat VOID-EMAIL-DIR email "/"))
-;;          (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
-;;          (account (pass:email-account-plist email))
-;;          (out-host (plist-get 'out-host account))
-;;          (out-port (plist-get 'out-port account)))
-;;     (alet `((mu4e-sent-folder      . ,(mu4e:guess-folder base-dir "sent"))
-;;             (mu4e-drafts-folder    . ,(mu4e:guess-folder base-dir "draft"))
-;;             (mu4e-trash-folder     . ,(mu4e:guess-folder base-dir "trash" "delete" "junk"))
-;;             (user-email-address    . ,email)
-;;             (smtpmail-smtp-server  . ,out-host)
-;;             (smtpmail-smtp-user    . ,base-dir)
-;;             (smtpmail-smtp-service . ,out-port))
-;;       (make-mu4e-context :name name :vars it))))
-
-;; ;; **** multiple contexts
-;; ;; :PROPERTIES:
-;; ;; :ID: e56b64ac-ed36-4689-b8f4-8711c1f4f79f
-;; ;; :END:
-
-;; (defadvice! setup-contexts (:before mu4e)
-;;   "Initiaize context for each email account."
-;;   (require 'password-store)
-;;   (--each (-map #'mu4e::account-context (pass:email-list))
-;;     (cl-pushnew it mu4e-contexts)))
-
-;; ;; *** truncate lines in messages
-;; ;; :PROPERTIES:
-;; ;; :ID: e6addd49-6aa4-4b9e-8e50-4f0ea43aedb7
-;; ;; :END:
-
-;; (defhook! wrap-text-in-message (mu4e-view-mode-hook)
-;;   (setq-local truncate-lines nil))
+(defhook! wrap-text-in-message (mu4e-view-mode-hook)
+  (setq-local truncate-lines nil))
 
 ;; * Web Browsing
-;; ;; :PROPERTIES:
-;; ;; :ID: f0960e47-5dbb-4cca-a17a-f8eb0da445d3
-;; ;; :END:
+;; :PROPERTIES:
+;; :ID: f0960e47-5dbb-4cca-a17a-f8eb0da445d3
+;; :END:
 
-;; ;; In current times we are fortunate enough to have a wealth of information
-;; ;; available to us only a web search away.
+;; In current times we are fortunate enough to have a wealth of information
+;; available to us only a web search away.
 
-;; ;; ** engine-mode
-;; ;; :PROPERTIES:
-;; ;; :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
-;; ;; :HOST:     github
-;; ;; :BRANCH:   "main"
-;; ;; :REPO:     "hrs/engine-mode"
-;; ;; :COMMIT:   "e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1"
-;; ;; :TYPE:     git
-;; ;; :PACKAGE:  "engine-mode"
-;; ;; :LOCAL-REPO: "engine-mode"
-;; ;; :END:
+;; ** engine-mode
+;; :PROPERTIES:
+;; :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
+;; :HOST:     github
+;; :BRANCH:   "main"
+;; :REPO:     "hrs/engine-mode"
+;; :COMMIT:   "e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1"
+;; :TYPE:     git
+;; :PACKAGE:  "engine-mode"
+;; :LOCAL-REPO: "engine-mode"
+;; :END:
 
-;; ;; *** different engines
-;; ;; :PROPERTIES:
-;; ;; :ID:       2f5c974e-b26e-4080-a9b3-acd6406ab118
-;; ;; :END:
+;; *** different engines
+;; :PROPERTIES:
+;; :ID:       2f5c974e-b26e-4080-a9b3-acd6406ab118
+;; :END:
 
-;; ;; This package essentially automates the creation of an interactive web searching
-;; ;; functions. Engine mode seems to only be useful for binding keys.
+;; This package essentially automates the creation of an interactive web searching
+;; functions. Engine mode seems to only be useful for binding keys.
 
-;; (defengine amazon
-;;   "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
-;; (defengine duckduckgo
-;;   "https://duckduckgo.com/?q=%s")
-;; (defengine qwant
-;;   "https://www.qwant.com/?q=%s")
-;; (defengine wikipedia
-;;   "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s")
+(defengine amazon
+  "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s")
+(defengine qwant
+  "https://www.qwant.com/?q=%s")
+(defengine wikipedia
+  "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s")
 
-;; ;; ** w3m
-;; ;; :PROPERTIES:
-;; ;; :ID: e5e13423-bc70-49b0-969e-94897c798d54
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    (:defaults "icons" (:exclude "octet.el" "mew-w3m.el" "w3m-xmas.el") "w3m-pkg.el")
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-w3m/emacs-w3m"
-;; ;; :PACKAGE:  "w3m"
-;; ;; :LOCAL-REPO: "emacs-w3m"
-;; ;; :COMMIT:   "a4edf91ba14d39b6a1a2724ad275e941b1f00235"
-;; ;; :END:
+;; ** w3m
+;; :PROPERTIES:
+;; :ID: e5e13423-bc70-49b0-969e-94897c798d54
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "icons" (:exclude "octet.el" "mew-w3m.el" "w3m-xmas.el") "w3m-pkg.el")
+;; :HOST:     github
+;; :REPO:     "emacs-w3m/emacs-w3m"
+;; :PACKAGE:  "w3m"
+;; :LOCAL-REPO: "emacs-w3m"
+;; :COMMIT:   "a4edf91ba14d39b6a1a2724ad275e941b1f00235"
+;; :END:
 
-;; ;; [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
-;; ;; there, but =w3m= has the benefit of having comprehensive [[https://github.com/emacs-w3m/emacs-w3m][emacs interface]]. Why
-;; ;; use this when you can use the GUI browser? Well, using the Emacs interface I can
-;; ;; view an Emacs webpage as plain text, which means I can perform searches on it
-;; ;; with [[https://github.com/abo-abo/swiper.git][swiper]], or any other Emacs operation on it. Another advantage is that
-;; ;; because the w3m interface's backend is a terminal application, it will (I'm
-;; ;; guessing; no benchmarks made) typically be faster than browsers at rendering
-;; ;; plain text webpages. Of course, the main limitation is that w3m will typically
-;; ;; only display text based web pages well--not ones with lots of interactive
-;; ;; javascript code.
+;; [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
+;; there, but =w3m= has the benefit of having comprehensive [[https://github.com/emacs-w3m/emacs-w3m][emacs interface]]. Why
+;; use this when you can use the GUI browser? Well, using the Emacs interface I can
+;; view an Emacs webpage as plain text, which means I can perform searches on it
+;; with [[https://github.com/abo-abo/swiper.git][swiper]], or any other Emacs operation on it. Another advantage is that
+;; because the w3m interface's backend is a terminal application, it will (I'm
+;; guessing; no benchmarks made) typically be faster than browsers at rendering
+;; plain text webpages. Of course, the main limitation is that w3m will typically
+;; only display text based web pages well--not ones with lots of interactive
+;; javascript code.
 
 ;; * Multimedia
-;; ;; :PROPERTIES:
-;; ;; :ID: 20a915a0-8525-413c-bd68-f1d5c14ce3da
-;; ;; :END:
+;; :PROPERTIES:
+;; :ID: 20a915a0-8525-413c-bd68-f1d5c14ce3da
+;; :END:
 
-;; ;; I'm using "multimedia" here as an umbrella term for non-text sources of
-;; ;; information such as music, videos, images, and gifs.
+;; I'm using "multimedia" here as an umbrella term for non-text sources of
+;; information such as music, videos, images, and gifs.
 
-;; ;; ** ytel
-;; ;; :PROPERTIES:
-;; ;; :ID:       6bf0b85c-212d-406d-b4b5-7720ccc274ba
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "gRastello/ytel"
-;; ;; :PACKAGE:  "ytel"
-;; ;; :LOCAL-REPO: "ytel"
-;; ;; :COMMIT:   "d80c7964ec66589d5580fc13773e94f1834ab76f"
-;; ;; :END:
+;; ** ytel
+;; :PROPERTIES:
+;; :ID:       6bf0b85c-212d-406d-b4b5-7720ccc274ba
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "gRastello/ytel"
+;; :PACKAGE:  "ytel"
+;; :LOCAL-REPO: "ytel"
+;; :COMMIT:   "d80c7964ec66589d5580fc13773e94f1834ab76f"
+;; :END:
 
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
-;; ;; :END:
+;; *** init
+;; :PROPERTIES:
+;; :ID:       167bc712-5552-4cfe-83ce-d0bb9927fa6a
+;; :END:
 
-;; ;; =ytel= is a YouTube search front-end. It is designed to let the user collect
-;; ;; YouTube search results into a buffer and manipulate them with emacs lisp.
+;; =ytel= is a YouTube search front-end. It is designed to let the user collect
+;; YouTube search results into a buffer and manipulate them with emacs lisp.
 
-;; (void-autoload 'ytel #'ytel)
+(void-autoload 'ytel #'ytel)
 
-;; (setq ytel-invidious-api-url "https://invidious.snopyta.org")
+(setq ytel-invidious-api-url "https://invidious.snopyta.org")
 
-;; (void-system-ensure-package 'ytel '(youtube-dl curl))
+(void-system-ensure-package 'ytel '(youtube-dl curl))
 
-;; ;; *** watch video
-;; ;; :PROPERTIES:
-;; ;; :ID:       547c6d1d-c8a5-42b3-8000-029228923304
-;; ;; :END:
+;; *** watch video
+;; :PROPERTIES:
+;; :ID:       547c6d1d-c8a5-42b3-8000-029228923304
+;; :END:
 
-;; (defun ytel/watch ()
-;;   "Stream video at point in mpv."
-;;   (interactive)
-;;   (let* ((video (ytel-get-current-video))
-;;      	 (id    (ytel-video-id video)))
-;;     (start-process "ytel mpv" nil
-;; 		           "mpv"
-;; 		           (concat "https://www.youtube.com/watch?v=" id))
-;; 	"--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
-;;   (message "Starting streaming..."))
+(defun ytel/watch ()
+  "Stream video at point in mpv."
+  (interactive)
+  (let* ((video (ytel-get-current-video))
+     	 (id    (ytel-video-id video)))
+    (start-process "ytel mpv" nil
+		           "mpv"
+		           (concat "https://www.youtube.com/watch?v=" id))
+	"--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
+  (message "Starting streaming..."))
 
-;; ;; *** download music
-;; ;; :PROPERTIES:
-;; ;; :ID:       7c28f457-3a63-45a7-87bc-dc5232a5a5cd
-;; ;; :END:
+;; *** download music
+;; :PROPERTIES:
+;; :ID:       7c28f457-3a63-45a7-87bc-dc5232a5a5cd
+;; :END:
 
-;; (defun ytel/download-music ()
-;;   "Download youtube video from `ytel' interface."
-;;   (interactive)
-;;   (let* ((video (ytel-get-current-video))
-;;          (title (ytel-video-title video))
-;;          (id (ytel-video-id video))
-;;          (dir VOID-MUSIC-DIR)
-;;          (url (format "https://www.youtube.com/watch?v=%s" id)))
-;;     (async-shell-command (format "cd %s && youtube-dl -f bestaudio %s" dir url))
-;;     (message "Downloading music...")))
+(defun ytel/download-music ()
+  "Download youtube video from `ytel' interface."
+  (interactive)
+  (let* ((video (ytel-get-current-video))
+         (title (ytel-video-title video))
+         (id (ytel-video-id video))
+         (dir VOID-MUSIC-DIR)
+         (url (format "https://www.youtube.com/watch?v=%s" id)))
+    (async-shell-command (format "cd %s && youtube-dl -f bestaudio %s" dir url))
+    (message "Downloading music...")))
 
-;; ;; ** emms
-;; ;; :PROPERTIES:
-;; ;; :ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
-;; ;; :REPO:     "https://git.savannah.gnu.org/git/emms.git"
-;; ;; :PACKAGE:  "emms"
-;; ;; :LOCAL-REPO: "emms"
-;; ;; :COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
-;; ;; :END:
+;; ** emms
+;; :PROPERTIES:
+;; :ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
+;; :REPO:     "https://git.savannah.gnu.org/git/emms.git"
+;; :PACKAGE:  "emms"
+;; :LOCAL-REPO: "emms"
+;; :COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
+;; :END:
 
-;; ;; [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
+;; [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
 
-;; ;; *** ensure mpv is available
-;; ;; :PROPERTIES:
-;; ;; :ID:       259e8bfb-a896-4e8b-8c3b-e120d4f141b4
-;; ;; :END:
+;; *** ensure mpv is available
+;; :PROPERTIES:
+;; :ID:       259e8bfb-a896-4e8b-8c3b-e120d4f141b4
+;; :END:
 
-;; (void-system-ensure)
+(void-system-ensure)
 
-;; ;; *** commands
-;; ;; :PROPERTIES:
-;; ;; :ID:       a59fba5b-8687-4416-8ce8-a05dec352e0c
-;; ;; :END:
+;; *** commands
+;; :PROPERTIES:
+;; :ID:       a59fba5b-8687-4416-8ce8-a05dec352e0c
+;; :END:
 
-;; (void-autoload)
+(void-autoload)
 
-;; ;; *** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       3861c03d-b08e-463b-a28e-e88c191993fc
-;; ;; :END:
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       3861c03d-b08e-463b-a28e-e88c191993fc
+;; :END:
 
-;; (setq emms-directory (concat VOID-DATA-DIR "emms/"))
-;; (setq emms-seek-seconds 5)
-;; (setq emms-player-list '(emms-player-mpv))
-;; (setq emms-source-file-default-directory "~/Multimedia/music")
-;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-;; (setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
-;; (setq mpc-host "127.0.0.1:6600")
+(setq emms-directory (concat VOID-DATA-DIR "emms/"))
+(setq emms-seek-seconds 5)
+(setq emms-player-list '(emms-player-mpv))
+(setq emms-source-file-default-directory "~/Multimedia/music")
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
+(setq mpc-host "127.0.0.1:6600")
 
-;; ;; *** emms
-;; ;; :PROPERTIES:
-;; ;; :ID: 5d28b703-a87f-47ca-b320-785e7589fea6
-;; ;; :END:
+;; *** emms
+;; :PROPERTIES:
+;; :ID: 5d28b703-a87f-47ca-b320-785e7589fea6
+;; :END:
 
-;; (void-system-ensure-package 'emms 'mpv)
+(void-system-ensure-package 'emms 'mpv)
 
-;; (void-autoload 'emms (list #'emms-play-directory #'emms-play-file))
+(void-autoload 'emms (list #'emms-play-directory #'emms-play-file))
 
-;; (void-load-before-call 'package 'emms-player-mpv)
+(void-load-before-call 'package 'emms-player-mpv)
 
-;; ;; *** quitting
-;; ;; :PROPERTIES:
-;; ;; :ID: 545e6534-f289-4a89-838a-2a65ac74fe72
-;; ;; :END:
+;; *** quitting
+;; :PROPERTIES:
+;; :ID: 545e6534-f289-4a89-838a-2a65ac74fe72
+;; :END:
 
-;; (defhook! quit-emms (kill-emacs-hook)
-;;   "Shut down EMMS."
-;;   (when emms-player-playing-p (emms-pause))
-;;   (emms-stop)
-;;   ;; kill any existing mpd processes
-;;   (when (member 'emms-player-mpd emms-player-list)
-;;     (call-process "killall" nil nil nil "mpd")))
+(defhook! quit-emms (kill-emacs-hook)
+  "Shut down EMMS."
+  (when emms-player-playing-p (emms-pause))
+  (emms-stop)
+  ;; kill any existing mpd processes
+  (when (member 'emms-player-mpd emms-player-list)
+    (call-process "killall" nil nil nil "mpd")))
 
-;; ;; ** escr
-;; ;; :PROPERTIES:
-;; ;; :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
-;; ;; :host:     github
-;; ;; :repo:     "atykhonov/escr"
-;; ;; :package:  "escr"
-;; ;; :type:     git
-;; ;; :local-repo: "escr"
-;; ;; :commit:   fc9dcdd98fcd7c9482f31032779fcd9e574016c0
-;; ;; :END:
+;; ** escr
+;; :PROPERTIES:
+;; :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
+;; :host:     github
+;; :repo:     "atykhonov/escr"
+;; :package:  "escr"
+;; :type:     git
+;; :local-repo: "escr"
+;; :commit:   fc9dcdd98fcd7c9482f31032779fcd9e574016c0
+;; :END:
 
-;; ;; Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
-;; ;; cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or
-;; ;; [[https://www.reddit.com/r/emacs/][emacs-reddit]] or even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or
-;; ;; often not utilized at all).
+;; Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
+;; cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or
+;; [[https://www.reddit.com/r/emacs/][emacs-reddit]] or even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or
+;; often not utilized at all).
 
-;; ;; There are three screenshot packages I know of [[https://github.com/emacsmirror/screenshot][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[https://github.com/atykhonov/escr][escr]]. But
-;; ;; they all have their downsides. Screenshot's main command, =screenshot=, assumes
-;; ;; that you want. =escr= doesn't provide prompt you for the filename or provide any
-;; ;; option that would prompt you for the file name.
+;; There are three screenshot packages I know of [[https://github.com/emacsmirror/screenshot][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[https://github.com/atykhonov/escr][escr]]. But
+;; they all have their downsides. Screenshot's main command, =screenshot=, assumes
+;; that you want. =escr= doesn't provide prompt you for the filename or provide any
+;; option that would prompt you for the file name.
 
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       a6a8610e-84b5-471d-8f07-2ad2c67c2998
-;; ;; :END:
+;; *** init
+;; :PROPERTIES:
+;; :ID:       a6a8610e-84b5-471d-8f07-2ad2c67c2998
+;; :END:
 
-;; (alet '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
-;;   (void-autoload 'escr it))
+(alet '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
+  (void-autoload 'escr it))
 
-;; ;; *** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       4ec97ac8-cad6-4536-be21-6ae2ee1655f3
-;; ;; :END:
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       4ec97ac8-cad6-4536-be21-6ae2ee1655f3
+;; :END:
 
-;; (setq escr-screenshot-quality 10)
-;; (setq escr-screenshot-directory VOID-SCREENSHOT-DIR)
+(setq escr-screenshot-quality 10)
+(setq escr-screenshot-directory VOID-SCREENSHOT-DIR)
 
-;; ;; *** function for geting screenshot filename
-;; ;; :PROPERTIES:
-;; ;; :ID:       58405f4f-e891-494e-afc7-a227415ec12b
-;; ;; :END:
+;; *** function for geting screenshot filename
+;; :PROPERTIES:
+;; :ID:       58405f4f-e891-494e-afc7-a227415ec12b
+;; :END:
 
-;; ;; =escr= doesn't prompt for the filename. While this is faster in the shortrun and
-;; ;; may be useful for situations when you're short on time, it does mean that I'll
-;; ;; need to invest time in looking at the screenshots again so you can properly name
-;; ;; them.
+;; =escr= doesn't prompt for the filename. While this is faster in the shortrun and
+;; may be useful for situations when you're short on time, it does mean that I'll
+;; need to invest time in looking at the screenshots again so you can properly name
+;; them.
 
-;; (defun escr:get-filename ()
-;;   "Return the filename."
-;;   (alet (format "%s-%s.png"
-;;                 (alet (read-string "Image name: ")
-;;                   (if (string-empty-p it) "screenshot" it))
-;;                 (format-time-string "%Y-%m-%d-%H-%M-%S.png"))
-;;     (expand-file-name it escr-screenshot-directory)))
+(defun escr:get-filename ()
+  "Return the filename."
+  (alet (format "%s-%s.png"
+                (alet (read-string "Image name: ")
+                  (if (string-empty-p it) "screenshot" it))
+                (format-time-string "%Y-%m-%d-%H-%M-%S.png"))
+    (expand-file-name it escr-screenshot-directory)))
 
-;; ;; *** tell =escr--screenshot= to use maim
-;; ;; :PROPERTIES:
-;; ;; :ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
-;; ;; :END:
+;; *** tell =escr--screenshot= to use maim
+;; :PROPERTIES:
+;; :ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
+;; :END:
 
-;; ;; If we don't use an short idle timer to take the screenshot, we'll end up
-;; ;; capturing the prompt for the filename (like in [[][this example]]).
+;; If we don't use an short idle timer to take the screenshot, we'll end up
+;; capturing the prompt for the filename (like in [[][this example]]).
 
-;; (defadvice! use-miam (:override (x y width height) escr--screenshot)
-;;   (let ((window-id (frame-parameter (selected-frame) 'window-id))
-;;         (crop (format "%sx%s+%s+%s" width height x y))
-;;         (filename (escr:get-filename)))
-;;     (alet `(lambda ()
-;;              (call-process "maim" nil nil nil
-;;                            "--window" ,window-id
-;;                            "--geometry" ,crop
-;;                            "--quality" ,(number-to-string escr-screenshot-quality)
-;;                            ,filename)
-;;              (message "Screenshot Taken!"))
-;;       (run-with-timer 1 nil it))))
+(defadvice! use-miam (:override (x y width height) escr--screenshot)
+  (let ((window-id (frame-parameter (selected-frame) 'window-id))
+        (crop (format "%sx%s+%s+%s" width height x y))
+        (filename (escr:get-filename)))
+    (alet `(lambda ()
+             (call-process "maim" nil nil nil
+                           "--window" ,window-id
+                           "--geometry" ,crop
+                           "--quality" ,(number-to-string escr-screenshot-quality)
+                           ,filename)
+             (message "Screenshot Taken!"))
+      (run-with-timer 1 nil it))))
 
-;; ;; ** gif-screencast
-;; ;; :PROPERTIES:
-;; ;; :ID: 28387a67-7037-47ce-97c9-c35d77f7cb22
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     gitlab
-;; ;; :REPO:     "Ambrevar/emacs-gif-screencast"
-;; ;; :PACKAGE:  "gif-screencast"
-;; ;; :LOCAL-REPO: "emacs-gif-screencast"
-;; ;; :COMMIT:   "e39786458fb30e2e9683094c75c6c2cef537d9c4"
-;; ;; :END:
+;; ** gif-screencast
+;; :PROPERTIES:
+;; :ID: 28387a67-7037-47ce-97c9-c35d77f7cb22
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     gitlab
+;; :REPO:     "Ambrevar/emacs-gif-screencast"
+;; :PACKAGE:  "gif-screencast"
+;; :LOCAL-REPO: "emacs-gif-screencast"
+;; :COMMIT:   "e39786458fb30e2e9683094c75c6c2cef537d9c4"
+;; :END:
 
-;; ;; This package allows for the creation of gifs from within emacs.
+;; This package allows for the creation of gifs from within emacs.
 
-;; ;; ** keypression
-;; ;; :PROPERTIES:
-;; ;; :ID: 1943c432-4d47-43a5-ba92-2f17205bbae0
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "chuntaro/emacs-keypression"
-;; ;; :PACKAGE:  "keypression"
-;; ;; :LOCAL-REPO: "emacs-keypression"
-;; ;; :END:
+;; ** keypression
+;; :PROPERTIES:
+;; :ID: 1943c432-4d47-43a5-ba92-2f17205bbae0
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "chuntaro/emacs-keypression"
+;; :PACKAGE:  "keypression"
+;; :LOCAL-REPO: "emacs-keypression"
+;; :END:
 
-;; ;; [[https://github.com/chuntaro/emacs-keypression][keypression]] is displays keypresses from within Emacs--no external tools
-;; ;; necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypression/images/screencast.gif][looks]] pretty professional!
+;; [[https://github.com/chuntaro/emacs-keypression][keypression]] is displays keypresses from within Emacs--no external tools
+;; necessary! It [[https://raw.githubusercontent.com/wiki/chuntaro/emacs-keypression/images/screencast.gif][looks]] pretty professional!
 
-;; (setq keypression-frame-justify 'keypression-right-justified)
+(setq keypression-frame-justify 'keypression-right-justified)
 
 ;; * Text Editing
 ;; :PROPERTIES:
@@ -7439,202 +7439,202 @@ The change to this function."
   :advice (:after (helpful-update . elisp-demos-advice-helpful-update)))
 
 ;; * Asthetic
-;; ;; :PROPERTIES:
-;; ;; :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
-;; ;; :END:
+;; :PROPERTIES:
+;; :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
+;; :END:
 
-;; ;; It's easy to underestimate how much of a difference having an asthetically
-;; ;; pleasing Emacs configuration can have. Ugliness really can take its toll.
+;; It's easy to underestimate how much of a difference having an asthetically
+;; pleasing Emacs configuration can have. Ugliness really can take its toll.
 
-;; ;; ** which-key
-;; ;; :PROPERTIES:
-;; ;; :ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "justbur/emacs-which-key"
-;; ;; :PACKAGE:  "which-key"
-;; ;; :LOCAL-REPO: "emacs-which-key"
-;; ;; :COMMIT:   "c011b268196b8356c70f668506a1133086bc9477"
-;; ;; :END:
+;; ** which-key
+;; :PROPERTIES:
+;; :ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "justbur/emacs-which-key"
+;; :PACKAGE:  "which-key"
+;; :LOCAL-REPO: "emacs-which-key"
+;; :COMMIT:   "c011b268196b8356c70f668506a1133086bc9477"
+;; :END:
 
-;; ;; Emacs is full of so many keybindings, that it can be difficult to keep track of
-;; ;; them. Especially when you're starting out, but even when you're an Emacs-pro,
-;; ;; it's easy to forget what a particular functionality is bound to. Typically,
-;; ;; you'll remember the first few key strokes but struggle with the rest. To address
-;; ;; this [[github:][which-key]] displays key binding sequences in the minibuffer as your typing
-;; ;; them ([[][]] and [[][]] are screenshots of this in action). By doing this
-;; ;; you can "discover" the commands as you go along.
+;; Emacs is full of so many keybindings, that it can be difficult to keep track of
+;; them. Especially when you're starting out, but even when you're an Emacs-pro,
+;; it's easy to forget what a particular functionality is bound to. Typically,
+;; you'll remember the first few key strokes but struggle with the rest. To address
+;; this [[github:][which-key]] displays key binding sequences in the minibuffer as your typing
+;; them ([[][]] and [[][]] are screenshots of this in action). By doing this
+;; you can "discover" the commands as you go along.
 
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       c4aedc23-0be3-46fe-b046-32b5f0738c6b
-;; ;; :END:
+;; *** init
+;; :PROPERTIES:
+;; :ID:       c4aedc23-0be3-46fe-b046-32b5f0738c6b
+;; :END:
 
-;; ;; **** hooks
-;; ;; :PROPERTIES:
-;; ;; :ID:       e6626cde-d243-4aac-a61c-2897e43b7e73
-;; ;; :END:
+;; **** hooks
+;; :PROPERTIES:
+;; :ID:       e6626cde-d243-4aac-a61c-2897e43b7e73
+;; :END:
 
-;; (void-add-hook 'emacs-startup-hook #'which-key-mode)
+(void-add-hook 'emacs-startup-hook #'which-key-mode)
 
-;; ;; **** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       a4b5878c-1b3f-4d85-9403-7ed8cc52433f
-;; ;; :END:
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       a4b5878c-1b3f-4d85-9403-7ed8cc52433f
+;; :END:
 
-;; (setq which-key-sort-uppercase-first nil)
-;; (setq which-key-max-display-columns nil)
-;; (setq which-key-add-column-padding 1)
-;; (setq which-key-min-display-lines 6)
-;; (setq which-key-side-window-slot -10)
-;; (setq which-key-sort-order #'which-key-prefix-then-key-order)
-;; (setq which-key-popup-type 'minibuffer)
-;; (setq which-key-idle-delay 0.8)
+(setq which-key-sort-uppercase-first nil)
+(setq which-key-max-display-columns nil)
+(setq which-key-add-column-padding 1)
+(setq which-key-min-display-lines 6)
+(setq which-key-side-window-slot -10)
+(setq which-key-sort-order #'which-key-prefix-then-key-order)
+(setq which-key-popup-type 'minibuffer)
+(setq which-key-idle-delay 0.8)
 
-;; ;; *** set line spacing
-;; ;; :PROPERTIES:
-;; ;; :ID:       6abb35f4-c648-4bed-b59a-5a0636857fd8
-;; ;; :END:
+;; *** set line spacing
+;; :PROPERTIES:
+;; :ID:       6abb35f4-c648-4bed-b59a-5a0636857fd8
+;; :END:
 
-;; (defhook! set-line-spacing (which-key-init-buffer-hook)
-;;   (setq line-spacing 3))
+(defhook! set-line-spacing (which-key-init-buffer-hook)
+  (setq line-spacing 3))
 
-;; ;; *** leader keys
-;; ;; :PROPERTIES:
-;; ;; :ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
-;; ;; :END:
+;; *** leader keys
+;; :PROPERTIES:
+;; :ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
+;; :END:
 
-;; (which-key-add-key-based-replacements void-leader-key "<leader>")
-;; (which-key-add-key-based-replacements void-localleader-key "<localleader>")
+(which-key-add-key-based-replacements void-leader-key "<leader>")
+(which-key-add-key-based-replacements void-localleader-key "<localleader>")
 
-;; ;; ** dashboard
-;; ;; :PROPERTIES:
-;; ;; :ID: 20926522-b78b-4bca-b70e-9ef4213c4344
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    (:defaults "banners" "dashboard-pkg.el")
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-dashboard/emacs-dashboard"
-;; ;; :PACKAGE:  "dashboard"
-;; ;; :LOCAL-REPO: "emacs-dashboard"
-;; ;; :COMMIT:   "2cebc69e3d4b82569daa732b9114787d7018304b"
-;; ;; :END:
+;; ** dashboard
+;; :PROPERTIES:
+;; :ID: 20926522-b78b-4bca-b70e-9ef4213c4344
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "banners" "dashboard-pkg.el")
+;; :HOST:     github
+;; :REPO:     "emacs-dashboard/emacs-dashboard"
+;; :PACKAGE:  "dashboard"
+;; :LOCAL-REPO: "emacs-dashboard"
+;; :COMMIT:   "2cebc69e3d4b82569daa732b9114787d7018304b"
+;; :END:
 
-;; ;; [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
-;; ;; having an extensible, fast, nice-looking dashboard when starting emacs is
-;; ;; nice. It's not only nice asthetically, it's also strategic too. First, you can
-;; ;; use it as a launching point to get to your tasks quicker. And second, it doesn't
-;; ;; require any expensive modes. I've often been starting out with the scratch
-;; ;; buffer and I've wanted to have the scratch buffer start off with
-;; ;; =emacs-lisp-mode=, but I don't want it to trigger =company=, =yasnippet=, etc. on
-;; ;; startup. If I start my emacs with =dashboard= I can avoid this.
+;; [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
+;; having an extensible, fast, nice-looking dashboard when starting emacs is
+;; nice. It's not only nice asthetically, it's also strategic too. First, you can
+;; use it as a launching point to get to your tasks quicker. And second, it doesn't
+;; require any expensive modes. I've often been starting out with the scratch
+;; buffer and I've wanted to have the scratch buffer start off with
+;; =emacs-lisp-mode=, but I don't want it to trigger =company=, =yasnippet=, etc. on
+;; startup. If I start my emacs with =dashboard= I can avoid this.
 
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       de94c9a8-fc05-46ec-ac06-510f1014e02d
-;; ;; :END:
+;; *** init
+;; :PROPERTIES:
+;; :ID:       de94c9a8-fc05-46ec-ac06-510f1014e02d
+;; :END:
 
-;; ;; **** require
-;; ;; :PROPERTIES:
-;; ;; :ID:       73d00f99-4b70-44d1-8359-01bd2c94b330
-;; ;; :END:
+;; **** require
+;; :PROPERTIES:
+;; :ID:       73d00f99-4b70-44d1-8359-01bd2c94b330
+;; :END:
 
-;; (require 'dashboard)
-;; (void-add-hook 'window-setup-hook #'dashboard-insert-startupify-lists)
+(require 'dashboard)
+(void-add-hook 'window-setup-hook #'dashboard-insert-startupify-lists)
 
-;; ;; **** open dashboard at startup
-;; ;; :PROPERTIES:
-;; ;; :ID:       1bcc371e-61fa-480e-bdae-4a999d3b10c9
-;; ;; :END:
+;; **** open dashboard at startup
+;; :PROPERTIES:
+;; :ID:       1bcc371e-61fa-480e-bdae-4a999d3b10c9
+;; :END:
 
-;; (defadvice! open-dashboard-instead (:override void-initial-buffer)
-;;   (if void-debug-p (get-buffer "*Messages*")
-;;     (get-buffer-create "*dashboard*")))
+(defadvice! open-dashboard-instead (:override void-initial-buffer)
+  (if void-debug-p (get-buffer "*Messages*")
+    (get-buffer-create "*dashboard*")))
 
-;; ;; **** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       f5434534-e767-4416-848a-8912bae0ede1
-;; ;; :END:
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       f5434534-e767-4416-848a-8912bae0ede1
+;; :END:
 
-;; (setq dashboard-items nil)
-;; (setq dashboard-startup-banner 2)
-;; (setq dashboard-center-content t)
-;; (setq initial-buffer-choice #'void-initial-buffer)
+(setq dashboard-items nil)
+(setq dashboard-startup-banner 2)
+(setq dashboard-center-content t)
+(setq initial-buffer-choice #'void-initial-buffer)
 
-;; ;; *** dashboard-init-info
-;; ;; :PROPERTIES:
-;; ;; :ID: 92c199ad-5862-4fe3-be04-44c94d4286b6
-;; ;; :END:
+;; *** dashboard-init-info
+;; :PROPERTIES:
+;; :ID: 92c199ad-5862-4fe3-be04-44c94d4286b6
+;; :END:
 
-;; ;; [[helpvar:void-init-time][void-init-time]] is more accurate than dashboard's init time measure. So I use it
-;; ;; instead.
+;; [[helpvar:void-init-time][void-init-time]] is more accurate than dashboard's init time measure. So I use it
+;; instead.
 
-;; (defadvice! show-package-load-time (:before dashboard-insert-startupify-lists)
-;;   (setq dashboard-init-info
-;;         (format "%d packages loaded in %.2f seconds"
-;;                 (cond ((featurep 'straight)
-;;                        (hash-table-size straight--profile-cache))
-;;                       ((featurep 'package) (length package-activated-list))
-;;                       (t 0))
-;;                 (string-to-number (emacs-init-time)))))
+(defadvice! show-package-load-time (:before dashboard-insert-startupify-lists)
+  (setq dashboard-init-info
+        (format "%d packages loaded in %.2f seconds"
+                (cond ((featurep 'straight)
+                       (hash-table-size straight--profile-cache))
+                      ((featurep 'package) (length package-activated-list))
+                      (t 0))
+                (string-to-number (emacs-init-time)))))
 
-;; ;; *** banner path
-;; ;; :PROPERTIES:
-;; ;; :ID: 597af7c3-f5d2-4cf5-a93e-3dd3564fb34a
-;; ;; :END:
+;; *** banner path
+;; :PROPERTIES:
+;; :ID: 597af7c3-f5d2-4cf5-a93e-3dd3564fb34a
+;; :END:
 
-;; (defadvice! set-custom-banner-path (:override dashboard-get-banner-path)
-;;   "Use the Void text banner."
-;;   (concat VOID-LOCAL-DIR "void-banner.txt"))
+(defadvice! set-custom-banner-path (:override dashboard-get-banner-path)
+  "Use the Void text banner."
+  (concat VOID-LOCAL-DIR "void-banner.txt"))
 
-;; ;; *** navigator buttons                                                 :disabled:
-;; ;; :PROPERTIES:
-;; ;; :ID:       a4a9e0ae-ee44-4434-bcf6-b415ef348e45
-;; ;; :END:
+;; *** navigator buttons                                                 :disabled:
+;; :PROPERTIES:
+;; :ID:       a4a9e0ae-ee44-4434-bcf6-b415ef348e45
+;; :END:
 
-;; ;; **** navigator button
-;; ;; :PROPERTIES:
-;; ;; :ID:       63829df6-5ba9-477e-99e9-86aabf7f5862
-;; ;; :END:
+;; **** navigator button
+;; :PROPERTIES:
+;; :ID:       63829df6-5ba9-477e-99e9-86aabf7f5862
+;; :END:
 
-;; ;; This is a convenience macro that allows navigation buttons to be defined
-;; ;; declaratively and with a "defun-like" syntax. Perhaps this is overkill.
+;; This is a convenience macro that allows navigation buttons to be defined
+;; declaratively and with a "defun-like" syntax. Perhaps this is overkill.
 
-;; (defmacro dashboard:define-naviator-button! (name args description &rest body)
-;;   "Define a dashboard navigator button."
-;;   (declare (indent defun))
-;;   (let ((dashboard-fn dashboard:name-button)
-;;         ((&plist ))
-;;         ((&plist ) icon))
-;;     `(alet (list ()
-;;                  ,name
-;;                  ,description
-;;                  #',dashboard-fn)
-;;        (push it dashboard-navigator-buttons))))
+(defmacro dashboard:define-naviator-button! (name args description &rest body)
+  "Define a dashboard navigator button."
+  (declare (indent defun))
+  (let ((dashboard-fn dashboard:name-button)
+        ((&plist ))
+        ((&plist ) icon))
+    `(alet (list ()
+                 ,name
+                 ,description
+                 #',dashboard-fn)
+       (push it dashboard-navigator-buttons))))
 
-;; ;; **** github link
-;; ;; :PROPERTIES:
-;; ;; :ID:       a3c05c71-bd42-4508-8738-5c75f95b29d6
-;; ;; :END:
+;; **** github link
+;; :PROPERTIES:
+;; :ID:       a3c05c71-bd42-4508-8738-5c75f95b29d6
+;; :END:
 
-;; (dashboard:define-naviator-button! Homepage ()
-;;                                    "Browse Homepage."
-;;                                    :icon "mark-github"
-;;                                    (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
+(dashboard:define-naviator-button! Homepage ()
+                                   "Browse Homepage."
+                                   :icon "mark-github"
+                                   (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
 
-;; ;; **** go to readme
-;; ;; :PROPERTIES:
-;; ;; :ID:       1a666fec-9f7c-4153-9e9a-f0f4a74e4d31
-;; ;; :END:
+;; **** go to readme
+;; :PROPERTIES:
+;; :ID:       1a666fec-9f7c-4153-9e9a-f0f4a74e4d31
+;; :END:
 
-;; (dashboard:define-naviator-button! README ()
-;;                                    "Go to README."
-;;                                    :icon "eye"
-;;                                    :type faicon
-;;                                    (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
+(dashboard:define-naviator-button! README ()
+                                   "Go to README."
+                                   :icon "eye"
+                                   :type faicon
+                                   (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
 
-;; ** feebleline
+** feebleline
 ;; :PROPERTIES:
 ;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
 ;; :TYPE:     git
