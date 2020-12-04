@@ -2869,7 +2869,7 @@ Orderless will do this."
 (custom-set-default 'window-divider-default-bottom-width 7)
 (custom-set-default 'window-divider-default-right-width  7)
 
-;; *** color
+;; *** window divider face
 ;; :PROPERTIES:
 ;; :ID:       61157149-dcce-40a9-8bfa-76a6af24838a
 ;; :END:
