@@ -4388,7 +4388,7 @@ Orderless will do this."
 ;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
 ;; :END:
 
-(void-autoload 'keychord #'keychord-mode)
+(autoload #'keychord-mode "keychord" nil t nil)
 
 (alet (list #'evil-insert-state #'evil-emacs-state)
   (void-load-before-call 'keychord it))
