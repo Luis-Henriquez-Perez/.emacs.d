@@ -388,6 +388,10 @@ Assumes vc is git which is fine because straight only uses git right now."
 (require 'shut-up)
 (defalias 'shut-up! 'shut-up)
 
+(defun void--silence-output-advice (orig-fn &rest args)
+  "Silence output."
+  (shut-up (apply orig-fn args)))
+
 ;; **** dash
 ;; :PROPERTIES:
 ;; :TYPE:     git
@@ -2544,6 +2548,13 @@ Orderless will do this."
 ;; :PROPERTIES:
 ;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
 ;; :END:
+
+;; **** silence keyboard quit
+;; :PROPERTIES:
+;; :ID:       33f2010f-df3d-4b2b-8b4b-488cc037c6fc
+;; :END:
+
+(void-add-advice #'keyboard-quit :around #'void--silence-ouput-advice)
 
 ;; **** escape
 ;; :PROPERTIES:
