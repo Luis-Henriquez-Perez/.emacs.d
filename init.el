@@ -2293,7 +2293,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; *** workgroups
 
-(autoload #'wg-switch-workgroup)
+(autoload #'wg-switch-workgroup "workgroup" nil)
 
 ;; *** ignore changing the modeline
 ;; :PROPERTIES:
