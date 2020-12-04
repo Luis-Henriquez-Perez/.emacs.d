@@ -1283,6 +1283,7 @@ SYM is a symbol that stores a list."
     (unless (fboundp it)
       (fset it `(lambda (&rest args)
                   ;; will trigger the before-load hook.
+                  (fmakunbound #',it)
                   (require ',package)
                   (apply #',it args))))))
 
