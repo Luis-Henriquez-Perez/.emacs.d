@@ -4210,207 +4210,207 @@ Orderless will do this."
 ;; ;; :END:
 
 ;; *** evil
-;; ;; :PROPERTIES:
-;; ;; :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el")
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-evil/evil"
-;; ;; :PACKAGE:  "evil"
-;; ;; :LOCAL-REPO: "evil"
-;; ;; :COMMIT:   "32b2783d2cb7e093ac284fa6af9ceed8e4418826"
-;; ;; :END:
+;; :PROPERTIES:
+;; :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el")
+;; :HOST:     github
+;; :REPO:     "emacs-evil/evil"
+;; :PACKAGE:  "evil"
+;; :LOCAL-REPO: "evil"
+;; :COMMIT:   "32b2783d2cb7e093ac284fa6af9ceed8e4418826"
+;; :END:
 
-;; ;; [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
-;; ;; and provides facilities for writing custom extensions. Also see our page on
-;; ;; [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
+;; [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
+;; and provides facilities for writing custom extensions. Also see our page on
+;; [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
 
-;; ;; **** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
-;; ;; :END:
+;; **** init
+;; :PROPERTIES:
+;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
+;; :END:
 
-;; (autoload #'evil-mode "evil" nil t nil)
-;; (void-add-hook 'window-setup-hook #'evil-mode)
+(autoload #'evil-mode "evil" nil t nil)
+(void-add-hook 'window-setup-hook #'evil-mode)
 
-;; ;; **** custom
-;; ;; :PROPERTIES:
-;; ;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
-;; ;; :END:
+;; **** custom
+;; :PROPERTIES:
+;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
+;; :END:
 
-;; (custom-set-default 'evil-want-C-u-scroll t)
+(custom-set-default 'evil-want-C-u-scroll t)
 
-;; ;; **** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
-;; ;; :END:
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
+;; :END:
 
-;; (setq evil-want-C-w-in-emacs-state         nil)
-;; (setq evil-want-visual-char-semi-exclusive t)
-;; ;; Whether the cursor can move past the end of the line.
-;; (setq evil-move-beyond-eol                 nil)
-;; (setq evil-magic                           t)
-;; (setq evil-echo-state                      nil)
-;; (setq evil-indent-convert-tabs             t)
-;; (setq evil-ex-search-vim-style-regexp      t)
-;; (setq evil-ex-substitute-global            t)
-;; (setq evil-ex-visual-char-range            t)
-;; (setq evil-insert-skip-empty-lines         t)
-;; (setq evil-mode-line-format                nil)
-;; (setq evil-respect-visual-line-mode        t)
-;; (setq evil-symbol-word-search              t)
+(setq evil-want-C-w-in-emacs-state         nil)
+(setq evil-want-visual-char-semi-exclusive t)
+;; Whether the cursor can move past the end of the line.
+(setq evil-move-beyond-eol                 nil)
+(setq evil-magic                           t)
+(setq evil-echo-state                      nil)
+(setq evil-indent-convert-tabs             t)
+(setq evil-ex-search-vim-style-regexp      t)
+(setq evil-ex-substitute-global            t)
+(setq evil-ex-visual-char-range            t)
+(setq evil-insert-skip-empty-lines         t)
+(setq evil-mode-line-format                nil)
+(setq evil-respect-visual-line-mode        t)
+(setq evil-symbol-word-search              t)
 
-;; ;; **** cursors
-;; ;; :PROPERTIES:
-;; ;; :ID: a5f558fb-221c-4b33-a7cd-29308ef74b0d
-;; ;; :END:
+;; **** cursors
+;; :PROPERTIES:
+;; :ID: a5f558fb-221c-4b33-a7cd-29308ef74b0d
+;; :END:
 
-;; ;; It's nice to have cursors change colors (and sometimes shape) depending on the
-;; ;; current evil state. It makes it easy to tell which state you're in. I define
-;; ;; some colors here. Evil has a cursor variable for each state. The cursor variable
-;; ;; for insert state, for example, is [[helpvar:evil-insert-state-cursor][evil-insert-state-cursor]]. Its value is of the
-;; ;; form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
+;; It's nice to have cursors change colors (and sometimes shape) depending on the
+;; current evil state. It makes it easy to tell which state you're in. I define
+;; some colors here. Evil has a cursor variable for each state. The cursor variable
+;; for insert state, for example, is [[helpvar:evil-insert-state-cursor][evil-insert-state-cursor]]. Its value is of the
+;; form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 
-;; ;; ***** colors and shapes
-;; ;; :PROPERTIES:
-;; ;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
-;; ;; :END:
+;; ***** colors and shapes
+;; :PROPERTIES:
+;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
+;; :END:
 
-;; ;; Evil differentiates what state you're in based on the cursor color.
+;; Evil differentiates what state you're in based on the cursor color.
 
-;; (defhook! setup-cursor (evil-mode-hook)
-;;   "Initialize the default cursor shape and size."
-;;   (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
-;;   (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
-;;   (setq evil-normal-state-cursor   '( box        "DarkGoldenrod2"))
-;;   (setq evil-visual-state-cursor   '((hollow)    "dark gray"))
-;;   (setq evil-operator-state-cursor '((hbar . 10) "hot pink"))
-;;   (setq evil-replace-state-cursor  '( box        "chocolate"))
-;;   (setq evil-motion-state-cursor   '( box        "plum3")))
+(defhook! setup-cursor (evil-mode-hook)
+  "Initialize the default cursor shape and size."
+  (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
+  (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
+  (setq evil-normal-state-cursor   '( box        "DarkGoldenrod2"))
+  (setq evil-visual-state-cursor   '((hollow)    "dark gray"))
+  (setq evil-operator-state-cursor '((hbar . 10) "hot pink"))
+  (setq evil-replace-state-cursor  '( box        "chocolate"))
+  (setq evil-motion-state-cursor   '( box        "plum3")))
 
-;; ;; ***** updating cursors
-;; ;; :PROPERTIES:
-;; ;; :ID: ea4da6d4-4a2c-42cf-b397-cea1555781ce
-;; ;; :END:
+;; ***** updating cursors
+;; :PROPERTIES:
+;; :ID: ea4da6d4-4a2c-42cf-b397-cea1555781ce
+;; :END:
 
-;; ;; After a theme is loaded, the cursor color won't automatically update. Therefore,
-;; ;; I add a hook in [[helpvar:void-after-load-theme-hook][void-after-load-theme-hook]]. Now after a new theme is loaded, the
-;; ;; cursor color will update.
+;; After a theme is loaded, the cursor color won't automatically update. Therefore,
+;; I add a hook in [[helpvar:void-after-load-theme-hook][void-after-load-theme-hook]]. Now after a new theme is loaded, the
+;; cursor color will update.
 
-;; (defhook! refresh-evil-cursor (void-after-load-theme-hook)
-;;   "Enable cursor refreshing after theme change."
-;;   (when (bound-and-true-p evil-mode)
-;;     (evil-refresh-cursor)))
+(defhook! refresh-evil-cursor (void-after-load-theme-hook)
+  "Enable cursor refreshing after theme change."
+  (when (bound-and-true-p evil-mode)
+    (evil-refresh-cursor)))
 
-;; ;; **** normal state everywhere
-;; ;; :PROPERTIES:
-;; ;; :ID:       e6126bd7-94b8-4ce0-b547-0536b59437ea
-;; ;; :END:
+;; **** normal state everywhere
+;; :PROPERTIES:
+;; :ID:       e6126bd7-94b8-4ce0-b547-0536b59437ea
+;; :END:
 
-;; ;; Noctuid pointed out
+;; Noctuid pointed out
 
-;; (defhook! make-normal-state-default (evil-mode-hook)
-;;   "Make normal state the default `evil-mode' state."
-;;   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
-;;   (setq evil-emacs-state-modes nil)
-;;   (setq evil-motion-state-modes nil))
+(defhook! make-normal-state-default (evil-mode-hook)
+  "Make normal state the default `evil-mode' state."
+  (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
+  (setq evil-emacs-state-modes nil)
+  (setq evil-motion-state-modes nil))
 
-;; (defadvice! replace-motion-with-normal (:around evil-make-overriding-map)
-;;   "Advice for `evil-make-overriding-map' that inhibits motion state."
-;;   (-let (((keymap state copy) <args>))
-;;     (funcall <orig-fn> keymap (if (eq state 'motion) 'normal state) copy)))
+(defadvice! replace-motion-with-normal (:around evil-make-overriding-map)
+  "Advice for `evil-make-overriding-map' that inhibits motion state."
+  (-let (((keymap state copy) <args>))
+    (funcall <orig-fn> keymap (if (eq state 'motion) 'normal state) copy)))
 
-;; (defadvice! replace-motion-with-normal (:around evil-set-initial-state)
-;;   (-let (((mode state) <args>))
-;;     (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
+(defadvice! replace-motion-with-normal (:around evil-set-initial-state)
+  (-let (((mode state) <args>))
+    (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
 
-;; (void-add-advice #'evil-motion-state :override #'evil-normal-state)
+(void-add-advice #'evil-motion-state :override #'evil-normal-state)
 
-;; ;; **** insert state in minibuffer
-;; ;; :PROPERTIES:
-;; ;; :ID: a23137c5-62a0-4e77-9e51-6a7372dac703
-;; ;; :END:
+;; **** insert state in minibuffer
+;; :PROPERTIES:
+;; :ID: a23137c5-62a0-4e77-9e51-6a7372dac703
+;; :END:
 
-;; ;; Before I just used ~(evil-change-state evil-previous-state)~ to revert the
-;; ;; state back to what it last was. But this fails with ~evil-force-normal-state~
-;; ;; which is what I'm currently using to exit the minibuffer because then the
-;; ;; last state is normal state if the minibuffer is aborted. Using a
-;; ;; =evil:state-before-minibuffer= ensures that the state will be reverted to
-;; ;; the correct one.
+;; Before I just used ~(evil-change-state evil-previous-state)~ to revert the
+;; state back to what it last was. But this fails with ~evil-force-normal-state~
+;; which is what I'm currently using to exit the minibuffer because then the
+;; last state is normal state if the minibuffer is aborted. Using a
+;; =evil:state-before-minibuffer= ensures that the state will be reverted to
+;; the correct one.
 
-;; (defhook! preserve-prior-evil-state (minibuffer-enter-hook)
-;;   "Save state before entering the minibuffer and enter insert state."
-;;   (when (bound-and-true-p evil-mode)
-;;     (setq evil:state-before-minibuffer evil-state)
-;;     (evil-insert-state)))
+(defhook! preserve-prior-evil-state (minibuffer-enter-hook)
+  "Save state before entering the minibuffer and enter insert state."
+  (when (bound-and-true-p evil-mode)
+    (setq evil:state-before-minibuffer evil-state)
+    (evil-insert-state)))
 
-;; (defhook! restore-prior-evil-state (minibuffer-exit-hook)
-;;   "Restore state after minibuffer."
-;;   (when (bound-and-true-p evil-mode)
-;;     (evil-change-state evil:state-before-minibuffer)
-;;     (setq evil:state-before-minibuffer nil)))
+(defhook! restore-prior-evil-state (minibuffer-exit-hook)
+  "Restore state after minibuffer."
+  (when (bound-and-true-p evil-mode)
+    (evil-change-state evil:state-before-minibuffer)
+    (setq evil:state-before-minibuffer nil)))
 
-;; ;; **** escape
-;; ;; :PROPERTIES:
-;; ;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
-;; ;; :END:
+;; **** escape
+;; :PROPERTIES:
+;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
+;; :END:
 
-;; ;; ***** escape
-;; ;; :PROPERTIES:
-;; ;; :ID: ea9378de-e5c5-482c-b53b-743a81e3bc8e
-;; ;; :END:
+;; ***** escape
+;; :PROPERTIES:
+;; :ID: ea9378de-e5c5-482c-b53b-743a81e3bc8e
+;; :END:
 
-;; ;; We want escape to be a general "quit everything".
+;; We want escape to be a general "quit everything".
 
-;; (general-def :states '(emacs insert) [escape] #'evil-force-normal-state)
+(general-def :states '(emacs insert) [escape] #'evil-force-normal-state)
 
-;; (defadvice! exit-everything (:after evil-force-normal-state lispyville-normal-state)
-;;   "Exits out of whatever is happening after escape."
-;;   (cond ((minibuffer-window-active-p (minibuffer-window))
-;;          (abort-recursive-edit))
-;;         ((run-hook-with-args-until-success 'void-escape-hook))
-;;         ((or defining-kbd-macro executing-kbd-macro) nil)
-;;         (t (keyboard-quit))))
+(defadvice! exit-everything (:after evil-force-normal-state lispyville-normal-state)
+  "Exits out of whatever is happening after escape."
+  (cond ((minibuffer-window-active-p (minibuffer-window))
+         (abort-recursive-edit))
+        ((run-hook-with-args-until-success 'void-escape-hook))
+        ((or defining-kbd-macro executing-kbd-macro) nil)
+        (t (keyboard-quit))))
 
-;; ;; ***** keychord
-;; ;; :PROPERTIES:
-;; ;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
-;; ;; :END:
+;; ***** keychord
+;; :PROPERTIES:
+;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
+;; :END:
 
-;; ;; Sometimes we don't have access to a convenient escape key--I mean that caps-lock
-;; ;; is not bound to escape. Or, perhaps, we might find it faster or preferable to
-;; ;; press =jk= really quickly to invoke escape.
+;; Sometimes we don't have access to a convenient escape key--I mean that caps-lock
+;; is not bound to escape. Or, perhaps, we might find it faster or preferable to
+;; press =jk= really quickly to invoke escape.
 
-;; ;; This is better than evil escape as it only binds in insert.
+;; This is better than evil escape as it only binds in insert.
 
-;; ;; ****** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
-;; ;; :END:
+;; ****** init
+;; :PROPERTIES:
+;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
+;; :END:
 
-;; (autoload #'keychord-mode "keychord" nil t nil)
+(autoload #'keychord-mode "keychord" nil t nil)
 
-;; (alet (list #'evil-insert-state #'evil-emacs-state)
-;;   (void-load-before-call 'keychord it))
+(alet (list #'evil-insert-state #'evil-emacs-state)
+  (void-load-before-call 'keychord it))
 
-;; ;; ****** be quiet when turning on
-;; ;; :PROPERTIES:
-;; ;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
-;; ;; :END:
+;; ****** be quiet when turning on
+;; :PROPERTIES:
+;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
+;; :END:
 
-;; (after! key-chord (shut-up (key-chord-mode 1)))
+(after! key-chord (shut-up (key-chord-mode 1)))
 
-;; ;; ****** keychord bindings
-;; ;; :PROPERTIES:
-;; ;; :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
-;; ;; :END:
+;; ****** keychord bindings
+;; :PROPERTIES:
+;; :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
+;; :END:
 
-;; (general-def :states '(visual insert)
-;;   (general-chord "jk") 'evil-force-normal-state
-;;   (general-chord "kj") 'evil-force-normal-state)
+(general-def :states '(visual insert)
+  (general-chord "jk") 'evil-force-normal-state
+  (general-chord "kj") 'evil-force-normal-state)
 
-;; ;; **** saving
+;; **** saving
 ;; ;; :PROPERTIES:
 ;; ;; :ID: 8181807e-9811-427c-beec-f380d91040f9
 ;; ;; :END:
@@ -4423,7 +4423,7 @@ Orderless will do this."
 ;;            (count-lines (point-min) (point-max))
 ;;            (buffer-size)))
 
-;; ;; **** text objects
+;; **** text objects
 ;; ;; :PROPERTIES:
 ;; ;; :ID: 07366548-2960-49c6-9ab7-cb177b06ad70
 ;; ;; :END:
@@ -4498,7 +4498,7 @@ Orderless will do this."
 ;;   (general-def evil-outer-text-objects-map
 ;;     "\"" #'evil:textobj-a-string))
 
-;; ;; **** package specific setup                                           :disabled:
+;; **** package specific setup                                           :disabled:
 ;; ;; :PROPERTIES:
 ;; ;; :ID: 5f9025e0-156c-4270-96ab-49011df83632
 ;; ;; :END:
