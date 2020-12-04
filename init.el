@@ -1280,11 +1280,12 @@ SYM is a symbol that stores a list."
 (defun void-autoload (package fn)
   "Create a function that can be called."
   ;; add function to hash table.
-  (unless (fboundp fn)
-    (fset fn `(lambda (&rest args)
-                ;; will trigger the before-load hook.
-                (require package)
-                (funcall #',fn ,args)))))
+  (--each (-list fn)
+    (unless (fboundp it)
+      (fset it `(lambda (&rest args)
+                  ;; will trigger the before-load hook.
+                  (require package)
+                  (funcall #',it ,args))))))
 
 ;; *** loading on call
 ;; :PROPERTIES:
