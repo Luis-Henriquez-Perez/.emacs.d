@@ -2227,507 +2227,507 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 
 ;; * Window Management
-;; ;; :PROPERTIES:
-;; ;; :ID: 29dbf899-17cd-4b00-aacb-090ccd20e133
-;; ;; :END:
-
-;; ;; Window management is one of the most important things to get right if you're
-;; ;; going to be efficient in emacs (that is unless you're using primarily frames
-;; ;; instead of windows).
-
-;; ;; ** ace-window
-;; ;; :PROPERTIES:
-;; ;; :ID:       ff248a3a-5dbd-4a3d-b27d-1ac5e2b0215a
-;; ;; :REPO:     "abo-abo/ace-window"
-;; ;; :HOST:     github
-;; ;; :TYPE:     git
-;; ;; :COMMIT:   "c7cb315c14e36fded5ac4096e158497ae974bec9"
-;; ;; :FLAVOR:   melpa
-;; ;; :PACKAGE:  "ace-window"
-;; ;; :LOCAL-REPO: "ace-window"
-;; ;; :END:
-
-;; ;; [[https://github.com/abo-abo/ace-window][ace-window]] uses avy to navigate windows in cases when there are many. There is
-;; ;; an alternative package for this, [[https://github.com/dimitri/switch-window][switch-window]]. The advantage of =switch-window=
-;; ;; is that the characters used for switching to a window are *really* easy to see,
-;; ;; but you can't see the buffer contents. That's a no-go for me I need to see them.
-
-;; (void-autoload 'ace-window '(ace-window ace-swap-window))
-;; (general-def [remap other-window] #'ace-window)
-;; (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-;; (setq aw-background t)
-
-;; ;; ** workgroups2
-;; ;; :PROPERTIES:
-;; ;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
-;; ;; :HOST:     github
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
-;; ;; :REPO:     "pashinin/workgroups2"
-;; ;; :PACKAGE:  "workgroups2"
-;; ;; :LOCAL-REPO: "workgroups2"
-;; ;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
-;; ;; :END:
-
-;; ;; There is a need to save buffers and window configurations in their own groups.
-;; ;; Often we'll have a group of buffers we've setup to work on a project or task and
-;; ;; suddenly, in the middle of that task we'll want to work on another task. It's
-;; ;; inconvenient to get rid of the window configuration we've set up just to have to
-;; ;; come back to it and set it up again. This is what workspaces, also called
-;; ;; workgroups, are for. You can save the window configuration you're using and
-;; ;; switch to a new one.
-
-;; ;; Workgroup provides a. One notable advantage of workgroups is that it does not
-;; ;; use emacs's built-in serialization of window configs. Usually, it is better to
-;; ;; use something that's built-in. However, emacs's serialization has the drawback
-;; ;; that it's not a lisp object; implying that it is not.
-
-;; ;; *** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
-;; ;; :END:
-
-;; (setq wg-flag-modified nil)
-;; (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
-
-;; ;; *** ignore changing the modeline
-;; ;; :PROPERTIES:
-;; ;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
-;; ;; :END:
-
-;; (setq wg-mode-line-display-on nil)
-;; (advice-add #'wg-change-modeline :override #'ignore)
-
-;; ;; *** save sessions on quit
-;; ;; :PROPERTIES:
-;; ;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
-;; ;; :END:
-
-;; (setq wg-emacs-exit-save-behavior 'save)
-;; (setq wg-workgroups-mode-exit-save-behavior 'save)
-;; (setq wg-flag-modified nil)
-
-;; ;; *** display in modeline
-;; ;; :PROPERTIES:
-;; ;; :ID:       80793c50-2954-4ea4-a7e5-df5e2da60d7f
-;; ;; :END:
-
-;; (after! (feebleline all-the-icons)
-;;   (defun feebleline:current-workgroup ()
-;;     (when (bound-and-true-p workgroups-mode)
-;;       (wg-workgroup-name (wg-current-workgroup)))))
-
-;; ;; ** window divider
-;; ;; :PROPERTIES:
-;; ;; :ID: 0bcebb71-f730-427f-9919-1538bd63456c
-;; ;; :TYPE:     built-in
-;; ;; :END:
-
-;; ;; Emacs can add border to windows using a mode called [[helpfn:window-divider-mode][window-divider-mode]].
-;; ;; Often in emacs you have multiple windows displaying different buffers on the
-;; ;; screen. By default the border between these windows is very thin, so it can be
-;; ;; hard to distinguish windows sometimes. The point of adding borders to windows is
-;; ;; to distinguish them easily from one another.
-
-;; ;; Window dividers are useful in general so I don't get confused about when one
-;; ;; window ends and another begins (see [[helpfn:window-divider-mode][window-divider-mode]]). When using [[I like emacs][exwm]] it
-;; ;; makes emacs feel like a window manager with gaps.
-
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       c3e2fda8-89c8-4f3b-951a-113e936d6206
-;; ;; :END:
-
-;; ;; **** hooks
-;; ;; :PROPERTIES:
-;; ;; :ID:       66ada8e3-2fce-428b-a096-e3495e573414
-;; ;; :END:
-
-;; (void-add-hook 'window-setup-hook #'window-divider-mode)
-
-;; ;; **** custom variables
-;; ;; :PROPERTIES:
-;; ;; :ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
-;; ;; :END:
-
-;; (custom-set-default 'window-divider-default-places t)
-;; (custom-set-default 'window-divider-default-bottom-width 4)
-;; (custom-set-default 'window-divider-default-right-width  4)
-
-;; ;; *** color
-;; ;; :PROPERTIES:
-;; ;; :ID:       61157149-dcce-40a9-8bfa-76a6af24838a
-;; ;; :END:
-
-;; (set-face-foreground 'window-divider "black")
-
-;; ;; *** update on theme change
-;; ;; :PROPERTIES:
-;; ;; :ID: 342bd557-889b-4dbd-8e76-5cd9da3b0f74
-;; ;; :END:
-
-;; (defhook! update-window-divider (void-after-load-theme-hook)
-;;   "Ensure window divider persists after theme change."
-;;   (unless (bound-and-true-p window-divider-mode)
-;;     (window-divider-mode 1)))
-
-;; ;; *** adjust window divider gap size
-;; ;; :PROPERTIES:
-;; ;; :ID:       5485c926-fac0-4e87-ae97-f7bf25d0a55c
-;; ;; :END:
-
-;; ;; **** TODO increase gap size
-;; ;; :PROPERTIES:
-;; ;; :ID:       867fad5c-b4d4-4cba-929e-0dc23f007c5b
-;; ;; :END:
-
-;; ;; Somtimes I might want to adjust this.
-
-;; (defun frame:adjust-window-divider-size (amount)
-;;   "Adjust the gap size of window-divider by AMOUNT."
-;;   (general-setq window-divider-default-bottom-width
-;;                 (+ amount window-divider-default-bottom-width))
-;;   (general-setq window-divider-default-right-width
-;;                 (+ amount window-divider-default-right-width)))
-
-;; ;; **** increase
-;; ;; :PROPERTIES:
-;; ;; :ID:       ebd6b013-6213-42a1-9e95-fefc7e7da991
-;; ;; :END:
-
-;; (defun frame/increment-window-divider-size ()
-;;   "Increase window divider size."
-;;   (interactive)
-;;   (frame:adjust-window-divider-size 1))
-
-;; ;; **** decrease
-;; ;; :PROPERTIES:
-;; ;; :ID:       6b1eb1cd-1cfd-4b82-a413-cb61fa13e0a4
-;; ;; :END:
-
-;; (defun frame/decrement-window-divider-size ()
-;;   "Decrease window divider size."
-;;   (interactive)
-;;   (frame:adjust-window-divider-size -1))
-
-;; ;; ** transpose-frame
-;; ;; :PROPERTIES:
-;; ;; :ID: 5487535d-2534-4857-b1e0-c63b40917710
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacsorphanage/transpose-frame"
-;; ;; :PACKAGE:  "transpose-frame"
-;; ;; :LOCAL-REPO: "transpose-frame"
-;; ;; :COMMIT:   "12e523d70ff78cc8868097b56120848befab5dbc"
-;; ;; :END:
-
-;; ;; https://www.emacswiki.org/emacs/TransposeFrame
-
-;; (alet (list #'transpose-frame #'flip-frame #'flop-frame
-;;             #'rotate-frame #'rotate-frame-clockwise)
-;;   (void-autoload 'transpose-frame it))
-
-;; ;; ** exwm
-;; ;; :PROPERTIES:
-;; ;; :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
-;; ;; :TYPE:     git
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-straight/exwm"
-;; ;; :FILES:    ("*" (:exclude ".git"))
-;; ;; :PACKAGE:  "exwm"
-;; ;; :LOCAL-REPO: "exwm"
-;; ;; :COMMIT:   "45ac28cc9cffe910c3b70979bc321a1a60e002ea"
-;; ;; :END:
-
-;; ;; [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
-;; ;; There are benefits and drawbacks to making emacs your window manager. One
-;; ;; benefit is that you get a super consistent window management experience. If you
-;; ;; use a typical window manager, you have to.
-
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       581b8529-00a0-4935-9363-60dba9dbe5f4
-;; ;; :END:
-
-;; (void-add-hook 'exwm-mode #'hide-mode-line-mode)
-;; (void-load-before-call 'exwm (list #'browse-url))
-;; (setq exwm-replace nil)
-
-;; ;; *** exwm
-;; ;; :PROPERTIES:
-;; ;; :ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
-;; ;; :END:
-
-;; ;; In fact, EXWM does not need to be loaded on startup. It is only needed when you
-;; ;; actually want to open another application such as a separate Emacs instance or
-;; ;; the web browser. This is great because EXWM actually does consume significant
-;; ;; startup time. Instead of loading =EXWM= immediately, I add advises to the
-;; ;; functions which open external linux applications.
-
-;; (defhook! setup-hide-mode-line (exwm-mode-hook)
-;;   (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
-;;   (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
-
-;; ;; *** start it
-;; ;; :PROPERTIES:
-;; ;; :ID:       bcfbb2b7-527d-4fdb-97f2-6d824bc9e94c
-;; ;; :END:
-
-;; (after! exwm
-;;   (exwm-init)
-;;   ;; Enable the clipboard.
-;;   (require 'exwm-systemtray)
-;;   (exwm-systemtray-enable))
-
-;; ;; *** org capture from an exwm buffer
-;; ;; :PROPERTIES:
-;; ;; :ID:       5428bdc1-c075-4387-b3ab-080d372c478f
-;; ;; :END:
-
-;; ;; A common dream among many Org users is to integrate [[info:org#Capture][org-capture]] into their browser.
-;; ;; Indeed, the browser by nature would be a place you'd want to capture from a lot.
-;; ;; However, since graphical browsers are not in emacs the main way to do this was
-;; ;; via a hacky and difficult to set up [[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol]].
-
-;; ;; https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
-
-;; ;; **** exwm title
-;; ;; :PROPERTIES:
-;; ;; :ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
-;; ;; :END:
-
-;; (defun exwm::title-info (title)
-;;   "Return the webpage and the program."
-;;   (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
-;;     (list webpage program)))
-
-;; ;; **** download webpage as pdf
-;; ;; :PROPERTIES:
-;; ;; :ID:       bd7165df-9dae-4954-b153-96335678e296
-;; ;; :END:
-
-;; ;; Storing the links is better, but not good enough. Webpages die. They can be
-;; ;; taken off by a third-party or removed by the owner themselves. Even if they
-;; ;; aren't though, they can be modified so that what you originally found isn't
-;; ;; there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wkhtmltopdf]], a command that
-;; ;; downloads a given webpage as pdf. A consequence of doing this is that you will
-;; ;; have access to all the webpages you used for research offline.
-
-;; (defun void-download-webpage-as-pdf (url webpage-title)
-;;   "Save the webpage at URL to `VOID-SCREENSHOT-DIR'."
-;;   (let* ((program "wkhtmltopdf")
-;;          (process-name (format "%s - %s" program (ts-format)))
-;;          (webpage-title (s-replace "/" "~" webpage-title))
-;;          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
-;;          (fn `(lambda (&rest _)
-;;                 (if (file-exists-p ,pdf-path)
-;;                     (message "Webpage saved succesfully.")
-;;                   (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
-;;     (message "%s <-- %s" (f-abbrev pdf-path) url)
-;;     (async-start-process process-name "firejail" fn program url pdf-path)))
-
-;; ;; **** replacement for fake id
-;; ;; :PROPERTIES:
-;; ;; :ID:       4f0436c4-bc37-49b0-a8a3-894e212d4d13
-;; ;; :END:
-
-;; (defun exwm-input::fake-key-to-id (event id)
-;;   "Fake a key event equivalent to Emacs event EVENT and send it
-;;  to program with x window ID."
-;;   (let* ((keysym (xcb:keysyms:event->keysym exwm--connection event))
-;;          keycode)
-;;     (when (= 0 (car keysym))
-;;       (user-error "[EXWM] Invalid key: %s" (single-key-description event)))
-;;     (setq keycode (xcb:keysyms:keysym->keycode exwm--connection
-;; 					                           (car keysym)))
-;;     (when (/= 0 keycode)
-;;       (dolist (class '(xcb:KeyPress xcb:KeyRelease))
-;;         (xcb:+request exwm--connection
-;; 	        (make-instance
-;; 	         'xcb:SendEvent
-;; 	         :propagate 0 :destination id
-;; 	         :event-mask xcb:EventMask:NoEvent
-;; 	         :event
-;; 	         (xcb:marshal
-;; 	          (make-instance
-;; 	           class
-;; 	           :detail keycode :time xcb:Time:CurrentTime
-;; 	           :root exwm--root :event id :child 0 :root-x 0 :root-y 0
-;; 	           :event-x 0 :event-y 0 :state (cdr keysym) :same-screen 0)
-;; 	          exwm--connection)))))
-;;     (xcb:flush exwm--connection)))
-
-;; ;; **** url from firefox
-;; ;; :PROPERTIES:
-;; ;; :ID:       f407cc8c-0bb9-47fe-adeb-4e9d27b5c5b7
-;; ;; :END:
-
-;; ;; Emacs simulates a keypress to firefox--specifically the keypresses to select the
-;; ;; current url and to add it to the kill ring.
-
-;; (defun exwm::firefox-url ()
-;;   "Save the current firefox url to kill ring."
-;;   ;; We get the xwindow id of the buffer named Firefox
-;;   (let ((fid (exwm--buffer->id (current-buffer))))
-;;     ;; Send c-l to select url
-;;     (exwm-input::fake-key-to-id 'C-l fid)
-;;     ;; We sleep to avoid race conditions.
-;;     (sleep-for 0 300)
-;;     ;; Copy url to kill ring (note: this is not affected by simulation keys)
-;;     (exwm-input::fake-key-to-id 'C-c fid)
-;;     (sleep-for 0 300)
-;;     ;; try to set the state back
-;;     (exwm-input::fake-key-to-id 'escape fid)
-;;     (current-kill 0)))
-
-;; ;; **** url from qutebrowser
-;; ;; :PROPERTIES:
-;; ;; :ID:       822cbb61-60b4-445e-9756-4bf797500375
-;; ;; :END:
-
-;; (defun exwm::qutebrowser-url ()
-;;   (interactive)
-;;   (let ((fid (exwm--buffer->id (current-buffer))))
-;;     (sleep-for 0 300)
-;;     ;; if in insert state exit it.
-;;     (exwm-input::fake-key-to-id 'escape fid)
-;;     (sleep-for 0 300)
-;;     (exwm-input::fake-key-to-id 'y fid)
-;;     (sleep-for 0 300)
-;;     (exwm-input::fake-key-to-id 'y fid)
-;;     (sleep-for 0 300)
-;;     (aprog1 (current-kill 0)
-;;       (void-log "Copied %S to the kill ring." it))))
-
-;; ;; *** appropriate name for exwm buffers
-;; ;; :PROPERTIES:
-;; ;; :ID: b9712cdc-2cf9-482f-8f62-b2e4f56b9c97
-;; ;; :END:
-
-;; (defhook! rename-buffer-to-title (exwm-update-title-hook)
-;;   "Rename buffer to title."
-;;   (exwm-workspace-rename-buffer exwm-title))
-
-;; ;; *** to start in char mode
-;; ;; :PROPERTIES:
-;; ;; :ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
-;; ;; :END:
-
-;; ;; =EXWM= has two modes, =line-mode= and =char-mode=. It's best for Emacs and Next to
-;; ;; start with =char-mode= because they both have keys that are important for their
-;; ;; use (like =M-x=) which conflict with Emacs (the instance that's managing the
-;; ;; windows).
-
-;; ;; **** list of applications
-;; ;; :PROPERTIES:
-;; ;; :ID:       d1bf0601-a995-48f7-ab80-86755ba9269a
-;; ;; :END:
-
-;; (defvar exwm:char-mode-apps (list "emacs" "next" "nyxt" "qutebrowser")
-;;   "List of applications to exwm should start in char-mode.")
-
-;; ;; **** to start in char mode
-;; ;; :PROPERTIES:
-;; ;; :ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
-;; ;; :END:
-
-;; (defhook! start-in-char-mode (exwm-manage-finish-hook)
-;;   "Start a program in char-mode if it's in `exwm:char-mode-apps'."
-;;   (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
-;;     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
-
-;; ;; *** exwm-edit
-;; ;; :PROPERTIES:
-;; ;; :ID: 1a167827-b791-4a69-a90e-c2d30bd83abb
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "agzam/exwm-edit"
-;; ;; :PACKAGE:  "exwm-edit"
-;; ;; :LOCAL-REPO: "exwm-edit"
-;; ;; :COMMIT:   "2fd9426922c8394ec8d21c50dcc20b7d03af21e4"
-;; ;; :END:
-
-;; ;; The dream is to do all text editing in Emacs. This package is a big step towards
-;; ;; achieving that dream. =exwm-edit= allows the user to edit text fields in
-;; ;; external packages with an emacs buffer. It acts a lot like =org-edit-src-code=:
-;; ;; it copies any text in the text field to a buffer, you edit the buffer, then
-;; ;; press a binding to insert the buffer text into the text field. It goes without
-;; ;; saying that when the text is in an emacs buffer, you can use the full-force of
-;; ;; Emacs's text editing capabilities on it.
-
-;; (after! exwm (require 'exwm-edit))
-
-;; ;; *** exwm-firefox
-;; ;; :PROPERTIES:
-;; ;; :ID:       333e6bd1-4371-4563-a0d1-a12b42c67836
-;; ;; :END:
-
-;; ;; **** setup
-;; ;; :PROPERTIES:
-;; ;; :ID:       027e4e46-bb81-4161-8a46-7c6576ec3435
-;; ;; :END:
-
-;; (void-add-hook 'exwm-manage-finish-hook #'exwm-firefox-evil-activate-if-firefox)
-;; (void-autoload 'exwm-firefox 'exwm-firefox-evil-activate-if-firefox)
-
-;; ;; **** add appropriate prefix keys
-;; ;; :PROPERTIES:
-;; ;; :ID:       2b37c2a6-83ea-458d-9749-781903b3b82d
-;; ;; :END:
-
-;; (dolist (k `(escape))
-;;   (cl-pushnew k exwm-input-prefix-keys))
-
-;; ;; ** buffer-expose
-;; ;; :PROPERTIES:
-;; ;; :ID:       07b13cf0-49ca-4463-9d5b-9eb032585e96
-;; ;; :TYPE:     git
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-straight/buffer-expose"
-;; ;; :FILES:    ("*" (:exclude ".git"))
-;; ;; :PACKAGE:  "buffer-expose"
-;; ;; :LOCAL-REPO: "buffer-expose"
-;; ;; :COMMIT:   "3f8e0c52d85397e59b6081c8c3e71a55d610c56d"
-;; ;; :END:
-
-;; ;; *** TODO commands
-;; ;; :PROPERTIES:
-;; ;; :ID:       6ea230c6-d60e-4cc1-989b-cb9b34198311
-;; ;; :END:
-
-;; (alet (list #'buffer-expose #'buffer-expose-no-stars #'buffer-expose-major-mode
-;;             #'buffer-expose-dired-buffers #'buffer-expose-stars
-;;             #'buffer-expose-current-mode)
-;;   (void-autoload 'buffer-expose it))
-
-;; ;; *** setq
-;; ;; :PROPERTIES:
-;; ;; :ID:       b30c439e-a2e0-43c4-a1ef-08d68d579c21
-;; ;; :END:
-
-;; (setq buffer-expose-show-current-buffer t)
-;; (setq buffer-expose-rescale-factor      0.5)
-;; (setq buffer-expose-highlight-selected  nil)
-;; (setq buffer-expose-max-num-windows     8)
-;; (setq buffer-expose-auto-init-aw        t)
-;; (setq buffer-expose-hide-modelines      nil)
-;; (setq buffer-expose-key-hint            "")
-
-;; ;; *** bindings
-;; ;; :PROPERTIES:
-;; ;; :ID:       c73d075a-bbf2-4548-baee-9963f4acd725
-;; ;; :END:
-
-;; (general-def buffer-expose-grid-map
-;;   "l" buffer-expose-next-window
-;;   "h" buffer-expose-prev-window
-;;   "L" buffer-expose-next-page
-;;   "H" buffer-expose-prev-page
-;;   "j" buffer-expose-down-window
-;;   "k" buffer-expose-up-window)
+;; :PROPERTIES:
+;; :ID: 29dbf899-17cd-4b00-aacb-090ccd20e133
+;; :END:
+
+;; Window management is one of the most important things to get right if you're
+;; going to be efficient in emacs (that is unless you're using primarily frames
+;; instead of windows).
+
+;; ** ace-window
+;; :PROPERTIES:
+;; :ID:       ff248a3a-5dbd-4a3d-b27d-1ac5e2b0215a
+;; :REPO:     "abo-abo/ace-window"
+;; :HOST:     github
+;; :TYPE:     git
+;; :COMMIT:   "c7cb315c14e36fded5ac4096e158497ae974bec9"
+;; :FLAVOR:   melpa
+;; :PACKAGE:  "ace-window"
+;; :LOCAL-REPO: "ace-window"
+;; :END:
+
+;; [[https://github.com/abo-abo/ace-window][ace-window]] uses avy to navigate windows in cases when there are many. There is
+;; an alternative package for this, [[https://github.com/dimitri/switch-window][switch-window]]. The advantage of =switch-window=
+;; is that the characters used for switching to a window are *really* easy to see,
+;; but you can't see the buffer contents. That's a no-go for me I need to see them.
+
+(void-autoload 'ace-window '(ace-window ace-swap-window))
+(general-def [remap other-window] #'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(setq aw-background t)
+
+;; ** workgroups2
+;; :PROPERTIES:
+;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
+;; :HOST:     github
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
+;; :REPO:     "pashinin/workgroups2"
+;; :PACKAGE:  "workgroups2"
+;; :LOCAL-REPO: "workgroups2"
+;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
+;; :END:
+
+;; There is a need to save buffers and window configurations in their own groups.
+;; Often we'll have a group of buffers we've setup to work on a project or task and
+;; suddenly, in the middle of that task we'll want to work on another task. It's
+;; inconvenient to get rid of the window configuration we've set up just to have to
+;; come back to it and set it up again. This is what workspaces, also called
+;; workgroups, are for. You can save the window configuration you're using and
+;; switch to a new one.
+
+;; Workgroup provides a. One notable advantage of workgroups is that it does not
+;; use emacs's built-in serialization of window configs. Usually, it is better to
+;; use something that's built-in. However, emacs's serialization has the drawback
+;; that it's not a lisp object; implying that it is not.
+
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
+;; :END:
+
+(setq wg-flag-modified nil)
+(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+
+;; *** ignore changing the modeline
+;; :PROPERTIES:
+;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
+;; :END:
+
+(setq wg-mode-line-display-on nil)
+(advice-add #'wg-change-modeline :override #'ignore)
+
+;; *** save sessions on quit
+;; :PROPERTIES:
+;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
+;; :END:
+
+(setq wg-emacs-exit-save-behavior 'save)
+(setq wg-workgroups-mode-exit-save-behavior 'save)
+(setq wg-flag-modified nil)
+
+;; *** display in modeline
+;; :PROPERTIES:
+;; :ID:       80793c50-2954-4ea4-a7e5-df5e2da60d7f
+;; :END:
+
+(after! (feebleline all-the-icons)
+  (defun feebleline:current-workgroup ()
+    (when (bound-and-true-p workgroups-mode)
+      (wg-workgroup-name (wg-current-workgroup)))))
+
+;; ** window divider
+;; :PROPERTIES:
+;; :ID: 0bcebb71-f730-427f-9919-1538bd63456c
+;; :TYPE:     built-in
+;; :END:
+
+;; Emacs can add border to windows using a mode called [[helpfn:window-divider-mode][window-divider-mode]].
+;; Often in emacs you have multiple windows displaying different buffers on the
+;; screen. By default the border between these windows is very thin, so it can be
+;; hard to distinguish windows sometimes. The point of adding borders to windows is
+;; to distinguish them easily from one another.
+
+;; Window dividers are useful in general so I don't get confused about when one
+;; window ends and another begins (see [[helpfn:window-divider-mode][window-divider-mode]]). When using [[I like emacs][exwm]] it
+;; makes emacs feel like a window manager with gaps.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       c3e2fda8-89c8-4f3b-951a-113e936d6206
+;; :END:
+
+;; **** hooks
+;; :PROPERTIES:
+;; :ID:       66ada8e3-2fce-428b-a096-e3495e573414
+;; :END:
+
+(void-add-hook 'window-setup-hook #'window-divider-mode)
+
+;; **** custom variables
+;; :PROPERTIES:
+;; :ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
+;; :END:
+
+(custom-set-default 'window-divider-default-places t)
+(custom-set-default 'window-divider-default-bottom-width 4)
+(custom-set-default 'window-divider-default-right-width  4)
+
+;; *** color
+;; :PROPERTIES:
+;; :ID:       61157149-dcce-40a9-8bfa-76a6af24838a
+;; :END:
+
+(set-face-foreground 'window-divider "black")
+
+;; *** update on theme change
+;; :PROPERTIES:
+;; :ID: 342bd557-889b-4dbd-8e76-5cd9da3b0f74
+;; :END:
+
+(defhook! update-window-divider (void-after-load-theme-hook)
+  "Ensure window divider persists after theme change."
+  (unless (bound-and-true-p window-divider-mode)
+    (window-divider-mode 1)))
+
+;; *** adjust window divider gap size
+;; :PROPERTIES:
+;; :ID:       5485c926-fac0-4e87-ae97-f7bf25d0a55c
+;; :END:
+
+;; **** TODO increase gap size
+;; :PROPERTIES:
+;; :ID:       867fad5c-b4d4-4cba-929e-0dc23f007c5b
+;; :END:
+
+;; Somtimes I might want to adjust this.
+
+(defun frame:adjust-window-divider-size (amount)
+  "Adjust the gap size of window-divider by AMOUNT."
+  (general-setq window-divider-default-bottom-width
+                (+ amount window-divider-default-bottom-width))
+  (general-setq window-divider-default-right-width
+                (+ amount window-divider-default-right-width)))
+
+;; **** increase
+;; :PROPERTIES:
+;; :ID:       ebd6b013-6213-42a1-9e95-fefc7e7da991
+;; :END:
+
+(defun frame/increment-window-divider-size ()
+  "Increase window divider size."
+  (interactive)
+  (frame:adjust-window-divider-size 1))
+
+;; **** decrease
+;; :PROPERTIES:
+;; :ID:       6b1eb1cd-1cfd-4b82-a413-cb61fa13e0a4
+;; :END:
+
+(defun frame/decrement-window-divider-size ()
+  "Decrease window divider size."
+  (interactive)
+  (frame:adjust-window-divider-size -1))
+
+;; ** transpose-frame
+;; :PROPERTIES:
+;; :ID: 5487535d-2534-4857-b1e0-c63b40917710
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "emacsorphanage/transpose-frame"
+;; :PACKAGE:  "transpose-frame"
+;; :LOCAL-REPO: "transpose-frame"
+;; :COMMIT:   "12e523d70ff78cc8868097b56120848befab5dbc"
+;; :END:
+
+;; https://www.emacswiki.org/emacs/TransposeFrame
+
+(alet (list #'transpose-frame #'flip-frame #'flop-frame
+            #'rotate-frame #'rotate-frame-clockwise)
+  (void-autoload 'transpose-frame it))
+
+;; ** exwm
+;; :PROPERTIES:
+;; :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/exwm"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "exwm"
+;; :LOCAL-REPO: "exwm"
+;; :COMMIT:   "45ac28cc9cffe910c3b70979bc321a1a60e002ea"
+;; :END:
+
+;; [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
+;; There are benefits and drawbacks to making emacs your window manager. One
+;; benefit is that you get a super consistent window management experience. If you
+;; use a typical window manager, you have to.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       581b8529-00a0-4935-9363-60dba9dbe5f4
+;; :END:
+
+(void-add-hook 'exwm-mode #'hide-mode-line-mode)
+(void-load-before-call 'exwm (list #'browse-url))
+(setq exwm-replace nil)
+
+;; *** exwm
+;; :PROPERTIES:
+;; :ID: 18ee4dd8-445b-4101-adfb-ba8e18a71bb4
+;; :END:
+
+;; In fact, EXWM does not need to be loaded on startup. It is only needed when you
+;; actually want to open another application such as a separate Emacs instance or
+;; the web browser. This is great because EXWM actually does consume significant
+;; startup time. Instead of loading =EXWM= immediately, I add advises to the
+;; functions which open external linux applications.
+
+(defhook! setup-hide-mode-line (exwm-mode-hook)
+  (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
+  (add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line))
+
+;; *** start it
+;; :PROPERTIES:
+;; :ID:       bcfbb2b7-527d-4fdb-97f2-6d824bc9e94c
+;; :END:
+
+(after! exwm
+  (exwm-init)
+  ;; Enable the clipboard.
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable))
+
+;; *** org capture from an exwm buffer
+;; :PROPERTIES:
+;; :ID:       5428bdc1-c075-4387-b3ab-080d372c478f
+;; :END:
+
+;; A common dream among many Org users is to integrate [[info:org#Capture][org-capture]] into their browser.
+;; Indeed, the browser by nature would be a place you'd want to capture from a lot.
+;; However, since graphical browsers are not in emacs the main way to do this was
+;; via a hacky and difficult to set up [[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol]].
+
+;; https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
+
+;; **** exwm title
+;; :PROPERTIES:
+;; :ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
+;; :END:
+
+(defun exwm::title-info (title)
+  "Return the webpage and the program."
+  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
+    (list webpage program)))
+
+;; **** download webpage as pdf
+;; :PROPERTIES:
+;; :ID:       bd7165df-9dae-4954-b153-96335678e296
+;; :END:
+
+;; Storing the links is better, but not good enough. Webpages die. They can be
+;; taken off by a third-party or removed by the owner themselves. Even if they
+;; aren't though, they can be modified so that what you originally found isn't
+;; there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wkhtmltopdf]], a command that
+;; downloads a given webpage as pdf. A consequence of doing this is that you will
+;; have access to all the webpages you used for research offline.
+
+(defun void-download-webpage-as-pdf (url webpage-title)
+  "Save the webpage at URL to `VOID-SCREENSHOT-DIR'."
+  (let* ((program "wkhtmltopdf")
+         (process-name (format "%s - %s" program (ts-format)))
+         (webpage-title (s-replace "/" "~" webpage-title))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
+         (fn `(lambda (&rest _)
+                (if (file-exists-p ,pdf-path)
+                    (message "Webpage saved succesfully.")
+                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
+    (message "%s <-- %s" (f-abbrev pdf-path) url)
+    (async-start-process process-name "firejail" fn program url pdf-path)))
+
+;; **** replacement for fake id
+;; :PROPERTIES:
+;; :ID:       4f0436c4-bc37-49b0-a8a3-894e212d4d13
+;; :END:
+
+(defun exwm-input::fake-key-to-id (event id)
+  "Fake a key event equivalent to Emacs event EVENT and send it
+ to program with x window ID."
+  (let* ((keysym (xcb:keysyms:event->keysym exwm--connection event))
+         keycode)
+    (when (= 0 (car keysym))
+      (user-error "[EXWM] Invalid key: %s" (single-key-description event)))
+    (setq keycode (xcb:keysyms:keysym->keycode exwm--connection
+					                           (car keysym)))
+    (when (/= 0 keycode)
+      (dolist (class '(xcb:KeyPress xcb:KeyRelease))
+        (xcb:+request exwm--connection
+	        (make-instance
+	         'xcb:SendEvent
+	         :propagate 0 :destination id
+	         :event-mask xcb:EventMask:NoEvent
+	         :event
+	         (xcb:marshal
+	          (make-instance
+	           class
+	           :detail keycode :time xcb:Time:CurrentTime
+	           :root exwm--root :event id :child 0 :root-x 0 :root-y 0
+	           :event-x 0 :event-y 0 :state (cdr keysym) :same-screen 0)
+	          exwm--connection)))))
+    (xcb:flush exwm--connection)))
+
+;; **** url from firefox
+;; :PROPERTIES:
+;; :ID:       f407cc8c-0bb9-47fe-adeb-4e9d27b5c5b7
+;; :END:
+
+;; Emacs simulates a keypress to firefox--specifically the keypresses to select the
+;; current url and to add it to the kill ring.
+
+(defun exwm::firefox-url ()
+  "Save the current firefox url to kill ring."
+  ;; We get the xwindow id of the buffer named Firefox
+  (let ((fid (exwm--buffer->id (current-buffer))))
+    ;; Send c-l to select url
+    (exwm-input::fake-key-to-id 'C-l fid)
+    ;; We sleep to avoid race conditions.
+    (sleep-for 0 300)
+    ;; Copy url to kill ring (note: this is not affected by simulation keys)
+    (exwm-input::fake-key-to-id 'C-c fid)
+    (sleep-for 0 300)
+    ;; try to set the state back
+    (exwm-input::fake-key-to-id 'escape fid)
+    (current-kill 0)))
+
+;; **** url from qutebrowser
+;; :PROPERTIES:
+;; :ID:       822cbb61-60b4-445e-9756-4bf797500375
+;; :END:
+
+(defun exwm::qutebrowser-url ()
+  (interactive)
+  (let ((fid (exwm--buffer->id (current-buffer))))
+    (sleep-for 0 300)
+    ;; if in insert state exit it.
+    (exwm-input::fake-key-to-id 'escape fid)
+    (sleep-for 0 300)
+    (exwm-input::fake-key-to-id 'y fid)
+    (sleep-for 0 300)
+    (exwm-input::fake-key-to-id 'y fid)
+    (sleep-for 0 300)
+    (aprog1 (current-kill 0)
+      (void-log "Copied %S to the kill ring." it))))
+
+;; *** appropriate name for exwm buffers
+;; :PROPERTIES:
+;; :ID: b9712cdc-2cf9-482f-8f62-b2e4f56b9c97
+;; :END:
+
+(defhook! rename-buffer-to-title (exwm-update-title-hook)
+  "Rename buffer to title."
+  (exwm-workspace-rename-buffer exwm-title))
+
+;; *** to start in char mode
+;; :PROPERTIES:
+;; :ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
+;; :END:
+
+;; =EXWM= has two modes, =line-mode= and =char-mode=. It's best for Emacs and Next to
+;; start with =char-mode= because they both have keys that are important for their
+;; use (like =M-x=) which conflict with Emacs (the instance that's managing the
+;; windows).
+
+;; **** list of applications
+;; :PROPERTIES:
+;; :ID:       d1bf0601-a995-48f7-ab80-86755ba9269a
+;; :END:
+
+(defvar exwm:char-mode-apps (list "emacs" "next" "nyxt" "qutebrowser")
+  "List of applications to exwm should start in char-mode.")
+
+;; **** to start in char mode
+;; :PROPERTIES:
+;; :ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
+;; :END:
+
+(defhook! start-in-char-mode (exwm-manage-finish-hook)
+  "Start a program in char-mode if it's in `exwm:char-mode-apps'."
+  (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
+    (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
+
+;; *** exwm-edit
+;; :PROPERTIES:
+;; :ID: 1a167827-b791-4a69-a90e-c2d30bd83abb
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "agzam/exwm-edit"
+;; :PACKAGE:  "exwm-edit"
+;; :LOCAL-REPO: "exwm-edit"
+;; :COMMIT:   "2fd9426922c8394ec8d21c50dcc20b7d03af21e4"
+;; :END:
+
+;; The dream is to do all text editing in Emacs. This package is a big step towards
+;; achieving that dream. =exwm-edit= allows the user to edit text fields in
+;; external packages with an emacs buffer. It acts a lot like =org-edit-src-code=:
+;; it copies any text in the text field to a buffer, you edit the buffer, then
+;; press a binding to insert the buffer text into the text field. It goes without
+;; saying that when the text is in an emacs buffer, you can use the full-force of
+;; Emacs's text editing capabilities on it.
+
+(after! exwm (require 'exwm-edit))
+
+;; *** exwm-firefox
+;; :PROPERTIES:
+;; :ID:       333e6bd1-4371-4563-a0d1-a12b42c67836
+;; :END:
+
+;; **** setup
+;; :PROPERTIES:
+;; :ID:       027e4e46-bb81-4161-8a46-7c6576ec3435
+;; :END:
+
+(void-add-hook 'exwm-manage-finish-hook #'exwm-firefox-evil-activate-if-firefox)
+(void-autoload 'exwm-firefox 'exwm-firefox-evil-activate-if-firefox)
+
+;; **** add appropriate prefix keys
+;; :PROPERTIES:
+;; :ID:       2b37c2a6-83ea-458d-9749-781903b3b82d
+;; :END:
+
+(dolist (k `(escape))
+  (cl-pushnew k exwm-input-prefix-keys))
+
+;; ** buffer-expose
+;; :PROPERTIES:
+;; :ID:       07b13cf0-49ca-4463-9d5b-9eb032585e96
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/buffer-expose"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "buffer-expose"
+;; :LOCAL-REPO: "buffer-expose"
+;; :COMMIT:   "3f8e0c52d85397e59b6081c8c3e71a55d610c56d"
+;; :END:
+
+;; *** TODO commands
+;; :PROPERTIES:
+;; :ID:       6ea230c6-d60e-4cc1-989b-cb9b34198311
+;; :END:
+
+(alet (list #'buffer-expose #'buffer-expose-no-stars #'buffer-expose-major-mode
+            #'buffer-expose-dired-buffers #'buffer-expose-stars
+            #'buffer-expose-current-mode)
+  (void-autoload 'buffer-expose it))
+
+;; *** setq
+;; :PROPERTIES:
+;; :ID:       b30c439e-a2e0-43c4-a1ef-08d68d579c21
+;; :END:
+
+(setq buffer-expose-show-current-buffer t)
+(setq buffer-expose-rescale-factor      0.5)
+(setq buffer-expose-highlight-selected  nil)
+(setq buffer-expose-max-num-windows     8)
+(setq buffer-expose-auto-init-aw        t)
+(setq buffer-expose-hide-modelines      nil)
+(setq buffer-expose-key-hint            "")
+
+;; *** bindings
+;; :PROPERTIES:
+;; :ID:       c73d075a-bbf2-4548-baee-9963f4acd725
+;; :END:
+
+(general-def buffer-expose-grid-map
+  "l" buffer-expose-next-window
+  "h" buffer-expose-prev-window
+  "L" buffer-expose-next-page
+  "H" buffer-expose-prev-page
+  "j" buffer-expose-down-window
+  "k" buffer-expose-up-window)
 
 ;; * Completion
 ;; :PROPERTIES:
