@@ -469,18 +469,18 @@ Assumes vc is git which is fine because straight only uses git right now."
 (require 'anaphora)
 
 ;; *** message logging
-:PROPERTIES:
-:ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
-:END:
-;;
+;; :PROPERTIES:
+;; :ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
+;; :END:
+
 ;; Messages shown in the echo area are the. Its not uncommon for the *Messages*
 ;; buffer to become full of messages.
 
 ;; **** debug-p
-:PROPERTIES:
-:ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
-:END:
-;;
+;; :PROPERTIES:
+;; :ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
+;; :END:
+
 ;; [[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
 ;; is to serve as an indicator of whether the current Void instance is run for
 ;; debugging. When Void is set up for debugging it prints out many messages about
@@ -491,10 +491,10 @@ Assumes vc is git which is fine because straight only uses git right now."
 The --debug-init flag and setting the DEBUG envar will enable this at startup.")
 
 ;; **** logging
-:PROPERTIES:
-:ID: 84ded5f7-382e-4f59-af9e-ccb157ef5c42
-:END:
-;;
+;; :PROPERTIES:
+;; :ID: 84ded5f7-382e-4f59-af9e-ccb157ef5c42
+;; :END:
+
 ;; The purpose of ~void-log~ is to distinguish regular messages from messages that
 ;; pertain specifically to Void, and to help debug Void functionality. When Void is
 ;; =void-debug= is non-nil, void-specific messages are logged in the =*messages*=
@@ -512,10 +512,10 @@ Accept the same arguments as `message'."
                args)))))
 
 ;; **** advice for using =void-log= instead of =message=
-:PROPERTIES:
-:ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
-:END:
-;;
+;; :PROPERTIES:
+;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
+;; :END:
+
 ;; Many packages produce their own messages. Sometimes I want to shut their
 ;; messages up entirely, for which I use [[71681f9f-2760-4cee-95a0-4aeb71191a42][shut-up]]. Other times though, I want to see
 ;; their messages when I'm debugging. This is what this device is for.
