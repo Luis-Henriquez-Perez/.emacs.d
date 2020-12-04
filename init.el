@@ -512,7 +512,7 @@ Accept the same arguments as `message'."
 
 ;; Packages like [[][]] come with their own output.
 
-(defun void--use-void-log (orign-fn &rest args)
+(defun void--use-void-log-advice (orign-fn &rest args)
   (cl-letf ((symbol-function 'message) (symbol-function 'void-log))
     (apply orign-fn args)))
 
