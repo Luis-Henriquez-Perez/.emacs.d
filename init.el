@@ -538,6 +538,36 @@ Accept the same arguments as `message'."
 
 (setq-default inhibit-message t)
 
+;; **** control which messages are logged
+;; :PROPERTIES:
+;; :ID:       8be3c981-cf1c-4416-95b9-4dde2e203b6c
+;; :END:
+
+;; This is based on [[][message-log]]. This package is really old.
+
+;; ***** dont log regexp
+;; :PROPERTIES:
+;; :ID:       6ab7cc41-c900-4168-a33e-c326fae8ab8a
+;; :END:
+
+(defvar void-message-blacklist
+  '("Mark set"
+    "Beginning of buffer"
+    "End of buffer"
+    "Quit")
+  "*A list of regular expressions that describe messages that should never be
+saved in the message log buffer.  A message is saved unless one of the regular
+expressions in this list matches the ENTIRE message.")
+
+;; ***** advice to message
+;; :PROPERTIES:
+;; :ID:       d2e66bf9-c025-4d44-810e-5b66f154f43c
+;; :END:
+
+(defadvice! maybe-ignore-message (:around (format-string &rest args) message)
+  (when (--none-p (string-match-p it format-string) void-message-blacklist)
+    (apply format-string args)))
+
 ;; *** macro writing tools
 ;; :PROPERTIES:
 ;; :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
