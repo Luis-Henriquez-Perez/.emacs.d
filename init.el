@@ -4229,682 +4229,682 @@ Orderless will do this."
 ;; ;; :END:
 
 ;; *** evil
-;; :PROPERTIES:
-;; :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el")
-;; :HOST:     github
-;; :REPO:     "emacs-evil/evil"
-;; :PACKAGE:  "evil"
-;; :LOCAL-REPO: "evil"
-;; :COMMIT:   "32b2783d2cb7e093ac284fa6af9ceed8e4418826"
-;; :END:
-
-;; [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
-;; and provides facilities for writing custom extensions. Also see our page on
-;; [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
-
-;; **** init
-;; :PROPERTIES:
-;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
-;; :END:
-
-(require 'evil)
-(void-add-hook 'window-setup-hook #'evil-mode)
-
-;; **** custom
-;; :PROPERTIES:
-;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
-;; :END:
-
-(custom-set-default 'evil-want-C-u-scroll t)
-
-;; **** settings
-;; :PROPERTIES:
-;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
-;; :END:
-
-(setq evil-want-C-w-in-emacs-state         nil)
-(setq evil-want-visual-char-semi-exclusive t)
-;; Whether the cursor can move past the end of the line.
-(setq evil-move-beyond-eol                 nil)
-(setq evil-magic                           t)
-(setq evil-echo-state                      nil)
-(setq evil-indent-convert-tabs             t)
-(setq evil-ex-search-vim-style-regexp      t)
-(setq evil-ex-substitute-global            t)
-(setq evil-ex-visual-char-range            t)
-(setq evil-insert-skip-empty-lines         t)
-(setq evil-mode-line-format                nil)
-(setq evil-respect-visual-line-mode        t)
-(setq evil-symbol-word-search              t)
-
-;; **** cursors
-;; :PROPERTIES:
-;; :ID: a5f558fb-221c-4b33-a7cd-29308ef74b0d
-;; :END:
-
-;; It's nice to have cursors change colors (and sometimes shape) depending on the
-;; current evil state. It makes it easy to tell which state you're in. I define
-;; some colors here. Evil has a cursor variable for each state. The cursor variable
-;; for insert state, for example, is [[helpvar:evil-insert-state-cursor][evil-insert-state-cursor]]. Its value is of the
-;; form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
-
-;; ***** colors and shapes
-;; :PROPERTIES:
-;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
-;; :END:
-
-;; Evil differentiates what state you're in based on the cursor color.
-
-(defhook! setup-cursor (evil-mode-hook)
-  "Initialize the default cursor shape and size."
-  (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
-  (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
-  (setq evil-normal-state-cursor   '( box        "DarkGoldenrod2"))
-  (setq evil-visual-state-cursor   '((hollow)    "dark gray"))
-  (setq evil-operator-state-cursor '((hbar . 10) "hot pink"))
-  (setq evil-replace-state-cursor  '( box        "chocolate"))
-  (setq evil-motion-state-cursor   '( box        "plum3")))
-
-;; ***** updating cursors
-;; :PROPERTIES:
-;; :ID: ea4da6d4-4a2c-42cf-b397-cea1555781ce
-;; :END:
-
-;; After a theme is loaded, the cursor color won't automatically update. Therefore,
-;; I add a hook in [[helpvar:void-after-load-theme-hook][void-after-load-theme-hook]]. Now after a new theme is loaded, the
-;; cursor color will update.
-
-(defhook! refresh-evil-cursor (void-after-load-theme-hook)
-  "Enable cursor refreshing after theme change."
-  (when (bound-and-true-p evil-mode)
-    (evil-refresh-cursor)))
-
-;; **** normal state everywhere
-;; :PROPERTIES:
-;; :ID:       e6126bd7-94b8-4ce0-b547-0536b59437ea
-;; :END:
-
-;; Noctuid pointed out
-
-(defhook! make-normal-state-default (evil-mode-hook)
-  "Make normal state the default `evil-mode' state."
-  (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
-  (setq evil-emacs-state-modes nil)
-  (setq evil-motion-state-modes nil))
-
-(defadvice! replace-motion-with-normal (:around evil-make-overriding-map)
-  "Advice for `evil-make-overriding-map' that inhibits motion state."
-  (-let (((keymap state copy) <args>))
-    (funcall <orig-fn> keymap (if (eq state 'motion) 'normal state) copy)))
-
-(defadvice! replace-motion-with-normal (:around evil-set-initial-state)
-  (-let (((mode state) <args>))
-    (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
-
-(void-add-advice #'evil-motion-state :override #'evil-normal-state)
-
-;; **** insert state in minibuffer
-;; :PROPERTIES:
-;; :ID: a23137c5-62a0-4e77-9e51-6a7372dac703
-;; :END:
-
-;; Before I just used ~(evil-change-state evil-previous-state)~ to revert the
-;; state back to what it last was. But this fails with ~evil-force-normal-state~
-;; which is what I'm currently using to exit the minibuffer because then the
-;; last state is normal state if the minibuffer is aborted. Using a
-;; =evil:state-before-minibuffer= ensures that the state will be reverted to
-;; the correct one.
-
-(defhook! preserve-prior-evil-state (minibuffer-enter-hook)
-  "Save state before entering the minibuffer and enter insert state."
-  (when (bound-and-true-p evil-mode)
-    (setq evil:state-before-minibuffer evil-state)
-    (evil-insert-state)))
-
-(defhook! restore-prior-evil-state (minibuffer-exit-hook)
-  "Restore state after minibuffer."
-  (when (bound-and-true-p evil-mode)
-    (evil-change-state evil:state-before-minibuffer)
-    (setq evil:state-before-minibuffer nil)))
-
-;; **** escape
-;; :PROPERTIES:
-;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
-;; :END:
-
-;; ***** escape
-;; :PROPERTIES:
-;; :ID: ea9378de-e5c5-482c-b53b-743a81e3bc8e
-;; :END:
-
-;; We want escape to be a general "quit everything".
-
-(general-def :states '(emacs insert) [escape] #'evil-force-normal-state)
-
-(defadvice! exit-everything (:after evil-force-normal-state lispyville-normal-state)
-  "Exits out of whatever is happening after escape."
-  (cond ((minibuffer-window-active-p (minibuffer-window))
-         (abort-recursive-edit))
-        ((run-hook-with-args-until-success 'void-escape-hook))
-        ((or defining-kbd-macro executing-kbd-macro) nil)
-        (t (keyboard-quit))))
-
-;; ***** keychord
-;; :PROPERTIES:
-;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
-;; :END:
-
-;; Sometimes we don't have access to a convenient escape key--I mean that caps-lock
-;; is not bound to escape. Or, perhaps, we might find it faster or preferable to
-;; press =jk= really quickly to invoke escape.
-
-;; This is better than evil escape as it only binds in insert.
-
-;; ****** init
-;; :PROPERTIES:
-;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
-;; :END:
-
-(void-autoload 'keychord #'keychord-mode)
-
-(alet (list #'evil-insert-state #'evil-emacs-state)
-  (void-load-before-call 'keychord it))
-
-;; ****** be quiet when turning on
-;; :PROPERTIES:
-;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
-;; :END:
-
-(after! key-chord (shut-up (key-chord-mode 1)))
-
-;; ****** keychord bindings
-;; :PROPERTIES:
-;; :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
-;; :END:
-
-(general-def :states '(visual insert)
-  (general-chord "jk") 'evil-force-normal-state
-  (general-chord "kj") 'evil-force-normal-state)
-
-;; **** saving
-;; :PROPERTIES:
-;; :ID: 8181807e-9811-427c-beec-f380d91040f9
-;; :END:
-
-(setq save-silently t)
-
-(defun evil:save-message ()
-  (message "\"%s\" %dL, %dC written"
-           (buffer-name)
-           (count-lines (point-min) (point-max))
-           (buffer-size)))
-
-;; **** text objects
-;; :PROPERTIES:
-;; :ID: 07366548-2960-49c6-9ab7-cb177b06ad70
-;; :END:
-
-;; To edit text efficiently Vim has the concept of [[https://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/][text objects]]. Text objects are
-;; structures that are seen in text. For example, a set of words followed by a
-;; period is a sentence. A words between two closing parentheses is a sexp.
-
-;; ***** general delimiter text object
-;; :PROPERTIES:
-;; :ID: f551956d-440c-431b-8fb0-8e71c9714f11
-;; :END:
-
-;; I discovered this the =form= text object from using [[https://github.com/luxbock/evil-cleverparens][evil-cleverparens]] in the past.
-;; The package =evil-cleverparens= was too slow for my taste; noctuid's [[https://github.com/sp3ctum/evil-lispy][evil-lispy]] is
-;; much faster and gave me the functionality that I needed most from
-;; =evil-cleverparens=: deleting and copying text with parentheses intelligently.
-;; However, many of the ideas of =evil-cleverparens= were excellent. One particular
-;; idea was to have a general =form= text object. Instead of specifying the
-;; particular surrounding bounds when doing an evil operator command you just use a
-;; single key for them. It's kind of like a =Do-What-I-Mean= surround operator. This
-;; is suprisingly useful because it takes significant time to specify whether you
-;; want =[]= or ={=}= or =()= or =""=. The main drawback you cannot distinguish between
-;; surround characters at multiple levels--it just takes the closest one. In
-;; practice, this is rarely an issue.
-
-(after! evil
-  (evil-define-text-object evil:textobj-inner-form (count &rest _)
-    "Inner sexp object."
-    (-if-let ((beg . end)
-              (->> (list (lispy--bounds-list) (lispy--bounds-string))
-                   (-non-nil)
-                   (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
-                   (car)))
-        (evil-range (1+ beg) (1- end) 'inclusive :expanded t)
-      (error "No surrounding form found.")))
-
-  (evil-define-text-object evil:textobj-outer-form (count &rest _)
-    "Smartparens inner sexp object."
-    (-if-let ((beg . end)
-              (->> (list (lispy--bounds-list) (lispy--bounds-string))
-                   (-non-nil)
-                   (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
-                   (car)))
-        (evil-range beg end 'inclusive :expanded t)
-      (error "No surrounding form found.")))
-
-  (general-def evil-inner-text-objects-map
-    "f" #'evil:textobj-inner-form)
-  (general-def evil-outer-text-objects-map
-    "f" #'evil:textobj-outer-form))
-
-;; ***** fix vim/evil around =""=
-;; :PROPERTIES:
-;; :ID: b57bf245-3d63-4078-8bcb-2ec0b9952ab9
-;; :END:
-
-;; =Vim= and =Evil= both have the interesting (inconsistent?) behavior that doing an
-;; outer text object operator on a comment grabs some whitespace on the left side.
-;; Try doing =va"= to ~(progn "hello world")~ and you'll see that =\s"hello world"= is
-;; selected instead of just "hello world".
-
-;; Why not just go to the end of the ="= like any other around operator?
-
-(after! evil
-  (evil-define-text-object evil:textobj-a-string (count &rest _)
-    "An outer comment text object as defined by `lispy--bounds-string'."
-    (-if-let ((beg . end) (lispy--bounds-string))
-        (evil-range beg end 'exclusive :expanded t)
-      (error "Not inside a comment.")))
-
-  (general-def evil-outer-text-objects-map
-    "\"" #'evil:textobj-a-string))
-
-;; **** package specific setup                                           :disabled:
-;; :PROPERTIES:
-;; :ID: 5f9025e0-156c-4270-96ab-49011df83632
-;; :END:
-
-;; ***** helpful
-;; :PROPERTIES:
-;; :ID: 81552b9b-46aa-46c8-8541-500059dda695
-;; :END:
-
-(after! (evil helpful)
-  (evil-set-initial-state 'helpful-mode 'normal))
-
-;; ***** magit
-;; :PROPERTIES:
-;; :ID: a27830b2-b60a-4aca-b65a-4042392d7105
-;; :END:
-
-(after! (evil magit)
-  (add-hook 'git-commit-mode-hook #'evil-insert-state))
-
-;; ***** org
-;; :PROPERTIES:
-;; :ID: 62d87b9a-6219-4feb-b46c-a6e2e4155a90
-;; :END:
-
-;; ****** insert state
-;; :PROPERTIES:
-;; :ID: b9cde044-5190-4789-97c4-a124c6701cd4
-;; :END:
-
-(after! (evil org)
-  (add-hook 'org-insert-heading-hook #'evil-insert-state)
-  (after! org-capture
-    (add-hook 'org-capture-mode-hook #'evil-insert-state)))
-
-;; ***** eshell
-;; :PROPERTIES:
-;; :ID: 0a974596-2004-4ed2-9053-8bc6db1acd84
-;; :END:
-
-;; ****** evil operators
-;; :PROPERTIES:
-;; :ID: 142162a1-0495-427e-bac6-f2e8e63dd184
-;; :END:
-
-;; ******* evil-change
-;; :PROPERTIES:
-;; :ID: 1a47ff34-8f3b-4845-b3e9-0ae0937c5c84
-;; :END:
-
-(after! eshell
-  (evil-define-operator eshell/evil-change (beg end type register yank-handler delete-func)
-    "Like `evil-change' but will not delete/copy the prompt."
-    (interactive "<R><x><y>")
-    (save-restriction
-      (narrow-to-region eshell-last-output-end (point-max))
-      (evil-change (max beg (point-min))
-                   (if (eq type 'line) (point-max) (min (or end (point-max)) (point-max)))
-                   type register yank-handler delete-func))))
-
-;; ******* evil-change-line
-;; :PROPERTIES:
-;; :ID: 296c4f58-261f-4f1b-a333-7807ebef331b
-;; :END:
-
-(after! eshell
-  (evil-define-operator eshell/evil-change-line (beg end type register yank-handler)
-    "Change to end of line."
-    :motion evil-end-of-line
-    (interactive "<R><x><y>")
-    (eshell/evil-change beg end type register yank-handler #'evil-delete-line)))
-
-;; ******* evil-delete
-;; :PROPERTIES:
-;; :ID: 63b0c253-a59e-409a-b593-36ddd84d8777
-;; :END:
-
-(after! eshell
-  (evil-define-operator eshell/evil-delete (beg end type register yank-handler)
-    "Like `evil-delete' but will not delete/copy the prompt."
-    (interactive "<R><x><y>")
-    (save-restriction
-      (narrow-to-region eshell-last-output-end (point-max))
-      (evil-delete (if beg (max beg (point-min)) (point-min))
-                   (if (eq type 'line) (point-max) (min (or end (point-max)) (point-max)))
-                   type register yank-handler))))
-
-;; ******* evil-delete-line
-;; :PROPERTIES:
-;; :ID: 017b5fe8-a27e-4bab-a014-8bf53258b92a
-;; :END:
-
-(after! eshell
-  (evil-define-operator eshell/evil-delete-line (_beg end type register yank-handler)
-    "Change to end of line."
-    :motion nil
-    :keep-visual t
-    (interactive "<R><x>")
-    (eshell/evil-delete (point) end type register yank-handler)))
-
-;; ****** update cursors after entering eshell
-;; :PROPERTIES:
-;; :ID: 5384f57c-9eba-4f00-953a-92814a253ce9
-;; :END:
-
-(after! evil
-  (evil-set-initial-state 'eshell-mode 'insert))
-
-;; ***** smartparens
-;; :PROPERTIES:
-;; :ID: 4977e770-2c5b-4819-8c6d-ed2c794737fe
-;; :END:
-
-;; smartparens breaks evil-mode's replace state
-(after! (evil smartparens)
-  (add-hook 'evil-replace-state-entry-hook #'turn-off-smartparens-mode)
-  (add-hook 'evil-replace-state-exit-hook  #'turn-on-smartparens-mode))
-
-;; ***** debugger-mode
-;; :PROPERTIES:
-;; :ID: 614215d3-33b1-482e-bf0e-c9d66cdb1c24
-;; :END:
-
-(after! evil (evil-set-initial-state 'debugger-mode 'emacs))
-
-;; ;; *** evil-surround
 ;; ;; :PROPERTIES:
-;; ;; :ID:       bc9899a4-654e-4bf6-89bd-557a72c713a8
+;; ;; :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
 ;; ;; :TYPE:     git
 ;; ;; :FLAVOR:   melpa
+;; ;; :FILES:    (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el")
 ;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-evil/evil-surround"
-;; ;; :PACKAGE:  "evil-surround"
-;; ;; :LOCAL-REPO: "evil-surround"
-;; ;; :COMMIT:   "346d4d85fcf1f9517e9c4991c1efe68b4130f93a"
+;; ;; :REPO:     "emacs-evil/evil"
+;; ;; :PACKAGE:  "evil"
+;; ;; :LOCAL-REPO: "evil"
+;; ;; :COMMIT:   "32b2783d2cb7e093ac284fa6af9ceed8e4418826"
 ;; ;; :END:
 
-;; ;; **** hooks
+;; ;; [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
+;; ;; and provides facilities for writing custom extensions. Also see our page on
+;; ;; [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
+
+;; ;; **** init
 ;; ;; :PROPERTIES:
-;; ;; :ID: ef933441-4891-48d8-a4aa-016702e55b48
+;; ;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
 ;; ;; :END:
 
-;; (void-add-hook '(prog-mode-hook text-mode-hook) #'evil-surround-mode)
+;; (require 'evil)
+;; (void-add-hook 'window-setup-hook #'evil-mode)
 
-;; ;; *** evil-matchit
+;; ;; **** custom
 ;; ;; :PROPERTIES:
-;; ;; :ID: 30ff273a-253b-4cdc-8e86-22e5705f44c1
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "redguardtoo/evil-matchit"
-;; ;; :PACKAGE:  "evil-matchit"
-;; ;; :LOCAL-REPO: "evil-matchit"
-;; ;; :COMMIT:   "539192328ec521796c3f2bd8c1ac1a1b0e4f08f9"
+;; ;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
 ;; ;; :END:
 
-;; (void-add-hook 'prog-mode-hook #'evil-matchit-mode)
-
-;; ;; *** evil-exchange
-;; ;; :PROPERTIES:
-;; ;; :ID: d1c40ac0-d143-4e27-847b-d3d8e72a552a
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "Dewdrops/evil-exchange"
-;; ;; :PACKAGE:  "evil-exchange"
-;; ;; :LOCAL-REPO: "evil-exchange"
-;; ;; :COMMIT:   "3030e21ee16a42dfce7f7cf86147b778b3f5d8c1"
-;; ;; :END:
-
-;; ;; Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swap two regions of text.
-
-;; (void-autoload 'evil-exchange (list #'evil-exchange))
-
-;; (general-def 'normal
-;;   :prefix "g"
-;;   "X" (list :def #'evil-exchange-cancel :wk "cancel")
-;;   "x" (list :def #'evil-exchange :wk "exchange"))
-
-;; ;; *** evil-visualstar
-;; ;; :PROPERTIES:
-;; ;; :ID:       8b86236c-2162-47e2-a2cc-eaee2f51d1b2
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "bling/evil-visualstar"
-;; ;; :PACKAGE:  "evil-visualstar"
-;; ;; :LOCAL-REPO: "evil-visualstar"
-;; ;; :COMMIT:   "06c053d8f7381f91c53311b1234872ca96ced752"
-;; ;; :END:
-
-;; ;; **** evil-visualstar
-;; ;; :PROPERTIES:
-;; ;; :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
-;; ;; :END:
-
-;; ;; [[https://github.com/bling/evil-visualstar][evil-visualstar]]
-
-;; (alet (list #'evil-visualstar/begin-search-backward
-;;             #'evil-visualstar/begin-search-forward)
-;;   (void-autoload 'evil-visualstart it))
-
-;; (general-def
-;;   :package evil-visualstar
-;;   :map evil-visual-state-map
-;;   "#" evil-visualstar/begin-search-backward
-;;   "*" evil-visualstar/begin-search-forward)
-
-;; ;; ** expand-region
-;; ;; :PROPERTIES:
-;; ;; :ID:       8ffebf9c-c783-4a5d-beb1-3194863bb234
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "magnars/expand-region.el"
-;; ;; :PACKAGE:  "expand-region"
-;; ;; :LOCAL-REPO: "expand-region.el"
-;; ;; :COMMIT:   "ea6b4cbb9985ddae532bd2faf9bb00570c9f2781"
-;; ;; :END:
-
-;; ;; [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
-;; ;; larger text objects. It's saves me keystrokes.
-
-;; ;; *** expand region
-;; ;; :PROPERTIES:
-;; ;; :ID:       dc5d1a43-fee6-48d8-bed0-8f6bc0119c68
-;; ;; :END:
-
-;; (general-def 'visual
-;;   "V" #'er/contract-region
-;;   "v" #'er/expand-region)
-
-;; ;; *** autoload commands
-;; ;; :PROPERTIES:
-;; ;; :ID:       23d68159-bb65-45b7-96e5-48cb1dfca946
-;; ;; :END:
-
-;; (alet (list #'er/expand-region
-;;             #'er/contract-region
-;;             #'er/mark-symbol
-;;             #'er/mark-word)
-;;   (void-autoload 'expand-region))
-
-;; ;; *** quit expand region
-;; ;; :PROPERTIES:
-;; ;; :ID:       0dc7bb0d-a0ef-450a-b129-9c8d80cb6a0e
-;; ;; :END:
-
-;; (defadvice! quit-expand-region (:before evil-escape)
-;;   "Properly abort an expand-region region."
-;;   (when (memq last-command '(er/expand-region er/contract-region))
-;;     (er/contract-region 0)))
-
-;; ;; ** avy
-;; ;; :PROPERTIES:
-;; ;; :ID: 71d016e2-a118-4468-8a01-fe86863bc030
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "abo-abo/avy"
-;; ;; :PACKAGE:  "avy"
-;; ;; :LOCAL-REPO: "avy"
-;; ;; :COMMIT:   "bbf1e7339eba06784dfe86643bb0fbddf5bb0342"
-;; ;; :END:
-
-;; ;; [[https://github.com/abo-abo/avy][Avy]]
-
-;; ;; *** settings
-;; ;; :PROPERTIES:
-;; ;; :ID:       fd52fbe0-e491-41f8-8558-3fc263a62c80
-;; ;; :END:
-
-;; (setq avy-background t)
-;; ;; Jump only on current window.
-;; (setq avy-all-windows nil)
-;; ;; Use avy keys.
-;; (setq avy-keys-alist nil)
-
-;; (setq avy-style 'at)
-
-;; ;; *** avy keys
-;; ;; :PROPERTIES:
-;; ;; :ID:       cbe231da-a16e-4846-a30e-aa4bc8228378
-;; ;; :END:
-
-;; (setq avy-keys
-;;       (list
-;;        ;; homerow keys in alternating order.
-;;        ?a ?j ?s ?k ?d ?l ?f ?\;
-;;        ;; middle homerow keys
-;;        ?g ?h
-;;        ;; keys above homerow in alternating order
-;;        ?t ?y ?r ?u ?e ?i ?w ?o ?q ?p
-;;        ;; keys below homerow
-;;        ?b ?n ?v ?m ?c ?, ?x ?. ?z ?/))
-
-;; ;; *** bootstrap
-;; ;; :PROPERTIES:
-;; ;; :ID: eff03171-05b3-4a70-93ee-0a0f2b2c64f4
-;; ;; :END:
-
-;; (void-autoload 'avy 'avy-jump)
-
-;; ;; *** avy-command-helper
-;; ;; :PROPERTIES:
-;; ;; :ID:       814e98f9-5823-4e8f-9f89-49cdecf3d809
-;; ;; :END:
-
-;; (defun avy:jump-to-regexp (regexp)
-;;   (avy-jump regexp
-;;             :beg (window-start)
-;;             :end (window-end)
-;;             :pred `(lambda () (/= (1+ ,(point)) (point)))))
-
-;; ;; *** avy commands
-;; ;; :PROPERTIES:
-;; ;; :ID: 01ee387f-f153-497e-b9fb-d62d5df9ebe1
-;; ;; :END:
-
-;; (defun void/evil-beginning-of-word ()
-;;   (interactive)
-;;   (avy:jump-to-regexp (rx word-start nonl)))
-
-;; (defun void/evil-beginning-of-WORD ()
-;;   (interactive)
-;;   (avy:jump-to-regexp (rx symbol-start nonl)))
-
-;; (defun void/evil-end-of-word ()
-;;   (interactive)
-;;   (avy:jump-to-regexp (rx nonl word-end)))
-
-;; (defun void/evil-end-of-WORD ()
-;;   (interactive)
-;;   (avy:jump-to-regexp (rx nonl symbol-end)))
-
-;; ;; ** undo
-;; ;; :PROPERTIES:
-;; ;; :ID: 87fde0b2-5db6-4b5f-8945-d469449f1207
-;; ;; :END:
-
-;; ;; *** undo-fu
-;; ;; :PROPERTIES:
-;; ;; :ID:       a808c260-399c-4cf7-82ae-48a433474e25
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     gitlab
-;; ;; :REPO:     "ideasman42/emacs-undo-fu"
-;; ;; :PACKAGE:  "undo-fu"
-;; ;; :LOCAL-REPO: "emacs-undo-fu"
-;; ;; :COMMIT:   "c0806c1903c5a0e4c69b6615cdc3366470a9b8ca"
-;; ;; :END:
+;; (custom-set-default 'evil-want-C-u-scroll t)
 
 ;; ;; **** settings
 ;; ;; :PROPERTIES:
-;; ;; :ID:       85230cf3-d90a-426a-b3dd-7cb3b27e8218
+;; ;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
 ;; ;; :END:
 
-;; (setq undo-limit 400000)
-;; (setq undo-strong-limit 3000000)
-;; (setq undo-outer-limit 3000000)
+;; (setq evil-want-C-w-in-emacs-state         nil)
+;; (setq evil-want-visual-char-semi-exclusive t)
+;; ;; Whether the cursor can move past the end of the line.
+;; (setq evil-move-beyond-eol                 nil)
+;; (setq evil-magic                           t)
+;; (setq evil-echo-state                      nil)
+;; (setq evil-indent-convert-tabs             t)
+;; (setq evil-ex-search-vim-style-regexp      t)
+;; (setq evil-ex-substitute-global            t)
+;; (setq evil-ex-visual-char-range            t)
+;; (setq evil-insert-skip-empty-lines         t)
+;; (setq evil-mode-line-format                nil)
+;; (setq evil-respect-visual-line-mode        t)
+;; (setq evil-symbol-word-search              t)
 
-;; ;; **** bind
+;; ;; **** cursors
 ;; ;; :PROPERTIES:
-;; ;; :ID:       650470d8-bf28-49a7-b120-7c60b1bfd618
+;; ;; :ID: a5f558fb-221c-4b33-a7cd-29308ef74b0d
 ;; ;; :END:
 
-;; (general-def [remap undo] undo-fu-only-undo)
-;; (general-def [remap redo] undo-fu-only-redo)
+;; ;; It's nice to have cursors change colors (and sometimes shape) depending on the
+;; ;; current evil state. It makes it easy to tell which state you're in. I define
+;; ;; some colors here. Evil has a cursor variable for each state. The cursor variable
+;; ;; for insert state, for example, is [[helpvar:evil-insert-state-cursor][evil-insert-state-cursor]]. Its value is of the
+;; ;; form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 
-;; ;; **** make sure that built-in undo is disabled
+;; ;; ***** colors and shapes
 ;; ;; :PROPERTIES:
-;; ;; :ID:       aa8f5747-5c19-45da-9957-ddf2b1c3f067
+;; ;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
 ;; ;; :END:
 
-;; (global-undo-tree-mode -1)
+;; ;; Evil differentiates what state you're in based on the cursor color.
 
-;; ;; *** undo-fu-session
+;; (defhook! setup-cursor (evil-mode-hook)
+;;   "Initialize the default cursor shape and size."
+;;   (setq evil-insert-state-cursor   '((bar . 3)   "chartreuse3"))
+;;   (setq evil-emacs-state-cursor    '((bar . 3)   "SkyBlue2"))
+;;   (setq evil-normal-state-cursor   '( box        "DarkGoldenrod2"))
+;;   (setq evil-visual-state-cursor   '((hollow)    "dark gray"))
+;;   (setq evil-operator-state-cursor '((hbar . 10) "hot pink"))
+;;   (setq evil-replace-state-cursor  '( box        "chocolate"))
+;;   (setq evil-motion-state-cursor   '( box        "plum3")))
+
+;; ;; ***** updating cursors
 ;; ;; :PROPERTIES:
-;; ;; :ID:       12a36a4e-65df-4dd3-be35-d84dd76651a4
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     gitlab
-;; ;; :REPO:     "ideasman42/emacs-undo-fu-session"
-;; ;; :PACKAGE:  "undo-fu-session"
-;; ;; :LOCAL-REPO: "emacs-undo-fu-session"
-;; ;; :COMMIT:   "56cdd3538a058c6916bdf2d9010c2179f2505829"
+;; ;; :ID: ea4da6d4-4a2c-42cf-b397-cea1555781ce
 ;; ;; :END:
+
+;; ;; After a theme is loaded, the cursor color won't automatically update. Therefore,
+;; ;; I add a hook in [[helpvar:void-after-load-theme-hook][void-after-load-theme-hook]]. Now after a new theme is loaded, the
+;; ;; cursor color will update.
+
+;; (defhook! refresh-evil-cursor (void-after-load-theme-hook)
+;;   "Enable cursor refreshing after theme change."
+;;   (when (bound-and-true-p evil-mode)
+;;     (evil-refresh-cursor)))
+
+;; ;; **** normal state everywhere
+;; ;; :PROPERTIES:
+;; ;; :ID:       e6126bd7-94b8-4ce0-b547-0536b59437ea
+;; ;; :END:
+
+;; ;; Noctuid pointed out
+
+;; (defhook! make-normal-state-default (evil-mode-hook)
+;;   "Make normal state the default `evil-mode' state."
+;;   (setq evil-normal-state-modes (append evil-emacs-state-modes evil-normal-state-modes))
+;;   (setq evil-emacs-state-modes nil)
+;;   (setq evil-motion-state-modes nil))
+
+;; (defadvice! replace-motion-with-normal (:around evil-make-overriding-map)
+;;   "Advice for `evil-make-overriding-map' that inhibits motion state."
+;;   (-let (((keymap state copy) <args>))
+;;     (funcall <orig-fn> keymap (if (eq state 'motion) 'normal state) copy)))
+
+;; (defadvice! replace-motion-with-normal (:around evil-set-initial-state)
+;;   (-let (((mode state) <args>))
+;;     (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
+
+;; (void-add-advice #'evil-motion-state :override #'evil-normal-state)
+
+;; ;; **** insert state in minibuffer
+;; ;; :PROPERTIES:
+;; ;; :ID: a23137c5-62a0-4e77-9e51-6a7372dac703
+;; ;; :END:
+
+;; ;; Before I just used ~(evil-change-state evil-previous-state)~ to revert the
+;; ;; state back to what it last was. But this fails with ~evil-force-normal-state~
+;; ;; which is what I'm currently using to exit the minibuffer because then the
+;; ;; last state is normal state if the minibuffer is aborted. Using a
+;; ;; =evil:state-before-minibuffer= ensures that the state will be reverted to
+;; ;; the correct one.
+
+;; (defhook! preserve-prior-evil-state (minibuffer-enter-hook)
+;;   "Save state before entering the minibuffer and enter insert state."
+;;   (when (bound-and-true-p evil-mode)
+;;     (setq evil:state-before-minibuffer evil-state)
+;;     (evil-insert-state)))
+
+;; (defhook! restore-prior-evil-state (minibuffer-exit-hook)
+;;   "Restore state after minibuffer."
+;;   (when (bound-and-true-p evil-mode)
+;;     (evil-change-state evil:state-before-minibuffer)
+;;     (setq evil:state-before-minibuffer nil)))
+
+;; ;; **** escape
+;; ;; :PROPERTIES:
+;; ;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
+;; ;; :END:
+
+;; ;; ***** escape
+;; ;; :PROPERTIES:
+;; ;; :ID: ea9378de-e5c5-482c-b53b-743a81e3bc8e
+;; ;; :END:
+
+;; ;; We want escape to be a general "quit everything".
+
+;; (general-def :states '(emacs insert) [escape] #'evil-force-normal-state)
+
+;; (defadvice! exit-everything (:after evil-force-normal-state lispyville-normal-state)
+;;   "Exits out of whatever is happening after escape."
+;;   (cond ((minibuffer-window-active-p (minibuffer-window))
+;;          (abort-recursive-edit))
+;;         ((run-hook-with-args-until-success 'void-escape-hook))
+;;         ((or defining-kbd-macro executing-kbd-macro) nil)
+;;         (t (keyboard-quit))))
+
+;; ;; ***** keychord
+;; ;; :PROPERTIES:
+;; ;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
+;; ;; :END:
+
+;; ;; Sometimes we don't have access to a convenient escape key--I mean that caps-lock
+;; ;; is not bound to escape. Or, perhaps, we might find it faster or preferable to
+;; ;; press =jk= really quickly to invoke escape.
+
+;; ;; This is better than evil escape as it only binds in insert.
+
+;; ;; ****** init
+;; ;; :PROPERTIES:
+;; ;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
+;; ;; :END:
+
+;; (void-autoload 'keychord #'keychord-mode)
+
+;; (alet (list #'evil-insert-state #'evil-emacs-state)
+;;   (void-load-before-call 'keychord it))
+
+;; ;; ****** be quiet when turning on
+;; ;; :PROPERTIES:
+;; ;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
+;; ;; :END:
+
+;; (after! key-chord (shut-up (key-chord-mode 1)))
+
+;; ;; ****** keychord bindings
+;; ;; :PROPERTIES:
+;; ;; :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
+;; ;; :END:
+
+;; (general-def :states '(visual insert)
+;;   (general-chord "jk") 'evil-force-normal-state
+;;   (general-chord "kj") 'evil-force-normal-state)
+
+;; ;; **** saving
+;; ;; :PROPERTIES:
+;; ;; :ID: 8181807e-9811-427c-beec-f380d91040f9
+;; ;; :END:
+
+;; (setq save-silently t)
+
+;; (defun evil:save-message ()
+;;   (message "\"%s\" %dL, %dC written"
+;;            (buffer-name)
+;;            (count-lines (point-min) (point-max))
+;;            (buffer-size)))
+
+;; ;; **** text objects
+;; ;; :PROPERTIES:
+;; ;; :ID: 07366548-2960-49c6-9ab7-cb177b06ad70
+;; ;; :END:
+
+;; ;; To edit text efficiently Vim has the concept of [[https://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/][text objects]]. Text objects are
+;; ;; structures that are seen in text. For example, a set of words followed by a
+;; ;; period is a sentence. A words between two closing parentheses is a sexp.
+
+;; ;; ***** general delimiter text object
+;; ;; :PROPERTIES:
+;; ;; :ID: f551956d-440c-431b-8fb0-8e71c9714f11
+;; ;; :END:
+
+;; ;; I discovered this the =form= text object from using [[https://github.com/luxbock/evil-cleverparens][evil-cleverparens]] in the past.
+;; ;; The package =evil-cleverparens= was too slow for my taste; noctuid's [[https://github.com/sp3ctum/evil-lispy][evil-lispy]] is
+;; ;; much faster and gave me the functionality that I needed most from
+;; ;; =evil-cleverparens=: deleting and copying text with parentheses intelligently.
+;; ;; However, many of the ideas of =evil-cleverparens= were excellent. One particular
+;; ;; idea was to have a general =form= text object. Instead of specifying the
+;; ;; particular surrounding bounds when doing an evil operator command you just use a
+;; ;; single key for them. It's kind of like a =Do-What-I-Mean= surround operator. This
+;; ;; is suprisingly useful because it takes significant time to specify whether you
+;; ;; want =[]= or ={=}= or =()= or =""=. The main drawback you cannot distinguish between
+;; ;; surround characters at multiple levels--it just takes the closest one. In
+;; ;; practice, this is rarely an issue.
+
+;; (after! evil
+;;   (evil-define-text-object evil:textobj-inner-form (count &rest _)
+;;     "Inner sexp object."
+;;     (-if-let ((beg . end)
+;;               (->> (list (lispy--bounds-list) (lispy--bounds-string))
+;;                    (-non-nil)
+;;                    (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
+;;                    (car)))
+;;         (evil-range (1+ beg) (1- end) 'inclusive :expanded t)
+;;       (error "No surrounding form found.")))
+
+;;   (evil-define-text-object evil:textobj-outer-form (count &rest _)
+;;     "Smartparens inner sexp object."
+;;     (-if-let ((beg . end)
+;;               (->> (list (lispy--bounds-list) (lispy--bounds-string))
+;;                    (-non-nil)
+;;                    (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
+;;                    (car)))
+;;         (evil-range beg end 'inclusive :expanded t)
+;;       (error "No surrounding form found.")))
+
+;;   (general-def evil-inner-text-objects-map
+;;     "f" #'evil:textobj-inner-form)
+;;   (general-def evil-outer-text-objects-map
+;;     "f" #'evil:textobj-outer-form))
+
+;; ;; ***** fix vim/evil around =""=
+;; ;; :PROPERTIES:
+;; ;; :ID: b57bf245-3d63-4078-8bcb-2ec0b9952ab9
+;; ;; :END:
+
+;; ;; =Vim= and =Evil= both have the interesting (inconsistent?) behavior that doing an
+;; ;; outer text object operator on a comment grabs some whitespace on the left side.
+;; ;; Try doing =va"= to ~(progn "hello world")~ and you'll see that =\s"hello world"= is
+;; ;; selected instead of just "hello world".
+
+;; ;; Why not just go to the end of the ="= like any other around operator?
+
+;; (after! evil
+;;   (evil-define-text-object evil:textobj-a-string (count &rest _)
+;;     "An outer comment text object as defined by `lispy--bounds-string'."
+;;     (-if-let ((beg . end) (lispy--bounds-string))
+;;         (evil-range beg end 'exclusive :expanded t)
+;;       (error "Not inside a comment.")))
+
+;;   (general-def evil-outer-text-objects-map
+;;     "\"" #'evil:textobj-a-string))
+
+;; ;; **** package specific setup                                           :disabled:
+;; ;; :PROPERTIES:
+;; ;; :ID: 5f9025e0-156c-4270-96ab-49011df83632
+;; ;; :END:
+
+;; ;; ***** helpful
+;; ;; :PROPERTIES:
+;; ;; :ID: 81552b9b-46aa-46c8-8541-500059dda695
+;; ;; :END:
+
+;; (after! (evil helpful)
+;;   (evil-set-initial-state 'helpful-mode 'normal))
+
+;; ;; ***** magit
+;; ;; :PROPERTIES:
+;; ;; :ID: a27830b2-b60a-4aca-b65a-4042392d7105
+;; ;; :END:
+
+;; (after! (evil magit)
+;;   (add-hook 'git-commit-mode-hook #'evil-insert-state))
+
+;; ;; ***** org
+;; ;; :PROPERTIES:
+;; ;; :ID: 62d87b9a-6219-4feb-b46c-a6e2e4155a90
+;; ;; :END:
+
+;; ;; ****** insert state
+;; ;; :PROPERTIES:
+;; ;; :ID: b9cde044-5190-4789-97c4-a124c6701cd4
+;; ;; :END:
+
+;; (after! (evil org)
+;;   (add-hook 'org-insert-heading-hook #'evil-insert-state)
+;;   (after! org-capture
+;;     (add-hook 'org-capture-mode-hook #'evil-insert-state)))
+
+;; ;; ***** eshell
+;; ;; :PROPERTIES:
+;; ;; :ID: 0a974596-2004-4ed2-9053-8bc6db1acd84
+;; ;; :END:
+
+;; ;; ****** evil operators
+;; ;; :PROPERTIES:
+;; ;; :ID: 142162a1-0495-427e-bac6-f2e8e63dd184
+;; ;; :END:
+
+;; ;; ******* evil-change
+;; ;; :PROPERTIES:
+;; ;; :ID: 1a47ff34-8f3b-4845-b3e9-0ae0937c5c84
+;; ;; :END:
+
+;; (after! eshell
+;;   (evil-define-operator eshell/evil-change (beg end type register yank-handler delete-func)
+;;     "Like `evil-change' but will not delete/copy the prompt."
+;;     (interactive "<R><x><y>")
+;;     (save-restriction
+;;       (narrow-to-region eshell-last-output-end (point-max))
+;;       (evil-change (max beg (point-min))
+;;                    (if (eq type 'line) (point-max) (min (or end (point-max)) (point-max)))
+;;                    type register yank-handler delete-func))))
+
+;; ;; ******* evil-change-line
+;; ;; :PROPERTIES:
+;; ;; :ID: 296c4f58-261f-4f1b-a333-7807ebef331b
+;; ;; :END:
+
+;; (after! eshell
+;;   (evil-define-operator eshell/evil-change-line (beg end type register yank-handler)
+;;     "Change to end of line."
+;;     :motion evil-end-of-line
+;;     (interactive "<R><x><y>")
+;;     (eshell/evil-change beg end type register yank-handler #'evil-delete-line)))
+
+;; ;; ******* evil-delete
+;; ;; :PROPERTIES:
+;; ;; :ID: 63b0c253-a59e-409a-b593-36ddd84d8777
+;; ;; :END:
+
+;; (after! eshell
+;;   (evil-define-operator eshell/evil-delete (beg end type register yank-handler)
+;;     "Like `evil-delete' but will not delete/copy the prompt."
+;;     (interactive "<R><x><y>")
+;;     (save-restriction
+;;       (narrow-to-region eshell-last-output-end (point-max))
+;;       (evil-delete (if beg (max beg (point-min)) (point-min))
+;;                    (if (eq type 'line) (point-max) (min (or end (point-max)) (point-max)))
+;;                    type register yank-handler))))
+
+;; ;; ******* evil-delete-line
+;; ;; :PROPERTIES:
+;; ;; :ID: 017b5fe8-a27e-4bab-a014-8bf53258b92a
+;; ;; :END:
+
+;; (after! eshell
+;;   (evil-define-operator eshell/evil-delete-line (_beg end type register yank-handler)
+;;     "Change to end of line."
+;;     :motion nil
+;;     :keep-visual t
+;;     (interactive "<R><x>")
+;;     (eshell/evil-delete (point) end type register yank-handler)))
+
+;; ;; ****** update cursors after entering eshell
+;; ;; :PROPERTIES:
+;; ;; :ID: 5384f57c-9eba-4f00-953a-92814a253ce9
+;; ;; :END:
+
+;; (after! evil
+;;   (evil-set-initial-state 'eshell-mode 'insert))
+
+;; ;; ***** smartparens
+;; ;; :PROPERTIES:
+;; ;; :ID: 4977e770-2c5b-4819-8c6d-ed2c794737fe
+;; ;; :END:
+
+;; ;; smartparens breaks evil-mode's replace state
+;; (after! (evil smartparens)
+;;   (add-hook 'evil-replace-state-entry-hook #'turn-off-smartparens-mode)
+;;   (add-hook 'evil-replace-state-exit-hook  #'turn-on-smartparens-mode))
+
+;; ;; ***** debugger-mode
+;; ;; :PROPERTIES:
+;; ;; :ID: 614215d3-33b1-482e-bf0e-c9d66cdb1c24
+;; ;; :END:
+
+;; (after! evil (evil-set-initial-state 'debugger-mode 'emacs))
+
+;; ;; ;; *** evil-surround
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       bc9899a4-654e-4bf6-89bd-557a72c713a8
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     github
+;; ;; ;; :REPO:     "emacs-evil/evil-surround"
+;; ;; ;; :PACKAGE:  "evil-surround"
+;; ;; ;; :LOCAL-REPO: "evil-surround"
+;; ;; ;; :COMMIT:   "346d4d85fcf1f9517e9c4991c1efe68b4130f93a"
+;; ;; ;; :END:
+
+;; ;; ;; **** hooks
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: ef933441-4891-48d8-a4aa-016702e55b48
+;; ;; ;; :END:
+
+;; ;; (void-add-hook '(prog-mode-hook text-mode-hook) #'evil-surround-mode)
+
+;; ;; ;; *** evil-matchit
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: 30ff273a-253b-4cdc-8e86-22e5705f44c1
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     github
+;; ;; ;; :REPO:     "redguardtoo/evil-matchit"
+;; ;; ;; :PACKAGE:  "evil-matchit"
+;; ;; ;; :LOCAL-REPO: "evil-matchit"
+;; ;; ;; :COMMIT:   "539192328ec521796c3f2bd8c1ac1a1b0e4f08f9"
+;; ;; ;; :END:
+
+;; ;; (void-add-hook 'prog-mode-hook #'evil-matchit-mode)
+
+;; ;; ;; *** evil-exchange
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: d1c40ac0-d143-4e27-847b-d3d8e72a552a
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     github
+;; ;; ;; :REPO:     "Dewdrops/evil-exchange"
+;; ;; ;; :PACKAGE:  "evil-exchange"
+;; ;; ;; :LOCAL-REPO: "evil-exchange"
+;; ;; ;; :COMMIT:   "3030e21ee16a42dfce7f7cf86147b778b3f5d8c1"
+;; ;; ;; :END:
+
+;; ;; ;; Package [[https://github.com/Dewdrops/evil-exchange][evil-exchange]] lets me swap two regions of text.
+
+;; ;; (void-autoload 'evil-exchange (list #'evil-exchange))
+
+;; ;; (general-def 'normal
+;; ;;   :prefix "g"
+;; ;;   "X" (list :def #'evil-exchange-cancel :wk "cancel")
+;; ;;   "x" (list :def #'evil-exchange :wk "exchange"))
+
+;; ;; ;; *** evil-visualstar
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       8b86236c-2162-47e2-a2cc-eaee2f51d1b2
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     github
+;; ;; ;; :REPO:     "bling/evil-visualstar"
+;; ;; ;; :PACKAGE:  "evil-visualstar"
+;; ;; ;; :LOCAL-REPO: "evil-visualstar"
+;; ;; ;; :COMMIT:   "06c053d8f7381f91c53311b1234872ca96ced752"
+;; ;; ;; :END:
+
+;; ;; ;; **** evil-visualstar
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
+;; ;; ;; :END:
+
+;; ;; ;; [[https://github.com/bling/evil-visualstar][evil-visualstar]]
+
+;; ;; (alet (list #'evil-visualstar/begin-search-backward
+;; ;;             #'evil-visualstar/begin-search-forward)
+;; ;;   (void-autoload 'evil-visualstart it))
+
+;; ;; (general-def
+;; ;;   :package evil-visualstar
+;; ;;   :map evil-visual-state-map
+;; ;;   "#" evil-visualstar/begin-search-backward
+;; ;;   "*" evil-visualstar/begin-search-forward)
+
+;; ;; ;; ** expand-region
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       8ffebf9c-c783-4a5d-beb1-3194863bb234
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     github
+;; ;; ;; :REPO:     "magnars/expand-region.el"
+;; ;; ;; :PACKAGE:  "expand-region"
+;; ;; ;; :LOCAL-REPO: "expand-region.el"
+;; ;; ;; :COMMIT:   "ea6b4cbb9985ddae532bd2faf9bb00570c9f2781"
+;; ;; ;; :END:
+
+;; ;; ;; [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
+;; ;; ;; larger text objects. It's saves me keystrokes.
+
+;; ;; ;; *** expand region
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       dc5d1a43-fee6-48d8-bed0-8f6bc0119c68
+;; ;; ;; :END:
+
+;; ;; (general-def 'visual
+;; ;;   "V" #'er/contract-region
+;; ;;   "v" #'er/expand-region)
+
+;; ;; ;; *** autoload commands
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       23d68159-bb65-45b7-96e5-48cb1dfca946
+;; ;; ;; :END:
+
+;; ;; (alet (list #'er/expand-region
+;; ;;             #'er/contract-region
+;; ;;             #'er/mark-symbol
+;; ;;             #'er/mark-word)
+;; ;;   (void-autoload 'expand-region))
+
+;; ;; ;; *** quit expand region
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       0dc7bb0d-a0ef-450a-b129-9c8d80cb6a0e
+;; ;; ;; :END:
+
+;; ;; (defadvice! quit-expand-region (:before evil-escape)
+;; ;;   "Properly abort an expand-region region."
+;; ;;   (when (memq last-command '(er/expand-region er/contract-region))
+;; ;;     (er/contract-region 0)))
+
+;; ;; ;; ** avy
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: 71d016e2-a118-4468-8a01-fe86863bc030
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     github
+;; ;; ;; :REPO:     "abo-abo/avy"
+;; ;; ;; :PACKAGE:  "avy"
+;; ;; ;; :LOCAL-REPO: "avy"
+;; ;; ;; :COMMIT:   "bbf1e7339eba06784dfe86643bb0fbddf5bb0342"
+;; ;; ;; :END:
+
+;; ;; ;; [[https://github.com/abo-abo/avy][Avy]]
+
+;; ;; ;; *** settings
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       fd52fbe0-e491-41f8-8558-3fc263a62c80
+;; ;; ;; :END:
+
+;; ;; (setq avy-background t)
+;; ;; ;; Jump only on current window.
+;; ;; (setq avy-all-windows nil)
+;; ;; ;; Use avy keys.
+;; ;; (setq avy-keys-alist nil)
+
+;; ;; (setq avy-style 'at)
+
+;; ;; ;; *** avy keys
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       cbe231da-a16e-4846-a30e-aa4bc8228378
+;; ;; ;; :END:
+
+;; ;; (setq avy-keys
+;; ;;       (list
+;; ;;        ;; homerow keys in alternating order.
+;; ;;        ?a ?j ?s ?k ?d ?l ?f ?\;
+;; ;;        ;; middle homerow keys
+;; ;;        ?g ?h
+;; ;;        ;; keys above homerow in alternating order
+;; ;;        ?t ?y ?r ?u ?e ?i ?w ?o ?q ?p
+;; ;;        ;; keys below homerow
+;; ;;        ?b ?n ?v ?m ?c ?, ?x ?. ?z ?/))
+
+;; ;; ;; *** bootstrap
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: eff03171-05b3-4a70-93ee-0a0f2b2c64f4
+;; ;; ;; :END:
+
+;; ;; (void-autoload 'avy 'avy-jump)
+
+;; ;; ;; *** avy-command-helper
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       814e98f9-5823-4e8f-9f89-49cdecf3d809
+;; ;; ;; :END:
+
+;; ;; (defun avy:jump-to-regexp (regexp)
+;; ;;   (avy-jump regexp
+;; ;;             :beg (window-start)
+;; ;;             :end (window-end)
+;; ;;             :pred `(lambda () (/= (1+ ,(point)) (point)))))
+
+;; ;; ;; *** avy commands
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: 01ee387f-f153-497e-b9fb-d62d5df9ebe1
+;; ;; ;; :END:
+
+;; ;; (defun void/evil-beginning-of-word ()
+;; ;;   (interactive)
+;; ;;   (avy:jump-to-regexp (rx word-start nonl)))
+
+;; ;; (defun void/evil-beginning-of-WORD ()
+;; ;;   (interactive)
+;; ;;   (avy:jump-to-regexp (rx symbol-start nonl)))
+
+;; ;; (defun void/evil-end-of-word ()
+;; ;;   (interactive)
+;; ;;   (avy:jump-to-regexp (rx nonl word-end)))
+
+;; ;; (defun void/evil-end-of-WORD ()
+;; ;;   (interactive)
+;; ;;   (avy:jump-to-regexp (rx nonl symbol-end)))
+
+;; ;; ;; ** undo
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID: 87fde0b2-5db6-4b5f-8945-d469449f1207
+;; ;; ;; :END:
+
+;; ;; ;; *** undo-fu
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       a808c260-399c-4cf7-82ae-48a433474e25
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     gitlab
+;; ;; ;; :REPO:     "ideasman42/emacs-undo-fu"
+;; ;; ;; :PACKAGE:  "undo-fu"
+;; ;; ;; :LOCAL-REPO: "emacs-undo-fu"
+;; ;; ;; :COMMIT:   "c0806c1903c5a0e4c69b6615cdc3366470a9b8ca"
+;; ;; ;; :END:
+
+;; ;; ;; **** settings
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       85230cf3-d90a-426a-b3dd-7cb3b27e8218
+;; ;; ;; :END:
+
+;; ;; (setq undo-limit 400000)
+;; ;; (setq undo-strong-limit 3000000)
+;; ;; (setq undo-outer-limit 3000000)
+
+;; ;; ;; **** bind
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       650470d8-bf28-49a7-b120-7c60b1bfd618
+;; ;; ;; :END:
+
+;; ;; (general-def [remap undo] undo-fu-only-undo)
+;; ;; (general-def [remap redo] undo-fu-only-redo)
+
+;; ;; ;; **** make sure that built-in undo is disabled
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       aa8f5747-5c19-45da-9957-ddf2b1c3f067
+;; ;; ;; :END:
+
+;; ;; (global-undo-tree-mode -1)
+
+;; ;; ;; *** undo-fu-session
+;; ;; ;; :PROPERTIES:
+;; ;; ;; :ID:       12a36a4e-65df-4dd3-be35-d84dd76651a4
+;; ;; ;; :TYPE:     git
+;; ;; ;; :FLAVOR:   melpa
+;; ;; ;; :HOST:     gitlab
+;; ;; ;; :REPO:     "ideasman42/emacs-undo-fu-session"
+;; ;; ;; :PACKAGE:  "undo-fu-session"
+;; ;; ;; :LOCAL-REPO: "emacs-undo-fu-session"
+;; ;; ;; :COMMIT:   "56cdd3538a058c6916bdf2d9010c2179f2505829"
+;; ;; ;; :END:
 
 ;; * Utility
 ;; ;; :PROPERTIES:
