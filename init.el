@@ -4257,7 +4257,7 @@ Orderless will do this."
 ;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
 ;; :END:
 
-(custom-set 'evil-want-C-u-scroll t)
+(custom-set-default 'evil-want-C-u-scroll t)
 
 ;; **** settings
 ;; :PROPERTIES:
