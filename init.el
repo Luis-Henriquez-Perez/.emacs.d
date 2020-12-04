@@ -4417,7 +4417,7 @@ Orderless will do this."
 ;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
 ;; :END:
 
-(shut-up (key-chord-mode 1))
+(after! key-chord (shut-up (key-chord-mode 1)))
 
 ;; ****** keychord bindings
 ;; :PROPERTIES:
