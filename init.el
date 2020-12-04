@@ -2021,7 +2021,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
 ;; :END:
 
-(require 'idle-require)
+(autoload #'idle-require-mode "idle-require" nil t nil)
 (void-add-hook 'emacs-startup-hook #'idle-require-mode)
 
 ;; **** settings
@@ -2045,6 +2045,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; when it has finished idle-requiring packages. I don't want to see the message
 ;; unless I'm debugging.
 
+(void-add-advice #'idle-require-mode :around #'void--use-void-log-advice)
 (void-add-advice #'idle-require-load-next :around #'void--use-void-log-advice)
 
 ;; **** increase gc-cons-threshold during idle loading
