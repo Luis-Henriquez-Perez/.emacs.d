@@ -1279,7 +1279,6 @@ SYM is a symbol that stores a list."
 
 (defun void-autoload (package fn)
   "Create a function that can be called."
-  ;; add function to hash table.
   (--each (-list fn)
     (unless (fboundp it)
       (fset it `(lambda (&rest args)
