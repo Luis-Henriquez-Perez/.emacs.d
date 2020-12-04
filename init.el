@@ -1268,25 +1268,6 @@ SYM is a symbol that stores a list."
   (declare (indent 1))
   `(setq ,sym (nconc ,sym ,@lists)))
 
-;; *** autoloading
-;; :PROPERTIES:
-;; :ID:       e648ce0e-bb00-452d-9498-236c65e3a873
-;; :END:
-
-;; Emacs has a built-in [[][autoloading facility]]. I don't use that because it
-;; involves. Autoloading can be done in elisp. You define a dummy function which
-;; unbinds itself, loads the specified package, then calls the real function.
-
-(defun void-autoload (package fn)
-  "Create a function that can be called."
-  (--each (-list fn)
-    (unless (fboundp it)
-      (fset it `(lambda (&rest args)
-                  ;; will trigger the before-load hook.
-                  (fmakunbound #',it)
-                  (require ',package)
-                  (apply #',it args))))))
-
 ;; *** loading on call
 ;; :PROPERTIES:
 ;; :ID:       fa6583aa-5e7c-4212-be8a-b90b4c08aa31
@@ -1806,7 +1787,7 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 (setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD)
 (setq gcmh-low-cons-threshold VOID-GC-CONS-THRESHOLD-MIN)
 
-(void-autoload 'gcmh #'gcmh-mode)
+(autoload #'gmch-mode #'gcmh nil t nil)
 (void-add-hook 'emacs-startup-hook #'gcmh-mode)
 
 ;; **** minibuffer
