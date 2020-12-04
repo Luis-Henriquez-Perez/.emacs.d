@@ -6047,1683 +6047,1683 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 
 ;; * Languages
-;; ;; :PROPERTIES:
-;; ;; :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
-;; ;; :END:
-
-;; ;; ** csv-mode
-;; ;; :PROPERTIES:
-;; ;; :ID:       b6f5b8b6-522e-4817-b3f8-ca6dbc50a2e2
-;; ;; :TYPE:     git
-;; ;; :HOST:     github
-;; ;; :REPO:     "emacs-straight/csv-mode"
-;; ;; :FILES:    ("*" (:exclude ".git"))
-;; ;; :PACKAGE:  "csv-mode"
-;; ;; :LOCAL-REPO: "csv-mode"
-;; ;; :COMMIT:   "635337407c44c1c3e9f7052afda7e27cf8a05c14"
-;; ;; :END:
-
-;; ;; *** align
-;; ;; :PROPERTIES:
-;; ;; :ID:       c8999694-08ec-4882-96fa-7e2f09204518
-;; ;; :END:
-
-;; (void-add-hook 'csv-mode-hook #'csv-align-mode)
-
-;; ;; *** add to mode list
-;; ;; :PROPERTIES:
-;; ;; :ID:       bb7d7cc9-8ee0-4e07-ae44-074305098a85
-;; ;; :END:
-
-
-;; ;; *** TODO csv
-;; ;; :PROPERTIES:
-;; ;; :ID:       e5b591e4-a261-4a36-90d0-b370cda73a47
-;; ;; :END:
-
-;; (use-package! csv-mode
-;;   :mode "\\.csv\\'"
-;;   :hook (csv-mode-hook . csv-align-mode))
-
-;; ;; ** lisp
-;; ;; :PROPERTIES:
-;; ;; :ID: 9b7ec12e-e62b-447a-90dd-2fef0cc952ad
-;; ;; :END:
-
-;; ;; *** sly
-;; ;; :PROPERTIES:
-;; ;; :ID: 2e4ddfa7-2243-458c-8045-ef4a9f652d9c
-;; ;; :END:
-
-;; ;; [[https://github.com/joaotavora/sly][sly]] is an alternative to [[https://github.com/slime/slime][slime]].
-
-;; (use-package! sly
-;;   :system-ensure sbcl
-;;   :setq (inferior-lisp-program . "/usr/bin/sbcl"))
-
-;; ;; *** clojure
-;; ;; :PROPERTIES:
-;; ;; :ID: 7941233e-6524-4da1-b6d9-05faf8991824
-;; ;; :END:
-
-;; ;; [[https://github.com/clojure-emacs/cider][cider]] is a repl for clojure.
-
-;; (use-package! cider
-;;   :system-ensure clojure
-;;   :commands cider)
-
-;; ;; *** emacs lisp
-;; ;; :PROPERTIES:
-;; ;; :ID: f90ab909-dd53-41ca-bc77-849fb89ac6c8
-;; ;; :END:
-
-;; ;; **** printing
-;; ;; :PROPERTIES:
-;; ;; :ID: 954a5a72-1db9-4a40-b9cb-e9099bfd0f83
-;; ;; :END:
-
-;; (setq eval-expression-print-length nil)
-;; (setq eval-expression-print-level nil)
-
-;; ;; **** electric-pair
-;; ;; :PROPERTIES:
-;; ;; :ID: 1febf5ab-f545-4a72-97ef-892740575a3a
-;; ;; :END:
-
-
-;; ;; **** fix elisp indentation
-;; ;; :PROPERTIES:
-;; ;; :ID: aa7f846f-8802-4c75-88d8-a438e2f63ccd
-;; ;; :END:
-
-;; ;; A problem with elisp indentation is indents quoted lists the way functions
-;; ;; should be indented. It has been discussed in at least three stackoverflow
-;; ;; questions [[https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned/10233#10233][here]], [[https://stackoverflow.com/questions/49222433/align-symbols-in-plist][here]] and [[https://stackoverflow.com/questions/22166895/customize-elisp-plist-indentation][here]]. In all these questions the solutions have not
-;; ;; been satisfactory. Some of them recommend using [[helpfn:common-lisp-indent-function][common-lisp-indent-function]] as
-;; ;; the value of [[helpvar:lisp-indent-function][lisp-indent-function]]. This works for indenting a quoted list
-;; ;; properly, but at the expense of changing the way that many other elisp forms are
-;; ;; indented. Common Lisp's indentation is different from Elisp's. Others recommend
-;; ;; using [[https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L12-L94][Fuco1's lisp indent function hack]]. This also is not ideal. For one thing
-;; ;; it only works for quoted lists with keywords but not generic symbols. Another
-;; ;; thing is that the change should really be occurring in [[helpfn:calculate-lisp-indent][calculate-lisp-indent]].
-;; ;; ~calculate-lisp-indent~ is a function that returns what the indentation should
-;; ;; be for the line at point. Since Fuco1 did not modify ~calculate-lisp-indent~ the
-;; ;; wrong indentation still returned by this function and the modified
-;; ;; ~lisp-indent-function~ just cleans up the mess. Better is just fixing the source
-;; ;; of the problem. You can check out a more in-depth explanation looking at my
-;; ;; [[https://www.reddit.com/r/emacs/comments/d7x7x8/finally_fixing_indentation_of_quoted_lists/][reddit-post]] or looking at an answer I gave to [[https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned][this question]].
-
-;; (defadvice! properly-calculate-indent (:override calculate-lisp-indent)
-;;   "Add better indentation for quoted and backquoted lists.
-;; The change to this function."
-;;   (defvar calculate-lisp-indent-last-sexp)
-;;   (save-excursion
-;;     (beginning-of-line)
-;;     (let ((indent-point (point))
-;;           state
-;;           ;; setting this to a number inhibits calling hook
-;;           (desired-indent nil)
-;;           (retry t)
-;;           calculate-lisp-indent-last-sexp containing-sexp)
-;;       (cond ((or (markerp <parse-start>) (integerp <parse-start>))
-;;              (goto-char <parse-start>))
-;;             ((null <parse-start>) (beginning-of-defun))
-;;             (t (setq state <parse-start>)))
-;;       (unless state
-;;         ;; Find outermost containing sexp
-;;         (while (< (point) indent-point)
-;;           (setq state (parse-partial-sexp (point) indent-point 0))))
-;;       ;; Find innermost containing sexp
-;;       (while (and retry
-;;                   state
-;;                   (> (elt state 0) 0))
-;;         (setq retry nil)
-;;         (setq calculate-lisp-indent-last-sexp (elt state 2))
-;;         (setq containing-sexp (elt state 1))
-;;         ;; Position following last unclosed open.
-;;         (goto-char (1+ containing-sexp))
-;;         ;; Is there a complete sexp since then?
-;;         (if (and calculate-lisp-indent-last-sexp
-;;                  (> calculate-lisp-indent-last-sexp (point)))
-;;             ;; Yes, but is there a containing sexp after that?
-;;             (let ((peek (parse-partial-sexp calculate-lisp-indent-last-sexp
-;;                                             indent-point 0)))
-;;               (if (setq retry (car (cdr peek))) (setq state peek)))))
-;;       (if retry
-;;           nil
-;;         ;; Innermost containing sexp found
-;;         (goto-char (1+ containing-sexp))
-;;         (if (not calculate-lisp-indent-last-sexp)
-;;             ;; indent-point immediately follows open paren.
-;;             ;; Don't call hook.
-;;             (setq desired-indent (current-column))
-;;           ;; Find the start of first element of containing sexp.
-;;           (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
-;;           (cond ((looking-at "\\s(")
-;;                  ;; First element of containing sexp is a list.
-;;                  ;; Indent under that list.
-;;                  )
-;;                 ((> (save-excursion (forward-line 1) (point))
-;;                     calculate-lisp-indent-last-sexp)
-;;                  ;; This is the first line to start within the containing sexp.
-;;                  ;; It's almost certainly a function call.
-;;                  (if (or
-;;                       (= (point) calculate-lisp-indent-last-sexp)
-
-;;                       (when-let (after (char-after (1+ containing-sexp)))
-;;                         (char-equal after ?:))
-
-;;                       (when-let (point (char-before containing-sexp))
-;;                         (char-equal point ?'))
-
-;;                       (let ((quoted-p nil)
-;;                             (point nil)
-;;                             (positions (nreverse (butlast (elt state 9)))))
-;;                         (while (and positions (not quoted-p))
-;;                           (setq point (pop positions))
-;;                           (setq quoted-p
-;;                                 (or
-;;                                  (and (char-before point)
-;;                                       (char-equal (char-before point) ?'))
-;;                                  (save-excursion
-;;                                    (goto-char (1+ point))
-;;                                    (looking-at-p "quote[\t\n\f\s]+(")))))
-;;                         quoted-p))
-;;                      ;; Containing sexp has nothing before this line
-;;                      ;; except the first element.  Indent under that element.
-;;                      nil
-;;                    ;; Skip the first element, find start of second (the first
-;;                    ;; argument of the function call) and indent under.
-;;                    (progn (forward-sexp 1)
-;;                           (parse-partial-sexp (point)
-;;                                               calculate-lisp-indent-last-sexp
-;;                                               0 t)))
-;;                  (backward-prefix-chars))
-;;                 (t
-;;                  ;; Indent beneath first sexp on same line as
-;;                  ;; `calculate-lisp-indent-last-sexp'.  Again, it's
-;;                  ;; almost certainly a function call.
-;;                  (goto-char calculate-lisp-indent-last-sexp)
-;;                  (beginning-of-line)
-;;                  (parse-partial-sexp (point) calculate-lisp-indent-last-sexp
-;;                                      0 t)
-;;                  (backward-prefix-chars)))))
-;;       ;; Point is at the point to indent under unless we are inside a string.
-;;       ;; Call indentation hook except when overridden by lisp-indent-offset
-;;       ;; or if the desired indentation has already been computed.
-;;       (let ((normal-indent (current-column)))
-;;         (cond ((elt state 3)
-;;                ;; Inside a string, don't change indentation.
-;;                nil)
-;;               ((and (integerp lisp-indent-offset) containing-sexp)
-;;                ;; Indent by constant offset
-;;                (goto-char containing-sexp)
-;;                (+ (current-column) lisp-indent-offset))
-;;               ;; in this case calculate-lisp-indent-last-sexp is not nil
-;;               (calculate-lisp-indent-last-sexp
-;;                (or
-;;                 ;; try to align the parameters of a known function
-;;                 (and lisp-indent-function
-;;                      (not retry)
-;;                      (funcall lisp-indent-function indent-point state))
-;;                 ;; If the function has no special alignment
-;;                 ;; or it does not apply to this argument,
-;;                 ;; try to align a constant-symbol under the last
-;;                 ;; preceding constant symbol, if there is such one of
-;;                 ;; the last 2 preceding symbols, in the previous
-;;                 ;; uncommented line.
-;;                 (and (save-excursion
-;;                        (goto-char indent-point)
-;;                        (skip-chars-forward " \t")
-;;                        (looking-at ":"))
-;;                      ;; The last sexp may not be at the indentation
-;;                      ;; where it begins, so find that one, instead.
-;;                      (save-excursion
-;;                        (goto-char calculate-lisp-indent-last-sexp)
-;;                        ;; Handle prefix characters and whitespace
-;;                        ;; following an open paren.  (Bug#1012)
-;;                        (backward-prefix-chars)
-;;                        (while (not (or (looking-back "^[ \t]*\\|([ \t]+"
-;;                                                      (line-beginning-position))
-;;                                        (and containing-sexp
-;;                                             (>= (1+ containing-sexp) (point)))))
-;;                          (forward-sexp -1)
-;;                          (backward-prefix-chars))
-;;                        (setq calculate-lisp-indent-last-sexp (point)))
-;;                      (> calculate-lisp-indent-last-sexp
-;;                         (save-excursion
-;;                           (goto-char (1+ containing-sexp))
-;;                           (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
-;;                           (point)))
-;;                      (let ((parse-sexp-ignore-comments t)
-;;                            indent)
-;;                        (goto-char calculate-lisp-indent-last-sexp)
-;;                        (or (and (looking-at ":")
-;;                                 (setq indent (current-column)))
-;;                            (and (< (line-beginning-position)
-;;                                    (prog2 (backward-sexp) (point)))
-;;                                 (looking-at ":")
-;;                                 (setq indent (current-column))))
-;;                        indent))
-;;                 ;; another symbols or constants not preceded by a constant
-;;                 ;; as defined above.
-;;                 normal-indent))
-;;               ;; in this case calculate-lisp-indent-last-sexp is nil
-;;               (desired-indent)
-;;               (t
-;;                normal-indent))))))
-
-;; ;; **** highlight-quoted
-;; ;; :PROPERTIES:
-;; ;; :ID: afacf700-86a9-4c1b-9062-7a28c11dcf69
-;; ;; :END:
-
-;; ;; [[https://github.com/Fanael/highlight-quoted][highlight-quoted]] highlights quotes, backticks and.
-
-;; (use-package! highlight-quoted
-;;   :hook emacs-lisp-mode)
-
-;; ;; **** buttercup
-;; ;; :PROPERTIES:
-;; ;; :ID: 228fb805-620d-4519-822f-f633540f7b58
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    (:defaults "bin" "buttercup-pkg.el")
-;; ;; :HOST:     github
-;; ;; :REPO:     "jorgenschaefer/emacs-buttercup"
-;; ;; :PACKAGE:  "buttercup"
-;; ;; :LOCAL-REPO: "emacs-buttercup"
-;; ;; :COMMIT:   "f6f93353405cda51ad2778ae9247f77265b7cbfb"
-;; ;; :END:
-
-;; ;; [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is an emacs debugging suite.
-
-;; ;; **** outorg
-;; ;; :PROPERTIES:
-;; ;; :ID: a3461ce0-8c5d-4bea-950e-b18ea6422672
-;; ;; :END:
-
-;; ;; Outorg adds overlays to make an org buffer look more readable. I do not want
-;; ;; these overlays.
-
-;; (use-package! outorg
-;;   ;; TODO: should be changed to `:functions'
-;;   :commands outorg-convert-back-to-code outorg-convert-to-org)
-
-;; (defadvice! dont-add-overlays (:around outorg-wrap-source-in-block)
-;;   (cl-letf (((symbol-function #'overlay-put) #'ignore))
-;;     (apply <orig-fn> <args>)))
-
-;; ;; **** outshine
-;; ;; :PROPERTIES:
-;; ;; :ID: ffeddf0d-aa29-473f-b73c-d94971d91da9
-;; ;; :END:
-
-;; ;; [[https://github.com/alphapapa/outshine][outshine]] is a clever package that tries to make elisp mode more like org mode.
-;; ;; It colors certain comments like org headings, and adds function for convertion
-;; ;; from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with =outshine= in mind.
-
-;; (void-add-hook 'emacs-lisp-mode-hook #'outshine-mode)
-
-;; (defun outshine:dwim-next-line ()
-;;   (interactive)
-;;   (if (outline-on-heading-p)
-;;       (outline-next-visible-heading 1)
-;;     (call-interactively #'evil-next-line)))
-
-;; (defun outshine:dwim-previous-line ()
-;;   (interactive)
-;;   (if (outline-on-heading-p)
-;;       (outline-previous-visible-heading 1)
-;;     (call-interactively #'evil-previous-line)))
-
-;; ;; TODO: make outshine-mode-map take precedence over normal/elisp-mode maps.
-;; ;; TODO: better binding system so I can advise instead of make wrappers.
-;; (general-def '(normal) emacs-lisp-mode-map
-;;   "TAB" #'outshine-toggle-children
-;;   "j" #'outshine:dwim-next-line
-;;   "k" #'outshine:dwim-previous-line
-;;   "b" (lambda () (interactive) (outline-back-to-heading)))
-
-;; ;; **** macrostep
-;; ;; :PROPERTIES:
-;; ;; :ID:       ecf2ab24-c3a0-4a72-8ba3-b5c1ed4a3f0a
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "joddie/macrostep"
-;; ;; :PACKAGE:  "macrostep"
-;; ;; :LOCAL-REPO: "macrostep"
-;; ;; :COMMIT:   "424e3734a1ee526a1bd7b5c3cd1d3ef19d184267"
-;; ;; :END:
-
-;; ;; ***** commands
-;; ;; :PROPERTIES:
-;; ;; :ID:       c6a0b556-8a8a-4abf-a920-87fff7ab078d
-;; ;; :END:
-
-;; ;; ***** macrostep
-;; ;; :PROPERTIES:
-;; ;; :ID: 81e59dcc-7e23-4dd1-9917-06f0ab59f2a6
-;; ;; :END:
-
-;; ;; [[https://github.com/joddie/macrostep][macrostep]]
-
-;; (use-package! macrostep
-;;   :commands
-;;   macrostep-expand
-;;   macrostep-collapse
-;;   macrostep-collapse-all
-;;   :init (define-localleader-key!
-;;           :infix "m"
-;;           :keymaps 'emacs-lisp-mode-map
-;;           "e" (list :def #'macrostep-expand :wk "expand")
-;;           "c" (list :def #'macrostep-collapse :wk "collapse")
-;;           "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
-
-;; ;; *** hy
-;; ;; :PROPERTIES:
-;; ;; :ID: 6b62fbdd-448b-4b69-82f8-1e1231a10c3e
-;; ;; :END:
-
-;; (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
-
-;; ;; ** markdown-mode
-;; ;; :PROPERTIES:
-;; ;; :ID: 9d684855-961a-4294-8b90-44d2796526e2
-;; ;; :END:
-
-;; ;; I'm adding [[https://github.com/jrblevin/markdown-mode][markdown-mode]] so I can see =README= files.
-
-;; (use-package! markdown-mode :mode "\\.md\\'")
-
-;; ;; ** org
-;; ;; :PROPERTIES:
-;; ;; :ID: 7fd3bb4f-354c-4427-914c-9de2223f5646
-;; ;; :END:
-
-;; ;; Org mode introduces an elegant way of dealing with different languages in one
-;; ;; file. In an org file the background language is Org's own markup language that's
-;; ;; typically composed mostly of outline headlines. In the org markup language you
-;; ;; can embed multiple different languages in [[info:org#Editing Source Code][source blocks]]. Additionally, org
-;; ;; mode provides a library of functions for dealing with these files. This includes
-;; ;; things like executing (or evaluating) source blocks, moving headlines to other
-;; ;; files, or even converting an org mode document into another format. As the name
-;; ;; =org= suggests, org is tool that's used for organization of data.
-
-;; ;; *** do the right thing after jumping to headline
-;; ;; :PROPERTIES:
-;; ;; :ID:       2ca61454-a0ca-47b3-8622-91d7969653da
-;; ;; :END:
-
-;; ;; When I search for a headline with [[helpfn:void/goto-line][void/goto-line]] or [[helpfn:void/goto-headline][void/goto-headline]] or even their
-;; ;; counsel equivalents, the proper headlines aren't automatically revealed.
-
-;; ;; [[screenshot:][This]] is what headline structure looks after using counsel/ivy's [[helpfn:swiper][swiper]] to find
-;; ;; the word =void/goto-line= in my emacs. You can see that only the headline that has
-;; ;; the target word is revealed but it's parents are (akwardly) hidden. I never want
-;; ;; headlines to be unfolded like this.
-
-;; ;; **** show branch
-;; ;; :PROPERTIES:
-;; ;; :ID:       d95fab52-7d8f-439f-9221-188490f4ad5f
-;; ;; :END:
-
-;; ;; This shows all headlines that make up the branch of the current headine and
-;; ;; their children. This is the typical behavior you would expect in any outlining
-;; ;; program.
-
-;; (defun org:show-branch ()
-;;   "Reveal the current org branch.
-;; Show all of the current headine's parents and their children. This includes this
-;; headline."
-;;   (let (points)
-;;     (save-excursion
-;;       (org-back-to-heading t)
-;;       (push (point) points)
-;;       (while (org-up-heading-safe)
-;;         (push (point) points))
-;;       (--each points
-;;         (goto-char it)
-;;         (outline-show-children)
-;;         (outline-show-entry)))))
-
-;; ;; **** show branch after jumping to point
-;; ;; :PROPERTIES:
-;; ;; :ID:       251e5df0-0a7d-4bf9-8fd9-69991d89a074
-;; ;; :END:
-
-;; ;; Note that I use points to store the heading points and go back to them inreverse
-;; ;; order. This is important because org does not unfold headlines properly if you
-;; ;; start from an invisible subheading.
-
-;; ;; Notably, I do not try to conserve the return value of =void/goto-line= or
-;; ;; =void/jump-to-headline= because these functions are and should only be used for
-;; ;; their side-effects.
-
-;; (defadvice! show-current-branch-in-org-mode (:after void/goto-line org/goto-headline)
-;;   "Properly unfold nearby headlines and reveal current headline."
-;;   (when (eq major-mode 'org-mode)
-;;     (org:show-branch)))
-
-;; ;; *** structures
-;; ;; :PROPERTIES:
-;; ;; :ID: 85ac0a35-4e44-41e6-a1f1-54698cb86212
-;; ;; :END:
-
-;; ;; **** todo-keywords
-;; ;; :PROPERTIES:
-;; ;; :ID: a32da379-654e-4b1a-83f4-cf9e4003d578
-;; ;; :END:
-
-;; ;; ***** todo keywords
-;; ;; :PROPERTIES:
-;; ;; :ID: 2f0459d4-9afd-4fd9-bdba-c0a3dc993963
-;; ;; :END:
-
-;; (after! org
-;;   (setq org-todo-keywords
-;;         '((sequence "TODO" "NEXT" "STARTED" "|" "DONE")
-;;           (sequence "QUESTION" "NEXT" "INVESTIGATING" "|" "ANSWERED")
-;;           (sequence "|" "PAUSED")
-;;           (sequence "|" "CANCELLED"))))
-
-;; ;; ***** return todo-keywords
-;; ;; :PROPERTIES:
-;; ;; :ID: 38385aee-1326-46d8-9eef-3bfa2e57c0cc
-;; ;; :END:
-
-;; ;; Knowing what the exact todo-keywords are is important so that I know exactly
-;; ;; when headline contents begin.
-
-;; (defun org:todo-keywords ()
-;;   "Return list of all TODO keywords."
-;;   (--filter (and (stringp it) (not (string= "|" it)))
-;;             (flatten-list org-todo-keywords)))
-
-;; ;; ***** heading start
-;; ;; :PROPERTIES:
-;; ;; :ID: 0ebf90e8-cd14-4364-b26a-da6676b29089
-;; ;; :END:
-
-;; (defun org:heading-start-regexp ()
-;;   "Compute regexp for heading start."
-;;   (rx-to-string `(: bol (1+ "*") space (opt (or ,@(org:todo-keywords)) space))))
-
-;; (defun org:heading-goto-start ()
-;;   "Go to first letter of headline."
-;;   (let (case-fold-search)
-;;     (beginning-of-line)
-;;     (re-search-forward (org:heading-start-regexp)
-;;                        (line-end-position))))
-
-;; ;; **** return
-;; ;; :PROPERTIES:
-;; ;; :ID: c161f1b0-dbc0-4240-8102-69e95f3fd62f
-;; ;; :END:
-
-;; (defun org/dwim-return ()
-;;   "Do what I mean."
-;;   (interactive)
-;;   (cond
-;;    (and (org-at-heading-p)
-;;         (looking-at-p (rx (* (or "\s" "\t"))
-;;                           (opt (1+ ":" (1+ letter)) ":") eol)))
-;;    (org/insert-heading-below)
-;;    (t
-;;     (call-interactively #'org-return))))
-
-;; ;; **** org-heading-folded-p
-;; ;; :PROPERTIES:
-;; ;; :ID: 919b2b6e-2c43-4fd5-87cc-cfc62cf75405
-;; ;; :END:
-
-;; (defun org:heading-folded-p ()
-;;   "Return t if an current heading is folded."
-;;   (outline-invisible-p (line-end-position)))
-
-;; ;; **** preserve point
-;; ;; :PROPERTIES:
-;; ;; :ID: 52781cc9-e1ca-4618-aa1b-6845494b5dc6
-;; ;; :END:
-
-;; ;; If possible org commands should preserve =point=. If this isn't possible (ie. when
-;; ;; deleting a subtree with), then should leave point at a place that is easy to
-;; ;; predict and convenient (as opposed to a random location).
-
-;; ;; ***** start on beginning of first heading
-;; ;; :PROPERTIES:
-;; ;; :ID: 81732dde-85f7-4336-a9fd-351d8f74671f
-;; ;; :END:
-
-;; ;; It looks nice if when I'm on a heading when I first enter an org file.
-
-;; (defhook! goto-first-heading (org-mode-hook)
-;;   "Go to first heading when entering an org-mode file."
-;;   (when (org-at-heading-p)
-;;     (beginning-of-line)
-;;     (org:heading-goto-start)))
-
-;; ;; ***** fix bug with next visible heading
-;; ;; :PROPERTIES:
-;; ;; :ID: 9a3759e8-8928-47cb-97c9-9ce5ee673cba
-;; ;; :END:
-
-;; ;; [[helpfn:outline-next-visible-heading][outline-next-visible-heading]] continues to =EOB= after reaching the last visible
-;; ;; heading. It should just stop at the last visible heading. This advice checks to
-;; ;; see if it's gone farther than it should have and in that case goes back.
-
-;; (defadvice! dont-end-at-eob (:around outline-next-visible-heading)
-;;   "Fix bug where the next heading moves past last visible heading."
-;;   (apply <orig-fn> <args>)
-;;   (when (eobp) (apply #'outline-previous-visible-heading <args>)))
-
-;; ;; ***** go to proper point after refile
-;; ;; :PROPERTIES:
-;; ;; :ID: 591045df-8d3e-4ff7-b4bc-c949222a0717
-;; ;; :END:
-
-;; (defadvice! end-at-headline-start (:after org-refile org-cut-subtree org-copy-subtree)
-;;   "After running body end at headline start."
-;;   (when (org-at-heading-p) (org:heading-goto-start)))
-
-;; ;; **** commands
-;; ;; :PROPERTIES:
-;; ;; :ID: 86f0b9be-0033-46bd-8d02-7e506fe73ead
-;; ;; :END:
-
-;; ;; ***** org choose capture template
-;; ;; :PROPERTIES:
-;; ;; :ID:       fc2cf818-48c4-4e52-8356-56106623ad77
-;; ;; :END:
-
-;; (defun org/choose-capture-template ()
-;;   "Select capture template."
-;;   (interactive)
-;;   (let (prefixes)
-;;     (alet (mapcan (lambda (x)
-;;                     (let ((x-keys (car x)))
-;;                       ;; Remove prefixed keys until we get one that matches the current item.
-;;                       (while (and prefixes
-;;                                   (let ((p1-keys (caar prefixes)))
-;;                                     (or
-;;                                      (<= (length x-keys) (length p1-keys))
-;;                                      (not (string-prefix-p p1-keys x-keys)))))
-;;                         (pop prefixes))
-;;                       (if (> (length x) 2)
-;;                           (let ((desc (mapconcat #'cadr (reverse (cons x prefixes)) " | ")))
-;;                             (list (format "%-5s %s" x-keys desc)))
-;;                         (push x prefixes)
-;;                         nil)))
-;;                   (-> org-capture-templates
-;;                       (org-capture-upgrade-templates)
-;;                       (org-contextualize-keys org-capture-templates-contexts)))
-;;       (funcall #'org-capture nil (car (split-string (completing-read "Capture template: " it nil t)))) )))
-
-;; ;; ***** org choose tags
-;; ;; :PROPERTIES:
-;; ;; :ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
-;; ;; :END:
-
-;; (defun org/choose-tags ()
-;;   "Select tags to add to headline."
-;;   (interactive)
-;;   (let* ((current (org-get-tags (point)))
-;;          (selected (->> (org-get-buffer-tags)
-;;                         (completing-read-multiple "Select org tag(s): "))))
-;;     (alet (-distinct (append (-difference current selected)
-;;                              (-difference selected current)))
-;;       (message "%S" it)
-;;       (org-set-tags it))))
-
-;; ;; ***** org outline headings
-;; ;; :PROPERTIES:
-;; ;; :ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
-;; ;; :END:
-
-;; ;; Annoyingly, the first time you call org/goto-headline, a prompt from
-;; ;; =org-goto-location= is triggered and somehow the call to =org/goto-headline= is
-;; ;; canceled. I had a damingly difficult time figuring out where exactly this
-;; ;; happens (and I didn't actually figure it out). However, overriding
-;; ;; =org-goto-location= seems to work. If I end up having some problems with other
-;; ;; calls to =org-goto-location=, I'll advise it only within the body. Or even better
-;; ;; create a transient advice that only happens the first time the function is
-;; ;; called.
-
-;; (advice-add #'org-goto-location :override
-;;             (lambda (&rest _) (call-interactively #'org/goto-headline)))
-
-;; (defun org/goto-headline ()
-;;   "Jump to an org heading using selectrum."
-;;   (interactive)
-;;   (require 'org-refile)
-;;   (let ((selectrum-should-sort-p nil)
-;;         (org-outline-path-complete-in-steps nil)
-;;         (org-goto-interface 'outline-path-completion))
-;;     (org-goto)))
-
-;; ;; ***** dwim
-;; ;; :PROPERTIES:
-;; ;; :ID: 93a6e45c-b23b-4639-9e1c-9f1aef0fb95a
-;; ;; :END:
-
-;; ;; ****** insert
-;; ;; :PROPERTIES:
-;; ;; :ID: 1b8ccbb8-2614-4d2e-ab7c-e8bd23c2c02d
-;; ;; :END:
-
-;; (defun org/dwim-insert-elisp-block ()
-;;   "Insert elisp block."
-;;   (interactive)
-;;   (save-excursion
-;;     (unless (org-at-heading-p)
-;;       (org-back-to-heading))
-;;     (org-end-of-subtree)
-;;     (goto-char (line-end-position))
-;;     (insert (concat "\n\n"
-;;                     "#+begin_src emacs-lisp"
-;;                     "\n"
-;;                     "#+end_src"))
-;;     (forward-line -1)))
-
-;; ;; ****** eval
-;; ;; :PROPERTIES:
-;; ;; :ID: e804805a-ba96-41d0-aa6f-6756c65e9abf
-;; ;; :END:
-
-;; (defun org/dwim-eval-block ()
-;;   "Eval block contents."
-;;   (interactive)
-;;   (unless (org-at-heading-p)
-;;     (user-error "Not in source block"))
-;;   (save-window-excursion
-;;     (org-babel-execute-subtree)))
-
-;; ;; ****** next-line
-;; ;; :PROPERTIES:
-;; ;; :ID: d8d118a7-78e8-4602-81b3-17fd1d8ab79c
-;; ;; :END:
-
-;; (defun org/dwim-next-line (&optional backward)
-;;   "Go to the start of the next heading.
-;; If DIR is a negative integer, go the opposite direction: the start of the
-;;   previous heading."
-;;   (interactive)
-;;   (outline-next-visible-heading (if backward -1 1))
-;;   (when (org-at-heading-p)
-;;     (org:heading-goto-start)))
-
-;; ;; ****** previous-line
-;; ;; :PROPERTIES:
-;; ;; :ID: e7562921-77ca-4d90-be57-1d586ec26ee5
-;; ;; :END:
-
-;; (defun org/dwim-previous-line (&optional forward)
-;;   (interactive)
-;;   (funcall #'org/dwim-next-line (not forward)))
-
-;; ;; ****** up-heading
-;; ;; :PROPERTIES:
-;; ;; :ID: 1f25d3b0-7280-4012-94b5-b0fea2f686b3
-;; ;; :END:
-
-;; (defun org/dwim-up-heading ()
-;;   ""
-;;   (interactive)
-;;   (condition-case nil
-;;       (progn (outline-up-heading 1)
-;;              (outline-hide-subtree)
-;;              (outline-show-children)
-;;              (org:heading-goto-start))
-;;     (error
-;;      (unless (outline-invisible-p (line-end-position))
-;;        (outline-hide-subtree))
-;;      (org:heading-goto-start))))
-
-;; ;; ***** jump to heading                                                      :avy:
-;; ;; :PROPERTIES:
-;; ;; :ID: 3c396b33-437c-410f-aff6-2106ade42621
-;; ;; :END:
-
-;; (defun org/avy-goto-headline ()
-;;   "Jump to the beginning of a visible heading using `avy'."
-;;   (interactive)
-;;   (org-back-to-heading)
-;;   (avy-jump (rx bol (1+ "*") space (group nonl))
-;;             :beg (window-start)
-;;             :end (window-end)
-;;             :pred `(lambda () (/= (1+ ,(point)) (point)))
-;;             :action (lambda (point) (goto-char point)
-;;                       (org:heading-goto-start))
-;;             :group 1))
-
-;; ;; ***** dwim jump to heading
-;; ;; :PROPERTIES:
-;; ;; :ID: 7ad9d757-57ba-4537-821f-8beae57f39eb
-;; ;; :END:
-
-;; (defun org/dwim-jump-to-heading ()
-;;   ""
-;;   (interactive)
-;;   (let ((origin (point)))
-;;     (if (and (org/avy-goto-headline)
-;;              (org:heading-folded-p))
-;;         (progn (outline-toggle-children)
-;;                (org:scroll-window-to-top))
-;;       (goto-char origin))))
-
-;; ;; ***** inserting
-;; ;; :PROPERTIES:
-;; ;; :ID: e99abeff-328b-48e4-aebb-00db34fa98e8
-;; ;; :END:
-
-;; ;; In my eyes, many Org functions are unnecessarily complicated and long. Often they
-;; ;; need to perform a simple task (like inserting a heading) but lose their
-;; ;; fundamental purpose in their inclusion of numerous obscure and opinionated
-;; ;; options. For this reason I wrote my own insert heading functions.
-
-;; ;; ****** newlines between headings
-;; ;; :PROPERTIES:
-;; ;; :ID: e0dcf718-120c-488d-9d37-96243132bf0b
-;; ;; :END:
-
-;; (defvar org:newlines-between-headings "\n\n"
-;;   "Number of newlines between headings.")
-
-;; ;; ****** heading above
-;; ;; :PROPERTIES:
-;; ;; :ID: 6c227dea-e10b-4f86-a01b-5d223d18e3a4
-;; ;; :END:
-
-;; (defun org/insert-heading-above (&optional below)
-;;   "Insert a heading above the current heading."
-;;   (interactive)
-;;   (funcall #'org/insert-heading-below (not below)))
-
-;; ;; ****** heading below
-;; ;; :PROPERTIES:
-;; ;; :ID: b059a431-e29c-4f2c-ab5e-8d2d02636405
-;; ;; :END:
-
-;; (defun org/insert-heading-below (&optional above)
-;;   "Insert heading below."
-;;   (interactive)
-;;   (let* ((on-heading-p (ignore-errors (org-back-to-heading)))
-;;          (newlines org:newlines-between-headings)
-;;          (level (or (org-current-level) 1))
-;;          (heading (concat (make-string level ?*) "\s")))
-;;     (cond ((not on-heading-p)
-;;            (insert heading))
-;;           (above
-;;            (goto-char (line-beginning-position))
-;;            (insert heading)
-;;            (save-excursion (insert newlines)))
-;;           (t ; below
-;;            (org-end-of-subtree)
-;;            (insert (concat newlines heading))))
-;;     (run-hooks 'org-insert-heading-hook)))
-
-;; ;; ****** subheading
-;; ;; :PROPERTIES:
-;; ;; :ID: cf910dcf-6250-4b6a-80d5-63ac457d4a81
-;; ;; :END:
-
-;; (defun org/insert-subheading ()
-;;   "Insert subheading below current heading."
-;;   (interactive)
-;;   (org/insert-heading-below)
-;;   (org-demote))
-
-;; ;; *** source blocks
-;; ;; :PROPERTIES:
-;; ;; :ID:       480f4384-b560-4a47-978d-0c8058519294
-;; ;; :END:
-
-;; ;; **** source blocks
-;; ;; :PROPERTIES:
-;; ;; :ID: 2bb1b8ef-f41c-4dfa-8e47-549326f7ce05
-;; ;; :END:
-
-;; ;; Many of these =org-src= variables are not very applicable to me anymore because I
-;; ;; use =edit-indirect= to edit source blocks.
-;; ;; :PROPERTIES:
-;; ;; :ID: 3329768f-2669-43be-ad85-da2239082cc2
-;; ;; :END:
-
-;; (use-feature! org-src
-;;   :popup ("\\*Org Src"
-;;           (display-buffer-at-bottom)
-;;           (window-height . 0.5))
-;;   :setq
-;;   (org-edit-src-persistent-message . nil)
-;;   (org-src-window-setup . 'plain)
-;;   (org-src-fontify-natively . t)
-;;   (org-src-ask-before-returning-to-edit-buffer . nil)
-;;   (org-src-preserve-indentation . t)
-;;   (org-src-tab-acts-natively . t)
-;;   (org-confirm-babel-evaluate . nil)
-;;   (org-babel-default-header-args . '((:session . "none")
-;;                                      (:results . "silent")
-;;                                      (:exports . "code")
-;;                                      (:cache . "no")
-;;                                      (:initeb . "no")
-;;                                      (:hlines . "no")
-;;                                      (:tangle . "yes"))))
-
-;; ;; **** edit source blocks
-;; ;; :PROPERTIES:
-;; ;; :ID:       a0e1c9d6-9071-4c6f-abc4-d2e9f011be03
-;; ;; :END:
-
-;; (defun org/dwim-edit-source-block ()
-;;   "Edit source block in current heading.
-;; Point does not have to be on source block."
-;;   (interactive)
-;;   (let ((org-src-window-setup 'plain))
-;;     (org-back-to-heading)
-;;     (org-next-block 1)
-;;     (org-edit-src-code)))
-
-;; ;; *** org-mode
-;; ;; :PROPERTIES:
-;; ;; :ID: c1c5724e-028a-42a5-a982-28d57203b335
-;; ;; :END:
-
-;; (use-package! org
-;;   :idle-require
-;;   calendar find-func format-spec org-macs org-compat org-faces org-entities
-;;   org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
-;;   org-capture
-;;   :setq
-;;   (org-directory . VOID-ORG-DIR)
-;;   (org-archive-location . (concat org-directory "archive.org::"))
-;;   (org-default-notes-file . (concat org-directory "notes.org"))
-;;   (org-fontify-emphasized-text . t)
-;;   (org-hide-emphasis-markers . t)
-;;   (org-pretty-entities . t)
-;;   (org-fontify-whole-heading-line . t)
-;;   (org-fontify-done-headline . t)
-;;   (org-fontify-quote-and-verse-blocks . t)
-;;   (org-adapt-indentation . nil)
-;;   (org-cycle-separator-lines . 2)
-;;   (outline-blank-line . t)
-;;   (org-enforce-todo-dependencies . t)
-;;   (org-use-fast-tag-selection . nil)
-;;   (org-tags-column . -80)
-;;   (org-tag-alist . nil)
-;;   (org-log-done . 'time))
-
-;; ;; *** asthetic
-;; ;; :PROPERTIES:
-;; ;; :ID: 52f5560d-6e52-4234-88d8-d326bc97525a
-;; ;; :END:
-
-;; ;; To be honest, org mode has some pretty ugly syntax. The asterixes at the
-;; ;; beginning of a heading are ugly, org block end and begin lines are ugly,
-;; ;; property drawers are ugly. For a nice-looking, minimal, and non-distracting
-;; ;; appearance all this needs to be improved.
-
-;; ;; **** visibility
-;; ;; :PROPERTIES:
-;; ;; :ID: 71462363-ddd0-4734-a074-7b00fde06e82
-;; ;; :END:
-
-;; ;; ***** hide lines
-;; ;; :PROPERTIES:
-;; ;; :ID: 533c108a-36d0-4686-9476-2588647402ed
-;; ;; :END:
-;; ;; =hide-lines= is a package which, as its name suggests, hides certain lines.
-;; ;; Specifically, it hides lines that match a regular expression you provide. You
-;; ;; can reveal them with [[helpfn:hide-lines-show-all][hide-lines-show-all]].
-
-;; ;; ****** hide lines
-;; ;; :PROPERTIES:
-;; ;; :ID: a2ea1e7e-5049-4b5e-bb06-4f31cf89ae32
-;; ;; :END:
-
-;; ;; Particularly in boilerplate heavy languages like Org, hiding certain lines can
-;; ;; make reading documents much easier by reducing visual distraction. This package
-;; ;; though is in need of an update. It didn't work out of the box (see [[id:b358f324-9b64-4e83-8168-231ff1ab115d][hide-lines]]
-;; ;; and [[id:a3e62e0a-452b-429c-9558-139e7b83cf80][hl overlay fix]]).
-
-;; (void-autoload 'hide-lines (list #'hide-lines #'hide-lines-matching))
-
-;; ;; ****** =hl= overlay fix
-;; ;; :PROPERTIES:
-;; ;; :ID: a3e62e0a-452b-429c-9558-139e7b83cf80
-;; ;; :END:
-
-;; ;; The line ~(overlay-put overlay 'invisible 'hl)~ in [[helpfn:][hide-lines-add-overlay]] wouldn't
-;; ;; work with the argument =hl=. It works when you set it to =t= instead. Maybe =hl= is
-;; ;; depreciated.
-
-;; (defadvice! fix-adding-overlay (:override hide-lines-add-overlay)
-;;   "Add an overlay from `start' to `end' in the current buffer.
-;; Push the overlay into `hide-lines-invisible-areas'."
-;;   (let ((overlay (make-overlay <start> <end>)))
-;;     (setq hide-lines-invisible-areas (cons overlay hide-lines-invisible-areas))
-;;     (overlay-put overlay 'invisible t)))
-
-;; ;; ****** make sure all lines are hidden
-;; ;; :PROPERTIES:
-;; ;; :ID: b358f324-9b64-4e83-8168-231ff1ab115d
-;; ;; :END:
-
-;; ;; When I tried hiding property drawers [[hfn:hide-lines-matching][hide-lines-matching]] left out the start and
-;; ;; end property lines. Only the property block body was hidden. This advice fixes
-;; ;; this.
-
-;; (defadvice! fix-hide-matching-lines  (:override hide-lines-matching)
-;;   "Hide lines matching the specified regexp."
-;;   (interactive "MHide lines matching regexp: ")
-;;   (set (make-local-variable 'line-move-ignore-invisible) t)
-;;   (save-excursion
-;;     (goto-char (point-min))
-;;     (while (re-search-forward <search-text> nil t)
-;;       (hide-lines-add-overlay (match-beginning 0) (match-end 0)))))
-
-;; ;; ***** toggle org properties
-;; ;; :PROPERTIES:
-;; ;; :ID: c2c54bd5-9148-45e9-a675-154bcbf13674
-;; ;; :END:
-
-;; ;; I want properties to exist--they are useful even if it's just to store an ID.
-;; ;; Yet, like most raw org syntax it looks ugly and takes up a lot of space.
-;; ;; Unless I explicitly ask for properties I don't want to see them.
-
-;; (defun org/hide-property-drawers ()
-;;   "Hide property drawers."
-;;   (interactive)
-;;   (let (selective-display-ellipses org-ellipsis)
-;;     ;; If properties are folded, ellipsis will show.
-;;     (org-show-all '(drawers))
-;;     (hide-lines-matching (concat (s-chop-suffix "$" org-property-re) "\n"))))
-
-;; ;; ***** toggle end source lines
-;; ;; :PROPERTIES:
-;; ;; :ID: 18fdd2a0-df15-486f-97c6-594cba018a3e
-;; ;; :END:
-
-;; (defun org/hide-source-block-delimiters ()
-;;   "Hide property drawers."
-;;   (interactive)
-;;   (let (selective-display-ellipses org-ellipsis)
-;;     ;; If properties are folded, ellipsis will show.
-;;     (org-show-all)
-;;     (hide-lines-matching (rx "#+" (or "begin" "end") "_src" (* nonl) "\n"))))
-
-;; ;; ***** ensure that everything is folded
-;; ;; :PROPERTIES:
-;; ;; :ID: 86437909-e4df-48ae-9e2f-bf364e92cc86
-;; ;; :END:
-
-;; (setq org-startup-folded 'fold)
-
-;; (defadvice! hide-all-property-drawers (:override org-set-startup-visibility)
-;;   "Completely hide all text properties."
-;;   ;; Hide property drawers on startup.
-;;   (org/hide-property-drawers)
-;;   (org-overview))
-
-;; ;; ***** ensure headings are visible
-;; ;; :PROPERTIES:
-;; ;; :ID: c0395fe0-fa69-49c1-94ed-cdbb94031868
-;; ;; :END:
-
-;; ;; Sometimes the heading inserted doesn't remain visible.
-
-;; (defhook! ensure-heading-are-visible (org-insert-heading-hook)
-;;   "Ensure that heading remains visible after insertion."
-;;   (-when-let (o (cdr (get-char-property-and-overlay (point) 'invisible)))
-;;     (move-overlay o (overlay-start o) (line-end-position 0))))
-
-;; ;; ***** display children in window
-;; ;; :PROPERTIES:
-;; ;; :ID: f7a9c5e7-fcf8-434a-a9b3-dbe4eadead78
-;; ;; :END:
-
-;; (defun org:display-children-in-window ()
-;;   "Scroll up window to maximize view of unfolded subtree.
-;; If the subtree is unfolded and the end of the current subtree is outside of the
-;; visible window, scroll up until the whole subtree is visible. If the whole
-;; subtree can't fit on the visible window, only scroll up until the top of the
-;; subtree is on the first line of the window (in other words, the beginning of
-;; th subtree should always be visible)."
-;;   (interactive)
-;;   ;; Don't use `window-beg' and `window-end' because their values are
-;;   ;; unreliable.
-;;   (let ((subtree-beg
-;;          (save-excursion (org-back-to-heading)
-;;                          (line-beginning-position)))
-;;         (subtree-end
-;;          (save-excursion (org-end-of-subtree)
-;;                          (line-end-position))))
-;;     (save-excursion
-;;       (while (and (pos-visible-in-window-p subtree-beg)
-;;                   (not (pos-visible-in-window-p subtree-end)))
-;;         (scroll-up 1))
-;;       ;; Sometimes the line at the end is not fully visible. So I try to
-;;       ;; scroll down an extra line.
-;;       (unless (pos-visible-in-window-p subtree-beg)
-;;         (scroll-down 1)))))
-
-;; ;; ***** ensure children are visible
-;; ;; :PROPERTIES:
-;; ;; :ID: 479455ed-a0be-4ecc-af66-559abf53c77c
-;; ;; :END:
-
-;; ;; If I unfold a subtree and the end of the subtree is outside of the window and
-;; ;; there's space in the window above the subtree, scroll up as much as possible.
-
-;; ;; Note that I don't use [[helpfn:window-start][window-start]] and [[helpfn:window-end][window-end]] because [[info:elisp#Window Start and End][their values are
-;; ;; unreliable]]. They update when [[helpfn:redisplay][redisplay]] is called; and for efficiency, I don't
-;; ;; want to call this function through every iteration of the loop. Instead I used
-;; ;; [[helpfn:pos-visible-in-window-p][pos-visible-in-window-p]] to tell me if a point is still in the visible window. In
-;; ;; hindsight, using this function is even easier than using ~window-beg~ and
-;; ;; ~window-end~ because it doesn't require any math on my part.
-
-;; (defadvice! ensure-children-visible (:after outline-toggle-children)
-;;   "Ensure children are visible after toggling."
-;;   (unless (org:heading-folded-p)
-;;     (org:display-children-in-window)))
-
-;; ;; **** fancy priorities
-;; ;; :PROPERTIES:
-;; ;; :ID: 306faaf1-fa4d-42bd-8863-ae73ca12cb61
-;; ;; :END:
-
-;; ;; [[package:org-fancy-priorities][org-fancy-priorities]] is a package that displays org priorities with an icon.
-
-;; (void-add-hook 'org-mode-hook #'org-fancy-priorities-mode)
-
-;; (after! all-the-icons
-;;   (alet (list (all-the-icons-material "priority_high")
-;;               (all-the-icons-octicon "arrow-up")
-;;               (all-the-icons-octicon "arrow-down")
-;;               (all-the-icons-material "low_priority"))
-;;     (setq org-fancy-priorities-list it)))
-
-;; ;; **** org-superstar
-;; ;; :PROPERTIES:
-;; ;; :ID: c43700f5-ff24-46b2-aed5-a12f8d8bb347
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "integral-dw/org-superstar-mode"
-;; ;; :PACKAGE:  "org-superstar"
-;; ;; :LOCAL-REPO: "org-superstar-mode"
-;; ;; :END:
-
-;; ;; [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
-
-;; (void-add-hook 'org-mode-hook #'org-superstar-mode)
-
-;; (setq org-superstar-special-todo-items t)
-;; (setq org-superstar-leading-bullet ?\s)
-
-;; ;; *** links
-;; ;; :PROPERTIES:
-;; ;; :ID: dbc3d205-9831-41f0-95f8-1e8746e0be3a
-;; ;; :END:
-
-;; ;; To me links are one of the biggest drawing points to org-mode. The ability to
-;; ;; have documentation that can link to websites, files, info docs and even github
-;; ;; commits is too juicy to pass up. Why in the 21st century do we still have to
-;; ;; deal with such weak, plain text code documentation when we could use a more
-;; ;; powerful markup language?
-
-;; ;; **** ol
-;; ;; :PROPERTIES:
-;; ;; :ID: 21148ef5-0887-4560-9997-6059b3529a2d
-;; ;; :END:
-
-;; (use-feature! ol
-;;   :after org
-;;   ;; :custom
-;;   ;; (org-link-descriptive . t)
-;;   ;; (org-link-use-indirect-buffer-for-internals . t)
-;;   )
-
-;; ;; **** custom link types
-;; ;; :PROPERTIES:
-;; ;; :ID: 76f86439-8ee3-4688-b117-a51d18d365ce
-;; ;; :END:
-
-;; ;; ***** helpvar
-;; ;; :PROPERTIES:
-;; ;; :ID: 20f9629a-f145-44df-b8b4-69c5394dc773
-;; ;; :END:
-
-;; ;; =helpvar= I a new link type that when pressed, opens a help buffer from [[https://github.com/Wilfred/helpful][helpful]] if
-;; ;; it's installed, otherwise it defaults to bringing up an regular emacs help buffer.
-
-;; (after! org
-;;   (defun ol:helpvar-face (link)
-;;     (if (boundp (intern link)) 'org-link 'error))
-
-;;   (defun ol:helpvar-follow (link)
-;;     (let ((var (intern link)))
-;;       (if (require 'helpful nil :noerror)
-;;           (helpful-variable var)
-;;         (describe-variable var))))
-
-;;   (org-link-set-parameters "helpvar" :face #'ol:helpvar:face :follow #'ol:helpvar:follow))
-
-;; ;; ***** helpfn
-;; ;; :PROPERTIES:
-;; ;; :ID: 449a3953-dce5-41a1-afdf-129fa6fae573
-;; ;; :END:
-
-;; ;; =helpfn= is the same as helpvar except with functions.
-
-;; (after! org
-;;   (defun ol:helpfn-face (link)
-;;     (let ((fn (intern link)))
-;;       (if (fboundp fn) 'org-link 'error)))
-
-;;   (defun ol:helpfn-follow (link)
-;;     (let ((fn (intern link)))
-;;       (if (require 'helpful nil :no-error)
-;;           (helpful-callable fn)
-;;         (describe-function fn))))
-
-;;   (org-link-set-parameters "helpfn" :face #'ol:helpfn-face :follow #'ol:helpfn-follow))
-
-;; ;; *** built in features
-;; ;; :PROPERTIES:
-;; ;; :ID:       e882f8f8-195f-4349-b766-a87a39be7e10
-;; ;; :END:
-
-;; ;; **** org capture
-;; ;; :PROPERTIES:
-;; ;; :ID: 81197df0-6744-4a63-a202-f7279d7b7119
-;; ;; :END:
-
-;; ;; Ever been in the middle of doing something when a thought in your head pops up
-;; ;; about some thing else? You can stop what you're doing but then you lose focus.
-;; ;; You can resolve to make note of it later but then you might forget. Capturing is
-;; ;; designed to confront this problem. While in the middle of a task you can quickly
-;; ;; jump into a small org buffer and write down an idea that you have, then close
-;; ;; it.
-
-;; ;; ***** org capture
-;; ;; :PROPERTIES:
-;; ;; :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
-;; ;; :END:
-
-;; (use-feature! org-capture
-;;   :trigger org-ml ts
-;;   :commands org-capture
-;;   :popup ("\\`CAPTURE"
-;;           (display-buffer-at-bottom)
-;;           (window-height . 0.5)
-;;           (slot . 10)))
-
-;; ;; ***** doct
-;; ;; :PROPERTIES:
-;; ;; :ID: 287fb9c7-110e-4758-aab2-71f74079ade2
-;; ;; :END:
-
-;; ;; [[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
-;; ;; by allowing you to write them in a declarative style (see [[helpfn:doct][doct docstring]]).
-;; ;; In org mode, capture templates are [[info:org#Capture templates][represented as plain lists]]. This makes
-;; ;; it easy to forget what a certain element meant or to accidentally omit a capture
-;; ;; template element as you're writing it.
-
-;; (use-package! doct
-;;   :after org-capture
-;;   :demand t)
-
-;; ;; ***** remove capture headerline
-;; ;; :PROPERTIES:
-;; ;; :ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
-;; ;; :END:
-
-;; ;; By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
-;; ;; need to disable =org-capture's= header-line.
-
-;; (defhook! disable-header-line (org-capture-mode-hook)
-;;   "Turn of the header line message."
-;;   (setq-local header-line-format nil))
-
-;; ;; ***** helpers
-;; ;; :PROPERTIES:
-;; ;; :ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
-;; ;; :END:
-
-;; ;; These functions are to help me reduce the boilerplate of defining a capture
-;; ;; template.
-
-;; ;; ****** org-capture-file
-;; ;; :PROPERTIES:
-;; ;; :ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
-;; ;; :END:
-
-;; ;; This function is a convenience wrapper to be used as the =:file= argument for [[helpfn:doct][doct
-;; ;; declarations]]. The reason I use this function instead of passing in the file path
-;; ;; is so that if VOID-CAPTURE-FILE is modified templates will still be added to the
-;; ;; right place.
-
-;; (defun org-capture:file ()
-;;   "Return `VOID-CAPTURE-FILE'.
-;; This is a convenience wrapper for `doct' declarations."
-;;   VOID-CAPTURE-FILE)
-
-;; ;; ****** add to capture templates
-;; ;; :PROPERTIES:
-;; ;; :ID:       16c55272-f8c2-4798-9da1-2ab492769f44
-;; ;; :END:
-
-;; ;; [[helpfn:doct][doct]] returns the new value of capture templates. but it does not actually add
-;; ;; it. For convenience this function declare it and add it in all in one go.
-;; ;; Additionally, it removes any capture templates with the same key so that I can
-;; ;; freely re-evaluate it without cluttering my capture templates with duplicate
-;; ;; entries.
-
-;; (defun org-capture:add-to-templates (declarations)
-;;   "Set `org-capture-templates' to the result of (doct DECLARATIONS).
-;; Before adding result, remove any members of `org-capture-templates' with the
-;; same key as the one(s) being added."
-;;   (cl-labels ((clean (templates)
-;;                      (when templates
-;;                        (cons (car templates)
-;;                              (--remove (string= (caar templates) (car it))
-;;                                        (clean (cdr templates)))))))
-;;     (setq org-capture-templates
-;;           (clean (-concat (doct declarations) org-capture-templates)))))
-
-;; ;; ****** schedule and deadline times
-;; ;; :PROPERTIES:
-;; ;; :ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
-;; ;; :END:
-
-;; ;; For capture templates that have deadlines, I set a start and an end date.
-
-;; (defun org-capture::default-planning-node (&optional days-difference)
-;;   "Return the default planning node for `org-capture-templates'."
-;;   (let* ((days-difference (or days-difference 7))
-;;          (now (ts-now))
-;;          (later (ts-adjust 'day days-difference now))
-;;          (beg (list (ts-year now) (ts-month now) (ts-day now)))
-;;          (end (list (ts-year later) (ts-month later) (ts-day later)))
-;;          (days-difference (or days-difference 7)))
-;;     (org-ml-build-planning! :scheduled beg :deadline end)))
-
-;; ;; ****** generic template
-;; ;; :PROPERTIES:
-;; ;; :ID:       7945bb08-cb78-4c7e-840d-3cf92b7e3677
-;; ;; :END:
-
-;; ;; To maximize code reusability, I create a generic template skeleton here. All of
-;; ;; my headlines should have their own UUID. And almost all of my headlines will
-;; ;; have the date created.
-
-;; (defun org-capture::generic-template ()
-;;   "Return the default `org-capture-template'."
-;;   (->> (org-ml-build-headline! :title-text "%?")
-;;        (org-ml-headline-set-node-property "ID" (org-id-new))
-;;        (org-ml-headline-set-node-property "CREATED" (ts-format))))
-
-;; ;; ****** default template keywords
-;; ;; :PROPERTIES:
-;; ;; :ID:       b2fe70d3-cc88-40fb-a718-8dafaeb98694
-;; ;; :END:
-
-;; (defvar org-capture:defaults
-;;   '(:file #'org-capture:file
-;;     :prepend t
-;;     :empty-lines 1)
-;;   "A plist of keywords that should always apply to capture templates.")
-
-;; ;; ****** convenience macro for defining capture templates
-;; ;; :PROPERTIES:
-;; ;; :ID:       9a3ece9d-e8e4-4b32-b65b-4a992e9d20cf
-;; ;; :END:
-
-;; (defmacro! define-capture-template! (name args &rest body)
-;;   "Define a capture template."
-;;   (declare (indent defun))
-;;   (-let* ((string-name (downcase (symbol-name name)))
-;;           ((_ alist body) (void--keyword-macro-args body))
-;;           (defaults org-capture:defaults)
-;;           (key (downcase (substring string-name 0 1))))
-;;     `(after! org-capture
-;;        (defun org-capture::<string-name>-template-node ()
-;;          "Return capture template node for <string-name>."
-;;          ,@body)
-;;        (defun org-capture::<string-name>-template-string ()
-;;          "Return capture template as a string."
-;;          (->> (org-capture::<string-name>-template-node)
-;;               (org-ml-to-trimmed-string)))
-;;        (org-capture:add-to-templates
-;;         (list ,string-name
-;;               :keys ,key
-;;               :template #'org-capture::<string-name>-template-string
-;;               ,@(-flatten-n 1 (-map #'-cons-to-list alist))
-;;               ,@org-capture:defaults)))))
-
-;; ;; ****** capture get url
-;; ;; :PROPERTIES:
-;; ;; :ID:       a0f5b143-f48f-4c6a-a1d1-63d638b15e22
-;; ;; :END:
-
-;; (defun org-capture:browser-url ()
-;;   "Return the url of current browser."
-;;   (cond ((and (bound-and-true-p exwm-mode))
-;;          (exwm::firefox-url))
-;;         (()
-;;          (exwm::qutebrowser-url))
-;;         ((eq major-mode 'eww-mode)
-;;          (eww-current-url))
-;;         ((eq major-mode 'w3m-mode)
-;;          ))
-;;   )
-
-;; ;; ****** is a browser buffer
-;; ;; :PROPERTIES:
-;; ;; :ID:       649c42af-cba2-4c0b-86a7-221ba6609592
-;; ;; :END:
-
-;; (defun in-browser-buffer-p ()
-;;   "docstring"
-;;   (s-matches-p (buffer-name)))
-
-;; ;; ***** capture templates
-;; ;; :PROPERTIES:
-;; ;; :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
-;; ;; :END:
-
-;; ;; I use [[https://github.com/ndwarshuis/org-ml][org-ml]] and [[https://github.com/progfolio/doct][doct]] to generate templates dynamically. By "dynamically"
-;; ;; I mean that a template for a given key is different every time I open it. This
-;; ;; is possible with regular capture templates via [[info:org#Template expansion][org template expansion]], but I think the
-;; ;; abstractions provided by =org-ml= and =doct= are even more robust and much easier to
-;; ;; extend.
-
-;; ;; ****** website
-;; ;; :PROPERTIES:
-;; ;; :ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
-;; ;; :END:
-
-;; ;; The purpose of this template is to.
-
-;; ;; A small note to avoid invalid filenames or wanting to create a filename but
-;; ;; inadvertently adding a file to a directory I replace any forward slashes (=/=)
-;; ;; with =~=.
-
-;; (define-capture-template! Website ()
-;;   :when #'org-capture:in-browser-buffer-p
-;;   :file (concat VOID-ORG-DIR "websites.org")
-;;   :immediate-finish t
-;;   :after-finalize (lambda () (void-download-webpage-as-pdf (exwm::qutebrowser-url) exwm-title))
-;;   (let* ((url (exwm::qutebrowser-url))
-;;          ;; find the newest pdf added to the directory.
-;;          (pdf-name exwm-title)
-;;          (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
-;;          (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
-;;     (->> (org-capture::generic-template)
-;;          (org-ml-headline-set-title! link-to-pdf nil)
-;;          (org-ml-headline-set-node-property "SOURCE" url))))
-
-;; ;; ****** question
-;; ;; :PROPERTIES:
-;; ;; :ID:       a672f3eb-43c1-4310-adcc-6d0022e50579
-;; ;; :END:
-
-;; ;; Sometimes I have questions that I want to record. It's kind of like a more
-;; ;; specific =TODO= because their "task" is always to be answered. I think it's
-;; ;; worth distinguishing them from tasks in which I need to perform an action that I
-;; ;; have no questions about. The purpose of this template is for problems and issues
-;; ;; I'm stumped on. This process can help me reason through as much as I can and
-;; ;; provide the perfect draft for a potential question for reddit or stackexchange.
-
-;; (define-capture-template! Question ()
-;;   (->> (org-capture::generic-template)
-;;        (org-ml-set-property :tags '("question"))))
-
-;; ;; ****** idea
-;; ;; :PROPERTIES:
-;; ;; :ID:       71864105-198a-4680-ad1d-bd3f40b7f0d6
-;; ;; :END:
-
-;; (define-capture-template! Idea ()
-;;   (->> (org-capture::generic-template)
-;;        (org-ml-set-property :tags '("idea"))))
-
-;; ;; ****** emacs
-;; ;; :PROPERTIES:
-;; ;; :ID: e6109a54-37af-44ba-852f-a1c34f910cb9
-;; ;; :END:
-
-;; ;; This capture template is for something emacs related I need to do.
-
-;; (define-capture-template! Emacs ()
-;;   (->> (org-capture::generic-template)
-;;        (org-ml-set-property :todo-keyword "TODO")
-;;        (org-ml-set-property :tags '("emacs"))
-;;        (org-ml-headline-set-planning (org-capture::default-planning-node))))
-
-;; ;; ****** generic todo
-;; ;; :PROPERTIES:
-;; ;; :ID:       3689e969-aefe-47f4-8d54-b23f08840374
-;; ;; :END:
-
-;; (define-capture-template! todo ()
-;;   (->> (org-capture::generic-template)
-;;        (org-ml-set-property :todo-keyword "TODO")))
-
-;; ;; ***** prevent capture templates from deleting windows
-;; ;; :PROPERTIES:
-;; ;; :ID:       a13e330a-33ff-4c1e-add4-00c5db4e6cd1
-;; ;; :END:
-
-;; ;; =org-capture= deletes all the other windows in the frame.
-
-;; (defadvice! dont-delete-other-windows (:around org-capture-place-template)
-;;   "Don't delete other windows when opening a capture template."
-;;   (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
-;;     (apply <orig-fn> <args>)))
-
-;; ;; **** org agenda
-;; ;; :PROPERTIES:
-;; ;; :ID:       16c1da27-264f-47df-a9d4-3f3ad8fa460f
-;; ;; :END:
-
-;; ;; ***** org agenda
-;; ;; :PROPERTIES:
-;; ;; :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
-;; ;; :END:
-
-;; ;; [[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the
-;; ;; current week.
-
-;; (use-feature! org-agenda
-;;   :after org
-;;   :commands (org-agenda org-agenda-list)
-;;   :setq
-;;   (org-agenda-files list VOID-CAPTURE-FILE)
-;;   (org-agenda-start-on-weekday . 0)
-;;   (org-agenda-timegrid-use-ampm)
-;;   (org-agenda-skip-unavailable-files)
-;;   (org-agenda-time-leading-zero . t)
-;;   (org-agenda-text-search-extra-files . '(agenda-archives))
-;;   (org-agenda-dim-blocked-tasks)
-;;   (org-agenda-inhibit-startup . t))
-
-;; ;; ***** org super agenda
-;; ;; :PROPERTIES:
-;; ;; :ID:       d4914094-9e4e-4269-a359-16c7abc6653a
-;; ;; :END:
-
-;; (use-package! org-super-agenda)
-
-;; ;; **** org refile
-;; ;; :PROPERTIES:
-;; ;; :ID:       7cb6769d-2904-4675-b17d-f658edb5a917
-;; ;; :END:
-
-;; ;; ***** org refile
-;; ;; :PROPERTIES:
-;; ;; :ID: 0174a708-8043-403e-b024-8ae29868564d
-;; ;; :END:
-
-;; (use-feature! org-refile
-;;   :pre-setq
-;;   (org-refile-targets . `((,VOID-MAIN-ORG-FILE . (:maxlevel . 10))
-;;                           (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
-;;   (org-refile-use-outline-path . 'file)
-;;   (org-refile-allow-creating-parent-nodes . t)
-;;   (org-reverse-note-order . t)
-;;   (org-outline-path-complete-in-steps . nil))
-
-;; ;; **** org id
-;; ;; :PROPERTIES:
-;; ;; :ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
-;; ;; :END:
-
-;; ;; =org-id= is a built-in package that creates that provides tools for creating and
-;; ;; storing universally unique IDs. This is primarily used to disguish and
-;; ;; referenance org headlines.
-
-;; (use-feature! org-id
-;;   :commands org-id-get-create
-;;   :setq
-;;   (org-id-locations-file . (concat VOID-DATA-DIR "org-id-locations"))
-;;   ;; Global ID state means we can have ID links anywhere. This is required for
-;;   ;; `org-brain', however.
-;;   (org-id-locations-file-relative . t)
-;;   :hook (org-insert-heading . org-id-get-create))
-
-;; ;; **** org clock
-;; ;; :PROPERTIES:
-;; ;; :ID:       d378471c-89df-48c9-a755-b79880f27308
-;; ;; :END:
-
-;; ;; =org-clock= is a built-in package that provides time logging functions for
-;; ;; tracking the time you spend on a particular task.
-
-;; (use-feature! org-clock
-;;   :commands org-clock-in
-;;   ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
-;;   :hook (kill-emacs . org-clock-save)
-;;   :setq
-;;   ;; org-clock-sound
-;;   ;; org-show-notification-handler
-;;   (org-clock-persist . 'history)
-;;   (org-clock-persist-file . (concat VOID-DATA-DIR "org-clock-save.el"))
-;;   ;; Resume when clocking into task with open clock
-;;   (org-clock-in-resume . t)
-;;   :config
-;;   ;; set up hooks for persistence.
-;;   (org-clock-persistence-insinuate))
-
-;; ;; **** org crypt
-;; ;; :PROPERTIES:
-;; ;; :ID:       f5278890-8b84-43df-b5dc-0ef8074bfba9
-;; ;; :END:
-
-;; (use-feature! org-crypt
-;;   :commands org-encrypt-entries org-encrypt-entry org-decrypt-entries org-decrypt-entry
-;;   :hook (org-reveal-start . org-decrypt-entry)
-;;   ;; :preface
-;;   ;; ;; org-crypt falls back to CRYPTKEY property then `epa-file-encrypt-to', which
-;;   ;; ;; is a better default than the empty string `org-crypt-key' defaults to.
-;;   ;; (defvar org-crypt-key nil)
-;;   ;; (after! org
-;;   ;;   (add-to-list 'org-tags-exclude-from-inheritance "crypt")
-;;   ;;   (add-hook! 'org-mode-hook
-;;   ;;              (add-hook 'before-save-hook 'org-encrypt-entries nil t)))
-;;   )
-
-;; ;; *** org-journal
-;; ;; :PROPERTIES:
-;; ;; :ID:       c3056303-5fa1-49f9-ae2d-294942e25f54
-;; ;; :END:
-
-;; ;; =org-journal= is a package that provides functions to maintain a simple
-;; ;; diary/journal using =org-mode=.
-
-;; (void-autoload 'org-journal #'org-journal-new-entry)
-
-;; (setq org-journal-file-type 'yearly)
-;; (setq org-journal-dir (concat VOID-ORG-DIR "journal/"))
-;; (setq org-journal-find-file 'find-file)
-
-;; ;; ** lua
-;; ;; :PROPERTIES:
-;; ;; :ID: 9f458b76-489f-45e0-b99a-ad6a9a2ae182
-;; ;; :END:
-
-;; (use-package! lua-mode :mode "\\.lua\\'")
-
-;; ;; ** cpp
-;; ;; :PROPERTIES:
-;; ;; :ID:       2fecdcf5-f482-4672-8bc8-9e9e1e0e110b
-;; ;; :END:
-
-;; ;; *** modern font lock
-;; ;; :PROPERTIES:
-;; ;; :ID:       2778d03a-4ee0-4175-90e5-331140ca7faf
-;; ;; :END:
-
-;; (use-package! modern-cpp-font-lock
-;;   :hook (c++-mode . modern-c++-font-lock-mode))
-
-;; ;; *** demangle
-;; ;; :PROPERTIES:
-;; ;; :ID:       2cda9af3-c7e3-48b5-8b49-ec4c63d4f501
-;; ;; :END:
-
-;; (use-package! demangle-mode
-;;   :hook llvm-mode)
-
-;; ;; ** TODO latex
-;; ;; :PROPERTIES:
-;; ;; :ID:       03b47c17-e217-4dd5-b48d-36ae54a8349e
-;; ;; :END:
-
-;; ;; *** tex
-;; ;; :PROPERTIES:
-;; ;; :ID:       da68dfd0-62c5-4101-a7f3-7b13df760670
-;; ;; :END:
-
-;; (add-to-list 'auto-mode-alist '("\\.tex\\'" . LaTeX-mode))
-
-;; (void-add-hook 'LaTeX-mode-hook #'visual-line-mode)
-
-;; (setq TeX-parse-self t)
-;; (setq TeX-auto-save t)
-;; ;; use hidden dirs for auctex files
-;; (setq TeX-auto-local ".auctex-auto")
-;; (setq TeX-style-local ".auctex-style")
-;; (setq TeX-source-correlate-mode t)
-;; (setq TeX-source-correlate-method 'synctex)
-;; ;; don't start the emacs server when correlating sources
-;; (setq TeX-source-correlate-start-server nil)
-;; ;; automatically insert braces after sub/superscript in math mode
-;; (setq TeX-electric-sub-and-superscript t)
-
-;; ;; *** auctex
-;; ;; :PROPERTIES:
-;; ;; :ID:       5d5d2e8f-3b95-4d1a-bcc0-1c4ec8f51202
-;; ;; :END:
-
-;; (use-package! auctex)
-
-;; ;; *** adaptive wrap
-;; ;; :PROPERTIES:
-;; ;; :ID:       80c837fc-a8de-4c11-9c76-b54f58c9a157
-;; ;; :END:
-
-;; (use-package! adaptive-wrap
-;;   :hook (LaTeX-mode . adaptive-wrap-prefix-mode)
-;;   :setq (adaptive-wrap-extra-indent . 0))
-
-;; ;; *** preview pane
-;; ;; :PROPERTIES:
-;; ;; :ID:       a1c99afc-ee73-42fd-b33d-7c61ad607e90
-;; ;; :END:
-
-;; (use-package! latex-preview-pane)
+;; :PROPERTIES:
+;; :ID: 51e3b9b1-0e74-431e-a113-fe6f86a4b22a
+;; :END:
+
+;; ** csv-mode
+;; :PROPERTIES:
+;; :ID:       b6f5b8b6-522e-4817-b3f8-ca6dbc50a2e2
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/csv-mode"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "csv-mode"
+;; :LOCAL-REPO: "csv-mode"
+;; :COMMIT:   "635337407c44c1c3e9f7052afda7e27cf8a05c14"
+;; :END:
+
+;; *** align
+;; :PROPERTIES:
+;; :ID:       c8999694-08ec-4882-96fa-7e2f09204518
+;; :END:
+
+(void-add-hook 'csv-mode-hook #'csv-align-mode)
+
+;; *** add to mode list
+;; :PROPERTIES:
+;; :ID:       bb7d7cc9-8ee0-4e07-ae44-074305098a85
+;; :END:
+
+
+;; *** TODO csv
+;; :PROPERTIES:
+;; :ID:       e5b591e4-a261-4a36-90d0-b370cda73a47
+;; :END:
+
+(use-package! csv-mode
+  :mode "\\.csv\\'"
+  :hook (csv-mode-hook . csv-align-mode))
+
+;; ** lisp
+;; :PROPERTIES:
+;; :ID: 9b7ec12e-e62b-447a-90dd-2fef0cc952ad
+;; :END:
+
+;; *** sly
+;; :PROPERTIES:
+;; :ID: 2e4ddfa7-2243-458c-8045-ef4a9f652d9c
+;; :END:
+
+;; [[https://github.com/joaotavora/sly][sly]] is an alternative to [[https://github.com/slime/slime][slime]].
+
+(use-package! sly
+  :system-ensure sbcl
+  :setq (inferior-lisp-program . "/usr/bin/sbcl"))
+
+;; *** clojure
+;; :PROPERTIES:
+;; :ID: 7941233e-6524-4da1-b6d9-05faf8991824
+;; :END:
+
+;; [[https://github.com/clojure-emacs/cider][cider]] is a repl for clojure.
+
+(use-package! cider
+  :system-ensure clojure
+  :commands cider)
+
+;; *** emacs lisp
+;; :PROPERTIES:
+;; :ID: f90ab909-dd53-41ca-bc77-849fb89ac6c8
+;; :END:
+
+;; **** printing
+;; :PROPERTIES:
+;; :ID: 954a5a72-1db9-4a40-b9cb-e9099bfd0f83
+;; :END:
+
+(setq eval-expression-print-length nil)
+(setq eval-expression-print-level nil)
+
+;; **** electric-pair
+;; :PROPERTIES:
+;; :ID: 1febf5ab-f545-4a72-97ef-892740575a3a
+;; :END:
+
+
+;; **** fix elisp indentation
+;; :PROPERTIES:
+;; :ID: aa7f846f-8802-4c75-88d8-a438e2f63ccd
+;; :END:
+
+;; A problem with elisp indentation is indents quoted lists the way functions
+;; should be indented. It has been discussed in at least three stackoverflow
+;; questions [[https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned/10233#10233][here]], [[https://stackoverflow.com/questions/49222433/align-symbols-in-plist][here]] and [[https://stackoverflow.com/questions/22166895/customize-elisp-plist-indentation][here]]. In all these questions the solutions have not
+;; been satisfactory. Some of them recommend using [[helpfn:common-lisp-indent-function][common-lisp-indent-function]] as
+;; the value of [[helpvar:lisp-indent-function][lisp-indent-function]]. This works for indenting a quoted list
+;; properly, but at the expense of changing the way that many other elisp forms are
+;; indented. Common Lisp's indentation is different from Elisp's. Others recommend
+;; using [[https://github.com/Fuco1/.emacs.d/blob/af82072196564fa57726bdbabf97f1d35c43b7f7/site-lisp/redef.el#L12-L94][Fuco1's lisp indent function hack]]. This also is not ideal. For one thing
+;; it only works for quoted lists with keywords but not generic symbols. Another
+;; thing is that the change should really be occurring in [[helpfn:calculate-lisp-indent][calculate-lisp-indent]].
+;; ~calculate-lisp-indent~ is a function that returns what the indentation should
+;; be for the line at point. Since Fuco1 did not modify ~calculate-lisp-indent~ the
+;; wrong indentation still returned by this function and the modified
+;; ~lisp-indent-function~ just cleans up the mess. Better is just fixing the source
+;; of the problem. You can check out a more in-depth explanation looking at my
+;; [[https://www.reddit.com/r/emacs/comments/d7x7x8/finally_fixing_indentation_of_quoted_lists/][reddit-post]] or looking at an answer I gave to [[https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned][this question]].
+
+(defadvice! properly-calculate-indent (:override calculate-lisp-indent)
+  "Add better indentation for quoted and backquoted lists.
+The change to this function."
+  (defvar calculate-lisp-indent-last-sexp)
+  (save-excursion
+    (beginning-of-line)
+    (let ((indent-point (point))
+          state
+          ;; setting this to a number inhibits calling hook
+          (desired-indent nil)
+          (retry t)
+          calculate-lisp-indent-last-sexp containing-sexp)
+      (cond ((or (markerp <parse-start>) (integerp <parse-start>))
+             (goto-char <parse-start>))
+            ((null <parse-start>) (beginning-of-defun))
+            (t (setq state <parse-start>)))
+      (unless state
+        ;; Find outermost containing sexp
+        (while (< (point) indent-point)
+          (setq state (parse-partial-sexp (point) indent-point 0))))
+      ;; Find innermost containing sexp
+      (while (and retry
+                  state
+                  (> (elt state 0) 0))
+        (setq retry nil)
+        (setq calculate-lisp-indent-last-sexp (elt state 2))
+        (setq containing-sexp (elt state 1))
+        ;; Position following last unclosed open.
+        (goto-char (1+ containing-sexp))
+        ;; Is there a complete sexp since then?
+        (if (and calculate-lisp-indent-last-sexp
+                 (> calculate-lisp-indent-last-sexp (point)))
+            ;; Yes, but is there a containing sexp after that?
+            (let ((peek (parse-partial-sexp calculate-lisp-indent-last-sexp
+                                            indent-point 0)))
+              (if (setq retry (car (cdr peek))) (setq state peek)))))
+      (if retry
+          nil
+        ;; Innermost containing sexp found
+        (goto-char (1+ containing-sexp))
+        (if (not calculate-lisp-indent-last-sexp)
+            ;; indent-point immediately follows open paren.
+            ;; Don't call hook.
+            (setq desired-indent (current-column))
+          ;; Find the start of first element of containing sexp.
+          (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+          (cond ((looking-at "\\s(")
+                 ;; First element of containing sexp is a list.
+                 ;; Indent under that list.
+                 )
+                ((> (save-excursion (forward-line 1) (point))
+                    calculate-lisp-indent-last-sexp)
+                 ;; This is the first line to start within the containing sexp.
+                 ;; It's almost certainly a function call.
+                 (if (or
+                      (= (point) calculate-lisp-indent-last-sexp)
+
+                      (when-let (after (char-after (1+ containing-sexp)))
+                        (char-equal after ?:))
+
+                      (when-let (point (char-before containing-sexp))
+                        (char-equal point ?'))
+
+                      (let ((quoted-p nil)
+                            (point nil)
+                            (positions (nreverse (butlast (elt state 9)))))
+                        (while (and positions (not quoted-p))
+                          (setq point (pop positions))
+                          (setq quoted-p
+                                (or
+                                 (and (char-before point)
+                                      (char-equal (char-before point) ?'))
+                                 (save-excursion
+                                   (goto-char (1+ point))
+                                   (looking-at-p "quote[\t\n\f\s]+(")))))
+                        quoted-p))
+                     ;; Containing sexp has nothing before this line
+                     ;; except the first element.  Indent under that element.
+                     nil
+                   ;; Skip the first element, find start of second (the first
+                   ;; argument of the function call) and indent under.
+                   (progn (forward-sexp 1)
+                          (parse-partial-sexp (point)
+                                              calculate-lisp-indent-last-sexp
+                                              0 t)))
+                 (backward-prefix-chars))
+                (t
+                 ;; Indent beneath first sexp on same line as
+                 ;; `calculate-lisp-indent-last-sexp'.  Again, it's
+                 ;; almost certainly a function call.
+                 (goto-char calculate-lisp-indent-last-sexp)
+                 (beginning-of-line)
+                 (parse-partial-sexp (point) calculate-lisp-indent-last-sexp
+                                     0 t)
+                 (backward-prefix-chars)))))
+      ;; Point is at the point to indent under unless we are inside a string.
+      ;; Call indentation hook except when overridden by lisp-indent-offset
+      ;; or if the desired indentation has already been computed.
+      (let ((normal-indent (current-column)))
+        (cond ((elt state 3)
+               ;; Inside a string, don't change indentation.
+               nil)
+              ((and (integerp lisp-indent-offset) containing-sexp)
+               ;; Indent by constant offset
+               (goto-char containing-sexp)
+               (+ (current-column) lisp-indent-offset))
+              ;; in this case calculate-lisp-indent-last-sexp is not nil
+              (calculate-lisp-indent-last-sexp
+               (or
+                ;; try to align the parameters of a known function
+                (and lisp-indent-function
+                     (not retry)
+                     (funcall lisp-indent-function indent-point state))
+                ;; If the function has no special alignment
+                ;; or it does not apply to this argument,
+                ;; try to align a constant-symbol under the last
+                ;; preceding constant symbol, if there is such one of
+                ;; the last 2 preceding symbols, in the previous
+                ;; uncommented line.
+                (and (save-excursion
+                       (goto-char indent-point)
+                       (skip-chars-forward " \t")
+                       (looking-at ":"))
+                     ;; The last sexp may not be at the indentation
+                     ;; where it begins, so find that one, instead.
+                     (save-excursion
+                       (goto-char calculate-lisp-indent-last-sexp)
+                       ;; Handle prefix characters and whitespace
+                       ;; following an open paren.  (Bug#1012)
+                       (backward-prefix-chars)
+                       (while (not (or (looking-back "^[ \t]*\\|([ \t]+"
+                                                     (line-beginning-position))
+                                       (and containing-sexp
+                                            (>= (1+ containing-sexp) (point)))))
+                         (forward-sexp -1)
+                         (backward-prefix-chars))
+                       (setq calculate-lisp-indent-last-sexp (point)))
+                     (> calculate-lisp-indent-last-sexp
+                        (save-excursion
+                          (goto-char (1+ containing-sexp))
+                          (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+                          (point)))
+                     (let ((parse-sexp-ignore-comments t)
+                           indent)
+                       (goto-char calculate-lisp-indent-last-sexp)
+                       (or (and (looking-at ":")
+                                (setq indent (current-column)))
+                           (and (< (line-beginning-position)
+                                   (prog2 (backward-sexp) (point)))
+                                (looking-at ":")
+                                (setq indent (current-column))))
+                       indent))
+                ;; another symbols or constants not preceded by a constant
+                ;; as defined above.
+                normal-indent))
+              ;; in this case calculate-lisp-indent-last-sexp is nil
+              (desired-indent)
+              (t
+               normal-indent))))))
+
+;; **** highlight-quoted
+;; :PROPERTIES:
+;; :ID: afacf700-86a9-4c1b-9062-7a28c11dcf69
+;; :END:
+
+;; [[https://github.com/Fanael/highlight-quoted][highlight-quoted]] highlights quotes, backticks and.
+
+(use-package! highlight-quoted
+  :hook emacs-lisp-mode)
+
+;; **** buttercup
+;; :PROPERTIES:
+;; :ID: 228fb805-620d-4519-822f-f633540f7b58
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "bin" "buttercup-pkg.el")
+;; :HOST:     github
+;; :REPO:     "jorgenschaefer/emacs-buttercup"
+;; :PACKAGE:  "buttercup"
+;; :LOCAL-REPO: "emacs-buttercup"
+;; :COMMIT:   "f6f93353405cda51ad2778ae9247f77265b7cbfb"
+;; :END:
+
+;; [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]] is an emacs debugging suite.
+
+;; **** outorg
+;; :PROPERTIES:
+;; :ID: a3461ce0-8c5d-4bea-950e-b18ea6422672
+;; :END:
+
+;; Outorg adds overlays to make an org buffer look more readable. I do not want
+;; these overlays.
+
+(use-package! outorg
+  ;; TODO: should be changed to `:functions'
+  :commands outorg-convert-back-to-code outorg-convert-to-org)
+
+(defadvice! dont-add-overlays (:around outorg-wrap-source-in-block)
+  (cl-letf (((symbol-function #'overlay-put) #'ignore))
+    (apply <orig-fn> <args>)))
+
+;; **** outshine
+;; :PROPERTIES:
+;; :ID: ffeddf0d-aa29-473f-b73c-d94971d91da9
+;; :END:
+
+;; [[https://github.com/alphapapa/outshine][outshine]] is a clever package that tries to make elisp mode more like org mode.
+;; It colors certain comments like org headings, and adds function for convertion
+;; from elisp to org. My [[helpvar:VOID-INIT-FILE][void-init-file]] is written with =outshine= in mind.
+
+(void-add-hook 'emacs-lisp-mode-hook #'outshine-mode)
+
+(defun outshine:dwim-next-line ()
+  (interactive)
+  (if (outline-on-heading-p)
+      (outline-next-visible-heading 1)
+    (call-interactively #'evil-next-line)))
+
+(defun outshine:dwim-previous-line ()
+  (interactive)
+  (if (outline-on-heading-p)
+      (outline-previous-visible-heading 1)
+    (call-interactively #'evil-previous-line)))
+
+;; TODO: make outshine-mode-map take precedence over normal/elisp-mode maps.
+;; TODO: better binding system so I can advise instead of make wrappers.
+(general-def '(normal) emacs-lisp-mode-map
+  "TAB" #'outshine-toggle-children
+  "j" #'outshine:dwim-next-line
+  "k" #'outshine:dwim-previous-line
+  "b" (lambda () (interactive) (outline-back-to-heading)))
+
+;; **** macrostep
+;; :PROPERTIES:
+;; :ID:       ecf2ab24-c3a0-4a72-8ba3-b5c1ed4a3f0a
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "joddie/macrostep"
+;; :PACKAGE:  "macrostep"
+;; :LOCAL-REPO: "macrostep"
+;; :COMMIT:   "424e3734a1ee526a1bd7b5c3cd1d3ef19d184267"
+;; :END:
+
+;; ***** commands
+;; :PROPERTIES:
+;; :ID:       c6a0b556-8a8a-4abf-a920-87fff7ab078d
+;; :END:
+
+;; ***** macrostep
+;; :PROPERTIES:
+;; :ID: 81e59dcc-7e23-4dd1-9917-06f0ab59f2a6
+;; :END:
+
+;; [[https://github.com/joddie/macrostep][macrostep]]
+
+(use-package! macrostep
+  :commands
+  macrostep-expand
+  macrostep-collapse
+  macrostep-collapse-all
+  :init (define-localleader-key!
+          :infix "m"
+          :keymaps 'emacs-lisp-mode-map
+          "e" (list :def #'macrostep-expand :wk "expand")
+          "c" (list :def #'macrostep-collapse :wk "collapse")
+          "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
+
+;; *** hy
+;; :PROPERTIES:
+;; :ID: 6b62fbdd-448b-4b69-82f8-1e1231a10c3e
+;; :END:
+
+(add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
+
+;; ** markdown-mode
+;; :PROPERTIES:
+;; :ID: 9d684855-961a-4294-8b90-44d2796526e2
+;; :END:
+
+;; I'm adding [[https://github.com/jrblevin/markdown-mode][markdown-mode]] so I can see =README= files.
+
+(use-package! markdown-mode :mode "\\.md\\'")
+
+;; ** org
+;; :PROPERTIES:
+;; :ID: 7fd3bb4f-354c-4427-914c-9de2223f5646
+;; :END:
+
+;; Org mode introduces an elegant way of dealing with different languages in one
+;; file. In an org file the background language is Org's own markup language that's
+;; typically composed mostly of outline headlines. In the org markup language you
+;; can embed multiple different languages in [[info:org#Editing Source Code][source blocks]]. Additionally, org
+;; mode provides a library of functions for dealing with these files. This includes
+;; things like executing (or evaluating) source blocks, moving headlines to other
+;; files, or even converting an org mode document into another format. As the name
+;; =org= suggests, org is tool that's used for organization of data.
+
+;; *** do the right thing after jumping to headline
+;; :PROPERTIES:
+;; :ID:       2ca61454-a0ca-47b3-8622-91d7969653da
+;; :END:
+
+;; When I search for a headline with [[helpfn:void/goto-line][void/goto-line]] or [[helpfn:void/goto-headline][void/goto-headline]] or even their
+;; counsel equivalents, the proper headlines aren't automatically revealed.
+
+;; [[screenshot:][This]] is what headline structure looks after using counsel/ivy's [[helpfn:swiper][swiper]] to find
+;; the word =void/goto-line= in my emacs. You can see that only the headline that has
+;; the target word is revealed but it's parents are (akwardly) hidden. I never want
+;; headlines to be unfolded like this.
+
+;; **** show branch
+;; :PROPERTIES:
+;; :ID:       d95fab52-7d8f-439f-9221-188490f4ad5f
+;; :END:
+
+;; This shows all headlines that make up the branch of the current headine and
+;; their children. This is the typical behavior you would expect in any outlining
+;; program.
+
+(defun org:show-branch ()
+  "Reveal the current org branch.
+Show all of the current headine's parents and their children. This includes this
+headline."
+  (let (points)
+    (save-excursion
+      (org-back-to-heading t)
+      (push (point) points)
+      (while (org-up-heading-safe)
+        (push (point) points))
+      (--each points
+        (goto-char it)
+        (outline-show-children)
+        (outline-show-entry)))))
+
+;; **** show branch after jumping to point
+;; :PROPERTIES:
+;; :ID:       251e5df0-0a7d-4bf9-8fd9-69991d89a074
+;; :END:
+
+;; Note that I use points to store the heading points and go back to them inreverse
+;; order. This is important because org does not unfold headlines properly if you
+;; start from an invisible subheading.
+
+;; Notably, I do not try to conserve the return value of =void/goto-line= or
+;; =void/jump-to-headline= because these functions are and should only be used for
+;; their side-effects.
+
+(defadvice! show-current-branch-in-org-mode (:after void/goto-line org/goto-headline)
+  "Properly unfold nearby headlines and reveal current headline."
+  (when (eq major-mode 'org-mode)
+    (org:show-branch)))
+
+;; *** structures
+;; :PROPERTIES:
+;; :ID: 85ac0a35-4e44-41e6-a1f1-54698cb86212
+;; :END:
+
+;; **** todo-keywords
+;; :PROPERTIES:
+;; :ID: a32da379-654e-4b1a-83f4-cf9e4003d578
+;; :END:
+
+;; ***** todo keywords
+;; :PROPERTIES:
+;; :ID: 2f0459d4-9afd-4fd9-bdba-c0a3dc993963
+;; :END:
+
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO" "NEXT" "STARTED" "|" "DONE")
+          (sequence "QUESTION" "NEXT" "INVESTIGATING" "|" "ANSWERED")
+          (sequence "|" "PAUSED")
+          (sequence "|" "CANCELLED"))))
+
+;; ***** return todo-keywords
+;; :PROPERTIES:
+;; :ID: 38385aee-1326-46d8-9eef-3bfa2e57c0cc
+;; :END:
+
+;; Knowing what the exact todo-keywords are is important so that I know exactly
+;; when headline contents begin.
+
+(defun org:todo-keywords ()
+  "Return list of all TODO keywords."
+  (--filter (and (stringp it) (not (string= "|" it)))
+            (flatten-list org-todo-keywords)))
+
+;; ***** heading start
+;; :PROPERTIES:
+;; :ID: 0ebf90e8-cd14-4364-b26a-da6676b29089
+;; :END:
+
+(defun org:heading-start-regexp ()
+  "Compute regexp for heading start."
+  (rx-to-string `(: bol (1+ "*") space (opt (or ,@(org:todo-keywords)) space))))
+
+(defun org:heading-goto-start ()
+  "Go to first letter of headline."
+  (let (case-fold-search)
+    (beginning-of-line)
+    (re-search-forward (org:heading-start-regexp)
+                       (line-end-position))))
+
+;; **** return
+;; :PROPERTIES:
+;; :ID: c161f1b0-dbc0-4240-8102-69e95f3fd62f
+;; :END:
+
+(defun org/dwim-return ()
+  "Do what I mean."
+  (interactive)
+  (cond
+   (and (org-at-heading-p)
+        (looking-at-p (rx (* (or "\s" "\t"))
+                          (opt (1+ ":" (1+ letter)) ":") eol)))
+   (org/insert-heading-below)
+   (t
+    (call-interactively #'org-return))))
+
+;; **** org-heading-folded-p
+;; :PROPERTIES:
+;; :ID: 919b2b6e-2c43-4fd5-87cc-cfc62cf75405
+;; :END:
+
+(defun org:heading-folded-p ()
+  "Return t if an current heading is folded."
+  (outline-invisible-p (line-end-position)))
+
+;; **** preserve point
+;; :PROPERTIES:
+;; :ID: 52781cc9-e1ca-4618-aa1b-6845494b5dc6
+;; :END:
+
+;; If possible org commands should preserve =point=. If this isn't possible (ie. when
+;; deleting a subtree with), then should leave point at a place that is easy to
+;; predict and convenient (as opposed to a random location).
+
+;; ***** start on beginning of first heading
+;; :PROPERTIES:
+;; :ID: 81732dde-85f7-4336-a9fd-351d8f74671f
+;; :END:
+
+;; It looks nice if when I'm on a heading when I first enter an org file.
+
+(defhook! goto-first-heading (org-mode-hook)
+  "Go to first heading when entering an org-mode file."
+  (when (org-at-heading-p)
+    (beginning-of-line)
+    (org:heading-goto-start)))
+
+;; ***** fix bug with next visible heading
+;; :PROPERTIES:
+;; :ID: 9a3759e8-8928-47cb-97c9-9ce5ee673cba
+;; :END:
+
+;; [[helpfn:outline-next-visible-heading][outline-next-visible-heading]] continues to =EOB= after reaching the last visible
+;; heading. It should just stop at the last visible heading. This advice checks to
+;; see if it's gone farther than it should have and in that case goes back.
+
+(defadvice! dont-end-at-eob (:around outline-next-visible-heading)
+  "Fix bug where the next heading moves past last visible heading."
+  (apply <orig-fn> <args>)
+  (when (eobp) (apply #'outline-previous-visible-heading <args>)))
+
+;; ***** go to proper point after refile
+;; :PROPERTIES:
+;; :ID: 591045df-8d3e-4ff7-b4bc-c949222a0717
+;; :END:
+
+(defadvice! end-at-headline-start (:after org-refile org-cut-subtree org-copy-subtree)
+  "After running body end at headline start."
+  (when (org-at-heading-p) (org:heading-goto-start)))
+
+;; **** commands
+;; :PROPERTIES:
+;; :ID: 86f0b9be-0033-46bd-8d02-7e506fe73ead
+;; :END:
+
+;; ***** org choose capture template
+;; :PROPERTIES:
+;; :ID:       fc2cf818-48c4-4e52-8356-56106623ad77
+;; :END:
+
+(defun org/choose-capture-template ()
+  "Select capture template."
+  (interactive)
+  (let (prefixes)
+    (alet (mapcan (lambda (x)
+                    (let ((x-keys (car x)))
+                      ;; Remove prefixed keys until we get one that matches the current item.
+                      (while (and prefixes
+                                  (let ((p1-keys (caar prefixes)))
+                                    (or
+                                     (<= (length x-keys) (length p1-keys))
+                                     (not (string-prefix-p p1-keys x-keys)))))
+                        (pop prefixes))
+                      (if (> (length x) 2)
+                          (let ((desc (mapconcat #'cadr (reverse (cons x prefixes)) " | ")))
+                            (list (format "%-5s %s" x-keys desc)))
+                        (push x prefixes)
+                        nil)))
+                  (-> org-capture-templates
+                      (org-capture-upgrade-templates)
+                      (org-contextualize-keys org-capture-templates-contexts)))
+      (funcall #'org-capture nil (car (split-string (completing-read "Capture template: " it nil t)))) )))
+
+;; ***** org choose tags
+;; :PROPERTIES:
+;; :ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
+;; :END:
+
+(defun org/choose-tags ()
+  "Select tags to add to headline."
+  (interactive)
+  (let* ((current (org-get-tags (point)))
+         (selected (->> (org-get-buffer-tags)
+                        (completing-read-multiple "Select org tag(s): "))))
+    (alet (-distinct (append (-difference current selected)
+                             (-difference selected current)))
+      (message "%S" it)
+      (org-set-tags it))))
+
+;; ***** org outline headings
+;; :PROPERTIES:
+;; :ID:       143e55e1-3900-48fd-a30a-18923dc4bd98
+;; :END:
+
+;; Annoyingly, the first time you call org/goto-headline, a prompt from
+;; =org-goto-location= is triggered and somehow the call to =org/goto-headline= is
+;; canceled. I had a damingly difficult time figuring out where exactly this
+;; happens (and I didn't actually figure it out). However, overriding
+;; =org-goto-location= seems to work. If I end up having some problems with other
+;; calls to =org-goto-location=, I'll advise it only within the body. Or even better
+;; create a transient advice that only happens the first time the function is
+;; called.
+
+(advice-add #'org-goto-location :override
+            (lambda (&rest _) (call-interactively #'org/goto-headline)))
+
+(defun org/goto-headline ()
+  "Jump to an org heading using selectrum."
+  (interactive)
+  (require 'org-refile)
+  (let ((selectrum-should-sort-p nil)
+        (org-outline-path-complete-in-steps nil)
+        (org-goto-interface 'outline-path-completion))
+    (org-goto)))
+
+;; ***** dwim
+;; :PROPERTIES:
+;; :ID: 93a6e45c-b23b-4639-9e1c-9f1aef0fb95a
+;; :END:
+
+;; ****** insert
+;; :PROPERTIES:
+;; :ID: 1b8ccbb8-2614-4d2e-ab7c-e8bd23c2c02d
+;; :END:
+
+(defun org/dwim-insert-elisp-block ()
+  "Insert elisp block."
+  (interactive)
+  (save-excursion
+    (unless (org-at-heading-p)
+      (org-back-to-heading))
+    (org-end-of-subtree)
+    (goto-char (line-end-position))
+    (insert (concat "\n\n"
+                    "#+begin_src emacs-lisp"
+                    "\n"
+                    "#+end_src"))
+    (forward-line -1)))
+
+;; ****** eval
+;; :PROPERTIES:
+;; :ID: e804805a-ba96-41d0-aa6f-6756c65e9abf
+;; :END:
+
+(defun org/dwim-eval-block ()
+  "Eval block contents."
+  (interactive)
+  (unless (org-at-heading-p)
+    (user-error "Not in source block"))
+  (save-window-excursion
+    (org-babel-execute-subtree)))
+
+;; ****** next-line
+;; :PROPERTIES:
+;; :ID: d8d118a7-78e8-4602-81b3-17fd1d8ab79c
+;; :END:
+
+(defun org/dwim-next-line (&optional backward)
+  "Go to the start of the next heading.
+If DIR is a negative integer, go the opposite direction: the start of the
+  previous heading."
+  (interactive)
+  (outline-next-visible-heading (if backward -1 1))
+  (when (org-at-heading-p)
+    (org:heading-goto-start)))
+
+;; ****** previous-line
+;; :PROPERTIES:
+;; :ID: e7562921-77ca-4d90-be57-1d586ec26ee5
+;; :END:
+
+(defun org/dwim-previous-line (&optional forward)
+  (interactive)
+  (funcall #'org/dwim-next-line (not forward)))
+
+;; ****** up-heading
+;; :PROPERTIES:
+;; :ID: 1f25d3b0-7280-4012-94b5-b0fea2f686b3
+;; :END:
+
+(defun org/dwim-up-heading ()
+  ""
+  (interactive)
+  (condition-case nil
+      (progn (outline-up-heading 1)
+             (outline-hide-subtree)
+             (outline-show-children)
+             (org:heading-goto-start))
+    (error
+     (unless (outline-invisible-p (line-end-position))
+       (outline-hide-subtree))
+     (org:heading-goto-start))))
+
+;; ***** jump to heading                                                      :avy:
+;; :PROPERTIES:
+;; :ID: 3c396b33-437c-410f-aff6-2106ade42621
+;; :END:
+
+(defun org/avy-goto-headline ()
+  "Jump to the beginning of a visible heading using `avy'."
+  (interactive)
+  (org-back-to-heading)
+  (avy-jump (rx bol (1+ "*") space (group nonl))
+            :beg (window-start)
+            :end (window-end)
+            :pred `(lambda () (/= (1+ ,(point)) (point)))
+            :action (lambda (point) (goto-char point)
+                      (org:heading-goto-start))
+            :group 1))
+
+;; ***** dwim jump to heading
+;; :PROPERTIES:
+;; :ID: 7ad9d757-57ba-4537-821f-8beae57f39eb
+;; :END:
+
+(defun org/dwim-jump-to-heading ()
+  ""
+  (interactive)
+  (let ((origin (point)))
+    (if (and (org/avy-goto-headline)
+             (org:heading-folded-p))
+        (progn (outline-toggle-children)
+               (org:scroll-window-to-top))
+      (goto-char origin))))
+
+;; ***** inserting
+;; :PROPERTIES:
+;; :ID: e99abeff-328b-48e4-aebb-00db34fa98e8
+;; :END:
+
+;; In my eyes, many Org functions are unnecessarily complicated and long. Often they
+;; need to perform a simple task (like inserting a heading) but lose their
+;; fundamental purpose in their inclusion of numerous obscure and opinionated
+;; options. For this reason I wrote my own insert heading functions.
+
+;; ****** newlines between headings
+;; :PROPERTIES:
+;; :ID: e0dcf718-120c-488d-9d37-96243132bf0b
+;; :END:
+
+(defvar org:newlines-between-headings "\n\n"
+  "Number of newlines between headings.")
+
+;; ****** heading above
+;; :PROPERTIES:
+;; :ID: 6c227dea-e10b-4f86-a01b-5d223d18e3a4
+;; :END:
+
+(defun org/insert-heading-above (&optional below)
+  "Insert a heading above the current heading."
+  (interactive)
+  (funcall #'org/insert-heading-below (not below)))
+
+;; ****** heading below
+;; :PROPERTIES:
+;; :ID: b059a431-e29c-4f2c-ab5e-8d2d02636405
+;; :END:
+
+(defun org/insert-heading-below (&optional above)
+  "Insert heading below."
+  (interactive)
+  (let* ((on-heading-p (ignore-errors (org-back-to-heading)))
+         (newlines org:newlines-between-headings)
+         (level (or (org-current-level) 1))
+         (heading (concat (make-string level ?*) "\s")))
+    (cond ((not on-heading-p)
+           (insert heading))
+          (above
+           (goto-char (line-beginning-position))
+           (insert heading)
+           (save-excursion (insert newlines)))
+          (t ; below
+           (org-end-of-subtree)
+           (insert (concat newlines heading))))
+    (run-hooks 'org-insert-heading-hook)))
+
+;; ****** subheading
+;; :PROPERTIES:
+;; :ID: cf910dcf-6250-4b6a-80d5-63ac457d4a81
+;; :END:
+
+(defun org/insert-subheading ()
+  "Insert subheading below current heading."
+  (interactive)
+  (org/insert-heading-below)
+  (org-demote))
+
+;; *** source blocks
+;; :PROPERTIES:
+;; :ID:       480f4384-b560-4a47-978d-0c8058519294
+;; :END:
+
+;; **** source blocks
+;; :PROPERTIES:
+;; :ID: 2bb1b8ef-f41c-4dfa-8e47-549326f7ce05
+;; :END:
+
+;; Many of these =org-src= variables are not very applicable to me anymore because I
+;; use =edit-indirect= to edit source blocks.
+;; :PROPERTIES:
+;; :ID: 3329768f-2669-43be-ad85-da2239082cc2
+;; :END:
+
+(use-feature! org-src
+  :popup ("\\*Org Src"
+          (display-buffer-at-bottom)
+          (window-height . 0.5))
+  :setq
+  (org-edit-src-persistent-message . nil)
+  (org-src-window-setup . 'plain)
+  (org-src-fontify-natively . t)
+  (org-src-ask-before-returning-to-edit-buffer . nil)
+  (org-src-preserve-indentation . t)
+  (org-src-tab-acts-natively . t)
+  (org-confirm-babel-evaluate . nil)
+  (org-babel-default-header-args . '((:session . "none")
+                                     (:results . "silent")
+                                     (:exports . "code")
+                                     (:cache . "no")
+                                     (:initeb . "no")
+                                     (:hlines . "no")
+                                     (:tangle . "yes"))))
+
+;; **** edit source blocks
+;; :PROPERTIES:
+;; :ID:       a0e1c9d6-9071-4c6f-abc4-d2e9f011be03
+;; :END:
+
+(defun org/dwim-edit-source-block ()
+  "Edit source block in current heading.
+Point does not have to be on source block."
+  (interactive)
+  (let ((org-src-window-setup 'plain))
+    (org-back-to-heading)
+    (org-next-block 1)
+    (org-edit-src-code)))
+
+;; *** org-mode
+;; :PROPERTIES:
+;; :ID: c1c5724e-028a-42a5-a982-28d57203b335
+;; :END:
+
+(use-package! org
+  :idle-require
+  calendar find-func format-spec org-macs org-compat org-faces org-entities
+  org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
+  org-capture
+  :setq
+  (org-directory . VOID-ORG-DIR)
+  (org-archive-location . (concat org-directory "archive.org::"))
+  (org-default-notes-file . (concat org-directory "notes.org"))
+  (org-fontify-emphasized-text . t)
+  (org-hide-emphasis-markers . t)
+  (org-pretty-entities . t)
+  (org-fontify-whole-heading-line . t)
+  (org-fontify-done-headline . t)
+  (org-fontify-quote-and-verse-blocks . t)
+  (org-adapt-indentation . nil)
+  (org-cycle-separator-lines . 2)
+  (outline-blank-line . t)
+  (org-enforce-todo-dependencies . t)
+  (org-use-fast-tag-selection . nil)
+  (org-tags-column . -80)
+  (org-tag-alist . nil)
+  (org-log-done . 'time))
+
+;; *** asthetic
+;; :PROPERTIES:
+;; :ID: 52f5560d-6e52-4234-88d8-d326bc97525a
+;; :END:
+
+;; To be honest, org mode has some pretty ugly syntax. The asterixes at the
+;; beginning of a heading are ugly, org block end and begin lines are ugly,
+;; property drawers are ugly. For a nice-looking, minimal, and non-distracting
+;; appearance all this needs to be improved.
+
+;; **** visibility
+;; :PROPERTIES:
+;; :ID: 71462363-ddd0-4734-a074-7b00fde06e82
+;; :END:
+
+;; ***** hide lines
+;; :PROPERTIES:
+;; :ID: 533c108a-36d0-4686-9476-2588647402ed
+;; :END:
+;; =hide-lines= is a package which, as its name suggests, hides certain lines.
+;; Specifically, it hides lines that match a regular expression you provide. You
+;; can reveal them with [[helpfn:hide-lines-show-all][hide-lines-show-all]].
+
+;; ****** hide lines
+;; :PROPERTIES:
+;; :ID: a2ea1e7e-5049-4b5e-bb06-4f31cf89ae32
+;; :END:
+
+;; Particularly in boilerplate heavy languages like Org, hiding certain lines can
+;; make reading documents much easier by reducing visual distraction. This package
+;; though is in need of an update. It didn't work out of the box (see [[id:b358f324-9b64-4e83-8168-231ff1ab115d][hide-lines]]
+;; and [[id:a3e62e0a-452b-429c-9558-139e7b83cf80][hl overlay fix]]).
+
+(void-autoload 'hide-lines (list #'hide-lines #'hide-lines-matching))
+
+;; ****** =hl= overlay fix
+;; :PROPERTIES:
+;; :ID: a3e62e0a-452b-429c-9558-139e7b83cf80
+;; :END:
+
+;; The line ~(overlay-put overlay 'invisible 'hl)~ in [[helpfn:][hide-lines-add-overlay]] wouldn't
+;; work with the argument =hl=. It works when you set it to =t= instead. Maybe =hl= is
+;; depreciated.
+
+(defadvice! fix-adding-overlay (:override hide-lines-add-overlay)
+  "Add an overlay from `start' to `end' in the current buffer.
+Push the overlay into `hide-lines-invisible-areas'."
+  (let ((overlay (make-overlay <start> <end>)))
+    (setq hide-lines-invisible-areas (cons overlay hide-lines-invisible-areas))
+    (overlay-put overlay 'invisible t)))
+
+;; ****** make sure all lines are hidden
+;; :PROPERTIES:
+;; :ID: b358f324-9b64-4e83-8168-231ff1ab115d
+;; :END:
+
+;; When I tried hiding property drawers [[hfn:hide-lines-matching][hide-lines-matching]] left out the start and
+;; end property lines. Only the property block body was hidden. This advice fixes
+;; this.
+
+(defadvice! fix-hide-matching-lines  (:override hide-lines-matching)
+  "Hide lines matching the specified regexp."
+  (interactive "MHide lines matching regexp: ")
+  (set (make-local-variable 'line-move-ignore-invisible) t)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward <search-text> nil t)
+      (hide-lines-add-overlay (match-beginning 0) (match-end 0)))))
+
+;; ***** toggle org properties
+;; :PROPERTIES:
+;; :ID: c2c54bd5-9148-45e9-a675-154bcbf13674
+;; :END:
+
+;; I want properties to exist--they are useful even if it's just to store an ID.
+;; Yet, like most raw org syntax it looks ugly and takes up a lot of space.
+;; Unless I explicitly ask for properties I don't want to see them.
+
+(defun org/hide-property-drawers ()
+  "Hide property drawers."
+  (interactive)
+  (let (selective-display-ellipses org-ellipsis)
+    ;; If properties are folded, ellipsis will show.
+    (org-show-all '(drawers))
+    (hide-lines-matching (concat (s-chop-suffix "$" org-property-re) "\n"))))
+
+;; ***** toggle end source lines
+;; :PROPERTIES:
+;; :ID: 18fdd2a0-df15-486f-97c6-594cba018a3e
+;; :END:
+
+(defun org/hide-source-block-delimiters ()
+  "Hide property drawers."
+  (interactive)
+  (let (selective-display-ellipses org-ellipsis)
+    ;; If properties are folded, ellipsis will show.
+    (org-show-all)
+    (hide-lines-matching (rx "#+" (or "begin" "end") "_src" (* nonl) "\n"))))
+
+;; ***** ensure that everything is folded
+;; :PROPERTIES:
+;; :ID: 86437909-e4df-48ae-9e2f-bf364e92cc86
+;; :END:
+
+(setq org-startup-folded 'fold)
+
+(defadvice! hide-all-property-drawers (:override org-set-startup-visibility)
+  "Completely hide all text properties."
+  ;; Hide property drawers on startup.
+  (org/hide-property-drawers)
+  (org-overview))
+
+;; ***** ensure headings are visible
+;; :PROPERTIES:
+;; :ID: c0395fe0-fa69-49c1-94ed-cdbb94031868
+;; :END:
+
+;; Sometimes the heading inserted doesn't remain visible.
+
+(defhook! ensure-heading-are-visible (org-insert-heading-hook)
+  "Ensure that heading remains visible after insertion."
+  (-when-let (o (cdr (get-char-property-and-overlay (point) 'invisible)))
+    (move-overlay o (overlay-start o) (line-end-position 0))))
+
+;; ***** display children in window
+;; :PROPERTIES:
+;; :ID: f7a9c5e7-fcf8-434a-a9b3-dbe4eadead78
+;; :END:
+
+(defun org:display-children-in-window ()
+  "Scroll up window to maximize view of unfolded subtree.
+If the subtree is unfolded and the end of the current subtree is outside of the
+visible window, scroll up until the whole subtree is visible. If the whole
+subtree can't fit on the visible window, only scroll up until the top of the
+subtree is on the first line of the window (in other words, the beginning of
+th subtree should always be visible)."
+  (interactive)
+  ;; Don't use `window-beg' and `window-end' because their values are
+  ;; unreliable.
+  (let ((subtree-beg
+         (save-excursion (org-back-to-heading)
+                         (line-beginning-position)))
+        (subtree-end
+         (save-excursion (org-end-of-subtree)
+                         (line-end-position))))
+    (save-excursion
+      (while (and (pos-visible-in-window-p subtree-beg)
+                  (not (pos-visible-in-window-p subtree-end)))
+        (scroll-up 1))
+      ;; Sometimes the line at the end is not fully visible. So I try to
+      ;; scroll down an extra line.
+      (unless (pos-visible-in-window-p subtree-beg)
+        (scroll-down 1)))))
+
+;; ***** ensure children are visible
+;; :PROPERTIES:
+;; :ID: 479455ed-a0be-4ecc-af66-559abf53c77c
+;; :END:
+
+;; If I unfold a subtree and the end of the subtree is outside of the window and
+;; there's space in the window above the subtree, scroll up as much as possible.
+
+;; Note that I don't use [[helpfn:window-start][window-start]] and [[helpfn:window-end][window-end]] because [[info:elisp#Window Start and End][their values are
+;; unreliable]]. They update when [[helpfn:redisplay][redisplay]] is called; and for efficiency, I don't
+;; want to call this function through every iteration of the loop. Instead I used
+;; [[helpfn:pos-visible-in-window-p][pos-visible-in-window-p]] to tell me if a point is still in the visible window. In
+;; hindsight, using this function is even easier than using ~window-beg~ and
+;; ~window-end~ because it doesn't require any math on my part.
+
+(defadvice! ensure-children-visible (:after outline-toggle-children)
+  "Ensure children are visible after toggling."
+  (unless (org:heading-folded-p)
+    (org:display-children-in-window)))
+
+;; **** fancy priorities
+;; :PROPERTIES:
+;; :ID: 306faaf1-fa4d-42bd-8863-ae73ca12cb61
+;; :END:
+
+;; [[package:org-fancy-priorities][org-fancy-priorities]] is a package that displays org priorities with an icon.
+
+(void-add-hook 'org-mode-hook #'org-fancy-priorities-mode)
+
+(after! all-the-icons
+  (alet (list (all-the-icons-material "priority_high")
+              (all-the-icons-octicon "arrow-up")
+              (all-the-icons-octicon "arrow-down")
+              (all-the-icons-material "low_priority"))
+    (setq org-fancy-priorities-list it)))
+
+;; **** org-superstar
+;; :PROPERTIES:
+;; :ID: c43700f5-ff24-46b2-aed5-a12f8d8bb347
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "integral-dw/org-superstar-mode"
+;; :PACKAGE:  "org-superstar"
+;; :LOCAL-REPO: "org-superstar-mode"
+;; :END:
+
+;; [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
+
+(void-add-hook 'org-mode-hook #'org-superstar-mode)
+
+(setq org-superstar-special-todo-items t)
+(setq org-superstar-leading-bullet ?\s)
+
+;; *** links
+;; :PROPERTIES:
+;; :ID: dbc3d205-9831-41f0-95f8-1e8746e0be3a
+;; :END:
+
+;; To me links are one of the biggest drawing points to org-mode. The ability to
+;; have documentation that can link to websites, files, info docs and even github
+;; commits is too juicy to pass up. Why in the 21st century do we still have to
+;; deal with such weak, plain text code documentation when we could use a more
+;; powerful markup language?
+
+;; **** ol
+;; :PROPERTIES:
+;; :ID: 21148ef5-0887-4560-9997-6059b3529a2d
+;; :END:
+
+(use-feature! ol
+  :after org
+  ;; :custom
+  ;; (org-link-descriptive . t)
+  ;; (org-link-use-indirect-buffer-for-internals . t)
+  )
+
+;; **** custom link types
+;; :PROPERTIES:
+;; :ID: 76f86439-8ee3-4688-b117-a51d18d365ce
+;; :END:
+
+;; ***** helpvar
+;; :PROPERTIES:
+;; :ID: 20f9629a-f145-44df-b8b4-69c5394dc773
+;; :END:
+
+;; =helpvar= I a new link type that when pressed, opens a help buffer from [[https://github.com/Wilfred/helpful][helpful]] if
+;; it's installed, otherwise it defaults to bringing up an regular emacs help buffer.
+
+(after! org
+  (defun ol:helpvar-face (link)
+    (if (boundp (intern link)) 'org-link 'error))
+
+  (defun ol:helpvar-follow (link)
+    (let ((var (intern link)))
+      (if (require 'helpful nil :noerror)
+          (helpful-variable var)
+        (describe-variable var))))
+
+  (org-link-set-parameters "helpvar" :face #'ol:helpvar:face :follow #'ol:helpvar:follow))
+
+;; ***** helpfn
+;; :PROPERTIES:
+;; :ID: 449a3953-dce5-41a1-afdf-129fa6fae573
+;; :END:
+
+;; =helpfn= is the same as helpvar except with functions.
+
+(after! org
+  (defun ol:helpfn-face (link)
+    (let ((fn (intern link)))
+      (if (fboundp fn) 'org-link 'error)))
+
+  (defun ol:helpfn-follow (link)
+    (let ((fn (intern link)))
+      (if (require 'helpful nil :no-error)
+          (helpful-callable fn)
+        (describe-function fn))))
+
+  (org-link-set-parameters "helpfn" :face #'ol:helpfn-face :follow #'ol:helpfn-follow))
+
+;; *** built in features
+;; :PROPERTIES:
+;; :ID:       e882f8f8-195f-4349-b766-a87a39be7e10
+;; :END:
+
+;; **** org capture
+;; :PROPERTIES:
+;; :ID: 81197df0-6744-4a63-a202-f7279d7b7119
+;; :END:
+
+;; Ever been in the middle of doing something when a thought in your head pops up
+;; about some thing else? You can stop what you're doing but then you lose focus.
+;; You can resolve to make note of it later but then you might forget. Capturing is
+;; designed to confront this problem. While in the middle of a task you can quickly
+;; jump into a small org buffer and write down an idea that you have, then close
+;; it.
+
+;; ***** org capture
+;; :PROPERTIES:
+;; :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
+;; :END:
+
+(use-feature! org-capture
+  :trigger org-ml ts
+  :commands org-capture
+  :popup ("\\`CAPTURE"
+          (display-buffer-at-bottom)
+          (window-height . 0.5)
+          (slot . 10)))
+
+;; ***** doct
+;; :PROPERTIES:
+;; :ID: 287fb9c7-110e-4758-aab2-71f74079ade2
+;; :END:
+
+;; [[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
+;; by allowing you to write them in a declarative style (see [[helpfn:doct][doct docstring]]).
+;; In org mode, capture templates are [[info:org#Capture templates][represented as plain lists]]. This makes
+;; it easy to forget what a certain element meant or to accidentally omit a capture
+;; template element as you're writing it.
+
+(use-package! doct
+  :after org-capture
+  :demand t)
+
+;; ***** remove capture headerline
+;; :PROPERTIES:
+;; :ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
+;; :END:
+
+;; By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
+;; need to disable =org-capture's= header-line.
+
+(defhook! disable-header-line (org-capture-mode-hook)
+  "Turn of the header line message."
+  (setq-local header-line-format nil))
+
+;; ***** helpers
+;; :PROPERTIES:
+;; :ID:       e0eab71c-40e0-47bf-87b3-94bee126aff3
+;; :END:
+
+;; These functions are to help me reduce the boilerplate of defining a capture
+;; template.
+
+;; ****** org-capture-file
+;; :PROPERTIES:
+;; :ID:       25fdde38-86d5-4ef4-aecb-81ceebec7c27
+;; :END:
+
+;; This function is a convenience wrapper to be used as the =:file= argument for [[helpfn:doct][doct
+;; declarations]]. The reason I use this function instead of passing in the file path
+;; is so that if VOID-CAPTURE-FILE is modified templates will still be added to the
+;; right place.
+
+(defun org-capture:file ()
+  "Return `VOID-CAPTURE-FILE'.
+This is a convenience wrapper for `doct' declarations."
+  VOID-CAPTURE-FILE)
+
+;; ****** add to capture templates
+;; :PROPERTIES:
+;; :ID:       16c55272-f8c2-4798-9da1-2ab492769f44
+;; :END:
+
+;; [[helpfn:doct][doct]] returns the new value of capture templates. but it does not actually add
+;; it. For convenience this function declare it and add it in all in one go.
+;; Additionally, it removes any capture templates with the same key so that I can
+;; freely re-evaluate it without cluttering my capture templates with duplicate
+;; entries.
+
+(defun org-capture:add-to-templates (declarations)
+  "Set `org-capture-templates' to the result of (doct DECLARATIONS).
+Before adding result, remove any members of `org-capture-templates' with the
+same key as the one(s) being added."
+  (cl-labels ((clean (templates)
+                     (when templates
+                       (cons (car templates)
+                             (--remove (string= (caar templates) (car it))
+                                       (clean (cdr templates)))))))
+    (setq org-capture-templates
+          (clean (-concat (doct declarations) org-capture-templates)))))
+
+;; ****** schedule and deadline times
+;; :PROPERTIES:
+;; :ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
+;; :END:
+
+;; For capture templates that have deadlines, I set a start and an end date.
+
+(defun org-capture::default-planning-node (&optional days-difference)
+  "Return the default planning node for `org-capture-templates'."
+  (let* ((days-difference (or days-difference 7))
+         (now (ts-now))
+         (later (ts-adjust 'day days-difference now))
+         (beg (list (ts-year now) (ts-month now) (ts-day now)))
+         (end (list (ts-year later) (ts-month later) (ts-day later)))
+         (days-difference (or days-difference 7)))
+    (org-ml-build-planning! :scheduled beg :deadline end)))
+
+;; ****** generic template
+;; :PROPERTIES:
+;; :ID:       7945bb08-cb78-4c7e-840d-3cf92b7e3677
+;; :END:
+
+;; To maximize code reusability, I create a generic template skeleton here. All of
+;; my headlines should have their own UUID. And almost all of my headlines will
+;; have the date created.
+
+(defun org-capture::generic-template ()
+  "Return the default `org-capture-template'."
+  (->> (org-ml-build-headline! :title-text "%?")
+       (org-ml-headline-set-node-property "ID" (org-id-new))
+       (org-ml-headline-set-node-property "CREATED" (ts-format))))
+
+;; ****** default template keywords
+;; :PROPERTIES:
+;; :ID:       b2fe70d3-cc88-40fb-a718-8dafaeb98694
+;; :END:
+
+(defvar org-capture:defaults
+  '(:file #'org-capture:file
+    :prepend t
+    :empty-lines 1)
+  "A plist of keywords that should always apply to capture templates.")
+
+;; ****** convenience macro for defining capture templates
+;; :PROPERTIES:
+;; :ID:       9a3ece9d-e8e4-4b32-b65b-4a992e9d20cf
+;; :END:
+
+(defmacro! define-capture-template! (name args &rest body)
+  "Define a capture template."
+  (declare (indent defun))
+  (-let* ((string-name (downcase (symbol-name name)))
+          ((_ alist body) (void--keyword-macro-args body))
+          (defaults org-capture:defaults)
+          (key (downcase (substring string-name 0 1))))
+    `(after! org-capture
+       (defun org-capture::<string-name>-template-node ()
+         "Return capture template node for <string-name>."
+         ,@body)
+       (defun org-capture::<string-name>-template-string ()
+         "Return capture template as a string."
+         (->> (org-capture::<string-name>-template-node)
+              (org-ml-to-trimmed-string)))
+       (org-capture:add-to-templates
+        (list ,string-name
+              :keys ,key
+              :template #'org-capture::<string-name>-template-string
+              ,@(-flatten-n 1 (-map #'-cons-to-list alist))
+              ,@org-capture:defaults)))))
+
+;; ****** capture get url
+;; :PROPERTIES:
+;; :ID:       a0f5b143-f48f-4c6a-a1d1-63d638b15e22
+;; :END:
+
+(defun org-capture:browser-url ()
+  "Return the url of current browser."
+  (cond ((and (bound-and-true-p exwm-mode))
+         (exwm::firefox-url))
+        (()
+         (exwm::qutebrowser-url))
+        ((eq major-mode 'eww-mode)
+         (eww-current-url))
+        ((eq major-mode 'w3m-mode)
+         ))
+  )
+
+;; ****** is a browser buffer
+;; :PROPERTIES:
+;; :ID:       649c42af-cba2-4c0b-86a7-221ba6609592
+;; :END:
+
+(defun in-browser-buffer-p ()
+  "docstring"
+  (s-matches-p (buffer-name)))
+
+;; ***** capture templates
+;; :PROPERTIES:
+;; :ID: aeb0bc04-84a1-4f85-89f9-c2e04cefce92
+;; :END:
+
+;; I use [[https://github.com/ndwarshuis/org-ml][org-ml]] and [[https://github.com/progfolio/doct][doct]] to generate templates dynamically. By "dynamically"
+;; I mean that a template for a given key is different every time I open it. This
+;; is possible with regular capture templates via [[info:org#Template expansion][org template expansion]], but I think the
+;; abstractions provided by =org-ml= and =doct= are even more robust and much easier to
+;; extend.
+
+;; ****** website
+;; :PROPERTIES:
+;; :ID:       03d7ea80-5d55-4ecb-b0ba-c229090b1d5e
+;; :END:
+
+;; The purpose of this template is to.
+
+;; A small note to avoid invalid filenames or wanting to create a filename but
+;; inadvertently adding a file to a directory I replace any forward slashes (=/=)
+;; with =~=.
+
+(define-capture-template! Website ()
+  :when #'org-capture:in-browser-buffer-p
+  :file (concat VOID-ORG-DIR "websites.org")
+  :immediate-finish t
+  :after-finalize (lambda () (void-download-webpage-as-pdf (exwm::qutebrowser-url) exwm-title))
+  (let* ((url (exwm::qutebrowser-url))
+         ;; find the newest pdf added to the directory.
+         (pdf-name exwm-title)
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR (s-replace "/" "~" pdf-name)))
+         (link-to-pdf (org-ml-to-trimmed-string (org-ml-build-link pdf-path pdf-name))))
+    (->> (org-capture::generic-template)
+         (org-ml-headline-set-title! link-to-pdf nil)
+         (org-ml-headline-set-node-property "SOURCE" url))))
+
+;; ****** question
+;; :PROPERTIES:
+;; :ID:       a672f3eb-43c1-4310-adcc-6d0022e50579
+;; :END:
+
+;; Sometimes I have questions that I want to record. It's kind of like a more
+;; specific =TODO= because their "task" is always to be answered. I think it's
+;; worth distinguishing them from tasks in which I need to perform an action that I
+;; have no questions about. The purpose of this template is for problems and issues
+;; I'm stumped on. This process can help me reason through as much as I can and
+;; provide the perfect draft for a potential question for reddit or stackexchange.
+
+(define-capture-template! Question ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :tags '("question"))))
+
+;; ****** idea
+;; :PROPERTIES:
+;; :ID:       71864105-198a-4680-ad1d-bd3f40b7f0d6
+;; :END:
+
+(define-capture-template! Idea ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :tags '("idea"))))
+
+;; ****** emacs
+;; :PROPERTIES:
+;; :ID: e6109a54-37af-44ba-852f-a1c34f910cb9
+;; :END:
+
+;; This capture template is for something emacs related I need to do.
+
+(define-capture-template! Emacs ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :todo-keyword "TODO")
+       (org-ml-set-property :tags '("emacs"))
+       (org-ml-headline-set-planning (org-capture::default-planning-node))))
+
+;; ****** generic todo
+;; :PROPERTIES:
+;; :ID:       3689e969-aefe-47f4-8d54-b23f08840374
+;; :END:
+
+(define-capture-template! todo ()
+  (->> (org-capture::generic-template)
+       (org-ml-set-property :todo-keyword "TODO")))
+
+;; ***** prevent capture templates from deleting windows
+;; :PROPERTIES:
+;; :ID:       a13e330a-33ff-4c1e-add4-00c5db4e6cd1
+;; :END:
+
+;; =org-capture= deletes all the other windows in the frame.
+
+(defadvice! dont-delete-other-windows (:around org-capture-place-template)
+  "Don't delete other windows when opening a capture template."
+  (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
+    (apply <orig-fn> <args>)))
+
+;; **** org agenda
+;; :PROPERTIES:
+;; :ID:       16c1da27-264f-47df-a9d4-3f3ad8fa460f
+;; :END:
+
+;; ***** org agenda
+;; :PROPERTIES:
+;; :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
+;; :END:
+
+;; [[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the
+;; current week.
+
+(use-feature! org-agenda
+  :after org
+  :commands (org-agenda org-agenda-list)
+  :setq
+  (org-agenda-files list VOID-CAPTURE-FILE)
+  (org-agenda-start-on-weekday . 0)
+  (org-agenda-timegrid-use-ampm)
+  (org-agenda-skip-unavailable-files)
+  (org-agenda-time-leading-zero . t)
+  (org-agenda-text-search-extra-files . '(agenda-archives))
+  (org-agenda-dim-blocked-tasks)
+  (org-agenda-inhibit-startup . t))
+
+;; ***** org super agenda
+;; :PROPERTIES:
+;; :ID:       d4914094-9e4e-4269-a359-16c7abc6653a
+;; :END:
+
+(use-package! org-super-agenda)
+
+;; **** org refile
+;; :PROPERTIES:
+;; :ID:       7cb6769d-2904-4675-b17d-f658edb5a917
+;; :END:
+
+;; ***** org refile
+;; :PROPERTIES:
+;; :ID: 0174a708-8043-403e-b024-8ae29868564d
+;; :END:
+
+(use-feature! org-refile
+  :pre-setq
+  (org-refile-targets . `((,VOID-MAIN-ORG-FILE . (:maxlevel . 10))
+                          (,(concat VOID-ORG-DIR "code.org") . (:maxlevel . 10))))
+  (org-refile-use-outline-path . 'file)
+  (org-refile-allow-creating-parent-nodes . t)
+  (org-reverse-note-order . t)
+  (org-outline-path-complete-in-steps . nil))
+
+;; **** org id
+;; :PROPERTIES:
+;; :ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
+;; :END:
+
+;; =org-id= is a built-in package that creates that provides tools for creating and
+;; storing universally unique IDs. This is primarily used to disguish and
+;; referenance org headlines.
+
+(use-feature! org-id
+  :commands org-id-get-create
+  :setq
+  (org-id-locations-file . (concat VOID-DATA-DIR "org-id-locations"))
+  ;; Global ID state means we can have ID links anywhere. This is required for
+  ;; `org-brain', however.
+  (org-id-locations-file-relative . t)
+  :hook (org-insert-heading . org-id-get-create))
+
+;; **** org clock
+;; :PROPERTIES:
+;; :ID:       d378471c-89df-48c9-a755-b79880f27308
+;; :END:
+
+;; =org-clock= is a built-in package that provides time logging functions for
+;; tracking the time you spend on a particular task.
+
+(use-feature! org-clock
+  :commands org-clock-in
+  ;; :before-call ((org-clock-in org-clock-out org-clock-in-last org-clock-goto org-clock-cancel) . (org-clock-load))
+  :hook (kill-emacs . org-clock-save)
+  :setq
+  ;; org-clock-sound
+  ;; org-show-notification-handler
+  (org-clock-persist . 'history)
+  (org-clock-persist-file . (concat VOID-DATA-DIR "org-clock-save.el"))
+  ;; Resume when clocking into task with open clock
+  (org-clock-in-resume . t)
+  :config
+  ;; set up hooks for persistence.
+  (org-clock-persistence-insinuate))
+
+;; **** org crypt
+;; :PROPERTIES:
+;; :ID:       f5278890-8b84-43df-b5dc-0ef8074bfba9
+;; :END:
+
+(use-feature! org-crypt
+  :commands org-encrypt-entries org-encrypt-entry org-decrypt-entries org-decrypt-entry
+  :hook (org-reveal-start . org-decrypt-entry)
+  ;; :preface
+  ;; ;; org-crypt falls back to CRYPTKEY property then `epa-file-encrypt-to', which
+  ;; ;; is a better default than the empty string `org-crypt-key' defaults to.
+  ;; (defvar org-crypt-key nil)
+  ;; (after! org
+  ;;   (add-to-list 'org-tags-exclude-from-inheritance "crypt")
+  ;;   (add-hook! 'org-mode-hook
+  ;;              (add-hook 'before-save-hook 'org-encrypt-entries nil t)))
+  )
+
+;; *** org-journal
+;; :PROPERTIES:
+;; :ID:       c3056303-5fa1-49f9-ae2d-294942e25f54
+;; :END:
+
+;; =org-journal= is a package that provides functions to maintain a simple
+;; diary/journal using =org-mode=.
+
+(void-autoload 'org-journal #'org-journal-new-entry)
+
+(setq org-journal-file-type 'yearly)
+(setq org-journal-dir (concat VOID-ORG-DIR "journal/"))
+(setq org-journal-find-file 'find-file)
+
+;; ** lua
+;; :PROPERTIES:
+;; :ID: 9f458b76-489f-45e0-b99a-ad6a9a2ae182
+;; :END:
+
+(use-package! lua-mode :mode "\\.lua\\'")
+
+;; ** cpp
+;; :PROPERTIES:
+;; :ID:       2fecdcf5-f482-4672-8bc8-9e9e1e0e110b
+;; :END:
+
+;; *** modern font lock
+;; :PROPERTIES:
+;; :ID:       2778d03a-4ee0-4175-90e5-331140ca7faf
+;; :END:
+
+(use-package! modern-cpp-font-lock
+  :hook (c++-mode . modern-c++-font-lock-mode))
+
+;; *** demangle
+;; :PROPERTIES:
+;; :ID:       2cda9af3-c7e3-48b5-8b49-ec4c63d4f501
+;; :END:
+
+(use-package! demangle-mode
+  :hook llvm-mode)
+
+;; ** TODO latex
+;; :PROPERTIES:
+;; :ID:       03b47c17-e217-4dd5-b48d-36ae54a8349e
+;; :END:
+
+;; *** tex
+;; :PROPERTIES:
+;; :ID:       da68dfd0-62c5-4101-a7f3-7b13df760670
+;; :END:
+
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . LaTeX-mode))
+
+(void-add-hook 'LaTeX-mode-hook #'visual-line-mode)
+
+(setq TeX-parse-self t)
+(setq TeX-auto-save t)
+;; use hidden dirs for auctex files
+(setq TeX-auto-local ".auctex-auto")
+(setq TeX-style-local ".auctex-style")
+(setq TeX-source-correlate-mode t)
+(setq TeX-source-correlate-method 'synctex)
+;; don't start the emacs server when correlating sources
+(setq TeX-source-correlate-start-server nil)
+;; automatically insert braces after sub/superscript in math mode
+(setq TeX-electric-sub-and-superscript t)
+
+;; *** auctex
+;; :PROPERTIES:
+;; :ID:       5d5d2e8f-3b95-4d1a-bcc0-1c4ec8f51202
+;; :END:
+
+(use-package! auctex)
+
+;; *** adaptive wrap
+;; :PROPERTIES:
+;; :ID:       80c837fc-a8de-4c11-9c76-b54f58c9a157
+;; :END:
+
+(use-package! adaptive-wrap
+  :hook (LaTeX-mode . adaptive-wrap-prefix-mode)
+  :setq (adaptive-wrap-extra-indent . 0))
+
+;; *** preview pane
+;; :PROPERTIES:
+;; :ID:       a1c99afc-ee73-42fd-b33d-7c61ad607e90
+;; :END:
+
+(use-package! latex-preview-pane)
 
 ;; * User Interface
 ;; ;; :PROPERTIES:
