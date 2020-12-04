@@ -2167,9 +2167,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
           "emacs"
           nil "open -n /Applications/Emacs.app --args --debug-init"))
         ((eq system-type 'gnu/linux)
-         (start-process "emacs" nil "emacs"
-                        ;; "--debug-init"
-                        ))))
+         (start-process "emacs" nil "emacs" "--debug-init"))))
 
 ;; ***** kill all process of program
 ;; :PROPERTIES:
