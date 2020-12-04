@@ -1787,7 +1787,7 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 (setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD)
 (setq gcmh-low-cons-threshold VOID-GC-CONS-THRESHOLD-MIN)
 
-(autoload #'gmch-mode #'gcmh nil t nil)
+(autoload #'gcmh-mode "gcmh" nil t nil)
 (void-add-hook 'emacs-startup-hook #'gcmh-mode)
 
 ;; **** minibuffer
