@@ -8108,268 +8108,269 @@ Orderless will do this."
 ;;                                    :type faicon
 ;;                                    (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
 
-;; ;; ** feebleline
-;; ;; :PROPERTIES:
-;; ;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :HOST:     github
-;; ;; :REPO:     "tautologyclub/feebleline"
-;; ;; :PACKAGE:  "feebleline"
-;; ;; :LOCAL-REPO: "feebleline"
-;; ;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
-;; ;; :END:
+;; ** feebleline
+;; :PROPERTIES:
+;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "tautologyclub/feebleline"
+;; :PACKAGE:  "feebleline"
+;; :LOCAL-REPO: "feebleline"
+;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
+;; :END:
 
-;; ;; Feebleline replaces the typical emacs modeline with text printed out to
-;; ;; echo area.
+;; Feebleline replaces the typical emacs modeline with text printed out to
+;; echo area.
 
-;; ;; Why use this instead of a typical modeline (such as doom-modeline,
-;; ;; telephone-line, smart-mode-line, etc.)? The problem with typical emacs modelines
-;; ;; is that they appear in every buffer. This means they do not scale well in terms
-;; ;; of screen space because each additional vertical window means another line
-;; ;; dedicated to the modeline. Moreover, more modelines aren't even more useful,
-;; ;; it's just excess information you don't need to know unless you're visiting the
-;; ;; buffer. Better is a global modeline that displays the information from the
-;; ;; buffer displayed in the currently selected window.
+;; Why use this instead of a typical modeline (such as doom-modeline,
+;; telephone-line, smart-mode-line, etc.)? The problem with typical emacs modelines
+;; is that they appear in every buffer. This means they do not scale well in terms
+;; of screen space because each additional vertical window means another line
+;; dedicated to the modeline. Moreover, more modelines aren't even more useful,
+;; it's just excess information you don't need to know unless you're visiting the
+;; buffer. Better is a global modeline that displays the information from the
+;; buffer displayed in the currently selected window.
 
-;; ;; *** init
-;; ;; :PROPERTIES:
-;; ;; :ID:       e0a819d7-1d30-4602-9539-e882f37b7bc2
-;; ;; :END:
+;; *** init
+;; :PROPERTIES:
+;; :ID:       e0a819d7-1d30-4602-9539-e882f37b7bc2
+;; :END:
 
-;; ;; **** feebleline
-;; ;; :PROPERTIES:
-;; ;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
-;; ;; :END:
+;; **** feebleline
+;; :PROPERTIES:
+;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
+;; :END:
 
-;; (void-add-hook 'window-setup-hook #'feebleline-mode)
+(require 'feebleline)
+(void-add-hook 'window-setup-hook #'feebleline-mode)
 
-;; ;; **** modeline display
-;; ;; :PROPERTIES:
-;; ;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
-;; ;; :END:
+;; **** modeline display
+;; :PROPERTIES:
+;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
+;; :END:
 
-;; ;; It's really easy to add new segments to this modeline.
+;; It's really easy to add new segments to this modeline.
 
-;; ;; There are those who insist on the usefulness of line numbers and column number.
-;; ;; I'm not one of them. I rarely ever need to use a specific line number or column
-;; ;; number when editing text. To me they are just distracting eye-candy.
+;; There are those who insist on the usefulness of line numbers and column number.
+;; I'm not one of them. I rarely ever need to use a specific line number or column
+;; number when editing text. To me they are just distracting eye-candy.
 
-;; (after! feebleline
-;;   (setq feebleline-msg-functions
-;;         '((feebleline:mode-icon :fmt "%2s")
-;;           (feebleline-file-or-buffer-name :face font-lock-keyword-face)
-;;           (feebleline-git-branch :face feebleline-git-face)
-;;           (feebleline:emms-track-status-indicator)
-;;           (feebleline:emms-current-track)
-;;           (feebleline:current-workgroup :align right)
-;;           (feebleline:dwim-battery-info :align right)
-;;           (feebleline:msg-display-time :align right))))
+(after! feebleline
+  (setq feebleline-msg-functions
+        '((feebleline:mode-icon :fmt "%2s")
+          (feebleline-file-or-buffer-name :face font-lock-keyword-face)
+          (feebleline-git-branch :face feebleline-git-face)
+          (feebleline:emms-track-status-indicator)
+          (feebleline:emms-current-track)
+          (feebleline:current-workgroup :align right)
+          (feebleline:dwim-battery-info :align right)
+          (feebleline:msg-display-time :align right))))
 
-;; ;; *** whether to display icons
-;; ;; :PROPERTIES:
-;; ;; :ID:       15850007-1ec3-45d0-afb9-0fd764991fca
-;; ;; :END:
+;; *** whether to display icons
+;; :PROPERTIES:
+;; :ID:       15850007-1ec3-45d0-afb9-0fd764991fca
+;; :END:
 
-;; (defvar void-display-icons-p t
-;;   "Whether to display icons.")
+(defvar void-display-icons-p t
+  "Whether to display icons.")
 
-;; (defun void/toggle-icon-display ()
-;;   "Toggle the display of icons."
-;;   (interactive)
-;;   (toggle! void-display-icons-p))
+(defun void/toggle-icon-display ()
+  "Toggle the display of icons."
+  (interactive)
+  (toggle! void-display-icons-p))
 
-;; ;; *** icon displayable
-;; ;; :PROPERTIES:
-;; ;; :ID:       8f470288-9779-4bd9-95d7-b725ea3507c6
-;; ;; :END:
+;; *** icon displayable
+;; :PROPERTIES:
+;; :ID:       8f470288-9779-4bd9-95d7-b725ea3507c6
+;; :END:
 
-;; (defun void-icons-displayable-p ()
-;;   "Return non-nil when icons are displayable."
-;;   (and (display-graphic-p)
-;;        void-display-icons-p
-;;        (featurep 'all-the-icons)
-;;        t))
+(defun void-icons-displayable-p ()
+  "Return non-nil when icons are displayable."
+  (and (display-graphic-p)
+       void-display-icons-p
+       (featurep 'all-the-icons)
+       t))
 
-;; ;; *** icon generic function
-;; ;; :PROPERTIES:
-;; ;; :ID:       e32829fe-6f94-4a20-956d-85248e940f54
-;; ;; :END:
+;; *** icon generic function
+;; :PROPERTIES:
+;; :ID:       e32829fe-6f94-4a20-956d-85248e940f54
+;; :END:
 
-;; (defun all-the-icons:icon (type name &rest properties)
-;;   "Return icon."
-;;   (if (void-icons-displayable-p)
-;;       (apply (void-symbol-intern 'all-the-icons- type) name properties)
-;;     (plist-get properties :fallback)))
+(defun all-the-icons:icon (type name &rest properties)
+  "Return icon."
+  (if (void-icons-displayable-p)
+      (apply (void-symbol-intern 'all-the-icons- type) name properties)
+    (plist-get properties :fallback)))
 
-;; ;; *** buffer mode
-;; ;; :PROPERTIES:
-;; ;; :ID:       666cea86-49d8-44c2-8727-e50c94963eee
-;; ;; :END:
+;; *** buffer mode
+;; :PROPERTIES:
+;; :ID:       666cea86-49d8-44c2-8727-e50c94963eee
+;; :END:
 
-;; (defun feebleline:mode-icon ()
-;;   "Display a mode icon."
-;;   (when (void-icons-displayable-p)
-;;     (--> (all-the-icons-icon-for-buffer)
-;;          (if (or (null it) (symbolp it))
-;;              (all-the-icons-faicon "file-o")
-;;            it)
-;;          (propertize it 'display '(raise 0.01)))))
+(defun feebleline:mode-icon ()
+  "Display a mode icon."
+  (when (void-icons-displayable-p)
+    (--> (all-the-icons-icon-for-buffer)
+         (if (or (null it) (symbolp it))
+             (all-the-icons-faicon "file-o")
+           it)
+         (propertize it 'display '(raise 0.01)))))
 
-;; ;; *** git branch
-;; ;; :PROPERTIES:
-;; ;; :ID:       48e08229-355d-4d4f-a003-d56781f94c80
-;; ;; :END:
+;; *** git branch
+;; :PROPERTIES:
+;; :ID:       48e08229-355d-4d4f-a003-d56781f94c80
+;; :END:
 
-;; ;; **** branch icon                                                      :disabled:
-;; ;; :PROPERTIES:
-;; ;; :ID:       58c2d085-f377-4444-85a7-2780421f28ee
-;; ;; :END:
+;; **** branch icon                                                      :disabled:
+;; :PROPERTIES:
+;; :ID:       58c2d085-f377-4444-85a7-2780421f28ee
+;; :END:
 
-;; (defun feebleline:git-branch-icon ()
-;;   (when (magit-git-repo-p default-directory)
-;;     (all-the-icons-octicon "git-branch" :v-adjust 0.01)))
+(defun feebleline:git-branch-icon ()
+  (when (magit-git-repo-p default-directory)
+    (all-the-icons-octicon "git-branch" :v-adjust 0.01)))
 
-;; ;; *** time
-;; ;; :PROPERTIES:
-;; ;; :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
-;; ;; :END:
+;; *** time
+;; :PROPERTIES:
+;; :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
+;; :END:
 
-;; (defun feebleline:msg-display-time ()
-;;   (format-time-string "%T %D %a"))
+(defun feebleline:msg-display-time ()
+  (format-time-string "%T %D %a"))
 
-;; ;; *** saved buffer
-;; ;; :PROPERTIES:
-;; ;; :ID:       f956383b-0e7e-4d42-95fb-2cb65faf5c35
-;; ;; :END:
+;; *** saved buffer
+;; :PROPERTIES:
+;; :ID:       f956383b-0e7e-4d42-95fb-2cb65faf5c35
+;; :END:
 
-;; (defun feebleline:saved-buffer-indicator-icon ()
-;;   "Display saved icon if buffer has been saved."
-;;   (when (and (buffer-file-name) (buffer-modified-p))
-;;     (all-the-icons:icon 'material "save" :v-adjust -0.01)))
+(defun feebleline:saved-buffer-indicator-icon ()
+  "Display saved icon if buffer has been saved."
+  (when (and (buffer-file-name) (buffer-modified-p))
+    (all-the-icons:icon 'material "save" :v-adjust -0.01)))
 
-;; ;; *** battery
-;; ;; :PROPERTIES:
-;; ;; :ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
-;; ;; :END:
+;; *** battery
+;; :PROPERTIES:
+;; :ID:       a23d0584-e0d4-4d6e-98ac-44bd51bcc3a4
+;; :END:
 
-;; ;; **** battery
-;; ;; :PROPERTIES:
-;; ;; :ID:       b1d5e914-3337-4426-94f7-9d618e9ffacf
-;; ;; :END:
+;; **** battery
+;; :PROPERTIES:
+;; :ID:       b1d5e914-3337-4426-94f7-9d618e9ffacf
+;; :END:
 
-;; ;; ***** battery
-;; ;; :PROPERTIES:
-;; ;; :ID:       9514f9db-4937-435a-943c-27cf066e979e
-;; ;; :END:
+;; ***** battery
+;; :PROPERTIES:
+;; :ID:       9514f9db-4937-435a-943c-27cf066e979e
+;; :END:
 
-;; (use-feature! battery :demand t)
+(use-feature! battery :demand t)
 
-;; ;; ***** battery charging
-;; ;; :PROPERTIES:
-;; ;; :ID:       0a44e046-e78b-4681-8cad-3cec5dbb2c14
-;; ;; :END:
+;; ***** battery charging
+;; :PROPERTIES:
+;; :ID:       0a44e046-e78b-4681-8cad-3cec5dbb2c14
+;; :END:
 
-;; (defun battery:charging-p ()
-;;   "Return non-nil if the battery is charging."
-;;   (alet (battery-format "%B" (funcall battery-status-function))
-;;     (string= it "Charging")))
+(defun battery:charging-p ()
+  "Return non-nil if the battery is charging."
+  (alet (battery-format "%B" (funcall battery-status-function))
+    (string= it "Charging")))
 
-;; ;; ***** battery percentage
-;; ;; :PROPERTIES:
-;; ;; :ID:       5b557679-4ddd-4ed3-92b7-e5e415e47497
-;; ;; :END:
+;; ***** battery percentage
+;; :PROPERTIES:
+;; :ID:       5b557679-4ddd-4ed3-92b7-e5e415e47497
+;; :END:
 
-;; (defun battery:percentage ()
-;;   "Return the battery percentage."
-;;   (alet (battery-format "%p" (funcall battery-status-function))
-;;     (string-to-number it)))
+(defun battery:percentage ()
+  "Return the battery percentage."
+  (alet (battery-format "%p" (funcall battery-status-function))
+    (string-to-number it)))
 
-;; ;; **** battery status
-;; ;; :PROPERTIES:
-;; ;; :ID:       212b76e2-b562-49d4-bdba-2d7a33d03981
-;; ;; :END:
+;; **** battery status
+;; :PROPERTIES:
+;; :ID:       212b76e2-b562-49d4-bdba-2d7a33d03981
+;; :END:
 
-;; (defun feebleline:battery-status-indicator ()
-;;   "Return what's used to indicate battery status."
-;;   (let* ((battery-fn (-rpartial #'battery-format (funcall battery-status-function)))
-;;          (icon-fn #'all-the-icons:icon)
-;;          (props '(:v-adjust 0.01))
-;;          (charge (battery:percentage))
-;;          (chargingp (battery:charging-p)))
-;;     (alet (cond (chargingp '(alltheicon "charging"       "[++++]"))
-;;                 ((> charge 75) '(faicon "full"           "[####]"))
-;;                 ((> charge 50) '(faicon "three-quarters" "[### ]"))
-;;                 ((> charge 25) '(faicon "half"           "[##  ]"))
-;;                 ((> charge 10) '(faicon "quarter"        "[#   ]"))
-;;                 (t             '(faicon "empty"          "[    ]")))
-;;       (apply icon-fn (car it) (concat "battery-" (cadr it)) :fallback (caddr it) props))))
+(defun feebleline:battery-status-indicator ()
+  "Return what's used to indicate battery status."
+  (let* ((battery-fn (-rpartial #'battery-format (funcall battery-status-function)))
+         (icon-fn #'all-the-icons:icon)
+         (props '(:v-adjust 0.01))
+         (charge (battery:percentage))
+         (chargingp (battery:charging-p)))
+    (alet (cond (chargingp '(alltheicon "charging"       "[++++]"))
+                ((> charge 75) '(faicon "full"           "[####]"))
+                ((> charge 50) '(faicon "three-quarters" "[### ]"))
+                ((> charge 25) '(faicon "half"           "[##  ]"))
+                ((> charge 10) '(faicon "quarter"        "[#   ]"))
+                (t             '(faicon "empty"          "[    ]")))
+      (apply icon-fn (car it) (concat "battery-" (cadr it)) :fallback (caddr it) props))))
 
-;; ;; **** percentage
-;; ;; :PROPERTIES:
-;; ;; :ID:       3a4875be-45e4-4e49-bc05-dcbf50a80eff
-;; ;; :END:
+;; **** percentage
+;; :PROPERTIES:
+;; :ID:       3a4875be-45e4-4e49-bc05-dcbf50a80eff
+;; :END:
 
-;; ;; The battery percentage actually comes with the tens place. That's too much
-;; ;; information and I'm not even sure if it's accurate enough for that tens place to
-;; ;; mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes the integer part.
+;; The battery percentage actually comes with the tens place. That's too much
+;; information and I'm not even sure if it's accurate enough for that tens place to
+;; mean anything. Using [[helpfn:string-to-number][string-to-number]] just takes the integer part.
 
-;; (defun feebleline:battery-info ()
-;;   "Return battery information."
-;;   (let* ((percentage (thread-last (funcall battery-status-function)
-;;                        (battery-format "%p")
-;;                        (string-to-number)))
-;;          (status-indicator (feebleline:battery-status-indicator)))
-;;     (format "%s %%%d" status-indicator percentage)))
+(defun feebleline:battery-info ()
+  "Return battery information."
+  (let* ((percentage (thread-last (funcall battery-status-function)
+                       (battery-format "%p")
+                       (string-to-number)))
+         (status-indicator (feebleline:battery-status-indicator)))
+    (format "%s %%%d" status-indicator percentage)))
 
-;; ;; **** dwim battery info
-;; ;; :PROPERTIES:
-;; ;; :ID:       0494e978-5f28-495f-87d4-904287495e92
-;; ;; :END:
+;; **** dwim battery info
+;; :PROPERTIES:
+;; :ID:       0494e978-5f28-495f-87d4-904287495e92
+;; :END:
 
-;; ;; I don't always need to display the battery information. It's only important to
-;; ;; see it if it's running low and my laptop's not charging.
+;; I don't always need to display the battery information. It's only important to
+;; see it if it's running low and my laptop's not charging.
 
-;; (defun feebleline:dwim-battery-info ()
-;;   "Same as `feebleline:battery-info' but."
-;;   (when (and (not (battery:charging-p))
-;;              (>= 35 (battery:percentage)))
-;;     (feebleline:battery-info)))
+(defun feebleline:dwim-battery-info ()
+  "Same as `feebleline:battery-info' but."
+  (when (and (not (battery:charging-p))
+             (>= 35 (battery:percentage)))
+    (feebleline:battery-info)))
 
-;; ;; *** music track
-;; ;; :PROPERTIES:
-;; ;; :ID:       58edb392-282a-4acd-a5a2-4c248da423ec
-;; ;; :END:
+;; *** music track
+;; :PROPERTIES:
+;; :ID:       58edb392-282a-4acd-a5a2-4c248da423ec
+;; :END:
 
-;; ;; **** track status
-;; ;; :PROPERTIES:
-;; ;; :ID:       e0ec86fe-018f-4253-af4d-5a2173da659f
-;; ;; :END:
+;; **** track status
+;; :PROPERTIES:
+;; :ID:       e0ec86fe-018f-4253-af4d-5a2173da659f
+;; :END:
 
-;; (defun feebleline:emms-track-status-indicator ()
-;;   "Return the indicator for track status."
-;;   (when (bound-and-true-p emms-player-playing-p)
-;;     (alet (cond
-;;            (emms-player-paused-p '(material "pause" "*paused*"))
-;;            (emms-repeat-track    '(material "repeat_one" "*repeat-one*"))
-;;            (t                    '(material "music_note" "*playing*")))
-;;       (funcall #'all-the-icons:icon
-;;                (car it)
-;;                (cadr it)
-;;                :fallback (caddr it)))))
+(defun feebleline:emms-track-status-indicator ()
+  "Return the indicator for track status."
+  (when (bound-and-true-p emms-player-playing-p)
+    (alet (cond
+           (emms-player-paused-p '(material "pause" "*paused*"))
+           (emms-repeat-track    '(material "repeat_one" "*repeat-one*"))
+           (t                    '(material "music_note" "*playing*")))
+      (funcall #'all-the-icons:icon
+               (car it)
+               (cadr it)
+               :fallback (caddr it)))))
 
-;; ;; **** music
-;; ;; :PROPERTIES:
-;; ;; :ID:       b3b654bb-e789-4647-9e82-e6c04c867ff8
-;; ;; :END:
+;; **** music
+;; :PROPERTIES:
+;; :ID:       b3b654bb-e789-4647-9e82-e6c04c867ff8
+;; :END:
 
-;; (defun feebleline:emms-current-track ()
-;;   "Add track information if playing."
-;;   (when (bound-and-true-p emms-player-playing-p)
-;;     (alet (->> (emms-playlist-current-selected-track)
-;;                (emms-track-name)
-;;                (f-base))
-;;       (s-truncate 25 it))))
+(defun feebleline:emms-current-track ()
+  "Add track information if playing."
+  (when (bound-and-true-p emms-player-playing-p)
+    (alet (->> (emms-playlist-current-selected-track)
+               (emms-track-name)
+               (f-base))
+      (s-truncate 25 it))))
 
 ;; ;; ** spinner
 ;; ;; :PROPERTIES:
