@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;; * Core
 ;; :PROPERTIES:
 ;; :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
