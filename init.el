@@ -1967,7 +1967,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; Since we're evaluating a good amount of lisp expressions, we should boost
 ;; garbage collection during this time.
 
-(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection-advice)
+(void-add-advice #'idle-require-load-next :around #'void--reduce-garbage-collection-advice)
 
 ;; ** Commands
 ;; :PROPERTIES:
