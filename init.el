@@ -1697,7 +1697,7 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 (setq gcmh-idle-delay 5)
 (setq gcmh-verbose void-debug-p)
 (setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD)
-(setq gcmh-low-cons-threshold VOID-LOW-GC-CONS-THRESHOLD)
+(setq gcmh-low-cons-threshold VOID-GC-CONS-THRESHOLD-MIN)
 
 (void-autoload 'gcmh #'gcmh-mode)
 (void-add-hook 'emacs-startup-hook #'gcmh-mode)
