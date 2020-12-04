@@ -2745,53 +2745,7 @@ Orderless will do this."
   "Use the Void text banner."
   (concat VOID-LOCAL-DIR "void-banner.txt"))
 
-;; *** navigator buttons                                                 :disabled:
-;; :PROPERTIES:
-;; :ID:       a4a9e0ae-ee44-4434-bcf6-b415ef348e45
-;; :END:
-
-;; **** navigator button
-;; :PROPERTIES:
-;; :ID:       63829df6-5ba9-477e-99e9-86aabf7f5862
-;; :END:
-
-;; This is a convenience macro that allows navigation buttons to be defined
-;; declaratively and with a "defun-like" syntax. Perhaps this is overkill.
-
-(defmacro dashboard:define-naviator-button! (name args description &rest body)
-  "Define a dashboard navigator button."
-  (declare (indent defun))
-  (let ((dashboard-fn dashboard:name-button)
-        ((&plist ))
-        ((&plist ) icon))
-    `(alet (list ()
-                 ,name
-                 ,description
-                 #',dashboard-fn)
-       (push it dashboard-navigator-buttons))))
-
-;; **** github link
-;; :PROPERTIES:
-;; :ID:       a3c05c71-bd42-4508-8738-5c75f95b29d6
-;; :END:
-
-(dashboard:define-naviator-button! Homepage ()
-                                   "Browse Homepage."
-                                   :icon "mark-github"
-                                   (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
-
-;; **** go to readme
-;; :PROPERTIES:
-;; :ID:       1a666fec-9f7c-4153-9e9a-f0f4a74e4d31
-;; :END:
-
-(dashboard:define-naviator-button! README ()
-                                   "Go to README."
-                                   :icon "eye"
-                                   :type faicon
-                                   (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
-
-** feebleline
+;; ** feebleline
 ;; :PROPERTIES:
 ;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
 ;; :TYPE:     git
