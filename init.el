@@ -530,7 +530,11 @@ Accept the same arguments as `message'."
 ;; :ID:       cf3d1f23-aa4c-4740-9413-edadd98ec142
 ;; :END:
 
-;; The documentation for inhbit-message says not to enable this globally because
+;; =inhibit-message= prevents messages from being displayed in the [[][]]. However,
+;; they are still logged to the =*Messages*= buffer. The [[helpvar:inhibit-message][documentation for
+;; inhibit-message]] says not to enable this globally because it is "necessary" for
+;; isearch and other emacs functionality. I am skeptical though. I prefer not to
+;; have [[id:][feebleline]] distracted with constant messages.
 
 (setq-default inhibit-message t)
 
