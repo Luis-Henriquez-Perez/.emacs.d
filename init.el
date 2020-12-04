@@ -2930,8 +2930,8 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       9702810e-2013-4c41-ba12-0b55de6ceb38
 ;; :END:
 
-(alet (list #'orderless-filter #'orderless-highlight-matches)
-  (void-autoload 'orderless it))
+(--each (list #'orderless-filter #'orderless-highlight-matches)
+  (autoload it "orderless" nil ))
 
 ;; **** use orderless filters
 ;; :PROPERTIES:
