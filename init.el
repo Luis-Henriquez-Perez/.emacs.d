@@ -2810,3 +2810,26 @@ Orderless will do this."
 ;; :PROPERTIES:
 ;; :ID:       e4605d42-4d57-40d9-8594-15b06f6196a4
 ;; :END:
+
+;; ** execute extended command
+;; :PROPERTIES:
+;; :ID: d8071a32-e58c-41ab-8fd7-7d7732708ee8
+;; :END:
+
+;; One of the most common--if not the most common--command you use in Emacs is
+;; [[helpfn:execute-extended-command][execute-extended-command]]. This command let's you search any other command and
+;; upon pressing enter, then you execute the command. The fact that this command is
+;; invoked so frequently demands it have one of the shortest, easiest to press
+;; bindings. I chose to give it =SPC SPC= and =;=. =SPC SPC= is short and quick to
+;; type as well as consistent with other =SPC= bindings. While =;= is super fast to
+;; press as well and even faster than =SPC SPC=.
+
+(define-leader-key! "SPC"
+  (list :def #'execute-extended-command :wk "M-x"))
+
+(general-def 'normal
+  ";" #'execute-extended-command)
+
+(general-def
+  "A-x" #'execute-extended-command
+  "M-x" #'execute-extended-command)
