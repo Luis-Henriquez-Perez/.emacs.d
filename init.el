@@ -4246,20 +4246,19 @@ Orderless will do this."
 ;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
 ;; :END:
 
-(setq evil-want-C-w-in-emacs-state         nil)
+(setq evil-want-C-w-in-emacs-state nil)
 (setq evil-want-visual-char-semi-exclusive t)
-;; Whether the cursor can move past the end of the line.
-(setq evil-move-beyond-eol                 nil)
-(setq evil-magic                           t)
-(setq evil-echo-state                      nil)
-(setq evil-indent-convert-tabs             t)
-(setq evil-ex-search-vim-style-regexp      t)
-(setq evil-ex-substitute-global            t)
-(setq evil-ex-visual-char-range            t)
-(setq evil-insert-skip-empty-lines         t)
-(setq evil-mode-line-format                nil)
-(setq evil-respect-visual-line-mode        t)
-(setq evil-symbol-word-search              t)
+(setq evil-move-beyond-eol nil)
+(setq evil-magic t)
+(setq evil-echo-state nil)
+(setq evil-indent-convert-tabs t)
+(setq evil-ex-search-vim-style-regexp t)
+(setq evil-ex-substitute-global t)
+(setq evil-ex-visual-char-range t)
+(setq evil-insert-skip-empty-lines t)
+(setq evil-mode-line-format nil)
+(setq evil-respect-visual-line-mode t)
+(setq evil-symbol-word-search t)
 
 ;; **** cursors
 ;; :PROPERTIES:
