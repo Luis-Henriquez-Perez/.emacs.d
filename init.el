@@ -2931,7 +2931,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 (--each (list #'orderless-filter #'orderless-highlight-matches)
-  (autoload it "orderless" nil ))
+  (autoload it "orderless" nil t nil))
 
 ;; **** use orderless filters
 ;; :PROPERTIES:
