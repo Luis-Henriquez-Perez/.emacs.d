@@ -1143,22 +1143,6 @@ Instead, arguments are accessed via anaphoric variables.
             (eval-after-load! ,features ,@body)))
         (t (error "Invalid argument."))))
 
-;; *** keyfreq
-;; :PROPERTIES:
-;; :ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "dacap/keyfreq"
-;; :PACKAGE:  "keyfreq"
-;; :LOCAL-REPO: "keyfreq"
-;; :COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
-;; :END:
-
-;; =keyfreq= records the frequency of key strokes.
-
-(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
-
 ;; *** system-packages
 ;; :PROPERTIES:
 ;; :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
@@ -1212,64 +1196,6 @@ Instead, arguments are accessed via anaphoric variables.
                       (cdr it)))
             system-packages-supported-package-managers))
     (setq system-packages-package-manager 'yay)))
-
-;; *** idle-require
-;; :PROPERTIES:
-;; :ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "nschum/idle-require.el"
-;; :PACKAGE:  "idle-require"
-;; :LOCAL-REPO: "idle-require.el"
-;; :COMMIT:   "33592bb098223b4432d7a35a1d65ab83f47c1ec1"
-;; :END:
-
-;; Idle require is a tool for loading autoload functions, files or features during
-;; idle time. The way to use this is to idle-require many small packages that
-;; individually don't take too much time. This helps ensure that in emacs loading
-;; of big packages like org-mode is snappy.
-
-;; **** init
-;; :PROPERTIES:
-;; :ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
-;; :END:
-
-(require 'idle-require)
-(void-add-hook 'emacs-startup-hook #'idle-require-mode)
-
-;; **** settings
-;; :PROPERTIES:
-;; :ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
-;; :END:
-
-;; When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
-;; start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
-;; require loads.
-
-(setq idle-require-load-break 2)
-(setq idle-require-idle-delay 10)
-
-;; **** make idle require use void-log
-;; :PROPERTIES:
-;; :ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
-;; :END:
-
-;; =idle-require= messages us to tell us when a package is being idle required and
-;; when it has finished idle-requiring packages. I don't want to see the message
-;; unless I'm debugging.
-
-(void-add-advice #'idle-require-load-next :around #'void--use-void-log-advice)
-
-;; **** increase gc-cons-threshold during idle loading
-;; :PROPERTIES:
-;; :ID:       275c3488-8192-476c-97b8-6c6643f54d2e
-;; :END:
-
-;; Since we're evaluating a good amount of lisp expressions, we should boost
-;; garbage collection during this time.
-
-(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection-advice)
 
 ;; *** with-os!
 ;; :PROPERTIES:
@@ -1958,6 +1884,80 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; commands more discoverable and naming schemes more consistent.
 
 (require 'prefixed-core)
+
+;; *** keyfreq
+;; :PROPERTIES:
+;; :ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "dacap/keyfreq"
+;; :PACKAGE:  "keyfreq"
+;; :LOCAL-REPO: "keyfreq"
+;; :COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
+;; :END:
+
+;; =keyfreq= records the frequency of key strokes.
+
+(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
+
+;; *** idle-require
+;; :PROPERTIES:
+;; :ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "nschum/idle-require.el"
+;; :PACKAGE:  "idle-require"
+;; :LOCAL-REPO: "idle-require.el"
+;; :COMMIT:   "33592bb098223b4432d7a35a1d65ab83f47c1ec1"
+;; :END:
+
+;; Idle require is a tool for loading autoload functions, files or features during
+;; idle time. The way to use this is to idle-require many small packages that
+;; individually don't take too much time. This helps ensure that in emacs loading
+;; of big packages like org-mode is snappy.
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
+;; :END:
+
+(require 'idle-require)
+(void-add-hook 'emacs-startup-hook #'idle-require-mode)
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       d16db762-9c50-4b00-9f2d-b4b5d15855cf
+;; :END:
+
+;; When emacs goes idle for [[helpvar:idle-require-idle-delay][idle-require-idle-delay]] seconds, the features will
+;; start loading. [[helpvar:idle-require-load-break][idle-require-load-break]] is the break between features idle
+;; require loads.
+
+(setq idle-require-load-break 2)
+(setq idle-require-idle-delay 10)
+
+;; **** make idle require use void-log
+;; :PROPERTIES:
+;; :ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
+;; :END:
+
+;; =idle-require= messages us to tell us when a package is being idle required and
+;; when it has finished idle-requiring packages. I don't want to see the message
+;; unless I'm debugging.
+
+(void-add-advice #'idle-require-load-next :around #'void--use-void-log-advice)
+
+;; **** increase gc-cons-threshold during idle loading
+;; :PROPERTIES:
+;; :ID:       275c3488-8192-476c-97b8-6c6643f54d2e
+;; :END:
+
+;; Since we're evaluating a good amount of lisp expressions, we should boost
+;; garbage collection during this time.
+
+(void-add-advice #'idle-require-load-next :around #'void--boost-garbage-collection-advice)
 
 ;; ** Commands
 ;; :PROPERTIES:
