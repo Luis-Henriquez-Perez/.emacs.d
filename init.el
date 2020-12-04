@@ -8,6 +8,16 @@
 ;; :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
 ;; :END:
 
+;; *** don't garbage collect during initialization
+;; :PROPERTIES:
+;; :ID:       4913461b-8421-4a64-b09a-18c54673d7d7
+;; :END:
+
+;; [[id:86653a5a-f273-4ce4-b89b-f288d5d46d44][gcmh]] will take care of setting the gc-cons-threshold back to normal.
+
+(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-percentage 0.6)
+
 ;; *** directories
 ;; :PROPERTIES:
 ;; :ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
@@ -327,7 +337,8 @@ Assumes vc is git which is fine because straight only uses git right now."
   "Package recipes.")
 
 (defvar void-package-load-paths
-  (let ((old-load-path load-path)
+  (let ((file-name-handler-alist nil)
+        (old-load-path load-path)
         (load-path load-path))
     (straight:initialize)
     (mapc #'straight:install-fn void-package-recipes)
@@ -1655,7 +1666,7 @@ SYM is a symbol that stores a list."
 ;; I define three levels on frequency with which emacs should perform garbage
 ;; collection.
 
-(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
+(defconst VOID-GC-CONS-THRESHOLD-MAX most-positive-fixnum
   "The upper limit for `gc-cons-threshold'.
 When VOID is performing computationally intensive operations,
 `gc-cons-threshold' is set to this value.")
@@ -1664,8 +1675,8 @@ When VOID is performing computationally intensive operations,
   "The default value for `gc-cons-threshold'.
 This is the value of `gc-cons-threshold' that should be used in typical usages.")
 
-(defconst VOID-GC-CONS-THRESHOLD-MIN (eval-when-compile (* 16 1024 1024))
-  "The default value for `gc-cons-threshold'.")
+(defconst VOID-GC-CONS-THRESHOLD-MIN (eval-when-compile (* 4 1024 1024))
+  "The value for `gc-cons-threshold'.")
 
 ;; **** gcmh
 ;; :PROPERTIES:
@@ -1683,14 +1694,13 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 ;; telling Emacs to gargbage collect during idle time, and it tells Emacs to
 ;; garbage collect more frequently when it's idle.
 
-(require 'gcmh)
-
-(setq gcmh-idle-delay 10)
+(setq gcmh-idle-delay 5)
 (setq gcmh-verbose void-debug-p)
 (setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD)
 (setq gcmh-low-cons-threshold VOID-LOW-GC-CONS-THRESHOLD)
 
-(gcmh-mode 1)
+(void-autoload 'gcmh #'gcmh-mode)
+(void-add-hook 'emacs-startup-hook #'gcmh-mode)
 
 ;; **** minibuffer
 ;; :PROPERTIES:
