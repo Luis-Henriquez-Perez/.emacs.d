@@ -2978,7 +2978,7 @@ Orderless will do this."
 ;; :END:
 
 (--each (list #'consult-theme)
-  (void-autoload it "consult" nil t nil))
+  (autoload it "consult" nil t nil))
 
 
 ;; ** company
