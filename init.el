@@ -1316,7 +1316,7 @@ SYM is a symbol that stores a list."
 ;; :END:
 
 (defun void-load-before-call (package functions)
-  (void--load-before-call package :before functions))
+  (void--load-on-call package :before functions))
 
 ;; **** load after call
 ;; :PROPERTIES:
@@ -1324,7 +1324,7 @@ SYM is a symbol that stores a list."
 ;; :END:
 
 (defun void-load-after-call (package functions)
-  (void--load-after-call package :after functions))
+  (void--load-on-call package :after functions))
 
 ;; ** Keybindings
 ;; :PROPERTIES:
