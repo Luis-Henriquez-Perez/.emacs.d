@@ -2554,7 +2554,7 @@ Orderless will do this."
 ;; :ID:       33f2010f-df3d-4b2b-8b4b-488cc037c6fc
 ;; :END:
 
-(void-add-advice #'keyboard-quit :around #'void--silence-ouput-advice)
+(void-add-advice #'keyboard-quit :around #'void--silence-output-advice)
 
 ;; **** escape
 ;; :PROPERTIES:
