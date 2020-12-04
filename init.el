@@ -2392,7 +2392,12 @@ Orderless will do this."
 (--each (list #'consult-theme)
   (autoload it "consult" nil t nil))
 
-;; * evil
+;; * Text Editing
+;; :PROPERTIES:
+;; :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
+;; :END:
+
+;; ** evil
 ;; :PROPERTIES:
 ;; :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
 ;; :TYPE:     git
@@ -2409,7 +2414,7 @@ Orderless will do this."
 ;; and provides facilities for writing custom extensions. Also see our page on
 ;; [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
 
-;; ** init
+;; *** init
 ;; :PROPERTIES:
 ;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
 ;; :END:
@@ -2417,14 +2422,14 @@ Orderless will do this."
 (autoload #'evil-mode "evil" nil t nil)
 (void-add-hook 'window-setup-hook #'evil-mode)
 
-;; ** custom
+;; *** custom
 ;; :PROPERTIES:
 ;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
 ;; :END:
 
 (custom-set-default 'evil-want-C-u-scroll t)
 
-;; ** settings
+;; *** settings
 ;; :PROPERTIES:
 ;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
 ;; :END:
@@ -2443,7 +2448,7 @@ Orderless will do this."
 (setq evil-respect-visual-line-mode t)
 (setq evil-symbol-word-search t)
 
-;; ** cursors
+;; *** cursors
 ;; :PROPERTIES:
 ;; :ID: a5f558fb-221c-4b33-a7cd-29308ef74b0d
 ;; :END:
@@ -2454,7 +2459,7 @@ Orderless will do this."
 ;; for insert state, for example, is [[helpvar:evil-insert-state-cursor][evil-insert-state-cursor]]. Its value is of the
 ;; form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 
-;; *** colors and shapes
+;; **** colors and shapes
 ;; :PROPERTIES:
 ;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
 ;; :END:
@@ -2473,7 +2478,7 @@ Orderless will do this."
   (setq evil-replace-state-cursor  '( box        "chocolate"))
   (setq evil-motion-state-cursor   '( box        "plum3")))
 
-;; *** updating cursors
+;; **** updating cursors
 ;; :PROPERTIES:
 ;; :ID: ea4da6d4-4a2c-42cf-b397-cea1555781ce
 ;; :END:
@@ -2487,7 +2492,7 @@ Orderless will do this."
   (when (bound-and-true-p evil-mode)
     (evil-refresh-cursor)))
 
-;; ** normal state everywhere
+;; *** normal state everywhere
 ;; :PROPERTIES:
 ;; :ID:       e6126bd7-94b8-4ce0-b547-0536b59437ea
 ;; :END:
@@ -2511,7 +2516,7 @@ Orderless will do this."
 
 (void-add-advice #'evil-motion-state :override #'evil-normal-state)
 
-;; ** insert state in minibuffer
+;; *** insert state in minibuffer
 ;; :PROPERTIES:
 ;; :ID: a23137c5-62a0-4e77-9e51-6a7372dac703
 ;; :END:
@@ -2535,12 +2540,12 @@ Orderless will do this."
     (evil-change-state evil:state-before-minibuffer)
     (setq evil:state-before-minibuffer nil)))
 
-;; ** escape
+;; *** escape
 ;; :PROPERTIES:
 ;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
 ;; :END:
 
-;; *** escape
+;; **** escape
 ;; :PROPERTIES:
 ;; :ID: ea9378de-e5c5-482c-b53b-743a81e3bc8e
 ;; :END:
@@ -2557,7 +2562,7 @@ Orderless will do this."
         ((or defining-kbd-macro executing-kbd-macro) nil)
         (t (keyboard-quit))))
 
-;; *** keychord
+;; **** keychord
 ;; :PROPERTIES:
 ;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
 ;; :END:
@@ -2568,7 +2573,7 @@ Orderless will do this."
 
 ;; This is better than evil escape as it only binds in insert.
 
-;; **** init
+;; ***** init
 ;; :PROPERTIES:
 ;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
 ;; :END:
@@ -2578,14 +2583,14 @@ Orderless will do this."
 (alet (list #'evil-insert-state #'evil-emacs-state)
   (void-load-before-call 'keychord it))
 
-;; **** be quiet when turning on
+;; ***** be quiet when turning on
 ;; :PROPERTIES:
 ;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
 ;; :END:
 
 (after! key-chord (shut-up (key-chord-mode 1)))
 
-;; **** keychord bindings
+;; ***** keychord bindings
 ;; :PROPERTIES:
 ;; :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
 ;; :END:
@@ -2800,3 +2805,8 @@ Orderless will do this."
 
 (defun feebleline:msg-display-time ()
   (format-time-string "%T %D %a"))
+
+;; * Keybindings
+;; :PROPERTIES:
+;; :ID:       e4605d42-4d57-40d9-8594-15b06f6196a4
+;; :END:
