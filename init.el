@@ -1306,8 +1306,8 @@ SYM is a symbol that stores a list."
 
 (defun void--load-on-call (package where functions)
   "Load packages FUNCTIONS are called."
-  (alet (fset (void-symbol-intern 'void--load- package)
-              `(lambda () (require ',package)))
+  (alet (void-symbol-intern 'void--load- package)
+    (fset it `(lambda () (require ',package)))
     (void-add-advice it where functions nil t)))
 
 ;; **** load before call
