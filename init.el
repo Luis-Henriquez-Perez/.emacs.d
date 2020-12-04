@@ -2980,7 +2980,6 @@ Orderless will do this."
 (--each (list #'consult-theme)
   (autoload it "consult" nil t nil))
 
-
 ;; ** company
 ;; ;; :PROPERTIES:
 ;; ;; :ID: 436d68f7-09f1-470a-a730-fd79d9c183ee
