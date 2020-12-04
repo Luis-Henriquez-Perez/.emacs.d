@@ -1956,9 +1956,11 @@ is called.")
 (defun void-initial-buffer ()
   "Return the initial buffer to be displayed.
 This function is meant to be used as the value of `initial-buffer-choice'."
-  (if void-debug-p
-      (get-buffer "*Messages*")
-    (get-buffer "*scratch*")))
+  (get-buffer "*scratch*")
+  ;; (if void-debug-p
+  ;;     (get-buffer "*Messages*")
+  ;;   (get-buffer "*scratch*"))
+  )
 
 ;; *** UTF-8
 ;; :PROPERTIES:
