@@ -8140,6 +8140,21 @@ Orderless will do this."
 (require 'feebleline)
 (void-add-hook 'window-setup-hook #'feebleline-mode)
 
+;; *** modeline display
+;; :PROPERTIES:
+;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
+;; :END:
+
+;; It's really easy to add new segments to this modeline.
+
+;; There are those who insist on the usefulness of line numbers and column number.
+;; I'm not one of them. I rarely ever need to use a specific line number or column
+;; number when editing text. To me they are just distracting eye-candy.
+
+(setq feebleline-msg-functions
+      '((feebleline-file-or-buffer-name :face font-lock-keyword-face)
+        (feebleline-git-branch :face feebleline-git-face)
+        (feebleline:msg-display-time :align right)))
 
 
 ;; * Keybindings
