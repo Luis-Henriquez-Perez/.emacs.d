@@ -2258,69 +2258,69 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; (setq aw-background t)
 
 ;; ** workgroups2
-;; :PROPERTIES:
-;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
-;; :HOST:     github
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
-;; :REPO:     "pashinin/workgroups2"
-;; :PACKAGE:  "workgroups2"
-;; :LOCAL-REPO: "workgroups2"
-;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
-;; :END:
+;; ;; :PROPERTIES:
+;; ;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
+;; ;; :HOST:     github
+;; ;; :TYPE:     git
+;; ;; :FLAVOR:   melpa
+;; ;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
+;; ;; :REPO:     "pashinin/workgroups2"
+;; ;; :PACKAGE:  "workgroups2"
+;; ;; :LOCAL-REPO: "workgroups2"
+;; ;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
+;; ;; :END:
 
-;; There is a need to save buffers and window configurations in their own groups.
-;; Often we'll have a group of buffers we've setup to work on a project or task and
-;; suddenly, in the middle of that task we'll want to work on another task. It's
-;; inconvenient to get rid of the window configuration we've set up just to have to
-;; come back to it and set it up again. This is what workspaces, also called
-;; workgroups, are for. You can save the window configuration you're using and
-;; switch to a new one.
+;; ;; There is a need to save buffers and window configurations in their own groups.
+;; ;; Often we'll have a group of buffers we've setup to work on a project or task and
+;; ;; suddenly, in the middle of that task we'll want to work on another task. It's
+;; ;; inconvenient to get rid of the window configuration we've set up just to have to
+;; ;; come back to it and set it up again. This is what workspaces, also called
+;; ;; workgroups, are for. You can save the window configuration you're using and
+;; ;; switch to a new one.
 
-;; Workgroup provides a. One notable advantage of workgroups is that it does not
-;; use emacs's built-in serialization of window configs. Usually, it is better to
-;; use something that's built-in. However, emacs's serialization has the drawback
-;; that it's not a lisp object; implying that it is not.
+;; ;; Workgroup provides a. One notable advantage of workgroups is that it does not
+;; ;; use emacs's built-in serialization of window configs. Usually, it is better to
+;; ;; use something that's built-in. However, emacs's serialization has the drawback
+;; ;; that it's not a lisp object; implying that it is not.
 
-;; *** settings
-;; :PROPERTIES:
-;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
-;; :END:
+;; ;; *** settings
+;; ;; :PROPERTIES:
+;; ;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
+;; ;; :END:
 
-(setq wg-flag-modified nil)
-(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+;; (setq wg-flag-modified nil)
+;; (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
 
-;; *** workgroups
+;; ;; *** workgroups
 
-(autoload #'wg-switch-workgroup "workgroup" nil)
+;; (autoload #'wg-switch-workgroup "workgroup" nil)
 
-;; *** ignore changing the modeline
-;; :PROPERTIES:
-;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
-;; :END:
+;; ;; *** ignore changing the modeline
+;; ;; :PROPERTIES:
+;; ;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
+;; ;; :END:
 
-(setq wg-mode-line-display-on nil)
-(advice-add #'wg-change-modeline :override #'ignore)
+;; (setq wg-mode-line-display-on nil)
+;; (advice-add #'wg-change-modeline :override #'ignore)
 
-;; *** save sessions on quit
-;; :PROPERTIES:
-;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
-;; :END:
+;; ;; *** save sessions on quit
+;; ;; :PROPERTIES:
+;; ;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
+;; ;; :END:
 
-(setq wg-emacs-exit-save-behavior 'save)
-(setq wg-workgroups-mode-exit-save-behavior 'save)
-(setq wg-flag-modified nil)
+;; (setq wg-emacs-exit-save-behavior 'save)
+;; (setq wg-workgroups-mode-exit-save-behavior 'save)
+;; (setq wg-flag-modified nil)
 
-;; *** display in modeline
-;; :PROPERTIES:
-;; :ID:       80793c50-2954-4ea4-a7e5-df5e2da60d7f
-;; :END:
+;; ;; *** display in modeline
+;; ;; :PROPERTIES:
+;; ;; :ID:       80793c50-2954-4ea4-a7e5-df5e2da60d7f
+;; ;; :END:
 
-(after! (feebleline all-the-icons)
-  (defun feebleline:current-workgroup ()
-    (when (bound-and-true-p workgroups-mode)
-      (wg-workgroup-name (wg-current-workgroup)))))
+;; (after! (feebleline all-the-icons)
+;;   (defun feebleline:current-workgroup ()
+;;     (when (bound-and-true-p workgroups-mode)
+;;       (wg-workgroup-name (wg-current-workgroup)))))
 
 ;; ** window divider
 ;; :PROPERTIES:
