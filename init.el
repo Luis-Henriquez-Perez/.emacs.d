@@ -8109,17 +8109,17 @@ Orderless will do this."
 ;;                                    (browse-url "https://github.com/Luis-Henriquez-Perez/.emacs.d"))
 
 ;; ** feebleline
-:PROPERTIES:
-:ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "tautologyclub/feebleline"
-:PACKAGE:  "feebleline"
-:LOCAL-REPO: "feebleline"
-:COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
-:END:
-;;
+;; :PROPERTIES:
+;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "tautologyclub/feebleline"
+;; :PACKAGE:  "feebleline"
+;; :LOCAL-REPO: "feebleline"
+;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
+;; :END:
+
 ;; Feebleline replaces the typical emacs modeline with text printed out to
 ;; echo area.
 
@@ -8133,18 +8133,18 @@ Orderless will do this."
 ;; buffer displayed in the currently selected window.
 
 ;; *** init
-:PROPERTIES:
-:ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
-:END:;;
+;; :PROPERTIES:
+;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
+;; :END:
 
 (require 'feebleline)
 (void-add-hook 'window-setup-hook #'feebleline-mode)
 
 ;; *** modeline display
-:PROPERTIES:
-:ID:       3061498c-9533-4595-a5ab-71bbf111fd87
-:END:
-;;
+;; :PROPERTIES:
+;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
+;; :END:
+
 ;; It's really easy to add new segments to this modeline.
 
 ;; There are those who insist on the usefulness of line numbers and column number.
