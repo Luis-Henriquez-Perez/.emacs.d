@@ -538,7 +538,6 @@ Accept the same arguments as `message'."
 
 (setq-default inhibit-message t)
 
-
 ;; *** macro writing tools
 ;; :PROPERTIES:
 ;; :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
