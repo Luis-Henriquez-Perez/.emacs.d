@@ -1077,17 +1077,6 @@ Instead, arguments are accessed via anaphoric variables.
 ;; advice. For these advices, I define them explicitly and use =void-add-advice= to
 ;; add them.
 
-;; ***** boost gc-cons-threshold
-;; :PROPERTIES:
-;; :ID:       41e763bd-215f-4176-95c1-f41261864671
-;; :END:
-
-(defun void--boost-gargbage-collection-advice (orign-fn &rest args)
-  "Boost garbage collection for the duration of ORIGN-FN."
-  (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX)
-        (gc-cons-percentage VOID-GC-CONS-PERCENTAGE-MAX))
-    (apply orign-fn args)))
-
 ;; ***** use =void-log= instead of =message=
 ;; :PROPERTIES:
 ;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
@@ -1408,16 +1397,6 @@ SYM is a symbol that stores a list."
   (void--load-after-call package :after functions))
 
 
-
-;; ** Keybindings
-;; :PROPERTIES:
-;; :ID:       d8b4c0d8-d4c2-4c41-99d0-d11604b88148
-;; :END:
-
-;; *** binding macro
-;; :PROPERTIES:
-;; :ID:       71fce500-90f3-4652-932f-b13621423ab1
-;; :END:
 
 ;; ** Packages
 ;; :PROPERTIES:
@@ -1740,7 +1719,27 @@ SYM is a symbol that stores a list."
 ;; because it spends resources garbage collecting when it doesn't have to. Indeed,
 ;; increasing the value of [[helpvar:gc-cons-threshold][gc-cons-threshold]], the number of bytes of consing
 ;; between garbage collections, is known to make a notable difference in user
-;; startup time.
+;; startup time. By default it is only 800 KB.
+
+;; **** gc cons threshold
+;; :PROPERTIES:
+;; :ID: e15d257f-1b0f-421e-8b34-076b1d20e493
+;; :END:
+
+;; I define three levels on frequency with which emacs should perform garbage
+;; collection.
+
+(defconst VOID-GC-CONS-THRESHOLD-MAX (eval-when-compile (* 256 1024 1024))
+  "The upper limit for `gc-cons-threshold'.
+When VOID is performing computationally intensive operations,
+`gc-cons-threshold' is set to this value.")
+
+(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
+  "The default value for `gc-cons-threshold'.
+This is the value of `gc-cons-threshold' that should be used in typical usages.")
+
+(defconst VOID-GC-CONS-THRESHOLD-MIN (eval-when-compile (* 16 1024 1024))
+  "The default value for `gc-cons-threshold'.")
 
 ;; **** gcmh
 ;; :PROPERTIES:
@@ -1762,8 +1761,8 @@ SYM is a symbol that stores a list."
 
 (setq gcmh-idle-delay 10)
 (setq gcmh-verbose void-debug-p)
-(setq gcmh-high-cons-threshold (* 64 1024 1024))
-(setq gcmh-low-cons-threshold (* 16 1024 1024))
+(setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD)
+(setq gcmh-low-cons-threshold VOID-LOW-GC-CONS-THRESHOLD)
 
 (gcmh-mode 1)
 
@@ -1794,11 +1793,21 @@ SYM is a symbol that stores a list."
 
 (defhook! boost-garbage-collection (minibuffer-enter-hook)
   "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold gcmh-high-cons-threshold))
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
 
 (defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
   "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (run-with-idle-timer 3 nil (lambda () (setq gc-cons-threshold gcmh-high-cons-threshold))))
+  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))
+
+;; **** boost gc-cons-threshold
+;; :PROPERTIES:
+;; :ID:       41e763bd-215f-4176-95c1-f41261864671
+;; :END:
+
+(defun void--boost-gargbage-collection-advice (orign-fn &rest args)
+  "Boost garbage collection for the duration of ORIGN-FN."
+  (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+    (apply orign-fn args)))
 
 ;; *** theme
 ;; :PROPERTIES:
@@ -1858,6 +1867,16 @@ is called.")
   "Disable old themes before loading new ones."
   (mapc #'disable-theme custom-enabled-themes)
   (apply <orig-fn> <args>))
+
+;; **** boost gc when loading theme
+;; :PROPERTIES:
+;; :ID:       447c9bc9-5aa8-40f9-8373-e8626183aef7
+;; :END:
+
+;; Loading a theme qualifies as an intensive operation as all the faces on the
+;; screen need to be redisplayed.
+
+(void-add-advice #'load-theme :around #'void--boost-garbage-collection-advice)
 
 ;; *** disable terminal initialization
 ;; :PROPERTIES:
