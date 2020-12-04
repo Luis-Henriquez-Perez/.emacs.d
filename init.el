@@ -1285,7 +1285,7 @@ SYM is a symbol that stores a list."
       (fset it `(lambda (&rest args)
                   ;; will trigger the before-load hook.
                   (require package)
-                  (funcall #',it ,args))))))
+                  ())))))
 
 ;; *** loading on call
 ;; :PROPERTIES:
