@@ -1740,7 +1740,7 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 ;; :ID:       41e763bd-215f-4176-95c1-f41261864671
 ;; :END:
 
-(defun void--boost-gargbage-collection-advice (orign-fn &rest args)
+(defun void--reduce-garbage-collection-advice (orign-fn &rest args)
   "Boost garbage collection for the duration of ORIGN-FN."
   (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
     (apply orign-fn args)))
@@ -1812,7 +1812,7 @@ is called.")
 ;; Loading a theme qualifies as an intensive operation as all the faces on the
 ;; screen need to be redisplayed.
 
-(void-add-advice #'load-theme :around #'void--boost-garbage-collection-advice)
+(void-add-advice #'load-theme :around #'void--reduce-garbage-collection-advice)
 
 ;; *** disable terminal initialization
 ;; :PROPERTIES:
