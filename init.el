@@ -2627,25 +2627,25 @@ Orderless will do this."
 
 
 ;; * Asthetic
-;; :PROPERTIES:
-;; :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
-;; :END:
-
+:PROPERTIES:
+:ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
+:END:
+;;
 ;; It's easy to underestimate how much of a difference having an asthetically
 ;; pleasing Emacs configuration can have. Ugliness really can take its toll.
 
 ;; ** which-key
-;; :PROPERTIES:
-;; :ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "justbur/emacs-which-key"
-;; :PACKAGE:  "which-key"
-;; :LOCAL-REPO: "emacs-which-key"
-;; :COMMIT:   "c011b268196b8356c70f668506a1133086bc9477"
-;; :END:
-
+:PROPERTIES:
+:ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "justbur/emacs-which-key"
+:PACKAGE:  "which-key"
+:LOCAL-REPO: "emacs-which-key"
+:COMMIT:   "c011b268196b8356c70f668506a1133086bc9477"
+:END:
+;;
 ;; Emacs is full of so many keybindings, that it can be difficult to keep track of
 ;; them. Especially when you're starting out, but even when you're an Emacs-pro,
 ;; it's easy to forget what a particular functionality is bound to. Typically,
@@ -2655,21 +2655,21 @@ Orderless will do this."
 ;; you can "discover" the commands as you go along.
 
 ;; *** init
-;; :PROPERTIES:
-;; :ID:       c4aedc23-0be3-46fe-b046-32b5f0738c6b
-;; :END:
-
+:PROPERTIES:
+:ID:       c4aedc23-0be3-46fe-b046-32b5f0738c6b
+:END:
+;;
 ;; **** hooks
-;; :PROPERTIES:
-;; :ID:       e6626cde-d243-4aac-a61c-2897e43b7e73
-;; :END:
+:PROPERTIES:
+:ID:       e6626cde-d243-4aac-a61c-2897e43b7e73
+:END:;;
 
 (void-add-hook 'emacs-startup-hook #'which-key-mode)
 
 ;; **** settings
-;; :PROPERTIES:
-;; :ID:       a4b5878c-1b3f-4d85-9403-7ed8cc52433f
-;; :END:
+:PROPERTIES:
+:ID:       a4b5878c-1b3f-4d85-9403-7ed8cc52433f
+:END:;;
 
 (setq which-key-sort-uppercase-first nil)
 (setq which-key-max-display-columns nil)
@@ -2681,34 +2681,34 @@ Orderless will do this."
 (setq which-key-idle-delay 0.8)
 
 ;; *** set line spacing
-;; :PROPERTIES:
-;; :ID:       6abb35f4-c648-4bed-b59a-5a0636857fd8
-;; :END:
+:PROPERTIES:
+:ID:       6abb35f4-c648-4bed-b59a-5a0636857fd8
+:END:;;
 
 (defhook! set-line-spacing (which-key-init-buffer-hook)
   (setq line-spacing 3))
 
 ;; *** leader keys
-;; :PROPERTIES:
-;; :ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
-;; :END:
+:PROPERTIES:
+:ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
+:END:;;
 
 (which-key-add-key-based-replacements void-leader-key "<leader>")
 (which-key-add-key-based-replacements void-localleader-key "<localleader>")
 
 ;; ** dashboard
-;; :PROPERTIES:
-;; :ID: 20926522-b78b-4bca-b70e-9ef4213c4344
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    (:defaults "banners" "dashboard-pkg.el")
-;; :HOST:     github
-;; :REPO:     "emacs-dashboard/emacs-dashboard"
-;; :PACKAGE:  "dashboard"
-;; :LOCAL-REPO: "emacs-dashboard"
-;; :COMMIT:   "2cebc69e3d4b82569daa732b9114787d7018304b"
-;; :END:
-
+:PROPERTIES:
+:ID: 20926522-b78b-4bca-b70e-9ef4213c4344
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    (:defaults "banners" "dashboard-pkg.el")
+:HOST:     github
+:REPO:     "emacs-dashboard/emacs-dashboard"
+:PACKAGE:  "dashboard"
+:LOCAL-REPO: "emacs-dashboard"
+:COMMIT:   "2cebc69e3d4b82569daa732b9114787d7018304b"
+:END:
+;;
 ;; [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
 ;; having an extensible, fast, nice-looking dashboard when starting emacs is
 ;; nice. It's not only nice asthetically, it's also strategic too. First, you can
@@ -2719,31 +2719,31 @@ Orderless will do this."
 ;; startup. If I start my emacs with =dashboard= I can avoid this.
 
 ;; *** init
-;; :PROPERTIES:
-;; :ID:       de94c9a8-fc05-46ec-ac06-510f1014e02d
-;; :END:
-
+:PROPERTIES:
+:ID:       de94c9a8-fc05-46ec-ac06-510f1014e02d
+:END:
+;;
 ;; **** require
-;; :PROPERTIES:
-;; :ID:       73d00f99-4b70-44d1-8359-01bd2c94b330
-;; :END:
+:PROPERTIES:
+:ID:       73d00f99-4b70-44d1-8359-01bd2c94b330
+:END:;;
 
 (require 'dashboard)
 (void-add-hook 'window-setup-hook #'dashboard-insert-startupify-lists)
 
 ;; **** open dashboard at startup
-;; :PROPERTIES:
-;; :ID:       1bcc371e-61fa-480e-bdae-4a999d3b10c9
-;; :END:
+:PROPERTIES:
+:ID:       1bcc371e-61fa-480e-bdae-4a999d3b10c9
+:END:;;
 
 (defadvice! open-dashboard-instead (:override void-initial-buffer)
   (if void-debug-p (get-buffer "*Messages*")
     (get-buffer-create "*dashboard*")))
 
 ;; **** settings
-;; :PROPERTIES:
-;; :ID:       f5434534-e767-4416-848a-8912bae0ede1
-;; :END:
+:PROPERTIES:
+:ID:       f5434534-e767-4416-848a-8912bae0ede1
+:END:;;
 
 (setq dashboard-items nil)
 (setq dashboard-startup-banner 2)
@@ -2751,10 +2751,10 @@ Orderless will do this."
 (setq initial-buffer-choice #'void-initial-buffer)
 
 ;; *** dashboard-init-info
-;; :PROPERTIES:
-;; :ID: 92c199ad-5862-4fe3-be04-44c94d4286b6
-;; :END:
-
+:PROPERTIES:
+:ID: 92c199ad-5862-4fe3-be04-44c94d4286b6
+:END:
+;;
 ;; [[helpvar:void-init-time][void-init-time]] is more accurate than dashboard's init time measure. So I use it
 ;; instead.
 
@@ -2768,26 +2768,26 @@ Orderless will do this."
                 (string-to-number (emacs-init-time)))))
 
 ;; *** banner path
-;; :PROPERTIES:
-;; :ID: 597af7c3-f5d2-4cf5-a93e-3dd3564fb34a
-;; :END:
+:PROPERTIES:
+:ID: 597af7c3-f5d2-4cf5-a93e-3dd3564fb34a
+:END:;;
 
 (defadvice! set-custom-banner-path (:override dashboard-get-banner-path)
   "Use the Void text banner."
   (concat VOID-LOCAL-DIR "void-banner.txt"))
 
 ;; ** feebleline
-;; :PROPERTIES:
-;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "tautologyclub/feebleline"
-;; :PACKAGE:  "feebleline"
-;; :LOCAL-REPO: "feebleline"
-;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
-;; :END:
-
+:PROPERTIES:
+:ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "tautologyclub/feebleline"
+:PACKAGE:  "feebleline"
+:LOCAL-REPO: "feebleline"
+:COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
+:END:
+;;
 ;; Feebleline replaces the typical emacs modeline with text printed out to
 ;; echo area.
 
@@ -2801,18 +2801,18 @@ Orderless will do this."
 ;; buffer displayed in the currently selected window.
 
 ;; *** init
-;; :PROPERTIES:
-;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
-;; :END:
+:PROPERTIES:
+:ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
+:END:;;
 
 (require 'feebleline)
 (void-add-hook 'window-setup-hook #'feebleline-mode)
 
 ;; *** modeline display
-;; :PROPERTIES:
-;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
-;; :END:
-
+:PROPERTIES:
+:ID:       3061498c-9533-4595-a5ab-71bbf111fd87
+:END:
+;;
 ;; It's really easy to add new segments to this modeline.
 
 ;; There are those who insist on the usefulness of line numbers and column number.
@@ -2825,12 +2825,94 @@ Orderless will do this."
         (feebleline:msg-display-time :align right)))
 
 ;; *** time
-;; :PROPERTIES:
-;; :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
-;; :END:
+:PROPERTIES:
+:ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
+:END:;;
 
 (defun feebleline:msg-display-time ()
   (format-time-string "%T %D %a"))
+
+;; ** window divider
+;; :PROPERTIES:
+;; :ID: 0bcebb71-f730-427f-9919-1538bd63456c
+;; :TYPE:     built-in
+;; :END:
+
+;; Emacs can add border to windows using a mode called [[helpfn:window-divider-mode][window-divider-mode]].
+;; Often in emacs you have multiple windows displaying different buffers on the
+;; screen. By default the border between these windows is very thin, so it can be
+;; hard to distinguish windows sometimes. The point of adding borders to windows is
+;; to distinguish them easily from one another.
+
+;; Window dividers are useful in general so I don't get confused about when one
+;; window ends and another begins (see [[helpfn:window-divider-mode][window-divider-mode]]). When using [[I like emacs][exwm]] it
+;; makes emacs feel like a window manager with gaps.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       c3e2fda8-89c8-4f3b-951a-113e936d6206
+;; :END:
+
+;; **** hooks
+;; :PROPERTIES:
+;; :ID:       66ada8e3-2fce-428b-a096-e3495e573414
+;; :END:
+
+(void-add-hook 'window-setup-hook #'window-divider-mode)
+
+;; **** custom variables
+;; :PROPERTIES:
+;; :ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
+;; :END:
+
+(custom-set-default 'window-divider-default-places t)
+(custom-set-default 'window-divider-default-bottom-width 4)
+(custom-set-default 'window-divider-default-right-width  4)
+
+;; *** color
+;; :PROPERTIES:
+;; :ID:       61157149-dcce-40a9-8bfa-76a6af24838a
+;; :END:
+
+;; If you don't make sure to set the window divider forground on theme change,
+
+(defhook! set-window-divider-face (:after load-theme)
+  (set-face-foreground 'window-divider "black"))
+
+;; *** update on theme change
+;; :PROPERTIES:
+;; :ID: 342bd557-889b-4dbd-8e76-5cd9da3b0f74
+;; :END:
+
+(defhook! update-window-divider (void-after-load-theme-hook)
+  "Ensure window divider persists after theme change."
+  (unless (bound-and-true-p window-divider-mode)
+    (window-divider-mode 1)))
+
+;; *** adjust window divider gap size
+;; :PROPERTIES:
+;; :ID:       5485c926-fac0-4e87-ae97-f7bf25d0a55c
+;; :END:
+
+;; **** increase
+;; :PROPERTIES:
+;; :ID:       ebd6b013-6213-42a1-9e95-fefc7e7da991
+;; :END:
+
+(defun frame/increment-window-divider-size ()
+  "Increase window divider size."
+  (interactive)
+  (frame:adjust-window-divider-size 1))
+
+;; **** decrease
+;; :PROPERTIES:
+;; :ID:       6b1eb1cd-1cfd-4b82-a413-cb61fa13e0a4
+;; :END:
+
+(defun frame/decrement-window-divider-size ()
+  "Decrease window divider size."
+  (interactive)
+  (frame:adjust-window-divider-size -1))
 
 
 
