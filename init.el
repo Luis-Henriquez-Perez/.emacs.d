@@ -505,14 +505,17 @@ Accept the same arguments as `message'."
                                  format-string)
                args)))))
 
-;; **** use =void-log= instead of =message=
+;; **** advice for using =void-log= instead of =message=
 ;; :PROPERTIES:
 ;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
 ;; :END:
 
-;; Packages like [[][]] come with their own output.
+;; Many packages produce their own messages. Sometimes I want to shut their
+;; messages up entirely, for which I use [[71681f9f-2760-4cee-95a0-4aeb71191a42][shut-up]]. Other times though, I want to see
+;; their messages when I'm debugging. This is what this device is for.
 
 (defun void--use-void-log-advice (orign-fn &rest args)
+  "Make ORIGN-FN use `void-log' instead of `message'."
   (cl-letf ((symbol-function 'message) (symbol-function 'void-log))
     (apply orign-fn args)))
 
@@ -1088,16 +1091,6 @@ Instead, arguments are accessed via anaphoric variables.
     `(progn
        ,@(--map `(,advice-macro ,name (,@before ,it ,@after) ,@body)
                 fns))))
-
-;; **** generic advices
-;; :PROPERTIES:
-;; :ID:       d5743200-e27c-4702-833b-6690613cadb5
-;; :END:
-
-;; There are some advices that I tend to use over and over again which do not lend
-;; themselves to =defadvice!= which is designed for the one-time declaration of an
-;; advice. For these advices, I define them explicitly and use =void-add-advice= to
-;; add them.
 
 ;; *** eval-after-load!
 ;; :PROPERTIES:
