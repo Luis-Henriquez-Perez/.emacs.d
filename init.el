@@ -468,106 +468,6 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 (require 'anaphora)
 
-;; *** message logging
-;; :PROPERTIES:
-;; :ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
-;; :END:
-
-;; Messages shown in the echo area are the. Its not uncommon for the *Messages*
-;; buffer to become full of messages.
-
-;; **** debug-p
-;; :PROPERTIES:
-;; :ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
-;; :END:
-
-;; [[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
-;; is to serve as an indicator of whether the current Void instance is run for
-;; debugging. When Void is set up for debugging it prints out many messages about
-;; what its doing via [[hfn:void-log][void-log]].
-
-(defvar void-debug-p (or (getenv "DEBUG") init-file-debug)
-  "When non-nil print debug messages.
-The --debug-init flag and setting the DEBUG envar will enable this at startup.")
-
-;; **** logging
-;; :PROPERTIES:
-;; :ID: 84ded5f7-382e-4f59-af9e-ccb157ef5c42
-;; :END:
-
-;; The purpose of ~void-log~ is to distinguish regular messages from messages that
-;; pertain specifically to Void, and to help debug Void functionality. When Void is
-;; =void-debug= is non-nil, void-specific messages are logged in the =*messages*=
-;; buffer.
-
-(defun void-log (format-string &rest args)
-  "Log to *Messages* if `void-debug-p' is on.
-Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
-Accept the same arguments as `message'."
-  (when void-debug-p
-    (let ((inhibit-message (active-minibuffer-window)))
-      (when void-debug-p
-        (apply #'message (concat (propertize "VOID " 'face 'font-lock-comment-face)
-                                 format-string)
-               args)))))
-
-;; **** advice for using =void-log= instead of =message=
-;; :PROPERTIES:
-;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
-;; :END:
-
-;; Many packages produce their own messages. Sometimes I want to shut their
-;; messages up entirely, for which I use [[71681f9f-2760-4cee-95a0-4aeb71191a42][shut-up]]. Other times though, I want to see
-;; their messages when I'm debugging. This is what this device is for.
-
-(defun void--use-void-log-advice (orign-fn &rest args)
-  "Make ORIGN-FN use `void-log' instead of `message'."
-  (cl-letf ((symbol-function 'message) (symbol-function 'void-log))
-    (apply orign-fn args)))
-
-;; **** don't show messages in echo area
-;; :PROPERTIES:
-;; :ID:       cf3d1f23-aa4c-4740-9413-edadd98ec142
-;; :END:
-
-;; =inhibit-message= prevents messages from being displayed in the [[][]]. However,
-;; they are still logged to the =*Messages*= buffer. The [[helpvar:inhibit-message][documentation for
-;; inhibit-message]] says not to enable this globally because it is "necessary" for
-;; isearch and other emacs functionality. I am skeptical though. I prefer not to
-;; have [[id:][feebleline]] distracted with constant messages.
-
-(setq-default inhibit-message t)
-
-;; **** control which messages are logged
-;; :PROPERTIES:
-;; :ID:       8be3c981-cf1c-4416-95b9-4dde2e203b6c
-;; :END:
-
-;; This is based on [[][message-log]]. This package is really old.
-
-;; ***** dont log regexp
-;; :PROPERTIES:
-;; :ID:       6ab7cc41-c900-4168-a33e-c326fae8ab8a
-;; :END:
-
-(defvar void-message-blacklist
-  '("Mark set"
-    "Beginning of buffer"
-    "End of buffer"
-    "Quit")
-  "*A list of regular expressions that describe messages that should never be
-saved in the message log buffer.  A message is saved unless one of the regular
-expressions in this list matches the ENTIRE message.")
-
-;; ***** advice to message
-;; :PROPERTIES:
-;; :ID:       d2e66bf9-c025-4d44-810e-5b66f154f43c
-;; :END:
-
-(defadvice! maybe-ignore-message (:around (format-string &rest args) message)
-  (when (--none-p (string-match-p it format-string) void-message-blacklist)
-    (apply format-string args)))
-
 ;; *** macro writing tools
 ;; :PROPERTIES:
 ;; :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
@@ -1141,6 +1041,106 @@ Instead, arguments are accessed via anaphoric variables.
        ,@(--map `(,advice-macro ,name (,@before ,it ,@after) ,@body)
                 fns))))
 
+;; *** message logging
+;; :PROPERTIES:
+;; :ID:       4d4f4b4a-4fc3-47fe-bed7-acc8e8103933
+;; :END:
+
+;; Messages shown in the echo area are the. Its not uncommon for the *Messages*
+;; buffer to become full of messages.
+
+;; **** debug-p
+;; :PROPERTIES:
+;; :ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
+;; :END:
+
+;; [[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
+;; is to serve as an indicator of whether the current Void instance is run for
+;; debugging. When Void is set up for debugging it prints out many messages about
+;; what its doing via [[hfn:void-log][void-log]].
+
+(defvar void-debug-p (or (getenv "DEBUG") init-file-debug)
+  "When non-nil print debug messages.
+The --debug-init flag and setting the DEBUG envar will enable this at startup.")
+
+;; **** logging
+;; :PROPERTIES:
+;; :ID: 84ded5f7-382e-4f59-af9e-ccb157ef5c42
+;; :END:
+
+;; The purpose of ~void-log~ is to distinguish regular messages from messages that
+;; pertain specifically to Void, and to help debug Void functionality. When Void is
+;; =void-debug= is non-nil, void-specific messages are logged in the =*messages*=
+;; buffer.
+
+(defun void-log (format-string &rest args)
+  "Log to *Messages* if `void-debug-p' is on.
+Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
+Accept the same arguments as `message'."
+  (when void-debug-p
+    (let ((inhibit-message (active-minibuffer-window)))
+      (when void-debug-p
+        (apply #'message (concat (propertize "VOID " 'face 'font-lock-comment-face)
+                                 format-string)
+               args)))))
+
+;; **** advice for using =void-log= instead of =message=
+;; :PROPERTIES:
+;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
+;; :END:
+
+;; Many packages produce their own messages. Sometimes I want to shut their
+;; messages up entirely, for which I use [[71681f9f-2760-4cee-95a0-4aeb71191a42][shut-up]]. Other times though, I want to see
+;; their messages when I'm debugging. This is what this device is for.
+
+(defun void--use-void-log-advice (orign-fn &rest args)
+  "Make ORIGN-FN use `void-log' instead of `message'."
+  (cl-letf ((symbol-function 'message) (symbol-function 'void-log))
+    (apply orign-fn args)))
+
+;; **** don't show messages in echo area
+;; :PROPERTIES:
+;; :ID:       cf3d1f23-aa4c-4740-9413-edadd98ec142
+;; :END:
+
+;; =inhibit-message= prevents messages from being displayed in the [[][]]. However,
+;; they are still logged to the =*Messages*= buffer. The [[helpvar:inhibit-message][documentation for
+;; inhibit-message]] says not to enable this globally because it is "necessary" for
+;; isearch and other emacs functionality. I am skeptical though. I prefer not to
+;; have [[id:][feebleline]] distracted with constant messages.
+
+(setq-default inhibit-message t)
+
+;; **** control which messages are logged
+;; :PROPERTIES:
+;; :ID:       8be3c981-cf1c-4416-95b9-4dde2e203b6c
+;; :END:
+
+;; This is based on [[][message-log]]. This package is really old.
+
+;; ***** dont log regexp
+;; :PROPERTIES:
+;; :ID:       6ab7cc41-c900-4168-a33e-c326fae8ab8a
+;; :END:
+
+(defvar void-message-blacklist
+  '("Mark set"
+    "Beginning of buffer"
+    "End of buffer"
+    "Quit")
+  "*A list of regular expressions that describe messages that should never be
+saved in the message log buffer.  A message is saved unless one of the regular
+expressions in this list matches the ENTIRE message.")
+
+;; ***** advice to message
+;; :PROPERTIES:
+;; :ID:       d2e66bf9-c025-4d44-810e-5b66f154f43c
+;; :END:
+
+(defadvice! maybe-ignore-message (:around (format-string &rest args) message)
+  (when (--none-p (string-match-p it format-string) void-message-blacklist)
+    (apply format-string args)))
+
 ;; *** eval-after-load!
 ;; :PROPERTIES:
 ;; :ID:       8d831084-539b-4072-a86a-b55afb09bf02
@@ -1356,6 +1356,7 @@ SYM is a symbol that stores a list."
 
 (defun void-load-after-call (package functions)
   (void--load-on-call package :after functions))
+
 
 ;; ** Keybindings
 ;; :PROPERTIES:
