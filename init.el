@@ -530,7 +530,7 @@ Accept the same arguments as `message'."
 ;; :ID:       cf3d1f23-aa4c-4740-9413-edadd98ec142
 ;; :END:
 
-;; The documentation for inhbit-message says not to enable this globally.
+;; The documentation for inhbit-message says not to enable this globally because
 
 (setq-default inhibit-message t)
 
