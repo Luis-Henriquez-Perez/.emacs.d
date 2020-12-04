@@ -8156,7 +8156,6 @@ Orderless will do this."
         (feebleline-git-branch :face feebleline-git-face)
         (feebleline:msg-display-time :align right)))
 
-
 ;; * Keybindings
 ;; ;; :PROPERTIES:
 ;; ;; :ID: 226e2c5b-2b81-483a-9942-d0ca0fc80f1f
