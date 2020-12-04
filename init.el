@@ -2832,6 +2832,99 @@ Orderless will do this."
 (defun feebleline:msg-display-time ()
   (format-time-string "%T %D %a"))
 
+;; ** window divider
+;; :PROPERTIES:
+;; :ID: 0bcebb71-f730-427f-9919-1538bd63456c
+;; :TYPE:     built-in
+;; :END:
+
+;; Emacs can add border to windows using a mode called [[helpfn:window-divider-mode][window-divider-mode]].
+;; Often in emacs you have multiple windows displaying different buffers on the
+;; screen. By default the border between these windows is very thin, so it can be
+;; hard to distinguish windows sometimes. The point of adding borders to windows is
+;; to distinguish them easily from one another.
+
+;; Window dividers are useful in general so I don't get confused about when one
+;; window ends and another begins (see [[helpfn:window-divider-mode][window-divider-mode]]). When using [[I like emacs][exwm]] it
+;; makes emacs feel like a window manager with gaps.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       c3e2fda8-89c8-4f3b-951a-113e936d6206
+;; :END:
+
+;; **** hooks
+;; :PROPERTIES:
+;; :ID:       66ada8e3-2fce-428b-a096-e3495e573414
+;; :END:
+
+(void-add-hook 'window-setup-hook #'window-divider-mode)
+
+;; **** custom variables
+;; :PROPERTIES:
+;; :ID:       21010045-e2e1-4c13-a9d7-63468e6a5739
+;; :END:
+
+(custom-set-default 'window-divider-default-places t)
+(custom-set-default 'window-divider-default-bottom-width 7)
+(custom-set-default 'window-divider-default-right-width  7)
+
+;; *** color
+;; :PROPERTIES:
+;; :ID:       61157149-dcce-40a9-8bfa-76a6af24838a
+;; :END:
+
+(defhook! set-window-divider-face (load-theme)
+  (set-face-foreground 'window-divider "black"))
+
+;; *** update on theme change
+;; :PROPERTIES:
+;; :ID: 342bd557-889b-4dbd-8e76-5cd9da3b0f74
+;; :END:
+
+(defhook! update-window-divider (void-after-load-theme-hook)
+  "Ensure window divider persists after theme change."
+  (unless (bound-and-true-p window-divider-mode)
+    (window-divider-mode 1)))
+
+;; *** adjust window divider gap size
+;; :PROPERTIES:
+;; :ID:       5485c926-fac0-4e87-ae97-f7bf25d0a55c
+;; :END:
+
+;; **** TODO increase gap size
+;; :PROPERTIES:
+;; :ID:       867fad5c-b4d4-4cba-929e-0dc23f007c5b
+;; :END:
+
+;; Somtimes I might want to adjust this.
+
+(defun frame:adjust-window-divider-size (amount)
+  "Adjust the gap size of window-divider by AMOUNT."
+  (general-setq window-divider-default-bottom-width
+                (+ amount window-divider-default-bottom-width))
+  (general-setq window-divider-default-right-width
+                (+ amount window-divider-default-right-width)))
+
+;; **** increase
+;; :PROPERTIES:
+;; :ID:       ebd6b013-6213-42a1-9e95-fefc7e7da991
+;; :END:
+
+(defun frame/increment-window-divider-size ()
+  "Increase window divider size."
+  (interactive)
+  (frame:adjust-window-divider-size 1))
+
+;; **** decrease
+;; :PROPERTIES:
+;; :ID:       6b1eb1cd-1cfd-4b82-a413-cb61fa13e0a4
+;; :END:
+
+(defun frame/decrement-window-divider-size ()
+  "Decrease window divider size."
+  (interactive)
+  (frame:adjust-window-divider-size -1))
 
 
 ;; * Keybindings
