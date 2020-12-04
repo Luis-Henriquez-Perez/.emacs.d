@@ -505,6 +505,17 @@ Accept the same arguments as `message'."
                                  format-string)
                args)))))
 
+;; **** use =void-log= instead of =message=
+;; :PROPERTIES:
+;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
+;; :END:
+
+;; Packages like [[][]] come with their own output.
+
+(defun void--use-void-log (orign-fn &rest args)
+  (cl-flet ((message (&rest args) (void-log args)))
+    (apply orign-fn args)))
+
 ;; *** macro writing tools
 ;; :PROPERTIES:
 ;; :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
@@ -1087,17 +1098,6 @@ Instead, arguments are accessed via anaphoric variables.
 ;; themselves to =defadvice!= which is designed for the one-time declaration of an
 ;; advice. For these advices, I define them explicitly and use =void-add-advice= to
 ;; add them.
-
-;; ***** use =void-log= instead of =message=
-;; :PROPERTIES:
-;; :ID:       adab4d98-ac13-4916-8349-99aa014d8f5c
-;; :END:
-
-;; Packages like [[][]] come with their own output.
-
-(defun void--use-void-log (orign-fn &rest args)
-  (noflet ((message (&rest args) (void-log args)))
-          (apply orign-fn args)))
 
 ;; *** eval-after-load!
 ;; :PROPERTIES:
