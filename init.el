@@ -1137,9 +1137,9 @@ expressions in this list matches the ENTIRE message.")
 ;; :ID:       d2e66bf9-c025-4d44-810e-5b66f154f43c
 ;; :END:
 
-(defadvice! maybe-ignore-message (:around (orign-fn &rest args) message)
+(defadvice! maybe-ignore-message (:around (orig-fn &rest args) message)
   (when (--none-p (string-match-p it (car args)) void-message-blacklist)
-    (apply orign-fn args)))
+    (apply orig-fn args)))
 
 ;; *** eval-after-load!
 ;; :PROPERTIES:
