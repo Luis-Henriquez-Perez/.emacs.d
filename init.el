@@ -2977,8 +2977,8 @@ Orderless will do this."
 ;; :ID:       f78a7e71-b70a-4067-b821-f581cf76fb84
 ;; :END:
 
-(alet (list #'consult-theme)
-  (void-autoload 'consult it))
+(--each (list #'consult-theme)
+  (void-autoload it "consult" nil t nil))
 
 
 ;; ** company
