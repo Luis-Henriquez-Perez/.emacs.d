@@ -1139,7 +1139,7 @@ expressions in this list matches the ENTIRE message.")
 
 (defadvice! maybe-ignore-message (:around (orign-fn &rest args) message)
   (when (--none-p (string-match-p it (car args)) void-message-blacklist)
-    (apply orig-fn args)))
+    (apply orign-fn args)))
 
 ;; *** eval-after-load!
 ;; :PROPERTIES:
