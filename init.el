@@ -18,7 +18,6 @@
 ;; [[id:86653a5a-f273-4ce4-b89b-f288d5d46d44][gcmh]] will take care of setting the gc-cons-threshold back to normal.
 
 (setq gc-cons-threshold most-positive-fixnum)
-(setq gc-cons-percentage 0.6)
 
 ;; *** directories
 ;; :PROPERTIES:
@@ -115,6 +114,44 @@ Files that need to exist, but I don't typically want to see go here.")
 
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
   (make-directory dir t))
+
+;; *** savehist
+;; :PROPERTIES:
+;; :ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
+;; :END:
+
+;; =savehist= is a built-in feature for saving the minibuffer-history to a file--the
+;; [[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
+;; variables which may or may not be related to minibuffer history. You add the
+;; ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
+;; :END:
+
+;; (idle-require 'custom)
+;; (void-add-hook 'emacs-startup-hook #'savehist-mode)
+
+(setq savehist-save-minibuffer-history t)
+(setq savehist-autosave-interval nil)
+(setq savehist-file (concat VOID-DATA-DIR "savehist"))
+
+(savehist-mode 1)
+
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+
+;; **** unpropertize kill ring
+;; ;; :PROPERTIES:
+;; ;; :ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
+;; ;; :END:
+
+;; (defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
+;;   "Remove text properties from `kill-ring'."
+;;   (setq kill-ring
+;;         (--map (when (stringp it) (substring-no-properties it))
+;;                (-non-nil kill-ring))))
+
 
 ;; ** Package Management
 ;; :PROPERTIES:
@@ -335,15 +372,12 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; This is where I actually install all of my packages in one go. To save time
 ;; installing packages, I try to access.
 
-(defvar void-package-recipes (void-get-package-recipes)
-  "Package recipes.")
-
 (defvar void-package-load-paths
   (let ((file-name-handler-alist nil)
         (old-load-path load-path)
         (load-path load-path))
     (straight:initialize)
-    (mapc #'straight:install-fn void-package-recipes)
+    (mapc #'straight:install-fn (void-get-package-recipes))
     (require 'dash)
     (-difference load-path old-load-path))
   "Package load-paths.")
@@ -467,6 +501,18 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; But if you're only.
 
 (require 'anaphora)
+
+;; *** loopy
+;; :PROPERTIES:
+;; :ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
+;; :HOST:     github
+;; :TYPE:     git
+;; :REPO:     "okamsn/loopy"
+;; :PACKAGE:  "loopy"
+;; :LOCAL-REPO: "loopy"
+;; :END:
+
+;; =loopy= is an alternative to =cl-loop= that preserves loop constructs.
 
 ;; *** macro writing tools
 ;; :PROPERTIES:
@@ -1099,17 +1145,17 @@ Accept the same arguments as `message'."
     (apply orign-fn args)))
 
 ;; **** don't show messages in echo area
-;; :PROPERTIES:
-;; :ID:       cf3d1f23-aa4c-4740-9413-edadd98ec142
-;; :END:
+;; ;; :PROPERTIES:
+;; ;; :ID:       cf3d1f23-aa4c-4740-9413-edadd98ec142
+;; ;; :END:
 
-;; =inhibit-message= prevents messages from being displayed in the [[][]]. However,
-;; they are still logged to the =*Messages*= buffer. The [[helpvar:inhibit-message][documentation for
-;; inhibit-message]] says not to enable this globally because it is "necessary" for
-;; isearch and other emacs functionality. I am skeptical though. I prefer not to
-;; have [[id:][feebleline]] distracted with constant messages.
+;; ;; =inhibit-message= prevents messages from being displayed in the [[][]]. However,
+;; ;; they are still logged to the =*Messages*= buffer. The [[helpvar:inhibit-message][documentation for
+;; ;; inhibit-message]] says not to enable this globally because it is "necessary" for
+;; ;; isearch and other emacs functionality. I am skeptical though. I prefer not to
+;; ;; have [[id:][feebleline]] distracted with constant messages.
 
-(setq-default inhibit-message t)
+;; (setq-default inhibit-message t)
 
 ;; **** control which messages are logged
 ;; ;; :PROPERTIES:
@@ -1335,10 +1381,12 @@ SYM is a symbol that stores a list."
 ;; :ID:       324e707b-2f44-4168-a846-037f5401dedb
 ;; :END:
 
-(defun void--load-on-call (package where functions)
+(defun void--load-on-call (package where functions &optional enable)
   "Load packages FUNCTIONS are called."
   (alet (void-symbol-intern 'void--load- package)
-    (fset it `(lambda () (require ',package)))
+    (fset it `(lambda () (require ',package)
+                (when ,enable
+                  (,(void-symbol-intern package '-mode) 1))))
     (void-add-advice it where functions nil t)))
 
 ;; **** load before call
@@ -1346,16 +1394,16 @@ SYM is a symbol that stores a list."
 ;; :ID:       cc0e92bc-cd6d-4994-82ea-eb065fc3ad89
 ;; :END:
 
-(defun void-load-before-call (package functions)
-  (void--load-on-call package :before functions))
+(defun void-load-before-call (package functions &optional enable)
+  (void--load-on-call package :before functions enable))
 
 ;; **** load after call
 ;; :PROPERTIES:
 ;; :ID:       b0b294d0-15ac-42d9-9e4c-fd9da8a95206
 ;; :END:
 
-(defun void-load-after-call (package functions)
-  (void--load-on-call package :after functions))
+(defun void-load-after-call (package functions &optional enable)
+  (void--load-on-call package :after functions enable))
 
 
 ;; ** Keybindings
@@ -1472,6 +1520,15 @@ SYM is a symbol that stores a list."
               ,@shared-args
               :prefix void-localleader-short-key
               :non-normal-prefix void-localleader-short-alt-key))))
+
+;; **** aliases
+;; :PROPERTIES:
+;; :ID:       81031f16-179e-4da7-9d83-7da5459fbdbd
+;; :END:
+
+(defalias 'gsetq 'general-setq)
+(defalias 'gsetq-default 'general-setq-default)
+
 
 ;; ** Packages
 ;; :PROPERTIES:
@@ -1728,16 +1785,16 @@ SYM is a symbol that stores a list."
 (setq mouse-yank-at-point t)
 
 ;; *** calendar
-;; :PROPERTIES:
-;; :ID:       4ad7e704-f490-40e4-b2bc-8a30a10a7bb7
-;; :END:
+;; ;; :PROPERTIES:
+;; ;; :ID:       4ad7e704-f490-40e4-b2bc-8a30a10a7bb7
+;; ;; :END:
 
-(setq diary-file (concat VOID-DATA-DIR "diary"))
+;; (setq diary-file (concat VOID-DATA-DIR "diary"))
 
-(after! calendar
-  (require 'f)
-  (unless (f-exists-p diary-file)
-    (f-touch diary-file)))
+;; (after! calendar
+;;   (require 'f)
+;;   (unless (f-exists-p diary-file)
+;;     (f-touch diary-file)))
 
 ;; *** mule-cmds
 ;; :PROPERTIES:
@@ -1770,19 +1827,97 @@ SYM is a symbol that stores a list."
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
 
-;; *** maybe get rid of UI elements
+;; *** utf-8 text encoding
 ;; :PROPERTIES:
-;; :ID: 3f466dd8-13f1-4160-a2a5-da1acd4f3d3e
+;; :ID:       26344072-c145-40bd-9ade-8c7f2eef54c8
 ;; :END:
 
-;; Emacs 27 and above allows the user to customize the UI in =early-init.el=. For
-;; easy backwards usage previous version of emacs (25 and 26) I include.
+(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8 "Default text encoding.")
+(setq-default locale-coding-system VOID-DEFAULT-CODING-SYSTEM)
+(setq-default buffer-file-coding-system VOID-DEFAULT-CODING-SYSTEM)
 
-(when (version< emacs-version "27")
-  (ignore-errors
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
-    (menu-bar-mode -1)))
+;; *** os specific
+;; :PROPERTIES:
+;; :ID:       e7a9bef7-3df5-4160-bff1-666c6e579981
+;; :END:
+
+;; **** linux
+;; :PROPERTIES:
+;; :ID:       6572e618-e5ef-445b-90d6-14dc2c24f1a4
+;; :END:
+
+(with-os! linux
+  (setq x-underline-at-descent-line t)
+  (setq x-gtk-use-system-tooltips nil))
+
+;; *** disable bi-directional text
+;; :PROPERTIES:
+;; :ID:       6c12f14c-75c7-4b30-9bb4-ca6e8d3cae47
+;; :END:
+
+;; Disabling bidirectional text provides a small performance boost. Bidirectional
+;; text is useful for languages that read right to left.
+
+(setq-default bidi-display-reordering 'left-to-right)
+(setq-default bidi-paragraph-direction 'left-to-right)
+
+;; *** scrolling
+;; :PROPERTIES:
+;; :ID:       c91bcd0f-da83-44a3-9d9e-e1f55dcdb642
+;; :END:
+
+(gsetq-default hscroll-margin 2)
+(gsetq-default hscroll-step 1)
+(gsetq-default scroll-conservatively 1001)
+(gsetq-default scroll-margin 0)
+(gsetq-default scroll-preserve-screen-position t)
+
+;; *** fast scrolling
+;; :PROPERTIES:
+;; :ID:       964a8b3e-37b4-4d6b-9298-3a1be3cfe6aa
+;; :END:
+
+;; "More performant rapid scrolling over unfontified regions. May cause brief
+;; spells of inaccurate fontification immediately after scrolling."
+
+(gsetq fast-but-imprecise-scrolling t)
+
+;; *** resize pixelwise
+;; :PROPERTIES:
+;; :ID:       02daff3d-e532-4cfa-a217-81e27627e7a7
+;; :END:
+
+;; ;; https://github.com/baskerville/bspwm/issues/551#issuecomment-574975395
+
+(gsetq window-resize-pixelwise t)
+(gsetq frame-resize-pixelwise t)
+
+;; *** inhibit startup messages
+;; :PROPERTIES:
+;; :ID:       e1ae4527-547e-46b8-b040-d9779bfe53ad
+;; :END:
+
+;; When emacs starts up it displays a message.
+
+(gsetq inhibit-startup-message t)
+(gsetq inhibit-splash-screen t)
+(void-add-advice 'startup-echo-area-message :override #'ignore)
+
+;; *** disable cursor blinking
+;; :PROPERTIES:
+;; :ID:       fe8a259b-12e6-4e58-a324-eab831283a86
+;; :END:
+
+;; By default the cursor blinks.
+
+(blink-cursor-mode -1)
+
+;; *** stop beeping
+;; :PROPERTIES:
+;; :ID:       2a83cb3a-ca2e-4d9c-a296-340d33855614
+;; :END:
+
+(setq-default ring-bell-function #'ignore)
 
 ;; *** garbage collection
 ;; :PROPERTIES:
@@ -1888,29 +2023,14 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 ;; :ID: 2ac7c2fe-a2ba-4e55-a467-ff4af8850331
 ;; :END:
 
-;; **** theme to load
+;; **** don't prompt me when loading theme
 ;; :PROPERTIES:
-;; :ID: cd085611-9e56-4df4-97dd-f087899562c0
+;; :ID:       eaa6531c-1188-41c7-a645-a82d9f482449
 ;; :END:
 
-(defvar void-theme 'tsdh-light
-  "The theme to load on startup.
-The value of this variable is updated to the current theme whenever `load-theme'
-is called.")
+;; If you don't enable =custom-save-themes=.
 
 (setq custom-safe-themes t)
-
-;; **** initialize at startup
-;; :PROPERTIES:
-;; :ID: 06b1f381-9066-4062-88d5-f376ad5d6df0
-;; :END:
-
-(defhook! set-theme (window-setup-hook)
-  "Set the theme and load the font, in that order."
-  (when (and void-theme (not (memq void-theme custom-enabled-themes)))
-    (condition-case nil
-        (load-theme void-theme t)
-      (error (void-log "Could not load %s" void-theme)))))
 
 ;; **** loading theme
 ;; :PROPERTIES:
@@ -1951,6 +2071,7 @@ is called.")
 ;; screen need to be redisplayed.
 
 (void-add-advice #'load-theme :around #'void--reduce-garbage-collection-advice)
+
 
 ;; *** disable terminal initialization
 ;; :PROPERTIES:
@@ -2048,6 +2169,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; =keyfreq= records the frequency of key strokes.
 
 (void-add-hook 'emacs-startup-hook #'keyfreq-mode)
+(autoload #'keyfreq-mode "keyfreq" nil t nil)
 
 ;; *** idle-require
 ;; :PROPERTIES:
@@ -2071,8 +2193,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       43d2350f-f7c4-43d3-9612-f78ccdf9d649
 ;; :END:
 
-(autoload #'idle-require-mode "idle-require" nil t nil)
-(void-add-hook 'emacs-startup-hook #'idle-require-mode)
+(require 'idle-require)
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -2108,10 +2229,53 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 (void-add-advice #'idle-require-load-next :around #'void--reduce-garbage-collection-advice)
 
+
 ;; ** Commands
 ;; :PROPERTIES:
 ;; :ID:       14fd249d-b972-472c-b57e-4e53a80b22dc
 ;; :END:
+
+;; *** consult
+;; :PROPERTIES:
+;; :ID:       44120178-95c3-44f1-a3a2-bd69b0d03e70
+;; :HOST:     github
+;; :REPO:     "minad/consult"
+;; :PACKAGE:  "consult"
+;; :TYPE:     git
+;; :LOCAL-REPO: "consult"
+;; :END:
+
+;; Consult is a package that provides several generic utility functions.
+
+;; **** Don't preview anything
+
+;; Many consult consult commands have a preview by default. Typically previews are
+;; expensive. This is especially true for [[][]], which switches the theme every
+;; time you move from one candidate to another.
+
+(setq consult-preview-theme nil)
+(setq consult-preview-outline nil)
+(setq consult-preview-buffer nil)
+(setq consult-preview-line nil)
+
+;; **** autoload commands
+;; :PROPERTIES:
+;; :ID:       f78a7e71-b70a-4067-b821-f581cf76fb84
+;; :END:
+
+(--each (list #'consult-theme #'consult-line #'consult-yank-pop
+              #'consult-outline #'consult-apropos #'consult-buffer)
+  (autoload it "consult" nil t nil))
+
+;; **** bindings
+;; :PROPERTIES:
+;; :ID:       c08a6f82-0408-4899-8e91-e1c5a062a7b2
+;; :END:
+
+(general-def
+  [remap switch-to-buffer] #'consult-buffer
+  [remap apropos] #'consult-apropos
+  [remap load-theme] #'consult-theme)
 
 ;; *** set font
 ;; :PROPERTIES:
@@ -2193,6 +2357,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (defun void/open-emacs-instance ()
   "Open a new emacs instance in debug-mode."
   (interactive)
+
   (cond ((eq system-type 'darwin)
          (start-process-shell-command
           "emacs"
@@ -2289,6 +2454,45 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; though files, buffers, commands, words--all to try to get through to the subset
 ;; of things that we actually want at this moment.
 
+;; ** company
+;; :PROPERTIES:
+;; :ID:       5c0ed97e-da66-42ab-a033-381ac9dd8972
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "company-mode/company-mode"
+;; :PACKAGE:  "company"
+;; :LOCAL-REPO: "company-mode"
+;; :COMMIT:   "dd925936f7c0bf00319c81e8caea1b3db63bb8b5"
+;; :END:
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       0f670007-165b-4a2d-ac35-97eab9ada739
+;; :END:
+
+;; **** hooks
+;; :PROPERTIES:
+;; :ID:       5e5393d9-9f58-45be-9ecc-1bc9f0316379
+;; :END:
+
+(void-add-hook 'prog-mode-hook #'company-mode)
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       5b7962d9-0a43-4efc-b8ad-3f638f6abff3
+;; :END:
+
+(setq company-frontends '(company-pseudo-tooltip-frontend))
+(setq company-tooltip-align-annotations t)
+(setq company-show-numbers t)
+(setq company-dabbrev-downcase nil)
+(setq company-idle-delay 0.15)
+(setq company-tooltip-limit 14)
+(setq company-minimum-prefix-length 1)
+(setq company-minimum-prefix-length 1)
+(setq company-require-match 'never)
+
 ;; ** selectrum
 ;; :PROPERTIES:
 ;; :ID:       294a9fde-e76f-40ce-9552-dd5801318717
@@ -2321,10 +2525,25 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 (void-add-hook 'emacs-startup-hook #'selectrum-mode)
+(autoload #'selectrum-mode "selectrum" nil t nil)
+
 (setq selectrum-fix-minibuffer-height t)
 (setq selectrum-should-sort-p t)
 (setq selectrum-count-style nil)
 (setq selectrum-num-candidates-displayed 15)
+
+;; *** minibuffer bindings
+;; :PROPERTIES:
+;; :ID:       f9bc79b9-ec16-4311-aa4c-8fef5add8b55
+;; :END:
+
+(general-def '(insert emacs) selectrum-minibuffer-map
+  "TAB" #'selectrum-next-candidate
+  "C-k" #'selectrum-previous-candidate
+  "C-j" #'selectrum-next-candidate
+  "C-;" #'selectrum-insert-current-candidate
+  "C-l" #'selectrum/mark-candidate
+  [backtab] #'selectrum-previous-candidate)
 
 ;; *** advice for disable
 ;; :PROPERTIES:
@@ -2372,6 +2591,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 (void-add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
+(autoload #'selectrum-prescient-mode "selectrum-prescient" nil t nil)
 
 (setq selectrum-preprocess-candidates-function #'selectrum-prescient--preprocess)
 
@@ -2416,38 +2636,567 @@ Orderless will do this."
         (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
     (apply <orig-fn> <args>)))
 
-;; *** consult
+
+;; * Utility
+
+;; ** persistence
 ;; :PROPERTIES:
-;; :ID:       44120178-95c3-44f1-a3a2-bd69b0d03e70
+;; :ID:       c73a2fc2-5c43-4f99-9336-3bb2154852b7
 ;; :END:
 
-;; Consult is a package that provides several generic utility functions.
+;; Packages and features that involve saving to external files.
 
-;; **** Don't preview anything
-
-;; Many consult consult commands have a preview by default. Typically previews are
-;; expensive. This is especially true for [[][]], which switches the theme every
-;; time you move from one candidate to another.
-
-(setq consult-preview-theme nil)
-(setq consult-preview-outline nil)
-(setq consult-preview-buffer nil)
-(setq consult-preview-line nil)
-
-;; **** autoload commands
+;; *** saveplace
 ;; :PROPERTIES:
-;; :ID:       f78a7e71-b70a-4067-b821-f581cf76fb84
+;; :ID:       41cb3357-9b4b-4205-987d-ff72f9a35df3
+;; :TYPE:     built-in
 ;; :END:
 
-(--each (list #'consult-theme)
-  (autoload it "consult" nil t nil))
+;; This package takes you to the last point you were at when you visited a file.
+
+;; **** recenter cursor
+;; :PROPERTIES:
+;; :ID:       dda57b64-b645-4eda-be54-9dda4af35404
+;; :END:
+
+(defadvice! recenter-on-load (:after-while save-place-find-file-hook)
+  "Recenter on cursor when loading a saved place."
+  (when buffer-file-name (ignore-errors (recenter))))
+
+;; **** saveplace
+;; :PROPERTIES:
+;; :ID: 6da42724-3137-4d70-9aed-9a978357679f
+;; :END:
+
+;; As its name suggests, =save-place= is a built-in package that stores the buffer
+;; location you left off at in a particular buffer. When you visit that buffer
+;; again, you are taken to the location you left off. This is very convenient.
+
+(void-load-after-call #'after-find-file #'saveplace t)
+
+(setq save-place-file (concat VOID-DATA-DIR "saveplace"))
+(setq save-place-limit nil)
+
+;; *** recentf
+;; :PROPERTIES:
+;; :ID: f26bedb3-a172-4543-afd0-4c47f5872d15
+;; :TYPE:     built-in
+;; :END:
+
+;; =recentf= is a built-in program that tracks the files you've opened recently
+;; persistently. This is a great idea because these are the files you'll likely
+;; revisit. In practice, I look at this list of files in addition to the buffers I
+;; already have open using a [[id:f26bedb3-a172-4543-afd0-4c47f5872d15][completion-framework]]. Because of this I rarely
+;; have to set out to look for a file with =dired=.
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       3e25c6a3-6a0f-47a4-a63f-ceca6476cc59
+;; :END:
+
+(-each '(easymenu tree-widget timer) #'idle-require)
+(void-load-before-call 'recentf #'find-file t)
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       3b9ab738-de00-40d4-93be-b2c84bfaac5c
+;; :END:
+
+(setq recentf-max-menu-items 0)
+(setq recentf-max-saved-items 700)
+
+(setq recentf-exclude
+      (list #'file-remote-p
+            "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
+            ;; ignore private Void temp files (but not all of them)
+            #'(lambda (file)
+                (-some-p (apply-partially #'file-in-directory-p file)
+		         (list VOID-DATA-DIR)))))
+
+(gsetq recentf-save-file (concat VOID-DATA-DIR "recentf"))
+(gsetq recentf-auto-cleanup 'never)
+(gsetq recentf-filename-handlers '(file-truename abbreviate-file-name))
+
+;; **** cleanup before saving
+;; :PROPERTIES:
+;; :ID:       8b682202-b948-4e6a-ac64-089726f7d84e
+;; :END:
+
+(void-add-advice #'recentf-save-list :before #'recentf-cleanup)
+
+;; **** silence recentf
+;; :PROPERTIES:
+;; :ID: 15a971c4-b43a-4539-846e-70fe4e90d84a
+;; :END:
+
+;; [[][recentf-mode]] as well as [[][recentf-cleanup]] output to the messages buffer.
+
+(void-add-advice #'recentf-mode :around #'void--silence-output-advice)
+(void-add-advice #'recentf-cleanup :around #'void--silence-output-advice)
+
+;; *** desktop
+;; :PROPERTIES:
+;; :ID:       902a11fc-b9aa-4875-ba92-8d2561a12a50
+;; :END:
+
+;; =desktop= is a built-in emacs package for saving window configuration setup.
+
+;; **** some settings
+;; :PROPERTIES:
+;; :ID:       e4c30275-db62-4e6d-890c-6199b0594fd8
+;; :END:
+
+(setq desktop-save t) ; what should happen when desktop is killed.
+(setq desktop-auto-save-timeout auto-save-timeout)
+(setq desktop-base-file-name "emacs.desktop")
+(setq desktop-base-lock-name "emacs.desktop.lock")
+(setq desktop-path (list VOID-DATA-DIR))
+(setq desktop-missing-file-warning nil)
+
+
+;; * Window management
+;; :PROPERTIES:
+;; :ID:       f8f186bd-a701-4bd4-a249-86ec4faff83b
+;; :END:
+
+;; ** zoom
+;; :PROPERTIES:
+;; :ID:       4caedc4f-c973-4e81-ba13-751f7b8297b2
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "cyrus-and/zoom"
+;; :PACKAGE:  "zoom"
+;; :LOCAL-REPO: "zoom"
+;; :END:
+
+;; Resize windows according to the [[https://en.wikipedia.org/wiki/Golden_ratio][golden ratio]].
+
+(autoload #'zoom-mode "zoom" nil t nil)
+
+(gsetq zoom-size '(0.618 . 0.618))
+
+(gsetq zoom-ignored-major-modes '(dired-mode markdown-mode))
+(gsetq zoom-ignored-buffer-names '("zoom.el" "init.el"))
+(gsetq zoom-ignored-buffer-name-regexps '("^*calc"))
+(gsetq zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
+
+;; ** workgroups2
+;; :PROPERTIES:
+;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
+;; :HOST:     github
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
+;; :REPO:     "pashinin/workgroups2"
+;; :PACKAGE:  "workgroups2"
+;; :LOCAL-REPO: "workgroups2"
+;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
+;; :END:
+
+;; There is a need to save buffers and window configurations in their own groups.
+;; Often we'll have a group of buffers we've setup to work on a project or task and
+;; suddenly, in the middle of that task we'll want to work on another task. It's
+;; inconvenient to get rid of the window configuration we've set up just to have to
+;; come back to it and set it up again. This is what workspaces, also called
+;; workgroups, are for. You can save the window configuration you're using and
+;; switch to a new one.
+
+;; Workgroup provides a. One notable advantage of workgroups is that it does not
+;; use emacs's built-in serialization of window configs. Usually, it is better to
+;; use something that's built-in. However, emacs's serialization has the drawback
+;; that it's not a lisp object; implying that it is not.
+
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
+;; :END:
+
+(setq wg-flag-modified nil)
+(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+
+;; *** workgroups
+
+(autoload #'wg-switch-workgroup "workgroup" nil)
+
+;; *** ignore changing the modeline
+;; :PROPERTIES:
+;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
+;; :END:
+
+(setq wg-mode-line-display-on nil)
+(advice-add #'wg-change-modeline :override #'ignore)
+
+;; *** save sessions on quit
+;; :PROPERTIES:
+;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
+;; :END:
+
+(setq wg-emacs-exit-save-behavior 'save)
+(setq wg-workgroups-mode-exit-save-behavior 'save)
+(setq wg-flag-modified nil)
 
 ;; * Text Editing
 ;; :PROPERTIES:
 ;; :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 ;; :END:
 
-;; ** evil
+;; ** expand region
+;; :PROPERTIES:
+;; :ID:       7e873fba-33ea-4720-ad79-bd8d557cc4b3
+;; :END:
+
+;; [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
+;; larger text objects. It's saves me keystrokes.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       41a1cebc-8da8-4e5c-8258-2ce440f1af50
+;; :END:
+
+(--each (list #'er/expand-region #'er/contract-region #'er/mark-symbol)
+  (autoload it "expand-region" nil t nil))
+
+;; *** quit expand region
+;; :PROPERTIES:
+;; :ID:       639824e1-0dcf-46bc-98b4-c70b9c7cb2a6
+;; :END:
+
+(defadvice! quit-expand-region (:before evil-escape)
+  "Properly abort an expand-region region."
+  (when (memq last-command '(er/expand-region er/contract-region))
+    (er/contract-region 0)))
+
+;; *** expand-region
+;; :PROPERTIES:
+;; :ID: 417c9c53-a776-4779-9afc-1eaa35a145c6
+;; :END:
+
+(general-def 'visual
+  "V" #'er/contract-region
+  "v" #'er/expand-region)
+
+;; ** writing
+;; :PROPERTIES:
+;; :ID:       98b567f1-00ad-4c99-aace-0a12f4d1b353
+;; :END:
+
+;; *** plural
+;; :PROPERTIES:
+;; :ID:       bf2ed9b7-144c-4d4b-92ae-74c93dfc6db5
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacsmirror/plural"
+;; :PACKAGE:  "plural"
+;; :LOCAL-REPO: "plural"
+;; :COMMIT:   "b91ce1594783c51dabeadbbcbb9caa00aaaa1353"
+;; :END:
+
+;; This package determines whether a noun is plural and provides a function to
+;; convert a singular noun to a plural one. For example ~(plural-pluralize
+;; "goose")~ returns ~"geese"~.
+
+;; My intended use for this package is to help automate prompts, docstrings or the
+;; like that concern N number of things, where N could be 1 or more things.
+
+(autoload #'plural-make-plural "plural" nil t nil)
+
+(after! plural
+  (push (cons (rx bos "is" eos) "are") plural-knowledge)
+  (push (cons (rx bos "thas" eos) "those") plural-knowledge)
+  (push (cons (rx bos "this" eos) "these") plural-knowledge))
+
+;; *** auto-capitalize
+;; :PROPERTIES:
+;; :ID:       4ddfacc1-a25e-466e-ab6b-2a5ec306f3be
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacsmirror/auto-capitalize"
+;; :PACKAGE:  "auto-capitalize"
+;; :LOCAL-REPO: "auto-capitalize"
+;; :COMMIT:   "0ee14c76d5771aaa84a004463f8b8b3a195c2fd8"
+;; :END:
+
+;; [[https://github.com/emacsmirror/auto-capitalize][auto-capitalize]] automatically capitalizes the first word of a sentence for me.
+;; It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capitalize-words]].
+
+(void-add-hook '(text-mode-hook org-mode-hook) #'auto-capitalize-mode)
+(autoload #'auto-capitalize-mode "auto-capitalize" nil t nil)
+(setq auto-capitalize-words '("I" "English"))
+
+;; *** spell-number
+;; :PROPERTIES:
+;; :ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacsmirror/spell-number"
+;; :PACKAGE:  "spell-number"
+;; :LOCAL-REPO: "spell-number"
+;; :COMMIT:   "3ce612dce14326b2304f5272e86b10c16102acce"
+;; :END:
+
+(setq spelln-language 'english-us)
+(setq spelln-country 'united-states)
+(setq spelln-period-character ?,)
+(setq spelln-decimal-character ?.)
+
+;; ** xr
+;; :PROPERTIES:
+;; :ID: 75c56163-9ce1-4726-969a-350fcc56395f
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/xr"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "xr"
+;; :LOCAL-REPO: "xr"
+;; :COMMIT:   "3cdf1129474cebd223d9313eff52be936ba2556a"
+;; :END:
+
+;; This package is the inverse of =rx=. It takes a regular expression and returns the
+;; =rx= representation.
+
+(autoload #'xr "xr" nil nil nil)
+
+;; ** outorg
+;; :PROPERTIES:
+;; :ID:       56679bb4-520f-4636-ad74-9a431c8400b5
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "alphapapa/outorg"
+;; :PACKAGE:  "outorg"
+;; :LOCAL-REPO: "outorg"
+;; :END:
+
+;; *** tame the outorg buffer
+;; :PROPERTIES:
+;; :ID:       fd41f662-2de1-4bf6-b0cc-6c13661a2215
+;; :END:
+
+(ignore! (push))
+
+;; ** saving & backups
+;; :PROPERTIES:
+;; :ID:       58228a67-3f7f-4654-8452-81194e75da07
+;; :END:
+
+;; *** super-save
+;; :PROPERTIES:
+;; :ID:       684e788c-6db9-4e6e-826b-d4871c0a3f90
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "bbatsov/super-save"
+;; :PACKAGE:  "super-save"
+;; :LOCAL-REPO: "super-save"
+;; :COMMIT:   "886b5518c8a8b4e1f5e59c332d5d80d95b61201d"
+;; :END:
+
+;; The default auto-saving feature in emacs saves after a certain number of
+;; characters are typed (see [[helpvar:auto-save-interval][auto-save-interval]]). The problem is that if you're in
+;; the middle of typing and you've just hit the number of characters that trigger a
+;; save, you could experience a lag, particularly if you are dealing with a large
+;; file being saved. Instead of doing this, [[https://github.com/bbatsov/super-save][super-save]] saves buffers during idle
+;; time and after certain commands like [[helpfn:switch-to-buffer][switch-to-buffer]] (see [[helpvar:super-save-triggers][super-save-triggers]]).
+;; Note that this is the same strategy employed by [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]] to load packages.
+;; Saving files like this reduces the likelihood of user delays.
+
+(void-load-before-call 'super-save #'find-file t)
+
+(setq super-save-idle-duration 5)
+(setq super-save-auto-save-when-idle t)
+
+;; ** spacing & indentation
+;; :PROPERTIES:
+;; :ID:       ae5416cd-ffa2-456a-9c56-afcfc65a33f8
+;; :END:
+
+;; *** aggressive-fill-paragraph
+;; :PROPERTIES:
+;; :ID: 4f57fd49-b466-4eea-b91a-2cc8f0b07297
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "davidshepherd7/aggressive-fill-paragraph-mode"
+;; :PACKAGE:  "aggressive-fill-paragraph"
+;; :LOCAL-REPO: "aggressive-fill-paragraph-mode"
+;; :COMMIT:   "2d65d925318006e2f6fa261ad192fbc2d212877b"
+;; :END:
+
+(void-add-hook 'prog-mode-hook #'aggressive-fill-paragraph-mode)
+
+;; *** aggressive-indent
+;; :PROPERTIES:
+;; :ID: f1b9a36e-26e4-4305-99ae-cbcf6a90013d
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "Malabarba/aggressive-indent-mode"
+;; :PACKAGE:  "aggressive-indent"
+;; :LOCAL-REPO: "aggressive-indent-mode"
+;; :COMMIT:   "b0ec0047aaae071ad1647159613166a253410a63"
+;; :END:
+
+;; [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
+;; it. It's pretty smart and very convenient.
+
+(autoload #'aggressive-indent-mode "aggressive-indent" nil t nil)
+(void-add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+
+;; ** parentheses
+;; :PROPERTIES:
+;; :ID:       e82d2b4e-659e-4c7d-8071-c413b8e540f7
+;; :END:
+
+;; *** smartparens
+;; :PROPERTIES:
+;; :ID: 17257f23-c45e-4b7b-a3b4-7fd2333edf4d
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "Fuco1/smartparens"
+;; :PACKAGE:  "smartparens"
+;; :LOCAL-REPO: "smartparens"
+;; :COMMIT:   "c59bfef7e8f1687ac77b0afaaaed86d8051d3de1"
+;; :END:
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       e26f4c55-9585-4544-bed6-9733d50823e7
+;; :END:
+
+(void-add-hook '(prog-mode-hook eshell-mode-hook ielm-mode-hook)
+               #'smartparens-strict-mode)
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       d4c619a8-c3e3-49ae-9e43-8274aeab1ba9
+;; :END:
+
+(setq sp-highlight-pair-overlay nil)
+(setq sp-highlight-wrap-overlay nil)
+(setq sp-highlight-wrap-tag-overlay nil)
+(setq sp-show-pair-from-inside t)
+(setq sp-cancel-autoskip-on-backward-movement nil)
+(setq sp-show-pair-delay 0.1)
+(setq sp-max-pair-length 4)
+(setq sp-max-prefix-length 50)
+(setq sp-escape-quotes-after-insert nil)
+
+;; **** config
+;; :PROPERTIES:
+;; :ID: f1c64411-ad51-4c24-8dad-b4aa7b8fc3b5
+;; :END:
+
+(after! smartparens
+  (sp-local-pair 'emacs-lisp-mode "<" ">")
+  (require 'smartparens-config)
+  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
+
+;; **** disable =smartparens-navigate-skip-match=
+;; :PROPERTIES:
+;; :ID: fda1875b-b3f7-4f43-83b1-873f3db3ae77
+;; :END:
+
+(after! smartparens
+  (defhook! disable-smartparens-navigate-skip-match (after-change-major-mode-hook)
+    "Disable smartparents skip match feature."
+    (setq sp-navigate-skip-match nil)
+    (setq sp-navigate-consider-sgml-tags nil)))
+
+;; **** autopairing
+;; :PROPERTIES:
+;; :ID: e860ce7e-aaac-477b-a373-a8b01957481d
+;; :END:
+
+(void-load-before-call 'smartparens (list #'evil-expression #'evil-ex))
+
+(after! smartparens
+  (defhook! enable-smartparens-maybe (minibuffer-setup-hook)
+    "Enable `smartparens-mode' in the minibuffer, during `eval-expression' or
+`evil-ex'."
+    (when (memq this-command '(eval-expression evil-ex))
+      (smartparens-mode 1))))
+
+;; *** rainbow-delimiters
+;; :PROPERTIES:
+;; :ID:       5b58bb1c-5d3c-4f04-b4fb-c55f1588839e
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "Fanael/rainbow-delimiters"
+;; :PACKAGE:  "rainbow-delimiters"
+;; :LOCAL-REPO: "rainbow-delimiters"
+;; :COMMIT:   "f43d48a24602be3ec899345a3326ed0247b960c6"
+;; :END:
+
+;; [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]] colors parentheses different colors based on level. This is a
+;; great idea! It makes it really easy to see which parentheses go together.
+
+(void-add-hook '(prog-mode-hook reb-mode-hook) #'rainbow-delimiters-mode)
+(autoload #'rainbow-delimiters-mode "rainbow-delimiters" nil t nil)
+
+(setq rainbow-delimiters-max-face-count 9)
+
+;; ** outshine
+;; :PROPERTIES:
+;; :ID:       6aeccc22-2ebe-43c0-a245-5535b5bd6f6c
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "alphapapa/outshine"
+;; :PACKAGE:  "outshine"
+;; :LOCAL-REPO: "outshine"
+;; :END:
+
+(autoload #'outshine-mode "outshine" nil t nil)
+
+;; ** modal editing
+;; :PROPERTIES:
+;; :ID:       175ad5b9-3f0e-445e-b0ae-da3bce144929
+;; :END:
+
+;; *** evil
+;; :PROPERTIES:
+;; :ID:       9639633f-ec3d-4499-9615-db0dcc9650c9
+;; :END:
+
+;; **** evil-visualstar
+;; :PROPERTIES:
+;; :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "bling/evil-visualstar"
+;; :PACKAGE:  "evil-visualstar"
+;; :LOCAL-REPO: "evil-visualstar"
+;; :END:
+
+;; [[https://github.com/bling/evil-visualstar][evil-visualstar]]
+
+(--each (list #'evil-visualstar/begin-search-backward
+              #'evil-visualstar/begin-search-forward)
+  (autoload it "evil-visualstar" nil t nil))
+
+(general-def evil-visual-state-map
+  "#" #'evil-visualstar/begin-search-backward
+  "*" #'evil-visualstar/begin-search-forward)
+
+;; **** evil-surround
+;; :PROPERTIES:
+;; :ID:       9ab88644-3c33-463c-8f24-3b048209e082
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "emacs-evil/evil-surround"
+;; :PACKAGE:  "evil-surround"
+;; :LOCAL-REPO: "evil-surround"
+;; :END:
+
+(alet '(evil-operator-state-entry-hook evil-visual-state-entry-hook)
+  (void-add-hook #'evil-surround-mode nil nil t))
+
+;; **** evil
 ;; :PROPERTIES:
 ;; :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
 ;; :TYPE:     git
@@ -2464,7 +3213,7 @@ Orderless will do this."
 ;; and provides facilities for writing custom extensions. Also see our page on
 ;; [[emacswiki:Evil][EmacsWiki]]. See a brief [[https://bytebucket.org/lyro/evil/raw/default/doc/evil.pdf][manual]]. See the [[https://github.com/noctuid/evil-guide][evil-guide]] by noctuid.
 
-;; *** init
+;; ***** init
 ;; :PROPERTIES:
 ;; :ID:       af3a9791-76ac-4fd5-96fe-d361cef3b5b3
 ;; :END:
@@ -2472,14 +3221,14 @@ Orderless will do this."
 (autoload #'evil-mode "evil" nil t nil)
 (void-add-hook 'window-setup-hook #'evil-mode)
 
-;; *** custom
+;; ***** custom
 ;; :PROPERTIES:
 ;; :ID:       f7ece898-25e2-4b2c-94f3-e832a687114c
 ;; :END:
 
 (custom-set-default 'evil-want-C-u-scroll t)
 
-;; *** settings
+;; ***** settings
 ;; :PROPERTIES:
 ;; :ID:       9f184a21-ef04-4b3d-a1b7-88a16eaa7b97
 ;; :END:
@@ -2498,7 +3247,7 @@ Orderless will do this."
 (setq evil-respect-visual-line-mode t)
 (setq evil-symbol-word-search t)
 
-;; *** cursors
+;; ***** cursors
 ;; :PROPERTIES:
 ;; :ID: a5f558fb-221c-4b33-a7cd-29308ef74b0d
 ;; :END:
@@ -2509,7 +3258,7 @@ Orderless will do this."
 ;; for insert state, for example, is [[helpvar:evil-insert-state-cursor][evil-insert-state-cursor]]. Its value is of the
 ;; form: ~((CURSOR-SHAPE . CURSOR-WIDTH) COLOR)~.
 
-;; **** colors and shapes
+;; ****** colors and shapes
 ;; :PROPERTIES:
 ;; :ID: 3f3cd5c9-1f6d-4c3b-b73f-82c9ee00395e
 ;; :END:
@@ -2528,7 +3277,7 @@ Orderless will do this."
   (setq evil-replace-state-cursor  '( box        "chocolate"))
   (setq evil-motion-state-cursor   '( box        "plum3")))
 
-;; **** updating cursors
+;; ****** updating cursors
 ;; :PROPERTIES:
 ;; :ID: ea4da6d4-4a2c-42cf-b397-cea1555781ce
 ;; :END:
@@ -2542,7 +3291,7 @@ Orderless will do this."
   (when (bound-and-true-p evil-mode)
     (evil-refresh-cursor)))
 
-;; *** normal state everywhere
+;; ***** normal state everywhere
 ;; :PROPERTIES:
 ;; :ID:       e6126bd7-94b8-4ce0-b547-0536b59437ea
 ;; :END:
@@ -2566,7 +3315,7 @@ Orderless will do this."
 
 (void-add-advice #'evil-motion-state :override #'evil-normal-state)
 
-;; *** insert state in minibuffer
+;; ***** insert state in minibuffer
 ;; :PROPERTIES:
 ;; :ID: a23137c5-62a0-4e77-9e51-6a7372dac703
 ;; :END:
@@ -2590,19 +3339,19 @@ Orderless will do this."
     (evil-change-state evil:state-before-minibuffer)
     (setq evil:state-before-minibuffer nil)))
 
-;; *** escape
+;; ***** escape
 ;; :PROPERTIES:
 ;; :ID:       e4b9d33d-c64d-47ef-9bff-baa80d1b34b2
 ;; :END:
 
-;; **** silence keyboard quit
+;; ****** silence keyboard quit
 ;; :PROPERTIES:
 ;; :ID:       33f2010f-df3d-4b2b-8b4b-488cc037c6fc
 ;; :END:
 
 (void-add-advice #'keyboard-quit :around #'void--silence-output-advice)
 
-;; **** escape
+;; ****** escape
 ;; :PROPERTIES:
 ;; :ID: ea9378de-e5c5-482c-b53b-743a81e3bc8e
 ;; :END:
@@ -2619,7 +3368,7 @@ Orderless will do this."
         ((or defining-kbd-macro executing-kbd-macro) nil)
         (t (keyboard-quit))))
 
-;; **** keychord
+;; ****** keychord
 ;; :PROPERTIES:
 ;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
 ;; :END:
@@ -2630,7 +3379,7 @@ Orderless will do this."
 
 ;; This is better than evil escape as it only binds in insert.
 
-;; ***** init
+;; ******* init
 ;; :PROPERTIES:
 ;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
 ;; :END:
@@ -2638,16 +3387,16 @@ Orderless will do this."
 (autoload #'keychord-mode "keychord" nil t nil)
 
 (alet (list #'evil-insert-state #'evil-emacs-state)
-  (void-load-before-call 'keychord it))
+  (void-load-before-call 'keychord it t))
 
-;; ***** be quiet when turning on
+;; ******* be quiet when turning on
 ;; :PROPERTIES:
 ;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
 ;; :END:
 
 (after! key-chord (shut-up (key-chord-mode 1)))
 
-;; ***** keychord bindings
+;; ******* keychord bindings
 ;; :PROPERTIES:
 ;; :ID:       738065e2-d607-4672-b44e-1fff5ed249bc
 ;; :END:
@@ -2664,6 +3413,479 @@ Orderless will do this."
 
 ;; It's easy to underestimate how much of a difference having an asthetically
 ;; pleasing Emacs configuration can have. Ugliness really can take its toll.
+
+;; ** helpful
+;; :PROPERTIES:
+;; :ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "Wilfred/helpful"
+;; :PACKAGE:  "helpful"
+;; :LOCAL-REPO: "helpful"
+;; :COMMIT:   "584ecc887bb92133119f93a6716cdf7af0b51dca"
+;; :END:
+
+;; *** helpful
+;; :PROPERTIES:
+;; :ID: 25270809-b64e-4b9a-b0c2-95ffd047280c
+;; :END:
+
+;; [[github:wilfred/helpful][helpful]] provides a complete replacement for the built-in
+;; Emacs help facility which provides much more contextual information
+;; in a better format.
+
+(general-def
+  :package 'helpful
+  [remap describe-function] #'helpful-callable
+  [remap describe-command]  #'helpful-command
+  [remap describe-variable] #'helpful-variable
+  [remap describe-key]      #'helpful-key)
+
+(push '("\\*Help.*"
+	    (display-buffer-at-bottom)
+	    (window-width . 0.50)
+	    (side . bottom)
+	    (slot . 4))
+      display-buffer-alist)
+
+;; ** org
+;; :PROPERTIES:
+;; :ID:       63748940-c1b9-47ea-b1ce-d6519453ad03
+;; :END:
+
+;; *** directories
+;; :PROPERTIES:
+;; :ID:       42e759b0-c676-4b87-ac84-20796500da5a
+;; :END:
+
+(setq org-directory VOID-ORG-DIR)
+(setq org-archive-location (concat org-directory "archive.org::"))
+(setq org-default-notes-file (concat org-directory "notes.org"))
+
+;; *** general settings
+;; :PROPERTIES:
+;; :ID:       b0aa3f0b-876a-4527-b8ba-4fdac5e7ebe8
+;; :END:
+
+(setq org-fontify-emphasized-text t)
+(setq org-hide-emphasis-markers t)
+(setq org-pretty-entities t)
+(setq org-fontify-whole-heading-line t)
+(setq org-fontify-done-headline t)
+(setq org-fontify-quote-and-verse-blocks t)
+(setq org-adapt-indentation nil)
+(setq org-cycle-separator-lines 2)
+(setq outline-blank-line t)
+(setq org-enforce-todo-dependencies t)
+(setq org-use-fast-tag-selection nil)
+(setq org-tags-column -80)
+(setq org-tag-alist nil)
+(setq org-log-done 'time)
+
+;; *** bindings
+;; :PROPERTIES:
+;; :ID:       3f4144ee-a780-478e-a1ad-47591f181ff3
+;; :END:
+
+(general-def '(normal) org-mode-map
+  "TAB" #'outline-toggle-children
+  "D" #'org-cut-subtree
+  "P" #'org-paste-subtree)
+
+;; *** required packages
+;; :PROPERTIES:
+;; :ID:       939d4fd6-85df-4ba2-8a67-23343d484bf9
+;; :END:
+
+(alet '(calendar find-func format-spec org-macs org-compat org-faces org-entities
+	    org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
+	    org-capture)
+  (-each it #'idle-require))
+
+;; *** org-journal
+;; :PROPERTIES:
+;; :ID:       c3056303-5fa1-49f9-ae2d-294942e25f54
+;; :END:
+
+;; =org-journal= is a package that provides functions to maintain a simple
+;; diary/journal using =org-mode=.
+
+(autoload #'org-journal-new-entry "org-journal" nil t nil)
+
+(setq org-journal-file-type 'yearly)
+(setq org-journal-dir (concat VOID-ORG-DIR "journal/"))
+(setq org-journal-find-file 'find-file)
+
+;; *** org-src
+;; :PROPERTIES:
+;; :ID:       e00378a1-adcf-4e83-8533-b6b442b5f362
+;; :TYPE:     built-in
+;; :END:
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       0f51ce73-d54e-4e89-8977-56c769940c5f
+;; :END:
+
+(setq org-edit-src-persistent-message nil)
+(setq org-src-window-setup 'plain)
+(setq org-src-fontify-natively t)
+(setq org-src-ask-before-returning-to-edit-buffer nil)
+(setq org-src-preserve-indentation t)
+(setq org-src-tab-acts-natively t)
+(setq org-confirm-babel-evaluate nil)
+
+(setq org-babel-default-header-args
+      '((:session . "none")
+        (:results . "silent")
+        (:exports . "code")
+        (:cache . "no")
+        (:initeb . "no")
+        (:hlines . "no")
+        (:tangle . "yes")))
+
+;; **** bindings in source block
+;; :PROPERTIES:
+;; :ID:       df270638-f6a7-4f0e-abe7-dd0c4e7df7ce
+;; :END:
+
+;; Note that you should have bindings that are different for entering and exiting
+;; source blocks.
+
+(defhook! enable-org-exit-src-bindings (org-src-mode-hook)
+  (define-localleader-key!
+    "," (list :def #'org-edit-src-exit  :wk "exit source block")
+    "a" (list :def #'org-edit-src-abort :wk "abort source block")
+    "c" (list :def #'org-edit-src-exit  :wk "exit source block")))
+
+;; **** creating new block
+;; :PROPERTIES:
+;; :ID:       ce6b465f-78aa-474e-8220-76085890edfb
+;; :END:
+
+;; *** org-capture
+;; :PROPERTIES:
+;; :ID:       3225bbc4-9685-4e7b-ae32-41a26780d191
+;; :TYPE:     built-in
+;; :END:
+
+;; **** org capture
+;; :PROPERTIES:
+;; :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
+;; :END:
+
+(autoload #'org-capture "org-capture" nil t nil)
+
+;; **** control popup windows
+;; :PROPERTIES:
+;; :ID:       33c99055-ea4a-4df2-b9fc-934ac3f06ce1
+;; :END:
+
+(push '("\\`CAPTURE"
+        (display-buffer-at-bottom)
+        (window-height . 0.5)
+        (slot . 10))
+      display-buffer-alist)
+
+;; **** remove capture headerline
+;; :PROPERTIES:
+;; :ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
+;; :END:
+
+;; By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
+;; need to disable =org-capture's= header-line.
+
+(defhook! disable-header-line (org-capture-mode-hook)
+  "Turn of the header line message."
+  (setq-local header-line-format nil))
+
+;; **** prevent capture templates from deleting windows
+;; :PROPERTIES:
+;; :ID:       a13e330a-33ff-4c1e-add4-00c5db4e6cd1
+;; :END:
+
+;; =org-capture= deletes all the other windows in the frame.
+
+(defadvice! dont-delete-other-windows (:around org-capture-place-template)
+  "Don't delete other windows when opening a capture template."
+  (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
+    (apply <orig-fn> <args>)))
+
+;; **** doct
+;; :PROPERTIES:
+;; :ID:       fa37f618-b58c-449b-a216-9d2f80ed12c6
+;; :END:
+
+;; [[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
+;; by allowing you to write them in a declarative style (see [[helpfn:doct][doct docstring]]).
+;; In org mode, capture templates are [[info:org#Capture templates][represented as plain lists]]. This makes
+;; it easy to forget what a certain element meant or to accidentally omit a capture
+;; template element as you're writing it.
+
+;; ***** doct
+;; :PROPERTIES:
+;; :ID:       0118ba87-219b-4611-9743-19228accaa2c
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "progfolio/doct"
+;; :PACKAGE:  "doct"
+;; :LOCAL-REPO: "doct"
+;; :END:
+
+(void-load-before-call 'doct #'org-capture)
+
+;; ***** add to capture templates
+;; :PROPERTIES:
+;; :ID:       16c55272-f8c2-4798-9da1-2ab492769f44
+;; :END:
+
+;; [[helpfn:doct][doct]] returns the new value of capture templates. but it does not actually add
+;; it. For convenience this function declare it and add it in all in one go.
+;; Additionally, it removes any capture templates with the same key so that I can
+;; freely re-evaluate it without cluttering my capture templates with duplicate
+;; entries.
+
+(defun org-capture:add-to-templates (declarations)
+  "Set `org-capture-templates' to the result of (doct DECLARATIONS).
+Before adding result, remove any members of `org-capture-templates' with the
+same key as the one(s) being added."
+  (cl-labels ((clean (templates)
+                     (when templates
+                       (cons (car templates)
+                             (--remove (string= (caar templates) (car it))
+                                       (clean (cdr templates)))))))
+    (setq org-capture-templates
+          (clean (-concat (doct declarations) org-capture-templates)))))
+
+;; **** capture templates
+;; :PROPERTIES:
+;; :ID:       a2a3f682-322a-450f-91bf-169d90f040c0
+;; :END:
+
+;; ***** emacs
+;; :PROPERTIES:
+;; :ID:       2682910c-9620-4cbf-ab71-371ed29e25a1
+;; :END:
+
+(list "emacs"
+      :keys "e"
+      :template (function org-capture::emacs-template-string)
+      :file (function org-capture:file)
+      :prepend t
+      :empty-lines 1)
+
+
+;; *** org-clock
+;; :PROPERTIES:
+;; :ID:       d378471c-89df-48c9-a755-b79880f27308
+;; :TYPE:     built-in
+;; :END:
+
+;; =org-clock= is a built-in package that provides time logging functions for
+;; tracking the time you spend on a particular task.
+
+;; :before-call (( org-clock-out org-clock-in-last  org-clock-cancel) . (org-clock-load))
+(--each (list #'org-clock-in #'org-clock-goto)
+  (autoload it "org-clock" nil t nil))
+
+(setq org-clock-persist 'history)
+(setq org-clock-persist-file (concat VOID-DATA-DIR "org-clock-save.el"))
+;; Resume when clocking into task with open clock
+(setq org-clock-in-resume t)
+
+;; set up hooks for persistence.
+(after! org-clock
+  (void-add-hook 'kill-emacs-hook #'org-clock-save)
+  (org-clock-persistence-insinuate))
+
+;; *** org-agenda
+;; :PROPERTIES:
+;; :ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
+;; :TYPE:     built-in
+;; :END:
+
+;; [[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the
+;; current week.
+
+(--each (list #'org-agenda #'org-agenda-list)
+  (autoload it "org-agenda" nil t nil))
+
+(setq org-agenda-files nil)
+(setq org-agenda-start-on-weekday 0)
+(setq org-agenda-timegrid-use-ampm nil)
+(setq org-agenda-skip-unavailable-files t)
+(setq org-agenda-time-leading-zero t)
+(setq org-agenda-text-search-extra-files '(agenda-archives))
+(setq org-agenda-dim-blocked-tasks t)
+(setq org-agenda-inhibit-startup t)
+
+;; *** org-refile
+;; :PROPERTIES:
+;; :ID:       6dfc0415-2945-4259-a782-b569fcb397ea
+;; :TYPE:     built-in
+;; :END:
+
+;; **** org refile
+;; :PROPERTIES:
+;; :ID: 0174a708-8043-403e-b024-8ae29868564d
+;; :END:
+
+(setq org-refile-targets nil)
+(setq org-refile-use-outline-path 'file)
+(setq org-refile-allow-creating-parent-nodes t)
+(setq org-reverse-note-order t)
+(setq org-outline-path-complete-in-steps nil)
+
+;; **** refile to org buffers
+;; :PROPERTIES:
+;; :ID:       c6194791-8ac6-40a8-adb0-35041faaaa5a
+;; :END:
+
+(defun org/refile-to-other-buffer (arg)
+  (interactive)
+  (let ((org-refile-keep arg)
+        org-refile-targets
+        current-prefix-arg)
+    (dolist (buf (delq (current-buffer)
+                       (doom-buffers-in-mode 'org-mode)))
+      (with-current-buffer buf
+        (and buffer-file-name
+             (cl-pushnew (cons buffer-file-name (cons :maxlevel 10))
+                         org-refile-targets))))
+    (call-interactively #'org-refile)))
+
+;; *** org-id
+;; :PROPERTIES:
+;; :ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
+;; :TYPE:     built-in
+;; :END:
+
+;; =org-id= is a built-in package that creates that provides tools for creating and
+;; storing universally unique IDs. This is primarily used to disguish and
+;; referenance org headlines.
+
+(autoload #'org-id-get-create "org-id")
+
+(setq org-id-locations-file (concat VOID-DATA-DIR "org-id-locations"))
+;; Global ID state means we can have ID links anywhere. This is required for
+;; `org-brain', however.
+(setq org-id-locations-file-relative t)
+
+(void-add-hook 'org-insert-heading-hook #'org-id-get-create)
+
+;; *** org-superstar
+;; :PROPERTIES:
+;; :ID: c43700f5-ff24-46b2-aed5-a12f8d8bb347
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "integral-dw/org-superstar-mode"
+;; :PACKAGE:  "org-superstar"
+;; :LOCAL-REPO: "org-superstar-mode"
+;; :END:
+
+;; [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
+
+(void-add-hook 'org-mode-hook #'org-superstar-mode)
+(autoload #'org-superstar-mode "org-superstar" nil t nil)
+
+(setq org-superstar-special-todo-items t)
+(setq org-superstar-leading-bullet ?\s)
+
+
+;; ** all-the-icons
+;; ;; :PROPERTIES:
+;; ;; :ID: 6a7c7438-42c0-4833-9398-fa9fd58515d1
+;; ;; :TYPE:     git
+;; ;; :FLAVOR:   melpa
+;; ;; :FILES:    (:defaults "data" "all-the-icons-pkg.el")
+;; ;; :HOST:     github
+;; ;; :REPO:     "domtronn/all-the-icons.el"
+;; ;; :PACKAGE:  "all-the-icons"
+;; ;; :LOCAL-REPO: "all-the-icons.el"
+;; ;; :END:
+
+;; ;; A little bit of decoration and spice can go a long way. As its name suggests,
+;; ;; [[all-the-icons][all-the-icons]] is a package that contains a lot of icons ([[][here]] you can see
+;; ;; a few). In practice I use these icons to (1) make things look nicer and more
+;; ;; colorful and (2) enhance readability of plain text.
+
+;; ;; *** icon types
+;; ;; :PROPERTIES:
+;; ;; :ID:       8d40db5e-39e1-4e49-9d26-82c8b36be5b0
+;; ;; :END:
+
+;; (defconst VOID-ICON-TYPES '(octicon faicon all-the-icons))
+
+;; ;; *** all icon files exist
+;; ;; :PROPERTIES:
+;; ;; :ID:       3c8a838d-c838-4d4e-adf8-d07cf621ea4d
+;; ;; :END:
+
+;; (defun all-the-icons:fonts-installed-p (font-dir)
+;;   "Return non-nil if all `all-the-icons' files are installed."
+;;   (--all-p (file-exists-p (concat font-dir it))
+;;            '("all-the-icons.ttf"
+;;              "file-icons.ttf"
+;;              "fontawesome.ttf"
+;;              "material-design-icons.ttf"
+;;              "octicons.ttf"
+;;              "weathericons.ttf")))
+
+;; (when (yes-or-no-p "No icons installed. Install?")
+;;   (all-the-icons-install-fonts :ignore-prompt))
+
+;; ;; *** font-dir
+;; ;; :PROPERTIES:
+;; ;; :ID:       2f31d9bf-3d89-4345-86c4-097c2eae6ea8
+;; ;; :END:
+
+;; (cl-case window-system
+;;   (x (concat (or (getenv "XDG_DATA_HOME")
+;;                  (concat (getenv "HOME") "/.local/share"))
+;;              "/fonts/"))
+;;   (mac (concat (getenv "HOME") "/Library/Fonts/" ))
+;;   (ns (concat (getenv "HOME") "/Library/Fonts/" )))
+
+;; ;; *** install all the icons if not installed
+;; ;; :PROPERTIES:
+;; ;; :ID: 1cda0692-8f42-4bb3-b11d-da52e2004a55
+;; ;; :END:
+
+;; ;; This will install the icons if they're not already installed. Unless somehow the
+;; ;; fonts are deleted, this code should only take effect the first time installing
+;; ;; void. This helps achieve the goal to automate as much as possible on a fresh
+;; ;; VOID install. For writing this code I referenced the body of
+;; ;; [[helpfn:all-the-icons-install-fonts][all-the-icons-install-fonts]].
+
+;; (defhook! install-icons-maybe (window-setup-hook)
+;;   "Install icons if not installed."
+;;   (unless (all-the-icons:fonts-installed-p ())
+;;     ))
+
+;; ;; *** boostrap
+;; ;; :PROPERTIES:
+;; ;; :ID: a13cf0ec-14e2-4d4b-b313-65fe68f0655b
+;; ;; :END:
+
+;; (--each VOID-ICON-TYPES
+;;   (autoload it "all-the-icons" nil t nil))
+
+;; ;; *** disable in tty
+;; ;; :PROPERTIES:
+;; ;; :ID: fce313d3-aa5a-4ea8-b994-1f9a8e33ab9d
+;; ;; :END:
+
+;; ;; In terminals these icons will not display correctly. I usually use emacs as a
+;; ;; graphical interface but.
+
+;; (--each (-map (void-symbol-intern 'all-the-icons it))
+;;   (void-add-advice it :around #'dont-display-in-terminal))
+
+;; (defun void--dont-display-in-terminal-advice ()
+;;   (if (display-graphic-p) (apply <orig-fn> <args>) ""))
 
 ;; ** which-key
 ;; :PROPERTIES:
@@ -2696,6 +3918,7 @@ Orderless will do this."
 ;; :END:
 
 (void-add-hook 'emacs-startup-hook #'which-key-mode)
+(autoload #'which-key-mode "which-key" nil t nil)
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -2724,8 +3947,8 @@ Orderless will do this."
 ;; :ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
 ;; :END:
 
-(which-key-add-key-based-replacements void-leader-key "<leader>")
-(which-key-add-key-based-replacements void-localleader-key "<localleader>")
+;; (which-key-add-key-based-replacements void-leader-key "<leader>")
+;; (which-key-add-key-based-replacements void-localleader-key "<localleader>")
 
 ;; ** dashboard
 ;; :PROPERTIES:
@@ -2957,6 +4180,42 @@ Orderless will do this."
   (interactive)
   (frame:adjust-window-divider-size -1))
 
+;; ** themes
+;; :PROPERTIES:
+;; :ID:       ee63aedb-beb7-4857-9af6-0b52afc2672e
+;; :END:
+
+;; *** one-themes
+;; :PROPERTIES:
+;; :ID:       b3b03192-be43-45fa-8086-1bb572af9499
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "balajisivaraman/emacs-one-themes"
+;; :PACKAGE:  "one-themes"
+;; :LOCAL-REPO: "emacs-one-themes"
+;; :END:
+
+(setq emacs-one-use-variable-pitch nil)
+
+;; *** solarized-theme
+;; :PROPERTIES:
+;; :ID:       f1a6119b-edba-4478-a726-ddb9c7530318
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "bbatsov/solarized-emacs"
+;; :PACKAGE:  "solarized-theme"
+;; :LOCAL-REPO: "solarized-emacs"
+;; :END:
+
+(setq solarized-use-variable-pitch nil)
+
+;; *** gruvbox-theme
+;; :PROPERTIES:
+;; :ID:       b10fe46a-390a-436d-876e-7a62de335fa6
+;; :END:
+
 
 ;; * Keybindings
 ;; :PROPERTIES:
@@ -2985,3 +4244,156 @@ Orderless will do this."
 (general-def
   "A-x" #'execute-extended-command
   "M-x" #'execute-extended-command)
+
+;; ** bindings that should be available everywhere
+;; :PROPERTIES:
+;; :ID:       cfb08f5e-9e6e-4e9f-ab85-92f9cc26f1bd
+;; :END:
+
+(define-localleader-key!
+  "a" (list :def #'org-agenda :wk "agenda")
+  "s" (list :def #'void/open-scratch :wk "scratch")
+  "c" (list :def #'org-capture  :wk "capture"))
+
+;; ** toggle
+;; :PROPERTIES:
+;; :ID: 10d6851b-6af6-4185-8976-0ad65b3d1d28
+;; :END:
+
+(define-leader-key!
+  :infix "t"
+  ""  (list :ignore t :wk "toggle/set")
+  "r" (list :def #'read-only-mode        :wk "read-only")
+  "t" (list :def #'load-theme            :wk "load theme")
+  "c" (list :def #'caps-lock-mode        :wk "caps lock")
+  "d" (list :def #'toggle-debug-on-error :wk "debug")
+  "F" (list :def #'void/set-font-face         :wk "set font")
+  "f" (list :def #'void/set-font-size    :wk "font size"))
+
+(define-leader-key!
+  :infix "t"
+  :keymaps 'org-mode-map
+  "l" (list :def #'org-toggle-link-display :wk "link display"))
+
+;; ** eval
+;; :PROPERTIES:
+;; :ID: afa6be08-a38c-45f1-867a-5620fc290aac
+;; :END:
+
+(define-leader-key! "e" (list :ignore t :wk "eval"))
+
+(define-leader-key!
+  :infix "e"
+  "e" (list :def #'eval-expression :wk "expression")
+  "r" (list :def #'eval-region          :wk "region")
+  "d" (list :def #'eval-defun           :wk "defun")
+  "l" (list :def #'eval-print-last-sexp :wk "sexp")
+  "B" (list :def #'eval-buffer          :wk "buffer"))
+
+(define-leader-key!
+  :infix "e"
+  :keymaps 'org-mode-map
+  "b" (list :def #'org-babel-execute-src-block :wk "source block")
+  "s" (list :def #'org-babel-execute-subtree :wk "subtree"))
+
+;; ** help
+;; :PROPERTIES:
+;; :ID: c7f3b699-7cf9-480b-a88c-10bdae4c165e
+;; :END:
+
+;; There's a lot of documentation finding and information searching involved in
+;; Emacs and for that we need all the help we can get.
+
+(define-leader-key!
+  :infix "h"
+  ""  (list :ignore t                      :wk "help")
+  "h" (list :def #'describe-function       :wk "function")
+  "v" (list :def #'describe-variable       :wk "variable")
+  "c" (list :def #'describe-char           :wk "char")
+  "k" (list :def #'describe-key            :wk "key")
+  "f" (list :def #'describe-function       :wk "function")
+  "a" (list :def #'apropos                 :wk "apropos"))
+
+;; ** quit
+;; :PROPERTIES:
+;; :ID:       ae435361-79e7-41c8-b490-8ec0f8d23a59
+;; :END:
+
+;; There's many ways to quit Emacs. Sometimes I'd like to save all the buffers I
+;; had been working on. Sometimes, when I'm testing something and I mess up
+;; [[helpvar:kill-emacs-hook][kill-emacs-hook]] I want Emacs to just quit even if it means ignoring that hook.
+;; Most of the time, I know what I'm doing when I quit Emacs, so I don't want a
+;; prompt asking me if I'm sure.
+
+(define-leader-key!
+  :infix "q"
+  ""  (list :ignore t                        :wk "quit")
+  "q" (list :def #'evil-quit-all             :wk "normally")
+  "s" (list :def #'void/quit-emacs-no-prompt :wk "with no prompt")
+  "Q" (list :def #'evil-save-and-quit        :wk "and save")
+  "x" (list :def #'void/kill-emacs-no-hook   :wk "with no hook")
+  "e" (list :def #'void/kill-emacs-processes :wk "emacs processes")
+  "b" (list :def #'void/kill-emacs-brutally  :wk "brutally")
+  ;; "r" (list :def #'restart-emacs             :wk "and restart")
+  )
+
+;; ** windows
+;; :PROPERTIES:
+;; :ID: 784956e2-3696-4f92-80ca-41b7e30e5b2b
+;; :END:
+
+;; Efficient window management in Emacs crucial for success. These keys all pertain
+;; to window/workspace actions.
+
+(define-leader-key!
+  :infix "w"
+  ""  (list :ignore nil                              :wk "window")
+  "w" (list :def #'display-buffer :wk "display buffer")
+  "o" (list :def #'other-window                      :wk "other window")
+  "S" (list :def #'void/window-split-below-and-focus :wk "split below and focus")
+  "V" (list :def #'void/window-split-right-and-focus :wk "split right and focus")
+  "s" (list :def #'split-window-below                :wk "split below")
+  "v" (list :def #'split-window-right                :wk "split right")
+  "M" (list :def #'maximize-window                   :wk "maximize")
+  "m" (list :def #'minimize-window                   :wk "minimize")
+  "b" (list :def #'balance-windows                   :wk "move left")
+  "d" (list :def #'delete-window                     :wk "delete current")
+  "D" (list :def #'delete-other-windows              :wk "delete others")
+  "h" (list :def #'windmove-left                     :wk "move left")
+  "j" (list :def #'windmove-down                     :wk "move down")
+  "k" (list :def #'windmove-up                       :wk "move up")
+  "l" (list :def #'windmove-right                    :wk "move right")
+  "x" (list :def #'ace-swap-window                   :wk "swap windows")
+  "t" (list :def #'transpose-frame                   :wk "transpose"))
+
+;; ** buffer
+;; :PROPERTIES:
+;; :ID: e3eec4f8-88d8-4010-adb5-2f8e05f14677
+;; :END:
+
+(define-leader-key!
+  :infix "b"
+  ""  (list :def nil                :wk "buffer")
+  "p" (list :def #'previous-buffer  :wk "previous")
+  "n" (list :def #'next-buffer      :wk "next")
+  "s" (list :def #'switch-to-buffer :wk "switch")
+  "b" (list :def #'switch-to-buffer :wk "switch")
+  "M" (list :def #'void/open-messages :wk "open *Messages*")
+  "d" (list :def #'display-buffer   :wk "display"))
+
+(define-leader-key!
+  :infix "b k"
+  ""  (list :ignore t             :wk "kill")
+  "c" (list #'kill-current-buffer :wk "current"))
+
+;; ** search
+;; :PROPERTIES:
+;; :ID: b50ed0da-652d-4d20-8a4e-e0cf053548a6
+;; :END:
+
+(define-leader-key!
+  :infix "s"
+  ""  (list :ignore t :wk "search")
+  "s" (list :def #'consult-line :wk "jump to line")
+  "w" (list :def #'search-web/default-engine :wk "web")
+  "h" (list :def #'consult-outline :wk "jump to outline heading"))
