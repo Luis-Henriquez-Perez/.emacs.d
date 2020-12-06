@@ -512,7 +512,8 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :LOCAL-REPO: "loopy"
 ;; :END:
 
-;; =loopy= is an alternative to =cl-loop= that preserves loop constructs.
+;; =loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
+;; [[][Common Lisp's iter]].
 
 ;; *** macro writing tools
 ;; :PROPERTIES:
@@ -2840,6 +2841,160 @@ Orderless will do this."
 ;; :PROPERTIES:
 ;; :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 ;; :END:
+
+;; ** lispyville
+;; :PROPERTIES:
+;; :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "noctuid/lispyville"
+;; :PACKAGE:  "lispyville"
+;; :LOCAL-REPO: "lispyville"
+;; :COMMIT:   "0f13f26cd6aa71f9fd852186ad4a00c4294661cd"
+;; :END:
+
+;; [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
+;; commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve parentheses.
+
+;; *** initialize
+;; :PROPERTIES:
+;; :ID:       fad4cb7c-ff1e-485d-99d1-f55384c26402
+;; :END:
+
+;; (autoload 'lispyville (list #'lispyville-comment-or-uncomment-line))
+(void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
+
+;; *** initialize
+;; :PROPERTIES:
+;; :ID: 5567b70d-60f2-4161-9a19-d6098f45cd95
+;; :END:
+
+(general-def lipsyville-mode-map
+  [remap evil-yank]                 #'lispyville-yank
+  [remap evil-delete]               #'lispyville-delete
+  [remap evil-change]               #'lispyville-change
+  [remap evil-yank-line]            #'lispyville-yank-line
+  [remap evil-delete-line]          #'lispyville-delete-line
+  [remap evil-change-line]          #'lispyville-change-line
+  [remap evil-delete-char]          #'lispyville-delete-char-or-splice
+  [remap evil-delete-backward-char] #'lispyville-delete-char-or-splice-backwards
+  [remap evil-substitute]           #'lispyville-substitute
+  [remap evil-change-whole-line]    #'lispyville-change-whole-line
+  [remap evil-join]                 #'lispyville-join)
+
+;; *** inner text objects
+;; :PROPERTIES:
+;; :ID:       f9f82ebe-5749-452f-ba49-269e60526b04
+;; :END:
+
+(general-def evil-inner-text-objects-map
+  "a" #'lispyville-inner-atom
+  "l" #'lispyville-inner-list
+  "x" #'lispyville-inner-sexp
+  "c" #'lispyville-inner-comment
+  "s" #'lispyville-inner-string)
+
+;; *** outer text objects
+;; :PROPERTIES:
+;; :ID:       9dda9a1b-c76f-4537-9554-45ad3c77977a
+;; :END:
+
+(general-def evil-outer-text-objects-map
+  "a" #'lispyville-a-atom
+  "l" #'lispyville-a-list
+  "x" #'lispyville-a-sexp
+  "c" #'lispyville-a-comment
+  "s" #'lispyville-a-string)
+
+;; *** slurp/barf
+;; :PROPERTIES:
+;; :ID: 21626641-98e3-4134-958d-03227e4da6b5
+;; :END:
+
+(general-def 'normal lispyville-mode-map
+  ">" #'lispyville-slurp
+  "<" #'lispyville-barf)
+
+;; *** escape
+;; :PROPERTIES:
+;; :ID: b355e1a1-6242-47f5-b357-5c3f5adbd200
+;; :END:
+
+;; =lispyville= binds escape to [[helpfn:lipyville-normal-state][lispyville-normal-state]]. So for =void-escape-hook=
+;; to still happen on escape, I need to add [[helpfn:evil:escape-a][evil:escape-a]] as advice to
+;; =lispyville-normal-state=.
+
+;; Sometimes =evil-normal-state= enters visual state.
+
+(general-def '(emacs insert) lispyville-mode-map [escape] #'lispyville-normal-state)
+
+;; *** additional
+;; :PROPERTIES:
+;; :ID: 1fbafa78-87a0-45ee-9c7c-0c703df2ac66
+;; :END:
+
+(general-def '(emacs insert) lispyville-mode-map
+  "SPC" #'lispy-space
+  ";"   #'lispy-comment)
+
+(general-def '(normal visual) lispyville-mode-map
+  "M-j" #'lispyville-drag-forward
+  "M-k" #'lispyville-drag-backward
+  "M-R" #'lispyville-raise-list
+  "M-v" #'lispy-convolute-sexp)
+
+;; ** lispy
+;; :PROPERTIES:
+;; :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "lispy-clojure.clj" "lispy-python.py" "lispy-pkg.el")
+;; :HOST:     github
+;; :REPO:     "abo-abo/lispy"
+;; :PACKAGE:  "lispy"
+;; :LOCAL-REPO: "lispy"
+;; :COMMIT:   "41f5574aefb69930d9bdcbe4e0cf642005369765"
+;; :END:
+
+;; For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
+;; very useful to me.
+
+;; *** hook
+;; :PROPERTIES:
+;; :ID:       37bd49d1-3e34-4579-87d2-e791278be017
+;; :END:
+
+(void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
+(autoload #'lispy-mode "lispy-mode" nil t nil)
+
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       20d99206-ddc4-42db-b4c1-8721decbaf8d
+;; :END:
+
+(setq lispy-avy-style-paren 'at-full)
+(setq lispy-eval-display-style 'overlay)
+(setq lispy-safe-delete t)
+(setq lispy-safe-copy t)
+(setq lispy-safe-paste t)
+(setq lispy-safe-actions-no-pull-delimiters-into-comments t)
+(setq lispy-delete-sexp-from-within t)
+(setq lispy-parens-only-left-in-string-or-comment nil)
+(setq lispy-safe-threshold 5000)
+(setq lispy-use-sly t)
+;; allow space before asterisk for headings (e.g. ";; *")
+(setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
+(setq lispy-key-theme nil)
+
+;; *** avoid void variable error
+;; ;; :PROPERTIES:
+;; ;; :ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
+;; ;; :END:
+
+;; ;; You'll get void variable if you don't do this.
+
+;; (after! (avy lispy) (setq lispy-avy-keys avy-keys))
 
 ;; ** expand region
 ;; :PROPERTIES:
