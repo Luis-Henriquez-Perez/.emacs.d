@@ -513,7 +513,10 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :END:
 
 ;; =loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
-;; [[][Common Lisp's iter]].
+;; [[][Common Lisp's iter]]. dash's functions and macros are good for most
+;; cases. But they are not as good in my opinion when you're dealing with a complex loop
+;; that involves accumulating several variables or atypical control-flow (as in, break
+;; statements or return statements).
 
 ;; *** macro writing tools
 ;; :PROPERTIES:
