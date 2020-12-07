@@ -995,11 +995,11 @@ should expire."
     (fset expire-advice
           (lambda (orig-fn &rest args)
             (aprog1 (apply orig-fn args)
-              (when (funcall expire-fn)
+              (when (or (eq t expire-fn) (funcall expire-fn))
                 (when (void-advice-p fn)
                   (advice-remove (void-advisee fn) fn))
                 (when (void-hook-p target)
-                  (remove-hook (void-hook-var FN)))
+                  (remove-hook (void-hook-var fn) fn))
                 (advice-remove target expire-advice)
                 (fmakunbound expire-advice)
                 (void-log "%s has expired." target)
@@ -2251,7 +2251,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; Consult is a package that provides several generic utility functions.
 
-;; **** Don't preview anything
+;; **** don't preview anything
 
 ;; Many consult consult commands have a preview by default. Typically previews are
 ;; expensive. This is especially true for [[][]], which switches the theme every
