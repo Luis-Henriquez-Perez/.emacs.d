@@ -1841,6 +1841,13 @@ SYM is a symbol that stores a list."
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
 
+;; *** use yes or no
+;; :PROPERTIES:
+;; :ID:       82a84315-2018-42e0-bd1a-74af7b722593
+;; :END:
+
+(void-add-advice #'yes-or-no-p :override #'y-or-n-p)
+
 ;; *** utf-8 text encoding
 ;; :PROPERTIES:
 ;; :ID:       26344072-c145-40bd-9ade-8c7f2eef54c8
