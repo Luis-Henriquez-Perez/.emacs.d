@@ -3196,24 +3196,6 @@ Orderless will do this."
 
 (autoload #'xr "xr" nil nil nil)
 
-;; ** outorg
-;; :PROPERTIES:
-;; :ID:       56679bb4-520f-4636-ad74-9a431c8400b5
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "alphapapa/outorg"
-;; :PACKAGE:  "outorg"
-;; :LOCAL-REPO: "outorg"
-;; :END:
-
-;; *** tame the outorg buffer
-;; :PROPERTIES:
-;; :ID:       fd41f662-2de1-4bf6-b0cc-6c13661a2215
-;; :END:
-
-(ignore! (push))
-
 ;; ** saving & backups
 ;; :PROPERTIES:
 ;; :ID:       58228a67-3f7f-4654-8452-81194e75da07
@@ -3653,6 +3635,22 @@ Orderless will do this."
 ;; It's easy to underestimate how much of a difference having an asthetically
 ;; pleasing Emacs configuration can have. Ugliness really can take its toll.
 
+;; ** mini-modeline
+;; :PROPERTIES:
+;; :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "kiennq/emacs-mini-modeline"
+;; :PACKAGE:  "mini-modeline"
+;; :LOCAL-REPO: "emacs-mini-modeline"
+;; :END:
+
+(setq mini-modeline-face-attr `(:background ,(face-attribute 'default :background)))
+
+(autoload #'mini-modeline-mode "mini-modeline" nil t nil)
+(void-add-hook 'window-setup-hook #'mini-modeline-mode)
+
 ;; ** helpful
 ;; :PROPERTIES:
 ;; :ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
@@ -3687,62 +3685,6 @@ Orderless will do this."
 	    (side . bottom)
 	    (slot . 4))
       display-buffer-alist)
-
-;; ** feebleline
-;; :PROPERTIES:
-;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "tautologyclub/feebleline"
-;; :PACKAGE:  "feebleline"
-;; :LOCAL-REPO: "feebleline"
-;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
-;; :END:
-
-;; Feebleline replaces the typical emacs modeline with text printed out to
-;; echo area.
-
-;; Why use this instead of a typical modeline (such as doom-modeline,
-;; telephone-line, smart-mode-line, etc.)? The problem with typical emacs modelines
-;; is that they appear in every buffer. This means they do not scale well in terms
-;; of screen space because each additional vertical window means another line
-;; dedicated to the modeline. Moreover, more modelines aren't even more useful,
-;; it's just excess information you don't need to know unless you're visiting the
-;; buffer. Better is a global modeline that displays the information from the
-;; buffer displayed in the currently selected window.
-
-;; *** init
-;; :PROPERTIES:
-;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
-;; :END:
-
-(require 'feebleline)
-(void-add-hook 'window-setup-hook #'feebleline-mode)
-
-;; *** modeline display
-;; :PROPERTIES:
-;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
-;; :END:
-
-;; It's really easy to add new segments to this modeline.
-
-;; There are those who insist on the usefulness of line numbers and column number.
-;; I'm not one of them. I rarely ever need to use a specific line number or column
-;; number when editing text. To me they are just distracting eye-candy.
-
-(setq feebleline-msg-functions
-      '((feebleline-file-or-buffer-name :face font-lock-keyword-face)
-        (feebleline-git-branch :face feebleline-git-face)
-        (feebleline:msg-display-time :align right)))
-
-;; *** time
-;; :PROPERTIES:
-;; :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
-;; :END:
-
-(defun feebleline:msg-display-time ()
-  (format-time-string "%T %D %a"))
 
 ;; ** org
 ;; :PROPERTIES:
@@ -3880,11 +3822,6 @@ Orderless will do this."
     "," (list :def #'org-edit-src-exit  :wk "exit source block")
     "a" (list :def #'org-edit-src-abort :wk "abort source block")
     "c" (list :def #'org-edit-src-exit  :wk "exit source block")))
-
-;; **** creating new block
-;; :PROPERTIES:
-;; :ID:       ce6b465f-78aa-474e-8220-76085890edfb
-;; :END:
 
 ;; *** org-capture
 ;; :PROPERTIES:
