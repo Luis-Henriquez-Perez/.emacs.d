@@ -3653,7 +3653,8 @@ Orderless will do this."
 ;; :LOCAL-REPO: "emacs-mini-modeline"
 ;; :END:
 
-(setq mini-modeline-face-attr `(:background ,(face-attribute 'default :background)))
+(defadvice! update-mini-modeline-face (:before load-theme)
+  (setq mini-modeline-face-attr `(:background ,(face-attribute 'default :background))))
 
 (autoload #'mini-modeline-mode "mini-modeline" nil t nil)
 (void-add-hook 'window-setup-hook #'mini-modeline-mode)
