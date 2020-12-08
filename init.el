@@ -1062,13 +1062,14 @@ Instead, arguments are accessed via anaphoric variables.
                          '(&rest <args>))))
     `(define-advice! ,name (,where ,advice-args ,target ,@other-args)
        (ignore <args>)
-       (cl-progv (->> (alet (help-function-arglist #',target t)
-                        ;; kind of a hack...
-                        (if (eq t it) nil it))
-                      (--remove (s-starts-with-p "@" (symbol-name it)))
-                      (--map (intern (format "<%s>" (symbol-name it)))))
-           <args>
-         ,@body))))
+       (cl-progv
+           (->> (alet (help-function-arglist #',target t)
+			      ;; kind of a hack...
+			      (if (eq t it) nil it))
+		        (--remove (s-starts-with-p "@" (symbol-name it)))
+		        (--map (intern (format "<%s>" (symbol-name it)))))
+	       <args>
+	     ,@body))))
 
 ;; ***** defadvice!
 ;; :PROPERTIES:
@@ -1291,12 +1292,10 @@ Accept the same arguments as `message'."
   (when (and (eq system-packages-package-manager 'pacman)
              (system-packages-package-installed-p "yay"))
     (alet (alist-get 'pacman system-packages-supported-package-managers)
-      (push `(yay
-              ;; yay doesn't want sudo passed in (I believe it uses a fakeroot environment)
-              (default-sudo . nil)
-              ,@(-map (-lambda ((action . command))
-                        (cons action (s-replace "pacman" "yay" command)))
-                      (cdr it)))
+      (push `(yay (default-sudo . nil)
+                  ,@(-map (-lambda ((action . command))
+			                (cons action (s-replace "pacman" "yay" command)))
+                          (cdr it)))
             system-packages-supported-package-managers))
     (setq system-packages-package-manager 'yay)))
 
@@ -1428,10 +1427,10 @@ SYM is a symbol that stores a list."
 ;; :ID: 143211d6-b868-4ffb-a5d0-25a77dee401f
 ;; :END:
 
-(defvar void-leader-key "SPC"
+(defconst VOID-LEADER-KEY "SPC"
   "The evil leader prefix key.")
 
-(defvar void-leader-alt-key "M-SPC"
+(defconst VOID-LEADER-ALT-KEY "M-SPC"
   "The leader prefix key used for Insert and Emacs states.")
 
 ;; **** localleader keys
@@ -1439,16 +1438,16 @@ SYM is a symbol that stores a list."
 ;; :ID: 45941bcb-209f-4aa3-829a-dee4e3ef2464
 ;; :END:
 
-(defvar void-localleader-key "SPC m"
+(defconst VOID-LOCALLEADER-KEY "SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
-(defvar void-localleader-alt-key "C-SPC m"
+(defconst VOID-LOCALLEADER-ALT-KEY "C-SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
-(defvar void-localleader-short-key ","
+(defconst VOID-LOCALLEADER-SHORT-KEY ","
   "A shorter alternative `void-localleader-key'.")
 
-(defvar void-localleader-short-alt-key "M-,"
+(defconst VOID-LOCALLEADER-SHORT-ALT-KEY "M-,"
   "A short non-normal  `void-localleader-key'.")
 
 ;; *** general
@@ -1466,8 +1465,8 @@ SYM is a symbol that stores a list."
 ;; There are numerous keybinding functions in Emacs; and they all look a little
 ;; different: there's [[helpfn:global-set-key][global-set-key]], [[helpfn:local-set-key][local-set-key]], [[helpfn:define-key][define-key]] and the list goes
 ;; on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3e-7438-4abf-a661-ed1553b1b8df][I use]] , there's also [[helpfn:evil-global-set-key][evil-global-set-key]] and
-;; [[helpfn:evil-define-key][evil-define-key]]. It would be nice to have one keybinding function that can
-;; handle all bindings. [[https://github.com/noctuid/general.el.git][general]] provides such a function ([[helpfn:general-define-key][general-define-key]]).
+;; [[helpfn:evil-define-key][evil-define-key]]. [[https://github.com/noctuid/general.el.git][general]] provides a function that you can use for all bindings
+;; ([[helpfn:general-define-key][general-define-key]]).
 
 ;; **** general
 ;; :PROPERTIES:
@@ -1481,6 +1480,8 @@ SYM is a symbol that stores a list."
 ;; :ID:       ffff6e7c-35c7-45e2-b2ad-6bca21bf8c1d
 ;; :END:
 
+;; One error you'll often get when defining keys is.
+
 (general-auto-unbind-keys)
 
 ;; **** definers
@@ -1493,9 +1494,11 @@ SYM is a symbol that stores a list."
 ;; specific arguments to =general-define-key= pretty often. A typical example of
 ;; this is binding =leader= or =localleader= keys like [[https://github.com/syl20bnr/spacemacs][spacemacs]].
 
+;; This form creates a macro =define-leader-key!= that.
+
 (general-create-definer define-leader-key!
-  :prefix void-leader-key
-  :non-normal-prefix void-leader-alt-key
+  :prefix VOID-LEADER-KEY
+  :non-normal-prefix VOID-LEADER-ALT-KEY
   :keymaps 'override
   :states '(normal motion insert emacs))
 
@@ -1513,22 +1516,29 @@ SYM is a symbol that stores a list."
 
 (defmacro define-localleader-key! (&rest args)
   (declare (indent defun))
-  (let ((shared-args '(:keymaps 'override :states '(normal motion insert emacs))))
+  (alet `(:keymaps 'override
+		  :states '(normal motion insert emacs)
+		  ,@args)
     `(progn (general-def
-              ,@args
-              ,@shared-args
-              :prefix void-localleader-key
-              :non-normal-prefix void-localleader-alt-key)
+              :prefix VOID-LOCALLEADER-KEY
+              :non-normal-prefix VOID-LOCALLEADER-ALT-KEY
+              ,@it)
             (general-def
-              ,@args
-              ,@shared-args
-              :prefix void-localleader-short-key
-              :non-normal-prefix void-localleader-short-alt-key))))
+              :prefix VOID-LOCALLEADER-SHORT-KEY
+              :non-normal-prefix VOID-LOCALLEADER-SHORT-ALT-KEY
+              ,@it))))
 
 ;; **** aliases
 ;; :PROPERTIES:
 ;; :ID:       81031f16-179e-4da7-9d83-7da5459fbdbd
 ;; :END:
+
+;; In addition to providing keybinding stuff, =general= also provides.
+
+(defalias 'define-key! 'general-def)
+
+(defalias 'set! 'general-setq)
+(defalias 'set-default! 'gsetq-default)
 
 (defalias 'gsetq 'general-setq)
 (defalias 'gsetq-default 'general-setq-default)
@@ -1760,9 +1770,9 @@ SYM is a symbol that stores a list."
 ;; :ID:       32e2118a-c92b-4e8d-b2db-048428462783
 ;; :END:
 
-(after! image-mode
-  ;; Non-nil means animated images loop forever, rather than playing once.
-  (setq image-animate-loop t))
+;; Non-nil means animated images loop forever, rather than playing once.
+
+(setq image-animate-loop t)
 
 ;; *** window
 ;; :PROPERTIES:
@@ -2276,7 +2286,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       c08a6f82-0408-4899-8e91-e1c5a062a7b2
 ;; :END:
 
-(general-def
+(define-key!
   [remap switch-to-buffer] #'consult-buffer
   [remap apropos] #'consult-apropos
   [remap load-theme] #'consult-theme)
@@ -2447,7 +2457,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; * Completion
 ;; :PROPERTIES:
-;; :ID: 056384d1-a95a-4dcb-bc9d-ffe95bbb52a8
+;; :ID:       744ac652-aebc-4f5b-883a-4464dd7b07cd
 ;; :END:
 
 ;; Completion has certainly become an integral part of any efficient workflow. One
@@ -2497,6 +2507,17 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (setq company-minimum-prefix-length 1)
 (setq company-require-match 'never)
 
+;; *** bindings
+;; :PROPERTIES:
+;; :ID:       ba170d95-7d86-4827-af6b-dc5fd4c1b7e5
+;; :END:
+
+(define-key! company-active-map
+  [tab]     #'company-select-next
+  [backtab] #'company-select-previous
+  "C-k"     #'company-select-previous
+  "C-j"     #'company-select-next)
+
 ;; ** selectrum
 ;; :PROPERTIES:
 ;; :ID:       294a9fde-e76f-40ce-9552-dd5801318717
@@ -2541,7 +2562,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       f9bc79b9-ec16-4311-aa4c-8fef5add8b55
 ;; :END:
 
-(general-def '(insert emacs) selectrum-minibuffer-map
+(define-key! '(insert emacs) selectrum-minibuffer-map
   "TAB" #'selectrum-next-candidate
   "C-k" #'selectrum-previous-candidate
   "C-j" #'selectrum-next-candidate
@@ -2640,8 +2661,58 @@ Orderless will do this."
         (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
     (apply <orig-fn> <args>)))
 
-
 ;; * Utility
+
+;; ** file browsing
+;; :PROPERTIES:
+;; :ID:       324ede5f-4606-40f2-a424-1cdf0c974853
+;; :END:
+
+;; *** dired
+;; :PROPERTIES:
+;; :ID:       877b66c0-7952-4b37-839a-4a9aa5af164a
+;; :END:
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID: 55109eeb-8e59-4d15-926e-fbe42ed28056
+;; :END:
+
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'top)
+(setq dired-hide-details-hide-symlink-targets nil)
+(setq dired-clean-confirm-killing-deleted-buffers nil)
+
+;; **** sort directories first
+;; :PROPERTIES:
+;; :ID: 4b6c0ed8-dbf2-4a65-adcc-1ce326eac465
+;; :END:
+
+(defhook! dired:sort-directories-first (dired-after-readin-hook)
+  "List directories first in dired buffers."
+  (save-excursion
+    (let (buffer-read-only)
+      (forward-line 2) ;; beyond dir. header
+      (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max))))
+  (and (featurep 'xemacs)
+       (fboundp 'dired-insert-set-properties)
+       (dired-insert-set-properties (point-min) (point-max)))
+  (set-buffer-modified-p nil))
+
+;; **** create non-existent directory
+;; :PROPERTIES:
+;; :ID: 66981d0c-fe40-4552-9f63-2c39a7d584d2
+;; :END:
+
+(defun dired:create-non-existent-directory-h ()
+  "Automatically create missing directories when creating new file."
+  (let ((parent-directory (file-name-directory buffer-file-name)))
+    (when (and (not (file-exists-p parent-directory))
+               (y-or-n-p (format "Directory `%s' does not exist! Create it?" parent-directory)))
+      (make-directory parent-directory t))))
+
+(after! dired
+  (add-to-list 'find-file-not-found-functions 'dired:create-non-existent-directory-h nil #'eq))
 
 ;; ** persistence
 ;; :PROPERTIES:
@@ -2712,7 +2783,7 @@ Orderless will do this."
 (setq recentf-exclude
       (list #'file-remote-p
             "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
-            ;; ignore private Void temp files (but not all of them)
+	        ;; ignore private Void temp files (but not all of them)
             #'(lambda (file)
                 (-some-p (apply-partially #'file-in-directory-p file)
 		         (list VOID-DATA-DIR)))))
@@ -2845,7 +2916,12 @@ Orderless will do this."
 ;; :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 ;; :END:
 
-;; ** lispyville
+;; ** lisp
+;; :PROPERTIES:
+;; :ID:       2b7db121-f807-4274-9347-70c996d3c6f7
+;; :END:
+
+;; *** lispyville
 ;; :PROPERTIES:
 ;; :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
 ;; :TYPE:     git
@@ -2860,20 +2936,19 @@ Orderless will do this."
 ;; [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
 ;; commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve parentheses.
 
-;; *** initialize
+;; **** initialize
 ;; :PROPERTIES:
 ;; :ID:       fad4cb7c-ff1e-485d-99d1-f55384c26402
 ;; :END:
 
-;; (autoload 'lispyville (list #'lispyville-comment-or-uncomment-line))
 (void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
 
-;; *** initialize
+;; **** remappings
 ;; :PROPERTIES:
 ;; :ID: 5567b70d-60f2-4161-9a19-d6098f45cd95
 ;; :END:
 
-(general-def lipsyville-mode-map
+(define-key! lipsyville-mode-map
   [remap evil-yank]                 #'lispyville-yank
   [remap evil-delete]               #'lispyville-delete
   [remap evil-change]               #'lispyville-change
@@ -2886,40 +2961,40 @@ Orderless will do this."
   [remap evil-change-whole-line]    #'lispyville-change-whole-line
   [remap evil-join]                 #'lispyville-join)
 
-;; *** inner text objects
+;; **** inner text objects
 ;; :PROPERTIES:
 ;; :ID:       f9f82ebe-5749-452f-ba49-269e60526b04
 ;; :END:
 
-(general-def evil-inner-text-objects-map
+(define-key! evil-inner-text-objects-map
   "a" #'lispyville-inner-atom
   "l" #'lispyville-inner-list
   "x" #'lispyville-inner-sexp
   "c" #'lispyville-inner-comment
   "s" #'lispyville-inner-string)
 
-;; *** outer text objects
+;; **** outer text objects
 ;; :PROPERTIES:
 ;; :ID:       9dda9a1b-c76f-4537-9554-45ad3c77977a
 ;; :END:
 
-(general-def evil-outer-text-objects-map
+(define-key! evil-outer-text-objects-map
   "a" #'lispyville-a-atom
   "l" #'lispyville-a-list
   "x" #'lispyville-a-sexp
   "c" #'lispyville-a-comment
   "s" #'lispyville-a-string)
 
-;; *** slurp/barf
+;; **** slurp/barf
 ;; :PROPERTIES:
 ;; :ID: 21626641-98e3-4134-958d-03227e4da6b5
 ;; :END:
 
-(general-def 'normal lispyville-mode-map
+(define-key! 'normal lispyville-mode-map
   ">" #'lispyville-slurp
   "<" #'lispyville-barf)
 
-;; *** escape
+;; **** escape
 ;; :PROPERTIES:
 ;; :ID: b355e1a1-6242-47f5-b357-5c3f5adbd200
 ;; :END:
@@ -2930,24 +3005,24 @@ Orderless will do this."
 
 ;; Sometimes =evil-normal-state= enters visual state.
 
-(general-def '(emacs insert) lispyville-mode-map [escape] #'lispyville-normal-state)
+(define-key! '(emacs insert) lispyville-mode-map [escape] #'lispyville-normal-state)
 
-;; *** additional
+;; **** additional
 ;; :PROPERTIES:
 ;; :ID: 1fbafa78-87a0-45ee-9c7c-0c703df2ac66
 ;; :END:
 
-(general-def '(emacs insert) lispyville-mode-map
+(define-key! '(emacs insert) lispyville-mode-map
   "SPC" #'lispy-space
   ";"   #'lispy-comment)
 
-(general-def '(normal visual) lispyville-mode-map
+(define-key! '(normal visual) lispyville-mode-map
   "M-j" #'lispyville-drag-forward
   "M-k" #'lispyville-drag-backward
   "M-R" #'lispyville-raise-list
   "M-v" #'lispy-convolute-sexp)
 
-;; ** lispy
+;; *** lispy
 ;; :PROPERTIES:
 ;; :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
 ;; :TYPE:     git
@@ -2963,15 +3038,15 @@ Orderless will do this."
 ;; For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
 ;; very useful to me.
 
-;; *** hook
+;; **** hook
 ;; :PROPERTIES:
 ;; :ID:       37bd49d1-3e34-4579-87d2-e791278be017
 ;; :END:
 
+(autoload #'lispy-mode "lispy" nil t nil)
 (void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
-(autoload #'lispy-mode "lispy-mode" nil t nil)
 
-;; *** settings
+;; **** settings
 ;; :PROPERTIES:
 ;; :ID:       20d99206-ddc4-42db-b4c1-8721decbaf8d
 ;; :END:
@@ -2990,7 +3065,7 @@ Orderless will do this."
 (setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
 (setq lispy-key-theme nil)
 
-;; *** avoid void variable error
+;; **** avoid void variable error
 ;; ;; :PROPERTIES:
 ;; ;; :ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
 ;; ;; :END:
@@ -2999,9 +3074,15 @@ Orderless will do this."
 
 ;; (after! (avy lispy) (setq lispy-avy-keys avy-keys))
 
-;; ** expand region
+;; ** expand-region
 ;; :PROPERTIES:
 ;; :ID:       7e873fba-33ea-4720-ad79-bd8d557cc4b3
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "magnars/expand-region.el"
+;; :PACKAGE:  "expand-region"
+;; :LOCAL-REPO: "expand-region.el"
 ;; :END:
 
 ;; [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
@@ -3030,7 +3111,7 @@ Orderless will do this."
 ;; :ID: 417c9c53-a776-4779-9afc-1eaa35a145c6
 ;; :END:
 
-(general-def 'visual
+(define-key! 'visual
   "V" #'er/contract-region
   "v" #'er/expand-region)
 
@@ -3336,7 +3417,7 @@ Orderless will do this."
               #'evil-visualstar/begin-search-forward)
   (autoload it "evil-visualstar" nil t nil))
 
-(general-def evil-visual-state-map
+(define-key! evil-visual-state-map
   "#" #'evil-visualstar/begin-search-backward
   "*" #'evil-visualstar/begin-search-forward)
 
@@ -3351,8 +3432,8 @@ Orderless will do this."
 ;; :LOCAL-REPO: "evil-surround"
 ;; :END:
 
-(alet '(evil-operator-state-entry-hook evil-visual-state-entry-hook)
-  (void-add-hook #'evil-surround-mode nil nil t))
+;; (--each '(evil-operator-state-entry-hook evil-visual-state-entry-hook)
+;;   (void-load-on-hook it #'evil-surround-mode t))
 
 ;; **** evil
 ;; :PROPERTIES:
@@ -3607,12 +3688,73 @@ Orderless will do this."
 	    (slot . 4))
       display-buffer-alist)
 
+;; ** feebleline
+;; :PROPERTIES:
+;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "tautologyclub/feebleline"
+;; :PACKAGE:  "feebleline"
+;; :LOCAL-REPO: "feebleline"
+;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
+;; :END:
+
+;; Feebleline replaces the typical emacs modeline with text printed out to
+;; echo area.
+
+;; Why use this instead of a typical modeline (such as doom-modeline,
+;; telephone-line, smart-mode-line, etc.)? The problem with typical emacs modelines
+;; is that they appear in every buffer. This means they do not scale well in terms
+;; of screen space because each additional vertical window means another line
+;; dedicated to the modeline. Moreover, more modelines aren't even more useful,
+;; it's just excess information you don't need to know unless you're visiting the
+;; buffer. Better is a global modeline that displays the information from the
+;; buffer displayed in the currently selected window.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
+;; :END:
+
+(require 'feebleline)
+(void-add-hook 'window-setup-hook #'feebleline-mode)
+
+;; *** modeline display
+;; :PROPERTIES:
+;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
+;; :END:
+
+;; It's really easy to add new segments to this modeline.
+
+;; There are those who insist on the usefulness of line numbers and column number.
+;; I'm not one of them. I rarely ever need to use a specific line number or column
+;; number when editing text. To me they are just distracting eye-candy.
+
+(setq feebleline-msg-functions
+      '((feebleline-file-or-buffer-name :face font-lock-keyword-face)
+        (feebleline-git-branch :face feebleline-git-face)
+        (feebleline:msg-display-time :align right)))
+
+;; *** time
+;; :PROPERTIES:
+;; :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
+;; :END:
+
+(defun feebleline:msg-display-time ()
+  (format-time-string "%T %D %a"))
+
 ;; ** org
 ;; :PROPERTIES:
 ;; :ID:       63748940-c1b9-47ea-b1ce-d6519453ad03
 ;; :END:
 
-;; *** directories
+;; *** initialize
+;; :PROPERTIES:
+;; :ID:       6d08d180-5b96-4f1f-98f9-53086c13561a
+;; :END:
+
+;; **** directories
 ;; :PROPERTIES:
 ;; :ID:       42e759b0-c676-4b87-ac84-20796500da5a
 ;; :END:
@@ -3621,7 +3763,7 @@ Orderless will do this."
 (setq org-archive-location (concat org-directory "archive.org::"))
 (setq org-default-notes-file (concat org-directory "notes.org"))
 
-;; *** general settings
+;; **** general settings
 ;; :PROPERTIES:
 ;; :ID:       b0aa3f0b-876a-4527-b8ba-4fdac5e7ebe8
 ;; :END:
@@ -3641,25 +3783,47 @@ Orderless will do this."
 (setq org-tag-alist nil)
 (setq org-log-done 'time)
 
-;; *** bindings
-;; :PROPERTIES:
-;; :ID:       3f4144ee-a780-478e-a1ad-47591f181ff3
-;; :END:
-
-(general-def '(normal) org-mode-map
-  "TAB" #'outline-toggle-children
-  "D" #'org-cut-subtree
-  "P" #'org-paste-subtree)
-
-;; *** required packages
+;; **** required packages
 ;; :PROPERTIES:
 ;; :ID:       939d4fd6-85df-4ba2-8a67-23343d484bf9
 ;; :END:
 
 (alet '(calendar find-func format-spec org-macs org-compat org-faces org-entities
-	    org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
-	    org-capture)
+		org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
+		org-capture)
   (-each it #'idle-require))
+
+;; *** bindings
+;; :PROPERTIES:
+;; :ID:       4ca3fe54-54b1-47ca-90f1-a14b3df1cc59
+;; :END:
+
+;; **** org mode local bindings
+;; :PROPERTIES:
+;; :ID:       a950d732-b0d2-46b9-82ce-1b9a474e7d76
+;; :END:
+
+(define-localleader-key!
+  :keymaps 'org-mode-map
+  "w" (list :def #'widen                      :wk "widen")
+  "n" (list :def #'org-narrow-to-subtree      :wk "narrow")
+  "k" (list :def #'org-cut-subtree            :wk "cut subtree")
+  "c" (list :def #'org-copy-subtree           :wk "copy subtree")
+  "r" (list :def #'org-refile                 :wk "refile")
+  "j" (list :def #'org/avy-goto-headline      :wk "jump to headline")
+  "E" (list :def #'org-babel-execute-subtree  :wk "execute subtree")
+  "e" (list :def #'org/dwim-edit-source-block :wk "edit source block")
+  "," (list :def #'org/dwim-edit-source-block :wk "edit source block"))
+
+;; **** bindings
+;; :PROPERTIES:
+;; :ID:       3f4144ee-a780-478e-a1ad-47591f181ff3
+;; :END:
+
+(define-key! '(normal) org-mode-map
+  "TAB" #'outline-toggle-children
+  "D" #'org-cut-subtree
+  "P" #'org-paste-subtree)
 
 ;; *** org-journal
 ;; :PROPERTIES:
@@ -3953,98 +4117,6 @@ same key as the one(s) being added."
 (setq org-superstar-leading-bullet ?\s)
 
 
-;; ** all-the-icons
-;; ;; :PROPERTIES:
-;; ;; :ID: 6a7c7438-42c0-4833-9398-fa9fd58515d1
-;; ;; :TYPE:     git
-;; ;; :FLAVOR:   melpa
-;; ;; :FILES:    (:defaults "data" "all-the-icons-pkg.el")
-;; ;; :HOST:     github
-;; ;; :REPO:     "domtronn/all-the-icons.el"
-;; ;; :PACKAGE:  "all-the-icons"
-;; ;; :LOCAL-REPO: "all-the-icons.el"
-;; ;; :END:
-
-;; ;; A little bit of decoration and spice can go a long way. As its name suggests,
-;; ;; [[all-the-icons][all-the-icons]] is a package that contains a lot of icons ([[][here]] you can see
-;; ;; a few). In practice I use these icons to (1) make things look nicer and more
-;; ;; colorful and (2) enhance readability of plain text.
-
-;; ;; *** icon types
-;; ;; :PROPERTIES:
-;; ;; :ID:       8d40db5e-39e1-4e49-9d26-82c8b36be5b0
-;; ;; :END:
-
-;; (defconst VOID-ICON-TYPES '(octicon faicon all-the-icons))
-
-;; ;; *** all icon files exist
-;; ;; :PROPERTIES:
-;; ;; :ID:       3c8a838d-c838-4d4e-adf8-d07cf621ea4d
-;; ;; :END:
-
-;; (defun all-the-icons:fonts-installed-p (font-dir)
-;;   "Return non-nil if all `all-the-icons' files are installed."
-;;   (--all-p (file-exists-p (concat font-dir it))
-;;            '("all-the-icons.ttf"
-;;              "file-icons.ttf"
-;;              "fontawesome.ttf"
-;;              "material-design-icons.ttf"
-;;              "octicons.ttf"
-;;              "weathericons.ttf")))
-
-;; (when (yes-or-no-p "No icons installed. Install?")
-;;   (all-the-icons-install-fonts :ignore-prompt))
-
-;; ;; *** font-dir
-;; ;; :PROPERTIES:
-;; ;; :ID:       2f31d9bf-3d89-4345-86c4-097c2eae6ea8
-;; ;; :END:
-
-;; (cl-case window-system
-;;   (x (concat (or (getenv "XDG_DATA_HOME")
-;;                  (concat (getenv "HOME") "/.local/share"))
-;;              "/fonts/"))
-;;   (mac (concat (getenv "HOME") "/Library/Fonts/" ))
-;;   (ns (concat (getenv "HOME") "/Library/Fonts/" )))
-
-;; ;; *** install all the icons if not installed
-;; ;; :PROPERTIES:
-;; ;; :ID: 1cda0692-8f42-4bb3-b11d-da52e2004a55
-;; ;; :END:
-
-;; ;; This will install the icons if they're not already installed. Unless somehow the
-;; ;; fonts are deleted, this code should only take effect the first time installing
-;; ;; void. This helps achieve the goal to automate as much as possible on a fresh
-;; ;; VOID install. For writing this code I referenced the body of
-;; ;; [[helpfn:all-the-icons-install-fonts][all-the-icons-install-fonts]].
-
-;; (defhook! install-icons-maybe (window-setup-hook)
-;;   "Install icons if not installed."
-;;   (unless (all-the-icons:fonts-installed-p ())
-;;     ))
-
-;; ;; *** boostrap
-;; ;; :PROPERTIES:
-;; ;; :ID: a13cf0ec-14e2-4d4b-b313-65fe68f0655b
-;; ;; :END:
-
-;; (--each VOID-ICON-TYPES
-;;   (autoload it "all-the-icons" nil t nil))
-
-;; ;; *** disable in tty
-;; ;; :PROPERTIES:
-;; ;; :ID: fce313d3-aa5a-4ea8-b994-1f9a8e33ab9d
-;; ;; :END:
-
-;; ;; In terminals these icons will not display correctly. I usually use emacs as a
-;; ;; graphical interface but.
-
-;; (--each (-map (void-symbol-intern 'all-the-icons it))
-;;   (void-add-advice it :around #'dont-display-in-terminal))
-
-;; (defun void--dont-display-in-terminal-advice ()
-;;   (if (display-graphic-p) (apply <orig-fn> <args>) ""))
-
 ;; ** which-key
 ;; :PROPERTIES:
 ;; :ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
@@ -4187,62 +4259,6 @@ same key as the one(s) being added."
 (defadvice! set-custom-banner-path (:override dashboard-get-banner-path)
   "Use the Void text banner."
   (concat VOID-LOCAL-DIR "void-banner.txt"))
-
-;; ** feebleline
-;; :PROPERTIES:
-;; :ID:       2e3fe8bf-18d2-4a18-92c6-4fcccf6b3c28
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "tautologyclub/feebleline"
-;; :PACKAGE:  "feebleline"
-;; :LOCAL-REPO: "feebleline"
-;; :COMMIT:   "b2f2db25cac77817bf0c49ea2cea6383556faea0"
-;; :END:
-
-;; Feebleline replaces the typical emacs modeline with text printed out to
-;; echo area.
-
-;; Why use this instead of a typical modeline (such as doom-modeline,
-;; telephone-line, smart-mode-line, etc.)? The problem with typical emacs modelines
-;; is that they appear in every buffer. This means they do not scale well in terms
-;; of screen space because each additional vertical window means another line
-;; dedicated to the modeline. Moreover, more modelines aren't even more useful,
-;; it's just excess information you don't need to know unless you're visiting the
-;; buffer. Better is a global modeline that displays the information from the
-;; buffer displayed in the currently selected window.
-
-;; *** init
-;; :PROPERTIES:
-;; :ID:       fa4b3d96-c346-4f43-9d1e-9accf0c0e97b
-;; :END:
-
-(require 'feebleline)
-(void-add-hook 'window-setup-hook #'feebleline-mode)
-
-;; *** modeline display
-;; :PROPERTIES:
-;; :ID:       3061498c-9533-4595-a5ab-71bbf111fd87
-;; :END:
-
-;; It's really easy to add new segments to this modeline.
-
-;; There are those who insist on the usefulness of line numbers and column number.
-;; I'm not one of them. I rarely ever need to use a specific line number or column
-;; number when editing text. To me they are just distracting eye-candy.
-
-(setq feebleline-msg-functions
-      '((feebleline-file-or-buffer-name :face font-lock-keyword-face)
-        (feebleline-git-branch :face feebleline-git-face)
-        (feebleline:msg-display-time :align right)))
-
-;; *** time
-;; :PROPERTIES:
-;; :ID:       f2f18c74-77e9-4334-9d4e-9044b3a69f23
-;; :END:
-
-(defun feebleline:msg-display-time ()
-  (format-time-string "%T %D %a"))
 
 ;; ** window divider
 ;; :PROPERTIES:
@@ -4411,22 +4427,8 @@ same key as the one(s) being added."
 (define-localleader-key!
   "a" (list :def #'org-agenda :wk "agenda")
   "s" (list :def #'void/open-scratch :wk "scratch")
+  "f" (list :def #'void/set-font-size    :wk "font size")
   "c" (list :def #'org-capture  :wk "capture"))
-
-;; ** toggle
-;; :PROPERTIES:
-;; :ID: 10d6851b-6af6-4185-8976-0ad65b3d1d28
-;; :END:
-
-(define-leader-key!
-  :infix "t"
-  ""  (list :ignore t :wk "toggle/set")
-  "r" (list :def #'read-only-mode        :wk "read-only")
-  "t" (list :def #'load-theme            :wk "load theme")
-  "c" (list :def #'caps-lock-mode        :wk "caps lock")
-  "d" (list :def #'toggle-debug-on-error :wk "debug")
-  "F" (list :def #'void/set-font-face         :wk "set font")
-  "f" (list :def #'void/set-font-size    :wk "font size"))
 
 (define-leader-key!
   :infix "t"
