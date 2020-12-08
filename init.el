@@ -115,44 +115,6 @@ Files that need to exist, but I don't typically want to see go here.")
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
   (make-directory dir t))
 
-;; *** savehist
-;; :PROPERTIES:
-;; :ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
-;; :END:
-
-;; =savehist= is a built-in feature for saving the minibuffer-history to a file--the
-;; [[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
-;; variables which may or may not be related to minibuffer history. You add the
-;; ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
-
-;; **** init
-;; :PROPERTIES:
-;; :ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
-;; :END:
-
-;; (idle-require 'custom)
-;; (void-add-hook 'emacs-startup-hook #'savehist-mode)
-
-(setq savehist-save-minibuffer-history t)
-(setq savehist-autosave-interval nil)
-(setq savehist-file (concat VOID-DATA-DIR "savehist"))
-
-(savehist-mode 1)
-
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-
-;; **** unpropertize kill ring
-;; ;; :PROPERTIES:
-;; ;; :ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
-;; ;; :END:
-
-;; (defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
-;;   "Remove text properties from `kill-ring'."
-;;   (setq kill-ring
-;;         (--map (when (stringp it) (substring-no-properties it))
-;;                (-non-nil kill-ring))))
-
-
 ;; ** Package Management
 ;; :PROPERTIES:
 ;; :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
@@ -1064,8 +1026,8 @@ Instead, arguments are accessed via anaphoric variables.
        (ignore <args>)
        (cl-progv
            (->> (alet (help-function-arglist #',target t)
-			      ;; kind of a hack...
-			      (if (eq t it) nil it))
+		          ;; kind of a hack...
+		          (if (eq t it) nil it))
 		        (--remove (s-starts-with-p "@" (symbol-name it)))
 		        (--map (intern (format "<%s>" (symbol-name it)))))
 	       <args>
@@ -2778,6 +2740,7 @@ Orderless will do this."
 
 (-each '(easymenu tree-widget timer) #'idle-require)
 (void-load-before-call 'recentf #'find-file t)
+(after! consult (void-load-before-call 'recentf #'consult-buffer t))
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -2815,6 +2778,43 @@ Orderless will do this."
 
 (void-add-advice #'recentf-mode :around #'void--silence-output-advice)
 (void-add-advice #'recentf-cleanup :around #'void--silence-output-advice)
+
+;; *** savehist
+;; :PROPERTIES:
+;; :ID:       dd4b9da7-e54d-4d62-bb70-aa8f7f4a016f
+;; :END:
+
+;; =savehist= is a built-in feature for saving the minibuffer-history to a file--the
+;; [[helpvar:savehist][savehist]] file. Additionally, it provides the ability to save additional
+;; variables which may or may not be related to minibuffer history. You add the
+;; ones you want to save to [[helpvar:savehist-additional-variables][savehist-additional-variables]].
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       54183df6-b4f5-4b01-9ddb-4054ef0583b0
+;; :END:
+
+(setq savehist-save-minibuffer-history t)
+(setq savehist-autosave-interval nil)
+(setq savehist-file (concat VOID-DATA-DIR "savehist"))
+
+(idle-require 'custom)
+(void-add-hook 'emacs-startup-hook #'savehist-mode)
+
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+
+;; **** unpropertize kill ring
+;; :PROPERTIES:
+;; :ID:       da2b6c31-d251-48aa-a6ed-8f01b9fa0b8d
+;; :END:
+
+;; #+begin_src elisp
+;; (defhook! unpropertize-kill-ring (kill-emacs-hook :append t)
+;;   "Remove text properties from `kill-ring'."
+;;   (setq kill-ring
+;;         (--map (when (stringp it) (substring-no-properties it))
+;;                (-non-nil kill-ring))))
+;; #+end_src
 
 ;; *** desktop
 ;; :PROPERTIES:
@@ -2922,164 +2922,6 @@ Orderless will do this."
 ;; :PROPERTIES:
 ;; :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 ;; :END:
-
-;; ** lisp
-;; :PROPERTIES:
-;; :ID:       2b7db121-f807-4274-9347-70c996d3c6f7
-;; :END:
-
-;; *** lispyville
-;; :PROPERTIES:
-;; :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "noctuid/lispyville"
-;; :PACKAGE:  "lispyville"
-;; :LOCAL-REPO: "lispyville"
-;; :COMMIT:   "0f13f26cd6aa71f9fd852186ad4a00c4294661cd"
-;; :END:
-
-;; [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
-;; commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve parentheses.
-
-;; **** initialize
-;; :PROPERTIES:
-;; :ID:       fad4cb7c-ff1e-485d-99d1-f55384c26402
-;; :END:
-
-(void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
-
-;; **** remappings
-;; :PROPERTIES:
-;; :ID: 5567b70d-60f2-4161-9a19-d6098f45cd95
-;; :END:
-
-(define-key! lipsyville-mode-map
-  [remap evil-yank]                 #'lispyville-yank
-  [remap evil-delete]               #'lispyville-delete
-  [remap evil-change]               #'lispyville-change
-  [remap evil-yank-line]            #'lispyville-yank-line
-  [remap evil-delete-line]          #'lispyville-delete-line
-  [remap evil-change-line]          #'lispyville-change-line
-  [remap evil-delete-char]          #'lispyville-delete-char-or-splice
-  [remap evil-delete-backward-char] #'lispyville-delete-char-or-splice-backwards
-  [remap evil-substitute]           #'lispyville-substitute
-  [remap evil-change-whole-line]    #'lispyville-change-whole-line
-  [remap evil-join]                 #'lispyville-join)
-
-;; **** inner text objects
-;; :PROPERTIES:
-;; :ID:       f9f82ebe-5749-452f-ba49-269e60526b04
-;; :END:
-
-(define-key! evil-inner-text-objects-map
-  "a" #'lispyville-inner-atom
-  "l" #'lispyville-inner-list
-  "x" #'lispyville-inner-sexp
-  "c" #'lispyville-inner-comment
-  "s" #'lispyville-inner-string)
-
-;; **** outer text objects
-;; :PROPERTIES:
-;; :ID:       9dda9a1b-c76f-4537-9554-45ad3c77977a
-;; :END:
-
-(define-key! evil-outer-text-objects-map
-  "a" #'lispyville-a-atom
-  "l" #'lispyville-a-list
-  "x" #'lispyville-a-sexp
-  "c" #'lispyville-a-comment
-  "s" #'lispyville-a-string)
-
-;; **** slurp/barf
-;; :PROPERTIES:
-;; :ID: 21626641-98e3-4134-958d-03227e4da6b5
-;; :END:
-
-(define-key! 'normal lispyville-mode-map
-  ">" #'lispyville-slurp
-  "<" #'lispyville-barf)
-
-;; **** escape
-;; :PROPERTIES:
-;; :ID: b355e1a1-6242-47f5-b357-5c3f5adbd200
-;; :END:
-
-;; =lispyville= binds escape to [[helpfn:lipyville-normal-state][lispyville-normal-state]]. So for =void-escape-hook=
-;; to still happen on escape, I need to add [[helpfn:evil:escape-a][evil:escape-a]] as advice to
-;; =lispyville-normal-state=.
-
-;; Sometimes =evil-normal-state= enters visual state.
-
-(define-key! '(emacs insert) lispyville-mode-map [escape] #'lispyville-normal-state)
-
-;; **** additional
-;; :PROPERTIES:
-;; :ID: 1fbafa78-87a0-45ee-9c7c-0c703df2ac66
-;; :END:
-
-(define-key! '(emacs insert) lispyville-mode-map
-  "SPC" #'lispy-space
-  ";"   #'lispy-comment)
-
-(define-key! '(normal visual) lispyville-mode-map
-  "M-j" #'lispyville-drag-forward
-  "M-k" #'lispyville-drag-backward
-  "M-R" #'lispyville-raise-list
-  "M-v" #'lispy-convolute-sexp)
-
-;; *** lispy
-;; :PROPERTIES:
-;; :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    (:defaults "lispy-clojure.clj" "lispy-python.py" "lispy-pkg.el")
-;; :HOST:     github
-;; :REPO:     "abo-abo/lispy"
-;; :PACKAGE:  "lispy"
-;; :LOCAL-REPO: "lispy"
-;; :COMMIT:   "41f5574aefb69930d9bdcbe4e0cf642005369765"
-;; :END:
-
-;; For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
-;; very useful to me.
-
-;; **** hook
-;; :PROPERTIES:
-;; :ID:       37bd49d1-3e34-4579-87d2-e791278be017
-;; :END:
-
-(autoload #'lispy-mode "lispy" nil t nil)
-(void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
-
-;; **** settings
-;; :PROPERTIES:
-;; :ID:       20d99206-ddc4-42db-b4c1-8721decbaf8d
-;; :END:
-
-(setq lispy-avy-style-paren 'at-full)
-(setq lispy-eval-display-style 'overlay)
-(setq lispy-safe-delete t)
-(setq lispy-safe-copy t)
-(setq lispy-safe-paste t)
-(setq lispy-safe-actions-no-pull-delimiters-into-comments t)
-(setq lispy-delete-sexp-from-within t)
-(setq lispy-parens-only-left-in-string-or-comment nil)
-(setq lispy-safe-threshold 5000)
-(setq lispy-use-sly t)
-;; allow space before asterisk for headings (e.g. ";; *")
-(setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
-(setq lispy-key-theme nil)
-
-;; **** avoid void variable error
-;; ;; :PROPERTIES:
-;; ;; :ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
-;; ;; :END:
-
-;; ;; You'll get void variable if you don't do this.
-
-;; (after! (avy lispy) (setq lispy-avy-keys avy-keys))
 
 ;; ** expand-region
 ;; :PROPERTIES:
@@ -3293,8 +3135,8 @@ Orderless will do this."
 ;; :ID:       e26f4c55-9585-4544-bed6-9733d50823e7
 ;; :END:
 
-(void-add-hook '(prog-mode-hook eshell-mode-hook ielm-mode-hook)
-               #'smartparens-strict-mode)
+(alet '(prog-mode-hook eshell-mode-hook ielm-mode-hook)
+  (void-add-hook it #'smartparens-strict-mode))
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -3383,6 +3225,8 @@ Orderless will do this."
 ;; :PROPERTIES:
 ;; :ID:       175ad5b9-3f0e-445e-b0ae-da3bce144929
 ;; :END:
+
+;; Modal editing is widely accepted to be more efficient than modeless editing.
 
 ;; *** evil
 ;; :PROPERTIES:
@@ -3634,65 +3478,168 @@ Orderless will do this."
   (general-chord "kj") 'evil-force-normal-state)
 
 
-;; * Asthetic
+;; * Languages
 ;; :PROPERTIES:
-;; :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
+;; :ID:       fa8dc2fc-96f4-4820-b368-4d61d1db0ee5
 ;; :END:
 
-;; It's easy to underestimate how much of a difference having an asthetically
-;; pleasing Emacs configuration can have. Ugliness really can take its toll.
-
-;; ** mini-modeline
+;; ** lisp
 ;; :PROPERTIES:
-;; :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
+;; :ID:       2b7db121-f807-4274-9347-70c996d3c6f7
+;; :END:
+
+;; *** lispyville
+;; :PROPERTIES:
+;; :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
 ;; :TYPE:     git
 ;; :FLAVOR:   melpa
 ;; :HOST:     github
-;; :REPO:     "kiennq/emacs-mini-modeline"
-;; :PACKAGE:  "mini-modeline"
-;; :LOCAL-REPO: "emacs-mini-modeline"
+;; :REPO:     "noctuid/lispyville"
+;; :PACKAGE:  "lispyville"
+;; :LOCAL-REPO: "lispyville"
+;; :COMMIT:   "0f13f26cd6aa71f9fd852186ad4a00c4294661cd"
 ;; :END:
 
-(defadvice! update-mini-modeline-face (:before load-theme)
-  (setq mini-modeline-face-attr `(:background ,(face-attribute 'default :background))))
+;; [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
+;; commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve parentheses.
 
-(autoload #'mini-modeline-mode "mini-modeline" nil t nil)
-(void-add-hook 'window-setup-hook #'mini-modeline-mode)
-
-;; ** helpful
+;; **** initialize
 ;; :PROPERTIES:
-;; :ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
+;; :ID:       fad4cb7c-ff1e-485d-99d1-f55384c26402
+;; :END:
+
+(void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
+
+;; **** remappings
+;; :PROPERTIES:
+;; :ID: 5567b70d-60f2-4161-9a19-d6098f45cd95
+;; :END:
+
+(define-key! lipsyville-mode-map
+  [remap evil-yank]                 #'lispyville-yank
+  [remap evil-delete]               #'lispyville-delete
+  [remap evil-change]               #'lispyville-change
+  [remap evil-yank-line]            #'lispyville-yank-line
+  [remap evil-delete-line]          #'lispyville-delete-line
+  [remap evil-change-line]          #'lispyville-change-line
+  [remap evil-delete-char]          #'lispyville-delete-char-or-splice
+  [remap evil-delete-backward-char] #'lispyville-delete-char-or-splice-backwards
+  [remap evil-substitute]           #'lispyville-substitute
+  [remap evil-change-whole-line]    #'lispyville-change-whole-line
+  [remap evil-join]                 #'lispyville-join)
+
+;; **** inner text objects
+;; :PROPERTIES:
+;; :ID:       f9f82ebe-5749-452f-ba49-269e60526b04
+;; :END:
+
+(define-key! evil-inner-text-objects-map
+  "a" #'lispyville-inner-atom
+  "l" #'lispyville-inner-list
+  "x" #'lispyville-inner-sexp
+  "c" #'lispyville-inner-comment
+  "s" #'lispyville-inner-string)
+
+;; **** outer text objects
+;; :PROPERTIES:
+;; :ID:       9dda9a1b-c76f-4537-9554-45ad3c77977a
+;; :END:
+
+(define-key! evil-outer-text-objects-map
+  "a" #'lispyville-a-atom
+  "l" #'lispyville-a-list
+  "x" #'lispyville-a-sexp
+  "c" #'lispyville-a-comment
+  "s" #'lispyville-a-string)
+
+;; **** slurp/barf
+;; :PROPERTIES:
+;; :ID: 21626641-98e3-4134-958d-03227e4da6b5
+;; :END:
+
+(define-key! 'normal lispyville-mode-map
+  ">" #'lispyville-slurp
+  "<" #'lispyville-barf)
+
+;; **** escape
+;; :PROPERTIES:
+;; :ID: b355e1a1-6242-47f5-b357-5c3f5adbd200
+;; :END:
+
+;; =lispyville= binds escape to [[helpfn:lipyville-normal-state][lispyville-normal-state]]. So for =void-escape-hook=
+;; to still happen on escape, I need to add [[helpfn:evil:escape-a][evil:escape-a]] as advice to
+;; =lispyville-normal-state=.
+
+;; Sometimes =evil-normal-state= enters visual state.
+
+(define-key! '(emacs insert) lispyville-mode-map [escape] #'lispyville-normal-state)
+
+;; **** additional
+;; :PROPERTIES:
+;; :ID: 1fbafa78-87a0-45ee-9c7c-0c703df2ac66
+;; :END:
+
+(define-key! '(emacs insert) lispyville-mode-map
+  "SPC" #'lispy-space
+  ";"   #'lispy-comment)
+
+(define-key! '(normal visual) lispyville-mode-map
+  "M-j" #'lispyville-drag-forward
+  "M-k" #'lispyville-drag-backward
+  "M-R" #'lispyville-raise-list
+  "M-v" #'lispy-convolute-sexp)
+
+;; *** lispy
+;; :PROPERTIES:
+;; :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
 ;; :TYPE:     git
 ;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "lispy-clojure.clj" "lispy-python.py" "lispy-pkg.el")
 ;; :HOST:     github
-;; :REPO:     "Wilfred/helpful"
-;; :PACKAGE:  "helpful"
-;; :LOCAL-REPO: "helpful"
-;; :COMMIT:   "584ecc887bb92133119f93a6716cdf7af0b51dca"
+;; :REPO:     "abo-abo/lispy"
+;; :PACKAGE:  "lispy"
+;; :LOCAL-REPO: "lispy"
+;; :COMMIT:   "41f5574aefb69930d9bdcbe4e0cf642005369765"
 ;; :END:
 
-;; *** helpful
+;; For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
+;; very useful to me.
+
+;; **** hook
 ;; :PROPERTIES:
-;; :ID: 25270809-b64e-4b9a-b0c2-95ffd047280c
+;; :ID:       37bd49d1-3e34-4579-87d2-e791278be017
 ;; :END:
 
-;; [[github:wilfred/helpful][helpful]] provides a complete replacement for the built-in
-;; Emacs help facility which provides much more contextual information
-;; in a better format.
+(autoload #'lispy-mode "lispy" nil t nil)
+(void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
 
-(general-def
-  :package 'helpful
-  [remap describe-function] #'helpful-callable
-  [remap describe-command]  #'helpful-command
-  [remap describe-variable] #'helpful-variable
-  [remap describe-key]      #'helpful-key)
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       20d99206-ddc4-42db-b4c1-8721decbaf8d
+;; :END:
 
-(push '("\\*Help.*"
-	    (display-buffer-at-bottom)
-	    (window-width . 0.50)
-	    (side . bottom)
-	    (slot . 4))
-      display-buffer-alist)
+(setq lispy-avy-style-paren 'at-full)
+(setq lispy-eval-display-style 'overlay)
+(setq lispy-safe-delete t)
+(setq lispy-safe-copy t)
+(setq lispy-safe-paste t)
+(setq lispy-safe-actions-no-pull-delimiters-into-comments t)
+(setq lispy-delete-sexp-from-within t)
+(setq lispy-parens-only-left-in-string-or-comment nil)
+(setq lispy-safe-threshold 5000)
+(setq lispy-use-sly t)
+;; allow space before asterisk for headings (e.g. ";; *")
+(setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
+(setq lispy-key-theme nil)
+
+;; **** avoid void variable error
+;; ;; :PROPERTIES:
+;; ;; :ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
+;; ;; :END:
+
+;; ;; You'll get void variable if you don't do this.
+
+;; (after! (avy lispy) (setq lispy-avy-keys avy-keys))
 
 ;; ** org
 ;; :PROPERTIES:
@@ -3743,12 +3690,17 @@ Orderless will do this."
 		org-capture)
   (-each it #'idle-require))
 
-;; *** bindings
+;; *** customization
+;; :PROPERTIES:
+;; :ID:       3f0570f0-436b-4a53-92c4-52b06ae26a15
+;; :END:
+
+;; **** bindings
 ;; :PROPERTIES:
 ;; :ID:       4ca3fe54-54b1-47ca-90f1-a14b3df1cc59
 ;; :END:
 
-;; **** org mode local bindings
+;; ***** org mode local bindings
 ;; :PROPERTIES:
 ;; :ID:       a950d732-b0d2-46b9-82ce-1b9a474e7d76
 ;; :END:
@@ -3765,7 +3717,39 @@ Orderless will do this."
   "e" (list :def #'org/dwim-edit-source-block :wk "edit source block")
   "," (list :def #'org/dwim-edit-source-block :wk "edit source block"))
 
-;; **** bindings
+;; ***** generic org bindings
+;; :PROPERTIES:
+;; :ID:       583bd7ac-64e0-48ea-bd75-5b6a20f2deae
+;; :END:
+
+;; Org mode just does not lend itself to typical evil bindings. These bindings are
+;; much more useful considering the specific structure of org mode documents.
+
+(general-def 'normal org-mode-map
+  "j" #'org/dwim-next-line
+  "k" #'org/dwim-previous-line
+  "E" #'org/dwim-eval-block
+  "e" #'org/dwim-eval-block
+  "b" #'org/dwim-insert-elisp-block
+  "o" #'org/insert-heading-below
+  "O" #'org/insert-heading-above
+  "h" #'org-up-heading-safe
+  "l" #'org-do-demote
+  "H" #'org-promote-subtree
+  "S" #'org-demote-subtree
+  ">" #'org-shiftmetaright
+  "<" #'org-shiftmetaleft
+  "t" #'org-set-tags-command
+  "r" #'org/choose-capture-template
+  "s" #'org/dwim-edit-source-block
+  "R" #'org-refile
+  "T" #'org-todo
+  "D" #'org-cut-subtree
+  "Y" #'org-copy-subtree
+  "K" #'org-metaup
+  "J" #'org-metadown)
+
+;; ***** bindings
 ;; :PROPERTIES:
 ;; :ID:       3f4144ee-a780-478e-a1ad-47591f181ff3
 ;; :END:
@@ -3774,6 +3758,191 @@ Orderless will do this."
   "TAB" #'outline-toggle-children
   "D" #'org-cut-subtree
   "P" #'org-paste-subtree)
+
+;; **** custom commands
+;; :PROPERTIES:
+;; :ID:       4dfeccc9-f12e-4449-a5fe-17541070b40e
+;; :END:
+
+;; ***** do the right thing after jumping to headline
+;; :PROPERTIES:
+;; :ID:       2ca61454-a0ca-47b3-8622-91d7969653da
+;; :END:
+
+;; When I search for a headline with [[helpfn:void/goto-line][void/goto-line]] or [[helpfn:void/goto-headline][void/goto-headline]] or even their
+;; counsel equivalents, the proper headlines aren't automatically revealed.
+
+;; [[screenshot:][This]] is what headline structure looks after using counsel/ivy's [[helpfn:swiper][swiper]] to find
+;; the word =void/goto-line= in my emacs. You can see that only the headline that has
+;; the target word is revealed but it's parents are (akwardly) hidden. I never want
+;; headlines to be unfolded like this.
+
+;; ****** show branch
+;; :PROPERTIES:
+;; :ID:       d95fab52-7d8f-439f-9221-188490f4ad5f
+;; :END:
+
+;; This shows all headlines that make up the branch of the current headine and
+;; their children. This is the typical behavior you would expect in any outlining
+;; program.
+
+(defun org:show-branch ()
+  "Reveal the current org branch.
+Show all of the current headine's parents and their children. This includes this
+headline."
+  (let (points)
+    (save-excursion
+      (org-back-to-heading t)
+      (push (point) points)
+      (while (org-up-heading-safe)
+        (push (point) points))
+      (--each points
+        (goto-char it)
+        (outline-show-children)
+        (outline-show-entry)))))
+
+;; ****** show branch after jumping to point
+;; :PROPERTIES:
+;; :ID:       251e5df0-0a7d-4bf9-8fd9-69991d89a074
+;; :END:
+
+;; Note that I use points to store the heading points and go back to them inreverse
+;; order. This is important because org does not unfold headlines properly if you
+;; start from an invisible subheading.
+
+;; Notably, I do not try to conserve the return value of =void/goto-line= or
+;; =void/jump-to-headline= because these functions are and should only be used for
+;; their side-effects.
+
+(defadvice! show-current-branch-in-org-mode (:after void/goto-line org/goto-headline)
+  "Properly unfold nearby headlines and reveal current headline."
+  (when (eq major-mode 'org-mode)
+    (org:show-branch)))
+
+;; ***** return
+;; :PROPERTIES:
+;; :ID:       8314f2e0-da63-4f2f-ad89-b97987ca5843
+;; :END:
+
+(defun org/dwim-return ()
+  "Do what I mean."
+  (interactive)
+  (cond ((org-at-heading-p)
+         (org/insert-heading-below))
+        (t
+         (call-interactively #'org-return))))
+
+;; ****** next-line
+;; :PROPERTIES:
+;; :ID: d8d118a7-78e8-4602-81b3-17fd1d8ab79c
+;; :END:
+
+(defun org/dwim-next-line (&optional backward)
+  "Go to the start of the next heading.
+If DIR is a negative integer, go the opposite direction: the start of the
+  previous heading."
+  (interactive)
+  (outline-next-visible-heading (if backward -1 1))
+  (when (org-at-heading-p)
+    (org:heading-goto-start)))
+
+;; ***** navigation
+;; :PROPERTIES:
+;; :ID:       3d9ea885-e679-46e5-9541-dea0436d05ec
+;; :END:
+
+;; ****** next-line
+;; :PROPERTIES:
+;; :ID: d8d118a7-78e8-4602-81b3-17fd1d8ab79c
+;; :END:
+
+(defun org/dwim-next-line (&optional backward)
+  "Go to the start of the next heading.
+If DIR is a negative integer, go the opposite direction: the start of the
+  previous heading."
+  (interactive)
+  (outline-next-visible-heading (if backward -1 1))
+  (when (org-at-heading-p)
+    (org:heading-goto-start)))
+
+;; ****** previous-line
+;; :PROPERTIES:
+;; :ID: e7562921-77ca-4d90-be57-1d586ec26ee5
+;; :END:
+
+(defun org/dwim-previous-line (&optional forward)
+  (interactive)
+  (funcall #'org/dwim-next-line (not forward)))
+
+;; ***** inserting
+;; :PROPERTIES:
+;; :ID: e99abeff-328b-48e4-aebb-00db34fa98e8
+;; :END:
+
+;; In my eyes, many Org functions are unnecessarily complicated and long. Often they
+;; need to perform a simple task (like inserting a heading) but lose their
+;; fundamental purpose in their inclusion of numerous obscure and opinionated
+;; options. For this reason I wrote my own insert heading functions.
+
+;; ****** newlines between headings
+;; :PROPERTIES:
+;; :ID: e0dcf718-120c-488d-9d37-96243132bf0b
+;; :END:
+
+(defvar org:newlines-between-headings "\n\n"
+  "Number of newlines between headings.")
+
+;; ****** heading above
+;; :PROPERTIES:
+;; :ID: 6c227dea-e10b-4f86-a01b-5d223d18e3a4
+;; :END:
+
+(defun org/insert-heading-above (&optional below)
+  "Insert a heading above the current heading."
+  (interactive)
+  (funcall #'org/insert-heading-below (not below)))
+
+;; ****** heading below
+;; :PROPERTIES:
+;; :ID: b059a431-e29c-4f2c-ab5e-8d2d02636405
+;; :END:
+
+(defun org/insert-heading-below (&optional above)
+  "Insert heading below."
+  (interactive)
+  (let* ((on-heading-p (ignore-errors (org-back-to-heading)))
+         (newlines org:newlines-between-headings)
+         (level (or (org-current-level) 1))
+         (heading (concat (make-string level ?*) "\s")))
+    (cond ((not on-heading-p)
+           (insert heading))
+          (above
+           (goto-char (line-beginning-position))
+           (insert heading)
+           (save-excursion (insert newlines)))
+          (t ; below
+           (org-end-of-subtree)
+           (insert (concat newlines heading))))
+    (run-hooks 'org-insert-heading-hook)))
+
+;; ****** subheading
+;; :PROPERTIES:
+;; :ID: cf910dcf-6250-4b6a-80d5-63ac457d4a81
+;; :END:
+
+(defun org/insert-subheading ()
+  "Insert subheading below current heading."
+  (interactive)
+  (org/insert-heading-below)
+  (org-demote))
+
+;; *** org-link-minor-mode
+;; :PROPERTIES:
+;; :ID:       25b93a1f-b105-47aa-9647-5015d23a4ac3
+;; :END:
+
+(autoload #'org-link-minor-mode "org-link-minor-mode" nil t nil)
+(void-add-hook 'outshine-mode-hook #'org-link-minor-mode)
 
 ;; *** org-journal
 ;; :PROPERTIES:
@@ -3794,6 +3963,18 @@ Orderless will do this."
 ;; :ID:       e00378a1-adcf-4e83-8533-b6b442b5f362
 ;; :TYPE:     built-in
 ;; :END:
+
+;; **** control org src popup
+;; :PROPERTIES:
+;; :ID:       f0f6ad72-b7bc-4894-86fe-32851698c319
+;; :END:
+
+;; #+begin_src elisp
+;; (push '("\\*Org Src"
+;; 	(display-buffer-at-bottom)
+;; 	(window-height . 0.5))
+;;       display-buffer-alist)
+;; #+end_src
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -4036,8 +4217,7 @@ same key as the one(s) being added."
 (autoload #'org-id-get-create "org-id")
 
 (setq org-id-locations-file (concat VOID-DATA-DIR "org-id-locations"))
-;; Global ID state means we can have ID links anywhere. This is required for
-;; `org-brain', however.
+
 (setq org-id-locations-file-relative t)
 
 (void-add-hook 'org-insert-heading-hook #'org-id-get-create)
@@ -4061,6 +4241,83 @@ same key as the one(s) being added."
 (setq org-superstar-special-todo-items t)
 (setq org-superstar-leading-bullet ?\s)
 
+;; * Asthetic
+;; :PROPERTIES:
+;; :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
+;; :END:
+
+;; It's easy to underestimate how much of a difference having an asthetically
+;; pleasing Emacs configuration can have. Ugliness really can take its toll.
+
+;; ** modeline left side
+;; :PROPERTIES:
+;; :ID:       e42a59ab-e11a-403d-a886-32634b0c8e8a
+;; :END:
+
+(setq mini-modeline-l-format
+      '("%e"
+	    (:eval (if (display-graphic-p) (all-the-icons-icon-for-buffer) ""))
+	    mode-line-buffer-identification))
+
+;; ** mini-modeline
+;; :PROPERTIES:
+;; :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "kiennq/emacs-mini-modeline"
+;; :PACKAGE:  "mini-modeline"
+;; :LOCAL-REPO: "emacs-mini-modeline"
+;; :END:
+
+;; If you don't set this, mini-modeline's background color won't
+;; update with the theme.
+
+(setq mini-modeline-face-attr '(:inherit default))
+
+(setq mini-modeline-l-format
+      '("%e" mode-line-buffer-identification))
+
+(setq mini-modeline-r-format
+      '("%e" (:eval (format-time-string "%a %m/%d %T"))))
+
+(autoload #'mini-modeline-mode "mini-modeline" nil t nil)
+(void-add-hook 'window-setup-hook #'mini-modeline-mode)
+
+;; ** helpful
+;; :PROPERTIES:
+;; :ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "Wilfred/helpful"
+;; :PACKAGE:  "helpful"
+;; :LOCAL-REPO: "helpful"
+;; :COMMIT:   "584ecc887bb92133119f93a6716cdf7af0b51dca"
+;; :END:
+
+;; *** helpful
+;; :PROPERTIES:
+;; :ID: 25270809-b64e-4b9a-b0c2-95ffd047280c
+;; :END:
+
+;; [[github:wilfred/helpful][helpful]] provides a complete replacement for the built-in
+;; Emacs help facility which provides much more contextual information
+;; in a better format.
+
+(general-def
+  :package 'helpful
+  [remap describe-function] #'helpful-callable
+  [remap describe-command]  #'helpful-command
+  [remap describe-variable] #'helpful-variable
+  [remap describe-key]      #'helpful-key)
+
+(push '("\\*Help.*"
+	    (display-buffer-at-bottom)
+	    (window-width . 0.50)
+	    (side . bottom)
+	    (slot . 4))
+      display-buffer-alist)
 
 ;; ** which-key
 ;; :PROPERTIES:
@@ -4490,6 +4747,21 @@ same key as the one(s) being added."
   :infix "b k"
   ""  (list :ignore t             :wk "kill")
   "c" (list #'kill-current-buffer :wk "current"))
+
+;; ** code
+;; :PROPERTIES:
+;; :ID: 661f77fb-3435-4e4f-8adb-c4d6390ea6b8
+;; :END:
+
+;; These bindings are for generally working with code.
+
+(define-leader-key! "c" (list :ignore t :wk "code"))
+
+(define-leader-key!
+  :infix "c"
+  "a" (list :def #'ialign                               :wk "align")
+  "l" (list :def #'lispyville-comment-or-uncomment-line :wk "toggle comment")
+  "y" (list :def #'lispyvile-comment-and-cone-dwim      :wk "copy comment"))
 
 ;; ** search
 ;; :PROPERTIES:
