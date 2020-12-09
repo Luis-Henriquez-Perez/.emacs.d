@@ -1779,6 +1779,13 @@ SYM is a symbol that stores a list."
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
 
+;; *** recursive minibuffers
+;; :PROPERTIES:
+;; :ID:       7eb20f6d-75b4-4eec-8878-e7232c1a153d
+;; :END:
+
+(setq-default enable-recursive-minibuffers t)
+
 ;; *** stop initial echo message
 ;; :PROPERTIES:
 ;; :ID:       c619e1ee-1109-4f1b-b1ba-53fcb8ceae4e
