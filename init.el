@@ -3426,9 +3426,15 @@ Orderless will do this."
         ((or defining-kbd-macro executing-kbd-macro) nil)
         (t (keyboard-quit))))
 
-;; ****** keychord
+;; ****** key-chord
 ;; :PROPERTIES:
 ;; :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "emacsorphanage/key-chord"
+;; :PACKAGE:  "key-chord"
+;; :LOCAL-REPO: "key-chord"
 ;; :END:
 
 ;; Sometimes we don't have access to a convenient escape key--I mean that caps-lock
@@ -3442,17 +3448,17 @@ Orderless will do this."
 ;; :ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
 ;; :END:
 
-(autoload #'keychord-mode "keychord" nil t nil)
+(autoload #'key-chord-mode "key-chord" nil t nil)
 
 (alet (list #'evil-insert-state #'evil-emacs-state)
-  (void-load-before-call 'keychord it t))
+  (void-load-before-call 'key-chord it t))
 
 ;; ******* be quiet when turning on
 ;; :PROPERTIES:
 ;; :ID:       1e1cff0d-3a2b-45cf-ab32-30379a86023c
 ;; :END:
 
-(after! key-chord (shut-up (key-chord-mode 1)))
+(void-add-advice #'key-chord-mode :around 'void--silence-output-advice)
 
 ;; ******* keychord bindings
 ;; :PROPERTIES:
