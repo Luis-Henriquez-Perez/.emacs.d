@@ -744,8 +744,8 @@ HOOK-FN is a function named with Void naming conventions."
                (void-log "& %s -> %s" ',var it))))
     (advice-add new-hook :before hook-log)
     (when expire-fn
-      (->> (void-expire-advice hook expire-fn t)
-           (advice-add new-hook :around)))))
+      (alet (void-expire-advice hook expire-fn t)
+        (advice-add new-hook :around it)))))
 
 ;; ***** adding hooks
 ;; :PROPERTIES:
@@ -839,7 +839,7 @@ function.
   "Return the function advised by FN.
 ADVICE is an advice of the form \"advisee@advisor\", where this function returns
 \"advisee\"."
-  (->> (symbol-name advice)
+  (->> (symbol-name fn)
        (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
        (nth 1)
        (intern)))
@@ -887,8 +887,8 @@ Advice name is of the form FN@ADVICE."
                (void-log "@ %s -%s-> %s" #',target ,where it))))
     (advice-add new-advice :before log-advice)
     (when expire-fn
-      (->> (void-expire-advice target expire-fn)
-           (advice-add new-advice :around)))))
+      (alet (void-expire-advice new-advice expire-fn t)
+        (advice-add new-advice :around it)))))
 
 ;; ***** adding advice
 ;; :PROPERTIES:
@@ -953,21 +953,19 @@ Advice name is of the form FN@ADVICE."
 FN is a function. EXPIRE-FN is a function that returns true when FN
 should expire."
   (let ((expire-advice (void-advice-name fn 'expire))
-        (expire-fn (or expire-fn (lambda () t))))
+        (expire-fn (or expire-fn t)))
     (fset expire-advice
-          (lambda (orig-fn &rest args)
-            (aprog1 (apply orig-fn args)
-              (when (or (eq t expire-fn) (funcall expire-fn))
-                (when (void-advice-p fn)
-                  (advice-remove (void-advisee fn) fn))
-                (when (void-hook-p target)
-                  (remove-hook (void-hook-var fn) fn))
-                (advice-remove target expire-advice)
-                (fmakunbound expire-advice)
-                (void-log "%s has expired." target)
-                (when unbind
-                  (fmakunbound target))))))
-    expire-advice))
+          `(lambda (orig-fn &rest args)
+             (aprog1 (apply orig-fn args)
+               (when (or (eq t #',expire-fn) (funcall #',expire-fn))
+                 (when (void-advice-p #',fn)
+                   (void-remove-advice #',fn))
+                 (when (void-hook-p #',fn)
+                   (void-remove-hook #',fn))
+                 (advice-remove #',fn #',expire-advice)
+                 (when ,unbind (fmakunbound #',expire-advice))
+                 (void-log "%s has expired." #',fn)
+                 (when ,unbind (fmakunbound #',fn))))))))
 
 ;; **** defadvice!
 ;; :PROPERTIES:
@@ -1348,11 +1346,13 @@ SYM is a symbol that stores a list."
 
 (defun void--load-on-call (package where functions &optional enable)
   "Load packages FUNCTIONS are called."
-  (alet (void-symbol-intern 'void--load- package)
-    (fset it `(lambda () (require ',package)
+  (alet (void-symbol-intern 'void--load- package '-advice)
+    (fset it `(lambda (&rest _)
+                (void-log "Loading %s" ',package)
+                (require ',package)
                 (when ,enable
                   (,(void-symbol-intern package '-mode) 1))))
-    (void-add-advice it where functions nil t)))
+    (void-add-advice functions where it nil t)))
 
 ;; **** load before call
 ;; :PROPERTIES:
