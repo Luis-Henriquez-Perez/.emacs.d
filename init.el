@@ -901,17 +901,6 @@ Advice name is of the form FN@ADVICE."
     (dolist (advice (-list advices))
       (void--add-advice symbol where advice props expire-fn))))
 
-;; ***** interactively
-;; :PROPERTIES:
-;; :ID:       f9c9bf89-56ca-43c5-816d-88311e9b9bad
-;; :END:
-
-(defun void/add-advice ()
-  ""
-  (interactive)
-  (completing-read )
-  )
-
 ;; **** remove advice
 ;; :PROPERTIES:
 ;; :ID:       3d13ea95-44aa-4261-8480-5ae9701d533d
