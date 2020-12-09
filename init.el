@@ -4774,8 +4774,9 @@ same key as the one(s) being added."
 ;; :ID:       1df41291-32c3-44ca-89a9-f042fb2bbd6c
 ;; :END:
 
-;; (which-key-add-key-based-replacements void-leader-key "<leader>")
-;; (which-key-add-key-based-replacements void-localleader-key "<localleader>")
+(after! which-key
+  (which-key-add-key-based-replacements VOID-LEADER-KEY "<leader>")
+  (which-key-add-key-based-replacements VOID-LOCALLEADER-KEY "<localleader>"))
 
 ;; ** dashboard
 ;; :PROPERTIES:
