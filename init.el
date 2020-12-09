@@ -2676,6 +2676,114 @@ Orderless will do this."
 (after! dired
   (add-to-list 'find-file-not-found-functions 'dired:create-non-existent-directory-h nil #'eq))
 
+;; *** ranger
+;; :PROPERTIES:
+;; :ID: 7504cab0-ddd9-4069-b6bb-9a5f3161cace
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "ralesi/ranger.el"
+;; :PACKAGE:  "ranger"
+;; :LOCAL-REPO: "ranger.el"
+;; :COMMIT:   "caf75f0060e503af078c7e5bb50d9aaa508e6f3e"
+;; :END:
+
+;; [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
+;; inspired file manager]] of also called =ranger=.
+
+;; **** make sure that =;= uses =M-x=
+;; :PROPERTIES:
+;; :ID:       c63911ca-6d26-4d7c-be76-246639fb6c7a
+;; :END:
+
+(general-def 'normal ranger-mode-map
+  ";" #'execute-extended-command
+  "u" #'dired-unmark)
+
+;; **** general bindings
+;; :PROPERTIES:
+;; :ID:       f69d31ab-1385-498c-9423-8fb3d5e4e94e
+;; :END:
+
+(general-def 'normal ranger-mode-map
+  "A" #'dired-do-find-regexp
+  "C" #'dired-do-copy
+  "B" #'dired-do-byte-compile
+  "D" #'dired-do-delete
+  "H" #'dired-do-hardlink
+  "L" #'dired-do-load
+  "M" #'dired-do-chmod
+  "O" #'dired-do-chown
+  "P" #'dired-do-print
+  "Q" #'dired-do-find-regexp-and-replace
+  "R" #'dired-do-rename
+  "S" #'dired-do-symlink
+  "T" #'dired-do-touch
+  "X" #'dired-do-shell-command
+  "Z" #'dired-do-compress
+  "c" #'dired-do-compress-to
+  "!" #'dired-do-shell-command
+  "&" #'dired-do-async-shell-command)
+
+;; **** entry
+;; :PROPERTIES:
+;; :ID: 2edf3f72-726f-4b31-9ff0-20e5e7d251b1
+;; :END:
+
+(--each (list #'deer #'ranger)
+  (autoload it "ranger" nil t nil))
+
+(setq ranger-override-dired-mode t)
+(setq ranger-cleanup-eagerly t)
+(setq ranger-cleanup-on-disable t)
+(setq ranger-omit-regexp "^.DS_Store$")
+(setq ranger-excluded-extensions
+      '("mkv" "iso" "mp4"))
+(setq ranger-deer-show-details nil)
+(setq ranger-max-preview-size 10)
+(setq ranger-modify-header t)
+(setq ranger-hide-cursor t)
+(setq ranger-dont-show-binary t)
+
+;; **** refresh contents
+;; :PROPERTIES:
+;; :ID:       cef37397-53aa-47e1-a519-ef56a311ae30
+;; :END:
+
+;; Ranger doesn't refresh the buffer after stuff like moving and pasting has
+;; happend. It results in a very jarring display.
+
+(defadvice! refresh-contents (:after ranger-paste dired-do-rename)
+  "Refresh contents."
+  (when (eq major-mode 'ranger-mode)
+    (ranger-refresh)))
+
+;; **** toggle dotfiles
+;; :PROPERTIES:
+;; :ID: 5b9b190c-b4a6-4834-b8c9-def16b0457ac
+;; :END:
+
+;; There's this wierd intermidiate stage between =hidden= and =format= called =prefer= in
+;; which only some files are hidden. That's wierd, so I get rid of it.
+
+(defadvice! toggle-between-two-only (:override ranger-toggle-dotfiles)
+  "Show/hide dot-files."
+  (interactive)
+  (setq ranger-show-hidden
+        (cl-case ranger-show-hidden
+          (hidden 'format)
+          (format 'hidden)))
+  (ranger-setup))
+
+;; **** silence window check
+;; :PROPERTIES:
+;; :ID: e9d83b37-1257-4d78-ae5f-863c4e7198d1
+;; :END:
+
+(defadvice! silence-output (:around ranger-window-check)
+  "Silence `ranger-window-check'."
+  (quiet! (apply <orig-fn> <args>)))
+
 ;; ** persistence
 ;; :PROPERTIES:
 ;; :ID:       c73a2fc2-5c43-4f99-9336-3bb2154852b7
