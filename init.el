@@ -1526,16 +1526,12 @@ SYM is a symbol that stores a list."
 ;; :TYPE:     built-in
 ;; :END:
 
-;; Emacs starts up with a default screen. Note that it doesn't seem this feature is
-;; provided (perhaps it's too fundamental?), therefore I use =:pre-setq=.
-
 (setq inhibit-startup-screen t)
 (setq inhibit-default-init t)
 (setq inhibit-startup-buffer-menu t)
 (setq initial-major-mode 'fundamental-mode)
 (setq initial-scratch-message nil)
 (setq initial-buffer-choice #'void-initial-buffer)
-(setq inhibit-startup-echo-area-message user-login-name)
 
 ;; *** paren
 ;; :PROPERTIES:
@@ -1612,15 +1608,6 @@ SYM is a symbol that stores a list."
 (setq delete-old-versions t)
 (setq backup-by-copying t)
 (setq backup-by-copying-when-linked t)
-
-;; *** subr
-;; :PROPERTIES:
-;; :ID:       61603f44-780e-4456-88c6-7ffe1e5c7197
-;; :END:
-
-(after! subr
-  (fset #'yes-or-no-p #'y-or-n-p)
-  (fset #'display-startup-echo-area-message #'ignore))
 
 ;; *** subr-x
 ;; :PROPERTIES:
@@ -1791,6 +1778,16 @@ SYM is a symbol that stores a list."
 ;; :PROPERTIES:
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
+
+;; *** stop initial echo message
+;; :PROPERTIES:
+;; :ID:       c619e1ee-1109-4f1b-b1ba-53fcb8ceae4e
+;; :END:
+
+;; If you just set [[helpvar:inhibit-startup-echo-area-message][inhibit-startup-echo-area-message]] to =t= the word =nil= is messaged.
+;; So it's best just to override the function entirely.
+
+(void-add-advice #'display-startup-echo-area-message :override #'ignore)
 
 ;; *** use yes or no
 ;; :PROPERTIES:
