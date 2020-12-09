@@ -3890,6 +3890,17 @@ The change to this function."
 ;; :ID:       4ca3fe54-54b1-47ca-90f1-a14b3df1cc59
 ;; :END:
 
+;; Org mode demands its own editing.
+
+;; ***** navigation
+;; :PROPERTIES:
+;; :ID:       25a91495-073d-4557-8407-49ea63f13383
+;; :END:
+
+(define-key! 'normal org-mode-map
+  "j" #'org/dwim-next-line
+  "k" #'org/dwim-previous-line)
+
 ;; ***** org mode local bindings
 ;; :PROPERTIES:
 ;; :ID:       a950d732-b0d2-46b9-82ce-1b9a474e7d76
@@ -3916,8 +3927,6 @@ The change to this function."
 ;; much more useful considering the specific structure of org mode documents.
 
 (general-def 'normal org-mode-map
-  "j" #'org/dwim-next-line
-  "k" #'org/dwim-previous-line
   "E" #'org/dwim-eval-block
   "e" #'org/dwim-eval-block
   "b" #'org/dwim-insert-elisp-block
@@ -3945,9 +3954,11 @@ The change to this function."
 ;; :END:
 
 (define-key! '(normal) org-mode-map
-  "TAB" #'outline-toggle-children
+  ;; Doesn't work for some reason -> "TAB" #'outline-toggle-children
   "D" #'org-cut-subtree
   "P" #'org-paste-subtree)
+
+(define-key! [remap org-cycle] #'outline-toggle-children)
 
 ;; **** custom commands
 ;; :PROPERTIES:
@@ -4008,6 +4019,20 @@ headline."
   "Properly unfold nearby headlines and reveal current headline."
   (when (eq major-mode 'org-mode)
     (org:show-branch)))
+
+;; ***** edit source blocks
+;; :PROPERTIES:
+;; :ID:       a0e1c9d6-9071-4c6f-abc4-d2e9f011be03
+;; :END:
+
+(defun org/dwim-edit-source-block ()
+  "Edit source block in current heading.
+Point does not have to be on source block."
+  (interactive)
+  (let ((org-src-window-setup 'plain))
+    (org-back-to-heading)
+    (org-next-block 1)
+    (org-edit-src-code)))
 
 ;; ***** return
 ;; :PROPERTIES:
@@ -4126,10 +4151,39 @@ If DIR is a negative integer, go the opposite direction: the start of the
   (org/insert-heading-below)
   (org-demote))
 
+;; ***** org choose tags
+;; :PROPERTIES:
+;; :ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
+;; :END:
+
+(defun org/choose-tags ()
+  "Select tags to add to headline."
+  (interactive)
+  (let* ((current (org-get-tags (point)))
+         (selected (->> (org-get-buffer-tags)
+                        (completing-read-multiple "Select org tag(s): "))))
+    (alet (-distinct (append (-difference current selected)
+                             (-difference selected current)))
+      (org-set-tags it))))
+
+;; ***** eval
+;; :PROPERTIES:
+;; :ID: e804805a-ba96-41d0-aa6f-6756c65e9abf
+;; :END:
+
+(defun org/dwim-eval-block ()
+  "Eval block contents."
+  (interactive)
+  (unless (org-at-heading-p)
+    (user-error "Not in source block"))
+  (save-window-excursion
+    (org-babel-execute-subtree)))
+
 ;; *** org-link-minor-mode
 ;; :PROPERTIES:
 ;; :ID:       25b93a1f-b105-47aa-9647-5015d23a4ac3
 ;; :END:
+;; This is a minor mode for displaying links in non-org buffers.
 
 (autoload #'org-link-minor-mode "org-link-minor-mode" nil t nil)
 (void-add-hook 'outshine-mode-hook #'org-link-minor-mode)
@@ -4853,7 +4907,12 @@ same key as the one(s) being added."
   :keymaps 'org-mode-map
   "l" (list :def #'org-toggle-link-display :wk "link display"))
 
-;; ** eval
+;; ** space bindings
+;; :PROPERTIES:
+;; :ID:       8f00f10d-0ace-4531-a3f4-2508a6592e06
+;; :END:
+
+;; *** eval
 ;; :PROPERTIES:
 ;; :ID: afa6be08-a38c-45f1-867a-5620fc290aac
 ;; :END:
@@ -4874,7 +4933,28 @@ same key as the one(s) being added."
   "b" (list :def #'org-babel-execute-src-block :wk "source block")
   "s" (list :def #'org-babel-execute-subtree :wk "subtree"))
 
-;; ** help
+;; *** toggle
+;; :PROPERTIES:
+;; :ID: 10d6851b-6af6-4185-8976-0ad65b3d1d28
+;; :END:
+
+(define-leader-key! "t" (list :ignore t :wk "toggle/set"))
+
+(define-leader-key!
+  :infix "t"
+  "r" (list :def #'read-only-mode        :wk "read-only")
+  "t" (list :def #'load-theme            :wk "load theme")
+  "c" (list :def #'caps-lock-mode        :wk "caps lock")
+  "d" (list :def #'toggle-debug-on-error :wk "debug")
+  "F" (list :def #'void/set-font-face         :wk "set font")
+  "f" (list :def #'void/set-font-size    :wk "font size"))
+
+(define-leader-key!
+  :infix "t"
+  :keymaps 'org-mode-map
+  "l" (list :def #'org-toggle-link-display :wk "link display"))
+
+;; *** help
 ;; :PROPERTIES:
 ;; :ID: c7f3b699-7cf9-480b-a88c-10bdae4c165e
 ;; :END:
@@ -4892,7 +4972,7 @@ same key as the one(s) being added."
   "f" (list :def #'describe-function       :wk "function")
   "a" (list :def #'apropos                 :wk "apropos"))
 
-;; ** quit
+;; *** quit
 ;; :PROPERTIES:
 ;; :ID:       ae435361-79e7-41c8-b490-8ec0f8d23a59
 ;; :END:
@@ -4915,7 +4995,7 @@ same key as the one(s) being added."
   ;; "r" (list :def #'restart-emacs             :wk "and restart")
   )
 
-;; ** windows
+;; *** windows
 ;; :PROPERTIES:
 ;; :ID: 784956e2-3696-4f92-80ca-41b7e30e5b2b
 ;; :END:
@@ -4944,7 +5024,7 @@ same key as the one(s) being added."
   "x" (list :def #'ace-swap-window                   :wk "swap windows")
   "t" (list :def #'transpose-frame                   :wk "transpose"))
 
-;; ** buffer
+;; *** buffer
 ;; :PROPERTIES:
 ;; :ID: e3eec4f8-88d8-4010-adb5-2f8e05f14677
 ;; :END:
@@ -4964,7 +5044,7 @@ same key as the one(s) being added."
   ""  (list :ignore t             :wk "kill")
   "c" (list #'kill-current-buffer :wk "current"))
 
-;; ** code
+;; *** code
 ;; :PROPERTIES:
 ;; :ID: 661f77fb-3435-4e4f-8adb-c4d6390ea6b8
 ;; :END:
