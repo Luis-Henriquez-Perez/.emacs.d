@@ -2780,9 +2780,7 @@ Orderless will do this."
 ;; :ID: e9d83b37-1257-4d78-ae5f-863c4e7198d1
 ;; :END:
 
-(defadvice! silence-output (:around ranger-window-check)
-  "Silence `ranger-window-check'."
-  (quiet! (apply <orig-fn> <args>)))
+(void-add-advice #'ranger-window-check :around #'void--silence-output-advice)
 
 ;; ** persistence
 ;; :PROPERTIES:
@@ -2841,7 +2839,7 @@ Orderless will do this."
 
 (-each '(easymenu tree-widget timer) #'idle-require)
 (void-load-before-call 'recentf #'find-file t)
-(after! consult (void-load-before-call 'recentf #'consult-buffer t))
+(void-load-before-call 'recentf #'consult-buffer t)
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -4080,6 +4078,18 @@ The change to this function."
 ;; :ID:       4dfeccc9-f12e-4449-a5fe-17541070b40e
 ;; :END:
 
+;; ***** goto start of heading
+;; :PROPERTIES:
+;; :ID:       0431e49f-ef6b-4edb-854c-6427479e5ee2
+;; :END:
+
+(defun org:heading-goto-start ()
+  "Go to the end of headline."
+  (save-match-data
+    (beginning-of-line)
+    (when (looking-at (rx (1+ "*")))
+      (goto-char (1- (match-end 0))))))
+
 ;; ***** do the right thing after jumping to headline
 ;; :PROPERTIES:
 ;; :ID:       2ca61454-a0ca-47b3-8622-91d7969653da
@@ -4329,10 +4339,10 @@ If DIR is a negative integer, go the opposite direction: the start of the
 ;; :END:
 
 ;; #+begin_src elisp
-;; (push '("\\*Org Src"
+;; (alet '("\\*Org Src"
 ;; 	(display-buffer-at-bottom)
 ;; 	(window-height . 0.5))
-;;       display-buffer-alist)
+;;   (push it display-buffer-alist))
 ;; #+end_src
 
 ;; **** settings
@@ -5173,6 +5183,36 @@ same key as the one(s) being added."
   "a" (list :def #'ialign                               :wk "align")
   "l" (list :def #'lispyville-comment-or-uncomment-line :wk "toggle comment")
   "y" (list :def #'lispyvile-comment-and-cone-dwim      :wk "copy comment"))
+
+;; *** app
+;; :PROPERTIES:
+;; :ID: 3f09a41a-03b8-4d5c-85c5-d7adeb7dd328
+;; :END:
+
+;; These are keybindings I use most frequently.
+
+(define-leader-key! "a" (list :ignore t :wk "app"))
+
+(define-leader-key!
+  :infix "a"
+  "a" (list :def #'void/open-org-agenda      :wk "agenda")
+  "m" (list :def #'mu4e                      :wk "mu4e")
+  "l" (list :def #'org-store-link                    :wk "store link")
+  "f" (list :def #'elfeed                    :wk "elfeed")
+  "d" (list :def #'deer                      :wk "deer")
+  "r" (list :def #'ranger                    :wk "ranger")
+  "e" (list :def #'void/open-emacs-instance  :wk "emacs")
+  "q" (list :def #'engine/search-qwant :wk "browse web")
+  "j" (list :def #'org/avy-goto-headline :wk "heading jump")
+  "c" (list :def #'org/choose-capture-template               :wk "capture"))
+
+(define-leader-key! "as" (list :ignore nil :wk "screenshot"))
+
+(define-leader-key!
+  :infix "as"
+  "s" (list :def #'escr-window-screenshot :wk "screenshot")
+  "w" (list :def #'escr-window-screenshot :wk "window")
+  "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 
 ;; ** search
 ;; :PROPERTIES:
