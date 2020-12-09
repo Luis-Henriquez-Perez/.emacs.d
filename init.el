@@ -1340,7 +1340,7 @@ SYM is a symbol that stores a list."
                 (void-log "Loading %s" ',package)
                 (require ',package)
                 (when ,enable
-                  (,(void-symbol-intern package '-mode) 1))))
+                  (funcall-interactively #',(void-symbol-intern package '-mode) 1))))
     (void-add-advice functions where it nil t)))
 
 ;; **** load before call
@@ -4241,16 +4241,6 @@ same key as the one(s) being added."
 ;; It's easy to underestimate how much of a difference having an asthetically
 ;; pleasing Emacs configuration can have. Ugliness really can take its toll.
 
-;; ** modeline left side
-;; :PROPERTIES:
-;; :ID:       e42a59ab-e11a-403d-a886-32634b0c8e8a
-;; :END:
-
-(setq mini-modeline-l-format
-      '("%e"
-	    (:eval (if (display-graphic-p) (all-the-icons-icon-for-buffer) ""))
-	    mode-line-buffer-identification))
-
 ;; ** mini-modeline
 ;; :PROPERTIES:
 ;; :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
@@ -4267,14 +4257,14 @@ same key as the one(s) being added."
 
 (setq mini-modeline-face-attr '(:inherit default))
 
-(setq mini-modeline-l-format
-      '("%e" mode-line-buffer-identification))
-
 (setq mini-modeline-r-format
       '("%e" (:eval (format-time-string "%a %m/%d %T"))))
 
+(setq mini-modeline-l-format
+      '("%e" mode-line-buffer-identification))
+
 (autoload #'mini-modeline-mode "mini-modeline" nil t nil)
-(void-add-hook 'window-setup-hook #'mini-modeline-mode)
+;; (void-add-hook 'window-setup-hook #'mini-modeline-mode)
 
 ;; ** helpful
 ;; :PROPERTIES:
