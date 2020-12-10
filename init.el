@@ -814,13 +814,13 @@ function.
 ;; I want to name advices so that they can be distinguished from other functions. I
 ;; also want to be able to deduce the function being advised from the name.
 
-;;  In this
-;; headline I provide a macro to concisely define functions that are specifically
-;; intended to advise other functions and to ensure that these functions are named
-;; properly. All user-defined advising functions should have the format
-;; =TARGET@ACTION=, where =TARGET= is the function being advised and =ACTION= is the
-;; action the advise is performing. This naming scheme is inspired and taken from
-;; the one introduced by [[helpfn:define-advice][define-advice]].
+;; In this headline I provide a macro to concisely define functions that
+;; are specifically intended to advise other functions and to ensure that
+;; these functions are named properly. All user-defined advising
+;; functions should have the format =TARGET@ACTION=, where =TARGET= is the
+;; function being advised and =ACTION= is the action the advise is
+;; performing. This naming scheme is inspired and taken from the one
+;; introduced by [[helpfn:define-advice][define-advice]].
 
 ;; **** advice-p
 ;; :PROPERTIES:
