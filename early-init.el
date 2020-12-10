@@ -35,7 +35,7 @@
 
 ;; Find existing font
 
-(push '(font . "Cascadia Mono-17") default-frame-alist)
+(push '(font . "JetBrains Mono-17") default-frame-alist)
 
 ;; Ignore X resources; its settings would be redundant with the other settings
 ;; in this file and can conflict with later config (particularly where the
@@ -49,6 +49,6 @@
 (unless after-init-time
   (setq-default mode-line-format nil))
 
-;; * Set fringes
-
-;; (setq-default )
+;; [[helpfn:set-frindge-style][set-frindge-style]]
+(push (cons 'left-fringe 0) default-frame-alist)
+(push (cons 'right-fringe 0) default-frame-alist)

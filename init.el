@@ -464,6 +464,17 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 (require 'anaphora)
 
+;; *** mmt
+;; :PROPERTIES:
+;; :ID:       7b34238c-05fe-4920-9942-bc8bc454b64c
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "mrkkrp/mmt"
+;; :PACKAGE:  "mmt"
+;; :LOCAL-REPO: "mmt"
+;; :END:
+
 ;; *** loopy
 ;; :PROPERTIES:
 ;; :ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
