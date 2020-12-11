@@ -4003,8 +4003,8 @@ If it's not possible, abort initialization gracefully."
     (let ((exwm-replace nil))
       (if (ignore-errors (exwm-init))
 	  ;; Enable the clipboard.
-	  (require 'exwm-systemtray)
-	(exwm-systemtray-enable)
+	  (progn (require 'exwm-systemtray)
+		 (exwm-systemtray-enable))
 	(void-log "Another window manager is present (or something went wrong).")))))
 
 ;; *** org capture from an exwm buffer
