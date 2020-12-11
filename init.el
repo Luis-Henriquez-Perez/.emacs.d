@@ -5301,6 +5301,7 @@ The change to this function."
 
 (define-localleader-key!
   :keymaps 'org-mode-map
+  "o" (list :def #'outorg-edit-as-org         :wk "edit as org")
   "w" (list :def #'widen                      :wk "widen")
   "n" (list :def #'org-narrow-to-subtree      :wk "narrow")
   "k" (list :def #'org-cut-subtree            :wk "cut subtree")
