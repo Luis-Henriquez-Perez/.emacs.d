@@ -5556,6 +5556,25 @@ If DIR is a negative integer, go the opposite direction: the start of the
   (org/insert-heading-below)
   (org-demote))
 
+;; ****** elisp block
+;; :PROPERTIES:
+;; :ID:       e03149e3-500f-45d6-a4c1-b2f69947b4d5
+;; :END:
+
+(defun org/dwim-insert-elisp-block ()
+  "Insert elisp block."
+  (interactive)
+  (save-excursion
+    (unless (org-at-heading-p)
+      (org-back-to-heading))
+    (org-end-of-subtree)
+    (goto-char (line-end-position))
+    (insert (concat "\n\n"
+                    "#+begin_src emacs-lisp"
+                    "\n"
+                    "#+end_src"))
+    (forward-line -1)))
+
 ;; ***** org choose tags
 ;; :PROPERTIES:
 ;; :ID:       b8b0c3a2-2cdc-424f-9cd6-ef3ad3d1512c
