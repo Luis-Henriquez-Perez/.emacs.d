@@ -2167,7 +2167,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; =atom= is perhaps the only type predicate not to end in =p=.
 
-(defalias 'atom 'atomp)
+(defalias 'atomp 'atom)
 
 ;; **** prefixed-core
 ;; :PROPERTIES:
