@@ -2554,6 +2554,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       5e5393d9-9f58-45be-9ecc-1bc9f0316379
 ;; :END:
 
+(autoload #'company-mode "company" nil t nil)
 (void-add-hook 'prog-mode-hook #'company-mode)
 
 ;; **** settings
@@ -2656,6 +2657,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
 
+(autoload #'company-prescient-mode "company-prescient" nil t nil)
 (void-add-hook 'company-mode-hook #'company-prescient-mode)
 
 ;; *** close company on escape
@@ -3751,6 +3753,7 @@ Each element of the list is an abbreviated.")
 ;; :END:
 
 (setq evil-magit-state 'normal)
+(autoload #'magit-status "evil-magit" nil t nil)
 (void-load-before-call 'evil-magit #'magit-status)
 (void-add-advice #'evil-magit-init :around #'void--silence-output-advice)
 (after! evil-magit (evil-magit-init))
@@ -4509,6 +4512,8 @@ If it's not possible, abort initialization gracefully."
 ;; :ID:       e26f4c55-9585-4544-bed6-9733d50823e7
 ;; :END:
 
+(autoload #'smartparens-mode "smartparens" nil t nil)
+(autoload #'smartparens-strict-mode "smartparens" nil t nil)
 (alet '(prog-mode-hook eshell-mode-hook ielm-mode-hook)
   (void-add-hook it #'smartparens-strict-mode))
 
@@ -4887,6 +4892,7 @@ If it's not possible, abort initialization gracefully."
 ;; :ID:       fad4cb7c-ff1e-485d-99d1-f55384c26402
 ;; :END:
 
+(autoload #'lispyville-mode "lispyville" nil t nil)
 (void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
 
 ;; **** remappings
@@ -5618,12 +5624,10 @@ If DIR is a negative integer, go the opposite direction: the start of the
 ;; :ID:       f0f6ad72-b7bc-4894-86fe-32851698c319
 ;; :END:
 
-;; #+begin_src elisp
-;; (alet '("\\*Org Src"
-;; 	(display-buffer-at-bottom)
-;; 	(window-height . 0.5))
-;;   (push it display-buffer-alist))
-;; #+end_src
+(alet '("\\*Org Src"
+	(display-buffer-at-bottom)
+	(window-height . 0.5))
+  (push it display-buffer-alist))
 
 ;; **** settings
 ;; :PROPERTIES:
