@@ -200,6 +200,27 @@ Assumes vc is git which is fine because straight only uses git right now."
   (interactive)
   (browse-url (straight:get-package-homepage (symbol-at-point))))
 
+;; ***** add package information in org properties
+;; :PROPERTIES:
+;; :ID:       bb363834-e8da-41c4-a77a-0cc2901d7843
+;; :END:
+
+(defun org/add-straight-recipe-info ()
+  "Add"
+  (interactive)
+  (awhen (->> (-fifth-item (org-heading-components))
+              (ht-get straight--recipe-cache)
+              (-partition-before-pred #'keywordp))
+    (-each it
+      (-lambda ((property value))
+        (org-set-property (upcase (void-keyword-name property))
+                          (format "%S" value))))
+    ;; (--> (car (alist-get :local-repo it))
+    ;;      (alist-get it straight:package-versions nil nil #'string=)
+    ;;      ;; (message "->> %S" it)
+    ;;      (org-set-property "COMMIT" it))
+    ))
+
 ;; **** straight-install-fn
 ;; :PROPERTIES:
 ;; :ID:       e63813c4-f321-4544-94f3-96b46cd38cf4
@@ -384,7 +405,6 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; now and I don't want to see them again.
 
 (require 'shut-up)
-(defalias 'shut-up! 'shut-up)
 
 (defun void--silence-output-advice (orig-fn &rest args)
   "Silence output."
@@ -474,6 +494,14 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :PACKAGE:  "mmt"
 ;; :LOCAL-REPO: "mmt"
 ;; :END:
+
+;; =mmt= is a library of tools for writing macros. Specifically, it
+;; provides the quintessential =once-only= and =with-gensyms= macros
+;; which are used to prevent variable leaking.
+
+(defalias 'once-only! 'mmt-once-only)
+(defalias 'with-gensyms! 'mmt-with-gensyms)
+(defalias 'with-unique-names! 'mmt-with-gensyms)
 
 ;; *** loopy
 ;; :PROPERTIES:
@@ -1193,10 +1221,10 @@ Accept the same arguments as `message'."
 (defmacro after! (features &rest body)
   "Wrapper around `with-eval-after-load'."
   (declare (indent defun) (debug t))
-  (cond ((eq 'or features)
+  (cond ((eq 'or (car-safe features))
          (macroexp-progn
           (--map `(after! ,it ,@body) (cdr features))))
-        ((eq 'and features)
+        ((eq 'and (car-safe features))
          (void-wrap-form (--map `(after! ,it) (cdr features))
                          (macroexp-progn body)))
         ((listp features)
@@ -1790,10 +1818,21 @@ SYM is a symbol that stores a list."
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
 
+;; *** set the fill-column
+;; :PROPERTIES:
+;; :ID:       84d8e85a-a6a1-49cd-b46e-e5cd3f825438
+;; :END:
+
+(setq-default fill-column 80)
+
 ;; *** recursive minibuffers
 ;; :PROPERTIES:
 ;; :ID:       7eb20f6d-75b4-4eec-8878-e7232c1a153d
 ;; :END:
+
+;; This means that you can use the minibuffer while in the minibuffer. One
+;; situation where I use this feature is in the command [[helpfn:eval-expression][eval-expression]]. As I'm
+;; typing an expression, I get completion from the minibuffer.
 
 (setq-default enable-recursive-minibuffers t)
 
@@ -1811,6 +1850,8 @@ SYM is a symbol that stores a list."
 ;; :PROPERTIES:
 ;; :ID:       82a84315-2018-42e0-bd1a-74af7b722593
 ;; :END:
+
+;; It suffices typing =y= or =n= as opposed to =yes= or =no=.
 
 (void-add-advice #'yes-or-no-p :override #'y-or-n-p)
 
@@ -1950,9 +1991,12 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 ;; :COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
 ;; :END:
 
-;; =gcmh= does three things. It reduces garbage collection by setting, it adds a hook
-;; telling Emacs to gargbage collect during idle time, and it tells Emacs to
-;; garbage collect more frequently when it's idle.
+;; =gcmh= does three things. It reduces garbage collection by setting, it adds a
+;; hook telling Emacs to gargbage collect during idle time, and it tells Emacs
+;; to garbage collect more frequently when it's idle.
+
+;; Note that I add gcmh mode hook at the end so that all the other hook commands
+;; are done before setting the =gc-cons-threshold= back to a normal value.
 
 (setq gcmh-idle-delay 5)
 (setq gcmh-verbose void-debug-p)
@@ -1960,7 +2004,7 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 (setq gcmh-low-cons-threshold VOID-GC-CONS-THRESHOLD-MIN)
 
 (autoload #'gcmh-mode "gcmh" nil t nil)
-(void-add-hook 'emacs-startup-hook #'gcmh-mode)
+(void-add-hook 'emacs-startup-hook #'gcmh-mode t)
 
 ;; **** minibuffer
 ;; :PROPERTIES:
@@ -2234,6 +2278,43 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; Consult is a package that provides several generic utility functions.
 
+;; *** setting font size
+;; :PROPERTIES:
+;; :ID: 4bf24b65-6f23-4e42-930e-4d43f766545c
+;; :END:
+
+;; Face attribute height is a magnitude of 10 greater than what we typically
+;; use as font sizes (eg. font-size 14 corresponds to a face-height of 140).
+;; I want to make sure I don't input 14 thinking about font size (it's
+;; happened before and it's a huge pain resetting the font-size when the
+;; font is super small). Therefore, I check the code.
+
+(defun void/set-font-size ()
+  "Set the font size interactively."
+  (interactive)
+  (let* ((old-font-size (face-attribute 'default :height))
+         (prompt "The font size is %d. What do you want to change it to? ")
+         (font-size (string-to-number (read-string (format prompt old-font-size))))
+         (digits (+ 1 (floor (log font-size 10)))))
+
+    ;; Make the font-size be 3 digits (Do what I mean not what I say).
+    (when (< digits 3)
+      (setq font-size (* font-size (expt 10 (- 3 digits)))))
+    (when (> digits 3)
+      (setq font-size (/ font-size (expt 10 (- digits 3)))))
+
+    ;; If font size is still doesn't make sense, ask me to make sure it's what I want.
+    (if (or (< font-size 280)
+            (y-or-n-p
+             (format "You're choosing a pretty large font size: %d. Is this what you intended?)"
+                     font-size)))
+        (progn
+          (set-face-attribute 'default nil :height font-size)
+          (message "Your Font Size was %s. Font size is now: %s"
+                   old-font-size
+                   font-size))
+      (message "Font Size has been cancelled."))))
+
 ;; **** don't preview anything
 
 ;; Many consult consult commands have a preview by default. Typically previews are
@@ -2273,6 +2354,37 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   "Apply an existing xfont to all graphical frames."
   (interactive)
   (set-frame-font (completing-read "Choose font: " (x-list-fonts "*")) nil t))
+
+;; *** important buffers
+;; :PROPERTIES:
+;; :ID:       8d04e395-5b57-434b-b975-9ae85620631d
+;; :END:
+
+;; **** init file
+;; :PROPERTIES:
+;; :ID:       08a3004c-6c37-401d-b584-c2c94577102d
+;; :END:
+
+;; **** messages buffer
+;; :PROPERTIES:
+;; :ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
+;; :END:
+
+;; In Emacs, messages. The messages buffer is where messages displayed at the bottom
+;; of the Emacs frame are recorded after they expire.
+
+(defun void/switch-to-messages ()
+  (interactive)
+  (select-window (display-buffer (get-buffer "*Messages*"))))
+
+;; **** main todo file
+;; :PROPERTIES:
+;; :ID: 2accd21d-7316-4fa5-bd8f-8f40935ed621
+;; :END:
+
+(defun void/switch-to-capture-file ()
+  (interactive)
+  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
 
 ;; *** void specific funtions
 ;; :PROPERTIES:
@@ -2376,27 +2488,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (interactive)
   (start-process "qutebrowser" nil "qutebrowser"))
 
-;; **** messages buffer
-;; :PROPERTIES:
-;; :ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
-;; :END:
-
-;; In Emacs, messages. The messages buffer is where messages displayed at the bottom
-;; of the Emacs frame are recorded after they expire.
-
-(defun void/switch-to-messages ()
-  (interactive)
-  (select-window (display-buffer (get-buffer "*Messages*"))))
-
-;; **** main todo file
-;; :PROPERTIES:
-;; :ID: 2accd21d-7316-4fa5-bd8f-8f40935ed621
-;; :END:
-
-(defun void/switch-to-capture-file ()
-  (interactive)
-  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
-
 ;; **** turn on debug-mode
 ;; :PROPERTIES:
 ;; :ID: c1ac481a-6ebd-49ce-a930-3b0593283aee
@@ -2490,6 +2581,193 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   [backtab] #'company-select-previous
   "C-k"     #'company-select-previous
   "C-j"     #'company-select-next)
+
+;; *** backends
+;; :PROPERTIES:
+;; :ID: 976f3260-992a-44ee-af91-5eff0b398b20
+;; :END:
+
+;; [[helpvar:company-backends][company-backends]] is what you have to keep in mind when you're using
+;; company. According to its documentation, =company-backends= contain
+;; individual backends or groups of backends. This is important so it's
+;; worth quoting here:
+
+;; **** backends-alist
+;; :PROPERTIES:
+;; :ID: 1ca376a2-e92f-4b77-8a91-3c2d00c0c5b7
+;; :END:
+
+(defvar company:backend-alist
+  '((text-mode :derived (company-dabbrev company-yasnippet company-ispell))
+    (prog-mode :derived ((:separate company-capf company-yasnippet)))
+    (conf-mode :derived (company-capf company-dabbrev-code company-yasnippet))
+    (org-mode :only (company-yasnippet)))
+  "An alist matching modes to company backends.")
+
+;; **** initialize a backend
+;; :PROPERTIES:
+;; :ID: 24288386-3600-4a23-90d1-d38f9862aca0
+;; :END:
+
+(defhook! setup-company-backends (after-change-major-mode-hook)
+  "Set `company-backends' for the current buffer."
+  (when (and (bound-and-true-p company-mode)
+             (not (eq major-mode 'fundamental-mode)))
+    (set (make-local-variable 'company-backends) (company::backends))))
+
+;; **** get backends
+;; :PROPERTIES:
+;; :ID: 985f9898-2608-4aa2-8ee9-98a178a4d5e5
+;; :END:
+
+(defun company::backends ()
+  "Compute company backends."
+  (or
+   (-when-let (((mode type backends) (assoc major-mode company:backend-alist)))
+     (when (eq type :only) backends))
+   (-mapcat (-lambda ((mode type backends))
+              (when (or (and (eq type :derived) (derived-mode-p mode))
+                        (and (eq type :exact)
+                             (or (eq major-mode mode)
+                                 (and (boundp mode) (symbol-value mode)))))
+                backends))
+            company:backend-alist)))
+
+;; **** local hook
+;; :PROPERTIES:
+;; :ID: 49a1e8e6-c557-4a9c-9a3a-a1aa60f90924
+;; :END:
+
+(after! company
+  (put 'company:init-backends-h 'permanent-local-hook t))
+
+;; *** company-prescient
+;; :PROPERTIES:
+;; :ID: df21548a-c262-4802-8e76-71a3135789cb
+;; :FLAVOR:   melpa
+;; :FILES:    ("company-prescient.el" "company-prescient-pkg.el")
+;; :PACKAGE:  "company-prescient"
+;; :LOCAL-REPO: "prescient.el"
+;; :TYPE:     git
+;; :REPO:     "raxod502/prescient.el"
+;; :HOST:     github
+;; :COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
+;; :END:
+
+;; [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
+
+(void-add-hook 'company-mode-hook #'company-prescient-mode)
+
+;; *** close company on escape
+;; :PROPERTIES:
+;; :ID: 750cc608-865e-4f69-a7b2-826fc66a7b71
+;; :END:
+
+(defhook! close-tooltip (void-escape-hook)
+  "Close company tooltip."
+  (when (and (boundp 'company-mode)
+             (eq company-mode t))
+    (company-abort)
+    t))
+
+
+;; ** snippets
+;; :PROPERTIES:
+;; :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
+;; :END:
+
+;; *** auto-yasnippet
+;; :PROPERTIES:
+;; :ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "abo-abo/auto-yasnippet"
+;; :PACKAGE:  "auto-yasnippet"
+;; :LOCAL-REPO: "auto-yasnippet"
+;; :END:
+
+(autoload #'aya-expand "auto-yasnippet" nil t nil)
+
+(setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
+
+(after! auto-yasnippet
+  (void-add-advice 'aya-expand :after #'evil-insert-state))
+
+;; *** yasnippet
+;; :PROPERTIES:
+;; :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("yasnippet.el" "snippets" "yasnippet-pkg.el")
+;; :HOST:     github
+;; :REPO:     "joaotavora/yasnippet"
+;; :PACKAGE:  "yasnippet"
+;; :LOCAL-REPO: "yasnippet"
+;; :COMMIT:   "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"
+;; :END:
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       9ccba3e4-072e-4838-9461-b962740f02c6
+;; :END:
+
+(void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
+(autoload #'yas-minor-mode-on "yasnippet" nil t nil)
+(setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       eeebeb45-18a3-41ab-a540-3fc67e272b89
+;; :END:
+
+(setq yas-verbosity (if void-debug-p 3 0))
+(setq yas-indent-line 'auto)
+(setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
+(setq yas-use-menu nil)
+(setq yas-triggers-in-field t)
+
+;; **** ensure each yasnippet directory
+;; :PROPERTIES:
+;; :ID:       0dae1585-e454-4740-b8c6-bad7bf1e4bb0
+;; :END:
+
+(defhook! ensure-yasnippet-dirs (yas-minor-mode-hook)
+  (--each yas-snippet-dirs (mkdir (void-to-string it) t)))
+
+;; **** delete yasnippet prompt
+;; :PROPERTIES:
+;; :ID:       c66234de-3bd7-48bd-a518-538002fbaa6c
+;; :END:
+
+(after! yasnippet
+  (delq #'yas-dropdown-prompt yas-prompt-functions))
+
+;; **** dont interfere with yasnippet
+;; ;; :PROPERTIES:
+;; ;; :ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
+;; ;; :END:
+
+;; (after! (smartparens yasnippet)
+;;   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
+
+;; *** yasnippet-snippets
+;; :PROPERTIES:
+;; :ID:       006e4191-a61f-4886-86db-024180a5fb1c
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el")
+;; :HOST:     github
+;; :REPO:     "AndreaCrotti/yasnippet-snippets"
+;; :PACKAGE:  "yasnippet-snippets"
+;; :LOCAL-REPO: "yasnippet-snippets"
+;; :COMMIT:   "7716da98b773f3e25a8a1b1949e24b4f3e855d17"
+;; :END:
+
+(defhook! add-snippet-dir (yas-minor-mode-hook)
+  "Add the location of yasnippet-snippets to `yas-snippet-dirs'."
+  (awhen (-first (-partial #'s-contains-p "yasnippet-snippets") load-path)
+    (add-to-list 'yas-snippet-dirs it nil #'string=)))
 
 ;; ** selectrum
 ;; :PROPERTIES:
@@ -2635,6 +2913,558 @@ Orderless will do this."
     (apply <orig-fn> <args>)))
 
 ;; * Utility
+
+;; ** email
+;; :PROPERTIES:
+;; :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
+;; :END:
+
+;; In today's world communication is largely done via emails. Whether at work or at
+;; school it's common to receive emails every day. In fact, you hear of people that
+;; have 20,000+ emails in a particular account. Unsurprisingly, when we're getting
+;; so many emails, it's easy to become overwhelmed. Fortunately, there are numerous
+;; ways to read and send emails in Emacs.
+
+;; *** built-in settings
+;; :PROPERTIES:
+;; :ID:       f2f187ab-caef-4fa6-85e7-628f76e3da41
+;; :END:
+
+;; **** sendmail
+;; :PROPERTIES:
+;; :ID:       48c3332f-975d-4f22-94a8-4ccd394ca82a
+;; :END:
+
+(setq send-mail-function #'sendmail-send-it)
+(setq sendmail-program (executable-find "msmtp"))
+(setq mail-specify-envelope-from t)
+
+;; **** smtpmail
+;; :PROPERTIES:
+;; :ID: 4dc1e0a6-5441-4b3e-8b75-ed3626a59154
+;; :END:
+
+(setq smtp-default-mail-server "mail.example.com")
+(setq smtp-smtp-server "mail.example.com")
+(setq smtpmail-smtp-service 587)
+(setq smtpmail-debug-info t)
+
+;; **** message
+;; :PROPERTIES:
+;; :ID:       4cf38804-18d6-470c-a9c3-e3327f2bebf9
+;; :END:
+
+(setq message-signature user-full-name)
+(setq message-sendmail-envelope-from 'header)
+(setq message-send-mail-function #'sendmail-send-it)
+(setq message-kill-buffer-on-exit t)
+
+;; *** mu4e
+;; :PROPERTIES:
+;; :ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
+;; :END:
+
+;; The most popular emacs mail client is =mu4e=. And, there is good reason why. =mu4e=
+;; has many juicy features. Overall, =mu4e= is definitely a great mail client.
+;; However, it's not all roses and rainbows; it does have a few annoying quicks.
+;; One is that unlike virtually all other emacs packages it does not come decoupled
+;; from =mu=. Another is that it is hard to set up multiple accounts properly despite
+;; it's [[explicit support]] for multiple accounts. =mu4e= comes bundled with =mu=. A
+;; significant advantage of using it is it's the most popular option and,
+;; therefore, has the most support (in the form of setup blogs and packages).
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       11a37383-0316-49fa-900e-c06f830c0e3f
+;; :END:
+
+(setq mu4e-completing-read-function #'completing-read)
+(setq mu4e-view-show-addresses t)
+(setq mu4e-view-show-images t)
+(setq mu4e-view-image-max-width 800)
+(setq mu4e-compose-signature-auto-include t)
+(setq mu4e-compose-format-flowed t)
+(setq mu4e-get-mail-command "mbsync -a")
+(setq mu4e-index-cleanup t)
+(setq mu4e-index-lazy-check nil)
+(setq mu4e-update-interval 180)
+(setq mu4e-headers-auto-update t)
+(setq mu4e-context-policy 'pick-first)
+(setq mu4e-compose-context-policy 'ask-if-none)
+(setq mu4e-confirm-quit nil)
+
+;; **** mu4e
+;; :PROPERTIES:
+;; :ID: 565eff90-8626-4ec8-a576-4ff3dfb307ae
+;; :END:
+
+(setq mu4e-header-fields '((:human-date . 12)
+                           (:flags . 4)
+                           (:from . 25)
+                           (:subject)))
+
+(setq mu4e-html2text-command
+      (if (executable-find "w3m") "w3m -dump -T text/html" #'mu4e-shr2text))
+
+;; **** setup mu4e
+;; :PROPERTIES:
+;; :ID:       8ed2fe81-eda9-4343-a6e1-0a6a725866a4
+;; :END:
+
+(defun mu4e/init ()
+  "Initialize mu4e."
+  (interactive)
+  (require 'password-store)
+  (let ((email-dirs (--map (concat VOID-EMAIL-DIR it) (pass:email-list))))
+    (when (or (not (-all-p #'f-exists-p email-dirs))
+              (-some-p #'f-empty-p email-dirs))
+      (message "creating directories that don't exist.")
+      (--each email-dirs (mkdir it t))
+      (shell-command (format "mu init -m %s" VOID-EMAIL-DIR))
+      (message "Updating mail...")
+      (mu4e-update-mail-and-index t))))
+
+;; **** mu4e headers
+;; :PROPERTIES:
+;; :ID:       8bc93633-f3a0-494d-ae61-c05f6490cd87
+;; :END:
+
+(setq mu4e-use-fancy-chars t)
+(after! (mu4e all-the-icons)
+  (setq mu4e-headers-draft-mark     (cons "D" (all-the-icons-faicon "pencil")))
+  (setq mu4e-headers-flagged-mark   (cons "F" (all-the-icons-faicon "flag")))
+  (setq mu4e-headers-new-mark       (cons "N" (all-the-icons-material "fiber_new")))
+  (setq mu4e-headers-passed-mark    (cons "P" (all-the-icons-faicon "arrow-right")))
+  (setq mu4e-headers-seen-mark      (cons "S" (all-the-icons-faicon "eye")))
+  (setq mu4e-headers-attach-mark    (cons "a" (all-the-icons-material "attach_file")))
+  (setq mu4e-headers-replied-mark   (cons "R" (all-the-icons-faicon "reply")))
+  (setq mu4e-headers-unread-mark    (cons "u" (all-the-icons-faicon "eye-slash")))
+  (setq mu4e-headers-encrypted-mark (cons "x" (all-the-icons-octicon "lock")))
+  (setq mu4e-headers-signed-mark    (cons "s" (all-the-icons-faicon "certificate")))
+  (setq mu4e-headers-trash-mark     (cons "T" (all-the-icons-faicon "trash"))))
+
+;; **** org-mu4e
+;; :PROPERTIES:
+;; :ID:       eaa1577b-bcb9-4f6e-9927-8c6d8042dda2
+;; :END:
+
+;; Mu4e's org integration lets you write emails in org mode and convert it to html
+;; before sending--very interesting indeed. I have yet to explore this feature but
+;; it is definitely on my list of things to try out.
+
+;; ***** init
+;; :PROPERTIES:
+;; :ID:       47c8d5d8-575f-4b73-9247-38f32cb706fd
+;; :END:
+
+(void-add-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+
+(setq org-mu4e-link-query-in-headers-mode nil)
+(setq org-mu4e-convert-to-html t)
+
+;; ***** hook
+;; :PROPERTIES:
+;; :ID:       fcdbaa17-20c6-4322-baed-27df5a0ad9a2
+;; :END:
+
+;; Only render to html once. If the first send fails for whatever reason,
+;; org-mu4e would do so each time you try again.
+
+(defhook! org-mu4e-render-html-only-once (message-send-hook)
+  (setq-local org-mu4e-convert-to-html nil))
+
+;; **** multiple accounts
+;; ;; :PROPERTIES:
+;; ;; :ID: ad6de3a4-674c-490f-841e-19b8f891cd65
+;; ;; :END:
+
+;; ;; Mu4e certainly gave me some trouble setting up multiple accounts despite [its
+;; ;; attempt] to make this easy. I have one directory =~/.mail= where which stores all
+;; ;; my mail. The subdirectories of =~/.mail= correspond to my individual email
+;; ;; accounts. Until I set multiple accounts correctly it keeps prompting me to
+;; ;; create folders (such as =sent/=) in the =~/.mail= directory. I think part of the
+;; ;; reason I spent so much time setting this up is because.
+
+;; ;; ***** return the list of emails with credentials
+;; ;; :PROPERTIES:
+;; ;; :ID:       3f7b1728-b855-447f-9f15-43bd79a94c14
+;; ;; :END:
+
+;; (defun pass:email-list ()
+;;   "Return a list of emails."
+;;   (->> (password-store-list)
+;;        (--map (elt (s-match "email/\\(.*\\)" it) 1))
+;;        (-non-nil)))
+
+;; ;; ***** return the stuff as a plist
+;; ;; :PROPERTIES:
+;; ;; :ID:       8129ca16-8641-4f2f-a4b6-03477d5b78f3
+;; ;; :END:
+
+;; (defun pass:email-account-plist (email)
+;;   "Return a plist of the relevant values of an email."
+;;   (shut-up!
+;;    (->> (cdr (password-store-parse-entry email))
+;;         (mapcar #'car)
+;;         (--mapcat (list (intern it)
+;;                         (password-store-get-field (concat "email/" email) it))))))
+
+;; ;; ***** mu4e folder name alist
+;; ;; :PROPERTIES:
+;; ;; :ID:       2ef07842-e321-4fff-ae73-f19c41d263a4
+;; ;; :END:
+
+;; ;; Mu4e keeps prompting you for the sent, trash, and drafts directory if you do not
+;; ;; assign the corresponding mu4e variables. The way certain email servers name
+;; ;; their directories varies. For example, outlook names its sent directory as =Sent
+;; ;; Items=.
+
+;; (defun mu4e:guess-folder (base-dir possible-name &rest other-possible-names)
+;;   "Return the first file in BASE-DIR that matches POSSIBLE-NAME or any POSSIBLE-NAMES.
+;; If there is no match, return POSSIBLE-NAME."
+;;   (alet (or (--first (-some-p (-cut s-contains-p <> it t)
+;;                               (cons possible-name other-possible-names))
+;;                      (cddr (directory-files base-dir)))
+;;             possible-name)
+;;     (format "/%s/%s" (f-filename base-dir) it)))
+
+;; ;; ***** set up contexts for single account
+;; ;; :PROPERTIES:
+;; ;; :ID:       66d460d7-9647-4c29-8348-eb7b3d571630
+;; ;; :END:
+
+;; (defun mu4e::account-context (email)
+;;   "Return an mu4e account context for specified EMAIL."
+;;   (let* ((base-dir (concat VOID-EMAIL-DIR email "/"))
+;;          (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
+;;          (account (pass:email-account-plist email))
+;;          (out-host (plist-get 'out-host account))
+;;          (out-port (plist-get 'out-port account)))
+;;     (alet `((mu4e-sent-folder      . ,(mu4e:guess-folder base-dir "sent"))
+;;             (mu4e-drafts-folder    . ,(mu4e:guess-folder base-dir "draft"))
+;;             (mu4e-trash-folder     . ,(mu4e:guess-folder base-dir "trash" "delete" "junk"))
+;;             (user-email-address    . ,email)
+;;             (smtpmail-smtp-server  . ,out-host)
+;;             (smtpmail-smtp-user    . ,base-dir)
+;;             (smtpmail-smtp-service . ,out-port))
+;;       (make-mu4e-context :name name :vars it))))
+
+;; ;; ***** multiple contexts
+;; ;; :PROPERTIES:
+;; ;; :ID: e56b64ac-ed36-4689-b8f4-8711c1f4f79f
+;; ;; :END:
+
+;; (defadvice! setup-contexts (:before mu4e)
+;;   "Initiaize context for each email account."
+;;   (require 'password-store)
+;;   (--each (-map #'mu4e::account-context (pass:email-list))
+;;     (cl-pushnew it mu4e-contexts)))
+
+;; **** truncate lines in messages
+;; ;; :PROPERTIES:
+;; ;; :ID: e6addd49-6aa4-4b9e-8e50-4f0ea43aedb7
+;; ;; :END:
+
+;; (defhook! wrap-text-in-message (mu4e-view-mode-hook)
+;;   (setq-local truncate-lines nil))
+
+;; ** shells & terminals
+;; :PROPERTIES:
+;; :ID:       214edd41-3ba1-4184-b484-fe7bb256d319
+;; :END:
+
+;; *** eshell
+;; :PROPERTIES:
+;; :ID: 5f04a252-2985-46b4-ab0b-eb4567de5dd9
+;; :TYPE:     built-in
+;; :END:
+
+;; [[info:eshell#Top][eshell]] is a built-in shell written entirely in elisp. This means that it's as
+;; portable and customizable as emacs itself. It can run elisp functions as
+;; commands. There's a good article about it in [[https://masteringemacs.org/article/complete-guide-mastering-eshell][mastering-emacs]]. Other articles I
+;; have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell post]], [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][Howard Abram's Post]].
+
+;; **** init
+;; :PROPERTIES:
+;; :ID:       f91b3d13-3470-4108-aae3-2b8b4e5f5edb
+;; :END:
+
+;; ***** idle require
+;; :PROPERTIES:
+;; :ID:       9ff94547-b138-41dc-836f-71fc37171ec3
+;; :END:
+
+(-each '(em-alias em-banner em-basic em-cmpl
+         em-dirs em-glob em-hist em-ls em-prompt
+         em-script em-term em-unix)
+  #'idle-require)
+
+;; ***** settings
+;; :PROPERTIES:
+;; :ID:       e8c08c7b-9b62-45c2-aa3e-b901bbcd66a1
+;; :END:
+
+(setq eshell-prefer-lisp-functions nil)
+(setq eshell-scroll-to-bottom-on-input 'all)
+(setq eshell-scroll-to-bottom-on-output 'all)
+(setq eshell-buffer-shorthand t)
+(setq eshell-kill-processes-on-exit t)
+(setq eshell-hist-ignoredups t)
+(setq eshell-input-filter #'eshell-input-filter-initial-space)
+(setq eshell-glob-case-insensitive t)
+(setq eshell-error-if-no-glob t)
+
+;; ***** popup
+;; :PROPERTIES:
+;; :ID:       bd580e0c-1736-4855-8cfb-e4e365ecd8d3
+;; :END:
+
+(push '("\\*eshell"
+	(display-buffer-at-bottom)
+	(window-height . 0.5)
+	(side . bottom)
+	(slot . 2))
+      display-buffer-alist)
+
+;; ***** directories
+;; :PROPERTIES:
+;; :ID:       4923faac-1630-4389-8f2c-d9e75c88eecf
+;; :END:
+
+(setq eshell-directory-name (concat VOID-DATA-DIR "eshell/"))
+(setq eshell-history-file-name (concat eshell-directory-name "history"))
+
+;; ***** bootstrap
+;; :PROPERTIES:
+;; :ID: 8ed5b69c-be1f-4181-bd01-88fc33b148d6
+;; :END:
+
+(remove-hook 'eshell-output-filter-functions #'eshell-postoutput-scroll-to-bottom)
+
+(setq eshell-banner-message "")
+
+;; **** visual commands
+;; :PROPERTIES:
+;; :ID: fedfa200-7d17-408d-ba42-da401cba6419
+;; :END:
+
+(after! em-term
+  (--each '("tmux" "htop" "bash" "zsh" "fish" "vim" "nvim" "ncmpcpp")
+    (add-to-list 'eshell-visual-commands it)))
+
+;; **** improvements
+;; :PROPERTIES:
+;; :ID: b3da5d39-1591-4a19-ae96-45a117a13f24
+;; :END:
+
+;; Eshell uses pcomplete as its completion engine.
+
+;; ***** pcomplete
+;; :PROPERTIES:
+;; :ID: 63de7a7f-431c-4652-aa55-45973b5a4c2a
+;; :END:
+
+;; This replaces the default popup window at the bottom of eshell. By using the
+;; =completion-in-region= backend, it triggers ivy/helm for completion.
+
+(defun eshell/pcomplete ()
+  "Use pcomplete with completion-in-region backend."
+  (interactive)
+  (require 'pcomplete)
+  (ignore-errors (pcomplete-std-complete)))
+
+;; ***** go to prompt on insert
+;; ;; :PROPERTIES:
+;; ;; :ID: 76bd909c-901c-4bc6-8848-d84b121a06c3
+;; ;; :END:
+
+;; (defun eshell:goto-prompt-on-insert-h ()
+;;   "Move cursor to the prompt when switching to insert state."
+;;   (when (< (point) eshell-last-output-end)
+;;     (goto-char
+;;      (if (memq this-command '(evil-append evil-append-line))
+;;          (point-max)
+;;        eshell-last-output-end))))
+
+;; **** eshell commands
+;; :PROPERTIES:
+;; :ID: 4a7074f6-7f53-4950-9c92-be39b23e1d70
+;; :END:
+
+;; ****** eshell-z
+;; :PROPERTIES:
+;; :ID: 497798a0-7b62-4779-bf15-f67500528f03
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "xuchunyang/eshell-z"
+;; :PACKAGE:  "eshell-z"
+;; :LOCAL-REPO: "eshell-z"
+;; :COMMIT:   "337cb241e17bd472bd3677ff166a0800f684213c"
+;; :END:
+
+(after! eshell
+  (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name)
+  (setq eshell:z-file . (expand-file-name "z" eshell-directory-name))
+  (autoload #'eshell-z "eshell-z" nil t nil))
+
+;; ***** eshell-up
+;; :PROPERTIES:
+;; :ID: 478219b9-1c6f-4907-b428-a2dfe0f45e5c
+;; :END:
+
+;; This is an Emacs package for quickly navigating to a specific parent directory
+;; in ~eshell~ without having to repeatedly typing ~cd ..~.
+
+(defalias 'eshell/up 'eshell-up)
+(defalias 'eshell/pk 'eshell-up-peek)
+(defalias 'eshell/peek 'eshell-up-peek)
+
+(--each '(eshell-up eshell-up-peek)
+  (autoload it "eshell-up" nil t nil))
+
+;; ***** eshell-clear
+;; :PROPERTIES:
+;; :ID: 6ae332e7-f2e8-4a78-9bb8-c9b4f271a6a2
+;; :END:
+
+;; The shell often gets cluttered with many commands. It's often useful to clear it
+;; and indeed there are many suggestions on how to do so online. However, many of
+;; them involve erasing the eshell buffer or making it's previous contents
+;; inaccessable. I don't like getting rid of information that could be important.
+;; All I really wanted is to just scroll up to the top of the window so that the
+;; previous contents weren't visible. Note that it is important that this command
+;; returns nil. Eshell shell ignores output returns nil. However, when it returns
+;; non-nil it prints it to the eshell buffer, which results in a residue
+;; line--that's not what we want.
+
+;; https://emacs.stackexchange.com/questions/28819/eshell-goes-to-the-bottom-of-the-page-after-executing-a-command
+
+(defadvice! scroll-to-top (:override eshell/clear)
+  "Scroll eshell buffer to top.
+The effect of this is to clear the contents of the eshell buffer."
+  (progn (call-interactively #'evil-scroll-line-to-top) nil))
+
+;; **** display
+;; :PROPERTIES:
+;; :ID: 66d647e3-b83b-4469-bb62-75546c2fee64
+;; :END:
+
+;; ***** prompt
+;; :PROPERTIES:
+;; :ID: c21591c9-43a2-4c6b-aac8-b46b41f4dc63
+;; :END:
+
+;; I got a lot of inspiration from the [[http://www.modernemacs.com/post/custom-eshell/][modern emacs blog]]. I think the
+;; author's code is in general a good example of how to use macros to abstract a
+;; task and make it much simpler than it would be otherwise.
+
+;; ****** with-face
+;; :PROPERTIES:
+;; :ID: ae757b22-27e1-4243-8da0-35c3a8e6ff65
+;; :END:
+
+(defmacro with-face! (string &rest props)
+  "Return STR propertized with PROPS."
+  `(propertize ,string 'face '(,@props)))
+
+;; ****** helpers
+;; :PROPERTIES:
+;; :ID: c29bac50-32e4-4128-8446-6f4153d3a7a0
+;; :END:
+
+;; Eshell prompt function finds eshell section functions specified by
+;; [[helpvar:eshell:enabled-sections][+eshell-enabled-sections]] and concatenates their results in order to
+;; generate the body of the eshell prompt.
+
+(defun eshell:acc (acc x)
+  "Accumulator for evaluating and concatenating `eshell:enabled-sections'."
+  (--if-let (funcall x)
+      (if (s-blank? acc)
+          it
+        (concat acc eshell:sep it))
+    acc))
+
+(defun eshell:prompt-func ()
+  "Generate the eshell prompt.
+This function generates the eshell prompt by concatenating `eshell:header' with
+valid `eshell:enabled-sections' and the `eshell-prompt-string'."
+  (concat eshell:header
+          (->> eshell:enabled-sections
+               (mapcar (lambda (it) (void-symbol-intern 'eshell-prompt-- it)))
+               (-filter #'fboundp)
+               (-reduce-from #'eshell:acc ""))
+          eshell-prompt-string))
+
+;; ****** eshell components
+;; :PROPERTIES:
+;; :ID: c22a9cdb-9b9f-4f06-9c09-f330d454ab1f
+;; :END:
+
+;; This heading contains the parts that make up the eshell prompt. They are the
+;; header, the separator, the section delimiter and, the meat of the prompt, the
+;; actual eshell sections.
+
+(defvar eshell:sep "\s|\s"
+  "Separator between eshell sections.")
+
+(defvar eshell:section-delim "\s"
+  "Separator between an eshell section icon and form.")
+
+(defvar eshell:header "\s"
+  "Eshell prompt header.")
+
+(defvar eshell:enabled-sections '(dir git)
+  "List of enabled eshell sections.
+Each element of the list is an abbreviated.")
+
+;; This is a regex that matches your eshell prompt so that eshell knows what to
+;; keep readonly and what not to.
+(setq eshell-prompt-regexp (rx (*? anything) "-> "))
+(setq eshell-prompt-string " -> ")
+
+(setq eshell-prompt-function #'eshell:prompt-func)
+
+;; ***** text wrapping
+;; :PROPERTIES:
+;; :ID: 7d155cf8-a90c-4183-a9be-5ffdc266d82a
+;; :END:
+
+(defhook! enable-text-wrapping (eshell-mode-hook)
+  "Enable text wrapping."
+  (visual-line-mode +1)
+  (set-display-table-slot standard-display-table 0 ?\ ))
+
+;; ***** fringes
+;; :PROPERTIES:
+;; :ID: 312652e5-9975-4241-b709-7ed5b8537202
+;; :END:
+
+(defhook! remove-fringes (eshell-mode-hook)
+  "Remove fringes for eshell."
+  (set-window-fringes nil 0 0)
+  (set-window-margins nil 1 nil))
+
+;; ***** hide modeline
+;; :PROPERTIES:
+;; :ID: 6dc13e60-abd4-40d0-be15-55b11c1faeb2
+;; :END:
+
+;; (add-hook 'eshell-mode-hook #'hide-mode-line-mode)
+
+;; **** shrink-path
+;; :PROPERTIES:
+;; :ID: eef8ea28-4de2-44ab-a09d-26f58c0a75ac
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     gitlab
+;; :REPO:     "bennya/shrink-path.el"
+;; :PACKAGE:  "shrink-path"
+;; :LOCAL-REPO: "shrink-path.el"
+;; :COMMIT:   "c14882c8599aec79a6e8ef2d06454254bb3e1e41"
+;; :END:
+
+(autoload #'shrink-path-file "shrink-path" nil t nil)
 
 ;; ** file browsing
 ;; :PROPERTIES:
@@ -2793,6 +3623,154 @@ Orderless will do this."
 
 (void-add-advice #'ranger-window-check :around #'void--silence-output-advice)
 
+;; ** version control
+;; :PROPERTIES:
+;; :ID: d99a378c-449f-4a0d-9b88-dd77d5a41bb1
+;; :END:
+
+;; *** git-auto-commit-mode
+;; :PROPERTIES:
+;; :ID:       00a518e9-56ae-4c0b-b2cd-518fb4c5d201
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "ryuslash/git-auto-commit-mode"
+;; :PACKAGE:  "git-auto-commit-mode"
+;; :LOCAL-REPO: "git-auto-commit-mode"
+;; :COMMIT:   "df07899acdb3f9c114b72fdab77107c924b3172c"
+;; :END:
+
+;; To avoid losing information. You should commit often in git--like every 10
+;; seconds or so. Obviously doing this manually on the command line (or even on
+;; [[id:d6088ed3-417a-44e8-822b-ce4743f497d0][magit]]) every time is a pain. This package commits your changes every time
+;; you save your file--which for me is all the time because I use [[id:bd455e73-4035-49b9-bbdf-3d59d4906c97][super-save]].
+
+;; **** settings
+;; :PROPERTIES:
+;; :ID:       8a46cee4-624c-4440-8b99-c6b34d356a6b
+;; :END:
+
+(setq gac-automatically-push-p nil)
+(setq gac-ask-for-summary nil)
+(setq gac-default-message #'gac:commit-message)
+(setq gac-commit-additional-flag "-S")
+
+;; **** toggle summary
+;; :PROPERTIES:
+;; :ID:       50641d0a-0908-4207-bcb9-8e7437e75159
+;; :END:
+
+;; **** auto-commit
+;; :PROPERTIES:
+;; :ID:       36b71eb7-b71d-47a0-ad0a-5d62825fffa3
+;; :END:
+
+(autoload #'git-auto-commit-mode "git-auto-commit-mode" nil t nil)
+
+;; **** commit message
+;; :PROPERTIES:
+;; :ID:       3f0297a0-5929-4217-a109-545a2a010473
+;; :END:
+
+;; Committing often as I recommend will inevitably result with commits that are
+;; many bits and pieces of a change. The idea is to then squash together all
+;; related commits for the "polished" result. With this function I create "smart"
+;; commit messages that take advantage of the org headline structure. This makes it
+;; easy to go back and group commits which are related. Note that this function
+;; fails when you have a change that spans across multiple headlines (such as the
+;; replacement of a name throughout a document). This is something I plan to
+;; address later.
+
+(defun gac:commit-message (file)
+  "Return the commit message for changes to FILE."
+  (format "Update %s" (f-base file)))
+
+;; *** magit
+;; :PROPERTIES:
+;; :ID:       d6088ed3-417a-44e8-822b-ce4743f497d0
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("lisp/magit" "lisp/magit*.el" "lisp/git-rebase.el" "Documentation/magit.texi" "Documentation/AUTHORS.md" "LICENSE" (:exclude "lisp/magit-libgit.el") "magit-pkg.el")
+;; :HOST:     github
+;; :REPO:     "magit/magit"
+;; :PACKAGE:  "magit"
+;; :LOCAL-REPO: "magit"
+;; :COMMIT:   "87a63353df0ad8ac661ac1b93c59d40669b65ffc"
+;; :END:
+
+;; **** transient
+;; :PROPERTIES:
+;; :ID: baf64a0f-f9fa-4700-bebf-d996018f894f
+;; :END:
+
+(setq transient-default-level 5)
+(setq transient-levels-file (concat VOID-DATA-DIR "transient/levels"))
+(setq transient-values-file (concat VOID-DATA-DIR "transient/values"))
+(setq transient-history-file (concat VOID-DATA-DIR "transient/history"))
+
+;; **** magit
+;; :PROPERTIES:
+;; :ID: c8a37b6a-46c7-406e-8793-1186f14407e0
+;; :END:
+
+(-each '(f s with-editor git-commit package eieio lv transient)
+  #'idle-require)
+
+(push '("magit:"
+	(display-buffer-at-bottom)
+	(window-height . 0.5))
+      display-buffer-alist)
+
+(ignore! (void-add-hook 'magit-popup-mode-hook #'hide-mode-line-mode))
+
+(setq magit-completing-read-function #'completing-read)
+(setq magit-diff-refine-hunk t)
+(setq magit-auto-revert-mode t)
+
+;; **** quitting
+;; :PROPERTIES:
+;; :ID: 49088c3e-6d3a-41b7-aee4-f0bb34c71a0c
+;; :END:
+
+(defun magit/quit ()
+  "Clean up magit buffers after quitting `magit-status'."
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)))
+
+;; **** evil-magit
+;; :PROPERTIES:
+;; :ID:       a86e7a69-4e0a-41fd-aca7-66e514332e7f
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "emacs-evil/evil-magit"
+;; :PACKAGE:  "evil-magit"
+;; :LOCAL-REPO: "evil-magit"
+;; :END:
+
+(setq evil-magit-state 'normal)
+(void-load-before-call 'evil-magit #'magit-status)
+(void-add-advice #'evil-magit-init :around #'void--silence-output-advice)
+(after! evil-magit (evil-magit-init))
+
+
+;; *** git-gutter
+;; :PROPERTIES:
+;; :ID: 96f0c876-533c-4b1a-a4c1-7b6c9bf58c03
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "emacsorphanage/git-gutter"
+;; :PACKAGE:  "git-gutter"
+;; :LOCAL-REPO: "git-gutter"
+;; :COMMIT:   "db0e794fa97e4c902bbdf51b234cb68c993c71ae"
+;; :END:
+
+(autoload #'git-gutter-mode "git-gutter-mode" nil t nil)
+
+
 ;; ** persistence
 ;; :PROPERTIES:
 ;; :ID:       c73a2fc2-5c43-4f99-9336-3bb2154852b7
@@ -2866,7 +3844,7 @@ Orderless will do this."
 	    ;; ignore private Void temp files (but not all of them)
             #'(lambda (file)
                 (-some-p (apply-partially #'file-in-directory-p file)
-		         (list VOID-DATA-DIR)))))
+		 (list VOID-DATA-DIR)))))
 
 (gsetq recentf-save-file (concat VOID-DATA-DIR "recentf"))
 (gsetq recentf-auto-cleanup 'never)
@@ -2966,12 +3944,300 @@ Orderless will do this."
 
 (autoload #'zoom-mode "zoom" nil t nil)
 
-(gsetq zoom-size '(0.618 . 0.618))
+(set! zoom-size '(0.618 . 0.618))
 
-(gsetq zoom-ignored-major-modes '(dired-mode markdown-mode))
-(gsetq zoom-ignored-buffer-names '("zoom.el" "init.el"))
-(gsetq zoom-ignored-buffer-name-regexps '("^*calc"))
-(gsetq zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
+(set! zoom-ignored-major-modes '(dired-mode markdown-mode))
+(set! zoom-ignored-buffer-names '("zoom.el" "init.el"))
+(set! zoom-ignored-buffer-name-regexps '("^*calc"))
+(set! zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
+
+;; ** exwm
+;; :PROPERTIES:
+;; :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacs-straight/exwm"
+;; :FILES:    ("*" (:exclude ".git"))
+;; :PACKAGE:  "exwm"
+;; :LOCAL-REPO: "exwm"
+;; :COMMIT:   "45ac28cc9cffe910c3b70979bc321a1a60e002ea"
+;; :END:
+
+;; [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
+;; There are benefits and drawbacks to making emacs your window manager. One
+;; benefit is that you get a super consistent window management experience. If you
+;; use a typical window manager, you have to.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       581b8529-00a0-4935-9363-60dba9dbe5f4
+;; :END:
+
+;; This isn't precise, I want exwm to trigger itself when I try to open
+;; any external application but right now I'm not sure of how to do that
+;; so I deal with my most often case--opening the browser. This assumes
+;; [[helpfn:browse-url][browse-url]] will be used to open an external browser, which might not
+;; be the case. I'll address this in time.
+
+;; =exwm= provides an option [[helpvar:exwm-replace][exwm-replace]] to deal with the case of an existing
+;; window manager when exwm is initializing itself. There are three
+;; ways. You could replace it with exwm without asking, ask whether to
+;; replace it, or abort the initialization of exwm.
+
+;; I always want exwm to assume that if I'm using another window manager,
+;; I don't want to use exwm. Only problem is =exwm= aborts with an annoying
+;; =user-error=.
+
+(alet #'void--load-and-initialize-exwm-maybe-advice
+  (void-add-advice #'browse-url :before it nil t))
+
+(defun void--load-and-initialize-exwm-maybe-advice (&rest _)
+  "Try to initialize exwm.
+If it's not possible, abort initialization gracefully."
+  (with-os! linux
+    (require 'exwm)
+    ;; Try to enable exwm.
+    (let ((exwm-replace nil))
+      (if (ignore-errors (exwm-init))
+	  ;; Enable the clipboard.
+	  (require 'exwm-systemtray)
+	(exwm-systemtray-enable)
+	(void-log "Another window manager is present (or something went wrong).")))))
+
+;; *** org capture from an exwm buffer
+;; :PROPERTIES:
+;; :ID:       5428bdc1-c075-4387-b3ab-080d372c478f
+;; :END:
+
+;; A common dream among many Org users is to integrate [[info:org#Capture][org-capture]] into their browser.
+;; Indeed, the browser by nature would be a place you'd want to capture from a lot.
+;; However, since graphical browsers are not in emacs the main way to do this was
+;; via a hacky and difficult to set up [[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol]].
+
+;; https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcapture_and_exwm/
+
+;; **** exwm title
+;; :PROPERTIES:
+;; :ID:       ce78d409-e635-4d94-b20e-38c2034ab5e8
+;; :END:
+
+(defun exwm::title-info (title)
+  "Return the webpage and the program."
+  (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
+    (list webpage program)))
+
+;; **** download webpage as pdf
+;; :PROPERTIES:
+;; :ID:       bd7165df-9dae-4954-b153-96335678e296
+;; :END:
+
+;; Storing the links is better, but not good enough. Webpages die. They can be
+;; taken off by a third-party or removed by the owner themselves. Even if they
+;; aren't though, they can be modified so that what you originally found isn't
+;; there anymore. As a solution for this I came upon [[https://wkhtmltopdf.org/][wkhtmltopdf]], a command that
+;; downloads a given webpage as pdf. A consequence of doing this is that you will
+;; have access to all the webpages you used for research offline.
+
+(defun void-download-webpage-as-pdf (url webpage-title)
+  "Save the webpage at URL to `VOID-SCREENSHOT-DIR'."
+  (let* ((program "wkhtmltopdf")
+         (process-name (format "%s - %s" program (ts-format)))
+         (webpage-title (s-replace "/" "~" webpage-title))
+         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
+         (fn `(lambda (&rest _)
+                (if (file-exists-p ,pdf-path)
+                    (message "Webpage saved succesfully.")
+                  (warn "Failed to save webpage %s to %s." ,url ,pdf-path)))))
+    (message "%s <-- %s" (f-abbrev pdf-path) url)
+    (async-start-process process-name "firejail" fn program url pdf-path)))
+
+;; **** replacement for fake id
+;; :PROPERTIES:
+;; :ID:       4f0436c4-bc37-49b0-a8a3-894e212d4d13
+;; :END:
+
+(defun exwm-input::fake-key-to-id (event id)
+  "Fake a key event equivalent to Emacs event EVENT and send it
+ to program with x window ID."
+  (let* ((keysym (xcb:keysyms:event->keysym exwm--connection event))
+         keycode)
+    (when (= 0 (car keysym))
+      (user-error "[EXWM] Invalid key: %s" (single-key-description event)))
+    (setq keycode (xcb:keysyms:keysym->keycode exwm--connection
+					       (car keysym)))
+    (when (/= 0 keycode)
+      (dolist (class '(xcb:KeyPress xcb:KeyRelease))
+        (xcb:+request exwm--connection
+		      (make-instance
+		       'xcb:SendEvent
+		       :propagate 0 :destination id
+		       :event-mask xcb:EventMask:NoEvent
+		       :event
+		       (xcb:marshal
+			(make-instance
+			 class
+			 :detail keycode :time xcb:Time:CurrentTime
+			 :root exwm--root :event id :child 0 :root-x 0 :root-y 0
+			 :event-x 0 :event-y 0 :state (cdr keysym) :same-screen 0)
+			exwm--connection)))))
+    (xcb:flush exwm--connection)))
+
+;; **** url from firefox
+;; :PROPERTIES:
+;; :ID:       f407cc8c-0bb9-47fe-adeb-4e9d27b5c5b7
+;; :END:
+
+;; Emacs simulates a keypress to firefox--specifically the keypresses to select the
+;; current url and to add it to the kill ring.
+
+(defun exwm::firefox-url ()
+  "Save the current firefox url to kill ring."
+  ;; We get the xwindow id of the buffer named Firefox
+  (let ((fid (exwm--buffer->id (current-buffer))))
+    ;; Send c-l to select url
+    (exwm-input::fake-key-to-id 'C-l fid)
+    ;; We sleep to avoid race conditions.
+    (sleep-for 0 300)
+    ;; Copy url to kill ring (note: this is not affected by simulation keys)
+    (exwm-input::fake-key-to-id 'C-c fid)
+    (sleep-for 0 300)
+    ;; try to set the state back
+    (exwm-input::fake-key-to-id 'escape fid)
+    (current-kill 0)))
+
+;; **** url from qutebrowser
+;; :PROPERTIES:
+;; :ID:       822cbb61-60b4-445e-9756-4bf797500375
+;; :END:
+
+(defun exwm::qutebrowser-url ()
+  (interactive)
+  (let ((fid (exwm--buffer->id (current-buffer))))
+    (sleep-for 0 300)
+    ;; if in insert state exit it.
+    (exwm-input::fake-key-to-id 'escape fid)
+    (sleep-for 0 300)
+    (exwm-input::fake-key-to-id 'y fid)
+    (sleep-for 0 300)
+    (exwm-input::fake-key-to-id 'y fid)
+    (sleep-for 0 300)
+    (aprog1 (current-kill 0)
+      (void-log "Copied %S to the kill ring." it))))
+
+;; *** appropriate name for exwm buffers
+;; :PROPERTIES:
+;; :ID: b9712cdc-2cf9-482f-8f62-b2e4f56b9c97
+;; :END:
+
+;; By default each exwm buffer is named =*EXWM*=. We want them to have
+;; a more descriptive name.
+
+(defhook! rename-buffer-to-title (exwm-update-title-hook)
+  "Rename buffer to title."
+  (exwm-workspace-rename-buffer exwm-title))
+
+;; *** popup rules for exwm buffers
+;; :PROPERTIES:
+;; :ID:       0ecf05ce-4a76-4130-855e-e8d0d7390df1
+;; :END:
+
+;; *** to start in char mode
+;; :PROPERTIES:
+;; :ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
+;; :END:
+
+;; =EXWM= has two modes, =line-mode= and =char-mode=. It's best for Emacs and Next to
+;; start with =char-mode= because they both have keys that are important for their
+;; use (like =M-x=) which conflict with Emacs (the instance that's managing the
+;; windows).
+
+;; **** list of applications
+;; :PROPERTIES:
+;; :ID:       d1bf0601-a995-48f7-ab80-86755ba9269a
+;; :END:
+
+(defvar exwm:char-mode-apps (list "emacs" "next" "nyxt" "qutebrowser")
+  "List of applications to exwm should start in char-mode.")
+
+;; **** to start in char mode
+;; :PROPERTIES:
+;; :ID: 790c7f6e-6f66-4074-b51a-56b491bcde99
+;; :END:
+
+(defhook! start-in-char-mode (exwm-manage-finish-hook)
+  "Start a program in char-mode if it's in `exwm:char-mode-apps'."
+  (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
+    (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
+
+;; *** exwm-edit
+;; :PROPERTIES:
+;; :ID: 1a167827-b791-4a69-a90e-c2d30bd83abb
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "agzam/exwm-edit"
+;; :PACKAGE:  "exwm-edit"
+;; :LOCAL-REPO: "exwm-edit"
+;; :COMMIT:   "2fd9426922c8394ec8d21c50dcc20b7d03af21e4"
+;; :END:
+
+;; The dream is to do all text editing in Emacs. This package is a big step towards
+;; achieving that dream. =exwm-edit= allows the user to edit text fields in
+;; external packages with an emacs buffer. It acts a lot like =org-edit-src-code=:
+;; it copies any text in the text field to a buffer, you edit the buffer, then
+;; press a binding to insert the buffer text into the text field. It goes without
+;; saying that when the text is in an emacs buffer, you can use the full-force of
+;; Emacs's text editing capabilities on it.
+
+;; Concerning the loading of exwm-edit. Ideally, I should load it after
+;; certain applications where I'd use it need to be loaded.
+
+(autoload #'exwm-init "exwm-edit" nil t nil)
+
+(after! exwm
+  (funcall (get 'exwm-input-global-keys 'custom-set)
+	   'exwm-input-global-keys
+	   `((,(kbd "s-e") . exwm-edit))))
+
+;; *** keybindings
+;; :PROPERTIES:
+;; :ID: 293bc7c5-1320-4f3f-af2b-198d56694f71
+;; :END:
+
+(after! exwm
+  (funcall (get 'exwm-input-global-keys 'custom-set)
+           'exwm-input-global-keys
+           `((,(kbd "s-R") . exwm-reset)
+             (,(kbd "s-x") . exwm-input-toggle-keyboard)
+             (,(kbd "s-h") . windmove-left)
+             (,(kbd "s-j") . windmove-down)
+             (,(kbd "s-k") . windmove-up)
+             (,(kbd "s-l") . windmove-right)
+             (,(kbd "s-t") . transpose-frame)
+             (,(kbd "s-D") . kill-this-buffer)
+             (,(kbd "s-b") . switch-to-buffer)
+             (,(kbd "s-f") . find-file)
+             (,(kbd "s-O") . exwm-layout-toggle-fullscreen)
+             (,(kbd "s-p") . previous-buffer)
+             (,(kbd "s-n") . next-buffer)
+             (,(kbd "s-q") . void/open-qutebrowser)
+             (,(kbd "s-e") . void/open-emacs-instance)))
+  (general-def
+    "s-R" #'exwm-reset
+    "s-x" #'exwm-input-toggle-keyboard
+    "s-h" #'windmove-left
+    "s-j" #'windmove-down
+    "s-k" #'windmove-up
+    "s-l" #'windmove-right
+    "s-t" #'transpose-frame
+    "s-D" #'kill-this-buffer
+    "s-b" #'switch-to-buffer
+    "s-f" #'find-file
+    "s-O" #'exwm-layout-toggle-fullscreen
+    "s-p" #'previous-buffer
+    "s-n" #'next-buffer
+    "s-q" #'void/open-qutebrowser
+    "s-e" #'void/open-emacs-instance))
 
 ;; ** workgroups2
 ;; :PROPERTIES:
@@ -3202,8 +4468,6 @@ Orderless will do this."
 ;; :LOCAL-REPO: "aggressive-fill-paragraph-mode"
 ;; :COMMIT:   "2d65d925318006e2f6fa261ad192fbc2d212877b"
 ;; :END:
-
-(void-add-hook 'prog-mode-hook #'aggressive-fill-paragraph-mode)
 
 ;; *** aggressive-indent
 ;; :PROPERTIES:
@@ -3592,7 +4856,6 @@ Orderless will do this."
 (general-def :states '(visual insert)
   (general-chord "jk") 'evil-force-normal-state
   (general-chord "kj") 'evil-force-normal-state)
-
 
 ;; * Languages
 ;; :PROPERTIES:
@@ -4319,6 +5582,7 @@ If DIR is a negative integer, go the opposite direction: the start of the
 ;; :PROPERTIES:
 ;; :ID:       25b93a1f-b105-47aa-9647-5015d23a4ac3
 ;; :END:
+
 ;; This is a minor mode for displaying links in non-org buffers.
 
 (autoload #'org-link-minor-mode "org-link-minor-mode" nil t nil)
@@ -5069,6 +6333,17 @@ same key as the one(s) being added."
   :keymaps 'org-mode-map
   "b" (list :def #'org-babel-execute-src-block :wk "source block")
   "s" (list :def #'org-babel-execute-subtree :wk "subtree"))
+
+;; *** git
+;; :PROPERTIES:
+;; :ID: 87ba6613-6606-423c-84ec-f7c9ae10c9a6
+;; :END:
+
+(define-leader-key!
+  :infix "g"
+  ""  (list :ignore t           :wk "git")
+  "c" (list :def #'magit-commit :wk "commit")
+  "s" (list :def #'magit-status :wk "status"))
 
 ;; *** toggle
 ;; :PROPERTIES:
