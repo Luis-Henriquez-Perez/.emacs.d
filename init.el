@@ -5581,6 +5581,11 @@ If DIR is a negative integer, go the opposite direction: the start of the
 ;; *** org-link-minor-mode
 ;; :PROPERTIES:
 ;; :ID:       25b93a1f-b105-47aa-9647-5015d23a4ac3
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacsattic/org-link-minor-mode"
+;; :PACKAGE:  "org-link-minor-mode"
+;; :LOCAL-REPO: "org-link-minor-mode"
 ;; :END:
 
 ;; This is a minor mode for displaying links in non-org buffers.
