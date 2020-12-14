@@ -2191,6 +2191,36 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 
 ;; Consult is a package that provides several generic utility functions.
 
+;; **** don't preview anything
+
+;; Many consult consult commands have a preview by default. Typically previews are
+;; expensive. This is especially true for [[][]], which switches the theme every
+;; time you move from one candidate to another.
+
+(setq consult-preview-theme nil)
+(setq consult-preview-outline t)
+(setq consult-preview-buffer nil)
+(setq consult-preview-line t)
+
+;; **** autoload commands
+;; :PROPERTIES:
+;; :ID:       f78a7e71-b70a-4067-b821-f581cf76fb84
+;; :END:
+
+(--each (list #'consult-theme #'consult-line #'consult-yank-pop
+              #'consult-outline #'consult-apropos #'consult-buffer)
+  (autoload it "consult" nil t nil))
+
+;; **** bindings
+;; :PROPERTIES:
+;; :ID:       c08a6f82-0408-4899-8e91-e1c5a062a7b2
+;; :END:
+
+(define-key!
+  [remap switch-to-buffer] #'consult-buffer
+  [remap apropos] #'consult-apropos
+  [remap load-theme] #'consult-theme)
+
 ;; *** setting font size
 ;; :PROPERTIES:
 ;; :ID: 4bf24b65-6f23-4e42-930e-4d43f766545c
@@ -2227,36 +2257,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
                    old-font-size
                    font-size))
       (message "Font Size has been cancelled."))))
-
-;; **** don't preview anything
-
-;; Many consult consult commands have a preview by default. Typically previews are
-;; expensive. This is especially true for [[][]], which switches the theme every
-;; time you move from one candidate to another.
-
-(setq consult-preview-theme nil)
-(setq consult-preview-outline nil)
-(setq consult-preview-buffer nil)
-(setq consult-preview-line nil)
-
-;; **** autoload commands
-;; :PROPERTIES:
-;; :ID:       f78a7e71-b70a-4067-b821-f581cf76fb84
-;; :END:
-
-(--each (list #'consult-theme #'consult-line #'consult-yank-pop
-              #'consult-outline #'consult-apropos #'consult-buffer)
-  (autoload it "consult" nil t nil))
-
-;; **** bindings
-;; :PROPERTIES:
-;; :ID:       c08a6f82-0408-4899-8e91-e1c5a062a7b2
-;; :END:
-
-(define-key!
-  [remap switch-to-buffer] #'consult-buffer
-  [remap apropos] #'consult-apropos
-  [remap load-theme] #'consult-theme)
 
 ;; *** set font
 ;; :PROPERTIES:
