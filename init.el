@@ -2278,6 +2278,12 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID:       08a3004c-6c37-401d-b584-c2c94577102d
 ;; :END:
 
+(defun void/open-init-file ()
+  "Switch to init file."
+  (interactive)
+  (alet (or (get-file-buffer VOID-INIT-FILE) (create-file-buffer VOID-INIT-FILE))
+    (display-buffer it)))
+
 ;; **** messages buffer
 ;; :PROPERTIES:
 ;; :ID: 7064ea0e-20e0-481c-9d07-18e4506ee3e8
@@ -2286,9 +2292,10 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; In Emacs, messages. The messages buffer is where messages displayed at the bottom
 ;; of the Emacs frame are recorded after they expire.
 
-(defun void/switch-to-messages ()
+(defun void/open-messages-buffer ()
   (interactive)
-  (select-window (display-buffer (get-buffer "*Messages*"))))
+  (alet (get-buffer-create "*Messages*")
+    (display-buffer it)))
 
 ;; **** main todo file
 ;; :PROPERTIES:
@@ -2298,6 +2305,21 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (defun void/switch-to-capture-file ()
   (interactive)
   (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
+
+;; **** void-log buffer
+;; :PROPERTIES:
+;; :ID:       0d696000-94bb-45af-a7af-b96f29714089
+;; :END:
+
+;; **** switch to scratch buffer
+;; :PROPERTIES:
+;; :ID:       7d9af4b6-7744-437f-b088-ec9397056113
+;; :END:
+
+(defun void/open-scratch ()
+  "Pop scratch."
+  (interactive)
+  (pop-to-buffer "*scratch*"))
 
 ;; *** void specific funtions
 ;; :PROPERTIES:
@@ -2420,16 +2442,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (interactive)
   (let (confirm-kill-emacs)
     (kill-emacs)))
-
-;; *** switch to scratch buffer
-;; :PROPERTIES:
-;; :ID:       7d9af4b6-7744-437f-b088-ec9397056113
-;; :END:
-
-(defun void/open-scratch ()
-  "Pop scratch."
-  (interactive)
-  (pop-to-buffer "*scratch*"))
 
 
 ;; * Completion
