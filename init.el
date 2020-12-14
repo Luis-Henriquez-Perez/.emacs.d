@@ -115,6 +115,20 @@ Files that need to exist, but I don't typically want to see go here.")
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
   (make-directory dir t))
 
+;; *** debug-p
+;; :PROPERTIES:
+;; :ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
+;; :END:
+
+;; [[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
+;; is to serve as an indicator of whether the current Void instance is run for
+;; debugging. When Void is set up for debugging it prints out many messages about
+;; what its doing via [[hfn:void-log][void-log]].
+
+(defvar void-debug-p (or (getenv "DEBUG") init-file-debug)
+  "When non-nil print debug messages.
+The --debug-init flag and setting the DEBUG envar will enable this at startup.")
+
 ;; ** Package Management
 ;; :PROPERTIES:
 ;; :ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
@@ -533,6 +547,27 @@ Assumes vc is git which is fine because straight only uses git right now."
 
 ;; =ht= is a package that tries to provide a consistently named API for dealing with
 ;; hash-tables.
+
+;; *** elog
+;; :PROPERTIES:
+;; :ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "lujun9972/elog"
+;; :PACKAGE:  "elog"
+;; :LOCAL-REPO: "elog"
+;; :END:
+
+(require 'elog)
+
+(elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
+
+(defun void-log (format-string &rest args)
+  "Log to *Messages* if `void-debug-p' is on.
+Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
+Accept the same arguments as `message'."
+  (void--log 1 (apply #'format format-string args)))
 
 ;; *** macro writing tools
 ;; :PROPERTIES:
