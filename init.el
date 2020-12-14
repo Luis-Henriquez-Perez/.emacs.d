@@ -2899,6 +2899,35 @@ Orderless will do this."
   (cl-letf (((symbol-function #'overlay-put) #'ignore))
     (apply <orig-fn> <args>)))
 
+;; ** testing
+;; :PROPERTIES:
+;; :ID:       49fe171f-d1b9-4b90-89ab-bddd2748bbd0
+;; :END:
+
+;; *** ert-expectations
+;; :PROPERTIES:
+;; :ID:       3062b8a4-4261-49fc-9bdb-895ba75bbd19
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "emacsorphanage/ert-expectations"
+;; :PACKAGE:  "ert-expectations"
+;; :LOCAL-REPO: "ert-expectations"
+;; :END:
+
+(autoload 'expect "ert-expectations" nil nil 'macro)
+
+;; *** el-mock
+;; :PROPERTIES:
+;; :ID:       46df66b0-5820-4550-aa99-c913d3022fe1
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "rejeep/el-mock.el"
+;; :PACKAGE:  "el-mock"
+;; :LOCAL-REPO: "el-mock.el"
+;; :END:
+
 ;; ** email
 ;; :PROPERTIES:
 ;; :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
