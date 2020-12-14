@@ -6287,6 +6287,19 @@ same key as the one(s) being added."
   "b" (list :def #'org-babel-execute-src-block :wk "source block")
   "s" (list :def #'org-babel-execute-subtree :wk "subtree"))
 
+;; *** packages
+;; :PROPERTIES:
+;; :ID: d3286920-ead4-4f7c-bf9d-8a6ed3d7ba46
+;; :END:
+
+(define-leader-key!
+  :infix "p"
+  ""  (list :ignore t                       :wk "package")
+  "i" (list :def #'straight-use-package     :wk "install")
+  "r" (list :def #'straight-rebuild-package :wk "rebuild")
+  "p" (list :def #'straight-pull-package    :wk "pull")
+  "s" (list :def #'straight/search-package  :wk "search"))
+
 ;; *** git
 ;; :PROPERTIES:
 ;; :ID: 87ba6613-6606-423c-84ec-f7c9ae10c9a6
