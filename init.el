@@ -4119,12 +4119,12 @@ If it's not possible, abort initialization gracefully."
 ;; Concerning the loading of exwm-edit. Ideally, I should load it after
 ;; certain applications where I'd use it need to be loaded.
 
-(autoload #'exwm-init "exwm-edit" nil t nil)
+(autoload #'exwm-edit "exwm-edit" nil t nil)
 
 (after! exwm
   (funcall (get 'exwm-input-global-keys 'custom-set)
 	   'exwm-input-global-keys
-	   `((,(kbd "s-e") . exwm-edit))))
+	   `((,(kbd "C-'") . exwm-edit))))
 
 ;; *** keybindings
 ;; :PROPERTIES:
