@@ -35,8 +35,6 @@
 
 ;; Find existing font
 
-(push '(font . "JetBrains Mono-17") default-frame-alist)
-
 ;; Ignore X resources; its settings would be redundant with the other settings
 ;; in this file and can conflict with later config (particularly where the
 ;; cursor color is concerned).
