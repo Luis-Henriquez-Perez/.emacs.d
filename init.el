@@ -519,6 +519,21 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; that involves accumulating several variables or atypical control-flow (as in, break
 ;; statements or return statements).
 
+;; *** ht
+;; :PROPERTIES:
+;; :ID:       56bb0ff4-6ad1-44b7-a9a4-54abf48ed253
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("ht.el" "ht-pkg.el")
+;; :HOST:     github
+;; :REPO:     "Wilfred/ht.el"
+;; :PACKAGE:  "ht"
+;; :LOCAL-REPO: "ht.el"
+;; :END:
+
+;; =ht= is a package that tries to provide a consistently named API for dealing with
+;; hash-tables.
+
 ;; *** macro writing tools
 ;; :PROPERTIES:
 ;; :ID:       ea5d3295-d8f9-4f3a-a1f6-25811696aa29
