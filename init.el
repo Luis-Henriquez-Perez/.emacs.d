@@ -2086,9 +2086,8 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 (defun void-initial-buffer ()
   "Return the initial buffer to be displayed.
 This function is meant to be used as the value of `initial-buffer-choice'."
-  (if void-debug-p
-      (get-buffer "*Messages*")
-    (get-buffer "*scratch*")))
+  (alet (if void-debug-p  "*void-log*" "*scratch")
+    (get-buffer-create it)))
 
 ;; *** UTF-8
 ;; :PROPERTIES:
