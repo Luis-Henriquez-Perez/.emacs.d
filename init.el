@@ -2916,6 +2916,7 @@ Orderless will do this."
 ;; :END:
 
 (autoload 'expect "ert-expectations" nil nil 'macro)
+(autoload 'expectations "ert-expectations" nil nil 'macro)
 
 ;; *** el-mock
 ;; :PROPERTIES:
