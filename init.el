@@ -3696,8 +3696,7 @@ Each element of the list is an abbreviated.")
 ;; :COMMIT:   "db0e794fa97e4c902bbdf51b234cb68c993c71ae"
 ;; :END:
 
-(autoload #'git-gutter-mode "git-gutter-mode" nil t nil)
-
+(autoload #'git-gutter-mode "git-gutter" nil t nil)
 
 ;; ** persistence
 ;; :PROPERTIES:
