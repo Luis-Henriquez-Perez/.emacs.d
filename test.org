@@ -245,6 +245,7 @@
 #+begin_src emacs-lisp
 (expect 'the-hook&something-fn (void-hook-function-name 'the-hook 'something-fn))
 (expect 'another-hook&lala (void-hook-function-name 'another-hook 'lalala))
+(expect 'third-hook&gogogo (void-hook-function-name 'third-hook 'void--gogogo-advice))
 #+end_src
 
 ** generate hook
