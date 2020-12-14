@@ -740,13 +740,11 @@ WRAPPERS are a list of forms to wrap around FORM."
 ;; (=emacs-startup-hook&do-something= would be a hook in =emacs-starup-hook= for
 ;; example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]].
 
-(defun void-hook-var (hook-fn)
+(defun void-hook-variable (hook-fn)
   "Return the hook variable HOOK-FN is in.
 HOOK-FN is a function named with Void naming conventions."
-  (->> (symbol-name hook-fn)
-       (s-match (rx (group (1+ anything)) "&"))
-       (nth 1)
-       (intern)))
+  (intern (car (string-split (symbol-name hook-fn) "&" t))))
+
 
 ;; **** hook name
 ;; :PROPERTIES:
