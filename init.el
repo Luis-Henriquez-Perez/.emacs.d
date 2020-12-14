@@ -2921,6 +2921,18 @@ Orderless will do this."
 (setq message-send-mail-function #'sendmail-send-it)
 (setq message-kill-buffer-on-exit t)
 
+;; *** password-store
+;; :PROPERTIES:
+;; :ID:       3c57590c-1507-4369-b615-795965d4b182
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("contrib/emacs/*.el" "password-store-pkg.el")
+;; :HOST:     github
+;; :REPO:     "zx2c4/password-store"
+;; :PACKAGE:  "password-store"
+;; :LOCAL-REPO: "password-store"
+;; :END:
+
 ;; *** mu4e
 ;; :PROPERTIES:
 ;; :ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
