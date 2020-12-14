@@ -1760,11 +1760,34 @@ SYM is a symbol that stores a list."
 
 (setq nsm-settings-file (concat VOID-DATA-DIR "network-settings.data"))
 
-
 ;; ** Miscellaneous
 ;; :PROPERTIES:
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
+
+;; *** outorg
+;; :PROPERTIES:
+;; :ID:       85570385-ff5b-47ba-907b-5ef3666288bb
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "alphapapa/outorg"
+;; :PACKAGE:  "outorg"
+;; :LOCAL-REPO: "outorg"
+;; :END:
+
+;; **** dont add overlays for blank lines
+;; :PROPERTIES:
+;; :ID:       5f3f3e5a-3d57-44d2-9d61-9779d7b3051d
+;; :END:
+
+;; For some reason outorg adds overlays to the outorg buffers. They make it look
+;; like the outorg buffer has less whitespace in between headlines than it should.
+
+(defadvice! dont-add-overlays-for-blanks (:around outorg-wrap-source-in-block)
+  "Adding overlays for blank lines."
+  (cl-letf (((symbol-function #'overlay-put) #'ignore))
+    (apply <orig-fn> <args>)))
 
 ;; *** set the fill-column
 ;; :PROPERTIES:
