@@ -1765,30 +1765,6 @@ SYM is a symbol that stores a list."
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
 
-;; *** outorg
-;; :PROPERTIES:
-;; :ID:       85570385-ff5b-47ba-907b-5ef3666288bb
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "alphapapa/outorg"
-;; :PACKAGE:  "outorg"
-;; :LOCAL-REPO: "outorg"
-;; :END:
-
-;; **** dont add overlays for blank lines
-;; :PROPERTIES:
-;; :ID:       5f3f3e5a-3d57-44d2-9d61-9779d7b3051d
-;; :END:
-
-;; For some reason outorg adds overlays to the outorg buffers. They make it look
-;; like the outorg buffer has less whitespace in between headlines than it should.
-
-(defadvice! dont-add-overlays-for-blanks (:around outorg-wrap-source-in-block)
-  "Adding overlays for blank lines."
-  (cl-letf (((symbol-function #'overlay-put) #'ignore))
-    (apply <orig-fn> <args>)))
-
 ;; *** set the fill-column
 ;; :PROPERTIES:
 ;; :ID:       84d8e85a-a6a1-49cd-b46e-e5cd3f825438
@@ -2899,6 +2875,30 @@ Orderless will do this."
 
 ;; * Utility
 
+;; ** outorg
+;; :PROPERTIES:
+;; :ID:       85570385-ff5b-47ba-907b-5ef3666288bb
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "alphapapa/outorg"
+;; :PACKAGE:  "outorg"
+;; :LOCAL-REPO: "outorg"
+;; :END:
+
+;; *** dont add overlays for blank lines
+;; :PROPERTIES:
+;; :ID:       5f3f3e5a-3d57-44d2-9d61-9779d7b3051d
+;; :END:
+
+;; For some reason outorg adds overlays to the outorg buffers. They make it look
+;; like the outorg buffer has less whitespace in between headlines than it should.
+
+(defadvice! dont-add-overlays-for-blanks (:around outorg-wrap-source-in-block)
+  "Adding overlays for blank lines."
+  (cl-letf (((symbol-function #'overlay-put) #'ignore))
+    (apply <orig-fn> <args>)))
+
 ;; ** email
 ;; :PROPERTIES:
 ;; :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
@@ -2970,6 +2970,13 @@ Orderless will do this."
 ;; significant advantage of using it is it's the most popular option and,
 ;; therefore, has the most support (in the form of setup blogs and packages).
 
+;; **** init
+;; :PROPERTIES:
+;; :ID:       bcd9b479-1ed6-48cb-bd2e-35a46cf614e2
+;; :END:
+
+(autoload #'mu4e "mu4e" nil t nil)
+
 ;; **** settings
 ;; :PROPERTIES:
 ;; :ID:       11a37383-0316-49fa-900e-c06f830c0e3f
@@ -3026,8 +3033,8 @@ Orderless will do this."
 ;; :ID:       8bc93633-f3a0-494d-ae61-c05f6490cd87
 ;; :END:
 
-(setq mu4e-use-fancy-chars t)
 (after! (mu4e all-the-icons)
+  (setq mu4e-use-fancy-chars t)
   (setq mu4e-headers-draft-mark     (cons "D" (all-the-icons-faicon "pencil")))
   (setq mu4e-headers-flagged-mark   (cons "F" (all-the-icons-faicon "flag")))
   (setq mu4e-headers-new-mark       (cons "N" (all-the-icons-material "fiber_new")))
