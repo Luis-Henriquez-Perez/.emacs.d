@@ -1,25 +1,3 @@
-* defhook!
-:PROPERTIES:
-:ID:       130bc7cf-cfb9-43e0-91ba-2035d4b22012
-:END:
-
-** accepts multiple hooks
-:PROPERTIES:
-:ID:       ef5c4f7d-7a25-41cb-b75f-c1c73e8ec4db
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest defhook-accepts-multiple-hooks ()
-  (let (a-hook b-hook)
-    (defhook! hello-world (a-hook b-hook)
-      (+ 1 1))
-    (should (equal a-hook '(a-hook&hello-world)))
-    (should (equal b-hook '(b-hook&hello-world)))
-    ;; cleanup
-    (fmakunbound 'a-hook&hello-world)
-    (fmakunbound 'b-hook&hello-world)))
-#+end_src
-
 * defadvice
 :PROPERTIES:
 :ID:       f9dbab12-fa2d-4486-97b0-70b091d6527c
