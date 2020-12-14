@@ -2875,6 +2875,29 @@ Orderless will do this."
 
 ;; * Utility
 
+;; ** gif-screencast
+;; :PROPERTIES:
+;; :ID:       d8553132-c244-4319-bcc9-51905a296e34
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     gitlab
+;; :REPO:     "Ambrevar/emacs-gif-screencast"
+;; :PACKAGE:  "gif-screencast"
+;; :LOCAL-REPO: "emacs-gif-screencast"
+;; :END:
+
+(autoload #'gif-screencast-start-or-stop "gif-screencast" nil t nil)
+
+(define-key! "<f9>" 'gif-screencast-start-or-stop)
+
+(setq gif-screencast-program "scrot")
+(setq gif-screencast-args '("--quality" "25" "--focused"))
+;; To shut up the shutter sound of `screencapture' (see `gif-screencast-command').
+(setq gif-screencast-cropping-program "mogrify")
+;; Optional: Used to crop the capture to the Emacs frame.
+(setq gif-screencast-optimize-program "gifsicle")
+(setq gif-screencast-capture-format "png")
+
 ;; ** outorg
 ;; :PROPERTIES:
 ;; :ID:       85570385-ff5b-47ba-907b-5ef3666288bb
