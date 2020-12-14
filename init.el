@@ -209,7 +209,7 @@ Assumes vc is git which is fine because straight only uses git right now."
   "Add"
   (interactive)
   (awhen (->> (-fifth-item (org-heading-components))
-              (ht-get straight--recipe-cache)
+              (hash-get straight--recipe-cache)
               (-partition-before-pred #'keywordp))
     (-each it
       (-lambda ((property value))
