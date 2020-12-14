@@ -20,32 +20,6 @@
     (fmakunbound 'b-hook&hello-world)))
 #+end_src
 
-* ivy tests
-:PROPERTIES:
-:ID:       35fb8af3-c160-4330-8195-b159d97700a0
-:END:
-
-** everything checks out
-:PROPERTIES:
-:ID:       d9402509-d00c-44d4-86aa-de6d8f006594
-:END:
-
-#+begin_src emacs-lisp
-(it "should"
-  ;; make sure `ivy-sort-max-size' is not too low.
-  (should (>= 30000 ivy-sort-max-size))
-  ;; prescient-save-file
-  (should (string= prescient-save-file (concat VOID-DATA-DIR "prescient-save.el")))
-  ;; orderless should be doing the filtering.
-  (should (null ivy-prescient-enable-filtering))
-  ;; ivy prescient can handle the sorting.
-  (should ivy-prescient-enable-sorting)
-  ;; these should be on.
-  (should (and ivy-prescient-mode prescient-persist-mode))
-  ;; orderless should be the default sorter.
-  (should (eq (alist-get t ivy-re-builders-alist) #'orderless-ivy-re-builder)))
-#+end_src
-
 * defadvice
 :PROPERTIES:
 :ID:       f9dbab12-fa2d-4486-97b0-70b091d6527c
@@ -222,286 +196,99 @@
     (fmakunbound #'faa@do-something-cool)))
 #+end_src
 
+* advice
+:PROPERTIES:
+:ID:       962a1862-2b4d-4e97-94fa-7e874233eeaa
+:END:
+
 * hooks
 :PROPERTIES:
 :ID:       8b71ed59-bf00-48d2-a070-6e7d62f54770
 :END:
 
-** hook-p
+** void-hook-p
 :PROPERTIES:
 :ID:       656dada6-ffb9-4cbc-8568-13b89b2fed14
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void-hook-p ())
+(expect t (void-hook-p 'something&blah))
+(expect t (void-hook-p 'something&something))
+(expect nil (void-hook-p 'something-random))
 #+end_src
 
-** hook name
+** void-hook-variable
 :PROPERTIES:
-:ID:       fb4eaaf3-365d-4248-b95e-dc001c95d70b
+:ID:       417a0d09-b46e-44b9-b783-54acae5ab558
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void-hook-name ()
-  (alet (void-hook-name 'emacs-lisp-mode-hook 'do-something)
-    (should (eq it 'emacs-lisp-mode-hook&do-something))))
+(expect 'the-hook (void-hook-variable 'the-hook&blah))
+(expect 'spinach-hook (void-hook-variable 'spinach-hook&blah))
 #+end_src
 
-** hook variable
+** void-hook-function
 :PROPERTIES:
-:ID:       3d71878b-ceee-43b9-8a23-e31820418886
+:ID:       5ddbed40-42a7-457c-9668-fd9620589da9
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void-hook-var ()
-  (alet (void-hook-var 'emacs-lisp-mode-hook&do-something)
-    (should (eq it 'emacs-lisp-mode-hook))))
+(expect 'the-function (void-hook-function 'hook&the-function))
+(expect nil (void-hook-function 'fake-hook))
 #+end_src
 
-** advice action
+** void-hook-function-name
 :PROPERTIES:
-:ID:       9b1fbd9d-fdbd-4622-9d3b-6e2b6ad64827
+:ID:       67aff07f-ff08-4811-9a3a-f4f2bc0dd033
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest void-advice-action ()
-  (alet (void-advice-action 'emacs-lisp-mode-hook@hello)
-    (should (string= "hello" it)))
-
-  (alet (void-advice-action 'emacs-lisp-mode-hook@hello@do-this)
-    (should (string= "do-this" it))))
+(expect 'the-hook&something-fn (void-hook-function-name 'the-hook 'something-fn))
+(expect 'another-hook&lala (void-hook-function-name 'another-hook 'lalala))
 #+end_src
 
-* use-package
+** generate hook
 :PROPERTIES:
-:ID:       ba908b4d-f170-49c9-a469-503340ee2198
-:END:
-
-** args or error
-:PROPERTIES:
-:ID:       ee2ee278-34c4-4c5a-b58c-f62cd38ecf74
+:ID:       50e883fd-3b30-47c6-8d7d-2c0be92375b6
 :END:
 
 #+begin_src emacs-lisp
+(expect (void-generate-hook-function))
 #+end_src
 
-** as-one
+** void-add-hook 
 :PROPERTIES:
-:ID:       531081a7-7422-4678-bd5d-b55ff31d81c8
+:ID:       2f6a0803-6666-4e6d-976c-d1950e0fe211
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest use-package:unfold-args ()
-  (should (equal (use-package:unfold-args '(1 2 3 4) #'numberp)
-                 '((1 2 3 4) nil)))
-  (should (equal (use-package:unfold-args '((1 2 3 4)) #'numberp)
-                 '((1 2 3 4) nil)))
-  (should (equal (use-package:unfold-args '((a 2 3 4)) #'numberp)
-                 '((a 2 3 4) a))))
+(let ((some-hook nil))
+  (void--add-hook 'some-hook 'turn-on-the-lights nil nil nil)
+  (expect '(some-hook&turn-on-the-lights) some-hook)
+  ;; TODO: figure out how to determine if a function is an advice
+  (expect (fboundp 'some-hook&turn-on-the-lights@log)))
 #+end_src
 
-** custom use-package keywords
+** void-remove-hook
 :PROPERTIES:
-:ID:       724890eb-4760-400a-9943-3ba25a4772cd
-:END:
-
-*** os
-:PROPERTIES:
-:ID:       63f24710-2c4b-45e6-a293-83ca4aeb9730
+:ID:       b4986c41-71e6-42a5-bfa9-2f134d22b95c
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest use-package-os ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-defer t)
-        (use-package-always-ensure nil))
-    (should-expand-to! (use-package dummy :os mac :init (+ 1 1))
-                       (with-os! (mac) (+ 1 1)))))
+(let ((some-hook '(some-hook&some-function)))
+  ;; (stub 'some-hook&some-function)
+  (expect (void-remove-hook 'some-hook&some-function)))
 #+end_src
 
-*** pre-setq
+** expire-fn
 :PROPERTIES:
-:ID:       8b7867bb-6fa7-4702-a90f-0ec9759ec152
+:ID:       b3e57612-6df5-4186-9967-8fd0ac2e00fb
 :END:
 
 #+begin_src emacs-lisp
-(ert-deftest use-package-pre-setq ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-ensure nil)
-        (use-package-always-defer t))
-
-    (should-expand-to! (use-package foo :pre-setq (one . 1))
-                       (setq one 1))
-
-    (should-expand-to! (use-package foo :pre-setq (one . 1) (two . 2))
-                       (progn (setq one 1) (setq two 2)))
-
-    (should-expand-to! (use-package foo :pre-setq ((one . 1) (two . 2)))
-                       (progn (setq one 1) (setq two 2)))))
-#+end_src
-
-*** setq
-:PROPERTIES:
-:ID:       fe536281-6f1e-4096-99ff-da25b63f82c7
-:END:
-
-#+begin_src emacs-lisp
-(defmacro should-expand-to! (form1 form2)
-  `(should (equal (macroexpand-1 ',form1) ',form2)))
-
-(ert-deftest use-package-setq ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-defer t)
-        (use-package-always-ensure nil))
-
-    (should-expand-to! (use-package foo :setq (one . 1))
-                       (after! foo (setq one 1)))
-
-    (should-expand-to! (use-package foo :setq (one . 1) (two . 2))
-                       (after! foo (setq one 1) (setq two 2)))
-
-    (should-expand-to! (use-package foo :setq ((one . 1) (two . 2)))
-                       (after! foo (setq one 1) (setq two 2)))
-
-    (should-expand-to! (use-package foo :setq (one . 'hook) (two . 'fab))
-                       (after! foo (setq one 'hook) (setq two 'fab)))))
-#+end_src
-
-*** setq-default
-:PROPERTIES:
-:ID:       f1751a23-0c0e-4f21-8afb-181ed789fbd1
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package-setq-default ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-ensure nil)
-        (use-package-always-defer t))
-
-    (should-expand-to! (use-package foo :setq-default (one . 1))
-                       (setq-default one 1))
-
-    (should-expand-to! (use-package foo :setq-default (one . 1) (two . 2))
-                       (progn (setq-default one 1) (setq-default two 2)))
-
-    (should-expand-to! (use-package foo :setq-default ((one . 1) (two . 2)))
-                       (progn (setq-default one 1) (setq-default two 2)))))
-#+end_src
-
-*** before-call
-:PROPERTIES:
-:ID:       0a38dd5c-28b9-4132-9d13-8c89d474b029
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package-before-call ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-ensure nil)
-        (use-package-always-defer t))
-    (should-expand-to! (use-package foo :before-call bar)
-                       (defadvice! load-foo (:before bar)
-                         (require 'foo)))
-
-    (should-expand-to! (use-package foo :before-call bar baz)
-                       (defadvice! load-foo (:before bar baz)
-                         (require 'foo)))))
-#+end_src
-
-*** idle-require
-:PROPERTIES:
-:ID:       c5374e5c-1c21-4e1b-b34b-3e8d37c51d5b
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package-idle-require ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-ensure nil)
-        (use-package-always-defer t))
-    (should-expand-to! (use-package foo :idle-require flop) (idle-require 'flop))
-
-    (should-expand-to! (use-package foo :idle-require flop) (idle-require 'flop))
-
-    (should-expand-to! (use-package foo :idle-require flop flap)
-                       (progn
-                         (idle-require 'flop)
-                         (idle-require 'flap)))))
-#+end_src
-
-*** alias
-:PROPERTIES:
-:ID:       342c65b5-082c-4fc0-9b0b-aef6ab194a48
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package-alias ()
-
-  (let ((use-package-expand-minimally t)
-        (use-package-always-ensure nil)
-        (use-package-always-defer t))
-
-    (should-expand-to! (use-package foo :alias (one . two))
-                       (defalias 'one 'two))
-
-    (should-expand-to! (use-package foo :alias (one . two) (three . four))
-                       (progn
-                         (defalias 'one 'two)
-                         (defalias 'three 'four)))
-
-    (should-expand-to! (use-package foo :alias ((one . two) (three . four)))
-                       (progn
-                         (defalias 'one 'two)
-                         (defalias 'three 'four)))))
-#+end_src
-
-*** hook
-:PROPERTIES:
-:ID:       c1779156-bcf4-4c8f-a555-46c4d99d2ce0
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package-hook ()
-  (let ((use-package-expand-minimally t)
-        (use-package-always-ensure nil))
-    (should-expand-to! (use-package foo :hook emacs-startup)
-                       (progn (unless (fboundp 'foo-mode)
-                                (autoload #'foo-mode "foo" nil t))
-                              (void-add-hook 'emacs-startup-hook #'foo-mode)))
-
-    (should-expand-to! (use-package foo :hook emacs-startup-hook)
-                       (progn (unless (fboundp 'foo-mode)
-                                (autoload #'foo-mode "foo" nil t))
-                              (void-add-hook 'emacs-startup-hook #'foo-mode)))
-
-    (should-expand-to! (use-package foo :hook (emacs-startup-hook . dap-mode))
-                       (progn (unless (fboundp 'dap-mode)
-                                (autoload #'dap-mode "foo" nil t))
-                              (void-add-hook 'emacs-startup-hook #'dap-mode)))
-
-    (should-expand-to! (use-package foo :hook ((emacs-startup-hook . dap-mode)))
-                       (progn (unless (fboundp 'dap-mode)
-                                (autoload #'dap-mode "foo" nil t))
-                              (void-add-hook 'emacs-startup-hook #'dap-mode)))))
-#+end_src
-
-*** popup
-:PROPERTIES:
-:ID:       b67e00d2-f531-4f96-bea6-57d06fff14db
-:END:
-
-#+begin_src emacs-lisp
-(ert-deftest use-package-popup ()
-  (should-expand-to! (use-package foo :popup ("\\*fap" (dap)))
-                     (push '("\\*fap" (dap)) display-buffer-alist)))
-#+end_src
-
-* format
-:PROPERTIES:
-:ID:       4f45a68f-1822-4ef2-995b-a773927629c6
-:END:
-
-#+begin_src emacs-lisp
-(describe "")
-;; find all the symbols that match anaphoric macro.
-(s-match (rx "<" () ">"))
-(defun something-<name>-hook ())
+(with-stub
+  (stub foo)
+  (advice-add #'foo :around (void-expire-advice 'foo t))
+  (expect (noerror) (foo))
+  (expect (error 'void-function-error) (foo))
 #+end_src
