@@ -727,8 +727,8 @@ WRAPPERS are a list of forms to wrap around FORM."
 
 (defun void-hook-p (fn)
   "Return non-nil if FN is a Void hook."
-  (s-matches-p "\\`[^[:space:]]+&[^[:space:]]+\\'"
-               (symbol-name fn)))
+  (alet (rx (seq bos (one-or-more (not space)) "&" (one-or-more (not space)) eos))
+    (s-matches-p it (symbol-name fn))))
 
 ;; **** hook variable
 ;; :PROPERTIES:
