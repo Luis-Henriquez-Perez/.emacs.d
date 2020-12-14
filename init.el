@@ -2476,7 +2476,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (let (confirm-kill-emacs)
     (kill-emacs)))
 
-
 ;; * Completion
 ;; :PROPERTIES:
 ;; :ID:       744ac652-aebc-4f5b-883a-4464dd7b07cd
@@ -4354,6 +4353,20 @@ If it's not possible, abort initialization gracefully."
 ;; :PROPERTIES:
 ;; :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 ;; :END:
+
+;; ** separedit
+;; :PROPERTIES:
+;; :ID:       07021099-6cea-4016-929b-d9310ea305f8
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("separedit.el" "separedit-pkg.el")
+;; :HOST:     github
+;; :REPO:     "twlz0ne/separedit.el"
+;; :PACKAGE:  "separedit"
+;; :LOCAL-REPO: "separedit.el"
+;; :END:
+
+(autoload #'separedit-dwim "separedit" nil t nil)
 
 ;; ** expand-region
 ;; :PROPERTIES:
