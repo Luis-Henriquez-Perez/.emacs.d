@@ -222,9 +222,9 @@ Assumes vc is git which is fine because straight only uses git right now."
 (defun org/add-straight-recipe-info ()
   "Add"
   (interactive)
-  (awhen (->> (-fifth-item (org-heading-components))
-              (hash-get straight--recipe-cache)
-              (-partition-before-pred #'keywordp))
+  (awhen (--> (-fifth-item (org-heading-components))
+              (hash-get it straight--recipe-cache)
+              (-partition-before-pred #'keywordp it))
     (-each it
       (-lambda ((property value))
         (org-set-property (upcase (void-keyword-name property))
