@@ -5988,6 +5988,24 @@ same key as the one(s) being added."
 ;; It's easy to underestimate how much of a difference having an asthetically
 ;; pleasing Emacs configuration can have. Ugliness really can take its toll.
 
+;; ** zoom-frm
+;; :PROPERTIES:
+;; :ID:       15b8577e-3f98-420a-81a5-c7b91292aca3
+;; :TYPE:     git
+;; :HOST:     github
+;; :REPO:     "emacsmirror/zoom-frm"
+;; :PACKAGE:  "zoom-frm"
+;; :LOCAL-REPO: "zoom-frm"
+;; :END:
+
+;; This package increases or decreases the font of the current frame. It differs
+;; from [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale-decrease][text-scale-decrease]] in that it applies this
+;; "zooming" to the whole frame instead of the current buffer.
+
+(setq frame-zoom-font-difference 3)
+(autoload #'zoom-out "zoom-frm" nil t nil)
+(autoload #'zoom-in "zoom-frm" nil t nil)
+
 ;; ** mini-modeline
 ;; :PROPERTIES:
 ;; :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
