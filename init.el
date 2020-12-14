@@ -3071,91 +3071,91 @@ Orderless will do this."
   (setq-local org-mu4e-convert-to-html nil))
 
 ;; **** multiple accounts
-;; ;; :PROPERTIES:
-;; ;; :ID: ad6de3a4-674c-490f-841e-19b8f891cd65
-;; ;; :END:
+;; :PROPERTIES:
+;; :ID: ad6de3a4-674c-490f-841e-19b8f891cd65
+;; :END:
 
-;; ;; Mu4e certainly gave me some trouble setting up multiple accounts despite [its
-;; ;; attempt] to make this easy. I have one directory =~/.mail= where which stores all
-;; ;; my mail. The subdirectories of =~/.mail= correspond to my individual email
-;; ;; accounts. Until I set multiple accounts correctly it keeps prompting me to
-;; ;; create folders (such as =sent/=) in the =~/.mail= directory. I think part of the
-;; ;; reason I spent so much time setting this up is because.
+;; Mu4e certainly gave me some trouble setting up multiple accounts despite [its
+;; attempt] to make this easy. I have one directory =~/.mail= where which stores all
+;; my mail. The subdirectories of =~/.mail= correspond to my individual email
+;; accounts. Until I set multiple accounts correctly it keeps prompting me to
+;; create folders (such as =sent/=) in the =~/.mail= directory. I think part of the
+;; reason I spent so much time setting this up is because.
 
-;; ;; ***** return the list of emails with credentials
-;; ;; :PROPERTIES:
-;; ;; :ID:       3f7b1728-b855-447f-9f15-43bd79a94c14
-;; ;; :END:
+;; ***** return the list of emails with credentials
+;; :PROPERTIES:
+;; :ID:       3f7b1728-b855-447f-9f15-43bd79a94c14
+;; :END:
 
-;; (defun pass:email-list ()
-;;   "Return a list of emails."
-;;   (->> (password-store-list)
-;;        (--map (elt (s-match "email/\\(.*\\)" it) 1))
-;;        (-non-nil)))
+(defun pass:email-list ()
+  "Return a list of emails."
+  (->> (password-store-list)
+       (--map (elt (s-match "email/\\(.*\\)" it) 1))
+       (-non-nil)))
 
-;; ;; ***** return the stuff as a plist
-;; ;; :PROPERTIES:
-;; ;; :ID:       8129ca16-8641-4f2f-a4b6-03477d5b78f3
-;; ;; :END:
+;; ***** return the stuff as a plist
+;; :PROPERTIES:
+;; :ID:       8129ca16-8641-4f2f-a4b6-03477d5b78f3
+;; :END:
 
-;; (defun pass:email-account-plist (email)
-;;   "Return a plist of the relevant values of an email."
-;;   (shut-up!
-;;    (->> (cdr (password-store-parse-entry email))
-;;         (mapcar #'car)
-;;         (--mapcat (list (intern it)
-;;                         (password-store-get-field (concat "email/" email) it))))))
+(defun pass:email-account-plist (email)
+  "Return a plist of the relevant values of an email."
+  (shut-up
+    (->> (cdr (password-store-parse-entry email))
+         (mapcar #'car)
+         (--mapcat (list (intern it)
+                         (password-store-get-field (concat "email/" email) it))))))
 
-;; ;; ***** mu4e folder name alist
-;; ;; :PROPERTIES:
-;; ;; :ID:       2ef07842-e321-4fff-ae73-f19c41d263a4
-;; ;; :END:
+;; ***** mu4e folder name alist
+;; :PROPERTIES:
+;; :ID:       2ef07842-e321-4fff-ae73-f19c41d263a4
+;; :END:
 
-;; ;; Mu4e keeps prompting you for the sent, trash, and drafts directory if you do not
-;; ;; assign the corresponding mu4e variables. The way certain email servers name
-;; ;; their directories varies. For example, outlook names its sent directory as =Sent
-;; ;; Items=.
+;; Mu4e keeps prompting you for the sent, trash, and drafts directory if you do not
+;; assign the corresponding mu4e variables. The way certain email servers name
+;; their directories varies. For example, outlook names its sent directory as =Sent
+;; Items=.
 
-;; (defun mu4e:guess-folder (base-dir possible-name &rest other-possible-names)
-;;   "Return the first file in BASE-DIR that matches POSSIBLE-NAME or any POSSIBLE-NAMES.
-;; If there is no match, return POSSIBLE-NAME."
-;;   (alet (or (--first (-some-p (-cut s-contains-p <> it t)
-;;                               (cons possible-name other-possible-names))
-;;                      (cddr (directory-files base-dir)))
-;;             possible-name)
-;;     (format "/%s/%s" (f-filename base-dir) it)))
+(defun mu4e:guess-folder (base-dir possible-name &rest other-possible-names)
+  "Return the first file in BASE-DIR that matches POSSIBLE-NAME or any POSSIBLE-NAMES.
+If there is no match, return POSSIBLE-NAME."
+  (alet (or (--first (-some-p (-cut s-contains-p <> it t)
+                              (cons possible-name other-possible-names))
+                     (cddr (directory-files base-dir)))
+            possible-name)
+    (format "/%s/%s" (f-filename base-dir) it)))
 
-;; ;; ***** set up contexts for single account
-;; ;; :PROPERTIES:
-;; ;; :ID:       66d460d7-9647-4c29-8348-eb7b3d571630
-;; ;; :END:
+;; ***** set up contexts for single account
+;; :PROPERTIES:
+;; :ID:       66d460d7-9647-4c29-8348-eb7b3d571630
+;; :END:
 
-;; (defun mu4e::account-context (email)
-;;   "Return an mu4e account context for specified EMAIL."
-;;   (let* ((base-dir (concat VOID-EMAIL-DIR email "/"))
-;;          (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
-;;          (account (pass:email-account-plist email))
-;;          (out-host (plist-get 'out-host account))
-;;          (out-port (plist-get 'out-port account)))
-;;     (alet `((mu4e-sent-folder      . ,(mu4e:guess-folder base-dir "sent"))
-;;             (mu4e-drafts-folder    . ,(mu4e:guess-folder base-dir "draft"))
-;;             (mu4e-trash-folder     . ,(mu4e:guess-folder base-dir "trash" "delete" "junk"))
-;;             (user-email-address    . ,email)
-;;             (smtpmail-smtp-server  . ,out-host)
-;;             (smtpmail-smtp-user    . ,base-dir)
-;;             (smtpmail-smtp-service . ,out-port))
-;;       (make-mu4e-context :name name :vars it))))
+(defun mu4e::account-context (email)
+  "Return an mu4e account context for specified EMAIL."
+  (let* ((base-dir (concat VOID-EMAIL-DIR email "/"))
+         (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
+         (account (pass:email-account-plist email))
+         (out-host (plist-get 'out-host account))
+         (out-port (plist-get 'out-port account)))
+    (alet `((mu4e-sent-folder      . ,(mu4e:guess-folder base-dir "sent"))
+            (mu4e-drafts-folder    . ,(mu4e:guess-folder base-dir "draft"))
+            (mu4e-trash-folder     . ,(mu4e:guess-folder base-dir "trash" "delete" "junk"))
+            (user-email-address    . ,email)
+            (smtpmail-smtp-server  . ,out-host)
+            (smtpmail-smtp-user    . ,base-dir)
+            (smtpmail-smtp-service . ,out-port))
+      (make-mu4e-context :name name :vars it))))
 
-;; ;; ***** multiple contexts
-;; ;; :PROPERTIES:
-;; ;; :ID: e56b64ac-ed36-4689-b8f4-8711c1f4f79f
-;; ;; :END:
+;; ***** multiple contexts
+;; :PROPERTIES:
+;; :ID: e56b64ac-ed36-4689-b8f4-8711c1f4f79f
+;; :END:
 
-;; (defadvice! setup-contexts (:before mu4e)
-;;   "Initiaize context for each email account."
-;;   (require 'password-store)
-;;   (--each (-map #'mu4e::account-context (pass:email-list))
-;;     (cl-pushnew it mu4e-contexts)))
+(defadvice! setup-contexts (:before mu4e)
+  "Initiaize context for each email account."
+  (require 'password-store)
+  (--each (-map #'mu4e::account-context (pass:email-list))
+    (cl-pushnew it mu4e-contexts)))
 
 ;; **** truncate lines in messages
 ;; ;; :PROPERTIES:
