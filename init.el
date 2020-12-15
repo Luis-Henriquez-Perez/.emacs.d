@@ -2326,7 +2326,8 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (defun void/open-init-file ()
   "Switch to init file."
   (interactive)
-  (alet (or (get-file-buffer VOID-INIT-FILE) (create-file-buffer VOID-INIT-FILE))
+  (alet (or (get-file-buffer VOID-INIT-FILE)
+	    (create-file-buffer VOID-INIT-FILE))
     (display-buffer it)))
 
 ;; **** messages buffer
