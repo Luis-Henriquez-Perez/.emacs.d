@@ -6770,7 +6770,7 @@ same key as the one(s) being added."
   "w" (list :def #'escr-window-screenshot :wk "window")
   "f" (list :def #'escr-frame-screenshot  :wk "frame"))
 
-;; ** search
+;; *** search
 ;; :PROPERTIES:
 ;; :ID: b50ed0da-652d-4d20-8a4e-e0cf053548a6
 ;; :END:
@@ -6779,5 +6779,5 @@ same key as the one(s) being added."
   :infix "s"
   ""  (list :ignore t :wk "search")
   "s" (list :def #'consult-line :wk "jump to line")
-  "w" (list :def #'search-web/default-engine :wk "web")
+  "w" (list :def #'engine/search-duckduckgo :wk "web")
   "h" (list :def #'consult-outline :wk "jump to outline heading"))
