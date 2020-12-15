@@ -2884,6 +2884,134 @@ Orderless will do this."
 
 ;; * Utility
 
+;; ** engine-mode
+;; :PROPERTIES:
+;; :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
+;; :HOST:     github
+;; :BRANCH:   "main"
+;; :REPO:     "hrs/engine-mode"
+;; :COMMIT:   "e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1"
+;; :TYPE:     git
+;; :PACKAGE:  "engine-mode"
+;; :LOCAL-REPO: "engine-mode"
+;; :END:
+
+;; *** engine-mode
+;; :PROPERTIES:
+;; :ID:       f5a2c47b-01df-4dcf-b012-b6311cf79683
+;; :END:
+
+(--each '(engine/search-duckduckgo engine/search-qwant
+	  engine/search-duckduckgo engine/search-wikipedia)
+  (autoload it "engine-mode" nil t nil))
+
+;; *** different engines
+;; :PROPERTIES:
+;; :ID:       2f5c974e-b26e-4080-a9b3-acd6406ab118
+;; :END:
+
+;; This package essentially automates the creation of an interactive web searching
+;; functions.
+
+(after! engine-mode
+  (defengine amazon
+    "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s")
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s")
+  (defengine qwant
+    "https://www.qwant.com/?q=%s")
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"))
+
+;; ** restart-emacs
+;; :PROPERTIES:
+;; :ID:       7412bc2f-0db1-44e9-8ea7-0dc595a04fca
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :HOST:     github
+;; :REPO:     "iqbalansari/restart-emacs"
+;; :PACKAGE:  "restart-emacs"
+;; :LOCAL-REPO: "restart-emacs"
+;; :END:
+
+(autoload #'restart-emacs "restart-emacs" nil t nil)
+
+;; ** escr
+;; :PROPERTIES:
+;; :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
+;; :host:     github
+;; :repo:     "atykhonov/escr"
+;; :package:  "escr"
+;; :type:     git
+;; :local-repo: "escr"
+;; :commit:   fc9dcdd98fcd7c9482f31032779fcd9e574016c0
+;; :END:
+
+;; Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
+;; cannot. From my experience looking at posts on [[https://emacs.stackexchange.com/][emacs stackexchange]] or
+;; [[https://www.reddit.com/r/emacs/][emacs-reddit]] or even other [[https://github.com/caisah/emacs.dz][emacs configs]], screenshots are underutilized (or
+;; often not utilized at all).
+
+;; There are three screenshot packages I know of [[https://github.com/emacsmirror/screenshot][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[https://github.com/atykhonov/escr][escr]]. But
+;; they all have their downsides. Screenshot's main command, =screenshot=, assumes
+;; that you want. =escr= doesn't provide prompt you for the filename or provide any
+;; option that would prompt you for the file name.
+
+;; *** init
+;; :PROPERTIES:
+;; :ID:       a6a8610e-84b5-471d-8f07-2ad2c67c2998
+;; :END:
+
+(--each '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
+  (autoload it "escr" nil t nil))
+
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       4ec97ac8-cad6-4536-be21-6ae2ee1655f3
+;; :END:
+
+(setq escr-screenshot-quality 10)
+;; (setq escr-screenshot-directory VOID-SCREENSHOT-DIR)
+
+;; *** function for geting screenshot filename
+;; :PROPERTIES:
+;; :ID:       58405f4f-e891-494e-afc7-a227415ec12b
+;; :END:
+
+;; =escr= doesn't prompt for the filename. While this is faster in the shortrun and
+;; may be useful for situations when you're short on time, it does mean that I'll
+;; need to invest time in looking at the screenshots again so you can properly name
+;; them.
+
+(defun escr:get-filename ()
+  "Return the filename."
+  (alet (format "%s-%s.png"
+                (alet (read-string "Image name: ")
+                  (if (string-empty-p it) "screenshot" it))
+                (format-time-string "%Y-%m-%d-%H-%M-%S.png"))
+    (expand-file-name it escr-screenshot-directory)))
+
+;; *** tell =escr--screenshot= to use maim
+;; :PROPERTIES:
+;; :ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
+;; :END:
+
+;; If we don't use an short idle timer to take the screenshot, we'll end up
+;; capturing the prompt for the filename (like in [[][this example]]).
+
+(defadvice! use-miam (:override (x y width height) escr--screenshot)
+  (let ((window-id (frame-parameter (selected-frame) 'window-id))
+        (crop (format "%sx%s+%s+%s" width height x y))
+        (filename (escr:get-filename)))
+    (alet `(lambda ()
+             (call-process "maim" nil nil nil
+                           "--window" ,window-id
+                           "--geometry" ,crop
+                           "--quality" ,(number-to-string escr-screenshot-quality)
+                           ,filename)
+             (message "Screenshot Taken!"))
+      (run-with-timer 1 nil it))))
+
 ;; ** gif-screencast
 ;; :PROPERTIES:
 ;; :ID:       d8553132-c244-4319-bcc9-51905a296e34
