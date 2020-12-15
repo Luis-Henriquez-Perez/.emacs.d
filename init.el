@@ -4325,6 +4325,10 @@ If it's not possible, abort initialization gracefully."
 ;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
 ;; :END:
 
+(setq wg-load-last-workgroup nil)
+(setq wg-open-this-wg nil)
+(setq wg-control-frames nil)
+(setq wg-session-load-on-start nil)
 (setq wg-flag-modified nil)
 (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
 
