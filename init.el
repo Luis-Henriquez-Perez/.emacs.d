@@ -1765,6 +1765,17 @@ SYM is a symbol that stores a list."
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
 
+;; *** log the init time
+;; :PROPERTIES:
+;; :ID:       36e2113f-a28f-4ef2-bb90-141f82291c91
+;; :END:
+
+;; I find it convenient to be able to view the init time in the =*void-log*= buffer.
+
+(defhook! log-init-time (emacs-startup-hook :append t)
+  "Log the init time."
+  (void-log "emacs-init-time -> %s" (emacs-init-time)))
+
 ;; *** set the fill-column
 ;; :PROPERTIES:
 ;; :ID:       84d8e85a-a6a1-49cd-b46e-e5cd3f825438
