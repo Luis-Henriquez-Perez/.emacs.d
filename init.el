@@ -2310,7 +2310,8 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 (defun void/set-font-face ()
   "Apply an existing xfont to all graphical frames."
   (interactive)
-  (set-frame-font (completing-read "Choose font: " (x-list-fonts "*")) nil t))
+  (alet (completing-read "Choose font: " (x-list-fonts "*"))
+    (set-frame-font it nil t)))
 
 ;; *** important buffers
 ;; :PROPERTIES:
