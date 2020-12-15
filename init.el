@@ -6350,8 +6350,9 @@ same key as the one(s) being added."
 ;; :ID:       1bcc371e-61fa-480e-bdae-4a999d3b10c9
 ;; :END:
 
-(defadvice! open-dashboard-instead (:override void-initial-buffer)
-  (if void-debug-p (get-buffer "*Messages*")
+(defadvice! open-dashboard-instead (:around void-initial-buffer)
+  (if void-debug-p
+      (apply <orig-fn> <args>)
     (get-buffer-create "*dashboard*")))
 
 ;; **** settings
