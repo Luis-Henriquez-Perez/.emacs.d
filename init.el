@@ -1750,10 +1750,45 @@ SYM is a symbol that stores a list."
 
 (setq nsm-settings-file (concat VOID-DATA-DIR "network-settings.data"))
 
+;; *** browse-url
+;; :PROPERTIES:
+;; :ID:       e59dc362-5615-45a8-8010-a111ddc5e835
+;; :END:
+
+;; =browse-url= is a built-in package that provides a useful abstraction for browsing
+;; the web.
+
+;; **** always open url in new windows
+;; :PROPERTIES:
+;; :ID:       6ae5e9b6-4be3-4689-b539-3959e9d20f23
+;; :END:
+
+;; Strive to always open url in new windows. While using exwm, having each
+;; window be in it's own buffer lends itself better to searching them via
+;; [[helpfn:switch-to-buffer][switch-to-buffer]] and the like.
+
+(setq browse-url-firefox-new-window-is-tab nil)
+(setq browse-url-new-window-flag t)
+(setq browse-url-firefox-arguments nil)
+
+(alet (list (cons (rx "http://www.wikipedia.org/search") #'w3m)
+	    (cons "." #'browse-url-firefox))
+  (setq browse-url-browser-function it))
+
 ;; ** Miscellaneous
 ;; :PROPERTIES:
 ;; :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 ;; :END:
+
+;; *** disable =auto-save-directory= from being created
+;; :PROPERTIES:
+;; :ID:       eca1df47-5c58-4606-8036-a9b8de3ec962
+;; :END:
+
+;; As per [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][this stackoverflow question]], this prevents the =auto-save-directory= from
+;; being created.
+
+(setq auto-save-list-file-prefix nil)
 
 ;; *** log the init time
 ;; :PROPERTIES:
