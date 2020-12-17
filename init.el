@@ -6516,37 +6516,22 @@ same key as the one(s) being added."
 ;; :ID:       ee63aedb-beb7-4857-9af6-0b52afc2672e
 ;; :END:
 
-;; *** one-themes
+;; *** base16-theme
 ;; :PROPERTIES:
-;; :ID:       b3b03192-be43-45fa-8086-1bb572af9499
+;; :ID:       1046503c-61b9-4769-ad48-58ba7f8000f5
 ;; :TYPE:     git
 ;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "build/*.el" "base16-theme-pkg.el")
 ;; :HOST:     github
-;; :REPO:     "balajisivaraman/emacs-one-themes"
-;; :PACKAGE:  "one-themes"
-;; :LOCAL-REPO: "emacs-one-themes"
+;; :REPO:     "belak/base16-emacs"
+;; :PACKAGE:  "base16-theme"
+;; :LOCAL-REPO: "base16-emacs"
 ;; :END:
 
-(setq emacs-one-use-variable-pitch nil)
+;; =base16-theme= has variants of essentially all the themes I use, so I decided
+;; just to use these themes instead of the others.
 
-;; *** solarized-theme
-;; :PROPERTIES:
-;; :ID:       f1a6119b-edba-4478-a726-ddb9c7530318
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :HOST:     github
-;; :REPO:     "bbatsov/solarized-emacs"
-;; :PACKAGE:  "solarized-theme"
-;; :LOCAL-REPO: "solarized-emacs"
-;; :END:
-
-(setq solarized-use-variable-pitch nil)
-
-;; *** gruvbox-theme
-;; :PROPERTIES:
-;; :ID:       b10fe46a-390a-436d-876e-7a62de335fa6
-;; :END:
-
+(void-load-before-call 'base16-theme #'load-theme)
 
 ;; * Keybindings
 ;; :PROPERTIES:
