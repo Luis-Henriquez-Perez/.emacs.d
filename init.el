@@ -559,6 +559,9 @@ Assumes vc is git which is fine because straight only uses git right now."
 ;; :LOCAL-REPO: "elog"
 ;; :END:
 
+;; =elog= is a library for generating logging functions. I use [[][]] to generate a
+;; function that logs to the buffer =*void-log*=.
+
 (require 'elog)
 
 (elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
