@@ -2951,6 +2951,52 @@ Orderless will do this."
   (defengine wikipedia
     "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"))
 
+;; ** eww
+;; :PROPERTIES:
+;; :ID:       77d23774-7f42-45ee-90ec-5f28efddee65
+;; :END:
+
+;; *** ability to add new windows
+;; :PROPERTIES:
+;; :ID:       54dc52bb-f7e5-4a86-a306-aa42482cbd6d
+;; :END:
+
+;; =eww= doesn't create new buffers by default when you do a new search. Instead, it
+;; replaces the existing buffer. I got this code snippet from [[https://stackoverflow.com/questions/28458784/emacs-and-eww-open-links-in-new-window][this-question]].
+
+(defhook! create-new-buffer (eww-after-render-hook)
+  (let* ((title  (plist-get eww-data :title))
+	 (url    (plist-get eww-data :url))
+	 (result (concat "*eww-" (or title
+				     (if (string-match "://" url)
+					 (substring url (match-beginning 0))
+				       url)) "*")))
+    (rename-buffer result t)))
+
+;; ** w3m
+;; :PROPERTIES:
+;; :ID: e5e13423-bc70-49b0-969e-94897c798d54
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    (:defaults "icons" (:exclude "octet.el" "mew-w3m.el" "w3m-xmas.el") "w3m-pkg.el")
+;; :HOST:     github
+;; :REPO:     "emacs-w3m/emacs-w3m"
+;; :PACKAGE:  "w3m"
+;; :LOCAL-REPO: "emacs-w3m"
+;; :COMMIT:   "a4edf91ba14d39b6a1a2724ad275e941b1f00235"
+;; :END:
+
+;; [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
+;; there, but =w3m= has the benefit of having comprehensive [[https://github.com/emacs-w3m/emacs-w3m][emacs interface]]. Why
+;; use this when you can use the GUI browser? Well, using the Emacs interface I can
+;; view an Emacs webpage as plain text, which means I can perform searches on it
+;; with [[https://github.com/abo-abo/swiper.git][swiper]], or any other Emacs operation on it. Another advantage is that
+;; because the w3m interface's backend is a terminal application, it will (I'm
+;; guessing; no benchmarks made) typically be faster than browsers at rendering
+;; plain text webpages. Of course, the main limitation is that w3m will typically
+;; only display text based web pages well--not ones with lots of interactive
+;; javascript code.
+
 ;; ** restart-emacs
 ;; :PROPERTIES:
 ;; :ID:       7412bc2f-0db1-44e9-8ea7-0dc595a04fca
