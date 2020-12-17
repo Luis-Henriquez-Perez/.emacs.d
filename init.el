@@ -1631,16 +1631,6 @@ SYM is a symbol that stores a list."
   (setq tramp-auto-save-directory (concat VOID-DATA-DIR "tramp-auto-save/"))
   (setq tramp-persistency-file-name (concat VOID-DATA-DIR "tramp-persistency.el")))
 
-;; *** desktop
-;; :PROPERTIES:
-;; :ID: 3a6b72e7-57c8-42f0-a8d7-1bbde72de9bd
-;; :END:
-
-(after! desktop
-  (setq desktop-dirname (concat VOID-DATA-DIR "desktop"))
-  (setq desktop-base-file-name "autosave")
-  (setq desktop-base-lock-name "autosave-lock"))
-
 ;; *** cus-edit
 ;; :PROPERTIES:
 ;; :ID: 8bd5683d-91e1-4c1b-a8a5-3b39921e995d
