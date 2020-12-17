@@ -4668,7 +4668,7 @@ If it's not possible, abort initialization gracefully."
 ;; [[https://github.com/emacsmirror/auto-capitalize][auto-capitalize]] automatically capitalizes the first word of a sentence for me.
 ;; It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capitalize-words]].
 
-(void-add-hook '(text-mode-hook org-mode-hook) #'auto-capitalize-mode)
+(void-add-hook 'text-mode-hook #'auto-capitalize-mode)
 (autoload #'auto-capitalize-mode "auto-capitalize" nil t nil)
 (setq auto-capitalize-words '("I" "English"))
 
