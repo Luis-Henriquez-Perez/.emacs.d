@@ -4794,7 +4794,7 @@ If it's not possible, abort initialization gracefully."
 ;; :ID: e860ce7e-aaac-477b-a373-a8b01957481d
 ;; :END:
 
-(void-load-before-call 'smartparens (list #'evil-expression #'evil-ex))
+(void-load-before-call 'smartparens (list #'evil-expression #'evil-ex) t)
 
 (after! smartparens
   (defhook! enable-smartparens-maybe (minibuffer-setup-hook)
