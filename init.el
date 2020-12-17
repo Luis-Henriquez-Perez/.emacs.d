@@ -740,8 +740,6 @@ WRAPPERS are a list of forms to wrap around FORM."
   "Return a list of anaphoric symbols in OBJ."
   (s-match-strings-all VOID-ANAPHORIC-SYMBOL-REGEXP (void-to-string obj)))
 
-
-
 ;; *** hooks
 ;; :PROPERTIES:
 ;; :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
