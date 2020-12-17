@@ -2730,7 +2730,8 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 (defhook! ensure-yasnippet-dirs (yas-minor-mode-hook)
-  (--each yas-snippet-dirs (mkdir (void-to-string it) t)))
+  (--each yas-snippet-dirs
+    (mkdir (if (stringp it) it (symbol-value it)) t)))
 
 ;; **** delete yasnippet prompt
 ;; :PROPERTIES:
