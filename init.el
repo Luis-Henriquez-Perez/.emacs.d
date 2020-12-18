@@ -6688,7 +6688,7 @@ same key as the one(s) being added."
   "t" (list :def #'load-theme            :wk "load theme")
   "c" (list :def #'caps-lock-mode        :wk "caps lock")
   "d" (list :def #'toggle-debug-on-error :wk "debug")
-  "F" (list :def #'void/set-font-face         :wk "set font")
+  "F" (list :def #'void/set-font-face    :wk "set font")
   "f" (list :def #'void/set-font-size    :wk "font size"))
 
 (define-leader-key!
@@ -6706,13 +6706,14 @@ same key as the one(s) being added."
 
 (define-leader-key!
   :infix "h"
-  ""  (list :ignore t                      :wk "help")
-  "h" (list :def #'describe-function       :wk "function")
-  "v" (list :def #'describe-variable       :wk "variable")
-  "c" (list :def #'describe-char           :wk "char")
-  "k" (list :def #'describe-key            :wk "key")
-  "f" (list :def #'describe-function       :wk "function")
-  "a" (list :def #'apropos                 :wk "apropos"))
+  ""  (list :ignore t                :wk "help")
+  "m" (list :def #'describe-mode     :wk "mode")
+  "h" (list :def #'describe-function :wk "function")
+  "v" (list :def #'describe-variable :wk "variable")
+  "c" (list :def #'describe-char     :wk "char")
+  "k" (list :def #'describe-key      :wk "key")
+  "f" (list :def #'describe-function :wk "function")
+  "a" (list :def #'apropos           :wk "apropos"))
 
 ;; *** quit
 ;; :PROPERTIES:
@@ -6737,35 +6738,6 @@ same key as the one(s) being added."
   ;; "r" (list :def #'restart-emacs             :wk "and restart")
   )
 
-;; *** windows
-;; :PROPERTIES:
-;; :ID: 784956e2-3696-4f92-80ca-41b7e30e5b2b
-;; :END:
-
-;; Efficient window management in Emacs crucial for success. These keys all pertain
-;; to window/workspace actions.
-
-(define-leader-key!
-  :infix "w"
-  ""  (list :ignore nil                              :wk "window")
-  "w" (list :def #'display-buffer :wk "display buffer")
-  "o" (list :def #'other-window                      :wk "other window")
-  "S" (list :def #'void/window-split-below-and-focus :wk "split below and focus")
-  "V" (list :def #'void/window-split-right-and-focus :wk "split right and focus")
-  "s" (list :def #'split-window-below                :wk "split below")
-  "v" (list :def #'split-window-right                :wk "split right")
-  "M" (list :def #'maximize-window                   :wk "maximize")
-  "m" (list :def #'minimize-window                   :wk "minimize")
-  "b" (list :def #'balance-windows                   :wk "move left")
-  "d" (list :def #'delete-window                     :wk "delete current")
-  "D" (list :def #'delete-other-windows              :wk "delete others")
-  "h" (list :def #'windmove-left                     :wk "move left")
-  "j" (list :def #'windmove-down                     :wk "move down")
-  "k" (list :def #'windmove-up                       :wk "move up")
-  "l" (list :def #'windmove-right                    :wk "move right")
-  "x" (list :def #'ace-swap-window                   :wk "swap windows")
-  "t" (list :def #'transpose-frame                   :wk "transpose"))
-
 ;; *** buffer
 ;; :PROPERTIES:
 ;; :ID: e3eec4f8-88d8-4010-adb5-2f8e05f14677
@@ -6773,18 +6745,24 @@ same key as the one(s) being added."
 
 (define-leader-key!
   :infix "b"
-  ""  (list :def nil                :wk "buffer")
-  "p" (list :def #'previous-buffer  :wk "previous")
-  "n" (list :def #'next-buffer      :wk "next")
-  "s" (list :def #'switch-to-buffer :wk "switch")
-  "b" (list :def #'switch-to-buffer :wk "switch")
-  "M" (list :def #'void/open-messages :wk "open *Messages*")
-  "d" (list :def #'display-buffer   :wk "display"))
+  ""  (list :def nil                             :wk "buffer")
+  "p" (list :def #'previous-buffer               :wk "previous")
+  "n" (list :def #'next-buffer                   :wk "next")
+  "s" (list :def #'switch-to-buffer              :wk "switch")
+  "b" (list :def #'switch-to-buffer-other-window :wk "switch")
+  "d" (list :def #'display-buffer                :wk "display"))
 
 (define-leader-key!
   :infix "b k"
   ""  (list :ignore t             :wk "kill")
   "c" (list #'kill-current-buffer :wk "current"))
+
+(define-leader-key!
+  :infix "b c"
+  ""  (list :ignore t                  :wk "common buffers")
+  "m" (list :def #'void/open-messages  :wk "*Messages*")
+  "s" (list :def #'void/open-scratch   :wk "*scratch*")
+  "i" (list :def #'void/open-init-file :wk "init"))
 
 ;; *** code
 ;; :PROPERTIES:
@@ -6812,16 +6790,16 @@ same key as the one(s) being added."
 
 (define-leader-key!
   :infix "a"
-  "a" (list :def #'void/open-org-agenda      :wk "agenda")
-  "m" (list :def #'mu4e                      :wk "mu4e")
-  "l" (list :def #'org-store-link                    :wk "store link")
-  "f" (list :def #'elfeed                    :wk "elfeed")
-  "d" (list :def #'deer                      :wk "deer")
-  "r" (list :def #'ranger                    :wk "ranger")
-  "e" (list :def #'void/open-emacs-instance  :wk "emacs")
-  "q" (list :def #'engine/search-qwant :wk "browse web")
-  "j" (list :def #'org/avy-goto-headline :wk "heading jump")
-  "c" (list :def #'org/choose-capture-template               :wk "capture"))
+  "a" (list :def #'void/open-org-agenda        :wk "agenda")
+  "m" (list :def #'mu4e                        :wk "mu4e")
+  "l" (list :def #'org-store-link              :wk "store link")
+  "f" (list :def #'elfeed                      :wk "elfeed")
+  "d" (list :def #'deer                        :wk "deer")
+  "r" (list :def #'ranger                      :wk "ranger")
+  "e" (list :def #'void/open-emacs-instance    :wk "emacs")
+  "q" (list :def #'engine/search-duckduckgo    :wk "browse web")
+  "j" (list :def #'org/avy-goto-headline       :wk "heading jump")
+  "c" (list :def #'org/choose-capture-template :wk "capture"))
 
 (define-leader-key! "as" (list :ignore nil :wk "screenshot"))
 
@@ -6838,7 +6816,7 @@ same key as the one(s) being added."
 
 (define-leader-key!
   :infix "s"
-  ""  (list :ignore t :wk "search")
-  "s" (list :def #'consult-line :wk "jump to line")
+  ""  (list :ignore t                       :wk "search")
+  "s" (list :def #'consult-line             :wk "jump to line")
   "w" (list :def #'engine/search-duckduckgo :wk "web")
-  "h" (list :def #'consult-outline :wk "jump to outline heading"))
+  "h" (list :def #'consult-outline          :wk "jump to outline heading"))
