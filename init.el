@@ -4896,6 +4896,103 @@ If it's not possible, abort initialization gracefully."
 ;; :ID:       9639633f-ec3d-4499-9615-db0dcc9650c9
 ;; :END:
 
+;; **** text objects
+;; :PROPERTIES:
+;; :ID: 07366548-2960-49c6-9ab7-cb177b06ad70
+;; :END:
+
+;; To edit text efficiently Vim has the concept of [[https://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/][text objects]]. Text objects are
+;; structures that are seen in text. For example, a set of words followed by a
+;; period is a sentence. A words between two closing parentheses is a sexp.
+
+;; ***** general delimiter text object
+;; :PROPERTIES:
+;; :ID: f551956d-440c-431b-8fb0-8e71c9714f11
+;; :END:
+
+;; I discovered this the =form= text object from using [[https://github.com/luxbock/evil-cleverparens][evil-cleverparens]] in the past.
+;; The package =evil-cleverparens= was too slow for my taste; noctuid's [[https://github.com/sp3ctum/evil-lispy][evil-lispy]] is
+;; much faster and gave me the functionality that I needed most from
+;; =evil-cleverparens=: deleting and copying text with parentheses intelligently.
+;; However, many of the ideas of =evil-cleverparens= were excellent. One particular
+;; idea was to have a general =form= text object. Instead of specifying the
+;; particular surrounding bounds when doing an evil operator command you just use a
+;; single key for them. It's kind of like a =Do-What-I-Mean= surround operator. This
+;; is suprisingly useful because it takes significant time to specify whether you
+;; want =[]= or ={=}= or =()= or =""=. The main drawback you cannot distinguish between
+;; surround characters at multiple levels--it just takes the closest one. In
+;; practice, this is rarely an issue.
+
+(after! evil
+  (evil-define-text-object evil:textobj-inner-form (count &rest _)
+    "Inner sexp object."
+    (-if-let ((beg . end)
+              (->> (list (lispy--bounds-list) (lispy--bounds-string))
+                   (-non-nil)
+                   (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
+                   (car)))
+        (evil-range (1+ beg) (1- end) 'inclusive :expanded t)
+      (error "No surrounding form found.")))
+
+  (evil-define-text-object evil:textobj-outer-form (count &rest _)
+    "Smartparens inner sexp object."
+    (-if-let ((beg . end)
+              (->> (list (lispy--bounds-list) (lispy--bounds-string))
+                   (-non-nil)
+                   (--sort (< (- (cdr it) (car it)) (- (cdr other) (car other))))
+                   (car)))
+        (evil-range beg end 'inclusive :expanded t)
+      (error "No surrounding form found.")))
+
+  (general-def evil-inner-text-objects-map
+    "f" #'evil:textobj-inner-form)
+  (general-def evil-outer-text-objects-map
+    "f" #'evil:textobj-outer-form))
+
+;; ***** fix vim/evil around =""=
+;; :PROPERTIES:
+;; :ID: b57bf245-3d63-4078-8bcb-2ec0b9952ab9
+;; :END:
+
+;; =Vim= and =Evil= both have the interesting (inconsistent?) behavior that doing an
+;; outer text object operator on a comment grabs some whitespace on the left side.
+;; Try doing =va"= to ~(progn "hello world")~ and you'll see that =\s"hello world"= is
+;; selected instead of just "hello world".
+
+;; Why not just go to the end of the ="= like any other around operator?
+
+(after! evil
+  (evil-define-text-object evil:textobj-a-string (count &rest _)
+    "An outer comment text object as defined by `lispy--bounds-string'."
+    (-if-let ((beg . end) (lispy--bounds-string))
+        (evil-range beg end 'exclusive :expanded t)
+      (error "Not inside a comment.")))
+
+  (general-def evil-outer-text-objects-map
+    "\"" #'evil:textobj-a-string))
+
+;; **** evil-lion
+;; :PROPERTIES:
+;; :ID:       95d248be-601e-4dbd-b318-febcd0e49d71
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("evil-lion.el" "evil-lion-pkg.el")
+;; :HOST:     github
+;; :REPO:     "edkolev/evil-lion"
+;; :PACKAGE:  "evil-lion"
+;; :LOCAL-REPO: "evil-lion"
+;; :END:
+
+;; =evil-lion= provides a very useful way of aligning text.
+
+(--each '(evil-lion-right evil-lion-left)
+  (autoload it "evil-lion" nil t nil))
+
+(general-def 'normal
+  :infix "g"
+  "l" #'evil-lion-left
+  "L" #'evil-lion-right)
+
 ;; **** evil-visualstar
 ;; :PROPERTIES:
 ;; :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
