@@ -1124,7 +1124,7 @@ log function that is added to FN."
 
 (defun void-generic-advice-name (symbol)
   "Return SYMBOL as a generic advice symbol."
-  (alet (rx (1+ alnum) "--" (group (1+)) "-advice")
+  (alet (rx (1+ alnum) "--" (group (1+ alnum)) "-advice")
     (s-match it (symbol-name symbol))))
 
 ;; ***** advice name
