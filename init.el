@@ -743,18 +743,106 @@ WRAPPERS are a list of forms to wrap around FORM."
   "Return a list of anaphoric symbols in OBJ."
   (s-match-strings-all VOID-ANAPHORIC-SYMBOL-REGEXP (void-to-string obj)))
 
+;; *** eval-after-load!
+;; :PROPERTIES:
+;; :ID:       8d831084-539b-4072-a86a-b55afb09bf02
+;; :END:
+
+;; =eval-after-load= is a macro that evaluates a lisp form after a file or feature
+;; has been loaded. It's syntax is a bit terse because you need to quote the
+;; feature as well as the form to be evaluated.
+
+;; Also, if an =eval-after-load= block contains an error and it is triggered by a
+;; feature, the error will happening. I think it might be that because the form was
+;; not successfully evaluated =eval-after-load= does not realize it should stop
+;; loading it. To remedy this I wrap the block with [[][condition-case]].
+
+(defmacro eval-after-load! (feature &rest body)
+  "A wrapper around `eval-after-load!' with error catching."
+  (declare (indent defun))
+  `(eval-after-load ',feature
+     '(condition-case error
+          (progn ,@body)
+        (error
+         (message "Error in `eval-after-load': %S" error)))))
+
+;; *** after!
+;; :PROPERTIES:
+;; :ID: b31cd42d-cc57-492d-afae-d7d5e353e931
+;; :END:
+
+;; =after!= is yet another wrapper around == that can accept multiple features or
+;; even a specification of features using =and= or =or=.
+
+;; The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
+;; [[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
+;; been loaded.
+
+;; We intentionally avoid with-eval-after-load to prevent eager macro expansion
+;; from pulling (or failing to pull) in autoloaded macros/features.
+
+(defmacro after! (features &rest body)
+  "Wrapper around `with-eval-after-load'."
+  (declare (indent defun) (debug t))
+  (cond ((eq 'or (car-safe features))
+         (macroexp-progn
+          (--map `(after! ,it ,@body) (cdr features))))
+        ((eq 'and (car-safe features))
+         (void-wrap-form (--map `(after! ,it) (cdr features))
+                         (macroexp-progn body)))
+        ((listp features)
+         `(after! ,(cons 'and features) ,@body))
+        ((symbolp features)
+         `(if (featurep ',features)
+              ,(macroexp-progn body)
+            (eval-after-load! ,features ,@body)))
+        (t (error "Invalid argument."))))
+
+;; *** with-os!
+;; :PROPERTIES:
+;; :ID: 1a645745-11ce-4cfb-8c5f-63470f0a61c3
+;; :END:
+
+;; Emacs is for the most part operating system agnostic. Packages written in elisp
+;; should work across operating systems. Nevertheless, there are a handful of
+;; settings that should favors particular operating systems over others.
+
+(defmacro with-os! (os &rest body)
+  "If OS is current system's operating system, execute body.
+OS can be either `mac', `linux' or `windows'(unquoted)."
+  (declare (indent defun))
+  (when (funcall (cond ((eq :not (car-safe os)) (-not #'member))
+                       (t #'member))
+                 (pcase system-type
+                   (`darwin 'mac)
+                   (`gnu/linux 'linux)
+                   (`(cygwin windows-nt ms-dos) 'windows)
+                   (_ nil))
+                 (-list os))
+    `(progn ,@body)))
+
+;; *** ignore!
+;; :PROPERTIES:
+;; :ID: 0597956f-d40c-4c2b-9adf-5ece8c5b38de
+;; :END:
+
+(defmacro ignore! (&rest _)
+  "Do nothing and return nil."
+  nil)
+
 ;; *** hooks
 ;; :PROPERTIES:
 ;; :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
 ;; :END:
 
 ;; One of the most common ways to customize Emacs is via [[info:elisp#Hooks][hooks]]. Hooks are variables
-;; containing functions (also referred to as hooks). The functions in hooks are run
-;; after certain events, such as starting and quitting emacs. Their purpose is to
-;; fascillitate customization of what happens before or after particular events.
+;; containing functions (which are sometimes also referred to as hooks). The
+;; functions in hooks are run after certain events, such as starting and quitting
+;; emacs. Their purpose is to fascillitate customization of what happens before or
+;; after particular events.
 
 ;; In this headline, I strive to establish a common naming convention for
-;; Void-defined hooks, so I can clearly distinguish them from pre-defined hooks.
+;; "void-defined" hooks, so I can clearly distinguish them from pre-defined hooks.
 
 ;; **** hook-p
 ;; :PROPERTIES:
@@ -763,10 +851,25 @@ WRAPPERS are a list of forms to wrap around FORM."
 
 (defun void-hook-p (fn)
   "Return non-nil if FN is a Void hook."
-  (alet (rx (seq bos (one-or-more (not space)) "&" (one-or-more (not space)) eos))
+  (alet "\\`[^[:space:]]+&[^[:space:]]+\\'"
     (s-matches-p it (symbol-name fn))))
 
-;; **** hook variable
+;; **** hook naming
+;; :PROPERTIES:
+;; :ID:       82e6a9e7-208a-48b0-b779-c14a0a7eca00
+;; :END:
+
+;; This section pertains to functions that help with the naming convention.
+
+;; ***** hook info
+;; :PROPERTIES:
+;; :ID:       4c093dca-87fc-4c61-ba45-a43b326d1ae0
+;; :END:
+
+(defsubst void--hook-info (hook-fn i)
+  (intern (nth i (split-string (symbol-name hook-fn) "&" t))))
+
+;; ***** hook variable
 ;; :PROPERTIES:
 ;; :ID:       77f45347-3688-438d-8674-39e6d476a2d1
 ;; :END:
@@ -776,37 +879,72 @@ WRAPPERS are a list of forms to wrap around FORM."
 ;; (=emacs-startup-hook&do-something= would be a hook in =emacs-starup-hook= for
 ;; example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]].
 
-(defun void-hook-variable (hook-fn)
+(defsubst void-hook-variable (hook-fn)
   "Return the hook variable HOOK-FN is in.
 HOOK-FN is a function named with Void naming conventions."
-  (intern (car (string-split (symbol-name hook-fn) "&" t))))
+  (void--hook-info hook-fn 0))
 
+;; ***** hook function
+;; :PROPERTIES:
+;; :ID:       fa705f26-31f0-43c3-80a6-6741e74ab0ea
+;; :END:
 
-;; **** hook name
+(defun void-hook-function (hook-fn)
+  "Return the function HOOK-FN."
+  (void--hook-info hook-fn 1))
+
+;; ***** hook name
 ;; :PROPERTIES:
 ;; :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
 ;; :END:
 
 ;; This function is to help produce names that abide by hook naming conventions.
 
-(defun void-hook-name (var hook)
+(defun void-hook-function-name (hook function)
   "Return a hook name that meets Void naming conventions."
-  (funcall (-partial #'void-symbol-intern var '&)
-           (or (->> (symbol-name hook)
-                    (s-match "void--\\([^[:space:]]+\\)-hook")
-                    (nth 1))
-               hook)))
+  (alet (or (void-generic-hook-name function) function)
+    (void-symbol-intern hook '& function)))
 
-;; **** hook action
+;; ***** void-generic-hook-name
 ;; :PROPERTIES:
-;; :ID:       fa705f26-31f0-43c3-80a6-6741e74ab0ea
+;; :ID:       60ce5cfe-8345-4496-8d82-eec05c5297ea
 ;; :END:
 
-(defun void-hook-action (hook)
-  "Return the action for hook."
-  (->> (symbol-name hook)
-       (s-match (rx "&" (group (1+ (not (any "&" white)))) eos))
-       (nth 1)))
+(defun void-generic-hook-name (symbol)
+  "Return a name for a generic hook."
+  (-some->> (symbol-name symbol)
+    (s-match "\\`[^[:space:]]+--\\([^[:space:]]+\\)-hook")
+    (nth 1)
+    (intern)))
+
+;; **** generate a hook
+;; :PROPERTIES:
+;; :ID:       01cdecef-a345-45f0-b38e-5fe0b4939b08
+;; :END:
+
+;; When there's a bug with a function (also called a hook) added to a hook
+;; variable, it interferes with the running of the hook variable. Evaluation
+;; stops at the error; as a result hooks following the bugged function aren't
+;; evaluated. All in all, you get an unpleasant experience with partially
+;; evaluated code. I've faced this problem numerous times, mostly when I failed
+;; to autoload the hook for a mode and as a result get a =void-function= error
+;; in the middle of the mode's hook.
+
+;; I would prefer an elegant failure. By this, I mean I'd like the "problem"
+;; function to report the problem to me without short-circuiting. This is why I
+;; wrap hook functions in a [[helpfn:condition-case][condition-case]] block.
+
+(defun void-generate-hook-function (hook function)
+  "Return a Void hook function.
+The function does the same thing as FUNCTION, but errors are caught."
+  (alet (void-hook-function-name hook function)
+    (fset it
+	  `(lambda (&rest args)
+	     (condition-case err
+		 (apply #',function args)
+	       (error
+		(void-log "%s failed." ',function)))))
+    it))
 
 ;; **** adding hooks
 ;; :PROPERTIES:
@@ -821,39 +959,38 @@ HOOK-FN is a function named with Void naming conventions."
 ;; Add a hook that follow naming conventions. When adding a hook, if it is a void
 ;; function, change it to a hook.
 
-(defun void--add-hook (var hook &optional depth local expire-fn)
-  (let* ((new-hook (void-hook-name var hook))
-         (hook-log (void-symbol-intern new-hook '@ 'log-on-debug)))
-    (defalias new-hook hook)
-    (add-hook var new-hook depth local)
-    (fset hook-log
-          `(lambda (&rest _)
-             (alet ,(void-hook-action new-hook)
-               (void-log "& %s -> %s" ',var it))))
-    (advice-add new-hook :before hook-log)
+(defun void--add-hook (hook function &optional depth local expire-fn)
+  "Generate a Void hook function and add it to HOOK."
+  (let ((hook-fn (void-generate-hook-function hook function)))
+    (add-hook hook hook-fn depth local)
+    (void-log-function hook-fn)
+    ;; (advice-add hook-fn :before (void-log-advice function))
     (when expire-fn
-      (alet (void-expire-advice hook expire-fn t)
-        (advice-add new-hook :around it)))))
+      (alet (void-expire-advice hook-fn expire-fn t)
+	(advice-add new-hook :around it)))))
 
 ;; ***** adding hooks
 ;; :PROPERTIES:
 ;; :ID:       10dcca8f-7dd0-45da-a413-43608c098b10
 ;; :END:
 
-(defun void-add-hook (vars hooks &optional depth local expire-fn)
-  "Alias HOOK to match Void naming conventions and add it to VAR."
-  (dolist (var (-list vars))
-    (dolist (hook (-list hooks))
-      (void--add-hook var hook depth local expire-fn))))
+;; This is a simple wrapper around [[id:][void--add-hook]] that handles multiple hook
+;; variables and hook functions.
+
+(defun void-add-hook (hooks functions &optional depth local expire-fn)
+  "Generate Void hook functions and add them to HOOKS."
+  (dolist (hook (-list hooks))
+    (dolist (fn (-list functions))
+      (void--add-hook hook fn depth local expire-fn))))
 
 ;; **** removing hooks
 ;; :PROPERTIES:
 ;; :ID:       99708d72-a8d4-42ba-b6ae-ba692fbafec8
 ;; :END:
 
-(defun void-remove-hook (hook)
+(defun void-remove-hook (fn)
   "Remove a void hook."
-  (remove-hook (void-hook-var hook) hook))
+  (remove-hook (void-hook-var fn) fn))
 
 ;; **** defhook!
 ;; :PROPERTIES:
@@ -912,7 +1049,57 @@ function.
   (s-matches-p (rx (1+ (not white)) "@" (1+ (not white)))
                (symbol-name fn)))
 
-;; **** advised function
+;; **** logging certain functions
+;; :PROPERTIES:
+;; :ID:       1ccfaa39-924f-4b1d-82b2-e458511cbb1b
+;; :END:
+
+;; I make distinctions between different kinds of functions such as advices, hook
+;; functions and interactive functions. Depending on which type of function it is I
+;; want to log it differently.
+
+;; ***** log message
+;; :PROPERTIES:
+;; :ID:       f0f4d5fd-2ce2-408c-8a4d-f55e39744132
+;; :END:
+
+(defun void--log-message (fn)
+  "Return the message logged."
+  (pcase fn
+    ((pred void-hook-p)
+     (format "& %s -> %s"
+	     (void-hook-variable fn)
+	     (void-hook-function fn)))
+    ((pred void-advice-p)
+     (format "@ %s -> %s"
+	     (void-advice-symbol fn)
+	     (void-advice-function fn)))
+    (_
+     (format "%s called" fn))))
+
+;; ***** log advice
+;; :PROPERTIES:
+;; :ID:       25ea174f-af84-49e3-ad13-c797ef4ee6b2
+;; :END:
+
+;; Maybe it's overkill having an advice just to log a function. But it helps
+;; maintain maximum purity and extensibility.
+
+(defun void-log-function (fn &optional after)
+  "Log calls to FN.
+Add a log to *void-log* after function is called.
+This function should be primarly used for side-effect but does incidentally return the
+log function that is added to FN."
+  (aprog1 (void-symbol-intern fn '@ 'log)
+    (fset it `(lambda (&rest _) (void-log ,(void--log-message fn))))
+    (advice-add fn (if after :after :before) it)))
+
+;; **** naming advice
+;; :PROPERTIES:
+;; :ID:       d8773074-d384-48b8-aa89-f99c8098753a
+;; :END:
+
+;; ***** advised symbol
 ;; :PROPERTIES:
 ;; :ID:       f893fbe8-592b-409e-8de7-6060e936456f
 ;; :END:
@@ -923,28 +1110,33 @@ function.
 ;; it's possible for a given advice to advise multiple functions. With the naming
 ;; system I provide, doing this is trivial.
 
-(defun void-advised-fn (fn)
-  "Return the function advised by FN.
-ADVICE is an advice of the form \"advisee@advisor\", where this function returns
-\"advisee\"."
+(defun void-advice-symbol (fn)
+  "Return the symbol."
   (->> (symbol-name fn)
        (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
        (nth 1)
        (intern)))
 
-;; **** advice name
+;; ***** generic advice
+;; :PROPERTIES:
+;; :ID:       fc8709ba-606f-4979-a7c8-c8c488721904
+;; :END:
+
+(defun void-generic-advice-name (symbol)
+  "Return SYMBOL as a generic advice symbol."
+  (alet (rx (1+ alnum) "--" (group (1+)) "-advice")
+    (s-match it (symbol-name symbol))))
+
+;; ***** advice name
 ;; :PROPERTIES:
 ;; :ID:       03416f82-ced7-42a0-843b-6975903f0b38
 ;; :END:
 
-(defun void-advice-name (fn advice)
+(defun void-advice-name (symbol advice)
   "Return advice name that meets Void naming conventions.
 Advice name is of the form FN@ADVICE."
-  (funcall (-partial #'void-symbol-intern fn '@)
-           (or (->> (symbol-name advice)
-                    (s-match "void--\\([^[:space:]]+\\)-advice")
-                    (nth 1))
-               advice)))
+  (alet (or (void-generic-advice-name advice) advice)
+    (void-symbol-intern symbol '@ it)))
 
 ;; **** adding advice
 ;; :PROPERTIES:
@@ -963,20 +1155,15 @@ Advice name is of the form FN@ADVICE."
 ;; convention I created [[helpfn:void-add-advice][void-add-advice]]. It will create an advice with an
 ;; appropriate name to target.
 
-(defun void--add-advice (target where advice &optional props expire-fn)
-  "Advise TARGETS with Void ADVICES."
-  (let* ((new-advice (void-advice-name target advice))
-         (log-advice (void-symbol-intern new-advice '@ 'log-on-debug)))
-    (defalias new-advice advice)
-    (advice-add target where new-advice props)
-    (fset log-advice
-          `(lambda (&rest _)
-             (alet ,(void-advice-action new-advice)
-               (void-log "@ %s -%s-> %s" #',target ,where it))))
-    (advice-add new-advice :before log-advice)
+(defun void--add-advice (symbol where fn &optional props expire-fn)
+  "Advise SYMBOLS with Void ADVICES."
+  (let ((advice (void-advice-name symbol fn)))
+    (defalias advice fn)
+    (advice-add symbol where advice props)
+    (void-log-function advice)
     (when expire-fn
-      (alet (void-expire-advice new-advice expire-fn t)
-        (advice-add new-advice :around it)))))
+      (alet (void-expire-advice advice expire-fn t)
+	(advice-add advice :around it)))))
 
 ;; ***** adding advice
 ;; :PROPERTIES:
@@ -999,14 +1186,14 @@ Advice name is of the form FN@ADVICE."
 
 (defun void-remove-advice (advice)
   "Remove advice."
-  (advice-remove (void-advised-fn advice) advice))
+  (advice-remove (void-advice-symbol advice) advice))
 
 ;; **** advice action
 ;; :PROPERTIES:
 ;; :ID:       f15279e9-cd0c-4a74-bc74-389d14a4b82a
 ;; :END:
 
-(defun void-advice-action (advice)
+(defun void-advice-function (advice)
   "Return the action for advice."
   (->> (symbol-name advice)
        (s-match (rx "@" (group (1+ (not (any "@" white)))) eos))
@@ -1129,61 +1316,6 @@ Instead, arguments are accessed via anaphoric variables.
        ,@(--map `(,advice-macro ,name (,@before ,it ,@after) ,@body)
                 fns))))
 
-;; *** eval-after-load!
-;; :PROPERTIES:
-;; :ID:       8d831084-539b-4072-a86a-b55afb09bf02
-;; :END:
-
-;; =eval-after-load= is a macro that evaluates a lisp form after a file or feature
-;; has been loaded. It's syntax is a bit terse because you need to quote the
-;; feature as well as the form to be evaluated.
-
-;; Also, if an =eval-after-load= block contains an error and it is triggered by a
-;; feature, the error will happening. I think it might be that because the form was
-;; not successfully evaluated =eval-after-load= does not realize it should stop
-;; loading it. To remedy this I wrap the block with [[][condition-case]].
-
-(defmacro eval-after-load! (feature &rest body)
-  "A wrapper around `eval-after-load!' with error catching."
-  (declare (indent defun))
-  `(eval-after-load ',feature
-     '(condition-case error
-          (progn ,@body)
-        (error
-         (message "Error in `eval-after-load': %S" error)))))
-
-;; *** after!
-;; :PROPERTIES:
-;; :ID: b31cd42d-cc57-492d-afae-d7d5e353e931
-;; :END:
-
-;; =after!= is yet another wrapper around == that can accept multiple features or
-;; even a specification of features using =and= or =or=.
-
-;; The reason that we check for the feature is to prevent [[hvar:eval-after-load][eval-after-load]] from polluting the
-;; [[hvar:after-load-list][after-load-list]]. =eval-after-load= adds an entry to =after-load-list= whether or not it has
-;; been loaded.
-
-;; We intentionally avoid with-eval-after-load to prevent eager macro expansion
-;; from pulling (or failing to pull) in autoloaded macros/features.
-
-(defmacro after! (features &rest body)
-  "Wrapper around `with-eval-after-load'."
-  (declare (indent defun) (debug t))
-  (cond ((eq 'or (car-safe features))
-         (macroexp-progn
-          (--map `(after! ,it ,@body) (cdr features))))
-        ((eq 'and (car-safe features))
-         (void-wrap-form (--map `(after! ,it) (cdr features))
-                         (macroexp-progn body)))
-        ((listp features)
-         `(after! ,(cons 'and features) ,@body))
-        ((symbolp features)
-         `(if (featurep ',features)
-              ,(macroexp-progn body)
-            (eval-after-load! ,features ,@body)))
-        (t (error "Invalid argument."))))
-
 ;; *** system-packages
 ;; :PROPERTIES:
 ;; :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
@@ -1235,38 +1367,6 @@ Instead, arguments are accessed via anaphoric variables.
                           (cdr it)))
             system-packages-supported-package-managers))
     (setq system-packages-package-manager 'yay)))
-
-;; *** with-os!
-;; :PROPERTIES:
-;; :ID: 1a645745-11ce-4cfb-8c5f-63470f0a61c3
-;; :END:
-
-;; Emacs is for the most part operating system agnostic. Packages written in elisp
-;; should work across operating systems. Nevertheless, there are a handful of
-;; settings that should favors particular operating systems over others.
-
-(defmacro with-os! (os &rest body)
-  "If OS is current system's operating system, execute body.
-OS can be either `mac', `linux' or `windows'(unquoted)."
-  (declare (indent defun))
-  (when (funcall (cond ((eq :not (car-safe os)) (-not #'member))
-                       (t #'member))
-                 (pcase system-type
-                   (`darwin 'mac)
-                   (`gnu/linux 'linux)
-                   (`(cygwin windows-nt ms-dos) 'windows)
-                   (_ nil))
-                 (-list os))
-    `(progn ,@body)))
-
-;; *** ignore!
-;; :PROPERTIES:
-;; :ID: 0597956f-d40c-4c2b-9adf-5ece8c5b38de
-;; :END:
-
-(defmacro ignore! (&rest _)
-  "Do nothing and return nil."
-  nil)
 
 ;; *** list mutation
 ;; :PROPERTIES:
@@ -2281,15 +2381,26 @@ This function is meant to be used as the value of `initial-buffer-choice'."
               #'consult-outline #'consult-apropos #'consult-buffer)
   (autoload it "consult" nil t nil))
 
+;; Make sure to load recentf before using some consult commands.
+
+(--each (list #'consult-buffer #'consult-buffer-other-window)
+  (void-load-before-call 'recentf it t))
+
+;; **** make sure commands work in folds
+;; :PROPERTIES:
+;; :ID:       6e442764-a323-4242-8dfd-818a82ea802b
+;; :END:
+
 ;; **** bindings
 ;; :PROPERTIES:
 ;; :ID:       c08a6f82-0408-4899-8e91-e1c5a062a7b2
 ;; :END:
 
 (define-key!
-  [remap switch-to-buffer] #'consult-buffer
-  [remap apropos] #'consult-apropos
-  [remap load-theme] #'consult-theme)
+  [remap switch-to-buffer]              #'consult-buffer
+  [remap switch-to-buffer-other-window] #'consult-buffer-other-window
+  [remap apropos]                       #'consult-apropos
+  [remap load-theme]                    #'consult-theme)
 
 ;; *** setting font size
 ;; :PROPERTIES:
@@ -2398,31 +2509,6 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :ID: 1b49e07a-466f-41da-8b31-18c28421cf62
 ;; :END:
 
-;; **** windows
-;; :PROPERTIES:
-;; :ID: 039a9070-2ba3-4e01-abd4-7bdb49cc5a3d
-;; :END:
-
-;; ***** split-right-and-focus
-;; :PROPERTIES:
-;; :ID: 6cb60d94-723b-48e5-850a-3483e78f6647
-;; :END:
-
-(defun void/window-split-right-and-focus ()
-  "Split window right and select the window created with the split."
-  (interactive)
-  (select-window (split-window-right)))
-
-;; ***** split-below-and-focus
-;; :PROPERTIES:
-;; :ID: d6a4a81f-007d-4b7e-97a3-e0bba3ff97a4
-;; :END:
-
-(defun void/window-split-below-and-focus ()
-  "Split window below and select the window created with the split."
-  (interactive)
-  (select-window (split-window-below)))
-
 ;; **** all
 ;; :PROPERTIES:
 ;; :ID: e97267e8-fca8-4bf2-9899-7ec694e8a767
@@ -2514,6 +2600,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
   (interactive)
   (let (confirm-kill-emacs)
     (kill-emacs)))
+
 
 ;; * Completion
 ;; :PROPERTIES:
@@ -2913,6 +3000,78 @@ Orderless will do this."
 
 ;; * Utility
 
+;; ** epa
+;; :PROPERTIES:
+;; :ID:       ad3f6134-4fa6-492e-93a6-b94235ecad3d
+;; :TYPE:     built-in
+;; :END:
+
+;; Setting these variables in coordination with configuring =gpgconf= lets me enter
+;; my gpg passphrase via emacs.
+
+(setq epg-gpg-program "gpg2")
+(setq epa-pinentry-mode 'loopback)
+
+;; ** pdf-tools
+;; :PROPERTIES:
+;; :ID:       63343f9d-6b19-43de-8302-d1344d571949
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("lisp/*.el" "README" ("build" "Makefile") ("build" "server") (:exclude "lisp/tablist.el" "lisp/tablist-filter.el") "pdf-tools-pkg.el")
+;; :HOST:     github
+;; :REPO:     "politza/pdf-tools"
+;; :PACKAGE:  "pdf-tools"
+;; :LOCAL-REPO: "pdf-tools"
+;; :COMMIT:   "c510442ab89c8a9e9881230eeb364f4663f59e76"
+;; :END:
+
+;; *** pdf-tools
+;; :PROPERTIES:
+;; :ID: 163d8880-6a7d-4479-a7e4-e333e4f930da
+;; :END:
+
+(autoload #'pdf-view-mode "pdf-tools" nil t nil)
+(push '("%PDF" . pdf-view-mode) magic-mode-alist)
+(push '("\\.[pP][dD][fF]\\'" . pdf-view-mode) auto-mode-alist)
+
+;; *** epd-pdf-info-program
+;; :PROPERTIES:
+;; :ID:       25826061-a4a7-4f8a-8d3b-bdd5a80f70d0
+;; :END:
+
+(defadvice! build-pdf-into-program-maybe (:before pdf-view-mode)
+  "Build the pdf-info program if it hasn't already been built."
+  (unless (file-executable-p pdf-info-epdfinfo-program)
+    (let ((wconf (current-window-configuration)))
+      (pdf-tools-install)
+      (message "Building epdfinfo, this will take a moment...")
+      (--each (buffer-list)
+        (with-current-buffer it
+          (when (eq major-mode 'pdf-view-mode)
+            (fundamental-mode))))
+      (while compilation-in-progress
+        ;; Block until `pdf-tools-install' is done
+        (redisplay)
+        (sleep-for 1))
+      ;; HACK If pdf-tools was loaded by you opening a pdf file, once
+      ;;      `pdf-tools-install' completes, `pdf-view-mode' will throw an error
+      ;;      because the compilation buffer is focused, not the pdf buffer.
+      ;;      Therefore, it is imperative that the window config is restored.
+      (when (file-executable-p pdf-info-epdfinfo-program)
+        (set-window-configuration wconf)))))
+
+;; *** bindings
+;; :PROPERTIES:
+;; :ID:       506c568c-0473-4db6-82b6-cc91174b0ce4
+;; :END:
+
+(general-def 'normal pdf-view-mode-map
+  "j" #'pdf-view-next-line-or-next-page
+  "k" #'pdf-view-previous-line-or-previous-page
+  "0" #'pdf-view-first-page
+  "9" #'pdf-view-last-page
+  "s" #'pdf-view-fit-width-to-window)
+
 ;; ** engine-mode
 ;; :PROPERTIES:
 ;; :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
@@ -3138,6 +3297,16 @@ Orderless will do this."
 ;; :PROPERTIES:
 ;; :ID:       49fe171f-d1b9-4b90-89ab-bddd2748bbd0
 ;; :END:
+
+;; *** popup management
+;; :PROPERTIES:
+;; :ID:       5fbf293e-84ae-4f47-bdcd-850ff552465a
+;; :END:
+
+(alet `(,(rx "*ert*")
+	(display-buffer-at-bottom)
+	(window-height . 0.5))
+  (push it display-buffer-alist))
 
 ;; *** ert-expectations
 ;; :PROPERTIES:
@@ -4097,7 +4266,6 @@ Each element of the list is an abbreviated.")
 
 (-each '(easymenu tree-widget timer) #'idle-require)
 (void-load-before-call 'recentf #'find-file t)
-(void-load-before-call 'recentf #'consult-buffer t)
 
 ;; **** settings
 ;; :PROPERTIES:
@@ -4173,52 +4341,94 @@ Each element of the list is an abbreviated.")
 ;;                (-non-nil kill-ring))))
 ;; #+end_src
 
-;; *** desktop
-;; :PROPERTIES:
-;; :ID:       902a11fc-b9aa-4875-ba92-8d2561a12a50
-;; :END:
-
-;; =desktop= is a built-in emacs package for saving window configuration setup.
-
-;; **** some settings
-;; :PROPERTIES:
-;; :ID:       e4c30275-db62-4e6d-890c-6199b0594fd8
-;; :END:
-
-(setq desktop-save t) ; what should happen when desktop is killed.
-(setq desktop-auto-save-timeout auto-save-timeout)
-(setq desktop-base-file-name "emacs.desktop")
-(setq desktop-base-lock-name "emacs.desktop.lock")
-(setq desktop-path (list VOID-DATA-DIR))
-(setq desktop-missing-file-warning nil)
-
-
 ;; * Window management
 ;; :PROPERTIES:
 ;; :ID:       f8f186bd-a701-4bd4-a249-86ec4faff83b
 ;; :END:
 
-;; ** zoom
+;; ** workgroups2
 ;; :PROPERTIES:
-;; :ID:       4caedc4f-c973-4e81-ba13-751f7b8297b2
+;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
+;; :HOST:     github
+;; :TYPE:     git
+;; :FLAVOR:   melpa
+;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
+;; :REPO:     "pashinin/workgroups2"
+;; :PACKAGE:  "workgroups2"
+;; :LOCAL-REPO: "workgroups2"
+;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
+;; :END:
+
+;; There is a need to save buffers and window configurations in their own groups.
+;; Often we'll have a group of buffers we've setup to work on a project or task and
+;; suddenly, in the middle of that task we'll want to work on another task. It's
+;; inconvenient to get rid of the window configuration we've set up just to have to
+;; come back to it and set it up again. This is what workspaces, also called
+;; workgroups, are for. You can save the window configuration you're using and
+;; switch to a new one.
+
+;; Workgroup provides a. One notable advantage of workgroups is that it does not
+;; use emacs's built-in serialization of window configs. Usually, it is better to
+;; use something that's built-in. However, emacs's serialization has the drawback
+;; that it's not a lisp object; implying that it is not.
+
+;; *** settings
+;; :PROPERTIES:
+;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
+;; :END:
+
+(setq wg-load-last-workgroup nil)
+(setq wg-open-this-wg nil)
+(setq wg-control-frames nil)
+(setq wg-session-load-on-start nil)
+(setq wg-flag-modified nil)
+(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+
+;; *** workgroups
+
+(autoload #'wg-switch-workgroup "workgroup" nil)
+
+;; *** ignore changing the modeline
+;; :PROPERTIES:
+;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
+;; :END:
+
+(setq wg-mode-line-display-on nil)
+(advice-add #'wg-change-modeline :override #'ignore)
+
+;; *** save sessions on quit
+;; :PROPERTIES:
+;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
+;; :END:
+
+(setq wg-emacs-exit-save-behavior 'save)
+(setq wg-workgroups-mode-exit-save-behavior 'save)
+(setq wg-flag-modified nil)
+
+;; *** shut up messages from workgroup commands
+;; :PROPERTIES:
+;; :ID:       6dc3b7c4-7afd-46a0-850a-1a362cd7e601
+;; :END:
+
+(--each (list #'wg-create-workgroup #'wg-switch-workgroup)
+  (void-add-advice it :around #'void--silence-output-advice))
+
+;; ** zoom-window
+;; :PROPERTIES:
+;; :ID:       d506fde5-d1bc-4807-a1d0-a8ed5c33def2
 ;; :TYPE:     git
 ;; :FLAVOR:   melpa
 ;; :HOST:     github
-;; :REPO:     "cyrus-and/zoom"
-;; :PACKAGE:  "zoom"
-;; :LOCAL-REPO: "zoom"
+;; :REPO:     "emacsorphanage/zoom-window"
+;; :PACKAGE:  #("zoom-window" 0 11 (fontified t))
+;; :LOCAL-REPO: "zoom-window"
 ;; :END:
 
-;; Resize windows according to the [[https://en.wikipedia.org/wiki/Golden_ratio][golden ratio]].
+;; This package provides a command that temporarily makes a window occupy full
+;; screen. And then reverts the window configuration to what it was again
+;; afterwards.
 
-(autoload #'zoom-mode "zoom" nil t nil)
-
-(set! zoom-size '(0.618 . 0.618))
-
-(set! zoom-ignored-major-modes '(dired-mode markdown-mode))
-(set! zoom-ignored-buffer-names '("zoom.el" "init.el"))
-(set! zoom-ignored-buffer-name-regexps '("^*calc"))
-(set! zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
+(autoload #'zoom-window-zoom "zoom-window" nil t nil)
 
 ;; ** exwm
 ;; :PROPERTIES:
@@ -4508,64 +4718,122 @@ If it's not possible, abort initialization gracefully."
     "s-q" #'void/open-qutebrowser
     "s-e" #'void/open-emacs-instance))
 
-;; ** workgroups2
+;; ** split-right-and-focus
 ;; :PROPERTIES:
-;; :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
-;; :HOST:     github
-;; :TYPE:     git
-;; :FLAVOR:   melpa
-;; :FILES:    ("src/*.el" "workgroups2-pkg.el")
-;; :REPO:     "pashinin/workgroups2"
-;; :PACKAGE:  "workgroups2"
-;; :LOCAL-REPO: "workgroups2"
-;; :COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
+;; :ID: 6cb60d94-723b-48e5-850a-3483e78f6647
 ;; :END:
 
-;; There is a need to save buffers and window configurations in their own groups.
-;; Often we'll have a group of buffers we've setup to work on a project or task and
-;; suddenly, in the middle of that task we'll want to work on another task. It's
-;; inconvenient to get rid of the window configuration we've set up just to have to
-;; come back to it and set it up again. This is what workspaces, also called
-;; workgroups, are for. You can save the window configuration you're using and
-;; switch to a new one.
+(defun void/window-split-right-and-focus ()
+  "Split window right and select the window created with the split."
+  (interactive)
+  (select-window (split-window-right)))
 
-;; Workgroup provides a. One notable advantage of workgroups is that it does not
-;; use emacs's built-in serialization of window configs. Usually, it is better to
-;; use something that's built-in. However, emacs's serialization has the drawback
-;; that it's not a lisp object; implying that it is not.
-
-;; *** settings
+;; ** split-below-and-focus
 ;; :PROPERTIES:
-;; :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
+;; :ID: d6a4a81f-007d-4b7e-97a3-e0bba3ff97a4
 ;; :END:
 
-(setq wg-load-last-workgroup nil)
-(setq wg-open-this-wg nil)
-(setq wg-control-frames nil)
-(setq wg-session-load-on-start nil)
-(setq wg-flag-modified nil)
-(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+(defun void/window-split-below-and-focus ()
+  "Split window below and select the window created with the split."
+  (interactive)
+  (select-window (split-window-below)))
+
+;; ** window bindings
+;; :PROPERTIES:
+;; :ID:       5b4d2ce0-667f-42c8-bad4-880f371fddc4
+;; :END:
+
+;; These bindings pertain to manipulating windows.
+
+;; *** set the window leader
+;; :PROPERTIES:
+;; :ID: 784956e2-3696-4f92-80ca-41b7e30e5b2b
+;; :END:
+
+;; Efficient window management in Emacs crucial for success. These keys all pertain
+;; to window/workspace actions.
+
+(define-leader-key!
+  :infix "w"
+  ""  (list :ignore nil :wk "window"))
+
+;; *** motion
+;; :PROPERTIES:
+;; :ID:       ef50a2d7-deab-40b8-a654-133d9d3edd48
+;; :END:
+
+;; This headline is for bindings that involve traversing windows. The typical
+;; bindings for moving up, down, left and right between windows. And as a bonus, a
+;; binding to.
+
+(define-leader-key!
+  :infix "w"
+  "h" (list :def #'windmove-left  :wk "left")
+  "j" (list :def #'windmove-down  :wk "down")
+  "k" (list :def #'windmove-up    :wk "up")
+  "l" (list :def #'windmove-right :wk "right")
+  "o" (list :def #'ace-window     :wk "other"))
+
+;; *** splitting
+;; :PROPERTIES:
+;; :ID:       6c49babb-b749-4501-8699-dd2d7f885488
+;; :END:
+
+(define-leader-key!
+  :infix "w"
+  "S" (list :def #'void/window-split-below-and-focus :wk "split below and focus")
+  "V" (list :def #'void/window-split-right-and-focus :wk "split right and focus")
+  "s" (list :def #'window-split-below                :wk "split below")
+  "v" (list :def #'window-split-right                :wk "split right"))
+
+;; *** deleting
+;; :PROPERTIES:
+;; :ID:       218f650f-f52f-4cdf-9731-032631612ad3
+;; :END:
+
+(define-leader-key!
+  :infix "w"
+  "d" (list :def #'delete-window        :wk "delete current")
+  "D" (list :def #'delete-other-windows :wk "delete others"))
+
+;; *** resizing
+;; :PROPERTIES:
+;; :ID:       0aed1e9d-acff-430c-8372-23a620726bae
+;; :END:
+
+(define-leader-key!
+  :infix "w"
+  "z" (list :def #'zoom-window-zoom :wk "zoom"))
+
+;; *** layout
+;; :PROPERTIES:
+;; :ID:       864e890f-d67c-40bc-8f72-49f4d6a21d5d
+;; :END:
+
+(define-leader-key!
+  :infix "w"
+  "x" (list :def #'ace-swap-window :wk "swap windows")
+  "t" (list :def #'transpose-frame :wk "transpose"))
 
 ;; *** workgroups
-
-(autoload #'wg-switch-workgroup "workgroup" nil)
-
-;; *** ignore changing the modeline
 ;; :PROPERTIES:
-;; :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
+;; :ID:       8cb7ee3d-6d9e-4fbf-a96a-5f7cdc2aa363
 ;; :END:
 
-(setq wg-mode-line-display-on nil)
-(advice-add #'wg-change-modeline :override #'ignore)
+(define-leader-key!
+  :infix "w"
+  "w" (list :ignore t :wk "workgroup"))
 
-;; *** save sessions on quit
-;; :PROPERTIES:
-;; :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
-;; :END:
+;; (defun wg/create-workgroup ()
+;;   (call-interactively #'wg-open-workgroup))
 
-(setq wg-emacs-exit-save-behavior 'save)
-(setq wg-workgroups-mode-exit-save-behavior 'save)
-(setq wg-flag-modified nil)
+(define-leader-key!
+  :infix "w w"
+  "c" (list :def #'wg-create-workgroup          :wk "open") 
+  "o" (list :def #'wg-open-workgroup            :wk "open") 
+  "s" (list :def #'wg-switch-workgroup          :wk "switch") 
+  "h" (list :def #'wg-switch-to-workgroup-left  :wk "left") 
+  "l" (list :def #'wg-switch-to-workgroup-right :wk "right"))
 
 ;; * Text Editing
 ;; :PROPERTIES:
@@ -6363,8 +6631,17 @@ same key as the one(s) being added."
 ;; :ID:       37f062a8-b9d9-4533-ba8e-d675a1d5f10a
 ;; :END:
 
+(defun mini-modeline:display-current-workgroup ()
+  "Return the name of the current workgroup."
+  (awhen (and (featurep 'workgroups2)
+	      (wg-workgroup-name (wg-current-workgroup)))
+    it))
+
 (setq mini-modeline-r-format
-      '("%e" (:eval (format-time-string "%a %m/%d %T"))))
+      '("%e"
+	(:eval (awhen (mini-modeline:display-current-workgroup)
+		(concat it " ")))
+	(:eval (format-time-string "%a %m/%d %T"))))
 
 (setq mini-modeline-l-format
       '("%e" mode-line-buffer-identification))
@@ -6661,22 +6938,18 @@ same key as the one(s) being added."
 ;; :ID:       ee63aedb-beb7-4857-9af6-0b52afc2672e
 ;; :END:
 
-;; *** base16-theme
+;; *** monochrome-theme 
 ;; :PROPERTIES:
-;; :ID:       1046503c-61b9-4769-ad48-58ba7f8000f5
+;; :ID:       aaff9e51-3f6b-4473-9bb9-5e87333acdec
 ;; :TYPE:     git
 ;; :FLAVOR:   melpa
-;; :FILES:    (:defaults "build/*.el" "base16-theme-pkg.el")
 ;; :HOST:     github
-;; :REPO:     "belak/base16-emacs"
-;; :PACKAGE:  "base16-theme"
-;; :LOCAL-REPO: "base16-emacs"
+;; :REPO:     "fxn/monochrome-theme.el"
+;; :PACKAGE:  "monochrome-theme"
+;; :LOCAL-REPO: "monochrome-theme.el"
 ;; :END:
 
-;; =base16-theme= has variants of essentially all the themes I use, so I decided
-;; just to use these themes instead of the others.
-
-(void-load-before-call 'base16-theme #'load-theme)
+(void-load-before-call 'monochrome-theme (list #'load-theme #'consult-theme))
 
 ;; * Keybindings
 ;; :PROPERTIES:
