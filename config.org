@@ -320,13 +320,13 @@ makes it easier to access them.
 #+begin_src emacs-lisp
 (setq void-property-drawer-regexp
       (rx (seq bol
-               ";; :PROPERTIES:"
+               ":PROPERTIES:"
                "\n"
-               (group (*? bol ";; :" (one-or-more (not (syntax whitespace)))
+               (group (*? bol ":" (one-or-more (not (syntax whitespace)))
                           (1+ "\s")
                           (one-or-more nonl)
                           "\n"))
-               ";; :END:")))
+               ":END:")))
 #+end_src
 
 ***** convert a string to a property list
@@ -379,7 +379,7 @@ completely reproducible as one file.
 (defun void-get-package-recipes ()
   "Return a list of recipes from org file."
   (let ((recipes nil)
-        (elfile (concat user-emacs-directory "init.el"))
+        (elfile (concat user-emacs-directory "config.org"))
         (regexp void-property-drawer-regexp))
     (with-temp-buffer
       (insert-file-contents-literally elfile)
