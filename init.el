@@ -6681,8 +6681,11 @@ same key as the one(s) being added."
 ;; Emacs help facility which provides much more contextual information
 ;; in a better format.
 
+(--each (list #'helpful-callable #'helpful-command
+	      #'helpful-variable #'helpful-key)
+  (autoload it "helpful" nil t nil))
+
 (general-def
-  :package 'helpful
   [remap describe-function] #'helpful-callable
   [remap describe-command]  #'helpful-command
   [remap describe-variable] #'helpful-variable
