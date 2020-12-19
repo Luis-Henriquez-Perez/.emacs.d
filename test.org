@@ -215,6 +215,15 @@
 (expect nil (void-hook-function 'fake-hook))
 #+end_src
 
+** void-generic-hook-name
+:PROPERTIES:
+:ID:       b582643e-5eb1-4708-afcf-31928fa7fde5
+:END:
+
+#+begin_src emacs-lisp
+(expect 'generic-hook (void-generic-hook-name 'void--generic-hook-hook))
+#+end_src
+
 ** void-hook-function-name
 :PROPERTIES:
 :ID:       67aff07f-ff08-4811-9a3a-f4f2bc0dd033
