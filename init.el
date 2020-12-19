@@ -2378,7 +2378,8 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 ;; :END:
 
 (--each (list #'consult-theme #'consult-line #'consult-yank-pop
-              #'consult-outline #'consult-apropos #'consult-buffer)
+              #'consult-outline #'consult-apropos #'consult-buffer
+	      #'consult-buffer-other-window)
   (autoload it "consult" nil t nil))
 
 ;; Make sure to load recentf before using some consult commands.
