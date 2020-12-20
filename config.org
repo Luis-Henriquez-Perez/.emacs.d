@@ -6310,21 +6310,46 @@ very useful to me.
 (setq lispy-parens-only-left-in-string-or-comment nil)
 (setq lispy-safe-threshold 5000)
 (setq lispy-use-sly t)
-#+end_src
-allow space before asterisk for headings (e.g. ";; *")
-#+begin_src emacs-lisp
+;; allow space before asterisk for headings (e.g. ";; *")
 (setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
 (setq lispy-key-theme nil)
 #+end_src
 
 **** avoid void variable error
-;; :PROPERTIES:
-;; :ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
-;; :END:
+:PROPERTIES:
+:ID:       a73ff9be-1a3d-4007-ad40-5a34c38767f6
+:END:
 
-;; You'll get void variable if you don't do this.
+You'll get void variable if you don't do this.
 
+#+begin_src emacs-lisp
 (after! (avy lispy) (setq lispy-avy-keys avy-keys))
+#+end_src
+
+*** evil-lispy
+:PROPERTIES:
+:ID:       f79c2035-ce79-491a-acf6-5e80f72cffe9
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "sp3ctum/evil-lispy"
+:PACKAGE:  "evil-lispy"
+:LOCAL-REPO: "evil-lispy"
+:END:
+
+**** lispy state cursor
+:PROPERTIES:
+:ID:       c44cf8dc-e80c-4be6-9c11-221b446cc87b
+:END:
+
+#+begin_src emacs-lisp
+(gsetq evil-lispy-state-cursor  '((bar . 4) "red"))
+#+end_src
+
+**** lispy
+:PROPERTIES:
+:ID:       18173a29-7442-473e-a851-f46182f56447
+:END:
 
 *** highlight-quoted
 :PROPERTIES:
