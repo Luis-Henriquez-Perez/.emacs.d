@@ -836,6 +836,34 @@ loading it. To remedy this I wrap the block with [[][condition-case]].
          (message "Error in `eval-after-load': %S" error)))))
 #+end_src
 
+*** dbc
+:PROPERTIES:
+:ID:       b3351a74-b2d0-42b8-9895-b6baad0adb0b
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     gitlab
+:REPO:     "matsievskiysv/display-buffer-control"
+:PACKAGE:  "dbc"
+:LOCAL-REPO: "display-buffer-control"
+:END:
+
+=dbc= stands for "display-buffer-control". This package provides an interface for
+working with [[helpfn:display-buffer-alist][display-buffer-alist]].
+
+**** define rulesets
+:PROPERTIES:
+:ID:       577ff03c-40e0-4ac4-a3ab-47cd9d24992e
+:END:
+
+For now, I haven't found a buffer I'd like to display in any place other than
+the bottom. I don't like it when buffer text is cutt off or truncated on the
+side windows.
+
+#+begin_src emacs-lisp
+(require 'dbc)
+(dbc-add-ruleset "bottom" '((display-buffer-at-bottom) . ((side . bottom) (window-height . 0.5))))
+#+end_src
+
 *** after!
 :PROPERTIES:
 :ID: b31cd42d-cc57-492d-afae-d7d5e353e931
@@ -1474,10 +1502,7 @@ packages
 :END:
 
 #+begin_src emacs-lisp
-(push '("\\*system-packages"
-        (display-buffer-at-bottom)
-        (window-height . 0.5))
-      display-buffer-alist)
+(dbc-add-rule "bottom" "system-packages" :newname "\\*system-packages")
 #+end_src
 
 **** use yay for arch
@@ -1816,10 +1841,7 @@ In addition to providing keybinding stuff, =general= also provides.
 :END:
 
 #+begin_src emacs-lisp
-(push '("\\*Messages"
-        (display-buffer-at-bottom)
-        (window-height . 0.5))
-      display-buffer-alist)
+(dbc-add-rule "bottom" "messages" :newname "\\*Messages\\*")
 
 (setq idle-update-delay 1)
 (setq blink-matching-paren t)
@@ -3691,16 +3713,13 @@ like the outorg buffer has less whitespace in between headlines than it should.
 :ID:       49fe171f-d1b9-4b90-89ab-bddd2748bbd0
 :END:
 
-*** popup management
+*** ert
 :PROPERTIES:
 :ID:       5fbf293e-84ae-4f47-bdcd-850ff552465a
 :END:
 
 #+begin_src emacs-lisp
-(alet `(,(rx "*ert*")
-	(display-buffer-at-bottom)
-	(window-height . 0.5))
-  (push it display-buffer-alist))
+(dbc-add-rule "bottom" "ert" :newname "\\*ert\\*")
 #+end_src
 
 *** ert-expectations
@@ -4089,12 +4108,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 :END:
 
 #+begin_src emacs-lisp
-(push '("\\*eshell"
-	(display-buffer-at-bottom)
-	(window-height . 0.5)
-	(side . bottom)
-	(slot . 2))
-      display-buffer-alist)
+(dbc-add-rule "bottom" "eshell" :newname "\\*eshell\\*")
 #+end_src
 
 ***** directories
@@ -4642,10 +4656,7 @@ address later.
 (-each '(f s with-editor git-commit package eieio lv transient)
   #'idle-require)
 
-(push '("magit:"
-	(display-buffer-at-bottom)
-	(window-height . 0.5))
-      display-buffer-alist)
+(dbc-add-rule "bottom" "magit" :newname "magit: ")
 
 (ignore! (void-add-hook 'magit-popup-mode-hook #'hide-mode-line-mode))
 
@@ -7053,10 +7064,7 @@ diary/journal using =org-mode=.
 :END:
 
 #+begin_src emacs-lisp
-(alet '("\\*Org Src"
-	(display-buffer-at-bottom)
-	(window-height . 0.5))
-  (push it display-buffer-alist))
+(dbc-add-rule "bottom" "org source" :newfile (rx "*Org Src"))
 #+end_src
 
 **** settings
@@ -7120,11 +7128,7 @@ source blocks.
 :END:
 
 #+begin_src emacs-lisp
-(push '("\\`CAPTURE"
-        (display-buffer-at-bottom)
-        (window-height . 0.5)
-        (slot . 10))
-      display-buffer-alist)
+(dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE")
 #+end_src
 
 **** remove capture headerline
@@ -7496,12 +7500,7 @@ in a better format.
   [remap describe-variable] #'helpful-variable
   [remap describe-key]      #'helpful-key)
 
-(push '("\\*Help.*"
-	(display-buffer-at-bottom)
-	(window-width . 0.50)
-	(side . bottom)
-	(slot . 4))
-      display-buffer-alist)
+(dbc-add-rule "bottom" "help" :newname "\\*help.+")
 #+end_src
 
 ** which-key
