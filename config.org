@@ -3649,13 +3649,13 @@ capturing the prompt for the filename (like in [[][this example]]).
 
 (setq gif-screencast-program "scrot")
 (setq gif-screencast-args '("--quality" "25" "--focused"))
-#+end_src
-To shut up the shutter sound of `screencapture' (see `gif-screencast-command').
-#+begin_src emacs-lisp
+
+;; To shut up the shutter sound of `screencapture' (see `gif-screencast-command').
+
 (setq gif-screencast-cropping-program "mogrify")
-#+end_src
-Optional: Used to crop the capture to the Emacs frame.
-#+begin_src emacs-lisp
+
+;; Optional: Used to crop the capture to the Emacs frame.
+
 (setq gif-screencast-optimize-program "gifsicle")
 (setq gif-screencast-capture-format "png")
 #+end_src
@@ -6314,6 +6314,37 @@ very useful to me.
 (setq lispy-outline "^;;\\(?:;[^#]\\|[[:space:]]*\\*+\\)")
 (setq lispy-key-theme nil)
 #+end_src
+
+**** enter lispy state via =H= and =L=
+:PROPERTIES:
+:ID:       55955252-d35f-493f-bb2c-73a2363ca1c6
+:END:
+
+#+begin_src emacs-lisp
+(define-key! 'normal evil-lispy-mode-map
+  "H" #'evil-lispy/enter-state-left
+  "L" #'evil-lispy/enter-state-right)
+#+end_src
+
+**** key-theme
+:PROPERTIES:
+:ID:       8977fd1e-5603-4acc-b3d7-c767f6b913fe
+:END:
+
+#+begin_src emacs-lisp
+(lispy-set-key-theme '(special))
+#+end_src
+
+**** eros
+:PROPERTIES:
+:ID:       265b3b87-012e-452e-aa1f-c7c8e3308a73
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "xiongtx/eros"
+:PACKAGE:  "eros"
+:LOCAL-REPO: "eros"
+:END:
 
 **** avoid void variable error
 :PROPERTIES:
