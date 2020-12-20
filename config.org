@@ -7749,19 +7749,20 @@ Somtimes I might want to adjust this.
 :ID:       ee63aedb-beb7-4857-9af6-0b52afc2672e
 :END:
 
-*** monochrome-theme 
+*** base16-theme
 :PROPERTIES:
-:ID:       aaff9e51-3f6b-4473-9bb9-5e87333acdec
+:ID:       37fb1cc6-2b33-4978-a43c-8b6950b84cc4
 :TYPE:     git
 :FLAVOR:   melpa
+:FILES:    (:defaults "build/*.el" "base16-theme-pkg.el")
 :HOST:     github
-:REPO:     "fxn/monochrome-theme.el"
-:PACKAGE:  "monochrome-theme"
-:LOCAL-REPO: "monochrome-theme.el"
+:REPO:     "belak/base16-emacs"
+:PACKAGE:  "base16-theme"
+:LOCAL-REPO: "base16-emacs"
 :END:
 
 #+begin_src emacs-lisp
-(void-load-before-call 'monochrome-theme (list #'load-theme #'consult-theme))
+(void-load-before-call 'base16-theme (list #'load-theme #'consult-theme))
 #+end_src
 
 * Keybindings
