@@ -6395,6 +6395,11 @@ You'll get void variable if you don't do this.
 :ID:       18173a29-7442-473e-a851-f46182f56447
 :END:
 
+#+begin_src emacs-lisp
+(autoload #'evil-lispy-mode "evil-lispy" nil t nil)
+(void-add-hook 'lispy-mode-hook #'evil-lispy-mode)
+#+end_src
+
 *** highlight-quoted
 :PROPERTIES:
 :ID:       d0973dce-693b-45ca-88e3-27da1bb217f7
