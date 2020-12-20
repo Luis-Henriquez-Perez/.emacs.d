@@ -6342,8 +6342,10 @@ very useful to me.
 :ID:       8977fd1e-5603-4acc-b3d7-c767f6b913fe
 :END:
 
+Key themes are keybinding themes used for.
+
 #+begin_src emacs-lisp
-(lispy-set-key-theme '(special))
+(after! lispy (lispy-set-key-theme '(special)))
 #+end_src
 
 **** eros
