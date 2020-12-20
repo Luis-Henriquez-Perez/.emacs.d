@@ -7923,8 +7923,8 @@ prompt asking me if I'm sure.
   ""  (list :def nil                             :wk "buffer")
   "p" (list :def #'previous-buffer               :wk "previous")
   "n" (list :def #'next-buffer                   :wk "next")
-  "s" (list :def #'switch-to-buffer              :wk "switch")
-  "b" (list :def #'switch-to-buffer-other-window :wk "switch")
+  "o" (list :def #'switch-to-buffer-other-window :wk "switch other window")
+  "b" (list :def #'switch-to-buffer              :wk "switch")
   "d" (list :def #'display-buffer                :wk "display"))
 
 (define-leader-key!
