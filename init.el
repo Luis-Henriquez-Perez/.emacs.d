@@ -54,4 +54,4 @@ Tangling needs to occur when either `void-main-elisp-file' does not exist or
 (let ((file-name-handler-alist nil)
       (gc-cons-threshold most-positive-fixnum))
   (void-tangle-org-file-maybe)
-  (load void-main-elisp-file))
+  (load void-main-elisp-file nil t))
