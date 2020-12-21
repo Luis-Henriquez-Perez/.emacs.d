@@ -7754,9 +7754,10 @@ from [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale
 "zooming" to the whole frame instead of the current buffer.
 
 #+begin_src emacs-lisp
-(setq frame-zoom-font-difference 3)
-(autoload #'zoom-out "zoom-frm" nil t nil)
-(autoload #'zoom-in "zoom-frm" nil t nil)
+(setq frame-zoom-font-difference 0.5)
+(setq zoom-frame/buffer 'buffer)
+(--each (list #'zoom-out #'zoom-in #'toggle-zoom-frame)
+  (autoload it "zoom-frm" nil t nil))
 #+end_src
 
 ** mini-modeline
