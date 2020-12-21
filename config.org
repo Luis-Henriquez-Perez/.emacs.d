@@ -5477,6 +5477,34 @@ binding to.
 :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 :END:
 
+** annotate
+:PROPERTIES:
+:ID:       704ee343-2b90-442f-8ce6-cb158c15b8d7
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "bastibe/annotate.el"
+:PACKAGE:  "annotate"
+:LOCAL-REPO: "annotate.el"
+:END:
+
+This package allows you to add annotations to a file without actually editing
+it. The annotations are stored in their own file, so they are persistent.
+
+I prefer keeping code separate from documentation. This means I don't use inline
+comments in code. Instead, I use these annotations. At least, this is the idea
+in theory. As of writing this I've just added this package to my configuration
+so I'm not sure whether I will find it useful.
+
+*** init
+:PROPERTIES:
+:ID:       b52b2c19-ee6e-411a-917c-1b7b6887d11b
+:END:
+
+#+begin_src emacs-lisp
+(setq annotate-file (concat VOID-DATA-DIR "annotations"))
+#+end_src
+
 ** separedit
 :PROPERTIES:
 :ID:       07021099-6cea-4016-929b-d9310ea305f8
@@ -5547,6 +5575,15 @@ can use it to edit org descriptions in the same way that we edit source blocks.
 
 There are two cases when editing a description. There's the case of an existing
 description and there's the case of a new one.
+
+**** init
+:PROPERTIES:
+:ID:       8eb7b300-4df2-4a27-bae5-12bb982060f6
+:END:
+
+#+begin_src emacs-lisp
+(dbc-add-rule )
+#+end_src
 
 **** name for an org description
 :PROPERTIES:
@@ -5763,6 +5800,8 @@ source block editing tools used by org mode.
 :END:
 
 #+begin_src emacs-lisp
+(define-minor-mode org:source-mode ()
+  "")
 #+end_src
 
 **** edit
@@ -5778,7 +5817,9 @@ newline and only commit if the user has added content to the source block.
 (defun org/dwim-edit-source-block ()
   "Edit org source block."
   (interactive)
-  (-let* ((nodes )
+  (-let* ((elements '(headline src-block))
+	  (nodes (-> (org-ml-parse-subtree-at (point))
+		     (org-element-map elements #'identity)))
 	  (source-block (--first (eq (org-element-type it) 'src-block) nodes))
 	  (beg (org-element-property :begin source-block))
 	  (end (org-element-property :end source-block))
@@ -5786,9 +5827,7 @@ newline and only commit if the user has added content to the source block.
     (unless source-block
       (user-error "No source block in headline."))
     (with-current-buffer (edit-indirect-region beg end t)
-      (rename-buffer (format "*Org Source - %S" headline))
-      ;; (org:source-mode 1)
-      )))
+      (rename-buffer (format "*Org Source - %S" headline)))))
 #+end_src
 
 **** trim any trailing whitespace
