@@ -5794,6 +5794,14 @@ implementations for editing in an indirect buffer, I'd rather just use
 one. =edit-indirect= is simpler, more general and more customizable than the
 source block editing tools used by org mode.
 
+**** popup rule
+:PROPERTIES:
+:ID:       56dc7e88-35a1-471d-8123-fcd0fdd85590
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** minor mode for org source buffers
 :PROPERTIES:
 :ID:       9e55d8ab-23d8-4b40-beac-ab0fb151f02f
