@@ -5498,7 +5498,8 @@ binding to.
 :ID:       786b11a6-561b-4793-9c6c-f7630aba3774
 :END:
 
-The idea is I want to use one.
+=edit-indirect= is a package that provides a means to edit text in an indirect
+buffer. It's the same concept as org-src buffers but is not tied to org-mode.
 
 *** init
 :PROPERTIES:
@@ -5509,12 +5510,31 @@ The idea is I want to use one.
 (dbc-add-rule "bottom" "edit-indirect" :newname "\\*edit-indirect\\*")
 #+end_src
 
-*** extend edit-indirect so I can customize the buffer name
+*** helpers
 :PROPERTIES:
-:ID:       157e83c6-b25e-4d70-bcf1-63bbe6fd42f5
+:ID:       7a5d6767-c8fd-4b5c-8102-cc6ad919e7e6
+:END:
+
+**** equal shortcut
+:PROPERTIES:
+:ID:       47937704-e6e7-4900-abab-735c26b3cf36
 :END:
 
 #+begin_src emacs-lisp
+(defun org-element:type-equal-p (element type)
+  "Return non-nil if ELEMENT"
+  (eq (org-element-type element) type))
+#+end_src
+
+**** elements under current heading
+:PROPERTIES:
+:ID:       6c82be4f-a775-4381-af7d-300eb8ff61b9
+:END:
+
+#+begin_src emacs-lisp
+(defun org-element:headline-elements ()
+  "docstring"
+  )
 #+end_src
 
 *** editing org descriptions
@@ -5742,6 +5762,9 @@ source block editing tools used by org mode.
 :ID:       9e55d8ab-23d8-4b40-beac-ab0fb151f02f
 :END:
 
+#+begin_src emacs-lisp
+#+end_src
+
 **** edit
 :PROPERTIES:
 :ID:       519013b5-258b-48e1-801b-84bda1175101
@@ -5753,19 +5776,19 @@ newline and only commit if the user has added content to the source block.
 
 #+begin_src emacs-lisp
 (defun org/dwim-edit-source-block ()
-  "Edit sourc code."
+  "Edit org source block."
   (interactive)
-  (alet (->> (org-ml-parse-subtree-at (point))
-	     (--split-when (eq (org-element-type it) 'headline))
-	     (car)
-	     (--first (eq (org-element-type it) 'src-block)))
-    (org-element-property :contents-begin source-block)
-    (org-element-property :contents-end source-block)
-    (let (())
-      (with-current-buffer (edit-indirect-region beg end t)
-	(rename-buffer (format "*Org Source - %S"))
-	(when (= beg end)
-	  )))))
+  (-let* ((nodes )
+	  (source-block (--first (eq (org-element-type it) 'src-block) nodes))
+	  (beg (org-element-property :begin source-block))
+	  (end (org-element-property :end source-block))
+	  (headline (org-element-property :title-text (car nodes))))
+    (unless source-block
+      (user-error "No source block in headline."))
+    (with-current-buffer (edit-indirect-region beg end t)
+      (rename-buffer (format "*Org Source - %S" headline))
+      ;; (org:source-mode 1)
+      )))
 #+end_src
 
 **** trim any trailing whitespace
@@ -5773,7 +5796,13 @@ newline and only commit if the user has added content to the source block.
 :ID:       3a3d2ddb-7f80-4627-9733-986f4af1d2d7
 :END:
 
-A common annoyance is dealing accidentally.
+A common annoyance is dealing accidentally leaving trailing whitespace in the
+source buffer and then finding out when you see it written to the org file. With
+this I never have to think about this again.
+
+#+begin_src emacs-lisp
+(void-add-hook 'org-edit-source-mode-hook #'delete-trailing-whitespace)
+#+end_src
 
 *** bindings inside edit-indirect
 :PROPERTIES:
@@ -5843,6 +5872,9 @@ larger text objects. It's saves me keystrokes.
 :PROPERTIES:
 :ID:       98b567f1-00ad-4c99-aace-0a12f4d1b353
 :END:
+
+This headline is for packages and configuration related to writing such as spell
+and grammer checking.
 
 *** plural
 :PROPERTIES:
@@ -6523,6 +6555,9 @@ This is better than evil escape as it only binds in insert.
 :PROPERTIES:
 :ID:       2b7db121-f807-4274-9347-70c996d3c6f7
 :END:
+
+This headline is for packages and configuration which pertain to editing lisp
+code.
 
 *** lispyville
 :PROPERTIES:
@@ -7739,7 +7774,18 @@ referenance org headlines.
 It's easy to underestimate how much of a difference having an asthetically
 pleasing Emacs configuration can have. Ugliness really can take its toll.
 
-** zoom-frm
+** text scaling
+:PROPERTIES:
+:ID:       5d242d0e-eeab-46de-bcee-ecfd79b2bffc
+:END:
+
+I change the text scale frequently because in some cases, such as viewing my
+main org file, I want a birds-eye view where I can see the structure of a
+document at a glance. However, when I'm doing something like editing a source
+block I want to focus on a very specific thing totally; therefore, I want the
+text to take up most of the screen.
+
+*** zoom-frm
 :PROPERTIES:
 :ID:       15b8577e-3f98-420a-81a5-c7b91292aca3
 :TYPE:     git
