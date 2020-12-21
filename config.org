@@ -5824,14 +5824,14 @@ newline and only commit if the user has added content to the source block.
 			     (--split-when (eq 'headline (org-element-type it)))
 			     (car)
 			     (--first (eq (org-element-type it) 'src-block))))
-	  (beg (org-element-property :begin source-block))
-	  (end (org-element-property :end source-block))
+	  (beg (org-element-property :contents-begin source-block))
+	  (end (org-element-property :contents-end source-block))
 	  (headline (org-element-property :title-text (car nodes))))
     (unless source-block
       (user-error "No source block in headline."))
     (message "(%d , %d)" beg end)
-    ;; (with-current-buffer (edit-indirect-region beg end t)
-    ;;   (rename-buffer (format "*Org Source - %S" headline)))
+    (with-current-buffer (edit-indirect-region beg end t)
+      (rename-buffer (format "*Org Source - %S" headline)))
     ))
 #+end_src
 
