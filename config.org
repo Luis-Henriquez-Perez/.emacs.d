@@ -2115,6 +2115,58 @@ window be in it's own buffer lends itself better to searching them via
 :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 :END:
 
+*** tangle hook
+:PROPERTIES:
+:ID: 549999d7-901b-4ab4-bdbe-81514b756ced
+:END:
+
+Void tangles itself just before quitting if [[helpfn:void-needs-tangling-p][void-needs-tangling-p]] returns true.
+I tangle before quitting so I don't have to do it before startup. It's
+preferable for quitting emacs to be slightly slower than for emacs startup to
+be.
+
+#+begin_src emacs-lisp
+(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
+  "Tangle `VOID-MAIN-ORG-FILE' if necessary."
+  (when (void-needs-tangling-p)
+    (alet (concat VOID-LOCAL-DIR "main.el")
+      (org-babel-tangle-file VOID-MAIN-ORG-FILE it))))
+#+end_src
+
+*** tangle asynchronously upon saving
+:PROPERTIES:
+:ID: 00298d4e-6b18-4203-874f-f5a877a5cabf
+:END:
+
+This is another attempt to keep my =main.el= file in sync as much as possible with
+[[helpvar:VOID-README-FILE][void-main-org-file]]. ~void-tangle-on-save-h~ is called whenever a buffer is being
+saved to a file. The reason why I use ~cl-letf~ to temporarily override [[helpfn:load][load]] is
+because ~VOID-INIT-FILE~ already contains all the code I need so I don't want it
+to waste time loading ~void-main-elisp-file~.
+
+#+begin_src emacs-lisp
+(defhook! tangle-maybe (after-save-hook)
+  "Tangle `VOID-MAIN-ORG-FILE' asynchronously when it is saved."
+  (when (and (require 'async nil t)
+             (string= (file-truename VOID-MAIN-ORG-FILE)
+                      (or (buffer-file-name (current-buffer)) ""))
+             (void-needs-tangling-p))
+    (async-start
+     (lambda ()
+       (let ((old-fn (symbol-function 'load))
+             (user-init-file (concat user-emacs-directory "init.el")))
+         (require 'cl)
+         (cl-letf (((symbol-function 'load)
+                    (lambda (file &rest args)
+                      (when (string= user-init-file file)
+                        (apply old-fn file args)))))
+           (load user-init-file))))
+     (lambda (_)
+       (void-log
+        (concat (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
+                " tangling `VOID-MAIN-ORG-FILE'."))))))
+#+end_src
+
 *** disable =auto-save-directory= from being created
 :PROPERTIES:
 :ID:       eca1df47-5c58-4606-8036-a9b8de3ec962
