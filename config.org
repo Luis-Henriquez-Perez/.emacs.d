@@ -5828,6 +5828,7 @@ newline and only commit if the user has added content to the source block.
 	      (end (match-end 5))
 	      (lang (match-string 2)))
 	  (with-current-buffer (edit-indirect-region beg end t)
+	    (goto-char (point-min))
 	    (rename-buffer (format "*Org Source - %S" headline) t)
 	    (funcall (org-src-get-lang-mode lang))))))))
 #+end_src
