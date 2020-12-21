@@ -5493,6 +5493,226 @@ binding to.
 (autoload #'separedit-dwim "separedit" nil t nil)
 #+end_src
 
+** edit-indirect
+:PROPERTIES:
+:ID:       786b11a6-561b-4793-9c6c-f7630aba3774
+:END:
+
+The idea is I want to use one.
+
+*** init
+:PROPERTIES:
+:ID:       e3ac93b2-889b-48e7-8458-d8935aece221
+:END:
+
+#+begin_src emacs-lisp
+(dbc-add-rule "bottom" "edit-indirect" :newname "\\*edit-indirect\\*")
+#+end_src
+
+*** extend edit-indirect so I can customize the buffer name
+:PROPERTIES:
+:ID:       157e83c6-b25e-4d70-bcf1-63bbe6fd42f5
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
+*** editing org descriptions
+:PROPERTIES:
+:ID:       bdabe0b9-4116-423b-9fc0-049651bed58a
+:END:
+
+This headline contains customizations and extensions to =edit-indirect= so that I
+can use it to edit org descriptions in the same way that we edit source blocks.
+
+There are two cases when editing a description. There's the case of an existing
+description and there's the case of a new one.
+
+**** name for an org description
+:PROPERTIES:
+:ID:       f47f5e44-cca9-4bb7-be2f-471aa54bfaac
+:END:
+
+#+begin_src emacs-lisp
+(dbc-add-rule "bottom" "org description" :newname "\\*edit-indirect\\*")
+#+end_src
+
+**** description bounds
+:PROPERTIES:
+:ID:       74367212-cbd0-4871-94d5-24980e997bd7
+:END:
+
+=edit-indirect= requires the beginning and end of the editing region, so I need to
+determine the beginning and end of the description.
+
+It is important to note that my tendency in org mode is to have a headline with
+at most one description and at most one source block.
+
+When there is no existing description, the beginning and the end are the
+same--the end point of the property drawer. And yes, I assume the heading has a
+property drawer, at least for now. In my usage it's a good assumption because
+every headline in my org file should have a property drawer.
+
+#+begin_src emacs-lisp
+(defun org:description-bounds ()
+  "Return the bounds of description at headline.
+If there is no existing description return nil."
+  (interactive)
+  (let ((nodes (thread-first (org-ml-parse-subtree-at (point))
+		 (org-element-map org-element-all-elements #'identity))))
+    (aif (thread-last nodes
+	   (--split-when (not (eq (org-element-type it) 'paragraph)))
+	   (car))
+	;; Get the set of paragraphs that are.
+	(cons (org-element-property :begin (-first-item it))
+	      (org-element-property :end (-last-item it)))
+      ;; Assume a property drawer exists.
+      (alet (thread-last nodes 
+	      (--split-when (eq (org-element-type it) 'headline))
+	      (car)
+	      (--first (eq (org-element-type it) 'property-drawer)))
+	(alet (org-element-property :end it)
+	  (cons it it))))))
+#+end_src
+
+**** maybe remove newline
+:PROPERTIES:
+:ID:       cfa12a0f-fd23-4684-bb10-b86b2e4e5c58
+:END:
+
+#+begin_src emacs-lisp
+(defun org:description-maybe-remove-newline ()
+  "Remove newline if that's all there is."
+  (alet (buffer-string)
+    (when (and (seq-every-p (lambda (char) (= 10 char)) it)
+	       (= (1+ org:description-default-post-blanks) (length it)))
+      (erase-buffer))))
+#+end_src
+
+**** default post blanks
+:PROPERTIES:
+:ID:       117478bf-3759-4a00-b738-9b1aad99ed54
+:END:
+
+#+begin_src emacs-lisp
+(defvar org:description-default-post-blanks 1
+  "Number of blank lines that should follow a description.")
+#+end_src
+
+**** creating a new description
+:PROPERTIES:
+:ID:       9dde4377-ec03-462c-b3bd-5be8b98cc781
+:END:
+
+Creating a new description is trickier. One reason is because if I want newlines
+separating a description from it's source block--and I do--then I need to
+somehow add a newline as if it was already there. Also, I have to consider the
+case I end up aborting the description or committing an empty description in
+which case, then, I need to make sure not to add the newline.
+
+***** entering a description
+:PROPERTIES:
+:ID:       0e2abde6-6bf0-4d5c-81fb-98874694e635
+:END:
+
+When we enter a description and there is no existing description, we want to
+insert a blank like one that would be there if there were an existing
+description.
+
+**** init
+:PROPERTIES:
+:ID:       f9afdc3d-ceea-4e9e-a986-9f6bb7e860f6
+:END:
+
+#+begin_src emacs-lisp
+(defun org:description-goto-last-non-white ()
+  (goto-char (point-max))
+  (skip-chars-backward "\n\s"))
+
+(defun org:description-add-newlines ()
+  (save-excursion
+    (--dotimes (1+ org:description-default-post-blanks)
+      (insert "\n"))))
+#+end_src
+
+**** create a hook for editing descriptions
+:PROPERTIES:
+:ID:       8775acdc-0389-40af-a5f4-e74c78144944
+:END:
+
+#+begin_src emacs-lisp
+(define-minor-mode org:description-edit-mode
+  "Mode for editing org descriptions.")
+#+end_src
+
+**** edit description
+:PROPERTIES:
+:ID:       3a7da5c8-f445-4592-b0c0-7fbff3be912e
+:END:
+
+It is uncough to edit the text of the buffer when we're not commit it--even
+worse to have to edit it again afterwards if we don't end up committing
+anything. No, instead we should work with the edit indirect buffer.
+
+We need to make sure that we respect [[helpvar:edit-indirect-after-creation-hook][edit-indirect-after-creation-hook]] by doing
+our description management stuff before anything is done in that hook. It may be
+worth it to consider creating a hook specifically for org descriptions.
+
+#+begin_src emacs-lisp
+(defun org/dwim-edit-description ()
+  (interactive)
+  (-let [(beg . end) (org:description-bounds)]
+    (unless beg (user-error "No description at headline."))
+    ;; We need to respect what could be in edit-indirect hooks.
+    (let ((edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
+	  (headline (org-get-heading t t t t)))
+      (when (= beg end)
+	(add-hook 'edit-indirect-after-creation-hook #'org:description-add-newlines 0))
+      (add-hook 'edit-indirect-after-creation-hook #'org:description-goto-last-non-white 0)
+      (with-current-buffer (edit-indirect-region beg end t)
+	;; Rename the buffer to a more appropriate name.
+	(rename-buffer (format "*Org Desc - %s*" headline) t)
+	(org:description-edit-mode 1)
+	;; Go to the last non-whitespace character.
+	;; Maybe remove it if we don't do any editing.
+	(add-hook 'edit-indirect-before-commit-hook
+		  #'org:description-maybe-remove-newline nil t)))))
+#+end_src
+
+**** evil support
+:PROPERTIES:
+:ID:       f270092b-19ca-40ba-87aa-77b3d314c9a6
+:END:
+
+#+begin_src emacs-lisp
+(after! evil
+  (void-add-hook 'org:description-edit-mode-hook #'evil-insert-state))
+#+end_src
+
+*** editing org source blocks
+:PROPERTIES:
+:ID:       5d7edceb-9934-4bfe-a556-cdc0512288e0
+:END:
+
+Because org-mode already has lots of support for source blocks, they're way easier.
+
+*** bindings inside edit-indirect
+:PROPERTIES:
+:ID: 42992d1e-5d65-4570-ba96-02b3be31b97b
+:END:
+
+I want quick, convenient bindings I can use to abort or commit (which is
+=edit-indirect= lingo for writing the contents of the buffer back into its source
+file, see [[helpfn:edit-indirect-commit][edit-indirect-commit]].
+
+#+begin_src emacs-lisp
+(define-localleader-key!
+  :keymaps 'edit-indirect-mode-map
+  "," #'edit-indirect-commit
+  "c" #'edit-indirect-commit
+  "a" #'edit-indirect-abort)
+#+end_src
+
 ** expand-region
 :PROPERTIES:
 :ID:       7e873fba-33ea-4720-ad79-bd8d557cc4b3
