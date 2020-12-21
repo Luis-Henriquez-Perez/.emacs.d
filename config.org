@@ -5820,15 +5820,19 @@ newline and only commit if the user has added content to the source block.
   (save-excursion
     (save-match-data
       (org-back-to-heading)
-      (org-babel-next-src-block)
-      (looking-at org-babel-src-block-regexp)
-      (let ((beg (match-beginning 5))
-	    (end (match-end 5)))
-	;; (unless source-block
-	;;   (user-error "No source block in headline."))
-	(with-current-buffer (edit-indirect-region beg end t)
-	  ;; (rename-buffer (format "*Org Source - %S" headline))
-	  )))))
+      (let ((start (point))
+	    (headline (-fifth-item (org-heading-components))))
+	(org-babel-next-src-block)
+	(unless (= (save-excursion (org-back-to-heading) (point))
+		   (point))
+	  (user-error "No source code block under headline."))
+	(looking-at org-babel-src-block-regexp)
+	(let ((beg (match-beginning 5))
+	      (end (match-end 5))
+	      (lang (match-string 2)))
+	  (with-current-buffer (edit-indirect-region beg end t)
+	    (rename-buffer (format "*Org Source - %S" headline) t)
+	    (funcall (org-src-get-lang-mode lang))))))))
 #+end_src
 
 **** trim any trailing whitespace
