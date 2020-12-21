@@ -5542,11 +5542,24 @@ description and there's the case of a new one.
 :ID:       74367212-cbd0-4871-94d5-24980e997bd7
 :END:
 
-=edit-indirect= requires the beginning and end of the editing region, so I need to
-determine the beginning and end of the description.
+=edit-indirect= requires the beginning and end of the editing region, so I need
+to determine the beginning and end of the description.
 
-It is important to note that my tendency in org mode is to have a headline with
-at most one description and at most one source block.
+I want my descriptions after property drawers (and any whitespace that follows
+them).
+
+After an org heading node there is a section subnode which is the parent of all
+the heading's contents. If it has more than one child, the blank following the
+property drawer child pertains to the property drawer. However, if it's only
+child is the property drawer then the post blank pertains to the section
+itself.
+
+The approach I took to doing figuring this out is using the =org-element= parser
+to determine.
+
+It is important to note that my
+tendency in org mode is to have a headline with at most one description and at
+most one source block.
 
 When there is no existing description, the beginning and the end are the
 same--the end point of the property drawer. And yes, I assume the heading has a
@@ -5558,27 +5571,82 @@ every headline in my org file should have a property drawer.
   "Return the bounds of description at headline.
 If there is no existing description return nil."
   (interactive)
-  (let ((nodes (thread-first (org-ml-parse-subtree-at (point))
-		 (org-element-map org-element-all-elements #'identity))))
-    (aif (thread-last nodes
-	   (--split-when (not (eq (org-element-type it) 'paragraph)))
-	   (car))
-	;; Get the set of paragraphs that are.
+  (let* ((parse-tree (org-ml-parse-subtree-at (point)))
+	 (elements '(headline section property-drawer src-block paragraph))
+	 (nodes (->> (org-element-map parse-tree elements #'identity)
+		     (--split-when (eq (org-element-type it) 'headline))
+		     (car))))
+    (aif (car (--split-when (not (eq (org-element-type it) 'paragraph)) nodes))
 	(cons (org-element-property :begin (-first-item it))
 	      (org-element-property :end (-last-item it)))
-      ;; Assume a property drawer exists.
-      (alet (thread-last nodes 
-	      (--split-when (eq (org-element-type it) 'headline))
-	      (car)
-	      (--first (eq (org-element-type it) 'property-drawer)))
-	(alet (org-element-property :end it)
+      (-let* ((section (--first (eq (org-element-type it) 'section) nodes))
+	      ((property-drawer others) (org-element-contents section)))
+	(alet (org-element-property :end (if others property-drawer section))
 	  (cons it it))))))
 #+end_src
 
-**** maybe remove newline
+**** default post blanks
+:PROPERTIES:
+:ID:       117478bf-3759-4a00-b738-9b1aad99ed54
+:END:
+
+It is my preference to have one blank line after a description--or any org item
+for that matter. I just find it much more readable and less cluttered.
+
+#+begin_src emacs-lisp
+(defvar org:description-default-post-blanks 1
+  "Number of blank lines that should follow a description.")
+#+end_src
+
+**** hooks
+:PROPERTIES:
+:ID:       6ab3a2cc-17aa-4166-aa3f-8627afe40c1a
+:END:
+
+=edit-indirect= has hooks for whenever you want to do a quick thing.
+
+***** goto last non-white
+:PROPERTIES:
+:ID:       f9afdc3d-ceea-4e9e-a986-9f6bb7e860f6
+:END:
+
+Most of the time I will want to add to the end of a description. Therefore, I
+want the cursor to start at the last non-whitespace character of the
+description.
+
+#+begin_src emacs-lisp
+(defun org:description-goto-last-non-white ()
+  (goto-char (point-max))
+  (skip-chars-backward "\n\s"))
+#+end_src
+
+***** add newlines in the beginning
+:PROPERTIES:
+:ID:       46917f50-8e0b-4c29-8f9b-1aab7e0e9550
+:END:
+
+In the case where there was no existing description, we need to newlines to the
+description buffer so that if we end up committing a change the description will
+be placed properly in relation to what's below it. This hook is designed to make
+sure this happens.
+
+#+begin_src emacs-lisp
+(defun org:description-add-newlines ()
+  (save-excursion
+    (--dotimes (1+ org:description-default-post-blanks)
+      (insert "\n"))))
+#+end_src
+
+***** maybe remove newline
 :PROPERTIES:
 :ID:       cfa12a0f-fd23-4684-bb10-b86b2e4e5c58
 :END:
+
+When you open a description buffer and close it again, you'd expect the source
+buffer to stay the same--and you should expect this. Since we add newlines to
+the description buffer when there's no existing description, we could
+inadvertently edit the source buffer in this case. So this hook is to remove any
+newlines added in the case that nothing was changed.
 
 #+begin_src emacs-lisp
 (defun org:description-maybe-remove-newline ()
@@ -5589,56 +5657,14 @@ If there is no existing description return nil."
       (erase-buffer))))
 #+end_src
 
-**** default post blanks
-:PROPERTIES:
-:ID:       117478bf-3759-4a00-b738-9b1aad99ed54
-:END:
-
-#+begin_src emacs-lisp
-(defvar org:description-default-post-blanks 1
-  "Number of blank lines that should follow a description.")
-#+end_src
-
-**** creating a new description
-:PROPERTIES:
-:ID:       9dde4377-ec03-462c-b3bd-5be8b98cc781
-:END:
-
-Creating a new description is trickier. One reason is because if I want newlines
-separating a description from it's source block--and I do--then I need to
-somehow add a newline as if it was already there. Also, I have to consider the
-case I end up aborting the description or committing an empty description in
-which case, then, I need to make sure not to add the newline.
-
-***** entering a description
-:PROPERTIES:
-:ID:       0e2abde6-6bf0-4d5c-81fb-98874694e635
-:END:
-
-When we enter a description and there is no existing description, we want to
-insert a blank like one that would be there if there were an existing
-description.
-
-**** init
-:PROPERTIES:
-:ID:       f9afdc3d-ceea-4e9e-a986-9f6bb7e860f6
-:END:
-
-#+begin_src emacs-lisp
-(defun org:description-goto-last-non-white ()
-  (goto-char (point-max))
-  (skip-chars-backward "\n\s"))
-
-(defun org:description-add-newlines ()
-  (save-excursion
-    (--dotimes (1+ org:description-default-post-blanks)
-      (insert "\n"))))
-#+end_src
-
-**** create a hook for editing descriptions
+**** define a minor mode for editing descriptions
 :PROPERTIES:
 :ID:       8775acdc-0389-40af-a5f4-e74c78144944
 :END:
+
+The way I've set things up editing descriptions is it's own "thing". I'm going
+to be adding hooks and maybe even binding keys with editing descriptions in mind.
+Therefore, I think it's worthy to give it it's own mode.
 
 #+begin_src emacs-lisp
 (define-minor-mode org:description-edit-mode
@@ -5689,12 +5715,65 @@ worth it to consider creating a hook specifically for org descriptions.
   (void-add-hook 'org:description-edit-mode-hook #'evil-insert-state))
 #+end_src
 
+**** custom hooks
+:PROPERTIES:
+:ID:       240acf8a-621e-4e44-9c11-250b70a0e3dc
+:END:
+
+#+begin_src emacs-lisp
+(alet (list #'auto-capitalize-mode #'aggressive-fill-paragraph-mode
+	    #'org-link-minor-mode)
+  (void-add-hook 'org:description-edit-mode-hook it))
+#+end_src
+
 *** editing org source blocks
 :PROPERTIES:
 :ID:       5d7edceb-9934-4bfe-a556-cdc0512288e0
 :END:
 
-Because org-mode already has lots of support for source blocks, they're way easier.
+Why reinvent the wheel? While we can already edit source blocks with org
+built-in [[helpfn:org-edit-src-code][org-edit-src-code]], I value consistency. Instead of using two different
+implementations for editing in an indirect buffer, I'd rather just use
+one. =edit-indirect= is simpler, more general and more customizable than the
+source block editing tools used by org mode.
+
+**** minor mode for org source buffers
+:PROPERTIES:
+:ID:       9e55d8ab-23d8-4b40-beac-ab0fb151f02f
+:END:
+
+**** edit
+:PROPERTIES:
+:ID:       519013b5-258b-48e1-801b-84bda1175101
+:END:
+
+When editing a source block we face a similar problem to descriptions--namely,
+the case when the org source buffer is empty. In this case we need to add a
+newline and only commit if the user has added content to the source block.
+
+#+begin_src emacs-lisp
+(defun org/dwim-edit-source-block ()
+  "Edit sourc code."
+  (interactive)
+  (alet (->> (org-ml-parse-subtree-at (point))
+	     (--split-when (eq (org-element-type it) 'headline))
+	     (car)
+	     (--first (eq (org-element-type it) 'src-block)))
+    (org-element-property :contents-begin source-block)
+    (org-element-property :contents-end source-block)
+    (let (())
+      (with-current-buffer (edit-indirect-region beg end t)
+	(rename-buffer (format "*Org Source - %S"))
+	(when (= beg end)
+	  )))))
+#+end_src
+
+**** trim any trailing whitespace
+:PROPERTIES:
+:ID:       3a3d2ddb-7f80-4627-9733-986f4af1d2d7
+:END:
+
+A common annoyance is dealing accidentally.
 
 *** bindings inside edit-indirect
 :PROPERTIES:
@@ -6978,6 +7057,7 @@ Org mode demands its own editing.
   "r" (list :def #'org-refile                 :wk "refile")
   "j" (list :def #'org/avy-goto-headline      :wk "jump to headline")
   "E" (list :def #'org-babel-execute-subtree  :wk "execute subtree")
+  "d" (list :def #'org/dwim-edit-description  :wk "edit description")
   "e" (list :def #'org/dwim-edit-source-block :wk "edit source block")
   "," (list :def #'org/dwim-edit-source-block :wk "edit source block"))
 #+end_src
