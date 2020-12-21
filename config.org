@@ -5820,14 +5820,19 @@ newline and only commit if the user has added content to the source block.
   (-let* ((elements '(headline src-block))
 	  (nodes (-> (org-ml-parse-subtree-at (point))
 		     (org-element-map elements #'identity)))
-	  (source-block (--first (eq (org-element-type it) 'src-block) nodes))
+	  (source-block (->> nodes
+			     (--split-when (eq 'headline (org-element-type it)))
+			     (car)
+			     (--first (eq (org-element-type it) 'src-block))))
 	  (beg (org-element-property :begin source-block))
 	  (end (org-element-property :end source-block))
 	  (headline (org-element-property :title-text (car nodes))))
     (unless source-block
       (user-error "No source block in headline."))
-    (with-current-buffer (edit-indirect-region beg end t)
-      (rename-buffer (format "*Org Source - %S" headline)))))
+    (message "(%d , %d)" beg end)
+    ;; (with-current-buffer (edit-indirect-region beg end t)
+    ;;   (rename-buffer (format "*Org Source - %S" headline)))
+    ))
 #+end_src
 
 **** trim any trailing whitespace
