@@ -11,34 +11,34 @@
 
 ;; *** check if tangling is needed
 
-;; I only want to tangle =void-main-org-file= when actually need to. Tangling is
+;; I only want to tangle =VOID-MAIN-ORG-FILE= when actually need to. Tangling is
 ;; done at the expense of some (small) initialization time increase. If it can be
 ;; avoided, all the better.
 
 (defun void-needs-tangling-p ()
-  "Whether `void-main-org-file' needs to be tangled.
-Tangling needs to occur when either `void-main-elisp-file' does not exist or
-`void-main-org-file' is newer than `void-main-elisp-file'."
-  (or (not (file-exists-p void-main-elisp-file))
-      (file-newer-than-file-p void-main-org-file void-main-elisp-file)))
+  "Whether `VOID-MAIN-ORG-FILE' needs to be tangled.
+Tangling needs to occur when either `VOID-MAIN-ELISP-FILE' does not exist or
+`VOID-MAIN-ORG-FILE' is newer than `VOID-MAIN-ELISP-FILE'."
+  (or (not (file-exists-p VOID-MAIN-ELISP-FILE))
+      (file-newer-than-file-p VOID-MAIN-ORG-FILE VOID-MAIN-ELISP-FILE)))
 
 ;; *** tangling
 
 ;; ** tangle from and to files
 
-(defvar void-main-org-file (concat user-emacs-directory "config.org")
+(defconst VOID-MAIN-ORG-FILE (concat user-emacs-directory "config.org")
   "Org file containing most of VOID's initialization code.")
 
-(defvar void-main-elisp-file (concat user-emacs-directory "main.el")
-  "The elisp file that `void-main-org-file' tangles to.")
+(defconst VOID-MAIN-ELISP-FILE (concat user-emacs-directory "main.el")
+  "The elisp file that `VOID-MAIN-ORG-FILE' tangles to.")
 
 ;; ** main body
 
 (defun void-tangle-org-file ()
   (let ((code ""))
-    (org-babel-map-src-blocks void-main-org-file
+    (org-babel-map-src-blocks VOID-MAIN-ORG-FILE
       (setq code (concat code body "\n")))
-    (with-temp-file void-main-elisp-file
+    (with-temp-file VOID-MAIN-ELISP-FILE
       (insert ";; -*- lexical-binding: t -*-\n\n")
       (insert code))))
 
@@ -54,4 +54,4 @@ Tangling needs to occur when either `void-main-elisp-file' does not exist or
 (let ((file-name-handler-alist nil)
       (gc-cons-threshold most-positive-fixnum))
   (void-tangle-org-file-maybe)
-  (load void-main-elisp-file nil t))
+  (load VOID-MAIN-ELISP-FILE nil t))
