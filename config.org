@@ -3557,6 +3557,59 @@ my gpg passphrase via emacs.
 (setq epa-pinentry-mode 'loopback)
 #+end_src
 
+** emms
+:PROPERTIES:
+:ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
+:REPO:     "https://git.savannah.gnu.org/git/emms.git"
+:PACKAGE:  "emms"
+:LOCAL-REPO: "emms"
+:COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
+:END:
+
+[[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
+
+*** settings
+:PROPERTIES:
+:ID:       3861c03d-b08e-463b-a28e-e88c191993fc
+:END:
+
+#+begin_src emacs-lisp
+(setq emms-directory (concat VOID-DATA-DIR "emms/"))
+(setq emms-seek-seconds 5)
+(setq emms-player-list '(emms-player-mpv))
+(setq emms-source-file-default-directory "~/Multimedia/music")
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
+(setq mpc-host "127.0.0.1:6600")
+#+end_src
+
+*** emms
+:PROPERTIES:
+:ID: 5d28b703-a87f-47ca-b320-785e7589fea6
+:END:
+
+#+begin_src emacs-lisp
+(autoload 'emms (list #'emms-play-directory #'emms-play-file))
+#+end_src
+
+*** quitting
+:PROPERTIES:
+:ID: 545e6534-f289-4a89-838a-2a65ac74fe72
+:END:
+
+#+begin_src emacs-lisp
+(defhook! quit-emms (kill-emacs-hook)
+  "Shut down EMMS."
+  (when emms-player-playing-p (emms-pause))
+  (emms-stop)
+  ;; kill any existing mpd processes
+  (when (member 'emms-player-mpd emms-player-list)
+    (call-process "killall" nil nil nil "mpd")))
+#+end_src
+
 ** pdf-tools
 :PROPERTIES:
 :ID:       63343f9d-6b19-43de-8302-d1344d571949
