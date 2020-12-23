@@ -5560,42 +5560,6 @@ binding to.
 =edit-indirect= is a package that provides a means to edit text in an indirect
 buffer. It's the same concept as org-src buffers but is not tied to org-mode.
 
-*** init
-:PROPERTIES:
-:ID:       e3ac93b2-889b-48e7-8458-d8935aece221
-:END:
-
-#+begin_src emacs-lisp
-(dbc-add-rule "bottom" "edit-indirect" :newname "\\*edit-indirect\\*")
-#+end_src
-
-*** helpers
-:PROPERTIES:
-:ID:       7a5d6767-c8fd-4b5c-8102-cc6ad919e7e6
-:END:
-
-**** equal shortcut
-:PROPERTIES:
-:ID:       47937704-e6e7-4900-abab-735c26b3cf36
-:END:
-
-#+begin_src emacs-lisp
-(defun org-element:type-equal-p (element type)
-  "Return non-nil if ELEMENT"
-  (eq (org-element-type element) type))
-#+end_src
-
-**** elements under current heading
-:PROPERTIES:
-:ID:       6c82be4f-a775-4381-af7d-300eb8ff61b9
-:END:
-
-#+begin_src emacs-lisp
-(defun org-element:headline-elements ()
-  "docstring"
-  )
-#+end_src
-
 *** editing org descriptions
 :PROPERTIES:
 :ID:       bdabe0b9-4116-423b-9fc0-049651bed58a
@@ -5613,16 +5577,7 @@ description and there's the case of a new one.
 :END:
 
 #+begin_src emacs-lisp
-(dbc-add-rule )
-#+end_src
-
-**** name for an org description
-:PROPERTIES:
-:ID:       f47f5e44-cca9-4bb7-be2f-471aa54bfaac
-:END:
-
-#+begin_src emacs-lisp
-(dbc-add-rule "bottom" "org description" :newname "\\*edit-indirect\\*")
+(dbc-add-rule "bottom" "org description" :newname "\\*Org Desc - .+")
 #+end_src
 
 **** description bounds
@@ -5713,13 +5668,14 @@ description.
 :ID:       46917f50-8e0b-4c29-8f9b-1aab7e0e9550
 :END:
 
-In the case where there was no existing description, we need to newlines to the
-description buffer so that if we end up committing a change the description will
-be placed properly in relation to what's below it. This hook is designed to make
-sure this happens.
+In the case where there was no existing description, we need to add newlines to
+the description buffer so that if we end up committing a change the description
+will be placed properly in relation to what's below it. This hook is designed to
+make sure this happens.
 
 #+begin_src emacs-lisp
 (defun org:description-add-newlines ()
+  "Add newlines."
   (save-excursion
     (--dotimes (1+ org:description-default-post-blanks)
       (insert "\n"))))
@@ -5759,6 +5715,20 @@ Therefore, I think it's worthy to give it it's own mode.
   "Mode for editing org descriptions.")
 #+end_src
 
+**** requirements for editing descriptions
+:PROPERTIES:
+:ID:       9a789e79-84b8-4415-b152-e11fca786587
+:END:
+
+The edit description function requires =org-ml= and =edit-indirect=. I don't
+know if this is the best way to declare these dependencies. It certaintly is
+efficient.
+
+#+begin_src emacs-lisp
+(void-load-before-call 'org-ml #'org/dwim-edit-description)
+(void-load-before-call 'edit-indirect #'org/dwim-edit-description)
+#+end_src
+
 **** edit description
 :PROPERTIES:
 :ID:       3a7da5c8-f445-4592-b0c0-7fbff3be912e
@@ -5775,28 +5745,31 @@ worth it to consider creating a hook specifically for org descriptions.
 #+begin_src emacs-lisp
 (defun org/dwim-edit-description ()
   (interactive)
-  (-let [(beg . end) (org:description-bounds)]
+  (-let* (((beg . end) (org:description-bounds))
+	  (was-empty-p (= beg end)))
     (unless beg (user-error "No description at headline."))
-    ;; We need to respect what could be in edit-indirect hooks.
     (let ((edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
 	  (headline (org-get-heading t t t t)))
-      (when (= beg end)
+      (when was-empty-p
 	(add-hook 'edit-indirect-after-creation-hook #'org:description-add-newlines 0))
       (add-hook 'edit-indirect-after-creation-hook #'org:description-goto-last-non-white 0)
-      (with-current-buffer (edit-indirect-region beg end t)
-	;; Rename the buffer to a more appropriate name.
+      (with-current-buffer (edit-indirect-region beg end)
 	(rename-buffer (format "*Org Desc - %s*" headline) t)
 	(org:description-edit-mode 1)
-	;; Go to the last non-whitespace character.
-	;; Maybe remove it if we don't do any editing.
 	(add-hook 'edit-indirect-before-commit-hook
-		  #'org:description-maybe-remove-newline nil t)))))
+		  #'org:description-maybe-remove-newline nil t)
+	(select-window (display-buffer (buffer-name)))))))
 #+end_src
 
 **** evil support
 :PROPERTIES:
 :ID:       f270092b-19ca-40ba-87aa-77b3d314c9a6
 :END:
+
+When I open a buffer for editing a description it is very likely that I'll end
+up appending more commentary to the existing description. I think it will save
+me more time making that common case easier than the cost for the few situations
+where I don't do this.
 
 #+begin_src emacs-lisp
 (after! evil
@@ -5831,6 +5804,7 @@ source block editing tools used by org mode.
 :END:
 
 #+begin_src emacs-lisp
+(dbc-add-rule "bottom" "org source blocks" :newname "\\*Org[[:space:]]\\(?:S\\(?:ource\\|rc\\)\\).+")
 #+end_src
 
 **** minor mode for org source buffers
@@ -5839,11 +5813,40 @@ source block editing tools used by org mode.
 :END:
 
 #+begin_src emacs-lisp
-(define-minor-mode org:source-mode ()
-  "")
+(define-minor-mode org:source-mode ())
 #+end_src
 
-**** edit
+**** hooks
+:PROPERTIES:
+:ID:       84daf376-561e-4b12-a134-b3d50ec14efe
+:END:
+
+***** add newlines
+:PROPERTIES:
+:ID:       adc49d00-604c-47c7-b8fd-df3a30eb243a
+:END:
+
+#+begin_src emacs-lisp
+(defun org-source:remove-if-only-newline ()
+  (message "FUUCKKKKKKK")
+  (when (string= (buffer-string) "\n")
+    (erase-buffer)))
+#+end_src
+
+**** default post blanks
+:PROPERTIES:
+:ID:       117478bf-3759-4a00-b738-9b1aad99ed54
+:END:
+
+It is my preference to have one blank line after a description--or any org item
+for that matter. I just find it much more readable and less cluttered.
+
+#+begin_src emacs-lisp
+(defvar org:source-default-post-blanks 1
+  "Number of blank lines that should follow a description.")
+#+end_src
+
+**** main function for editing source block
 :PROPERTIES:
 :ID:       519013b5-258b-48e1-801b-84bda1175101
 :END:
@@ -5852,24 +5855,31 @@ When editing a source block we face a similar problem to descriptions--namely,
 the case when the org source buffer is empty. In this case we need to add a
 newline and only commit if the user has added content to the source block.
 
+The style in which I wrote this function is different from the last because it
+was inconvenient to get the start and end points of the source block contents. I
+have not finished with this source block.
+
 #+begin_src emacs-lisp
 (defun org/dwim-edit-source-block ()
   "Edit org source block."
   (interactive)
-  (save-excursion
-    (save-match-data
-      (org-back-to-heading)
-      (let ((start (point))
-	    (headline (-fifth-item (org-heading-components))))
-	(org-babel-next-src-block)
-	(looking-at org-babel-src-block-regexp)
-	(let ((beg (match-beginning 5))
-	      (end (match-end 5))
-	      (lang (match-string 2)))
-	  (with-current-buffer (edit-indirect-region beg end t)
-	    (goto-char (point-min))
-	    (rename-buffer (format "*Org Source - %S" headline) t)
-	    (funcall (org-src-get-lang-mode lang))))))))
+  (alet (-> (org-ml-parse-subtree-at (point))
+	    (org-element-map '(headline src-block) #'identity nil))
+    (-let* ((headline (org-element-property :title (car it)))
+	    (source-block (--first (eq 'src-block (org-element-type it)) it))
+	    (edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
+	    (lang (org-element-property :language source-block))
+	    ((beg end) (org-src--contents-area source-block)))
+      (with-current-buffer (edit-indirect-region beg end)
+	(rename-buffer (format "*Org Source - %s*" headline) t)
+	(funcall (org-src-get-lang-mode lang))
+	(when (= beg end)
+	  (goto-char (point-max))
+	  (insert "\n")
+	  (alet #'org-source:remove-if-only-newline
+	    (add-hook 'edit-indirect-before-commit-hook it nil t)))
+	(goto-char (point-min))
+	(select-window (display-buffer (buffer-name)))))))
 #+end_src
 
 **** trim any trailing whitespace
@@ -7084,7 +7094,7 @@ The change to this function."
 :ID:       63748940-c1b9-47ea-b1ce-d6519453ad03
 :END:
 
-*** initialize
+*** init
 :PROPERTIES:
 :ID:       6d08d180-5b96-4f1f-98f9-53086c13561a
 :END:
@@ -7503,6 +7513,17 @@ options. For this reason I wrote my own insert heading functions.
   (save-window-excursion
     (org-babel-execute-subtree)))
 #+end_src
+
+*** org-ml
+:PROPERTIES:
+:ID:       7f3ec0ad-45f8-4100-970e-773cfb9a625b
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "ndwarshuis/org-ml"
+:PACKAGE:  "org-ml"
+:LOCAL-REPO: "org-ml"
+:END:
 
 *** org-link-minor-mode
 :PROPERTIES:
