@@ -5536,34 +5536,6 @@ binding to.
 :ID:       40fb1b29-b772-456f-aac6-cf4a3b5cde3f
 :END:
 
-** annotate
-:PROPERTIES:
-:ID:       704ee343-2b90-442f-8ce6-cb158c15b8d7
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "bastibe/annotate.el"
-:PACKAGE:  "annotate"
-:LOCAL-REPO: "annotate.el"
-:END:
-
-This package allows you to add annotations to a file without actually editing
-it. The annotations are stored in their own file, so they are persistent.
-
-I prefer keeping code separate from documentation. This means I don't use inline
-comments in code. Instead, I use these annotations. At least, this is the idea
-in theory. As of writing this I've just added this package to my configuration
-so I'm not sure whether I will find it useful.
-
-*** init
-:PROPERTIES:
-:ID:       b52b2c19-ee6e-411a-917c-1b7b6887d11b
-:END:
-
-#+begin_src emacs-lisp
-(setq annotate-file (concat VOID-DATA-DIR "annotations"))
-#+end_src
-
 ** separedit
 :PROPERTIES:
 :ID:       07021099-6cea-4016-929b-d9310ea305f8
