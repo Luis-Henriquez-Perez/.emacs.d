@@ -6447,7 +6447,7 @@ Why not just go to the end of the ="= like any other around operator?
 =evil-lion= provides a very useful way of aligning text.
 
 #+begin_src emacs-lisp
-(--each '(evil-lion-right evil-lion-left)
+(--each (list #'evil-lion-right #'evil-lion-left)
   (autoload it "evil-lion" nil t nil))
 
 (general-def 'normal
