@@ -2126,6 +2126,9 @@ window be in it's own buffer lends itself better to searching them via
 :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 :END:
 
+This headline contains headings for which I have not yet determined a good
+hierarchy.
+
 *** tangling
 :PROPERTIES:
 :ID:       adf94410-e747-4d5a-b9dc-7b7b249b8c76
@@ -2136,12 +2139,7 @@ should only be done as a last resort. This heading provides hooks that try to
 "sneak in" a tangle during the current emacs session so that I can avoid a
 slower startup.
 
-**** helpers
-:PROPERTIES:
-:ID:       25c4ad2c-068d-4bb4-9940-1ad5519236cd
-:END:
-
-***** whether tangling is needed
+**** determine whether to tangle
 :PROPERTIES:
 :ID:       9408329a-ab73-4bcc-9416-d2cea8fa37bb
 :END:
@@ -2157,7 +2155,7 @@ my =init.el=.
       (file-newer-than-file-p VOID-MAIN-ORG-FILE VOID-MAIN-ORG-FILE)))
 #+end_src
 
-***** load tangling functions
+**** load tangling functions
 :PROPERTIES:
 :ID:       27c742d6-1145-4be1-9c24-46e1613df247
 :END:
@@ -2184,7 +2182,7 @@ built-in emacs variables and functions.
       (load user-init-file))))
 #+end_src
 
-***** indicate if tangling successful
+**** indicate if tangling successful
 :PROPERTIES:
 :ID:       066857c8-b9bb-4660-899d-0bea725d2b15
 :END:
