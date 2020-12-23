@@ -19,7 +19,12 @@
 (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
-*** important directories
+*** config files and directores
+:PROPERTIES:
+:ID:       be8993d3-c8f7-451b-8cb4-04a9138e5c4e
+:END:
+
+**** important directories
 :PROPERTIES:
 :ID:       17fd696e-6140-4d9b-9d17-053c2dced786
 :END:
@@ -39,7 +44,7 @@ Files that need to exist, but I don't typically want to see go here.")
   "Path to the directory where packages are stored.")
 #+end_src
 
-*** important files
+**** important files
 :PROPERTIES:
 :ID:       d01a33a8-c6e8-433c-9850-6bd7ea0488f9
 :END:
@@ -55,7 +60,7 @@ Files that need to exist, but I don't typically want to see go here.")
   "Path to elisp file.")
 #+end_src
 
-*** ensure directories exist
+**** ensure directories exist
 :PROPERTIES:
 :ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
 :END:
@@ -2825,6 +2830,8 @@ problem.
 :PROPERTIES:
 :ID: f7a9c5e7-fcf8-434a-a9b3-dbe4eadead78
 :END:
+
+By default when you search a subtree with consult, you end up.
 
 #+begin_src emacs-lisp
 (defun outline:display-children-in-window ()
