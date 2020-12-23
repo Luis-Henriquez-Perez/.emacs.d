@@ -7600,9 +7600,10 @@ diary/journal using =org-mode=.
 #+begin_src emacs-lisp
 (autoload #'org-journal-new-entry "org-journal" nil t nil)
 
-(setq org-journal-file-type 'yearly)
-(setq org-journal-dir (concat VOID-ORG-DIR "journal/"))
-(setq org-journal-find-file 'find-file)
+(after! org-journal
+  (setq org-journal-file-type 'yearly)
+  (setq org-journal-dir (concat org-directory "journal/"))
+  (setq org-journal-find-file 'find-file))
 #+end_src
 
 *** org-src
