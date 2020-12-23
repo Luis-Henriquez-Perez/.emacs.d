@@ -2788,8 +2788,10 @@ Consult is a package that provides several generic utility functions.
 **** don't preview anything
 
 Many consult consult commands have a preview by default. Typically previews are
-expensive. This is especially true for [[][]], which switches the theme every
-time you move from one candidate to another.
+expensive. This is especially true for [[helpfn:consult-theme][consult-theme]], which switches the theme
+every time you move from one candidate to another. If a preview is helpful and
+its benefit is not outweighed by the performance cost of previewing, then I
+favor using it.
 
 #+begin_src emacs-lisp
 (setq consult-preview-theme nil)
@@ -2817,10 +2819,106 @@ Make sure to load recentf before using some consult commands.
   (void-load-before-call 'recentf it t))
 #+end_src
 
-**** make sure commands work in folds
+**** make sure commands display correctly
+:PROPERTIES:
+:ID:       a8d49e11-b173-4aea-ba43-08ec7bea4379
+:END:
+
+This headline addresses some inconveniences with the way =consult-line= and
+=consult-outline=.
+
+***** revealing folds
+:PROPERTIES:
+:ID:       e7c56a70-0772-41c3-a8a6-261e64ee3f36
+:END:
+
+When you have a folded outline structure (which will be true about 99% of the
+time) and the point you select for your search is in folded text, consult does
+not unfold it for you. This is annoying. The purpose of this headline is to
+address this problem.
+
+****** make sure commands work in folds
 :PROPERTIES:
 :ID:       6e442764-a323-4242-8dfd-818a82ea802b
 :END:
+
+This function is designed to reveal the current outline branch hierarchy so that
+you can see the point where consult takes you.
+
+#+begin_src emacs-lisp
+(defun outline:show-branch-maybe ()
+  "Reveal the current outline branch.
+Show all of the current headine's parents and their children. This includes this
+headline."
+  (when (outline-invisible-p (line-end-position))
+    (let (points)
+      (save-excursion
+        (when (ignore-errors (outline-back-to-heading :invisible-ok))
+          (push (point) points)
+          (while (ignore-errors (outline-up-heading 1 :invisible-ok))
+            (push (point) points))
+          (dolist (point points)
+            (goto-char point)
+            (outline-show-children)
+            (outline-show-entry)))))))
+#+end_src
+
+****** advise =consult-outline= and =consult-line=
+:PROPERTIES:
+:ID:       1b502b03-3aa8-428e-ae93-ffb6769490ff
+:END:
+
+#+begin_src emacs-lisp
+(alet (list #'consult-outline #'consult-line)
+  (void-add-advice it :after #'outline:show-current-branch))
+#+end_src
+
+***** window display
+:PROPERTIES:
+:ID:       b1049ef3-ab14-4b41-b759-eb3699107e71
+:END:
+
+Another rough edge with searching via consult is that sometimes the heading
+won't be placed perfectly in a window. This headline is for addressing this
+problem.
+
+****** display children in window
+:PROPERTIES:
+:ID: f7a9c5e7-fcf8-434a-a9b3-dbe4eadead78
+:END:
+
+#+begin_src emacs-lisp
+(defun outline:display-children-in-window ()
+  "Scroll up window to maximize view of unfolded subtree.
+If the subtree is unfolded and the end of the current subtree is outside of the
+visible window, scroll up until the whole subtree is visible. If the whole
+subtree can't fit on the visible window, only scroll up until the top of the
+subtree is on the first line of the window (in other words, the beginning of
+th subtree should always be visible)."
+  ;; Don't use `window-beg' and `window-end' because their values are
+  ;; unreliable.
+  (let ((subtree-beg (outline-back-to-heading)
+		     (line-beginning-position))
+        (subtree-end (outline-end-of-subtree)
+		     (line-end-position)))
+    (while (and (pos-visible-in-window-p subtree-beg)
+                (not (pos-visible-in-window-p subtree-end)))
+      (scroll-up 1))
+    ;; Sometimes the line at the end is not fully visible. So I try to
+    ;; scroll down an extra line.
+    (unless (pos-visible-in-window-p subtree-beg)
+      (scroll-down 1))))
+#+end_src
+
+****** advise
+:PROPERTIES:
+:ID:       9ac87847-c116-4a0b-b2ab-544c1f02cdcf
+:END:
+
+#+begin_src emacs-lisp
+(alet (list #'consult-outline #'consult-line)
+  (void-add-advice it :after #'outline:display-children-in-window))
+#+end_src
 
 **** bindings
 :PROPERTIES:
@@ -3238,6 +3336,8 @@ worth quoting here:
 :ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
 :END:
 
+This heading is for configuring snippet.
+
 *** auto-yasnippet
 :PROPERTIES:
 :ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
@@ -3484,9 +3584,8 @@ Prescient.
 :END:
 
 #+begin_src emacs-lisp
-(after! selectrum
-  (setq selectrum-refine-candidates-function #'orderless-filter)
-  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
+(setq selectrum-refine-candidates-function #'orderless-filter)
+(setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
 #+end_src
 
 **** stop selectrum filtering and highlight
