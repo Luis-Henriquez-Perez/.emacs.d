@@ -3356,12 +3356,14 @@ This heading is for configuring snippet.
 #+end_src
 
 **** dont interfere with yasnippet
-;; :PROPERTIES:
-;; :ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
-;; :END:
+:PROPERTIES:
+:ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
+:END:
 
+#+begin_src elisp
 (after! (smartparens yasnippet)
   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
+#+end_src
 
 *** yasnippet-snippets
 :PROPERTIES:
