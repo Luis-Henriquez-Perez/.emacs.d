@@ -2840,10 +2840,10 @@ subtree is on the first line of the window (in other words, the beginning of
 th subtree should always be visible)."
   ;; Don't use `window-beg' and `window-end' because their values are
   ;; unreliable.
-  (let ((subtree-beg (outline-back-to-heading)
-		     (line-beginning-position))
-        (subtree-end (outline-end-of-subtree)
-		     (line-end-position)))
+  (let ((subtree-beg (save-excursion (outline-back-to-heading)
+				     (line-beginning-position)))
+        (subtree-end (save-excursion (outline-end-of-subtree)
+				     (line-end-position))))
     (while (and (pos-visible-in-window-p subtree-beg)
                 (not (pos-visible-in-window-p subtree-end)))
       (scroll-up 1))
