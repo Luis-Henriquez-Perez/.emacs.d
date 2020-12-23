@@ -5588,6 +5588,7 @@ binding to.
 #+begin_src emacs-lisp
 (define-leader-key!
   :infix "w"
+  "m" (list :def #'maximize-window :wk "maximize")
   "z" (list :def #'zoom-window-zoom :wk "zoom"))
 #+end_src
 
