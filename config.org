@@ -7726,21 +7726,16 @@ source blocks.
 :TYPE:     built-in
 :END:
 
-**** org capture
+=org-capture= is a feature that allows you to capture a.
+
+**** init
 :PROPERTIES:
 :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
 :END:
 
 #+begin_src emacs-lisp
 (autoload #'org-capture "org-capture" nil t nil)
-#+end_src
 
-**** control popup windows
-:PROPERTIES:
-:ID:       33c99055-ea4a-4df2-b9fc-934ac3f06ce1
-:END:
-
-#+begin_src emacs-lisp
 (dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE")
 #+end_src
 
@@ -7841,7 +7836,6 @@ same key as the one(s) being added."
       :prepend t
       :empty-lines 1)
 #+end_src
-
 
 *** org-clock
 :PROPERTIES:
