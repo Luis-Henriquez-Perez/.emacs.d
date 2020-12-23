@@ -10,11 +10,13 @@
   (org-element-property :value src-block))
 
 (defun void-source-block-strings (org-file)
+  "Return a list of source block strings for ORG-FILE."
   (with-temp-buffer
     (insert-file-contents org-file)
     (org-element-map (org-element-parse-buffer) '(src-block) #'void--org-parse-fn)))
 
 (defun void--tangle-org-file (org-file elisp-file)
+  "Tangle ORG-FILE to ELISP-FILE."
   (with-temp-file elisp-file
     (insert ";; -*- lexical-binding: t -*-\n\n")
     (insert (string-join (void-source-block-strings org-file) "\n"))))
