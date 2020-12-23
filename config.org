@@ -3,7 +3,7 @@
 :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
 :END:
 
-** Init
+** Initialize
 :PROPERTIES:
 :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
 :END:
@@ -19,61 +19,15 @@
 (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
-*** directories
+*** important directories
 :PROPERTIES:
-:ID: 93cc2db1-44c7-45ec-af98-5a4eb7145f61
+:ID:       17fd696e-6140-4d9b-9d17-053c2dced786
 :END:
-
-I store certain important directories in variables so that I can easily
-reference them in the future.
-
-**** core directories and files
-:PROPERTIES:
-:ID: ad18ebcb-803a-4fd6-adcb-c71cf54f3432
-:END:
-
-***** top level
-:PROPERTIES:
-:ID: 48bf884a-de27-45f8-a5b1-94567815942d
-:END:
-
-These are important files and directories that I end up referring to often in my
-code.
 
 #+begin_src emacs-lisp
 (defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
   "Path to `user-emacs-directory'.")
 
-(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
-  "Path to the elisp file that bootstraps Void startup.")
-
-(defconst VOID-MULTIMEDIA-DIR (concat VOID-EMACS-DIR "screenshots/")
-  "Directory where any multimedia describing VOID should go.
- These could screenshots are for detailing any problems, interesting behaviors or features.")
-
-(defconst VOID-TEST-FILE (concat VOID-EMACS-DIR "test.org")
-  "Path to the file that contains all of Void's tests.")
-#+end_src
-
-***** org
-:PROPERTIES:
-:ID:       c88f95cd-f5bd-4c69-8679-7e42c52e9a36
-:END:
-
-#+begin_src emacs-lisp
-(defconst VOID-ORG-DIR (expand-file-name "~/Documents/org/")
-  "Path where Void's org files go.")
-
-(defconst VOID-CAPTURE-FILE (concat VOID-ORG-DIR "capture.org")
-  "File where all org captures will go.")
-#+end_src
-
-***** hidden
-:PROPERTIES:
-:ID: d46d573b-1d17-4d0b-9b49-9049dbb6f7c1
-:END:
-
-#+begin_src emacs-lisp
 (defconst VOID-LOCAL-DIR (concat VOID-EMACS-DIR ".local/")
   "Path to the directory for local Emacs files.
 Files that need to exist, but I don't typically want to see go here.")
@@ -85,40 +39,24 @@ Files that need to exist, but I don't typically want to see go here.")
   "Path to the directory where packages are stored.")
 #+end_src
 
-**** system directories
+*** important files
 :PROPERTIES:
-:ID:       f3bdd353-b0ff-48fd-a2f2-295ccfa139ab
+:ID:       d01a33a8-c6e8-433c-9850-6bd7ea0488f9
 :END:
 
-These are directories I have on my system.
-
 #+begin_src emacs-lisp
-(defconst VOID-DOWNLOAD-DIR (expand-file-name "~/Downloads/")
-  "Directory where downloads should go.")
+(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
+  "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-MULTIMEDIA-DIR (expand-file-name "~/Multimedia/")
-  "Directory where multimedia should go.")
+(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "config.org"))
 
-(defconst VOID-VIDEO-DIR (concat VOID-MULTIMEDIA-DIR "Videos/")
-  "Directory where videos should go.")
-
-(defconst VOID-MUSIC-DIR (concat VOID-MULTIMEDIA-DIR "Music/")
-  "Directory where music should go.")
-
-(defconst VOID-ALERT-SOUNDS (concat VOID-MULTIMEDIA-DIR "Alert Sounds/")
-  "Directory where alert sounds should go.")
-
-(defconst VOID-EMAIL-DIR (expand-file-name "~/.mail/")
-  "Directories where emails are stored.")
+(defconst VOID-MAIN-ELISP-FILE (concat VOID-EMACS-DIR "main.el"))
 #+end_src
 
-**** ensure directories exist
+*** ensure directories exist
 :PROPERTIES:
 :ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
 :END:
-
-I create the directories that don't exist. But I assume they already exist if
-Void is compiled.
 
 #+begin_src emacs-lisp
 (dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
