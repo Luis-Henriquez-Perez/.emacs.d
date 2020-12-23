@@ -2126,56 +2126,115 @@ window be in it's own buffer lends itself better to searching them via
 :ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
 :END:
 
-*** tangle hook
+*** tangling
 :PROPERTIES:
-:ID: 549999d7-901b-4ab4-bdbe-81514b756ced
+:ID:       adf94410-e747-4d5a-b9dc-7b7b249b8c76
 :END:
 
-Void tangles itself just before quitting if [[helpfn:void-needs-tangling-p][void-needs-tangling-p]] returns true.
-I tangle before quitting so I don't have to do it before startup. It's
-preferable for quitting emacs to be slightly slower than for emacs startup to
-be.
+Tangling during startup is the most inconvenient time to tangle an org file. And
+should only be done as a last resort. This heading provides hooks that try to
+"sneak in" a tangle during the current emacs session so that I can avoid a
+slower startup.
+
+**** helpers
+:PROPERTIES:
+:ID:       25c4ad2c-068d-4bb4-9940-1ad5519236cd
+:END:
+
+***** whether tangling is needed
+:PROPERTIES:
+:ID:       9408329a-ab73-4bcc-9416-d2cea8fa37bb
+:END:
 
 #+begin_src emacs-lisp
-(defhook! tangle-on-quit-maybe (kill-emacs-hook :append t)
-  "Tangle `VOID-MAIN-ORG-FILE' if necessary."
-  (when (void-needs-tangling-p)
-    (alet (concat VOID-LOCAL-DIR "main.el")
-      (org-babel-tangle-file VOID-MAIN-ORG-FILE it))))
+(defun void-needs-tangling-p ()
+  "Return t if void needs taggling."
+  (void--needs-tangling-p VOID-MAIN-ORG-FILE VOID-MAIN-ELISP-FILE))
 #+end_src
 
-*** tangle asynchronously upon saving
+***** load tangling functions
 :PROPERTIES:
-:ID: 00298d4e-6b18-4203-874f-f5a877a5cabf
+:ID:       27c742d6-1145-4be1-9c24-46e1613df247
 :END:
 
-This is another attempt to keep my =main.el= file in sync as much as possible with
-[[helpvar:VOID-README-FILE][void-main-org-file]]. ~void-tangle-on-save-h~ is called whenever a buffer is being
-saved to a file. The reason why I use ~cl-letf~ to temporarily override [[helpfn:load][load]] is
-because ~VOID-INIT-FILE~ already contains all the code I need so I don't want it
-to waste time loading ~void-main-elisp-file~.
+This function is meant to be used as the first argument for =async-start=. This
+function and [[][[] end up doing the same thing but this one is more indirect
+about it. It achieves tangling by evaluating the init file but without loading
+the main elisp file. I do it this way because my tangling function is not
+defined in a new emacs process. I considered injecting the raw function object
+into a lambda so I could essentially redefine the function in the new emacs
+process but that would only work if the function's definiton only depends on
+built-in emacs variables and functions.
 
 #+begin_src emacs-lisp
-(defhook! tangle-maybe (after-save-hook)
-  "Tangle `VOID-MAIN-ORG-FILE' asynchronously when it is saved."
-  (when (and (require 'async nil t)
-             (string= (file-truename VOID-MAIN-ORG-FILE)
-                      (or (buffer-file-name (current-buffer)) ""))
-             (void-needs-tangling-p))
-    (async-start
-     (lambda ()
-       (let ((old-fn (symbol-function 'load))
-             (user-init-file (concat user-emacs-directory "init.el")))
-         (require 'cl)
-         (cl-letf (((symbol-function 'load)
-                    (lambda (file &rest args)
-                      (when (string= user-init-file file)
-                        (apply old-fn file args)))))
-           (load user-init-file))))
-     (lambda (_)
-       (void-log
-        (concat (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
-                " tangling `VOID-MAIN-ORG-FILE'."))))))
+(defun void-load-init-file-only ()
+  "Load init file."
+  (let ((old-fn (symbol-function 'load))
+	(user-init-file (concat user-emacs-directory "init.el")))
+    (require 'cl)
+    (cl-letf (((symbol-function 'load)
+	       (lambda (file &rest args)
+		 (when (string= user-init-file file)
+                   (apply old-fn file args)))))
+      (load user-init-file))))
+#+end_src
+
+***** indicate if tangling successful
+:PROPERTIES:
+:ID:       066857c8-b9bb-4660-899d-0bea725d2b15
+:END:
+
+The purpose of this function is simply to log the outcome of whether tangling
+has been successful or not. It's used as the second argument of =async-start=.
+
+#+begin_src emacs-lisp
+(defun void-log-tangling-outcome ()
+  "Log whether tangling successful."
+  (alet (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
+    (void-log "%s tangling `VOID-MAIN-ORG-FILE'." it)))
+#+end_src
+
+**** tangle asyncronously
+:PROPERTIES:
+:ID:       9f3cfe06-dae6-48e1-864d-914a176a177b
+:END:
+
+This hook tangles my org file during saves and, crucially, it does so
+asynchronously--meaning that a separate emacs process does this tangling. Emacs
+is single-threaded, so doing it synchronously will likely cause a significant
+"hangs" or pauses after each save.
+
+#+begin_src emacs-lisp
+(defun void-tangle-async-maybe (&optional log-output-p)
+  "Tangle `VOID-MAIN-ORG-FILE' asynchronously."
+  (when (void-needs-tangling-p)
+    (async-start #'void-load-init-file-only
+		 (when log-output-p #'void-log-tangling-outcome))))
+#+end_src
+
+**** quitting (or killing in emacs parlance)
+:PROPERTIES:
+:ID:       d7ee4164-61a3-4b82-bc68-4673446707b9
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'kill-emacs-hook #'void-tangle-async-maybe)
+#+end_src
+
+**** saving
+:PROPERTIES:
+:ID:       585b1e28-950b-4901-ac90-487facdf0b70
+:END:
+
+When saving from a file I also make sure that I'm saving the main org file so I
+don't tangle needlessly.
+
+#+begin_src emacs-lisp
+(defhook! tangle-async-maybe (after-save-hook)
+  "When I'm saving from `VOID-MAIN-ORG-FILE', tangle it."
+  (when (aand (buffer-file-name)
+	      (string= VOID-MAIN-ELISP-FILE it))
+    (void-tangle-async-maybe)))
 #+end_src
 
 *** disable =auto-save-directory= from being created
