@@ -3684,7 +3684,12 @@ my gpg passphrase via emacs.
   "s" #'pdf-view-fit-width-to-window)
 #+end_src
 
-** engine-mode
+** web browsing
+:PROPERTIES:
+:ID:       0be0a36f-67dc-4db5-8d0a-321d19bae08a
+:END:
+
+*** engine-mode
 :PROPERTIES:
 :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
 :HOST:     github
@@ -3696,7 +3701,7 @@ my gpg passphrase via emacs.
 :LOCAL-REPO: "engine-mode"
 :END:
 
-*** engine-mode
+**** engine-mode
 :PROPERTIES:
 :ID:       f5a2c47b-01df-4dcf-b012-b6311cf79683
 :END:
@@ -3707,7 +3712,7 @@ my gpg passphrase via emacs.
   (autoload it "engine-mode" nil t nil))
 #+end_src
 
-*** different engines
+**** different engines
 :PROPERTIES:
 :ID:       2f5c974e-b26e-4080-a9b3-acd6406ab118
 :END:
@@ -3727,12 +3732,12 @@ functions.
     "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"))
 #+end_src
 
-** eww
+*** eww
 :PROPERTIES:
 :ID:       77d23774-7f42-45ee-90ec-5f28efddee65
 :END:
 
-*** ability to add new windows
+**** ability to add new windows
 :PROPERTIES:
 :ID:       54dc52bb-f7e5-4a86-a306-aa42482cbd6d
 :END:
@@ -3751,7 +3756,7 @@ replaces the existing buffer. I got this code snippet from [[https://stackoverfl
     (rename-buffer result t)))
 #+end_src
 
-** w3m
+*** w3m
 :PROPERTIES:
 :ID: e5e13423-bc70-49b0-969e-94897c798d54
 :TYPE:     git
