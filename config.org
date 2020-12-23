@@ -48,9 +48,11 @@ Files that need to exist, but I don't typically want to see go here.")
 (defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "config.org"))
+(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "config.org")
+  "Path to config file used for tangling.")
 
-(defconst VOID-MAIN-ELISP-FILE (concat VOID-EMACS-DIR "main.el"))
+(defconst VOID-MAIN-ELISP-FILE (concat VOID-EMACS-DIR "main.el")
+  "Path to elisp file.")
 #+end_src
 
 *** ensure directories exist
