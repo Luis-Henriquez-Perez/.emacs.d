@@ -2146,10 +2146,15 @@ slower startup.
 :ID:       9408329a-ab73-4bcc-9416-d2cea8fa37bb
 :END:
 
+If you looked at my init file you'll see that I already defined a variant of
+this function. I define it here from scratch so this file will be independent of
+my =init.el=.
+
 #+begin_src emacs-lisp
 (defun void-needs-tangling-p ()
   "Return t if void needs taggling."
-  (void--needs-tangling-p VOID-MAIN-ORG-FILE VOID-MAIN-ELISP-FILE))
+  (or (not (file-exists-p VOID-MAIN-ELISP-FILE))
+      (file-newer-than-file-p VOID-MAIN-ORG-FILE VOID-MAIN-ORG-FILE)))
 #+end_src
 
 ***** load tangling functions
