@@ -61,7 +61,7 @@ Files that need to exist, but I don't typically want to see go here.")
 :END:
 
 #+begin_src emacs-lisp
-(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-ORG-DIR))
+(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-PACKAGES-DIR))
   (make-directory dir t))
 #+end_src
 
