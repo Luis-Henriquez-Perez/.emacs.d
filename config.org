@@ -8414,7 +8414,7 @@ Somtimes I might want to adjust this.
 :END:
 
 #+begin_src emacs-lisp
-(void-load-before-call 'base16-theme (list #'load-theme #'consult-theme))
+(require 'base16-theme)
 #+end_src
 
 * Keybindings
