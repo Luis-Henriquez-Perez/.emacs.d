@@ -491,9 +491,9 @@ But if you're only.
 :LOCAL-REPO: "mmt"
 :END:
 
-=mmt= is a library of tools for writing macros. Specifically, it
-provides the quintessential =once-only= and =with-gensyms= macros
-which are used to prevent variable leaking.
+=mmt= is a library of tools for writing macros. Specifically, it provides the
+quintessential =once-only= and =with-gensyms= macros which are used to prevent
+variable leaking.
 
 #+begin_src emacs-lisp
 (defalias 'once-only! 'mmt-once-only)
