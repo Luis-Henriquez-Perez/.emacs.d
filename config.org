@@ -2753,11 +2753,7 @@ favor using it.
               #'consult-outline #'consult-apropos #'consult-buffer
 	      #'consult-buffer-other-window)
   (autoload it "consult" nil t nil))
-#+end_src
 
-Make sure to load recentf before using some consult commands.
-
-#+begin_src emacs-lisp
 (--each (list #'consult-buffer #'consult-buffer-other-window)
   (void-load-before-call 'recentf it t))
 #+end_src
