@@ -2335,14 +2335,14 @@ It suffices typing =y= or =n= as opposed to =yes= or =no=.
 (set-keyboard-coding-system 'utf-8)
 
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+;; (unless IS-WINDOWS
+;;   (setq selection-coding-system 'utf-8))
+
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))
 #+end_src
 
-*** os specific
-:PROPERTIES:
-:ID:       e7a9bef7-3df5-4160-bff1-666c6e579981
-:END:
-
-**** linux
+*** linux
 :PROPERTIES:
 :ID:       6572e618-e5ef-445b-90d6-14dc2c24f1a4
 :END:
