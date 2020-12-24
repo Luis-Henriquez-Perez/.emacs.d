@@ -360,7 +360,7 @@ installing packages, I try to access.
 
 ** Library
 :PROPERTIES:
-:ID: 3e9e5e7a-9f9b-4e92-b569-b5e8ba93820f
+:ID:       70af1291-6b16-4261-ba83-19bb16d0023e
 :END:
 
 This headline contains all the the helper functions and macros I defined for
@@ -401,6 +401,10 @@ now and I don't want to see them again.
 (defun void--silence-output-advice (orig-fn &rest args)
   "Silence output."
   (shut-up (apply orig-fn args)))
+
+(defun void-silence-output (fn)
+  "Silence output of FN."
+  (void-add-advice fn :around #'void--silence-output-advice))
 #+end_src
 
 **** dash
@@ -670,6 +674,28 @@ it when I don't want to be bothered with details and just want a string.
     (dolist (a args) (princ a))))
 #+end_src
 
+***** hook symbol
+:PROPERTIES:
+:ID:       7ae3dac1-058b-4b1b-a010-aeb5b121d3f6
+:END:
+
+#+begin_src emacs-lisp
+(defun void-hook-symbol-p (symbol)
+  "Return true if symbol is a hook symbol."
+  (s-matches-p ".+-hook\\'" (symbol-name symbol)))
+#+end_src
+
+***** mode symbol
+:PROPERTIES:
+:ID:       ec25e275-c36f-4cee-be04-1fdf8c974857
+:END:
+
+#+begin_src emacs-lisp
+(defun void-mode-symbol-p (symbol)
+  "Return non-nil if symbol is a mode symbol."
+  (s-matches-p ".+-mode\\'" (symbol-name symbol)))
+#+end_src
+
 **** wrap-form
 :PROPERTIES:
 :ID:       48e48c0f-7bb3-45c9-b4af-2da0ce84b64e
@@ -890,6 +916,19 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
   nil)
 #+end_src
 
+*** symbol-action
+:PROPERTIES:
+:ID:       fbdd0f2b-e6b1-41ad-8809-e960a392b676
+:END:
+
+#+begin_src emacs-lisp
+(defun void--symbol-action (symbol)
+  "Return action for symbol."
+  (->> (symbol-name symbol)
+       (s-match ".+?[:-]+\\(.+\\)")
+       (nth 1)))
+#+end_src
+
 *** hooks
 :PROPERTIES:
 :ID:       a9fb6a01-ded5-405c-83ba-c401dbc06400
@@ -904,16 +943,24 @@ after particular events.
 In this headline, I strive to establish a common naming convention for
 "void-defined" hooks, so I can clearly distinguish them from pre-defined hooks.
 
+**** void specific hook regexp
+:PROPERTIES:
+:ID:       91c9237a-9c47-48c0-abfc-c873155d5921
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 **** hook-p
 :PROPERTIES:
 :ID:       1995a309-e1d3-40e5-b6b1-fbcd81dda0bb
 :END:
 
 #+begin_src emacs-lisp
-(defun void-hook-p (fn)
-  "Return non-nil if FN is a Void hook."
+(defun void-defined-hook-symbol-p (symbol)
+  "Return non-nil if SYMBOL is a void-specific hook."
   (alet "\\`[^[:space:]]+&[^[:space:]]+\\'"
-    (s-matches-p it (symbol-name fn))))
+    (s-matches-p it (symbol-name symbol))))
 #+end_src
 
 **** hook naming
@@ -966,27 +1013,21 @@ HOOK-FN is a function named with Void naming conventions."
 :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
 :END:
 
-This function is to help produce names that abide by hook naming conventions.
+This function determines how void-defined hooks are named. When possible they
+should be in the form of some action so that the hook name will be of the form
+=hook-variable&do-something=. Having the names like this makes it so you can
+actually read through hook functions like reading a todo-list. It will be
+apparent what's being done.
 
 #+begin_src emacs-lisp
 (defun void-hook-function-name (hook function)
-  "Return a hook name that meets Void naming conventions."
-  (alet (or (void-generic-hook-name function) function)
-    (void-symbol-intern hook '& function)))
-#+end_src
-
-***** void-generic-hook-name
-:PROPERTIES:
-:ID:       60ce5cfe-8345-4496-8d82-eec05c5297ea
-:END:
-
-#+begin_src emacs-lisp
-(defun void-generic-hook-name (symbol)
-  "Return a name for a generic hook."
-  (-some->> (symbol-name symbol)
-    (s-match "\\`[^[:space:]]+--\\([^[:space:]]+\\)-hook")
-    (nth 1)
-    (intern)))
+  "Return name to give to void-defined hook function."
+  (alet (acond ((void-mode-symbol-p function)
+		(void-symbol-intern 'enable- function))
+	       ((nth 1 (s-match "void--\\(.+\\)-hook" (symbol-name function)))
+		it)
+	       (t function))
+    (void-symbol-intern hook '& it)))
 #+end_src
 
 **** generate a hook
@@ -1039,7 +1080,6 @@ function, change it to a hook.
   (let ((hook-fn (void-generate-hook-function hook function)))
     (add-hook hook hook-fn depth local)
     (void-log-function hook-fn)
-    ;; (advice-add hook-fn :before (void-log-advice function))
     (when expire-fn
       (alet (void-expire-advice hook-fn expire-fn t)
 	(advice-add new-hook :around it)))))
@@ -1127,7 +1167,7 @@ This function should be used to distinguish advices I add to functions over
 advices that have been added by Emacs or other packages.
 
 #+begin_src emacs-lisp
-(defun void-advice-p (fn)
+(defun void-defined-advice-symbol-p (fn)
   "Return non-nil if FN is a void advice."
   (s-matches-p (rx (1+ (not white)) "@" (1+ (not white)))
                (symbol-name fn)))
@@ -1151,11 +1191,11 @@ want to log it differently.
 (defun void--log-message (fn)
   "Return the message logged."
   (pcase fn
-    ((pred void-hook-p)
+    ((pred void-defined-hook-symbol-p)
      (format "& %s -> %s"
 	     (void-hook-variable fn)
 	     (void-hook-function fn)))
-    ((pred void-advice-p)
+    ((pred void-defined-advice-symbol-p)
      (format "@ %s -> %s"
 	     (void-advice-symbol fn)
 	     (void-advice-function fn)))
@@ -1207,29 +1247,17 @@ system I provide, doing this is trivial.
        (intern)))
 #+end_src
 
-***** generic advice
-:PROPERTIES:
-:ID:       fc8709ba-606f-4979-a7c8-c8c488721904
-:END:
-
-#+begin_src emacs-lisp
-(defun void-generic-advice-name (symbol)
-  "Return SYMBOL as a generic advice symbol."
-  (alet (rx (1+ alnum) "--" (group (1+ alnum)) "-advice")
-    (s-match it (symbol-name symbol))))
-#+end_src
-
 ***** advice name
 :PROPERTIES:
 :ID:       03416f82-ced7-42a0-843b-6975903f0b38
 :END:
 
+This is where I try to convert a symbol and an advice into a symbol@action.
+
 #+begin_src emacs-lisp
 (defun void-advice-name (symbol advice)
-  "Return advice name that meets Void naming conventions.
-Advice name is of the form FN@ADVICE."
-  (alet (or (void-generic-advice-name advice) advice)
-    (void-symbol-intern symbol '@ it)))
+  "Return advice name that meets Void naming conventions."
+  (void-symbol-intern symbol '@ advice))
 #+end_src
 
 **** adding advice
@@ -1325,9 +1353,9 @@ should expire."
           `(lambda (orig-fn &rest args)
              (aprog1 (apply orig-fn args)
                (when (or (eq t #',expire-fn) (funcall #',expire-fn))
-                 (when (void-advice-p #',fn)
+                 (when (void-defined-advice-symbol-p #',fn)
                    (void-remove-advice #',fn))
-                 (when (void-hook-p #',fn)
+                 (when (void-defined-hook-symbol-p #',fn)
                    (void-remove-hook #',fn))
                  (advice-remove #',fn #',expire-advice)
                  (when ,unbind (fmakunbound #',expire-advice))
@@ -1720,7 +1748,6 @@ In addition to providing keybinding stuff, =general= also provides.
 (defalias 'gsetq 'general-setq)
 (defalias 'gsetq-default 'general-setq-default)
 #+end_src
-
 
 ** Packages
 :PROPERTIES:
@@ -2261,9 +2288,18 @@ It suffices typing =y= or =n= as opposed to =yes= or =no=.
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-DEFAULT-CODING-SYSTEM 'utf-8 "Default text encoding.")
-(setq-default locale-coding-system VOID-DEFAULT-CODING-SYSTEM)
-(setq-default buffer-file-coding-system VOID-DEFAULT-CODING-SYSTEM)
+(setq-default locale-coding-system 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8)
+
+(set-language-environment 'utf-8)
+(setq-default locale-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq-default default-file-name-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+end_src
 
 *** os specific
@@ -2337,7 +2373,8 @@ spells of inaccurate fontification immediately after scrolling."
 :ID:       e1ae4527-547e-46b8-b040-d9779bfe53ad
 :END:
 
-When emacs starts up it displays a message.
+When emacs starts up it displays a message and it's own introduction screen. I
+prefer not seeing that. I have my own [[][dashboard]] anyway.
 
 #+begin_src emacs-lisp
 (gsetq inhibit-startup-message t)
@@ -2350,7 +2387,8 @@ When emacs starts up it displays a message.
 :ID:       fe8a259b-12e6-4e58-a324-eab831283a86
 :END:
 
-By default the cursor blinks.
+By default the cursor blinks. The point is so that it is easier to find on the
+screen. Usually, however, I have no trouble finding it so I disable it.
 
 #+begin_src emacs-lisp
 (blink-cursor-mode -1)
@@ -2463,16 +2501,19 @@ hook variables use action verbs in their names not nouns. So the =exit= in
   (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))
 #+end_src
 
-**** boost gc-cons-threshold
+**** reduce gc-cons-threshold
 :PROPERTIES:
 :ID:       41e763bd-215f-4176-95c1-f41261864671
 :END:
 
 #+begin_src emacs-lisp
-(defun void--reduce-garbage-collection-advice (orign-fn &rest args)
-  "Boost garbage collection for the duration of ORIGN-FN."
+(defun void--pause-garbage-collection-advice (orign-fn &rest args)
+  "Pause garbage collection for the duration of ORIGN-FN."
   (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
     (apply orign-fn args)))
+
+(defun void-pause-garbage-collection (fn)
+  (void-add-advice fn :around #'void--pause-garbage-collection-advice))
 #+end_src
 
 *** theme
@@ -2485,7 +2526,9 @@ hook variables use action verbs in their names not nouns. So the =exit= in
 :ID:       eaa6531c-1188-41c7-a645-a82d9f482449
 :END:
 
-If you don't enable =custom-save-themes=.
+If you don't enable =custom-save-themes=, emacs asks you whether you're sure you
+want to load a theme for security reasons. I prefer the convenience of not being
+prompted.
 
 #+begin_src emacs-lisp
 (setq custom-safe-themes t)
@@ -2534,9 +2577,8 @@ Loading a theme qualifies as an intensive operation as all the faces on the
 screen need to be redisplayed.
 
 #+begin_src emacs-lisp
-(void-add-advice #'load-theme :around #'void--reduce-garbage-collection-advice)
+(void-pause-garbage-collection #'load-theme)
 #+end_src
-
 
 *** disable terminal initialization
 :PROPERTIES:
@@ -2580,20 +2622,6 @@ to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
 This function is meant to be used as the value of `initial-buffer-choice'."
   (alet (if void-debug-p  "*void-log*" "*scratch")
     (get-buffer-create it)))
-#+end_src
-
-*** UTF-8
-:PROPERTIES:
-:ID: dd0fc702-67a7-404c-849e-22804663308d
-:END:
-
-I set =utf-8= as the default encoding for everything except the clipboard on
-windows. Window clipboard encoding could be wider than =utf-8=, so we let
-Emacs/the OS decide what encoding to use.
-
-#+begin_src emacs-lisp
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))
 #+end_src
 
 *** aliases
@@ -2712,9 +2740,8 @@ Since we're evaluating a good amount of lisp expressions, we should boost
 garbage collection during this time.
 
 #+begin_src emacs-lisp
-(void-add-advice #'idle-require-load-next :around #'void--reduce-garbage-collection-advice)
+(void-pause-garbage-collection #'idle-require-load-next)
 #+end_src
-
 
 ** Commands
 :PROPERTIES:
@@ -2814,7 +2841,7 @@ headline."
 
 #+begin_src emacs-lisp
 (alet (list #'consult-outline #'consult-line)
-  (void-add-advice it :after #'outline:show-current-branch))
+  (void-add-advice it :after #'outline:show-branch-maybe))
 #+end_src
 
 ***** window display
@@ -3104,7 +3131,6 @@ I've never had to use this. But better be safe than sorry.
     (kill-emacs)))
 #+end_src
 
-
 * Completion
 :PROPERTIES:
 :ID:       744ac652-aebc-4f5b-883a-4464dd7b07cd
@@ -3370,26 +3396,6 @@ This heading is for configuring snippet.
 #+begin_src elisp
 (after! (smartparens yasnippet)
   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
-#+end_src
-
-*** yasnippet-snippets
-:PROPERTIES:
-:ID:       006e4191-a61f-4886-86db-024180a5fb1c
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("*.el" "snippets" ".nosearch" "yasnippet-snippets-pkg.el")
-:HOST:     github
-:REPO:     "AndreaCrotti/yasnippet-snippets"
-:PACKAGE:  "yasnippet-snippets"
-:LOCAL-REPO: "yasnippet-snippets"
-:COMMIT:   "7716da98b773f3e25a8a1b1949e24b4f3e855d17"
-:END:
-
-#+begin_src emacs-lisp
-(defhook! add-snippet-dir (yas-minor-mode-hook)
-  "Add the location of yasnippet-snippets to `yas-snippet-dirs'."
-  (awhen (-first (-partial #'s-contains-p "yasnippet-snippets") load-path)
-    (add-to-list 'yas-snippet-dirs it nil #'string=)))
 #+end_src
 
 ** selectrum
@@ -4778,7 +4784,7 @@ which only some files are hidden. That's wierd, so I get rid of it.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-advice #'ranger-window-check :around #'void--silence-output-advice)
+(void-silence-output #'ranger-window-check)
 #+end_src
 
 ** version control
@@ -4921,7 +4927,7 @@ address later.
 (setq evil-magit-state 'normal)
 (autoload #'magit-status "evil-magit" nil t nil)
 (void-load-before-call 'evil-magit #'magit-status)
-(void-add-advice #'evil-magit-init :around #'void--silence-output-advice)
+(void-silence-output #'evil-magit-init)
 (after! evil-magit (evil-magit-init))
 #+end_src
 
@@ -5045,8 +5051,8 @@ have to set out to look for a file with =dired=.
 [[][recentf-mode]] as well as [[][recentf-cleanup]] output to the messages buffer.
 
 #+begin_src emacs-lisp
-(void-add-advice #'recentf-mode :around #'void--silence-output-advice)
-(void-add-advice #'recentf-cleanup :around #'void--silence-output-advice)
+(-each (list #'recentf-mode #'recentf-cleanup)
+  #'void-silence-output)
 #+end_src
 
 *** savehist
@@ -5167,7 +5173,7 @@ that it's not a lisp object; implying that it is not.
 
 #+begin_src emacs-lisp
 (--each (list #'wg-create-workgroup #'wg-switch-workgroup)
-  (void-add-advice it :around #'void--silence-output-advice))
+  #'void-silence-output)
 #+end_src
 
 ** zoom-window
@@ -6673,7 +6679,7 @@ the correct one.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-advice #'keyboard-quit :around #'void--silence-output-advice)
+(void-silence-output #'keyboard-quit)
 #+end_src
 
 ****** escape
@@ -6730,7 +6736,7 @@ This is better than evil escape as it only binds in insert.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-advice #'key-chord-mode :around 'void--silence-output-advice)
+(void-silence-output #'key-chord-mode)
 #+end_src
 
 ******* keychord bindings
@@ -7194,6 +7200,29 @@ The change to this function."
               (desired-indent)
               (t
                normal-indent))))))
+#+end_src
+
+*** macrostep
+:PROPERTIES:
+:ID:       fefc5700-3bd7-4a89-ae7b-bf68368e8bc4
+:TYPE:     git
+:FLAVOR:   melpa
+:HOST:     github
+:REPO:     "joddie/macrostep"
+:PACKAGE:  "macrostep"
+:LOCAL-REPO: "macrostep"
+:END:
+
+#+begin_src emacs-lisp
+(--each (list #'macrostep-expand #'macrostep-collapse #'macrostep-collapse-all)
+  (autoload it "macrostep" nil t nil))
+
+(define-localleader-key!
+  :infix "m"
+  :keymaps 'emacs-lisp-mode-map
+  "e" (list :def #'macrostep-expand :wk "expand")
+  "c" (list :def #'macrostep-collapse :wk "collapse")
+  "C" (list :def #'macrostep-collapse-all :wk "collapse all"))
 #+end_src
 
 ** org

@@ -179,6 +179,25 @@
 :ID:       962a1862-2b4d-4e97-94fa-7e874233eeaa
 :END:
 
+** void-advice-name
+:PROPERTIES:
+:ID:       ef9971c1-9629-42d9-a2f7-125be34d265a
+:END:
+
+#+begin_src emacs-lisp
+(expect (void-advice-name 'symbol 'object-action)
+  'symbol@action)
+
+(expect (void-advice-name 'symbol 'object--action)
+  'symbol@action)
+
+(expect (void-advice-name 'symbol 'object:action)
+  'symbol@action)
+
+(expect (void-advice-name 'symbol 'object:action-advice)
+  'symbol@action)
+#+end_src
+
 * hooks
 :PROPERTIES:
 :ID:       8b71ed59-bf00-48d2-a070-6e7d62f54770
