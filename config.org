@@ -3627,7 +3627,8 @@ my gpg passphrase via emacs.
 :END:
 
 #+begin_src emacs-lisp
-(autoload 'emms (list #'emms-play-directory #'emms-play-file))
+(--each (list #'emms-play-directory #'emms-play-file)
+  (autoload it "emms" nl t nil))
 #+end_src
 
 *** quitting
