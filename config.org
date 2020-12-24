@@ -397,14 +397,6 @@ now and I don't want to see them again.
 
 #+begin_src emacs-lisp
 (require 'shut-up)
-
-(defun void--silence-output-advice (orig-fn &rest args)
-  "Silence output."
-  (shut-up (apply orig-fn args)))
-
-(defun void-silence-output (fn)
-  "Silence output of FN."
-  (void-add-advice fn :around #'void--silence-output-advice))
 #+end_src
 
 **** dash
@@ -487,6 +479,62 @@ But if you're only.
 
 #+begin_src emacs-lisp
 (require 'anaphora)
+#+end_src
+
+*** generic advices
+:PROPERTIES:
+:ID:       8fb485ec-5387-46da-820e-629dcf004962
+:END:
+
+There are some advices that are so generic and used so often that they do not
+lend themselves to =defadvice!=. This headline demonstrates how I deal with
+them.
+
+**** silence
+:PROPERTIES:
+:ID:       7eddba70-8597-4af7-bc93-6ebdcc06ee6c
+:END:
+
+Often I want to silence the output of certain functions.
+
+#+begin_src emacs-lisp
+(defun void--silence-output-advice (orig-fn &rest args)
+  "Silence output for the duration of ORIGN-FN."
+  (shut-up (apply orig-fn args)))
+
+(defun void-silence-output (fn)
+  "Silence output for the duration of ORIGN-FN."
+  (void-add-advice fn :around #'void--silence-output-advice))
+#+end_src
+
+**** reduce gc-cons-threshold
+:PROPERTIES:
+:ID:       41e763bd-215f-4176-95c1-f41261864671
+:END:
+
+Some functions are very expensive and deserve.
+
+#+begin_src emacs-lisp
+(defun void--pause-garbage-collection-advice (orign-fn &rest args)
+  "Pause garbage collection for the duration of ORIGN-FN."
+  (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+    (apply orign-fn args)))
+
+(defun void-pause-garbage-collection (fn)
+  "Pause garbage collection for the duration of FN."
+  (void-add-advice fn :around #'void--pause-garbage-collection-advice))
+#+end_src
+
+**** log
+:PROPERTIES:
+:ID:       843d4ca9-ea52-46ea-9d77-bfd9e7222669
+:END:
+
+#+begin_src emacs-lisp
+(defun void--message-with-void-log-advice (orign-fn &rest args)
+  )
+
+(defun void-message-with-void-log (fn))
 #+end_src
 
 *** mmt
@@ -914,19 +962,6 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 (defmacro ignore! (&rest _)
   "Do nothing and return nil."
   nil)
-#+end_src
-
-*** symbol-action
-:PROPERTIES:
-:ID:       fbdd0f2b-e6b1-41ad-8809-e960a392b676
-:END:
-
-#+begin_src emacs-lisp
-(defun void--symbol-action (symbol)
-  "Return action for symbol."
-  (->> (symbol-name symbol)
-       (s-match ".+?[:-]+\\(.+\\)")
-       (nth 1)))
 #+end_src
 
 *** hooks
@@ -2501,21 +2536,6 @@ hook variables use action verbs in their names not nouns. So the =exit= in
   (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))
 #+end_src
 
-**** reduce gc-cons-threshold
-:PROPERTIES:
-:ID:       41e763bd-215f-4176-95c1-f41261864671
-:END:
-
-#+begin_src emacs-lisp
-(defun void--pause-garbage-collection-advice (orign-fn &rest args)
-  "Pause garbage collection for the duration of ORIGN-FN."
-  (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
-    (apply orign-fn args)))
-
-(defun void-pause-garbage-collection (fn)
-  (void-add-advice fn :around #'void--pause-garbage-collection-advice))
-#+end_src
-
 *** theme
 :PROPERTIES:
 :ID: 2ac7c2fe-a2ba-4e55-a467-ff4af8850331
@@ -2727,8 +2747,8 @@ when it has finished idle-requiring packages. I don't want to see the message
 unless I'm debugging.
 
 #+begin_src emacs-lisp
-(void-add-advice #'idle-require-mode :around #'void--use-void-log-advice)
-(void-add-advice #'idle-require-load-next :around #'void--use-void-log-advice)
+(void-use-void-log #'idle-require-mode)
+(void-use-void-log #'idle-require-load-next)
 #+end_src
 
 **** increase gc-cons-threshold during idle loading
@@ -6368,6 +6388,8 @@ Modal editing is widely accepted to be more efficient than modeless editing.
 :PROPERTIES:
 :ID:       9639633f-ec3d-4499-9615-db0dcc9650c9
 :END:
+
+=evil= is the most complete vim emulation in existence.
 
 **** text objects
 :PROPERTIES:
