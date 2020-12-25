@@ -7810,8 +7810,8 @@ source blocks.
 :ID: 7b8a8e1d-3c72-492f-9311-56a2428a1f1d
 :END:
 
-By default org capture templates have. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my question]]. I
-need to disable =org-capture's= header-line.
+By default org capture templates display a header line. This was the answer to [[https://emacs.stackexchange.com/questions/53648/eliminate-org-capture-message][my
+question]]. I need to disable =org-capture's= header-line.
 
 #+begin_src emacs-lisp
 (defhook! disable-header-line (org-capture-mode-hook)
