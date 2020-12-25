@@ -532,9 +532,11 @@ Some functions are very expensive and deserve.
 
 #+begin_src emacs-lisp
 (defun void--message-with-void-log-advice (orign-fn &rest args)
-  )
+  (cl-letf (((symbol-function 'message) #'void-log))
+    (apply orig-fn args)))
 
-(defun void-message-with-void-log (fn))
+(defun void-message-with-void-log (fn)
+  (void-add-advice fn :around #'void--message-with-void-log-advice))
 #+end_src
 
 *** mmt
@@ -2747,8 +2749,8 @@ when it has finished idle-requiring packages. I don't want to see the message
 unless I'm debugging.
 
 #+begin_src emacs-lisp
-(void-use-void-log #'idle-require-mode)
-(void-use-void-log #'idle-require-load-next)
+(void-message-with-void-log #'idle-require-mode)
+(void-message-with-void-log #'idle-require-load-next)
 #+end_src
 
 **** increase gc-cons-threshold during idle loading
@@ -3628,7 +3630,7 @@ my gpg passphrase via emacs.
 
 #+begin_src emacs-lisp
 (--each (list #'emms-play-directory #'emms-play-file)
-  (autoload it "emms" nl t nil))
+  (autoload it "emms" nil t nil))
 #+end_src
 
 *** quitting
