@@ -1301,7 +1301,8 @@ This is where I try to convert a symbol and an advice into a symbol@action.
 #+begin_src emacs-lisp
 (defun void-advice-name (symbol advice)
   "Return advice name that meets Void naming conventions."
-  (void-symbol-intern symbol '@ advice))
+  (alet (nth 1 (s-match "void--\\(.+\\)-advice" (symbol-name advice)))
+    (void-symbol-intern symbol '@ (or it advice))))
 #+end_src
 
 **** adding advice
