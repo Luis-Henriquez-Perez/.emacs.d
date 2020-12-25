@@ -7800,6 +7800,9 @@ source blocks.
 :ID:       d4f88618-e37b-4a96-807d-6b3bb966cbf9
 :END:
 
+I prefer to put all my capture templates in one file and then filter the
+contents of the file for the ones that I want.
+
 #+begin_src emacs-lisp
 (defvar ORG-CAPTURE:FILE (concat org-directory "capture.org")
   "File where org capture templates are put.")
