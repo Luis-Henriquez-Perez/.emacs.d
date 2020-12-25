@@ -532,10 +532,12 @@ Some functions are very expensive and deserve.
 
 #+begin_src emacs-lisp
 (defun void--message-with-void-log-advice (orign-fn &rest args)
+  "Use `void-log' instead of `message'."
   (cl-letf (((symbol-function 'message) #'void-log))
     (apply orig-fn args)))
 
 (defun void-message-with-void-log (fn)
+  "Use `void-log' instead of `message'."
   (void-add-advice fn :around #'void--message-with-void-log-advice))
 #+end_src
 
