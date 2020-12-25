@@ -895,8 +895,12 @@ side windows.
 
 #+begin_src emacs-lisp
 (require 'dbc)
+
 (alet '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5)))
   (dbc-add-ruleset "bottom" it))
+
+(alet '(display-buffer-in-side-window . ((side . top) (window-height . 0.4)))
+  (dbc-add-ruleset "top" it))
 #+end_src
 
 *** after!
@@ -3611,60 +3615,6 @@ my gpg passphrase via emacs.
 (setq epa-pinentry-mode 'loopback)
 #+end_src
 
-** emms
-:PROPERTIES:
-:ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
-:REPO:     "https://git.savannah.gnu.org/git/emms.git"
-:PACKAGE:  "emms"
-:LOCAL-REPO: "emms"
-:COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
-:END:
-
-[[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
-
-*** settings
-:PROPERTIES:
-:ID:       3861c03d-b08e-463b-a28e-e88c191993fc
-:END:
-
-#+begin_src emacs-lisp
-(setq emms-directory (concat VOID-DATA-DIR "emms/"))
-(setq emms-seek-seconds 5)
-(setq emms-player-list '(emms-player-mpv))
-(setq emms-source-file-default-directory "~/Multimedia/music")
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-(setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
-(setq mpc-host "127.0.0.1:6600")
-#+end_src
-
-*** emms
-:PROPERTIES:
-:ID: 5d28b703-a87f-47ca-b320-785e7589fea6
-:END:
-
-#+begin_src emacs-lisp
-(--each (list #'emms-play-directory #'emms-play-file)
-  (autoload it "emms" nil t nil))
-#+end_src
-
-*** quitting
-:PROPERTIES:
-:ID: 545e6534-f289-4a89-838a-2a65ac74fe72
-:END:
-
-#+begin_src emacs-lisp
-(defhook! quit-emms (kill-emacs-hook)
-  "Shut down EMMS."
-  (when emms-player-playing-p (emms-pause))
-  (emms-stop)
-  ;; kill any existing mpd processes
-  (when (member 'emms-player-mpd emms-player-list)
-    (call-process "killall" nil nil nil "mpd")))
-#+end_src
-
 ** pdf-tools
 :PROPERTIES:
 :ID:       63343f9d-6b19-43de-8302-d1344d571949
@@ -3842,7 +3792,12 @@ javascript code.
 (autoload #'restart-emacs "restart-emacs" nil t nil)
 #+end_src
 
-** escr
+** multimedia
+:PROPERTIES:
+:ID:       5675cbbc-beb1-4470-a1d2-08f253bb4535
+:END:
+
+*** escr
 :PROPERTIES:
 :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
 :host:     github
@@ -3863,7 +3818,7 @@ they all have their downsides. Screenshot's main command, =screenshot=, assumes
 that you want. =escr= doesn't provide prompt you for the filename or provide any
 option that would prompt you for the file name.
 
-*** init
+**** init
 :PROPERTIES:
 :ID:       a6a8610e-84b5-471d-8f07-2ad2c67c2998
 :END:
@@ -3873,7 +3828,7 @@ option that would prompt you for the file name.
   (autoload it "escr" nil t nil))
 #+end_src
 
-*** settings
+**** settings
 :PROPERTIES:
 :ID:       4ec97ac8-cad6-4536-be21-6ae2ee1655f3
 :END:
@@ -3883,7 +3838,7 @@ option that would prompt you for the file name.
 #+end_src
 (setq escr-screenshot-directory VOID-SCREENSHOT-DIR)
 
-*** function for geting screenshot filename
+**** function for geting screenshot filename
 :PROPERTIES:
 :ID:       58405f4f-e891-494e-afc7-a227415ec12b
 :END:
@@ -3903,7 +3858,7 @@ them.
     (expand-file-name it escr-screenshot-directory)))
 #+end_src
 
-*** tell =escr--screenshot= to use maim
+**** tell =escr--screenshot= to use maim
 :PROPERTIES:
 :ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
 :END:
@@ -3926,7 +3881,7 @@ capturing the prompt for the filename (like in [[][this example]]).
       (run-with-timer 1 nil it))))
 #+end_src
 
-** gif-screencast
+*** gif-screencast
 :PROPERTIES:
 :ID:       d8553132-c244-4319-bcc9-51905a296e34
 :TYPE:     git
@@ -3953,6 +3908,60 @@ capturing the prompt for the filename (like in [[][this example]]).
 
 (setq gif-screencast-optimize-program "gifsicle")
 (setq gif-screencast-capture-format "png")
+#+end_src
+
+*** emms
+:PROPERTIES:
+:ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
+:TYPE:     git
+:FLAVOR:   melpa
+:FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
+:REPO:     "https://git.savannah.gnu.org/git/emms.git"
+:PACKAGE:  "emms"
+:LOCAL-REPO: "emms"
+:COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
+:END:
+
+[[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
+
+**** settings
+:PROPERTIES:
+:ID:       3861c03d-b08e-463b-a28e-e88c191993fc
+:END:
+
+#+begin_src emacs-lisp
+(setq emms-directory (concat VOID-DATA-DIR "emms/"))
+(setq emms-seek-seconds 5)
+(setq emms-player-list '(emms-player-mpv))
+(setq emms-source-file-default-directory "~/Multimedia/music")
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
+(setq mpc-host "127.0.0.1:6600")
+#+end_src
+
+**** emms
+:PROPERTIES:
+:ID: 5d28b703-a87f-47ca-b320-785e7589fea6
+:END:
+
+#+begin_src emacs-lisp
+(--each (list #'emms-play-directory #'emms-play-file)
+  (autoload it "emms" nil t nil))
+#+end_src
+
+**** quitting
+:PROPERTIES:
+:ID: 545e6534-f289-4a89-838a-2a65ac74fe72
+:END:
+
+#+begin_src emacs-lisp
+(defhook! quit-emms (kill-emacs-hook)
+  "Shut down EMMS."
+  (when emms-player-playing-p (emms-pause))
+  (emms-stop)
+  ;; kill any existing mpd processes
+  (when (member 'emms-player-mpd emms-player-list)
+    (call-process "killall" nil nil nil "mpd")))
 #+end_src
 
 ** outorg
@@ -5139,7 +5148,202 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 :ID:       f8f186bd-a701-4bd4-a249-86ec4faff83b
 :END:
 
-** workgroups2
+** workspaces
+:PROPERTIES:
+:ID:       c979c631-4098-4204-b067-82f58b5b9ebe
+:END:
+
+*** tab-bar-mode
+:PROPERTIES:
+:ID:       0a72fe9a-1948-4022-a300-18a4881da382
+:END:
+
+**** settings
+:PROPERTIES:
+:ID:       bb63f5b2-cc45-454b-a032-be248f801636
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'tab-bar-mode-hook #'tab-bar-history-mode)
+#+end_src
+
+**** tabbar-mode
+:PROPERTIES:
+:ID:       5ffc2d82-533d-4bad-8e15-8032b5d3b0dc
+:END:
+
+#+begin_src emacs-lisp
+(gsetq tab-bar-history-limit 25)
+(gsetq tab-bar-new-tab-choice "*scratch*")
+(gsetq tab-bar-tab-hints nil)
+(gsetq tab-bar-show nil)
+#+end_src
+
+**** dont actually display the tabs
+:PROPERTIES:
+:ID:       e4cee146-f6ac-47f1-9e98-f209ae9f9bec
+:END:
+
+I want the tabs to exist as a concept, but (ironically) I don't actually want
+them displayed.
+
+#+begin_src emacs-lisp
+(defadvice! inhibit-tab-display (:after tab-bar-mode make-frame)
+  "Inhibit the display of tags in tab-bar-mode."
+  (--each (frame-list)
+    (set-frame-parameter it 'tab-bar-lines 0)))
+#+end_src
+
+*** desktop
+:PROPERTIES:
+:ID:       902a11fc-b9aa-4875-ba92-8d2561a12a50
+:END:
+
+=desktop= is a built-in emacs package for saving window configuration setup.
+
+**** some settings
+:PROPERTIES:
+:ID:       e4c30275-db62-4e6d-890c-6199b0594fd8
+:END:
+
+#+begin_src emacs-lisp
+(setq desktop-save t) ; what should happen when desktop is killed.
+(setq desktop-dirname VOID-DATA-DIR)
+(setq desktop-auto-save-timeout auto-save-timeout)
+(setq desktop-base-file-name "emacs.desktop")
+(setq desktop-base-lock-name "emacs.desktop.lock")
+(setq desktop-path (list VOID-DATA-DIR))
+(setq desktop-missing-file-warning nil)
+#+end_src
+
+**** allowing desktops to go in one directory
+:PROPERTIES:
+:ID:       22b0be3a-ef36-47d4-8684-602f3a8c8462
+:END:
+
+These functions are all based on the =desktop+= functions. The main thing it
+does is provide a directory where desktop files can be placed. This should
+really have been done by =desktop.el= but oh well.
+
+***** base directory
+:PROPERTIES:
+:ID:       e1ce2616-2280-435d-85c4-8d71c30c6a75
+:END:
+
+#+begin_src emacs-lisp
+(defvar desktop:base-dir (concat VOID-DATA-DIR "desktops/")
+  "Directory where desktops should go.")
+#+end_src
+
+***** generate the base directory
+:PROPERTIES:
+:ID:       fa173f38-2888-465a-8de4-282233322363
+:END:
+
+#+begin_src emacs-lisp
+(defun desktop:dirname (name)
+  "Return the path where desktop named NAME should go."
+  (require 'f)
+  (f-join desktop:base-dir name))
+#+end_src
+
+***** ensure the base directory
+:PROPERTIES:
+:ID:       3662ceaa-aed9-4dbc-bea9-7e1878237c87
+:END:
+
+#+begin_src emacs-lisp
+(defhook! ensure-desktop-directory (desktop-mode-hook)
+  "Make `desktop:base-dir' if it does not exist."
+  (mkdir desktop:base-dir t))
+#+end_src
+
+***** desktop names
+:PROPERTIES:
+:ID:       5286a22f-dc93-4e32-8a35-3bfbdfda8668
+:END:
+
+#+begin_src emacs-lisp
+(defun desktop:list ()
+  "Return a list of the names of all desktops."
+  (-difference (directory-files desktop:base-dir)
+	       (list ".." ".")))
+#+end_src
+
+***** create a desktop
+:PROPERTIES:
+:ID:       331367bb-a1eb-414f-89ef-386ba6fc1e60
+:END:
+
+#+begin_src emacs-lisp
+(defun desktop:create-desktop (name)
+  "Create a new desktop named NAME."
+  (let ((desktop-dirname (desktop:dirname name)))
+    (desktop-kill)
+    (make-directory desktop-dirname 'parents)
+    (desktop-save desktop-dirname)))
+#+end_src
+
+***** load an existing desktop
+:PROPERTIES:
+:ID:       691dd9bf-b207-4885-9f7c-b8791d972dc1
+:END:
+
+#+begin_src emacs-lisp
+(defun desktop:load-desktop (name)
+  (desktop-change-dir (desktop:dirname name)))
+#+end_src
+
+**** create desktop in new tab
+:PROPERTIES:
+:ID:       4bbb0f3a-bc51-4552-b91f-8404ab19cdd8
+:END:
+
+This is an integration with desktop and tab mode.
+
+#+begin_src emacs-lisp
+(defun desktop/create-desktop-in-new-tab (name)
+  "Create desktop named NAME in new tab.
+The tab's new name is the same as the desktop name."
+  (interactive
+   (list (completing-read "Create desktop:" (desktop:list))))
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab name)
+  (desktop:create-desktop name))
+#+end_src
+
+**** load desktop in a new tab
+:PROPERTIES:
+:ID:       391c0817-bb2f-4334-b320-f039ab23cfb7
+:END:
+
+#+begin_src emacs-lisp
+(defun desktop/load-desktop-in-new-tab (name)
+  "Create desktop named NAME in new tab.
+The tab's new name is the same as the desktop name."
+  (interactive
+   (list (completing-read "Load desktop: " (desktop:list))))
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab name)
+  (desktop:load-desktop name))
+#+end_src
+
+**** desktop restore functions
+:PROPERTIES:
+:ID:       0f82a1dc-d28e-4875-a622-e6116c0d3843
+:END:
+
+***** helpful-buffers
+:PROPERTIES:
+:ID:       f7d3a8ce-7115-47d6-b0ac-2d078741a49a
+:END:
+
+#+begin_src emacs-lisp
+(defun desktop:restore-helpful-buffer ()
+  "Restore helpful buffer.")
+#+end_src
+
+*** workgroups2
 :PROPERTIES:
 :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
 :HOST:     github
@@ -5165,7 +5369,7 @@ use emacs's built-in serialization of window configs. Usually, it is better to
 use something that's built-in. However, emacs's serialization has the drawback
 that it's not a lisp object; implying that it is not.
 
-*** settings
+**** settings
 :PROPERTIES:
 :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
 :END:
@@ -5179,13 +5383,13 @@ that it's not a lisp object; implying that it is not.
 (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
 #+end_src
 
-*** workgroups
+**** workgroups
 
 #+begin_src emacs-lisp
 (autoload #'wg-switch-workgroup "workgroup" nil)
 #+end_src
 
-*** ignore changing the modeline
+**** ignore changing the modeline
 :PROPERTIES:
 :ID:       a036dc89-7d5e-49b6-880c-87b4a4c2105e
 :END:
@@ -5195,7 +5399,7 @@ that it's not a lisp object; implying that it is not.
 (advice-add #'wg-change-modeline :override #'ignore)
 #+end_src
 
-*** save sessions on quit
+**** save sessions on quit
 :PROPERTIES:
 :ID:       1ca7da0b-7227-48be-88a7-8ad738c5263e
 :END:
@@ -5206,7 +5410,7 @@ that it's not a lisp object; implying that it is not.
 (setq wg-flag-modified nil)
 #+end_src
 
-*** shut up messages from workgroup commands
+**** shut up messages from workgroup commands
 :PROPERTIES:
 :ID:       6dc3b7c4-7afd-46a0-850a-1a362cd7e601
 :END:
@@ -5215,6 +5419,13 @@ that it's not a lisp object; implying that it is not.
 (--each (list #'wg-create-workgroup #'wg-switch-workgroup)
   #'void-silence-output)
 #+end_src
+
+**** by default create a new workgroup using scratch buffer
+:PROPERTIES:
+:ID:       5b5357d2-1c11-4d58-9eba-450772a15009
+:END:
+
+When a new workgroup is created it's done by.
 
 ** zoom-window
 :PROPERTIES:
@@ -5981,7 +6192,6 @@ source block editing tools used by org mode.
 
 #+begin_src emacs-lisp
 (defun org-source:remove-if-only-newline ()
-  (message "FUUCKKKKKKK")
   (when (string= (buffer-string) "\n")
     (erase-buffer)))
 #+end_src
@@ -7490,22 +7700,6 @@ their side-effects.
     (org:show-branch)))
 #+end_src
 
-***** edit source blocks
-:PROPERTIES:
-:ID:       a0e1c9d6-9071-4c6f-abc4-d2e9f011be03
-:END:
-
-#+begin_src emacs-lisp
-(defun org/dwim-edit-source-block ()
-  "Edit source block in current heading.
-Point does not have to be on source block."
-  (interactive)
-  (let ((org-src-window-setup 'plain))
-    (org-back-to-heading)
-    (org-next-block 1)
-    (org-edit-src-code)))
-#+end_src
-
 ***** return
 :PROPERTIES:
 :ID:       8314f2e0-da63-4f2f-ad89-b97987ca5843
@@ -7759,7 +7953,6 @@ diary/journal using =org-mode=.
 
 #+begin_src emacs-lisp
 (setq org-edit-src-persistent-message nil)
-(setq org-src-window-setup 'plain)
 (setq org-src-fontify-natively t)
 (setq org-src-ask-before-returning-to-edit-buffer nil)
 (setq org-src-preserve-indentation t)
@@ -7798,7 +7991,8 @@ source blocks.
 :TYPE:     built-in
 :END:
 
-=org-capture= is a feature that allows you to capture a.
+=org-capture= is a feature that allows you to quickly save a thought that popped
+into your head while keeing disctractions to a minimum.
 
 **** init
 :PROPERTIES:
@@ -7807,7 +8001,7 @@ source blocks.
 
 #+begin_src emacs-lisp
 (autoload #'org-capture "org-capture" nil t nil)
-(dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE")
+(dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE-")
 #+end_src
 
 **** set where capture templates should go
@@ -8000,7 +8194,8 @@ Instead of passing in the string I use =org-ml= to print the string.
 :END:
 
 #+begin_src emacs-lisp
-(after! org
+(after! org-capture
+  (require 'doct)
   (doct:add-to-templates
    (list "emacs"
 	 :keys "e"
@@ -8249,6 +8444,22 @@ does not seem to be needed (feebleline doesn't do it and it works fine).
 (defadvice! dont-redisplay (:around mini-modeline-mode)
   (cl-letf (((symbol-function #'redisplay) #'ignore))
     (apply <orig-fn> <args>)))
+#+end_src
+
+** info
+:PROPERTIES:
+:ID:       d49f83c4-ba8f-477e-beef-8156ed8b974b
+:END:
+
+This headline is for customizing info nodes.
+
+*** popup rule
+:PROPERTIES:
+:ID:       a7215e72-ef0e-4910-a2b4-405348c21c24
+:END:
+
+#+begin_src emacs-lisp
+'(dbc-add-rule "top" "info" :newname (rx "*info"))
 #+end_src
 
 ** helpful
