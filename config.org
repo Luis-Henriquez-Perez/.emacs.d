@@ -8470,7 +8470,7 @@ This headline is for customizing info nodes.
 :END:
 
 #+begin_src emacs-lisp
-'(dbc-add-rule "top" "info" :newname (rx "*info"))
+(dbc-add-rule "top" "info" :newname (rx "*info"))
 #+end_src
 
 ** helpful
@@ -9039,7 +9039,7 @@ These are keybindings I use most frequently.
   "e" (list :def #'void/open-emacs-instance    :wk "emacs")
   "q" (list :def #'engine/search-duckduckgo    :wk "browse web")
   "j" (list :def #'org/avy-goto-headline       :wk "heading jump")
-  "c" (list :def #'org/choose-capture-template :wk "capture"))
+  "c" (list :def #'org-capture/choose-template :wk "capture"))
 
 (define-leader-key! "as" (list :ignore nil :wk "screenshot"))
 
