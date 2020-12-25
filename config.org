@@ -7792,8 +7792,17 @@ source blocks.
 
 #+begin_src emacs-lisp
 (autoload #'org-capture "org-capture" nil t nil)
-
 (dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE")
+#+end_src
+
+**** set where capture templates should go
+:PROPERTIES:
+:ID:       d4f88618-e37b-4a96-807d-6b3bb966cbf9
+:END:
+
+#+begin_src emacs-lisp
+(defvar ORG-CAPTURE:FILE (concat org-directory "capture.org")
+  "File where org capture templates are put.")
 #+end_src
 
 **** remove capture headerline
@@ -7822,6 +7831,44 @@ need to disable =org-capture's= header-line.
   "Don't delete other windows when opening a capture template."
   (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
     (apply <orig-fn> <args>)))
+#+end_src
+
+**** completing-read org-capture
+:PROPERTIES:
+:ID:       ad2cc056-edda-490a-8cf9-10b370a21dc0
+:END:
+
+Org provides it's own default interface for capturing. To be consistent with how
+we complete everything else--via [[helpfn:][completing-read]], I create a function which
+let's me choose the template via completing-read.
+
+***** capture templates
+:PROPERTIES:
+:ID:       c4fdb186-3509-42f1-9c3e-8bf80a5e6b47
+:END:
+
+#+begin_src emacs-lisp
+(defun org-capture:template-list ()
+  "Return a list of capture templates."
+  (thread-first org-capture-templates
+    (org-capture-upgrade-templates)
+    (org-contextualize-keys org-capture-templates-contexts)))
+#+end_src
+
+***** replacement for =org-capture=
+:PROPERTIES:
+:ID:       4dd55ff4-7e6e-41f5-82f8-0db597959a17
+:END:
+
+#+begin_src emacs-lisp
+(defun org-capture/choose-template ()
+  "Choose a capture template."
+  (interactive)
+  (let* ((read-string (seq-map (lambda (it) (format "%s %s" (car it) (cadr it)))
+                               (org-capture:template-list)))
+         (selection (completing-read "Capture template: " read-string nil :require-match))
+         (key (car (split-string selection "\s" t))))
+    (org-capture nil key)))
 #+end_src
 
 **** doct
@@ -7862,7 +7909,7 @@ freely re-evaluate it without cluttering my capture templates with duplicate
 entries.
 
 #+begin_src emacs-lisp
-(defun org-capture:add-to-templates (declarations)
+(defun doct:add-to-templates (declarations)
   "Set `org-capture-templates' to the result of (doct DECLARATIONS).
 Before adding result, remove any members of `org-capture-templates' with the
 same key as the one(s) being added."
@@ -7875,6 +7922,30 @@ same key as the one(s) being added."
           (clean (-concat (doct declarations) org-capture-templates)))))
 #+end_src
 
+**** helpers
+:PROPERTIES:
+:ID:       0d333a6e-b6bc-437e-9bc1-3c11846c37f1
+:END:
+
+***** schedule and deadline times
+:PROPERTIES:
+:ID:       e5c8996f-0d93-4a76-9b30-baf40f70d74d
+:END:
+
+For capture templates that have deadlines, I set a start and an end date.
+
+#+begin_src emacs-lisp
+(defun org-capture::default-planning-node (&optional days-difference)
+  "Return the default planning node for `org-capture-templates'."
+  (let* ((days-difference (or days-difference 7))
+         (now (ts-now))
+         (later (ts-adjust 'day days-difference now))
+         (beg (list (ts-year now) (ts-month now) (ts-day now)))
+         (end (list (ts-year later) (ts-month later) (ts-day later)))
+         (days-difference (or days-difference 7)))
+    (org-ml-build-planning! :scheduled beg :deadline end)))
+#+end_src
+
 **** capture templates
 :PROPERTIES:
 :ID:       a2a3f682-322a-450f-91bf-169d90f040c0
@@ -7882,16 +7953,43 @@ same key as the one(s) being added."
 
 ***** emacs
 :PROPERTIES:
+:ID:       ef103d28-b746-42ba-ac1a-0462a19f03cd
+:END:
+
+This is a capture template for emacs usage.
+
+****** emacs capture template string
+:PROPERTIES:
+:ID:       a58f1de7-2049-4195-abfb-daad93a6ff2a
+:END:
+
+Instead of passing in the string I use =org-ml= to print the string.
+
+#+begin_src emacs-lisp
+(defun doct:emacs-template-string ()
+  "Return emacs capture template."
+  (->> (org-ml-build-headline! :title-text "%?")
+       (org-ml-headline-set-node-property "ID" (org-id-new))
+       (org-ml-headline-set-node-property "CREATED" (ts-format))
+       (org-ml-set-property :todo-keyword "TODO")
+       (org-ml-set-property :tags '("emacs"))
+       (org-ml-to-trimmed-string)))
+#+end_src
+
+****** emacs
+:PROPERTIES:
 :ID:       2682910c-9620-4cbf-ab71-371ed29e25a1
 :END:
 
 #+begin_src emacs-lisp
-(list "emacs"
-      :keys "e"
-      :template (function org-capture::emacs-template-string)
-      :file (function org-capture:file)
-      :prepend t
-      :empty-lines 1)
+(after! org
+  (doct:add-to-templates
+   (list "emacs"
+	 :keys "e"
+	 :template #'doct:emacs-template-string
+	 :file ORG-CAPTURE:FILE
+	 :prepend t
+	 :empty-lines 1)))
 #+end_src
 
 *** org-clock
@@ -7903,21 +8001,13 @@ same key as the one(s) being added."
 =org-clock= is a built-in package that provides time logging functions for
 tracking the time you spend on a particular task.
 
-:before-call (( org-clock-out org-clock-in-last  org-clock-cancel) . (org-clock-load))
 #+begin_src emacs-lisp
 (--each (list #'org-clock-in #'org-clock-goto)
   (autoload it "org-clock" nil t nil))
 
 (setq org-clock-persist 'history)
 (setq org-clock-persist-file (concat VOID-DATA-DIR "org-clock-save.el"))
-#+end_src
-Resume when clocking into task with open clock
-#+begin_src emacs-lisp
 (setq org-clock-in-resume t)
-#+end_src
-
-set up hooks for persistence.
-#+begin_src emacs-lisp
 (after! org-clock
   (void-add-hook 'kill-emacs-hook #'org-clock-save)
   (org-clock-persistence-insinuate))
@@ -7999,7 +8089,6 @@ referenance org headlines.
 (autoload #'org-id-get-create "org-id")
 
 (setq org-id-locations-file (concat VOID-DATA-DIR "org-id-locations"))
-
 (setq org-id-locations-file-relative t)
 
 (void-add-hook 'org-insert-heading-hook #'org-id-get-create)
