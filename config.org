@@ -1271,6 +1271,16 @@ log function that is added to FN."
 :ID:       d8773074-d384-48b8-aa89-f99c8098753a
 :END:
 
+***** advice symbol
+:PROPERTIES:
+:ID:       74aee21a-3549-488b-b6f1-de9549e7e358
+:END:
+
+#+begin_src emacs-lisp
+(defun void-advice-symbol-p (symbol)
+  (s-match "\\(.+\\)@.+" (symbol-name symbol)))
+#+end_src
+
 ***** advised symbol
 :PROPERTIES:
 :ID:       f893fbe8-592b-409e-8de7-6060e936456f
@@ -1286,7 +1296,7 @@ system I provide, doing this is trivial.
 (defun void-advice-symbol (fn)
   "Return the symbol."
   (->> (symbol-name fn)
-       (s-match (rx (group (1+ (not white))) "@" (1+ (not white))))
+       (s-match "\\([^[:space:]]+\\)@[^[:space:]]+")
        (nth 1)
        (intern)))
 #+end_src
