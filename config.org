@@ -7268,7 +7268,7 @@ The change to this function."
 :END:
 
 #+begin_src emacs-lisp
-(setq org-directory (expand-file-name "~/Documents/org/"))
+(setq org-directory (concat user-emacs-directory "org/"))
 (setq org-archive-location (concat org-directory "archive.org::"))
 (setq org-default-notes-file (concat org-directory "notes.org"))
 #+end_src
