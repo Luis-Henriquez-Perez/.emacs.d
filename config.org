@@ -8232,6 +8232,7 @@ tracking the time you spend on a particular task.
 (setq org-clock-persist 'history)
 (setq org-clock-persist-file (concat VOID-DATA-DIR "org-clock-save.el"))
 (setq org-clock-in-resume t)
+
 (after! org-clock
   (void-add-hook 'kill-emacs-hook #'org-clock-save)
   (org-clock-persistence-insinuate))
