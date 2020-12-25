@@ -895,7 +895,8 @@ side windows.
 
 #+begin_src emacs-lisp
 (require 'dbc)
-(dbc-add-ruleset "bottom" '((display-buffer-at-bottom) . ((side . bottom) (window-height . 0.5))))
+(alet '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5)))
+  (dbc-add-ruleset "bottom" it))
 #+end_src
 
 *** after!
@@ -3367,6 +3368,8 @@ This heading is for configuring snippet.
 :COMMIT:   "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"
 :END:
 
+=yasnippet= is a snippet framework for emacs.
+
 **** init
 :PROPERTIES:
 :ID:       9ccba3e4-072e-4838-9461-b962740f02c6
@@ -3389,6 +3392,18 @@ This heading is for configuring snippet.
 (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
 (setq yas-use-menu nil)
 (setq yas-triggers-in-field t)
+#+end_src
+
+**** popup
+:PROPERTIES:
+:ID:       585c6a1e-9fa0-4b89-8899-6faf40fa1644
+:END:
+
+=+snippet+= is the name of the buffer where you create a new snippet.
+
+#+begin_src emacs-lisp
+(dbc-add-rule "bottom" "snippet" :newname "\\+snippet\\+")
+(dbc-add-rule "bottom" "snippet test" :newname "*testing snippet:")
 #+end_src
 
 **** ensure each yasnippet directory
