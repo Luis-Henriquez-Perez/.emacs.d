@@ -4867,6 +4867,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
 (setq gac-ask-for-summary nil)
 (setq gac-default-message #'gac:commit-message)
 (setq gac-commit-additional-flag "-S")
+(setq gac-silent-message-p t)
 #+end_src
 
 **** toggle summary
@@ -5853,8 +5854,9 @@ binding to.
 #+begin_src emacs-lisp
 (define-leader-key!
   :infix "w"
-  "M" (list :def #'maximize-window :wk "maximize")
-  "m" (list :def #'minimize-window :wk "maximize")
+  "M" (list :def #'maximize-window  :wk "maximize")
+  "m" (list :def #'minimize-window  :wk "maximize")
+  "b" (list :def #'window-balance   :wk "maximize")
   "z" (list :def #'zoom-window-zoom :wk "zoom"))
 #+end_src
 
