@@ -3135,18 +3135,6 @@ I've never had to use this. But better be safe than sorry.
     (message "killed %d processes" count)))
 #+end_src
 
-***** qutebrowser
-:PROPERTIES:
-:ID: 77bace13-5af8-4974-981a-e07bf271182f
-:END:
-
-#+begin_src emacs-lisp
-(defun void/open-qutebrowser ()
-  "Open qutebrowser."
-  (interactive)
-  (start-process "qutebrowser" nil "qutebrowser"))
-#+end_src
-
 **** turn on debug-mode
 :PROPERTIES:
 :ID: c1ac481a-6ebd-49ce-a930-3b0593283aee
@@ -6239,7 +6227,7 @@ have not finished with this source block.
   (interactive)
   (alet (-> (org-ml-parse-subtree-at (point))
 	    (org-element-map '(headline src-block) #'identity nil))
-    (-let* ((headline (org-element-property :title (car it)))
+    (-let* ((headline (car-safe (org-element-property :title (car it))))
 	    (source-block (--first (eq 'src-block (org-element-type it)) it))
 	    (edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
 	    (lang (org-element-property :language source-block))
@@ -8211,7 +8199,7 @@ Instead of passing in the string I use =org-ml= to print the string.
    (list "emacs"
 	 :keys "e"
 	 :template #'doct:emacs-template-string
-	 :file ORG-CAPTURE:FILE
+	 :file org:capture-file
 	 :prepend t
 	 :empty-lines 1)))
 #+end_src
@@ -8837,10 +8825,10 @@ press as well and even faster than =SPC SPC=.
 
 #+begin_src emacs-lisp
 (define-localleader-key!
-  "a" (list :def #'org-agenda :wk "agenda")
-  "s" (list :def #'void/open-scratch :wk "scratch")
-  "f" (list :def #'void/set-font-size    :wk "font size")
-  "c" (list :def #'org-capture  :wk "capture"))
+  "a" (list :def #'org-agenda         :wk "agenda")
+  "s" (list :def #'void/open-scratch  :wk "scratch")
+  "f" (list :def #'void/set-font-size :wk "font size")
+  "c" (list :def #'org-capture        :wk "capture"))
 
 (define-leader-key!
   :infix "t"
@@ -8939,6 +8927,7 @@ Emacs and for that we need all the help we can get.
 (define-leader-key!
   :infix "h"
   ""  (list :ignore t                :wk "help")
+  "i" (list :def #'info              :wk "info")
   "m" (list :def #'describe-mode     :wk "mode")
   "h" (list :def #'describe-function :wk "function")
   "v" (list :def #'describe-variable :wk "variable")
