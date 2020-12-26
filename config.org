@@ -7509,6 +7509,15 @@ The change to this function."
 (setq org-default-notes-file (concat org-directory "notes.org"))
 #+end_src
 
+**** define capture file
+:PROPERTIES:
+:ID:       97a3bb5a-f485-45d0-a7f4-4bdd3963a16b
+:END:
+
+#+begin_src emacs-lisp
+(defvar org:capture-file (concat org-directory "capture.org"))
+#+end_src
+
 **** general settings
 :PROPERTIES:
 :ID:       b0aa3f0b-876a-4527-b8ba-4fdac5e7ebe8
@@ -8013,19 +8022,10 @@ into your head while keeing disctractions to a minimum.
 #+begin_src emacs-lisp
 (autoload #'org-capture "org-capture" nil t nil)
 (dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE-")
-#+end_src
 
-**** set where capture templates should go
-:PROPERTIES:
-:ID:       d4f88618-e37b-4a96-807d-6b3bb966cbf9
-:END:
-
-I prefer to put all my capture templates in one file and then filter the
-contents of the file for the ones that I want.
-
-#+begin_src emacs-lisp
-(defvar ORG-CAPTURE:FILE (concat org-directory "capture.org")
-  "File where org capture templates are put.")
+;; Make sure dependencies for `org-capture' are pulled.
+(--each '(ts org-ml)
+  (void-load-before-call it #'org-capture))
 #+end_src
 
 **** remove capture headerline
@@ -8240,18 +8240,17 @@ tracking the time you spend on a particular task.
 
 *** org-agenda
 :PROPERTIES:
-:ID: 65b2885d-aca6-42b8-a8ad-e3ae077b9aae
+:ID:       efa9d237-b055-4bfb-a1f9-86d964b5f007
 :TYPE:     built-in
 :END:
 
-[[helpfn:org-agenda-list][org-agenda-list]] is the function that actually takes you to the agenda for the
-current week.
+**** settings
+:PROPERTIES:
+:ID:       168100e3-7157-411a-ad46-6389d1d0242a
+:END:
 
 #+begin_src emacs-lisp
-(--each (list #'org-agenda #'org-agenda-list)
-  (autoload it "org-agenda" nil t nil))
-
-(setq org-agenda-files nil)
+(setq org-agenda-files (list org:capture-file))
 (setq org-agenda-start-on-weekday 0)
 (setq org-agenda-timegrid-use-ampm nil)
 (setq org-agenda-skip-unavailable-files t)
