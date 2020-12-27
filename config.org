@@ -8172,12 +8172,6 @@ from [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale
 ** mini-modeline
 :PROPERTIES:
 :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "kiennq/emacs-mini-modeline"
-:PACKAGE:  "mini-modeline"
-:LOCAL-REPO: "emacs-mini-modeline"
 :END:
 
 *** setup
@@ -8193,6 +8187,7 @@ this.
 (setq mini-modeline-enhance-visual nil)
 (setq mini-modeline-display-gui-line nil)
 
+(straight-use-package 'mini-modeline)
 (require 'mini-modeline)
 (void-add-hook 'emacs-startup-hook #'mini-modeline-mode)
 #+end_src
