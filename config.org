@@ -3791,12 +3791,6 @@ capturing the prompt for the filename (like in [[][this example]]).
 ** outorg
 :PROPERTIES:
 :ID:       85570385-ff5b-47ba-907b-5ef3666288bb
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "alphapapa/outorg"
-:PACKAGE:  "outorg"
-:LOCAL-REPO: "outorg"
 :END:
 
 *** dont add overlays for blank lines
@@ -3831,12 +3825,6 @@ like the outorg buffer has less whitespace in between headlines than it should.
 *** ert-expectations
 :PROPERTIES:
 :ID:       3062b8a4-4261-49fc-9bdb-895ba75bbd19
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "emacsorphanage/ert-expectations"
-:PACKAGE:  "ert-expectations"
-:LOCAL-REPO: "ert-expectations"
 :END:
 
 #+begin_src emacs-lisp
@@ -3847,12 +3835,6 @@ like the outorg buffer has less whitespace in between headlines than it should.
 *** el-mock
 :PROPERTIES:
 :ID:       46df66b0-5820-4550-aa99-c913d3022fe1
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "rejeep/el-mock.el"
-:PACKAGE:  "el-mock"
-:LOCAL-REPO: "el-mock.el"
 :END:
 
 ** email
