@@ -3627,12 +3627,6 @@ javascript code.
 *** escr
 :PROPERTIES:
 :ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
-:host:     github
-:repo:     "atykhonov/escr"
-:package:  "escr"
-:type:     git
-:local-repo: "escr"
-:commit:   fc9dcdd98fcd7c9482f31032779fcd9e574016c0
 :END:
 
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
