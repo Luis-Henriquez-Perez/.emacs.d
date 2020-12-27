@@ -5338,14 +5338,6 @@ The tab's new name is the same as the desktop name."
 *** workgroups2
 :PROPERTIES:
 :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
-:HOST:     github
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("src/*.el" "workgroups2-pkg.el")
-:REPO:     "pashinin/workgroups2"
-:PACKAGE:  "workgroups2"
-:LOCAL-REPO: "workgroups2"
-:COMMIT:   "737306531f6834227eee2f63b197a23401003d23"
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
