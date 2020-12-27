@@ -3830,6 +3830,7 @@ like the outorg buffer has less whitespace in between headlines than it should.
 #+begin_src emacs-lisp
 (autoload 'expect "ert-expectations" nil nil 'macro)
 (autoload 'expectations "ert-expectations" nil nil 'macro)
+(straight-use-package 'ert-expectations)
 #+end_src
 
 *** el-mock
