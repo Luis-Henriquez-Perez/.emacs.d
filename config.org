@@ -380,12 +380,6 @@ Some functions are very expensive and deserve.
 *** mmt
 :PROPERTIES:
 :ID:       7b34238c-05fe-4920-9942-bc8bc454b64c
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "mrkkrp/mmt"
-:PACKAGE:  "mmt"
-:LOCAL-REPO: "mmt"
 :END:
 
 =mmt= is a library of tools for writing macros. Specifically, it provides the
@@ -393,6 +387,7 @@ quintessential =once-only= and =with-gensyms= macros which are used to prevent
 variable leaking.
 
 #+begin_src emacs-lisp
+(straight-use-package 'mmt)
 (defalias 'once-only! 'mmt-once-only)
 (defalias 'with-gensyms! 'mmt-with-gensyms)
 (defalias 'with-unique-names! 'mmt-with-gensyms)
