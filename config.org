@@ -3596,14 +3596,6 @@ replaces the existing buffer. I got this code snippet from [[https://stackoverfl
 *** w3m
 :PROPERTIES:
 :ID: e5e13423-bc70-49b0-969e-94897c798d54
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    (:defaults "icons" (:exclude "octet.el" "mew-w3m.el" "w3m-xmas.el") "w3m-pkg.el")
-:HOST:     github
-:REPO:     "emacs-w3m/emacs-w3m"
-:PACKAGE:  "w3m"
-:LOCAL-REPO: "emacs-w3m"
-:COMMIT:   "a4edf91ba14d39b6a1a2724ad275e941b1f00235"
 :END:
 
 [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
