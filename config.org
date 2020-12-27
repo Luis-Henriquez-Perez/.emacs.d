@@ -396,11 +396,6 @@ variable leaking.
 *** loopy
 :PROPERTIES:
 :ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
-:HOST:     github
-:TYPE:     git
-:REPO:     "okamsn/loopy"
-:PACKAGE:  "loopy"
-:LOCAL-REPO: "loopy"
 :END:
 
 =loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
@@ -408,6 +403,10 @@ variable leaking.
 cases. But they are not as good in my opinion when you're dealing with a complex loop
 that involves accumulating several variables or atypical control-flow (as in, break
 statements or return statements).
+
+#+begin_src emacs-lisp
+(straight-use-package 'loopy)
+#+end_src
 
 *** ht
 :PROPERTIES:
