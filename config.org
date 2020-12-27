@@ -5240,6 +5240,7 @@ screen. And then reverts the window configuration to what it was again
 afterwards.
 
 #+begin_src emacs-lisp
+(straight-use-package 'zoom-window)
 (autoload #'zoom-window-zoom "zoom-window" nil t nil)
 #+end_src
 
@@ -5252,6 +5253,15 @@ afterwards.
 There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
+
+*** init
+:PROPERTIES:
+:ID:       f1fd1ea5-2e96-4842-8bab-4080628bf357
+:END:
+
+#+begin_src emacs-lisp
+(straight-use-package 'exwm)
+#+end_src
 
 *** init
 :PROPERTIES:
