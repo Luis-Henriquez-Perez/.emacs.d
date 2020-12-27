@@ -5361,11 +5361,6 @@ use emacs's built-in serialization of window configs. Usually, it is better to
 use something that's built-in. However, emacs's serialization has the drawback
 that it's not a lisp object; implying that it is not.
 
-**** initialize
-:PROPERTIES:
-:ID:       dc2d574c-0e87-43d9-95fa-daa4d8a5e7e4
-:END:
-
 **** settings
 :PROPERTIES:
 :ID:       3de17bba-1c3e-4d7d-a30c-f34f1eda640b
