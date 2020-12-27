@@ -3768,6 +3768,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'emms)
 (--each (list #'emms-play-directory #'emms-play-file)
   (autoload it "emms" nil t nil))
 #+end_src
