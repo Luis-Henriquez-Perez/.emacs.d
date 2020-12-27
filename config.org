@@ -263,6 +263,7 @@ messages. While these messages can be nice to know, more often than not I get it
 now and I don't want to see them again.
 
 #+begin_src emacs-lisp
+(straight-use-package 'shut-up)
 (require 'shut-up)
 #+end_src
 
