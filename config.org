@@ -3535,13 +3535,6 @@ my gpg passphrase via emacs.
 *** engine-mode
 :PROPERTIES:
 :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
-:HOST:     github
-:BRANCH:   "main"
-:REPO:     "hrs/engine-mode"
-:COMMIT:   "e0910f141f2d37c28936c51c3c8bb8a9ca0c01d1"
-:TYPE:     git
-:PACKAGE:  "engine-mode"
-:LOCAL-REPO: "engine-mode"
 :END:
 
 **** engine-mode
@@ -3550,6 +3543,7 @@ my gpg passphrase via emacs.
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'engine-mode)
 (--each '(engine/search-duckduckgo engine/search-qwant
 	  engine/search-duckduckgo engine/search-wikipedia)
   (autoload it "engine-mode" nil t nil))
