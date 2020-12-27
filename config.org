@@ -3175,13 +3175,6 @@ of things that we actually want at this moment.
 ** company
 :PROPERTIES:
 :ID:       5c0ed97e-da66-42ab-a033-381ac9dd8972
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "company-mode/company-mode"
-:PACKAGE:  "company"
-:LOCAL-REPO: "company-mode"
-:COMMIT:   "dd925936f7c0bf00319c81e8caea1b3db63bb8b5"
 :END:
 
 *** init
