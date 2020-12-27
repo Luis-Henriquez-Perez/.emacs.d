@@ -5414,12 +5414,6 @@ When a new workgroup is created it's done by.
 ** zoom-window
 :PROPERTIES:
 :ID:       d506fde5-d1bc-4807-a1d0-a8ed5c33def2
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "emacsorphanage/zoom-window"
-:PACKAGE:  #("zoom-window" 0 11 (fontified t))
-:LOCAL-REPO: "zoom-window"
 :END:
 
 This package provides a command that temporarily makes a window occupy full
