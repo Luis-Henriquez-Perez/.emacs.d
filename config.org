@@ -3612,15 +3612,10 @@ javascript code.
 ** restart-emacs
 :PROPERTIES:
 :ID:       7412bc2f-0db1-44e9-8ea7-0dc595a04fca
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "iqbalansari/restart-emacs"
-:PACKAGE:  "restart-emacs"
-:LOCAL-REPO: "restart-emacs"
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'restart-emacs)
 (autoload #'restart-emacs "restart-emacs" nil t nil)
 #+end_src
 
