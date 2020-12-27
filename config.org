@@ -3177,14 +3177,6 @@ This heading is for configuring snippet.
 *** yasnippet
 :PROPERTIES:
 :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("yasnippet.el" "snippets" "yasnippet-pkg.el")
-:HOST:     github
-:REPO:     "joaotavora/yasnippet"
-:PACKAGE:  "yasnippet"
-:LOCAL-REPO: "yasnippet"
-:COMMIT:   "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"
 :END:
 
 =yasnippet= is a snippet framework for emacs.
@@ -3195,6 +3187,7 @@ This heading is for configuring snippet.
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'yasnippet)
 (void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
 (autoload #'yas-minor-mode-on "yasnippet" nil t nil)
 (setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
