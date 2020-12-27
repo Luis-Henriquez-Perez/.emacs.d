@@ -3436,13 +3436,6 @@ This heading is for configuring snippet.
 ** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "raxod502/selectrum"
-:PACKAGE:  "selectrum"
-:LOCAL-REPO: "selectrum"
-:COMMIT:   "1ef55328dfba7abc653f7de695c34e2fbbef8ec9"
 :END:
 
 Selectrum is another completion framework. It distinguishes itself from the rest
@@ -3465,6 +3458,7 @@ selectrum and its provided features.
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'selectrum)
 (void-add-hook 'emacs-startup-hook #'selectrum-mode)
 (autoload #'selectrum-mode "selectrum" nil t nil)
 
