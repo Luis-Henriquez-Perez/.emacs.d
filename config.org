@@ -8297,13 +8297,6 @@ in a better format.
 ** which-key
 :PROPERTIES:
 :ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "justbur/emacs-which-key"
-:PACKAGE:  "which-key"
-:LOCAL-REPO: "emacs-which-key"
-:COMMIT:   "c011b268196b8356c70f668506a1133086bc9477"
 :END:
 
 Emacs is full of so many keybindings, that it can be difficult to keep track of
@@ -8325,6 +8318,7 @@ you can "discover" the commands as you go along.
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'which-key)
 (void-add-hook 'emacs-startup-hook #'which-key-mode)
 (autoload #'which-key-mode "which-key" nil t nil)
 #+end_src
