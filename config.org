@@ -3617,14 +3617,6 @@ my gpg passphrase via emacs.
 ** pdf-tools
 :PROPERTIES:
 :ID:       63343f9d-6b19-43de-8302-d1344d571949
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("lisp/*.el" "README" ("build" "Makefile") ("build" "server") (:exclude "lisp/tablist.el" "lisp/tablist-filter.el") "pdf-tools-pkg.el")
-:HOST:     github
-:REPO:     "politza/pdf-tools"
-:PACKAGE:  "pdf-tools"
-:LOCAL-REPO: "pdf-tools"
-:COMMIT:   "c510442ab89c8a9e9881230eeb364f4663f59e76"
 :END:
 
 *** pdf-tools
@@ -3633,6 +3625,7 @@ my gpg passphrase via emacs.
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'pdf-tools)
 (autoload #'pdf-view-mode "pdf-tools" nil t nil)
 (push '("%PDF" . pdf-view-mode) magic-mode-alist)
 (push '("\\.[pP][dD][fF]\\'" . pdf-view-mode) auto-mode-alist)
@@ -4372,6 +4365,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 :END:
 
 #+begin_src emacs-lisp
+(setq eshell-banner-message "")
 (setq eshell-prefer-lisp-functions nil)
 (setq eshell-scroll-to-bottom-on-input 'all)
 (setq eshell-scroll-to-bottom-on-output 'all)
@@ -4409,8 +4403,6 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 
 #+begin_src emacs-lisp
 (remove-hook 'eshell-output-filter-functions #'eshell-postoutput-scroll-to-bottom)
-
-(setq eshell-banner-message "")
 #+end_src
 
 **** visual commands
@@ -8773,22 +8765,6 @@ Somtimes I might want to adjust this.
 :PROPERTIES:
 :ID:       ee63aedb-beb7-4857-9af6-0b52afc2672e
 :END:
-
-*** base16-theme
-:PROPERTIES:
-:ID:       37fb1cc6-2b33-4978-a43c-8b6950b84cc4
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    (:defaults "build/*.el" "base16-theme-pkg.el")
-:HOST:     github
-:REPO:     "belak/base16-emacs"
-:PACKAGE:  "base16-theme"
-:LOCAL-REPO: "base16-emacs"
-:END:
-
-#+begin_src emacs-lisp
-(require 'base16-theme)
-#+end_src
 
 * Keybindings
 :PROPERTIES:
