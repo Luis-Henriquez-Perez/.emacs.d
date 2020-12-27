@@ -3715,6 +3715,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'gif-screencast)
 (autoload #'gif-screencast-start-or-stop "gif-screencast" nil t nil)
 
 (define-key! "<f9>" 'gif-screencast-start-or-stop)
