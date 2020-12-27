@@ -3537,7 +3537,7 @@ my gpg passphrase via emacs.
 :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
 :END:
 
-**** engine-mode
+**** init
 :PROPERTIES:
 :ID:       f5a2c47b-01df-4dcf-b012-b6311cf79683
 :END:
