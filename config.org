@@ -281,13 +281,6 @@ it anyway.
 **** dash-functional
 :PROPERTIES:
 :ID:       704fc35f-0ad0-4eb3-9eb5-d8335465dbd8
-:FLAVOR:   melpa
-:FILES:    ("dash-functional.el" "dash-functional-pkg.el")
-:PACKAGE:  "dash-functional"
-:LOCAL-REPO: "dash.el"
-:TYPE:     git
-:REPO:     "magnars/dash.el"
-:HOST:     github
 :END:
 
 =dash-functional= provides "function combinators". These are functions that take
@@ -301,19 +294,12 @@ emacs's [[helpfn:apply-partially][apply-partially]]. These functions can help.
 **** s
 :PROPERTIES:
 :ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("s.el" "s-pkg.el")
-:HOST:     github
-:REPO:     "magnars/s.el"
-:PACKAGE:  "s"
-:LOCAL-REPO: "s.el"
-:COMMIT:   "43ba8b563bee3426cead0e6d4ddc09398e1a349d"
 :END:
 
 =s= is an api for strings inspired by [[id:704fc35f-0ad0-4eb3-9eb5-d8335465dbd8][dash]].
 
 #+begin_src emacs-lisp
+(straight-use-package 's)
 (require 's)
 #+end_src
 
