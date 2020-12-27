@@ -3645,6 +3645,7 @@ option that would prompt you for the file name.
 :END:
 
 #+begin_src emacs-lisp
+(straight-use-package 'escr)
 (--each '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
   (autoload it "escr" nil t nil))
 #+end_src
