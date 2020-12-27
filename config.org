@@ -306,12 +306,6 @@ emacs's [[helpfn:apply-partially][apply-partially]]. These functions can help.
 **** anaphora
 :PROPERTIES:
 :ID:       1c47bd8a-15f1-4b1c-9574-23547d27d968
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "rolandwalker/anaphora"
-:PACKAGE:  "anaphora"
-:LOCAL-REPO: "anaphora"
 :END:
 
 It's common to want to refer to the thing you're operating on in lisp and in
@@ -319,6 +313,7 @@ many other languages. In lisp this often requires assigning the variable a name.
 But if you're only.
 
 #+begin_src emacs-lisp
+(straight-use-package 'anaphora)
 (require 'anaphora)
 #+end_src
 
