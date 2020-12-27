@@ -3747,6 +3747,17 @@ capturing the prompt for the filename (like in [[][this example]]).
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
 
+**** emms
+:PROPERTIES:
+:ID: 5d28b703-a87f-47ca-b320-785e7589fea6
+:END:
+
+#+begin_src emacs-lisp
+(straight-use-package 'emms)
+(--each (list #'emms-play-directory #'emms-play-file)
+  (autoload it "emms" nil t nil))
+#+end_src
+
 **** settings
 :PROPERTIES:
 :ID:       3861c03d-b08e-463b-a28e-e88c191993fc
@@ -3760,17 +3771,6 @@ capturing the prompt for the filename (like in [[][this example]]).
 (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 (setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
 (setq mpc-host "127.0.0.1:6600")
-#+end_src
-
-**** emms
-:PROPERTIES:
-:ID: 5d28b703-a87f-47ca-b320-785e7589fea6
-:END:
-
-#+begin_src emacs-lisp
-(straight-use-package 'emms)
-(--each (list #'emms-play-directory #'emms-play-file)
-  (autoload it "emms" nil t nil))
 #+end_src
 
 **** quitting
