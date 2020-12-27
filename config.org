@@ -262,14 +262,7 @@ now and I don't want to see them again.
 
 **** dash
 :PROPERTIES:
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("dash.el" "dash.texi" "dash-pkg.el")
-:HOST:     github
-:REPO:     "magnars/dash.el"
-:PACKAGE:  "dash"
-:LOCAL-REPO: "dash.el"
-:COMMIT:   "0f238a9a466879ee96e5db0482019453718f342d"
+:ID:       7885c48d-0ead-4d77-8de1-e9faec58b583
 :END:
 
 Dash is rich list manipulation library. Many of the functions it has are already
