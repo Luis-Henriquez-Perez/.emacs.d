@@ -5427,13 +5427,6 @@ afterwards.
 ** exwm
 :PROPERTIES:
 :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacs-straight/exwm"
-:FILES:    ("*" (:exclude ".git"))
-:PACKAGE:  "exwm"
-:LOCAL-REPO: "exwm"
-:COMMIT:   "45ac28cc9cffe910c3b70979bc321a1a60e002ea"
 :END:
 
 [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
