@@ -224,6 +224,14 @@ where that controls the setup of my files--my init file.
       (straight-vc-check-out-commit recipe commit))))
 #+end_src
 
+*** write recipes
+:PROPERTIES:
+:ID:       ae2a4253-2164-4b96-9ed8-67e368318053
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ** Library
 :PROPERTIES:
 :ID:       70af1291-6b16-4261-ba83-19bb16d0023e
