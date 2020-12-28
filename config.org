@@ -257,6 +257,7 @@ To write this function I looked at [[helpfn:straight-thaw-versions][straight-tha
 #+begin_src emacs-lisp
 (defun void--set-package-to-revision (revision)
   "Set package to specific revision."
+  ()
   )
 #+end_src
 
