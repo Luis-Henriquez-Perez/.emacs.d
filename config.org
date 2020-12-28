@@ -244,6 +244,10 @@ the code by using a different syntax for the same thing for an arbitrary reason.
 :ID:       2bb1554c-fd30-4d43-afb6-1e436e4a69b7
 :END:
 
+The purpose of this macro differs greatly from use-package. Instead of
+configuring your package installation, this macro is intended to be used for
+initializing your package and it.
+
 #+begin_src emacs-lisp
 (defmacro init-package! (package &rest body)
   ""
