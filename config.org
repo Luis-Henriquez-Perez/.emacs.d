@@ -291,7 +291,8 @@ Note that I write everything as a plist because it's easier.
 	  (expr recipe (straight:recipe package))
 	  (expr revision (straight:revision package))
 	  (concat contents
-		  (ppp-plist-to-string `(:revision ,revision ,@recipe))))
+		  (thread-last `(:revision ,revision ,@recipe)
+		    (ppp-plist-to-string))))
 	 (finally-do
 	  (with-temp-file (concat user-emacs-directory "recipes.el")
 	    (insert contents)))))
