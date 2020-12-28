@@ -282,6 +282,8 @@ information I need to install them. Separately, will be this file which contains
 the description and configuration of those packages. =straight.el= offers a
 lockfile but I need the recipes to be completely.
 
+Note that I write everything as a plist because it's easier.
+
 #+begin_src emacs-lisp
 (defun void--write-recipes ()
   "Write the information needed for all installed packages."
