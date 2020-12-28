@@ -247,6 +247,11 @@ This function is based on one provided by "" in [[][]].
           (magit-rev-parse "HEAD"))))))
 #+end_src
 
+**** set repository to a specific revision
+:PROPERTIES:
+:ID:       f7fbb68b-ede5-4458-9a16-afec10aba6be
+:END:
+
 **** write recipes and revisions
 :PROPERTIES:
 :ID:       ae2a4253-2164-4b96-9ed8-67e368318053
