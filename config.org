@@ -236,12 +236,19 @@ use-package block and what doesn't. If you put everything in the use-package
 block, then you end up with many lines of code in one form which is also not
 good--especially in my case because strive to maintained small code
 blocks. Furthermore, by using the DSL you loose out on many of the benefits of
-lisp such as.
+lisp such as proper indenting when you have many commands. Further it framents
+the code by using a different syntax for the same thing for an arbitrary reason.
 
-**** 
+**** initialize package
 :PROPERTIES:
 :ID:       2bb1554c-fd30-4d43-afb6-1e436e4a69b7
 :END:
+
+#+begin_src emacs-lisp
+(defmacro init-package! (package &rest body)
+  ""
+  (progn (-tree-map )))
+#+end_src
 
 ** Library
 :PROPERTIES:
