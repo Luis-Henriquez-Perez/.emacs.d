@@ -247,6 +247,16 @@ This function is based on one provided by "" in [[][]].
           (magit-rev-parse "HEAD"))))))
 #+end_src
 
+**** get the recipe
+:PROPERTIES:
+:ID:       55f67139-1b77-4dc8-96e2-139149d540e3
+:END:
+
+#+begin_src emacs-lisp
+(defun void--get-recipe (package)
+  (hash-get package straight--recipe-cache))
+#+end_src
+
 **** set repository to a specific revision
 :PROPERTIES:
 :ID:       f7fbb68b-ede5-4458-9a16-afec10aba6be
@@ -275,7 +285,7 @@ lockfile but I need the recipes to be completely.
 #+begin_src emacs-lisp
 (defun void--write-recipes ()
   "Write the information needed for all installed packages."
-  ())
+  (pp ))
 #+end_src
 
 **** load packages from recipes and revisions
