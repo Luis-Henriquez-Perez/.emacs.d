@@ -88,7 +88,7 @@ The --debug-init flag and setting the DEBUG envar will enable this at startup.")
 
 ** Package Management
 :PROPERTIES:
-:ID: 0397db22-91be-4311-beef-aeda4cd3a7f3
+:ID:       00eaa1a5-b5fe-437d-9888-1846ea9a232b
 :END:
 
 The purpose of this headline is to set up the package manager and install all of
@@ -674,12 +674,6 @@ loading it. To remedy this I wrap the block with [[][condition-case]].
 *** dbc
 :PROPERTIES:
 :ID:       b3351a74-b2d0-42b8-9895-b6baad0adb0b
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     gitlab
-:REPO:     "matsievskiysv/display-buffer-control"
-:PACKAGE:  "dbc"
-:LOCAL-REPO: "display-buffer-control"
 :END:
 
 =dbc= stands for "display-buffer-control". This package provides an interface for
@@ -706,7 +700,7 @@ side windows.
 
 *** after!
 :PROPERTIES:
-:ID: b31cd42d-cc57-492d-afae-d7d5e353e931
+:ID:       e209d256-86e0-4e30-a7d5-78a583729b42
 :END:
 
 =after!= is yet another wrapper around == that can accept multiple features or
@@ -740,7 +734,7 @@ from pulling (or failing to pull) in autoloaded macros/features.
 
 *** with-os!
 :PROPERTIES:
-:ID: 1a645745-11ce-4cfb-8c5f-63470f0a61c3
+:ID:       a3ea434a-3f70-4137-a525-5be4bc63c3a2
 :END:
 
 Emacs is for the most part operating system agnostic. Packages written in elisp
@@ -765,7 +759,7 @@ OS can be either `mac', `linux' or `windows'(unquoted)."
 
 *** ignore!
 :PROPERTIES:
-:ID: 0597956f-d40c-4c2b-9adf-5ece8c5b38de
+:ID:       e0173863-5b27-4afc-879a-17a6dce7ecd0
 :END:
 
 #+begin_src emacs-lisp
@@ -1313,13 +1307,6 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 *** system-packages
 :PROPERTIES:
 :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     gitlab
-:REPO:     "jabranham/system-packages"
-:PACKAGE:  "system-packages"
-:LOCAL-REPO: "system-packages"
-:COMMIT:   "92c58d98bc7282df9fd6f24436a105f5f518cde9"
 :END:
 
 =system-packages= provides an api for installing system packages. This api strives
@@ -1944,7 +1931,7 @@ window be in it's own buffer lends itself better to searching them via
 
 ** Miscellaneous
 :PROPERTIES:
-:ID: c21a5946-38b1-40dd-b6c3-da41fb5c4a5c
+:ID:       65edb4e7-0fe1-4e37-ae9b-027c9f15162a
 :END:
 
 This headline contains headings for which I have not yet determined a good
