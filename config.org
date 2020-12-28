@@ -3520,9 +3520,6 @@ plain text webpages. Of course, the main limitation is that w3m will typically
 only display text based web pages well--not ones with lots of interactive
 javascript code.
 
-#+begin_src emacs-lisp
-#+end_src
-
 ** restart-emacs
 :PROPERTIES:
 :ID:       7412bc2f-0db1-44e9-8ea7-0dc595a04fca
