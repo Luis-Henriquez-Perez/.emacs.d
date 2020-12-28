@@ -419,6 +419,8 @@ function that logs to the buffer =*void-log*=.
 :ID:       f507fcff-f3c5-4dff-b5d8-c4bcec34b58b
 :END:
 
+This form creates a set of functions for logging.
+
 #+begin_src emacs-lisp
 (elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
 #+end_src
