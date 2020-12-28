@@ -288,7 +288,7 @@ lockfile but I need the recipes to be completely.
   (loopy ()
 	 (concat )
 	 (finally-do
-	  (with-temp-file ))))
+	  (with-temp-file (insert recipe-info)))))
 #+end_src
 
 **** load packages from recipes and revisions
