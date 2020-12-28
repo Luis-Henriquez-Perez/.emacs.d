@@ -285,10 +285,11 @@ lockfile but I need the recipes to be completely.
 #+begin_src emacs-lisp
 (defun void--write-recipes ()
   "Write the information needed for all installed packages."
-  (loopy ()
-	 (concat )
-	 (finally-do
-	  (with-temp-file (insert recipe-info)))))
+  (loopy ((list package (hash-table-keys straight--recipe-cache))
+	  (expr recipe (straight:get-recipe package))
+	  (expr revision (straight:get-revision package))
+	  (concat recipe-info (pp `(,@recipe :revision ,revision))))
+	 (finally-do (with-temp-file (insert recipe-info)))))
 #+end_src
 
 **** load packages from recipes and revisions
