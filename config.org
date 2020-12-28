@@ -237,23 +237,22 @@ where that controls the setup of my files--my init file.
 This function is based on one provided by "" in [[][]].
 
 #+begin_src emacs-lisp
-(defun void--package-revision (package)
+(defun straight:revision (package)
   "Return the revision of PACKAGE."
-  (let ((recipe (gethash package straight--recipe-cache)))
-    (straight--with-plist recipe
-        (local-repo type)
-      (when (and (eq type 'git) local-repo)
-        (let ((default-directory (straight--repos-dir local-repo)))
-          (magit-rev-parse "HEAD"))))))
+  (straight--with-plist (straight:recipe package)
+      (local-repo type)
+    (when (and (eq type 'git) local-repo)
+      (let ((default-directory (straight--repos-dir local-repo)))
+        (magit-rev-parse "HEAD")))))
 #+end_src
 
-**** get the recipe
+**** recipe
 :PROPERTIES:
 :ID:       55f67139-1b77-4dc8-96e2-139149d540e3
 :END:
 
 #+begin_src emacs-lisp
-(defun straight:get-recipe (package)
+(defun straight:recipe (package)
   "Return recipe for an existing package."
   (hash-get package straight--recipe-cache))
 #+end_src
@@ -286,13 +285,15 @@ lockfile but I need the recipes to be completely.
 Note that I write everything as a plist because it's easier.
 
 #+begin_src emacs-lisp
-(defun void--write-recipes ()
+(defun straight:write-recipes ()
   "Write the information needed for all installed packages."
   (loopy ((list package (hash-table-keys straight--recipe-cache))
-	  (expr recipe (straight:get-recipe package))
-	  (expr revision (straight:get-revision package))
+	  (expr recipe (straight:recipe package))
+	  (expr revision (straight:revision package))
 	  (concat recipe-info (pp `(,@recipe :revision ,revision))))
-	 (finally-do (with-temp-file (insert recipe-info)))))
+	 (finally-do
+	  (with-temp-file (concat user-emacs-directory "recipes.el")
+	    (insert recipe-info)))))
 #+end_src
 
 **** load packages from recipes and revisions
