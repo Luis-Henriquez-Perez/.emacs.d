@@ -7158,6 +7158,13 @@ The change to this function."
   "C" (list :def #'macrostep-collapse-all :wk "collapse all"))
 #+end_src
 
+*** ppp
+:PROPERTIES:
+:ID:       82dbb88a-4bce-4ca3-90fe-38cfbea7abc6
+:END:
+
+This is a pretty printer.
+
 ** org
 :PROPERTIES:
 :ID:       63748940-c1b9-47ea-b1ce-d6519453ad03
