@@ -6154,14 +6154,7 @@ it. It's pretty smart and very convenient.
 
 *** smartparens
 :PROPERTIES:
-:ID: 17257f23-c45e-4b7b-a3b4-7fd2333edf4d
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "Fuco1/smartparens"
-:PACKAGE:  "smartparens"
-:LOCAL-REPO: "smartparens"
-:COMMIT:   "c59bfef7e8f1687ac77b0afaaaed86d8051d3de1"
+:ID:       f4ffbb57-1fb6-43ab-a747-470dfcfbd0ac
 :END:
 
 **** init
@@ -6236,13 +6229,6 @@ it. It's pretty smart and very convenient.
 *** rainbow-delimiters
 :PROPERTIES:
 :ID:       5b58bb1c-5d3c-4f04-b4fb-c55f1588839e
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "Fanael/rainbow-delimiters"
-:PACKAGE:  "rainbow-delimiters"
-:LOCAL-REPO: "rainbow-delimiters"
-:COMMIT:   "f43d48a24602be3ec899345a3326ed0247b960c6"
 :END:
 
 [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]] colors parentheses different colors based on level. This is a
@@ -6258,12 +6244,6 @@ great idea! It makes it really easy to see which parentheses go together.
 ** outshine
 :PROPERTIES:
 :ID:       6aeccc22-2ebe-43c0-a245-5535b5bd6f6c
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "alphapapa/outshine"
-:PACKAGE:  "outshine"
-:LOCAL-REPO: "outshine"
 :END:
 
 #+begin_src emacs-lisp
