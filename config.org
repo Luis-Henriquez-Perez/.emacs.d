@@ -7165,6 +7165,12 @@ The change to this function."
 
 This is a pretty printer.
 
+Sometimes you want to see what an object looks like represented as text so you
+know what you're dealing with. For example, I've wanted to see what a straight
+recipe looks like. The problem is by default [[][]] prints something on one
+line. And to avoid long lines, emacs truncates the output so you can't even see
+the whole thing.
+
 ** org
 :PROPERTIES:
 :ID:       63748940-c1b9-47ea-b1ce-d6519453ad03
