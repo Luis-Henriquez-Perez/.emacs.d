@@ -97,7 +97,7 @@ installed. The idea is to separate package installation and package configuratio
 
 *** straight.el
 :PROPERTIES:
-:ID: a086d616-b90d-4826-b61f-93eb0b7efc8e
+:ID:       86037015-ca61-48f9-96bf-df8fc625a35d
 :END:
 
 [[straight][straight.el]] is a package manager that installs packages by cloning their git
