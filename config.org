@@ -224,6 +224,19 @@ where that controls the setup of my files--my init file.
       (straight-vc-check-out-commit recipe commit))))
 #+end_src
 
+*** get packages to install
+:PROPERTIES:
+:ID:       31952415-9b8b-41a9-aabc-453f58c7dda7
+:END:
+
+*** install packages
+:PROPERTIES:
+:ID:       50cdef3e-4fc3-42eb-95e6-027479bf66ae
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 ** Library
 :PROPERTIES:
 :ID:       70af1291-6b16-4261-ba83-19bb16d0023e
