@@ -264,7 +264,8 @@ lockfile but I need the recipes to be completely.
 :END:
 
 #+begin_src emacs-lisp
-()
+(defun void--read-recipe-file ()
+  "Return a list whose cons cells.")
 #+end_src
 
 ** Library
