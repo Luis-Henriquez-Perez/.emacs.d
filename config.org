@@ -266,7 +266,7 @@ This function is based on one provided by "" in [[][]].
 To write this function I looked at [[helpfn:straight-thaw-versions][straight-thaw-versions]].
 
 #+begin_src emacs-lisp
-(defun void--set-package-to-revision (package revision)
+(defun straight:set-package-to-revision (package revision)
   "Set package to specific revision."
   (unless (straight-vc-commit-present-p recipe revision)
     (straight-vc-fetch-from-remote recipe))
