@@ -1505,13 +1505,6 @@ is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacem
 *** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "noctuid/general.el"
-:PACKAGE:  "general"
-:LOCAL-REPO: "general.el"
-:COMMIT:   "a0b17d207badf462311b2eef7c065b884462cb7c"
 :END:
 
 There are numerous keybinding functions in Emacs; and they all look a little
