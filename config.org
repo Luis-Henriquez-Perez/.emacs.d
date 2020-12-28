@@ -306,7 +306,9 @@ Note that I write everything as a plist because it's easier.
 #+begin_src emacs-lisp
 (defun void--read-recipe-file ()
   "Return a list whose cons cells."
-  ())
+  (loopy ((list )))
+  (awhile (read (or ))
+    ()))
 #+end_src
 
 ** Library
