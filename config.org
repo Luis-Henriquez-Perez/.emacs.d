@@ -398,9 +398,6 @@ cases. But they are not as good in my opinion when you're dealing with a complex
 that involves accumulating several variables or atypical control-flow (as in, break
 statements or return statements).
 
-#+begin_src emacs-lisp
-#+end_src
-
 *** ht
 :PROPERTIES:
 :ID:       56bb0ff4-6ad1-44b7-a9a4-54abf48ed253
@@ -412,12 +409,6 @@ hash-tables.
 *** elog
 :PROPERTIES:
 :ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "lujun9972/elog"
-:PACKAGE:  "elog"
-:LOCAL-REPO: "elog"
 :END:
 
 =elog= is a library for generating logging functions. I use [[][]] to generate a
