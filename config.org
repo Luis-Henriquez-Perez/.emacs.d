@@ -252,6 +252,8 @@ This function is based on one provided by "" in [[][]].
 :ID:       f7fbb68b-ede5-4458-9a16-afec10aba6be
 :END:
 
+To write this function I looked at [[helpfn:straight-thaw-versions][straight-thaw-versions]].
+
 #+begin_src emacs-lisp
 (defun void--set-package-to-revision (revision)
   "Set package to specific revision."
@@ -281,7 +283,8 @@ lockfile but I need the recipes to be completely.
 
 #+begin_src emacs-lisp
 (defun void--read-recipe-file ()
-  "Return a list whose cons cells.")
+  "Return a list whose cons cells."
+  ())
 #+end_src
 
 ** Library
