@@ -225,35 +225,6 @@ where that controls the setup of my files--my init file.
       (straight-vc-check-out-commit recipe commit))))
 #+end_src
 
-*** use-package-like macro
-:PROPERTIES:
-:ID:       0eacf0d5-0e99-47ea-a94d-459426d14c08
-:END:
-
-In my opinion, =use-package= is rather extreme in how it creates a DSL for
-configuring packages. Also there is ambiguity as to what goes into the
-use-package block and what doesn't. If you put everything in the use-package
-block, then you end up with many lines of code in one form which is also not
-good--especially in my case because strive to maintained small code
-blocks. Furthermore, by using the DSL you loose out on many of the benefits of
-lisp such as proper indenting when you have many commands. Further it framents
-the code by using a different syntax for the same thing for an arbitrary reason.
-
-**** initialize package
-:PROPERTIES:
-:ID:       2bb1554c-fd30-4d43-afb6-1e436e4a69b7
-:END:
-
-The purpose of this macro differs greatly from use-package. Instead of
-configuring your package installation, this macro is intended to be used for
-initializing your package and it.
-
-#+begin_src emacs-lisp
-(defmacro init-package! (package &rest body)
-  ""
-  (progn (-tree-map )))
-#+end_src
-
 ** Library
 :PROPERTIES:
 :ID:       70af1291-6b16-4261-ba83-19bb16d0023e
