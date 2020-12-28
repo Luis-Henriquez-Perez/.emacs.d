@@ -229,10 +229,17 @@ where that controls the setup of my files--my init file.
 :ID:       0f8d5286-2b4f-4f3f-a0a7-259c7d279171
 :END:
 
+This function is based on one provided by "" in [[][]].
+
 #+begin_src emacs-lisp
 (defun void--package-revision (package)
   "Return the revision of PACKAGE."
-  )
+  (let ((recipe (gethash package straight--recipe-cache)))
+    (straight--with-plist recipe
+        (local-repo type)
+      (when (and (eq type 'git) local-repo)
+        (let ((default-directory (straight--repos-dir local-repo)))
+          (magit-rev-parse "HEAD"))))))
 #+end_src
 
 *** write recipes and revisions
