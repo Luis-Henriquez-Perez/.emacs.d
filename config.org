@@ -290,10 +290,11 @@ Note that I write everything as a plist because it's easier.
   (loopy ((list package (hash-table-keys straight--recipe-cache))
 	  (expr recipe (straight:recipe package))
 	  (expr revision (straight:revision package))
-	  (collect recipe-list `(:revision ,revision ,@recipe)))
+	  (concat contents
+		  (ppp-plist-to-string `(:revision ,revision ,@recipe))))
 	 (finally-do
 	  (with-temp-file (concat user-emacs-directory "recipes.el")
-	    (insert (pp recipe-list))))))
+	    (insert contents)))))
 #+end_src
 
 **** load packages from recipes and revisions
