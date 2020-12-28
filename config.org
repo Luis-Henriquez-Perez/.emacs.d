@@ -215,8 +215,7 @@ where that controls the setup of my files--my init file.
 #+begin_src emacs-lisp
 (defun straight:install-fn (recipe)
   "Function that."
-  (straight-use-package recipe)
-  ;; After installing, set the package to the correct commit.
+    ;; After installing, set the package to the correct commit.
   (when-let ((local-repo (plist-get (cdr recipe) :local-repo))
              (commit (plist-get (cdr recipe) :commit)))
     (when (file-exists-p (straight--repos-dir local-repo))
@@ -256,7 +255,6 @@ messages. While these messages can be nice to know, more often than not I get it
 now and I don't want to see them again.
 
 #+begin_src emacs-lisp
-(straight-use-package 'shut-up)
 (require 'shut-up)
 #+end_src
 
@@ -274,7 +272,6 @@ already used as a dependency of very many packages so I'll likely end up loading
 it anyway.
 
 #+begin_src emacs-lisp
-(straight-use-package 'dash)
 (require 'dash)
 #+end_src
 
@@ -299,7 +296,6 @@ emacs's [[helpfn:apply-partially][apply-partially]]. These functions can help.
 =s= is an api for strings inspired by [[id:704fc35f-0ad0-4eb3-9eb5-d8335465dbd8][dash]].
 
 #+begin_src emacs-lisp
-(straight-use-package 's)
 (require 's)
 #+end_src
 
@@ -313,7 +309,6 @@ many other languages. In lisp this often requires assigning the variable a name.
 But if you're only.
 
 #+begin_src emacs-lisp
-(straight-use-package 'anaphora)
 (require 'anaphora)
 #+end_src
 
@@ -387,7 +382,6 @@ quintessential =once-only= and =with-gensyms= macros which are used to prevent
 variable leaking.
 
 #+begin_src emacs-lisp
-(straight-use-package 'mmt)
 (defalias 'once-only! 'mmt-once-only)
 (defalias 'with-gensyms! 'mmt-with-gensyms)
 (defalias 'with-unique-names! 'mmt-with-gensyms)
@@ -405,7 +399,6 @@ that involves accumulating several variables or atypical control-flow (as in, br
 statements or return statements).
 
 #+begin_src emacs-lisp
-(straight-use-package 'loopy)
 #+end_src
 
 *** ht
@@ -3187,7 +3180,6 @@ This heading is for configuring snippet.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'yasnippet)
 (void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
 (autoload #'yas-minor-mode-on "yasnippet" nil t nil)
 (setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
@@ -3274,7 +3266,6 @@ selectrum and its provided features.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'selectrum)
 (void-add-hook 'emacs-startup-hook #'selectrum-mode)
 (autoload #'selectrum-mode "selectrum" nil t nil)
 
@@ -3428,7 +3419,6 @@ my gpg passphrase via emacs.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'pdf-tools)
 (autoload #'pdf-view-mode "pdf-tools" nil t nil)
 (push '("%PDF" . pdf-view-mode) magic-mode-alist)
 (push '("\\.[pP][dD][fF]\\'" . pdf-view-mode) auto-mode-alist)
@@ -3492,7 +3482,6 @@ my gpg passphrase via emacs.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'engine-mode)
 (--each '(engine/search-duckduckgo engine/search-qwant
 	  engine/search-duckduckgo engine/search-wikipedia)
   (autoload it "engine-mode" nil t nil))
@@ -3559,7 +3548,6 @@ only display text based web pages well--not ones with lots of interactive
 javascript code.
 
 #+begin_src emacs-lisp
-(straight-use-package 'w3m)
 #+end_src
 
 ** restart-emacs
@@ -3568,7 +3556,6 @@ javascript code.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'restart-emacs)
 (autoload #'restart-emacs "restart-emacs" nil t nil)
 #+end_src
 
@@ -3598,7 +3585,6 @@ option that would prompt you for the file name.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'escr)
 (--each '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
   (autoload it "escr" nil t nil))
 #+end_src
@@ -3668,7 +3654,6 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'gif-screencast)
 (autoload #'gif-screencast-start-or-stop "gif-screencast" nil t nil)
 
 (define-key! "<f9>" 'gif-screencast-start-or-stop)
@@ -3706,7 +3691,6 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'emms)
 (--each (list #'emms-play-directory #'emms-play-file)
   (autoload it "emms" nil t nil))
 #+end_src
@@ -3783,7 +3767,6 @@ like the outorg buffer has less whitespace in between headlines than it should.
 #+begin_src emacs-lisp
 (autoload 'expect "ert-expectations" nil nil 'macro)
 (autoload 'expectations "ert-expectations" nil nil 'macro)
-(straight-use-package 'ert-expectations)
 #+end_src
 
 *** el-mock
@@ -5189,7 +5172,6 @@ screen. And then reverts the window configuration to what it was again
 afterwards.
 
 #+begin_src emacs-lisp
-(straight-use-package 'zoom-window)
 (autoload #'zoom-window-zoom "zoom-window" nil t nil)
 #+end_src
 
@@ -5209,7 +5191,6 @@ use a typical window manager, you have to.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'exwm)
 #+end_src
 
 *** init
@@ -8136,7 +8117,6 @@ this.
 (setq mini-modeline-enhance-visual nil)
 (setq mini-modeline-display-gui-line nil)
 
-(straight-use-package 'mini-modeline)
 (require 'mini-modeline)
 (void-add-hook 'emacs-startup-hook #'mini-modeline-mode)
 #+end_src
@@ -8229,7 +8209,6 @@ Emacs help facility which provides much more contextual information
 in a better format.
 
 #+begin_src emacs-lisp
-(straight-use-package 'helpful)
 (--each (list #'helpful-callable #'helpful-command
 	      #'helpful-variable #'helpful-key)
   (autoload it "helpful" nil t nil))
@@ -8267,7 +8246,6 @@ you can "discover" the commands as you go along.
 :END:
 
 #+begin_src emacs-lisp
-(straight-use-package 'which-key)
 (void-add-hook 'emacs-startup-hook #'which-key-mode)
 (autoload #'which-key-mode "which-key" nil t nil)
 #+end_src
