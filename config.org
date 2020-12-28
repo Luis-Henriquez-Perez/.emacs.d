@@ -7505,22 +7505,11 @@ options. For this reason I wrote my own insert heading functions.
 *** org-ml
 :PROPERTIES:
 :ID:       7f3ec0ad-45f8-4100-970e-773cfb9a625b
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "ndwarshuis/org-ml"
-:PACKAGE:  "org-ml"
-:LOCAL-REPO: "org-ml"
 :END:
 
 *** org-link-minor-mode
 :PROPERTIES:
 :ID:       25b93a1f-b105-47aa-9647-5015d23a4ac3
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacsattic/org-link-minor-mode"
-:PACKAGE:  "org-link-minor-mode"
-:LOCAL-REPO: "org-link-minor-mode"
 :END:
 
 This is a minor mode for displaying links in non-org buffers.
@@ -7917,12 +7906,6 @@ referenance org headlines.
 *** org-superstar
 :PROPERTIES:
 :ID: c43700f5-ff24-46b2-aed5-a12f8d8bb347
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "integral-dw/org-superstar-mode"
-:PACKAGE:  "org-superstar"
-:LOCAL-REPO: "org-superstar-mode"
 :END:
 
 [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
@@ -8066,13 +8049,6 @@ This headline is for customizing info nodes.
 ** helpful
 :PROPERTIES:
 :ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "Wilfred/helpful"
-:PACKAGE:  "helpful"
-:LOCAL-REPO: "helpful"
-:COMMIT:   "584ecc887bb92133119f93a6716cdf7af0b51dca"
 :END:
 
 *** helpful
@@ -8166,14 +8142,6 @@ you can "discover" the commands as you go along.
 ** dashboard
 :PROPERTIES:
 :ID: 20926522-b78b-4bca-b70e-9ef4213c4344
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    (:defaults "banners" "dashboard-pkg.el")
-:HOST:     github
-:REPO:     "emacs-dashboard/emacs-dashboard"
-:PACKAGE:  "dashboard"
-:LOCAL-REPO: "emacs-dashboard"
-:COMMIT:   "2cebc69e3d4b82569daa732b9114787d7018304b"
 :END:
 
 [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
@@ -8256,7 +8224,7 @@ instead.
 
 ** window divider
 :PROPERTIES:
-:ID: 0bcebb71-f730-427f-9919-1538bd63456c
+:ID:       2cdd6e24-5153-4585-8f1f-206b33445359
 :TYPE:     built-in
 :END:
 
