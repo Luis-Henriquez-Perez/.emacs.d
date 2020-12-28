@@ -6661,13 +6661,6 @@ code.
 *** lispyville
 :PROPERTIES:
 :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "noctuid/lispyville"
-:PACKAGE:  "lispyville"
-:LOCAL-REPO: "lispyville"
-:COMMIT:   "0f13f26cd6aa71f9fd852186ad4a00c4294661cd"
 :END:
 
 [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
@@ -6777,14 +6770,6 @@ Sometimes =evil-normal-state= enters visual state.
 *** lispy
 :PROPERTIES:
 :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    (:defaults "lispy-clojure.clj" "lispy-python.py" "lispy-pkg.el")
-:HOST:     github
-:REPO:     "abo-abo/lispy"
-:PACKAGE:  "lispy"
-:LOCAL-REPO: "lispy"
-:COMMIT:   "41f5574aefb69930d9bdcbe4e0cf642005369765"
 :END:
 
 For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
@@ -6868,12 +6853,6 @@ You'll get void variable if you don't do this.
 *** evil-lispy
 :PROPERTIES:
 :ID:       f79c2035-ce79-491a-acf6-5e80f72cffe9
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "sp3ctum/evil-lispy"
-:PACKAGE:  "evil-lispy"
-:LOCAL-REPO: "evil-lispy"
 :END:
 
 **** lispy state cursor
@@ -6898,12 +6877,6 @@ You'll get void variable if you don't do this.
 *** highlight-quoted
 :PROPERTIES:
 :ID:       d0973dce-693b-45ca-88e3-27da1bb217f7
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "Fanael/highlight-quoted"
-:PACKAGE:  "highlight-quoted"
-:LOCAL-REPO: "highlight-quoted"
 :END:
 
 [[https://github.com/Fanael/highlight-quoted][highlight-quoted]] highlights quotes, backticks and.
@@ -7100,12 +7073,6 @@ The change to this function."
 *** macrostep
 :PROPERTIES:
 :ID:       fefc5700-3bd7-4a89-ae7b-bf68368e8bc4
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "joddie/macrostep"
-:PACKAGE:  "macrostep"
-:LOCAL-REPO: "macrostep"
 :END:
 
 #+begin_src emacs-lisp
