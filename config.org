@@ -6132,13 +6132,6 @@ Saving files like this reduces the likelihood of user delays.
 *** aggressive-fill-paragraph
 :PROPERTIES:
 :ID: 4f57fd49-b466-4eea-b91a-2cc8f0b07297
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "davidshepherd7/aggressive-fill-paragraph-mode"
-:PACKAGE:  "aggressive-fill-paragraph"
-:LOCAL-REPO: "aggressive-fill-paragraph-mode"
-:COMMIT:   "2d65d925318006e2f6fa261ad192fbc2d212877b"
 :END:
 
 *** aggressive-indent
