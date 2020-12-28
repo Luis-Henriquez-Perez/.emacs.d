@@ -6106,13 +6106,6 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 *** super-save
 :PROPERTIES:
 :ID:       684e788c-6db9-4e6e-826b-d4871c0a3f90
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "bbatsov/super-save"
-:PACKAGE:  "super-save"
-:LOCAL-REPO: "super-save"
-:COMMIT:   "886b5518c8a8b4e1f5e59c332d5d80d95b61201d"
 :END:
 
 The default auto-saving feature in emacs saves after a certain number of
