@@ -224,13 +224,31 @@ where that controls the setup of my files--my init file.
       (straight-vc-check-out-commit recipe commit))))
 #+end_src
 
+*** revision
+:PROPERTIES:
+:ID:       0f8d5286-2b4f-4f3f-a0a7-259c7d279171
+:END:
+
+#+begin_src emacs-lisp
+(defun void--package-revision (package)
+  "Return the revision of PACKAGE."
+  )
+#+end_src
+
 *** write recipes and revisions
 :PROPERTIES:
 :ID:       ae2a4253-2164-4b96-9ed8-67e368318053
 :END:
 
+I want one file I can read to get the list of packages I need to install and any
+information I need to install them. Separately, will be this file which contains
+the description and configuration of those packages. =straight.el= offers a
+lockfile but I need the recipes to be completely.
+
 #+begin_src emacs-lisp
-(defun void--write-recipes ())
+(defun void--write-recipes ()
+  "Write the information needed for all installed packages."
+  ())
 #+end_src
 
 *** load packages from recipes and revisions
