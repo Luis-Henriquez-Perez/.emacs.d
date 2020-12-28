@@ -5607,13 +5607,6 @@ binding to.
 ** separedit
 :PROPERTIES:
 :ID:       07021099-6cea-4016-929b-d9310ea305f8
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("separedit.el" "separedit-pkg.el")
-:HOST:     github
-:REPO:     "twlz0ne/separedit.el"
-:PACKAGE:  "separedit"
-:LOCAL-REPO: "separedit.el"
 :END:
 
 #+begin_src emacs-lisp
@@ -5982,12 +5975,6 @@ file, see [[helpfn:edit-indirect-commit][edit-indirect-commit]].
 ** expand-region
 :PROPERTIES:
 :ID:       7e873fba-33ea-4720-ad79-bd8d557cc4b3
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "magnars/expand-region.el"
-:PACKAGE:  "expand-region"
-:LOCAL-REPO: "expand-region.el"
 :END:
 
 [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
@@ -6102,13 +6089,6 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 ** xr
 :PROPERTIES:
 :ID: 75c56163-9ce1-4726-969a-350fcc56395f
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacs-straight/xr"
-:FILES:    ("*" (:exclude ".git"))
-:PACKAGE:  "xr"
-:LOCAL-REPO: "xr"
-:COMMIT:   "3cdf1129474cebd223d9313eff52be936ba2556a"
 :END:
 
 This package is the inverse of =rx=. It takes a regular expression and returns the
