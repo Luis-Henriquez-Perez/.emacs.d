@@ -6137,13 +6137,6 @@ Saving files like this reduces the likelihood of user delays.
 *** aggressive-indent
 :PROPERTIES:
 :ID: f1b9a36e-26e4-4305-99ae-cbcf6a90013d
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "Malabarba/aggressive-indent-mode"
-:PACKAGE:  "aggressive-indent"
-:LOCAL-REPO: "aggressive-indent-mode"
-:COMMIT:   "b0ec0047aaae071ad1647159613166a253410a63"
 :END:
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
