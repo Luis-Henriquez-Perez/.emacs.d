@@ -224,7 +224,12 @@ where that controls the setup of my files--my init file.
       (straight-vc-check-out-commit recipe commit))))
 #+end_src
 
-*** revision
+*** reproducability
+:PROPERTIES:
+:ID:       e8871b11-d6bc-4577-bfa9-c8ae82867e1f
+:END:
+
+**** revision
 :PROPERTIES:
 :ID:       0f8d5286-2b4f-4f3f-a0a7-259c7d279171
 :END:
@@ -242,7 +247,7 @@ This function is based on one provided by "" in [[][]].
           (magit-rev-parse "HEAD"))))))
 #+end_src
 
-*** write recipes and revisions
+**** write recipes and revisions
 :PROPERTIES:
 :ID:       ae2a4253-2164-4b96-9ed8-67e368318053
 :END:
@@ -258,7 +263,7 @@ lockfile but I need the recipes to be completely.
   ())
 #+end_src
 
-*** load packages from recipes and revisions
+**** load packages from recipes and revisions
 :PROPERTIES:
 :ID:       72e642aa-19c3-4df6-911d-ad8bed207058
 :END:
