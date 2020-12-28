@@ -408,17 +408,27 @@ hash-tables.
 
 *** elog
 :PROPERTIES:
-:ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
+:ID:       d73fd7b1-5610-4d93-8802-1aa57c8c1918
 :END:
 
 =elog= is a library for generating logging functions. I use [[][]] to generate a
 function that logs to the buffer =*void-log*=.
 
+**** open elog
+:PROPERTIES:
+:ID:       f507fcff-f3c5-4dff-b5d8-c4bcec34b58b
+:END:
+
 #+begin_src emacs-lisp
-(require 'elog)
-
 (elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
+#+end_src
 
+**** void-log
+:PROPERTIES:
+:ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
+:END:
+
+#+begin_src emacs-lisp
 (defun void-log (format-string &rest args)
   "Log to *Messages* if `void-debug-p' is on.
 Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
