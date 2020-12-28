@@ -254,7 +254,7 @@ This function is based on one provided by "" in [[][]].
 
 #+begin_src emacs-lisp
 (defun void--set-package-to-revision (revision)
-  ""
+  "Set package to specific revision."
   )
 #+end_src
 
