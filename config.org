@@ -429,12 +429,6 @@ Accept the same arguments as `message'."
 *** ellocate
 :PROPERTIES:
 :ID:       e3590042-52fb-47ee-a5eb-a7860a3cdb17
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "walseb/ellocate"
-:PACKAGE:  "ellocate"
-:LOCAL-REPO: "ellocate"
 :END:
 
 *** macro writing tools
