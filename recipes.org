@@ -1,0 +1,928 @@
+* consult
+:PROPERTIES:
+:ID:       e81a0d79-39f0-492c-9636-ddc701cd85be
+:CONFIG:   [[id:44120178-95c3-44f1-a3a2-bd69b0d03e70][consult]]
+:END:
+
+#+begin_src emacs-lisp
+(consult :repo "minad/consult" :host github :type git :branch "main")
+#+end_src
+
+* dashboard
+:PROPERTIES:
+:ID:       d3035f59-65ca-4a68-bb1d-ea28b630d0fc
+:CONFIG:   [[id:20926522-b78b-4bca-b70e-9ef4213c4344][dashboard]]
+:END:
+
+#+begin_src emacs-lisp
+(dashboard :type git :flavor melpa :files (:defaults "banners" "dashboard-pkg.el") :host github :repo "emacs-dashboard/emacs-dashboard")
+#+end_src
+
+* which-key
+:PROPERTIES:
+:ID:       eb37400a-a7fd-4366-8d9a-816ab75f190d
+:CONFIG:   [[id:2ad092a3-ff63-49cd-91b9-380c91dbe9f5][which-key]]
+:END:
+
+#+begin_src emacs-lisp
+(which-key :type git :flavor melpa :host github :repo "justbur/emacs-which-key")
+#+end_src
+
+* helpful
+:PROPERTIES:
+:ID:       e2df3435-7e56-4070-8703-7ee12e96270e
+:CONFIG:   [[id:5340ddb3-92bc-42e5-bf0e-9f9650c41cd9][helpful]]
+:END:
+
+#+begin_src emacs-lisp
+(helpful :type git :flavor melpa :host github :repo "Wilfred/helpful")
+#+end_src
+
+* mini-modeline
+:PROPERTIES:
+:ID:       4fba2478-f146-4f75-9d73-a4209b9c16fd
+:CONFIG:   [[id:51768ba1-170f-497b-9479-541e7c6aadd6][mini-modeline]]
+:END:
+
+#+begin_src emacs-lisp
+(mini-modeline :type git :flavor melpa :host github :repo "kiennq/emacs-mini-modeline")
+#+end_src
+
+* zoom-frm
+:PROPERTIES:
+:ID:       38a0f1df-106c-43ea-a860-184c9c786718
+:CONFIG:   [[id:15b8577e-3f98-420a-81a5-c7b91292aca3][zoom-frm]]
+:END:
+
+#+begin_src emacs-lisp
+(zoom-frm :type git :host github :repo "emacsmirror/zoom-frm")
+#+end_src
+
+* org-superstar
+:PROPERTIES:
+:ID:       a6ccef06-5001-4c86-bab4-3cd22db1645c
+:CONFIG:   [[id:c4428756-a804-47e8-9586-f63b82dd1561][org-superstar]]
+:END:
+
+#+begin_src emacs-lisp
+(org-superstar :type git :flavor melpa :host github :repo "integral-dw/org-superstar-mode")
+#+end_src
+
+* doct
+:PROPERTIES:
+:ID:       6f3e1ca1-8828-455f-a012-7b35f657d53e
+:CONFIG:   [[id:fa37f618-b58c-449b-a216-9d2f80ed12c6][doct]]
+:END:
+
+#+begin_src emacs-lisp
+(doct :type git :flavor melpa :host github :repo "progfolio/doct")
+#+end_src
+
+* org-journal
+:PROPERTIES:
+:ID:       2c54b607-1ba0-49a8-8d9c-fa55694db489
+:CONFIG:   [[id:c3056303-5fa1-49f9-ae2d-294942e25f54][org-journal]]
+:END:
+
+#+begin_src emacs-lisp
+(org-journal :type git :flavor melpa :host github :repo "bastibe/org-journal")
+#+end_src
+
+* org-ml
+:PROPERTIES:
+:ID:       309aef25-feab-4bf6-a617-d932a482d6a8
+:CONFIG:   [[id:7f3ec0ad-45f8-4100-970e-773cfb9a625b][org-ml]]
+:END:
+
+#+begin_src emacs-lisp
+(org-ml :type git :flavor melpa :host github :repo "ndwarshuis/org-ml")
+#+end_src
+
+* org-link-minor-mode
+:PROPERTIES:
+:ID:       ee595fa2-da02-4cb8-a5ab-a003cd214598
+:CONFIG:   [[id:25b93a1f-b105-47aa-9647-5015d23a4ac3][org-link-minor-mode]]
+:END:
+
+#+begin_src emacs-lisp
+(org-link-minor-mode :type git :host github :repo "emacsattic/org-link-minor-mode")
+#+end_src
+
+* links
+:PROPERTIES:
+:ID:       747dcaf7-3d3b-4ae5-8f7c-706ac618ac5d
+:END:
+
+#+begin_src emacs-lisp
+(links :type git :host github :repo "emacsattic/links")
+#+end_src
+
+* org
+:PROPERTIES:
+:ID:       27ccfc0f-57b9-42ea-acf6-d103af7619bc
+:CONFIG:   [[id:63748940-c1b9-47ea-b1ce-d6519453ad03][org]]
+:END:
+
+#+begin_src emacs-lisp
+(org :type git :repo "https://code.orgmode.org/bzg/org-mode.git" :local-repo "org")
+#+end_src
+
+* ppp
+:PROPERTIES:
+:ID:       96d0d851-439f-4e6d-9c79-661663f4656b
+:CONFIG:   [[id:82dbb88a-4bce-4ca3-90fe-38cfbea7abc6][ppp]]
+:END:
+
+#+begin_src emacs-lisp
+(ppp :type git :flavor melpa :host github :repo "conao3/ppp.el")
+#+end_src
+
+* macrostep
+:PROPERTIES:
+:ID:       4f558137-7212-4d50-a6b5-e47630537545
+:CONFIG:   [[id:fefc5700-3bd7-4a89-ae7b-bf68368e8bc4][macrostep]]
+:END:
+
+#+begin_src emacs-lisp
+(macrostep :type git :flavor melpa :host github :repo "joddie/macrostep")
+#+end_src
+
+* highlight-quoted
+:PROPERTIES:
+:ID:       ac621121-93b1-4769-b290-624a5bc10908
+:CONFIG:   [[id:d0973dce-693b-45ca-88e3-27da1bb217f7][highlight-quoted]]
+:END:
+
+#+begin_src emacs-lisp
+(highlight-quoted :type git :flavor melpa :host github :repo "Fanael/highlight-quoted")
+#+end_src
+
+* evil-lispy
+:PROPERTIES:
+:ID:       6fe1548d-b170-4881-a191-0a79daf27e17
+:CONFIG:   [[id:f79c2035-ce79-491a-acf6-5e80f72cffe9][evil-lispy]]
+:END:
+
+#+begin_src emacs-lisp
+(evil-lispy :type git :flavor melpa :host github :repo "sp3ctum/evil-lispy")
+#+end_src
+
+* eros
+:PROPERTIES:
+:ID:       07e8fbb3-6bc0-411f-9e3c-f29faeb2cc01
+:CONFIG:   [[id:265b3b87-012e-452e-aa1f-c7c8e3308a73][eros]]
+:END:
+
+#+begin_src emacs-lisp
+(eros :type git :flavor melpa :host github :repo "xiongtx/eros")
+#+end_src
+
+* lispy
+:PROPERTIES:
+:ID:       1429bff3-29d6-4a5a-a68a-87494417ff71
+:CONFIG:   [[id:47f19607-13a7-4857-bb1a-33760f95cb7e][lispy]]
+:END:
+
+#+begin_src emacs-lisp
+(lispy :type git :flavor melpa :files (:defaults "lispy-clojure.clj" "lispy-python.py" "lispy-pkg.el") :host github :repo "abo-abo/lispy")
+#+end_src
+
+* lispyville
+:PROPERTIES:
+:ID:       77727936-a230-431c-862f-1cb2c5d30f64
+:CONFIG:   [[id:9d22714a-086d-49a1-9f8b-66da3b646110][lispyville]]
+:END:
+
+#+begin_src emacs-lisp
+(lispyville :type git :flavor melpa :host github :repo "noctuid/lispyville")
+#+end_src
+
+* key-chord
+:PROPERTIES:
+:ID:       ce53a6a1-8386-4b0c-99e4-2f52fca5efbd
+:CONFIG:   [[id:8fd1bcdc-c4b3-4fee-b91b-dcdf96167582][key-chord]]
+:END:
+
+#+begin_src emacs-lisp
+(key-chord :type git :flavor melpa :host github :repo "emacsorphanage/key-chord")
+#+end_src
+
+* evil
+:PROPERTIES:
+:ID:       ba195841-cfdb-48b1-b223-dcf4ef642821
+:CONFIG:   [[id:3b9aaf0c-a69c-474a-b1a3-f0e748e83558][evil]]
+:END:
+
+#+begin_src emacs-lisp
+(evil :type git :flavor melpa :files (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el") :host github :repo "emacs-evil/evil")
+#+end_src
+
+* evil-surround
+:PROPERTIES:
+:ID:       607895bf-3be6-49a8-9743-ad3b4aee7594
+:CONFIG:   [[id:9ab88644-3c33-463c-8f24-3b048209e082][evil-surround]]
+:END:
+
+#+begin_src emacs-lisp
+(evil-surround :type git :flavor melpa :host github :repo "emacs-evil/evil-surround")
+#+end_src
+
+* evil-visualstar
+:PROPERTIES:
+:ID:       a73fe41d-46e5-4641-a07c-01ae06d8f04f
+:CONFIG:   [[id:6ebca72d-f90a-4423-9ecd-706f9d426002][evil-visualstar]]
+:END:
+
+#+begin_src emacs-lisp
+(evil-visualstar :type git :flavor melpa :host github :repo "bling/evil-visualstar")
+#+end_src
+
+* evil-lion
+:PROPERTIES:
+:ID:       d57a4850-81a6-47d4-b409-d4512e0fb78d
+:CONFIG:   [[id:95d248be-601e-4dbd-b318-febcd0e49d71][evil-lion]]
+:END:
+
+#+begin_src emacs-lisp
+(evil-lion :type git :flavor melpa :files ("evil-lion.el" "evil-lion-pkg.el") :host github :repo "edkolev/evil-lion")
+#+end_src
+
+* outshine
+:PROPERTIES:
+:ID:       1f92a982-3c7d-4c11-8732-937280388c4a
+:CONFIG:   [[id:6aeccc22-2ebe-43c0-a245-5535b5bd6f6c][outshine]]
+:END:
+
+#+begin_src emacs-lisp
+(outshine :type git :flavor melpa :host github :repo "alphapapa/outshine")
+#+end_src
+
+* rainbow-delimiters
+:PROPERTIES:
+:ID:       19563430-e405-4e59-9546-e02ba3327e2b
+:CONFIG:   [[id:5b58bb1c-5d3c-4f04-b4fb-c55f1588839e][rainbow-delimiters]]
+:END:
+
+#+begin_src emacs-lisp
+(rainbow-delimiters :type git :flavor melpa :host github :repo "Fanael/rainbow-delimiters")
+#+end_src
+
+* smartparens
+:PROPERTIES:
+:ID:       ea890ea5-8da1-4295-9bc9-55b4b85c65be
+:CONFIG:   [[id:f4ffbb57-1fb6-43ab-a747-470dfcfbd0ac][smartparens]]
+:END:
+
+#+begin_src emacs-lisp
+(smartparens :type git :flavor melpa :host github :repo "Fuco1/smartparens")
+#+end_src
+
+* aggressive-indent
+:PROPERTIES:
+:ID:       d9f45bee-5c79-44d6-9f57-5f5ef3dd5aeb
+:CONFIG:   [[id:f1b9a36e-26e4-4305-99ae-cbcf6a90013d][aggressive-indent]]
+:END:
+
+#+begin_src emacs-lisp
+(aggressive-indent :type git :flavor melpa :host github :repo "Malabarba/aggressive-indent-mode")
+#+end_src
+
+* aggressive-fill-paragraph
+:PROPERTIES:
+:ID:       49808e7b-c04c-472f-93d1-aecd474bab08
+:CONFIG:   [[id:4f57fd49-b466-4eea-b91a-2cc8f0b07297][aggressive-fill-paragraph]]
+:END:
+
+#+begin_src emacs-lisp
+(aggressive-fill-paragraph :type git :flavor melpa :host github :repo "davidshepherd7/aggressive-fill-paragraph-mode")
+#+end_src
+
+* super-save
+:PROPERTIES:
+:ID:       9af7e3c1-42b8-452d-8390-c0af58745d9c
+:CONFIG:   [[id:684e788c-6db9-4e6e-826b-d4871c0a3f90][super-save]]
+:END:
+
+#+begin_src emacs-lisp
+(super-save :type git :flavor melpa :host github :repo "bbatsov/super-save")
+#+end_src
+
+* xr
+:PROPERTIES:
+:ID:       9ee02a4c-c3ab-41d9-bee8-77ed1a542121
+:CONFIG:   [[id:75c56163-9ce1-4726-969a-350fcc56395f][xr]]
+:END:
+
+#+begin_src emacs-lisp
+(xr :type git :host github :repo "emacs-straight/xr" :files ("*" (:exclude ".git")))
+#+end_src
+
+* spell-number
+:PROPERTIES:
+:ID:       0c121a7a-51f9-43f1-a8ba-6fd68570f044
+:CONFIG:   [[id:8bf270a6-6003-4430-bb03-0b665d5a162f][spell-number]]
+:END:
+
+#+begin_src emacs-lisp
+(spell-number :type git :host github :repo "emacsmirror/spell-number")
+#+end_src
+
+* auto-capitalize
+:PROPERTIES:
+:ID:       b7b8a9d8-82f8-4080-8f9d-5372dd8b0c75
+:CONFIG:   [[id:4ddfacc1-a25e-466e-ab6b-2a5ec306f3be][auto-capitalize]]
+:END:
+
+#+begin_src emacs-lisp
+(auto-capitalize :type git :host github :repo "emacsmirror/auto-capitalize")
+#+end_src
+
+* plural
+:PROPERTIES:
+:ID:       164d9446-f9f8-4c2f-9b8c-628d8d59a382
+:CONFIG:   [[id:bf2ed9b7-144c-4d4b-92ae-74c93dfc6db5][plural]]
+:END:
+
+#+begin_src emacs-lisp
+(plural :type git :host github :repo "emacsmirror/plural")
+#+end_src
+
+* expand-region
+:PROPERTIES:
+:ID:       1065c8ad-96c6-49a0-8318-05ffa6f44896
+:CONFIG:   [[id:417c9c53-a776-4779-9afc-1eaa35a145c6][expand-region]]
+:END:
+
+#+begin_src emacs-lisp
+(expand-region :type git :flavor melpa :host github :repo "magnars/expand-region.el")
+#+end_src
+
+* expand-region
+:PROPERTIES:
+:ID:       90888b86-f47f-4cbc-9c41-aa8d6e40035b
+:CONFIG:   [[id:7e873fba-33ea-4720-ad79-bd8d557cc4b3][expand-region]]
+:END:
+
+#+begin_src emacs-lisp
+(expand-region :type git :flavor melpa :host github :repo "magnars/expand-region.el")
+#+end_src
+
+* edit-indirect
+:PROPERTIES:
+:ID:       33c74235-2ece-42fb-aab8-b5522f86d895
+:CONFIG:   [[id:786b11a6-561b-4793-9c6c-f7630aba3774][edit-indirect]]
+:END:
+
+#+begin_src emacs-lisp
+(edit-indirect :type git :flavor melpa :host github :repo "Fanael/edit-indirect")
+#+end_src
+
+* separedit
+:PROPERTIES:
+:ID:       bd9d7045-b6df-4fd1-8aaf-2341efe1cde4
+:CONFIG:   [[id:07021099-6cea-4016-929b-d9310ea305f8][separedit]]
+:END:
+
+#+begin_src emacs-lisp
+(separedit :type git :flavor melpa :files ("separedit.el" "separedit-pkg.el") :host github :repo "twlz0ne/separedit.el")
+#+end_src
+
+* workgroups
+:PROPERTIES:
+:ID:       c5cca2d0-2479-4ced-8b97-fcc2d9995203
+:CONFIG:   [[id:8cb7ee3d-6d9e-4fbf-a96a-5f7cdc2aa363][workgroups]]
+:END:
+
+#+begin_src emacs-lisp
+(workgroups :type git :flavor melpa :host github :repo "tlh/workgroups.el")
+#+end_src
+
+* exwm-edit
+:PROPERTIES:
+:ID:       ff34a425-de3a-4334-8f0e-eea036468930
+:CONFIG:   [[id:1a167827-b791-4a69-a90e-c2d30bd83abb][exwm-edit]]
+:END:
+
+#+begin_src emacs-lisp
+(exwm-edit :type git :flavor melpa :host github :repo "agzam/exwm-edit")
+#+end_src
+
+* exwm
+:PROPERTIES:
+:ID:       92ff5d3c-1716-4fd4-be51-34c6b02c6115
+:CONFIG:   [[id:dbb69880-2180-4ecc-897d-78ff72a6358b][exwm]]
+:END:
+
+#+begin_src emacs-lisp
+(exwm :type git :host github :repo "emacs-straight/exwm" :files ("*" (:exclude ".git")))
+#+end_src
+
+* zoom-window
+:PROPERTIES:
+:ID:       a75d9e92-3b11-4b05-bb13-8a2a95f402a2
+:CONFIG:   [[id:d506fde5-d1bc-4807-a1d0-a8ed5c33def2][zoom-window]]
+:END:
+
+#+begin_src emacs-lisp
+(zoom-window :type git :flavor melpa :host github :repo "emacsorphanage/zoom-window")
+#+end_src
+
+* workgroups2
+:PROPERTIES:
+:ID:       e3d00a24-740f-4760-af33-25327d04d97d
+:CONFIG:   [[id:890c8e5b-524d-44b6-b90e-c830436b9da8][workgroups2]]
+:END:
+
+#+begin_src emacs-lisp
+(workgroups2 :type git :flavor melpa :files ("src/*.el" "workgroups2-pkg.el") :host github :repo "pashinin/workgroups2")
+#+end_src
+
+* git-gutter
+:PROPERTIES:
+:ID:       951ceac1-a457-419a-874f-827d7348f6ff
+:CONFIG:   [[id:96f0c876-533c-4b1a-a4c1-7b6c9bf58c03][git-gutter]]
+:END:
+
+#+begin_src emacs-lisp
+(git-gutter :type git :flavor melpa :host github :repo "emacsorphanage/git-gutter")
+#+end_src
+
+* evil-magit
+:PROPERTIES:
+:ID:       682fa40e-6c1e-49a1-8599-cc8dff94a682
+:CONFIG:   [[id:a86e7a69-4e0a-41fd-aca7-66e514332e7f][evil-magit]]
+:END:
+
+#+begin_src emacs-lisp
+(evil-magit :type git :flavor melpa :host github :repo "emacs-evil/evil-magit")
+#+end_src
+
+* magit
+:PROPERTIES:
+:ID:       8c795be1-b104-410a-a736-207769302d41
+:CONFIG:   [[id:c8a37b6a-46c7-406e-8793-1186f14407e0][magit]]
+:END:
+
+#+begin_src emacs-lisp
+(magit :type git :flavor melpa :files ("lisp/magit" "lisp/magit*.el" "lisp/git-rebase.el" "Documentation/magit.texi" "Documentation/AUTHORS.md" "LICENSE" (:exclude "lisp/magit-libgit.el") "magit-pkg.el") :host github :repo "magit/magit")
+#+end_src
+
+* transient
+:PROPERTIES:
+:ID:       2430d838-1202-430f-8371-89f60d996e4f
+:CONFIG:   [[id:baf64a0f-f9fa-4700-bebf-d996018f894f][transient]]
+:END:
+
+#+begin_src emacs-lisp
+(transient :type git :flavor melpa :files ("lisp/*.el" "docs/transient.texi" "transient-pkg.el") :host github :repo "magit/transient")
+#+end_src
+
+* magit
+:PROPERTIES:
+:ID:       49430079-ae8d-4765-8af6-b1596b36d715
+:CONFIG:   [[id:d6088ed3-417a-44e8-822b-ce4743f497d0][magit]]
+:END:
+
+#+begin_src emacs-lisp
+(magit :type git :flavor melpa :files ("lisp/magit" "lisp/magit*.el" "lisp/git-rebase.el" "Documentation/magit.texi" "Documentation/AUTHORS.md" "LICENSE" (:exclude "lisp/magit-libgit.el") "magit-pkg.el") :host github :repo "magit/magit")
+#+end_src
+
+* git-auto-commit-mode
+:PROPERTIES:
+:ID:       06eff195-611f-4f4a-964b-be245ac3d821
+:CONFIG:   [[id:00a518e9-56ae-4c0b-b2cd-518fb4c5d201][git-auto-commit-mode]]
+:END:
+
+#+begin_src emacs-lisp
+(git-auto-commit-mode :type git :flavor melpa :host github :repo "ryuslash/git-auto-commit-mode")
+#+end_src
+
+* ranger
+:PROPERTIES:
+:ID:       279852a6-d337-4ac5-b828-2bf438b6e781
+:CONFIG:   [[id:7504cab0-ddd9-4069-b6bb-9a5f3161cace][ranger]]
+:END:
+
+#+begin_src emacs-lisp
+(ranger :type git :flavor melpa :host github :repo "ralesi/ranger.el")
+#+end_src
+
+* shrink-path
+:PROPERTIES:
+:ID:       6b972082-6c22-40e7-aa4a-21a59ffc1af2
+:CONFIG:   [[id:eef8ea28-4de2-44ab-a09d-26f58c0a75ac][shrink-path]]
+:END:
+
+#+begin_src emacs-lisp
+(shrink-path :type git :flavor melpa :host gitlab :repo "bennya/shrink-path.el")
+#+end_src
+
+* eshell-up
+:PROPERTIES:
+:ID:       0b80ea25-b4b4-4f58-89a1-495cd9b72ec7
+:CONFIG:   [[id:478219b9-1c6f-4907-b428-a2dfe0f45e5c][eshell-up]]
+:END:
+
+#+begin_src emacs-lisp
+(eshell-up :type git :flavor melpa :host github :repo "peterwvj/eshell-up")
+#+end_src
+
+* eshell-z
+:PROPERTIES:
+:ID:       ffc2cfcf-f95e-4080-a257-8d9427f15de4
+:CONFIG:   [[id:497798a0-7b62-4779-bf15-f67500528f03][eshell-z]]
+:END:
+
+#+begin_src emacs-lisp
+(eshell-z :type git :flavor melpa :host github :repo "xuchunyang/eshell-z")
+#+end_src
+
+* mu4e
+:PROPERTIES:
+:ID:       9ad31e31-e46b-409a-a53b-4a9d0b39abd5
+:CONFIG:   [[id:565eff90-8626-4ec8-a576-4ff3dfb307ae][mu4e]]
+:END:
+
+#+begin_src emacs-lisp
+(mu4e :type git :host github :repo "emacsmirror/mu4e")
+#+end_src
+
+* mu4e
+:PROPERTIES:
+:ID:       179c0195-e24b-45f5-8558-b31a2114620d
+:CONFIG:   [[id:1ec73e33-5b94-4199-976d-1d72f8fb5a8e][mu4e]]
+:END:
+
+#+begin_src emacs-lisp
+(mu4e :type git :host github :repo "emacsmirror/mu4e")
+#+end_src
+
+* password-store
+:PROPERTIES:
+:ID:       df72e626-fabb-42a5-9bd9-af4a0e50d348
+:CONFIG:   [[id:3c57590c-1507-4369-b615-795965d4b182][password-store]]
+:END:
+
+#+begin_src emacs-lisp
+(password-store :type git :flavor melpa :files ("contrib/emacs/*.el" "password-store-pkg.el") :host github :repo "zx2c4/password-store")
+#+end_src
+
+* email
+:PROPERTIES:
+:ID:       46cb1764-75fd-4a01-b4c7-0c035da707b6
+:CONFIG:   [[id:b31fc41c-135d-45d9-9c05-5889d21d1cd4][email]]
+:END:
+
+#+begin_src emacs-lisp
+(email :type git :host github :repo "emacsmirror/email")
+#+end_src
+
+* el-mock
+:PROPERTIES:
+:ID:       fdadef20-5159-45db-bc7c-eac06ac89937
+:CONFIG:   [[id:46df66b0-5820-4550-aa99-c913d3022fe1][el-mock]]
+:END:
+
+#+begin_src emacs-lisp
+(el-mock :type git :flavor melpa :host github :repo "rejeep/el-mock.el")
+#+end_src
+
+* ert-expectations
+:PROPERTIES:
+:ID:       6249757e-2807-4772-884a-d94e85edcb36
+:CONFIG:   [[id:3062b8a4-4261-49fc-9bdb-895ba75bbd19][ert-expectations]]
+:END:
+
+#+begin_src emacs-lisp
+(ert-expectations :type git :flavor melpa :host github :repo "emacsorphanage/ert-expectations")
+#+end_src
+
+* outorg
+:PROPERTIES:
+:ID:       972227a1-76f8-4ab9-a2cb-f1905908549d
+:CONFIG:   [[id:85570385-ff5b-47ba-907b-5ef3666288bb][outorg]]
+:END:
+
+#+begin_src emacs-lisp
+(outorg :type git :flavor melpa :host github :repo "alphapapa/outorg")
+#+end_src
+
+* emms
+:PROPERTIES:
+:ID:       b3bf658a-47c8-4fcd-a963-682a460568a7
+:CONFIG:   [[id:6f3eaa69-bbbb-458e-bcad-1c121a3174e9][emms]]
+:END:
+
+#+begin_src emacs-lisp
+(emms :type git :flavor melpa :files ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el") :repo "https://git.savannah.gnu.org/git/emms.git")
+#+end_src
+
+* gif-screencast
+:PROPERTIES:
+:ID:       b1b1ff30-3236-4777-8891-55c52b1aff13
+:CONFIG:   [[id:d8553132-c244-4319-bcc9-51905a296e34][gif-screencast]]
+:END:
+
+#+begin_src emacs-lisp
+(gif-screencast :type git :flavor melpa :host gitlab :repo "Ambrevar/emacs-gif-screencast")
+#+end_src
+
+* restart-emacs
+:PROPERTIES:
+:ID:       b44fae75-ff21-4dbf-885f-54bde7f9a971
+:CONFIG:   [[id:7412bc2f-0db1-44e9-8ea7-0dc595a04fca][restart-emacs]]
+:END:
+
+#+begin_src emacs-lisp
+(restart-emacs :type git :flavor melpa :host github :repo "iqbalansari/restart-emacs")
+#+end_src
+
+* w3m
+:PROPERTIES:
+:ID:       017727a9-dc89-4caa-aa80-57ed3e11a5f0
+:CONFIG:   [[id:e5e13423-bc70-49b0-969e-94897c798d54][w3m]]
+:END:
+
+#+begin_src emacs-lisp
+(w3m :type git :flavor melpa :files (:defaults "icons" (:exclude "octet.el" "mew-w3m.el" "w3m-xmas.el") "w3m-pkg.el") :host github :repo "emacs-w3m/emacs-w3m")
+#+end_src
+
+* engine-mode
+:PROPERTIES:
+:ID:       de7badcd-94e6-4f2e-85cc-3a129467a7c2
+:CONFIG:   [[id:d701f44f-85eb-4849-8f2d-15423eb41a02][engine-mode]]
+:END:
+
+#+begin_src emacs-lisp
+(engine-mode :type git :flavor melpa :host github :repo "hrs/engine-mode")
+#+end_src
+
+* pdf-tools
+:PROPERTIES:
+:ID:       2e12bf9d-e622-44e5-94e7-de20d7b1faa8
+:CONFIG:   [[id:63343f9d-6b19-43de-8302-d1344d571949][pdf-tools]]
+:END:
+
+#+begin_src emacs-lisp
+(pdf-tools :type git :flavor melpa :files ("lisp/*.el" "README" ("build" "Makefile") ("build" "server") (:exclude "lisp/tablist.el" "lisp/tablist-filter.el") "pdf-tools-pkg.el") :host github :repo "politza/pdf-tools")
+#+end_src
+
+* orderless
+:PROPERTIES:
+:ID:       fb2d198a-18ac-40fa-9869-5e15eac6cb4e
+:CONFIG:   [[id:2278ca33-dbf2-45a7-bba7-8c73942b08be][orderless]]
+:END:
+
+#+begin_src emacs-lisp
+(orderless :type git :flavor melpa :host github :repo "oantolin/orderless")
+#+end_src
+
+* selectrum-prescient
+:PROPERTIES:
+:ID:       4dda08d1-a678-4e9c-b4c4-9bcb6563cea9
+:CONFIG:   [[id:70668ed8-9c83-42d2-8dce-d8f7de923569][selectrum-prescient]]
+:END:
+
+#+begin_src emacs-lisp
+(selectrum-prescient :type git :flavor melpa :files ("selectrum-prescient.el" "selectrum-prescient-pkg.el") :host github :repo "raxod502/prescient.el")
+#+end_src
+
+* prescient
+:PROPERTIES:
+:ID:       03fbfe83-7f2b-4c84-bc08-571c4e32bcc6
+:CONFIG:   [[id:4445c814-9899-4d54-affe-0cee38642690][prescient]]
+:END:
+
+#+begin_src emacs-lisp
+(prescient :type git :flavor melpa :files ("prescient.el" "prescient-pkg.el") :host github :repo "raxod502/prescient.el")
+#+end_src
+
+* selectrum
+:PROPERTIES:
+:ID:       97d81f61-e181-412d-a7f5-0f8b9192a2fc
+:CONFIG:   [[id:294a9fde-e76f-40ce-9552-dd5801318717][selectrum]]
+:END:
+
+#+begin_src emacs-lisp
+(selectrum :type git :flavor melpa :host github :repo "raxod502/selectrum")
+#+end_src
+
+* yasnippet
+:PROPERTIES:
+:ID:       c2d2579c-351b-4bb8-b5a1-4b7040ecefd4
+:CONFIG:   [[id:22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7][yasnippet]]
+:END:
+
+#+begin_src emacs-lisp
+(yasnippet :type git :flavor melpa :files ("yasnippet.el" "snippets" "yasnippet-pkg.el") :host github :repo "joaotavora/yasnippet")
+#+end_src
+
+* auto-yasnippet
+:PROPERTIES:
+:ID:       7238d32e-4a73-4aff-80e1-ce6f1629b926
+:CONFIG:   [[id:21fad08d-485b-4498-b47b-571cc48e5384][auto-yasnippet]]
+:END:
+
+#+begin_src emacs-lisp
+(auto-yasnippet :type git :flavor melpa :host github :repo "abo-abo/auto-yasnippet")
+#+end_src
+
+* company-prescient
+:PROPERTIES:
+:ID:       50f75aa4-d641-4502-8047-7465051f7b85
+:CONFIG:   [[id:be4bc19d-a25c-4e2d-9f12-5d2946bc9931][company-prescient]]
+:END:
+
+#+begin_src emacs-lisp
+(company-prescient :type git :flavor melpa :files ("company-prescient.el" "company-prescient-pkg.el") :host github :repo "raxod502/prescient.el")
+#+end_src
+
+* company
+:PROPERTIES:
+:ID:       0bcfacb9-7bd2-49f2-aa57-3ec62fcf1123
+:CONFIG:   [[id:5c0ed97e-da66-42ab-a033-381ac9dd8972][company]]
+:END:
+
+#+begin_src emacs-lisp
+(company :type git :flavor melpa :host github :repo "company-mode/company-mode")
+#+end_src
+
+* idle-require
+:PROPERTIES:
+:ID:       0a71632f-e736-4958-87a3-904f2ab38396
+:CONFIG:   [[id:0d619336-e852-4c6a-89a8-38ccbb71a077][idle-require]]
+:END:
+
+#+begin_src emacs-lisp
+(idle-require :type git :flavor melpa :host github :repo "nschum/idle-require.el")
+#+end_src
+
+* keyfreq
+:PROPERTIES:
+:ID:       c967f1d3-cb23-4cb8-a65e-2d5bac6ff245
+:CONFIG:   [[id:626b35f7-eef1-4a75-b2dc-8600c1ac47b7][keyfreq]]
+:END:
+
+#+begin_src emacs-lisp
+(keyfreq :type git :flavor melpa :host github :repo "dacap/keyfreq")
+#+end_src
+
+* prefixed-core
+:PROPERTIES:
+:ID:       62123143-83d9-4e0b-b35b-f277807c2084
+:CONFIG:   [[id:14b63dc9-1d95-4bd7-8b29-8b2b33bd1e69][prefixed-core]]
+:END:
+
+#+begin_src emacs-lisp
+(prefixed-core :type git :host github :repo "emacs-straight/prefixed-core" :files ("*" (:exclude ".git")))
+#+end_src
+
+* gcmh
+:PROPERTIES:
+:ID:       64d2f517-734e-4394-b8ff-0cb498a59162
+:CONFIG:   [[id:86653a5a-f273-4ce4-b89b-f288d5d46d44][gcmh]]
+:END:
+
+#+begin_src emacs-lisp
+(gcmh :type git :flavor melpa :host gitlab :repo "koral/gcmh")
+#+end_src
+
+* tramp
+:PROPERTIES:
+:ID:       0ee52136-7a9a-42a5-9afe-c4374dd98ebb
+:CONFIG:   [[id:3af0a4d6-bd08-4fe2-bc5c-79b1b811fc6b][tramp]]
+:END:
+
+#+begin_src emacs-lisp
+(tramp :type git :host github :repo "emacs-straight/tramp" :files ("*" (:exclude ".git")))
+#+end_src
+
+* general
+:PROPERTIES:
+:ID:       07ef3d86-164b-4810-b82a-2930aea3de4f
+:CONFIG:   [[id:706f35fc-f840-4a51-998f-abcd54c5d314][general]]
+:END:
+
+#+begin_src emacs-lisp
+(general :type git :flavor melpa :host github :repo "noctuid/general.el")
+#+end_src
+
+* system-packages
+:PROPERTIES:
+:ID:       6c452231-9d3e-4ea0-a0b7-933b278a8dd9
+:CONFIG:   [[id:74bd0e5a-f6b0-48eb-a91e-3932eae23516][system-packages]]
+:END:
+
+#+begin_src emacs-lisp
+(system-packages :type git :flavor melpa :host gitlab :repo "jabranham/system-packages")
+#+end_src
+
+* dbc
+:PROPERTIES:
+:ID:       dc4a89b0-70b7-4594-b0ac-e5edcd155bed
+:CONFIG:   [[id:b3351a74-b2d0-42b8-9895-b6baad0adb0b][dbc]]
+:END:
+
+#+begin_src emacs-lisp
+(dbc :type git :flavor melpa :host gitlab :repo "matsievskiysv/display-buffer-control")
+#+end_src
+
+* anaphora
+:PROPERTIES:
+:ID:       e965dece-b144-4535-b623-5f648796f373
+:CONFIG:   [[id:9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df][anaphora]]
+:END:
+
+#+begin_src emacs-lisp
+(anaphora :type git :flavor melpa :host github :repo "rolandwalker/anaphora")
+#+end_src
+
+* ellocate
+:PROPERTIES:
+:ID:       66150582-79e7-4ce6-ab8e-e26f604e3684
+:CONFIG:   [[id:e3590042-52fb-47ee-a5eb-a7860a3cdb17][ellocate]]
+:END:
+
+#+begin_src emacs-lisp
+(ellocate :type git :flavor melpa :host github :repo "walseb/ellocate")
+#+end_src
+
+* elog
+:PROPERTIES:
+:ID:       5a599a4d-5a47-4aa2-98d4-6e9bb5a413a0
+:CONFIG:   [[id:d73fd7b1-5610-4d93-8802-1aa57c8c1918][elog]]
+:END:
+
+#+begin_src emacs-lisp
+(elog :type git :flavor melpa :host github :repo "lujun9972/elog")
+#+end_src
+
+* ht
+:PROPERTIES:
+:ID:       30bcab5a-24ba-4146-929a-fe760d5f4363
+:CONFIG:   [[id:56bb0ff4-6ad1-44b7-a9a4-54abf48ed253][ht]]
+:END:
+
+#+begin_src emacs-lisp
+(ht :type git :flavor melpa :files ("ht.el" "ht-pkg.el") :host github :repo "Wilfred/ht.el")
+#+end_src
+
+* mmt
+:PROPERTIES:
+:ID:       d9fee386-dc24-40d5-8d55-a775a3d7f675
+:CONFIG:   [[id:a4377985-fe0e-4980-b839-08c334bde76c][mmt]]
+:END:
+
+#+begin_src emacs-lisp
+(mmt :type git :flavor melpa :host github :repo "mrkkrp/mmt")
+#+end_src
+
+* anaphora
+:PROPERTIES:
+:ID:       742af191-a59d-453b-b334-5eb0da1e7929
+:CONFIG:   [[id:1c47bd8a-15f1-4b1c-9574-23547d27d968][anaphora]]
+:END:
+
+#+begin_src emacs-lisp
+(anaphora :type git :flavor melpa :host github :repo "rolandwalker/anaphora")
+#+end_src
+
+* s
+:PROPERTIES:
+:ID:       23693687-0bbb-4751-94a8-0fceae62c887
+:CONFIG:   [[id:4b82deb0-bbe1-452c-8b60-ef734efb86d8][s]]
+:END:
+
+#+begin_src emacs-lisp
+(s :type git :flavor melpa :files ("s.el" "s-pkg.el") :host github :repo "magnars/s.el")
+#+end_src
+
+* dash-functional
+:PROPERTIES:
+:ID:       9137dafe-016c-4a59-8a98-b76d7190c6b6
+:CONFIG:   [[id:704fc35f-0ad0-4eb3-9eb5-d8335465dbd8][dash-functional]]
+:END:
+
+#+begin_src emacs-lisp
+(dash-functional :type git :flavor melpa :files ("dash-functional.el" "dash-functional-pkg.el") :host github :repo "magnars/dash.el")
+#+end_src
+
+* dash
+:PROPERTIES:
+:ID:       cbb8f3bc-571b-4d96-8a2a-ca249ec2ba77
+:CONFIG:   [[id:7885c48d-0ead-4d77-8de1-e9faec58b583][dash]]
+:END:
+
+#+begin_src emacs-lisp
+(dash :type git :flavor melpa :files ("dash.el" "dash.texi" "dash-pkg.el") :host github :repo "magnars/dash.el")
+#+end_src
+
+* shut-up
+:PROPERTIES:
+:ID:       2ac6175d-d2a8-4da5-9000-c55615167bc7
+:CONFIG:   [[id:71681f9f-2760-4cee-95a0-4aeb71191a42][shut-up]]
+:END:
+
+#+begin_src emacs-lisp
+(shut-up :type git :flavor melpa :host github :repo "cask/shut-up")
+#+end_src

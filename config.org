@@ -60,6 +60,16 @@ Files that need to exist, but I don't typically want to see go here.")
   "Path to elisp file.")
 #+end_src
 
+**** recipe file
+:PROPERTIES:
+:ID:       96efba8a-9935-4684-8063-b7e043ced4bd
+:END:
+
+#+begin_src emacs-lisp
+(defconst VOID-RECIPE-FILE (concat VOID-EMACS-DIR "recipes.org")
+  "File that contains recipes for my installed packages.")
+#+end_src
+
 **** ensure directories exist
 :PROPERTIES:
 :ID: 56e80dda-5d0e-4c7c-a225-00d0028d4995
@@ -153,53 +163,6 @@ This code is available from the [[https://github.com/raxod502/straight.el/blob/m
 
 Straight is very minimal. It lacks some utility functions.
 
-***** package homepage
-:PROPERTIES:
-:ID:       0edcf34d-a368-4e86-9365-1402f23befbb
-:END:
-
-Very often you'll want to go visit the homepage of a package you've installed.
-Either you'll want to checkout the readme, see new changes firsthand, or create
-an issue about a bug, or even suggest a feature. That's why having a function to
-quickly access a package homepage is a must.
-
-#+begin_src emacs-lisp
-(defun straight:get-package-homepage (package)
-  "Return the homepage for recipe.
-Assumes vc is git which is fine because straight only uses git right now."
-  (let* ((recipe (straight-recipes-retrieve package straight-recipe-repositories))
-         (repo (plist-get (cdr recipe) :repo))
-         (host (plist-get (cdr recipe) :host)))
-    (straight-vc-git--encode-url repo host)))
-
-(defun straight/goto-homepage ()
-  (interactive)
-  (browse-url (straight:get-package-homepage (symbol-at-point))))
-#+end_src
-
-***** add package information in org properties
-:PROPERTIES:
-:ID:       bb363834-e8da-41c4-a77a-0cc2901d7843
-:END:
-
-#+begin_src emacs-lisp
-(defun org/add-straight-recipe-info ()
-  "Add"
-  (interactive)
-  (awhen (--> (-fifth-item (org-heading-components))
-              (hash-get it straight--recipe-cache)
-              (-partition-before-pred #'keywordp it))
-    (-each it
-      (-lambda ((property value))
-        (org-set-property (upcase (void-keyword-name property))
-                          (format "%S" value))))
-    ;; (--> (car (alist-get :local-repo it))
-    ;;      (alist-get it straight:package-versions nil nil #'string=)
-    ;;      ;; (message "->> %S" it)
-    ;;      (org-set-property "COMMIT" it))
-    ))
-#+end_src
-
 **** straight-install-fn
 :PROPERTIES:
 :ID:       e63813c4-f321-4544-94f3-96b46cd38cf4
@@ -224,91 +187,45 @@ where that controls the setup of my files--my init file.
       (straight-vc-check-out-commit recipe commit))))
 #+end_src
 
-*** reproducability
+**** initialize straight
 :PROPERTIES:
-:ID:       e8871b11-d6bc-4577-bfa9-c8ae82867e1f
+:ID:       9011497f-098d-4d7d-b4fc-a816f121f23b
 :END:
-
-**** revision
-:PROPERTIES:
-:ID:       0f8d5286-2b4f-4f3f-a0a7-259c7d279171
-:END:
-
-This function is based on one provided by "" in [[][]].
 
 #+begin_src emacs-lisp
-(defun straight:revision (package)
-  "Return the revision of PACKAGE."
-  (straight--with-plist (straight:recipe package)
-      (local-repo type)
-    (when (and (eq type 'git) local-repo)
-      (let ((default-directory (straight--repos-dir local-repo)))
-        (magit-rev-parse "HEAD")))))
+(straight:initialize)
 #+end_src
 
-**** recipe
+*** package installation
 :PROPERTIES:
-:ID:       55f67139-1b77-4dc8-96e2-139149d540e3
+:ID:       350ebc50-cb45-43c3-994a-754658110ea4
+:END:
+
+**** package recipes
+:PROPERTIES:
+:ID:       e8860d22-6070-4bc7-a5fc-0f155f566624
 :END:
 
 #+begin_src emacs-lisp
-(defun straight:recipe (package)
-  "Return recipe for an existing package."
-  (hash-get package straight--recipe-cache))
+(defun void-package-recipes ()
+  "Return a list of all package recipes."
+  (with-temp-buffer
+    (let (forms)
+      (insert-file-contents VOID-RECIPE-FILE)
+      (goto-char (point-min))
+      (while (re-search-forward (rx bol "(") nil t nil)
+        (goto-char (match-beginning 0))
+        (push (read (current-buffer)) forms))
+      forms)))
 #+end_src
 
-**** set repository to a specific revision
+**** install packages
 :PROPERTIES:
-:ID:       f7fbb68b-ede5-4458-9a16-afec10aba6be
-:END:
-
-To write this function I looked at [[helpfn:straight-thaw-versions][straight-thaw-versions]].
-
-#+begin_src emacs-lisp
-(defun straight:set-package-to-revision (package revision)
-  "Set package to specific revision."
-  (unless (straight-vc-commit-present-p recipe revision)
-    (straight-vc-fetch-from-remote recipe))
-  (straight-vc-check-out-commit recipe revision))
-#+end_src
-
-**** write recipes and revisions
-:PROPERTIES:
-:ID:       ae2a4253-2164-4b96-9ed8-67e368318053
-:END:
-
-I want one file I can read to get the list of packages I need to install and any
-information I need to install them. Separately, will be this file which contains
-the description and configuration of those packages. =straight.el= offers a
-lockfile but I need the recipes to be completely.
-
-Note that I write everything as a plist because it's easier.
-
-#+begin_src emacs-lisp
-(defun straight:write-recipes ()
-  "Write the information needed for all installed packages."
-  (loopy ((list package (hash-table-keys straight--recipe-cache))
-	  (expr recipe (straight:recipe package))
-	  (expr revision (straight:revision package))
-	  (concat contents
-		  (thread-last `(:revision ,revision ,@recipe)
-		    (ppp-plist-to-string))))
-	 (finally-do
-	  (with-temp-file (concat user-emacs-directory "recipes.el")
-	    (insert contents)))))
-#+end_src
-
-**** load packages from recipes and revisions
-:PROPERTIES:
-:ID:       72e642aa-19c3-4df6-911d-ad8bed207058
+:ID:       a694267f-b37d-487b-ac68-c1da9e1fe776
 :END:
 
 #+begin_src emacs-lisp
-(defun void--read-recipe-file ()
-  "Return a list whose cons cells."
-  (loopy ((list )))
-  (awhile (read (or ))
-    ()))
+(mapc #'straight-use-package (void-package-recipes))
 #+end_src
 
 ** Library
@@ -334,6 +251,7 @@ leaves much to be desired.
 **** shut-up
 :PROPERTIES:
 :ID:       71681f9f-2760-4cee-95a0-4aeb71191a42
+:RECIPE:   [[id:2ac6175d-d2a8-4da5-9000-c55615167bc7][shut-up]]
 :END:
 
 This package provides a macro named =shut-up= that as its name suggests, silences
@@ -348,6 +266,7 @@ now and I don't want to see them again.
 **** dash
 :PROPERTIES:
 :ID:       7885c48d-0ead-4d77-8de1-e9faec58b583
+:RECIPE:   [[id:cbb8f3bc-571b-4d96-8a2a-ca249ec2ba77][dash]]
 :END:
 
 Dash is rich list manipulation library. Many of the functions it has are already
@@ -365,6 +284,7 @@ it anyway.
 **** dash-functional
 :PROPERTIES:
 :ID:       704fc35f-0ad0-4eb3-9eb5-d8335465dbd8
+:RECIPE:   [[id:9137dafe-016c-4a59-8a98-b76d7190c6b6][dash-functional]]
 :END:
 
 =dash-functional= provides "function combinators". These are functions that take
@@ -378,6 +298,7 @@ emacs's [[helpfn:apply-partially][apply-partially]]. These functions can help.
 **** s
 :PROPERTIES:
 :ID: 4b82deb0-bbe1-452c-8b60-ef734efb86d8
+:RECIPE:   [[id:23693687-0bbb-4751-94a8-0fceae62c887][s]]
 :END:
 
 =s= is an api for strings inspired by [[id:704fc35f-0ad0-4eb3-9eb5-d8335465dbd8][dash]].
@@ -389,6 +310,7 @@ emacs's [[helpfn:apply-partially][apply-partially]]. These functions can help.
 **** anaphora
 :PROPERTIES:
 :ID:       1c47bd8a-15f1-4b1c-9574-23547d27d968
+:RECIPE:   [[id:742af191-a59d-453b-b334-5eb0da1e7929][anaphora]]
 :END:
 
 It's common to want to refer to the thing you're operating on in lisp and in
@@ -461,7 +383,8 @@ Some functions are very expensive and deserve.
 
 *** mmt
 :PROPERTIES:
-:ID:       7b34238c-05fe-4920-9942-bc8bc454b64c
+:ID:       a4377985-fe0e-4980-b839-08c334bde76c
+:RECIPE:   [[id:d9fee386-dc24-40d5-8d55-a775a3d7f675][mmt]]
 :END:
 
 =mmt= is a library of tools for writing macros. Specifically, it provides the
@@ -488,6 +411,7 @@ statements or return statements).
 *** ht
 :PROPERTIES:
 :ID:       56bb0ff4-6ad1-44b7-a9a4-54abf48ed253
+:RECIPE:   [[id:30bcab5a-24ba-4146-929a-fe760d5f4363][ht]]
 :END:
 
 =ht= is a package that tries to provide a consistently named API for dealing with
@@ -496,10 +420,20 @@ hash-tables.
 *** elog
 :PROPERTIES:
 :ID:       d73fd7b1-5610-4d93-8802-1aa57c8c1918
+:RECIPE:   [[id:5a599a4d-5a47-4aa2-98d4-6e9bb5a413a0][elog]]
 :END:
 
 =elog= is a library for generating logging functions. I use [[][]] to generate a
 function that logs to the buffer =*void-log*=.
+
+**** init
+:PROPERTIES:
+:ID:       1a550471-3434-4980-9de4-6f708e0fc8f1
+:END:
+
+#+begin_src emacs-lisp
+(require 'elog)
+#+end_src
 
 **** open elog
 :PROPERTIES:
@@ -528,6 +462,7 @@ Accept the same arguments as `message'."
 *** ellocate
 :PROPERTIES:
 :ID:       e3590042-52fb-47ee-a5eb-a7860a3cdb17
+:RECIPE:   [[id:66150582-79e7-4ce6-ab8e-e26f604e3684][ellocate]]
 :END:
 
 *** macro writing tools
@@ -673,6 +608,7 @@ WRAPPERS are a list of forms to wrap around FORM."
 **** anaphora
 :PROPERTIES:
 :ID:       9938b1e1-6c6e-4a45-a85e-1a7f2d0bf6df
+:RECIPE:   [[id:e965dece-b144-4535-b623-5f648796f373][anaphora]]
 :END:
 
 Anaphora refers to the ability to refer to. I have decided it is best to use
@@ -773,6 +709,7 @@ loading it. To remedy this I wrap the block with [[][condition-case]].
 *** dbc
 :PROPERTIES:
 :ID:       b3351a74-b2d0-42b8-9895-b6baad0adb0b
+:RECIPE:   [[id:dc4a89b0-70b7-4594-b0ac-e5edcd155bed][dbc]]
 :END:
 
 =dbc= stands for "display-buffer-control". This package provides an interface for
@@ -790,11 +727,11 @@ side windows.
 #+begin_src emacs-lisp
 (require 'dbc)
 
-(alet '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5)))
-  (dbc-add-ruleset "bottom" it))
+(thread-last '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5)))
+  (dbc-add-ruleset "bottom"))
 
-(alet '(display-buffer-in-side-window . ((side . top) (window-height . 0.4)))
-  (dbc-add-ruleset "top" it))
+(thread-last '(display-buffer-in-side-window . ((side . top) (window-height . 0.4)))
+  (dbc-add-ruleset "top"))
 #+end_src
 
 *** after!
@@ -1406,6 +1343,7 @@ to use =defadvice!= or =anaphoric-defadvice!=.
 *** system-packages
 :PROPERTIES:
 :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
+:RECIPE:   [[id:6c452231-9d3e-4ea0-a0b7-933b278a8dd9][system-packages]]
 :END:
 
 =system-packages= provides an api for installing system packages. This api strives
@@ -1422,7 +1360,7 @@ packages
 (setq system-packages-noconfirm t)
 #+end_src
 
-**** popup
+**** popup rule
 :PROPERTIES:
 :ID:       69631be9-ce8f-4f65-b112-229bf1722621
 :END:
@@ -1591,6 +1529,7 @@ is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacem
 *** general
 :PROPERTIES:
 :ID: 706f35fc-f840-4a51-998f-abcd54c5d314
+:RECIPE:   [[id:07ef3d86-164b-4810-b82a-2930aea3de4f][general]]
 :END:
 
 There are numerous keybinding functions in Emacs; and they all look a little
@@ -1599,9 +1538,9 @@ on. And with [[https://github.com/emacs-evil/evil.git][evil]] which [[id:73366b3
 [[helpfn:evil-define-key][evil-define-key]]. [[https://github.com/noctuid/general.el.git][general]] provides a function that you can use for all bindings
 ([[helpfn:general-define-key][general-define-key]]).
 
-**** general
+**** init
 :PROPERTIES:
-:ID: f1ad5258-17cb-4424-a161-b856ee6dc5ab
+:ID:       2d0487ba-0150-47f2-a3d5-9d3c26e64c31
 :END:
 
 #+begin_src emacs-lisp
@@ -1849,6 +1788,7 @@ Don't ping things that look like domain names.
 *** tramp
 :PROPERTIES:
 :ID: 3af0a4d6-bd08-4fe2-bc5c-79b1b811fc6b
+:RECIPE:   [[id:0ee52136-7a9a-42a5-9afe-c4374dd98ebb][tramp]]
 :END:
 
 #+begin_src emacs-lisp
@@ -2375,13 +2315,7 @@ This is the value of `gc-cons-threshold' that should be used in typical usages."
 **** gcmh
 :PROPERTIES:
 :ID:       86653a5a-f273-4ce4-b89b-f288d5d46d44
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     gitlab
-:REPO:     "koral/gcmh"
-:PACKAGE:  "gcmh"
-:LOCAL-REPO: "gcmh"
-:COMMIT:   "84c43a4c0b41a595ac6e299fa317d2831813e580"
+:RECIPE:   [[id:64d2f517-734e-4394-b8ff-0cb498a59162][gcmh]]
 :END:
 
 =gcmh= does three things. It reduces garbage collection by setting, it adds a
@@ -2563,12 +2497,7 @@ This function is meant to be used as the value of `initial-buffer-choice'."
 **** prefixed-core
 :PROPERTIES:
 :ID:       14b63dc9-1d95-4bd7-8b29-8b2b33bd1e69
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacs-straight/prefixed-core"
-:FILES:    ("*" (:exclude ".git"))
-:PACKAGE:  "prefixed-core"
-:LOCAL-REPO: "prefixed-core"
+:RECIPE:   [[id:62123143-83d9-4e0b-b35b-f277807c2084][prefixed-core]]
 :END:
 
 This package defines numerous aliases to existing commands in an attempt to make
@@ -2581,13 +2510,7 @@ commands more discoverable and naming schemes more consistent.
 *** keyfreq
 :PROPERTIES:
 :ID:       626b35f7-eef1-4a75-b2dc-8600c1ac47b7
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "dacap/keyfreq"
-:PACKAGE:  "keyfreq"
-:LOCAL-REPO: "keyfreq"
-:COMMIT:   "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4"
+:RECIPE:   [[id:c967f1d3-cb23-4cb8-a65e-2d5bac6ff245][keyfreq]]
 :END:
 
 =keyfreq= records the frequency of key strokes.
@@ -2600,13 +2523,7 @@ commands more discoverable and naming schemes more consistent.
 *** idle-require
 :PROPERTIES:
 :ID:       0d619336-e852-4c6a-89a8-38ccbb71a077
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "nschum/idle-require.el"
-:PACKAGE:  "idle-require"
-:LOCAL-REPO: "idle-require.el"
-:COMMIT:   "33592bb098223b4432d7a35a1d65ab83f47c1ec1"
+:RECIPE:   [[id:0a71632f-e736-4958-87a3-904f2ab38396][idle-require]]
 :END:
 
 Idle require is a tool for loading autoload functions, files or features during
@@ -2671,6 +2588,7 @@ garbage collection during this time.
 *** consult
 :PROPERTIES:
 :ID:       44120178-95c3-44f1-a3a2-bd69b0d03e70
+:RECIPE:   [[id:e81a0d79-39f0-492c-9636-ddc701cd85be][consult]]
 :END:
 
 Consult is a package that provides several generic utility functions.
@@ -3050,6 +2968,7 @@ of things that we actually want at this moment.
 ** company
 :PROPERTIES:
 :ID:       5c0ed97e-da66-42ab-a033-381ac9dd8972
+:RECIPE:   [[id:0bcfacb9-7bd2-49f2-aa57-3ec62fcf1123][company]]
 :END:
 
 *** init
@@ -3166,15 +3085,8 @@ worth quoting here:
 
 *** company-prescient
 :PROPERTIES:
-:ID: df21548a-c262-4802-8e76-71a3135789cb
-:FLAVOR:   melpa
-:FILES:    ("company-prescient.el" "company-prescient-pkg.el")
-:PACKAGE:  "company-prescient"
-:LOCAL-REPO: "prescient.el"
-:TYPE:     git
-:REPO:     "raxod502/prescient.el"
-:HOST:     github
-:COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
+:ID:       be4bc19d-a25c-4e2d-9f12-5d2946bc9931
+:RECIPE:   [[id:50f75aa4-d641-4502-8047-7465051f7b85][company-prescient]]
 :END:
 
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
@@ -3208,13 +3120,8 @@ This heading is for configuring snippet.
 
 *** auto-yasnippet
 :PROPERTIES:
-:ID: 851aaa47-5220-43a2-9861-b36d4cb9b803
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "abo-abo/auto-yasnippet"
-:PACKAGE:  "auto-yasnippet"
-:LOCAL-REPO: "auto-yasnippet"
+:ID:       21fad08d-485b-4498-b47b-571cc48e5384
+:RECIPE:   [[id:7238d32e-4a73-4aff-80e1-ce6f1629b926][auto-yasnippet]]
 :END:
 
 #+begin_src emacs-lisp
@@ -3229,6 +3136,7 @@ This heading is for configuring snippet.
 *** yasnippet
 :PROPERTIES:
 :ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
+:RECIPE:   [[id:c2d2579c-351b-4bb8-b5a1-4b7040ecefd4][yasnippet]]
 :END:
 
 =yasnippet= is a snippet framework for emacs.
@@ -3257,7 +3165,7 @@ This heading is for configuring snippet.
 (setq yas-triggers-in-field t)
 #+end_src
 
-**** popup
+**** popup rule
 :PROPERTIES:
 :ID:       585c6a1e-9fa0-4b89-8899-6faf40fa1644
 :END:
@@ -3303,6 +3211,7 @@ This heading is for configuring snippet.
 ** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
+:RECIPE:   [[id:97d81f61-e181-412d-a7f5-0f8b9192a2fc][selectrum]]
 :END:
 
 Selectrum is another completion framework. It distinguishes itself from the rest
@@ -3367,14 +3276,7 @@ specifically designed to disable selectrum sorting.
 *** prescient
 :PROPERTIES:
 :ID:       4445c814-9899-4d54-affe-0cee38642690
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("prescient.el" "prescient-pkg.el")
-:HOST:     github
-:REPO:     "raxod502/prescient.el"
-:PACKAGE:  "prescient"
-:LOCAL-REPO: "prescient.el"
-:COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
+:RECIPE:   [[id:03fbfe83-7f2b-4c84-bc08-571c4e32bcc6][prescient]]
 :END:
 
 Prescient.
@@ -3388,14 +3290,8 @@ Prescient.
 *** selectrum-prescient
 :PROPERTIES:
 :ID:       70668ed8-9c83-42d2-8dce-d8f7de923569
-:flavor:   melpa
-:files:    ("selectrum-prescient.el" "selectrum-prescient-pkg.el")
-:package:  "selectrum-prescient"
-:local-repo: "prescient.el"
 :type:     git
-:repo:     "raxod502/prescient.el"
-:host:     github
-:COMMIT:   "41443e1c9f794b569dafdad4c0b64a608df64b99"
+:RECIPE:   [[id:4dda08d1-a678-4e9c-b4c4-9bcb6563cea9][selectrum-prescient]]
 :END:
 
 #+begin_src emacs-lisp
@@ -3408,13 +3304,7 @@ Prescient.
 *** orderless
 :PROPERTIES:
 :ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "oantolin/orderless"
-:PACKAGE:  "orderless"
-:LOCAL-REPO: "orderless"
-:COMMIT:   "e56eeef6e11909ccd62aa7250867dce803706d2c"
+:RECIPE:   [[id:fb2d198a-18ac-40fa-9869-5e15eac6cb4e][orderless]]
 :END:
 
 **** init
@@ -3456,7 +3346,6 @@ Orderless will do this."
 ** epa
 :PROPERTIES:
 :ID:       ad3f6134-4fa6-492e-93a6-b94235ecad3d
-:TYPE:     built-in
 :END:
 
 Setting these variables in coordination with configuring =gpgconf= lets me enter
@@ -3470,9 +3359,10 @@ my gpg passphrase via emacs.
 ** pdf-tools
 :PROPERTIES:
 :ID:       63343f9d-6b19-43de-8302-d1344d571949
+:RECIPE:   [[id:2e12bf9d-e622-44e5-94e7-de20d7b1faa8][pdf-tools]]
 :END:
 
-*** pdf-tools
+*** init
 :PROPERTIES:
 :ID: 163d8880-6a7d-4479-a7e4-e333e4f930da
 :END:
@@ -3533,6 +3423,7 @@ my gpg passphrase via emacs.
 *** engine-mode
 :PROPERTIES:
 :ID:       d701f44f-85eb-4849-8f2d-15423eb41a02
+:RECIPE:   [[id:de7badcd-94e6-4f2e-85cc-3a129467a7c2][engine-mode]]
 :END:
 
 **** init
@@ -3542,7 +3433,7 @@ my gpg passphrase via emacs.
 
 #+begin_src emacs-lisp
 (--each '(engine/search-duckduckgo engine/search-qwant
-	  engine/search-duckduckgo engine/search-wikipedia)
+	      engine/search-duckduckgo engine/search-wikipedia)
   (autoload it "engine-mode" nil t nil))
 #+end_src
 
@@ -3593,6 +3484,7 @@ replaces the existing buffer. I got this code snippet from [[https://stackoverfl
 *** w3m
 :PROPERTIES:
 :ID: e5e13423-bc70-49b0-969e-94897c798d54
+:RECIPE:   [[id:017727a9-dc89-4caa-aa80-57ed3e11a5f0][w3m]]
 :END:
 
 [[http://w3m.sourceforge.net/][w3m]] is a text-based web browser. There are many other text-based browsers out
@@ -3609,6 +3501,7 @@ javascript code.
 ** restart-emacs
 :PROPERTIES:
 :ID:       7412bc2f-0db1-44e9-8ea7-0dc595a04fca
+:RECIPE:   [[id:b44fae75-ff21-4dbf-885f-54bde7f9a971][restart-emacs]]
 :END:
 
 #+begin_src emacs-lisp
@@ -3701,12 +3594,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 *** gif-screencast
 :PROPERTIES:
 :ID:       d8553132-c244-4319-bcc9-51905a296e34
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     gitlab
-:REPO:     "Ambrevar/emacs-gif-screencast"
-:PACKAGE:  "gif-screencast"
-:LOCAL-REPO: "emacs-gif-screencast"
+:RECIPE:   [[id:b1b1ff30-3236-4777-8891-55c52b1aff13][gif-screencast]]
 :END:
 
 #+begin_src emacs-lisp
@@ -3729,19 +3617,13 @@ capturing the prompt for the filename (like in [[][this example]]).
 
 *** emms
 :PROPERTIES:
-:ID: 5d1abf3e-d0e5-4074-8d06-2b6eba47c6e4
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("*.el" "lisp/*.el" "doc/emms.texinfo" "emms-pkg.el")
-:REPO:     "https://git.savannah.gnu.org/git/emms.git"
-:PACKAGE:  "emms"
-:LOCAL-REPO: "emms"
-:COMMIT:   "94019bb34c56341e66b14c41ff706273e039f525"
+:ID:       6f3eaa69-bbbb-458e-bcad-1c121a3174e9
+:RECIPE:   [[id:b3bf658a-47c8-4fcd-a963-682a460568a7][emms]]
 :END:
 
 [[https://www.gnu.org/software/emms/][emms]] is a very complete music player.
 
-**** emms
+**** init
 :PROPERTIES:
 :ID: 5d28b703-a87f-47ca-b320-785e7589fea6
 :END:
@@ -3784,6 +3666,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 ** outorg
 :PROPERTIES:
 :ID:       85570385-ff5b-47ba-907b-5ef3666288bb
+:RECIPE:   [[id:972227a1-76f8-4ab9-a2cb-f1905908549d][outorg]]
 :END:
 
 *** dont add overlays for blank lines
@@ -3818,6 +3701,7 @@ like the outorg buffer has less whitespace in between headlines than it should.
 *** ert-expectations
 :PROPERTIES:
 :ID:       3062b8a4-4261-49fc-9bdb-895ba75bbd19
+:RECIPE:   [[id:6249757e-2807-4772-884a-d94e85edcb36][ert-expectations]]
 :END:
 
 #+begin_src emacs-lisp
@@ -3828,11 +3712,13 @@ like the outorg buffer has less whitespace in between headlines than it should.
 *** el-mock
 :PROPERTIES:
 :ID:       46df66b0-5820-4550-aa99-c913d3022fe1
+:RECIPE:   [[id:fdadef20-5159-45db-bc7c-eac06ac89937][el-mock]]
 :END:
 
 ** email
 :PROPERTIES:
 :ID: b31fc41c-135d-45d9-9c05-5889d21d1cd4
+:RECIPE:   [[id:46cb1764-75fd-4a01-b4c7-0c035da707b6][email]]
 :END:
 
 In today's world communication is largely done via emails. Whether at work or at
@@ -3884,18 +3770,13 @@ ways to read and send emails in Emacs.
 *** password-store
 :PROPERTIES:
 :ID:       3c57590c-1507-4369-b615-795965d4b182
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("contrib/emacs/*.el" "password-store-pkg.el")
-:HOST:     github
-:REPO:     "zx2c4/password-store"
-:PACKAGE:  "password-store"
-:LOCAL-REPO: "password-store"
+:RECIPE:   [[id:df72e626-fabb-42a5-9bd9-af4a0e50d348][password-store]]
 :END:
 
 *** mu4e
 :PROPERTIES:
 :ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
+:RECIPE:   [[id:179c0195-e24b-45f5-8558-b31a2114620d][mu4e]]
 :END:
 
 The most popular emacs mail client is =mu4e=. And, there is good reason why. =mu4e=
@@ -3941,6 +3822,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 **** mu4e
 :PROPERTIES:
 :ID: 565eff90-8626-4ec8-a576-4ff3dfb307ae
+:RECIPE:   [[id:9ad31e31-e46b-409a-a53b-4a9d0b39abd5][mu4e]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4141,7 +4023,6 @@ If there is no match, return POSSIBLE-NAME."
 *** eshell
 :PROPERTIES:
 :ID: 5f04a252-2985-46b4-ab0b-eb4567de5dd9
-:TYPE:     built-in
 :END:
 
 [[info:eshell#Top][eshell]] is a built-in shell written entirely in elisp. This means that it's as
@@ -4184,7 +4065,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 (setq eshell-error-if-no-glob t)
 #+end_src
 
-***** popup
+***** popup rule
 :PROPERTIES:
 :ID:       bd580e0c-1736-4855-8cfb-e4e365ecd8d3
 :END:
@@ -4267,13 +4148,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 ****** eshell-z
 :PROPERTIES:
 :ID: 497798a0-7b62-4779-bf15-f67500528f03
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "xuchunyang/eshell-z"
-:PACKAGE:  "eshell-z"
-:LOCAL-REPO: "eshell-z"
-:COMMIT:   "337cb241e17bd472bd3677ff166a0800f684213c"
+:RECIPE:   [[id:ffc2cfcf-f95e-4080-a257-8d9427f15de4][eshell-z]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4286,6 +4161,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 ***** eshell-up
 :PROPERTIES:
 :ID: 478219b9-1c6f-4907-b428-a2dfe0f45e5c
+:RECIPE:   [[id:0b80ea25-b4b4-4f58-89a1-495cd9b72ec7][eshell-up]]
 :END:
 
 This is an Emacs package for quickly navigating to a specific parent directory
@@ -4446,13 +4322,7 @@ keep readonly and what not to.
 **** shrink-path
 :PROPERTIES:
 :ID: eef8ea28-4de2-44ab-a09d-26f58c0a75ac
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     gitlab
-:REPO:     "bennya/shrink-path.el"
-:PACKAGE:  "shrink-path"
-:LOCAL-REPO: "shrink-path.el"
-:COMMIT:   "c14882c8599aec79a6e8ef2d06454254bb3e1e41"
+:RECIPE:   [[id:6b972082-6c22-40e7-aa4a-21a59ffc1af2][shrink-path]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4519,13 +4389,7 @@ keep readonly and what not to.
 *** ranger
 :PROPERTIES:
 :ID: 7504cab0-ddd9-4069-b6bb-9a5f3161cace
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "ralesi/ranger.el"
-:PACKAGE:  "ranger"
-:LOCAL-REPO: "ranger.el"
-:COMMIT:   "caf75f0060e503af078c7e5bb50d9aaa508e6f3e"
+:RECIPE:   [[id:279852a6-d337-4ac5-b828-2bf438b6e781][ranger]]
 :END:
 
 [[github:ralesi/ranger.el][ranger]] is a file browser built on top of dired that seeks to emulate [[github:ranger/ranger][a VIM
@@ -4642,13 +4506,7 @@ which only some files are hidden. That's wierd, so I get rid of it.
 *** git-auto-commit-mode
 :PROPERTIES:
 :ID:       00a518e9-56ae-4c0b-b2cd-518fb4c5d201
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "ryuslash/git-auto-commit-mode"
-:PACKAGE:  "git-auto-commit-mode"
-:LOCAL-REPO: "git-auto-commit-mode"
-:COMMIT:   "df07899acdb3f9c114b72fdab77107c924b3172c"
+:RECIPE:   [[id:06eff195-611f-4f4a-964b-be245ac3d821][git-auto-commit-mode]]
 :END:
 
 To avoid losing information. You should commit often in git--like every 10
@@ -4706,19 +4564,13 @@ address later.
 *** magit
 :PROPERTIES:
 :ID:       d6088ed3-417a-44e8-822b-ce4743f497d0
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("lisp/magit" "lisp/magit*.el" "lisp/git-rebase.el" "Documentation/magit.texi" "Documentation/AUTHORS.md" "LICENSE" (:exclude "lisp/magit-libgit.el") "magit-pkg.el")
-:HOST:     github
-:REPO:     "magit/magit"
-:PACKAGE:  "magit"
-:LOCAL-REPO: "magit"
-:COMMIT:   "87a63353df0ad8ac661ac1b93c59d40669b65ffc"
+:RECIPE:   [[id:49430079-ae8d-4765-8af6-b1596b36d715][magit]]
 :END:
 
 **** transient
 :PROPERTIES:
 :ID: baf64a0f-f9fa-4700-bebf-d996018f894f
+:RECIPE:   [[id:2430d838-1202-430f-8371-89f60d996e4f][transient]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4731,6 +4583,7 @@ address later.
 **** magit
 :PROPERTIES:
 :ID: c8a37b6a-46c7-406e-8793-1186f14407e0
+:RECIPE:   [[id:8c795be1-b104-410a-a736-207769302d41][magit]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4763,12 +4616,7 @@ address later.
 **** evil-magit
 :PROPERTIES:
 :ID:       a86e7a69-4e0a-41fd-aca7-66e514332e7f
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "emacs-evil/evil-magit"
-:PACKAGE:  "evil-magit"
-:LOCAL-REPO: "evil-magit"
+:RECIPE:   [[id:682fa40e-6c1e-49a1-8599-cc8dff94a682][evil-magit]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4783,13 +4631,7 @@ address later.
 *** git-gutter
 :PROPERTIES:
 :ID: 96f0c876-533c-4b1a-a4c1-7b6c9bf58c03
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "emacsorphanage/git-gutter"
-:PACKAGE:  "git-gutter"
-:LOCAL-REPO: "git-gutter"
-:COMMIT:   "db0e794fa97e4c902bbdf51b234cb68c993c71ae"
+:RECIPE:   [[id:951ceac1-a457-419a-874f-827d7348f6ff][git-gutter]]
 :END:
 
 #+begin_src emacs-lisp
@@ -4806,7 +4648,6 @@ Packages and features that involve saving to external files.
 *** saveplace
 :PROPERTIES:
 :ID:       41cb3357-9b4b-4205-987d-ff72f9a35df3
-:TYPE:     built-in
 :END:
 
 This package takes you to the last point you were at when you visited a file.
@@ -4841,7 +4682,6 @@ again, you are taken to the location you left off. This is very convenient.
 *** recentf
 :PROPERTIES:
 :ID: f26bedb3-a172-4543-afd0-4c47f5872d15
-:TYPE:     built-in
 :END:
 
 =recentf= is a built-in program that tracks the files you've opened recently
@@ -5145,6 +4985,7 @@ The tab's new name is the same as the desktop name."
 *** workgroups2
 :PROPERTIES:
 :ID:       890c8e5b-524d-44b6-b90e-c830436b9da8
+:RECIPE:   [[id:e3d00a24-740f-4760-af33-25327d04d97d][workgroups2]]
 :END:
 
 There is a need to save buffers and window configurations in their own groups.
@@ -5174,7 +5015,10 @@ that it's not a lisp object; implying that it is not.
 (setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
 #+end_src
 
-**** workgroups
+**** init
+:PROPERTIES:
+:ID:       eb3016f9-5c3d-407c-99db-b23d5bf4e7f8
+:END:
 
 #+begin_src emacs-lisp
 (autoload #'wg-switch-workgroup "workgroup" nil)
@@ -5221,6 +5065,7 @@ When a new workgroup is created it's done by.
 ** zoom-window
 :PROPERTIES:
 :ID:       d506fde5-d1bc-4807-a1d0-a8ed5c33def2
+:RECIPE:   [[id:a75d9e92-3b11-4b05-bb13-8a2a95f402a2][zoom-window]]
 :END:
 
 This package provides a command that temporarily makes a window occupy full
@@ -5234,6 +5079,7 @@ afterwards.
 ** exwm
 :PROPERTIES:
 :ID: dbb69880-2180-4ecc-897d-78ff72a6358b
+:RECIPE:   [[id:92ff5d3c-1716-4fd4-be51-34c6b02c6115][exwm]]
 :END:
 
 [[https://github.com/ch11ng/exwm][EXWM]] (Emacs X-Window Manager) is a full-featured window manager in Emacs.
@@ -5471,13 +5317,7 @@ windows).
 *** exwm-edit
 :PROPERTIES:
 :ID: 1a167827-b791-4a69-a90e-c2d30bd83abb
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "agzam/exwm-edit"
-:PACKAGE:  "exwm-edit"
-:LOCAL-REPO: "exwm-edit"
-:COMMIT:   "2fd9426922c8394ec8d21c50dcc20b7d03af21e4"
+:RECIPE:   [[id:ff34a425-de3a-4334-8f0e-eea036468930][exwm-edit]]
 :END:
 
 The dream is to do all text editing in Emacs. This package is a big step towards
@@ -5661,18 +5501,17 @@ binding to.
 *** workgroups
 :PROPERTIES:
 :ID:       8cb7ee3d-6d9e-4fbf-a96a-5f7cdc2aa363
+:RECIPE:   [[id:c5cca2d0-2479-4ced-8b97-fcc2d9995203][workgroups]]
 :END:
 
 #+begin_src emacs-lisp
 (define-leader-key!
   :infix "w"
   "w" (list :ignore t :wk "workgroup"))
-#+end_src
 
 (defun wg/create-workgroup ()
   (call-interactively #'wg-open-workgroup))
 
-#+begin_src emacs-lisp
 (define-leader-key!
   :infix "w w"
   "c" (list :def #'wg-create-workgroup          :wk "open") 
@@ -5690,6 +5529,7 @@ binding to.
 ** separedit
 :PROPERTIES:
 :ID:       07021099-6cea-4016-929b-d9310ea305f8
+:RECIPE:   [[id:bd9d7045-b6df-4fd1-8aaf-2341efe1cde4][separedit]]
 :END:
 
 #+begin_src emacs-lisp
@@ -5699,6 +5539,7 @@ binding to.
 ** edit-indirect
 :PROPERTIES:
 :ID:       786b11a6-561b-4793-9c6c-f7630aba3774
+:RECIPE:   [[id:33c74235-2ece-42fb-aab8-b5522f86d895][edit-indirect]]
 :END:
 
 =edit-indirect= is a package that provides a means to edit text in an indirect
@@ -6058,6 +5899,7 @@ file, see [[helpfn:edit-indirect-commit][edit-indirect-commit]].
 ** expand-region
 :PROPERTIES:
 :ID:       7e873fba-33ea-4720-ad79-bd8d557cc4b3
+:RECIPE:   [[id:90888b86-f47f-4cbc-9c41-aa8d6e40035b][expand-region]]
 :END:
 
 [[https://github.com/magnars/expand-region.el][expand-region]] allows me to toggle a key ("v" in my case) to select progressively
@@ -6088,6 +5930,7 @@ larger text objects. It's saves me keystrokes.
 *** expand-region
 :PROPERTIES:
 :ID: 417c9c53-a776-4779-9afc-1eaa35a145c6
+:RECIPE:   [[id:1065c8ad-96c6-49a0-8318-05ffa6f44896][expand-region]]
 :END:
 
 #+begin_src emacs-lisp
@@ -6107,12 +5950,7 @@ and grammer checking.
 *** plural
 :PROPERTIES:
 :ID:       bf2ed9b7-144c-4d4b-92ae-74c93dfc6db5
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacsmirror/plural"
-:PACKAGE:  "plural"
-:LOCAL-REPO: "plural"
-:COMMIT:   "b91ce1594783c51dabeadbbcbb9caa00aaaa1353"
+:RECIPE:   [[id:164d9446-f9f8-4c2f-9b8c-628d8d59a382][plural]]
 :END:
 
 This package determines whether a noun is plural and provides a function to
@@ -6134,12 +5972,7 @@ like that concern N number of things, where N could be 1 or more things.
 *** auto-capitalize
 :PROPERTIES:
 :ID:       4ddfacc1-a25e-466e-ab6b-2a5ec306f3be
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacsmirror/auto-capitalize"
-:PACKAGE:  "auto-capitalize"
-:LOCAL-REPO: "auto-capitalize"
-:COMMIT:   "0ee14c76d5771aaa84a004463f8b8b3a195c2fd8"
+:RECIPE:   [[id:b7b8a9d8-82f8-4080-8f9d-5372dd8b0c75][auto-capitalize]]
 :END:
 
 [[https://github.com/emacsmirror/auto-capitalize][auto-capitalize]] automatically capitalizes the first word of a sentence for me.
@@ -6153,13 +5986,8 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 
 *** spell-number
 :PROPERTIES:
-:ID: 9cc794c5-dc10-4fb5-8af1-dd555c749071
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacsmirror/spell-number"
-:PACKAGE:  "spell-number"
-:LOCAL-REPO: "spell-number"
-:COMMIT:   "3ce612dce14326b2304f5272e86b10c16102acce"
+:ID:       8bf270a6-6003-4430-bb03-0b665d5a162f
+:RECIPE:   [[id:0c121a7a-51f9-43f1-a8ba-6fd68570f044][spell-number]]
 :END:
 
 #+begin_src emacs-lisp
@@ -6172,6 +6000,7 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 ** xr
 :PROPERTIES:
 :ID: 75c56163-9ce1-4726-969a-350fcc56395f
+:RECIPE:   [[id:9ee02a4c-c3ab-41d9-bee8-77ed1a542121][xr]]
 :END:
 
 This package is the inverse of =rx=. It takes a regular expression and returns the
@@ -6189,6 +6018,7 @@ This package is the inverse of =rx=. It takes a regular expression and returns t
 *** super-save
 :PROPERTIES:
 :ID:       684e788c-6db9-4e6e-826b-d4871c0a3f90
+:RECIPE:   [[id:9af7e3c1-42b8-452d-8390-c0af58745d9c][super-save]]
 :END:
 
 The default auto-saving feature in emacs saves after a certain number of
@@ -6215,17 +6045,22 @@ Saving files like this reduces the likelihood of user delays.
 *** aggressive-fill-paragraph
 :PROPERTIES:
 :ID: 4f57fd49-b466-4eea-b91a-2cc8f0b07297
+:RECIPE:   [[id:49808e7b-c04c-472f-93d1-aecd474bab08][aggressive-fill-paragraph]]
 :END:
 
 *** aggressive-indent
 :PROPERTIES:
 :ID: f1b9a36e-26e4-4305-99ae-cbcf6a90013d
+:RECIPE:   [[id:d9f45bee-5c79-44d6-9f57-5f5ef3dd5aeb][aggressive-indent]]
 :END:
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] indents portions of the text your working on as your typing
 it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
+(straight-use-package
+ '(aggressive-indent :type git :flavor melpa :host github :repo "Malabarba/aggressive-indent-mode"))
+
 (autoload #'aggressive-indent-mode "aggressive-indent" nil t nil)
 (void-add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 #+end_src
@@ -6238,6 +6073,7 @@ it. It's pretty smart and very convenient.
 *** smartparens
 :PROPERTIES:
 :ID:       f4ffbb57-1fb6-43ab-a747-470dfcfbd0ac
+:RECIPE:   [[id:ea890ea5-8da1-4295-9bc9-55b4b85c65be][smartparens]]
 :END:
 
 **** init
@@ -6312,6 +6148,7 @@ it. It's pretty smart and very convenient.
 *** rainbow-delimiters
 :PROPERTIES:
 :ID:       5b58bb1c-5d3c-4f04-b4fb-c55f1588839e
+:RECIPE:   [[id:19563430-e405-4e59-9546-e02ba3327e2b][rainbow-delimiters]]
 :END:
 
 [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]] colors parentheses different colors based on level. This is a
@@ -6327,6 +6164,7 @@ great idea! It makes it really easy to see which parentheses go together.
 ** outshine
 :PROPERTIES:
 :ID:       6aeccc22-2ebe-43c0-a245-5535b5bd6f6c
+:RECIPE:   [[id:1f92a982-3c7d-4c11-8732-937280388c4a][outshine]]
 :END:
 
 #+begin_src emacs-lisp
@@ -6340,7 +6178,7 @@ great idea! It makes it really easy to see which parentheses go together.
 
 Modal editing is widely accepted to be more efficient than modeless editing.
 
-*** evil
+*** evil - the "extensible VI layer"
 :PROPERTIES:
 :ID:       9639633f-ec3d-4499-9615-db0dcc9650c9
 :END:
@@ -6429,13 +6267,7 @@ Why not just go to the end of the ="= like any other around operator?
 **** evil-lion
 :PROPERTIES:
 :ID:       95d248be-601e-4dbd-b318-febcd0e49d71
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    ("evil-lion.el" "evil-lion-pkg.el")
-:HOST:     github
-:REPO:     "edkolev/evil-lion"
-:PACKAGE:  "evil-lion"
-:LOCAL-REPO: "evil-lion"
+:RECIPE:   [[id:d57a4850-81a6-47d4-b409-d4512e0fb78d][evil-lion]]
 :END:
 
 =evil-lion= provides a very useful way of aligning text.
@@ -6453,12 +6285,7 @@ Why not just go to the end of the ="= like any other around operator?
 **** evil-visualstar
 :PROPERTIES:
 :ID: 6ebca72d-f90a-4423-9ecd-706f9d426002
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "bling/evil-visualstar"
-:PACKAGE:  "evil-visualstar"
-:LOCAL-REPO: "evil-visualstar"
+:RECIPE:   [[id:a73fe41d-46e5-4641-a07c-01ae06d8f04f][evil-visualstar]]
 :END:
 
 [[https://github.com/bling/evil-visualstar][evil-visualstar]]
@@ -6476,12 +6303,7 @@ Why not just go to the end of the ="= like any other around operator?
 **** evil-surround
 :PROPERTIES:
 :ID:       9ab88644-3c33-463c-8f24-3b048209e082
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "emacs-evil/evil-surround"
-:PACKAGE:  "evil-surround"
-:LOCAL-REPO: "evil-surround"
+:RECIPE:   [[id:607895bf-3be6-49a8-9743-ad3b4aee7594][evil-surround]]
 :END:
 
 #+begin_src emacs-lisp
@@ -6492,14 +6314,7 @@ Why not just go to the end of the ="= like any other around operator?
 **** evil
 :PROPERTIES:
 :ID: 3b9aaf0c-a69c-474a-b1a3-f0e748e83558
-:TYPE:     git
-:FLAVOR:   melpa
-:FILES:    (:defaults "doc/build/texinfo/evil.texi" (:exclude "evil-test-helpers.el") "evil-pkg.el")
-:HOST:     github
-:REPO:     "emacs-evil/evil"
-:PACKAGE:  "evil"
-:LOCAL-REPO: "evil"
-:COMMIT:   "32b2783d2cb7e093ac284fa6af9ceed8e4418826"
+:RECIPE:   [[id:ba195841-cfdb-48b1-b223-dcf4ef642821][evil]]
 :END:
 
 [[https://github.com/emacs-evil/evil][evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim,
@@ -6682,12 +6497,7 @@ We want escape to be a general "quit everything".
 ****** key-chord
 :PROPERTIES:
 :ID:       8fd1bcdc-c4b3-4fee-b91b-dcdf96167582
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "emacsorphanage/key-chord"
-:PACKAGE:  "key-chord"
-:LOCAL-REPO: "key-chord"
+:RECIPE:   [[id:ce53a6a1-8386-4b0c-99e4-2f52fca5efbd][key-chord]]
 :END:
 
 Sometimes we don't have access to a convenient escape key--I mean that caps-lock
@@ -6744,6 +6554,7 @@ code.
 *** lispyville
 :PROPERTIES:
 :ID: 9d22714a-086d-49a1-9f8b-66da3b646110
+:RECIPE:   [[id:77727936-a230-431c-862f-1cb2c5d30f64][lispyville]]
 :END:
 
 [[https://github.com/noctuid/lispyville][lispyville]] helps vim commands work better with lisp by providing
@@ -6853,6 +6664,7 @@ Sometimes =evil-normal-state= enters visual state.
 *** lispy
 :PROPERTIES:
 :ID:       47f19607-13a7-4857-bb1a-33760f95cb7e
+:RECIPE:   [[id:1429bff3-29d6-4a5a-a68a-87494417ff71][lispy]]
 :END:
 
 For learning how to use lispy. [[https://github.com/abo-abo/lispy][the README]] and the [[http://oremacs.com/lispy/#lispy-different][lispy function reference]] were
@@ -6914,12 +6726,7 @@ Key themes are keybinding themes used for.
 **** eros
 :PROPERTIES:
 :ID:       265b3b87-012e-452e-aa1f-c7c8e3308a73
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "xiongtx/eros"
-:PACKAGE:  "eros"
-:LOCAL-REPO: "eros"
+:RECIPE:   [[id:07e8fbb3-6bc0-411f-9e3c-f29faeb2cc01][eros]]
 :END:
 
 **** avoid void variable error
@@ -6936,6 +6743,7 @@ You'll get void variable if you don't do this.
 *** evil-lispy
 :PROPERTIES:
 :ID:       f79c2035-ce79-491a-acf6-5e80f72cffe9
+:RECIPE:   [[id:6fe1548d-b170-4881-a191-0a79daf27e17][evil-lispy]]
 :END:
 
 **** lispy state cursor
@@ -6947,7 +6755,7 @@ You'll get void variable if you don't do this.
 (gsetq evil-lispy-state-cursor  '((bar . 4) "red"))
 #+end_src
 
-**** lispy
+**** run after lispy
 :PROPERTIES:
 :ID:       18173a29-7442-473e-a851-f46182f56447
 :END:
@@ -6960,6 +6768,7 @@ You'll get void variable if you don't do this.
 *** highlight-quoted
 :PROPERTIES:
 :ID:       d0973dce-693b-45ca-88e3-27da1bb217f7
+:RECIPE:   [[id:ac621121-93b1-4769-b290-624a5bc10908][highlight-quoted]]
 :END:
 
 [[https://github.com/Fanael/highlight-quoted][highlight-quoted]] highlights quotes, backticks and.
@@ -7156,6 +6965,7 @@ The change to this function."
 *** macrostep
 :PROPERTIES:
 :ID:       fefc5700-3bd7-4a89-ae7b-bf68368e8bc4
+:RECIPE:   [[id:4f558137-7212-4d50-a6b5-e47630537545][macrostep]]
 :END:
 
 #+begin_src emacs-lisp
@@ -7173,6 +6983,7 @@ The change to this function."
 *** ppp
 :PROPERTIES:
 :ID:       82dbb88a-4bce-4ca3-90fe-38cfbea7abc6
+:RECIPE:   [[id:96d0d851-439f-4e6d-9c79-661663f4656b][ppp]]
 :END:
 
 This is a pretty printer.
@@ -7186,6 +6997,7 @@ the whole thing.
 ** org
 :PROPERTIES:
 :ID:       63748940-c1b9-47ea-b1ce-d6519453ad03
+:RECIPE:   [[id:27ccfc0f-57b9-42ea-acf6-d103af7619bc][org]]
 :END:
 
 *** init
@@ -7242,8 +7054,8 @@ the whole thing.
 
 #+begin_src emacs-lisp
 (alet '(calendar find-func format-spec org-macs org-compat org-faces org-entities
-	org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
-	org-capture)
+        org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
+	    org-capture)
   (-each it #'idle-require))
 #+end_src
 
@@ -7383,16 +7195,14 @@ program.
   "Reveal the current org branch.
 Show all of the current headine's parents and their children. This includes this
 headline."
-  (let (points)
-    (save-excursion
-      (org-back-to-heading t)
-      (push (point) points)
-      (while (org-up-heading-safe)
-        (push (point) points))
-      (--each points
-        (goto-char it)
-        (outline-show-children)
-        (outline-show-entry)))))
+  (loopy (before-do (org-back-to-heading t))
+         ((org-up-heading-safe)
+          (collect points (point)))
+         (finally-do
+          (--each-r points
+            (goto-char it)
+            (outline-show-children)
+            (outline-show-entry)))))
 #+end_src
 
 ****** show branch after jumping to point
@@ -7601,14 +7411,31 @@ options. For this reason I wrote my own insert heading functions.
     (org-babel-execute-subtree)))
 #+end_src
 
-*** org-ml
+*** links
 :PROPERTIES:
-:ID:       7f3ec0ad-45f8-4100-970e-773cfb9a625b
+:ID:       f70f36ae-1ef1-4dce-ad84-e4a8430f40a5
 :END:
 
-*** org-link-minor-mode
+**** org-super-links
+:PROPERTIES:
+:ID:       f3eed884-408f-44cb-becc-17c1431060c5
+:END:
+
+***** settings
+:PROPERTIES:
+:ID:       c7a7e21c-88b9-485e-9ae3-874d324981b5
+:END:
+
+#+begin_src emacs-lisp
+(setq sl-backlink-prefix nil)
+(setq sl-related-into-drawer "LINKS")
+(setq sl-backlink-into-drawer "BACKLINKS")
+#+end_src
+
+**** org-link-minor-mode
 :PROPERTIES:
 :ID:       25b93a1f-b105-47aa-9647-5015d23a4ac3
+:RECIPE:   [[id:ee595fa2-da02-4cb8-a5ab-a003cd214598][org-link-minor-mode]]
 :END:
 
 This is a minor mode for displaying links in non-org buffers.
@@ -7618,9 +7445,16 @@ This is a minor mode for displaying links in non-org buffers.
 (void-add-hook 'outshine-mode-hook #'org-link-minor-mode)
 #+end_src
 
+*** org-ml
+:PROPERTIES:
+:ID:       7f3ec0ad-45f8-4100-970e-773cfb9a625b
+:RECIPE:   [[id:309aef25-feab-4bf6-a617-d932a482d6a8][org-ml]]
+:END:
+
 *** org-journal
 :PROPERTIES:
 :ID:       c3056303-5fa1-49f9-ae2d-294942e25f54
+:RECIPE:   [[id:2c54b607-1ba0-49a8-8d9c-fa55694db489][org-journal]]
 :END:
 
 =org-journal= is a package that provides functions to maintain a simple
@@ -7638,7 +7472,6 @@ diary/journal using =org-mode=.
 *** org-src
 :PROPERTIES:
 :ID:       e00378a1-adcf-4e83-8533-b6b442b5f362
-:TYPE:     built-in
 :END:
 
 **** control org src popup
@@ -7692,7 +7525,6 @@ source blocks.
 *** org-capture
 :PROPERTIES:
 :ID:       3225bbc4-9685-4e7b-ae32-41a26780d191
-:TYPE:     built-in
 :END:
 
 =org-capture= is a feature that allows you to quickly save a thought that popped
@@ -7708,6 +7540,7 @@ into your head while keeing disctractions to a minimum.
 (dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE-")
 
 ;; Make sure dependencies for `org-capture' are pulled.
+;; (-each '(ts org-ml) (-partial #'void-load-before-call #'org-capture))
 (--each '(ts org-ml)
   (void-load-before-call it #'org-capture))
 #+end_src
@@ -7781,6 +7614,7 @@ let's me choose the template via completing-read.
 **** doct
 :PROPERTIES:
 :ID:       fa37f618-b58c-449b-a216-9d2f80ed12c6
+:RECIPE:   [[id:6f3e1ca1-8828-455f-a012-7b35f657d53e][doct]]
 :END:
 
 [[https://github.com/progfolio/doct][doct]] is a package designed to ease writing and understanding capture templates
@@ -7789,15 +7623,9 @@ In org mode, capture templates are [[info:org#Capture templates][represented as 
 it easy to forget what a certain element meant or to accidentally omit a capture
 template element as you're writing it.
 
-***** doct
+***** init
 :PROPERTIES:
 :ID:       0118ba87-219b-4611-9743-19228accaa2c
-:TYPE:     git
-:FLAVOR:   melpa
-:HOST:     github
-:REPO:     "progfolio/doct"
-:PACKAGE:  "doct"
-:LOCAL-REPO: "doct"
 :END:
 
 #+begin_src emacs-lisp
@@ -7903,7 +7731,6 @@ Instead of passing in the string I use =org-ml= to print the string.
 *** org-clock
 :PROPERTIES:
 :ID:       d378471c-89df-48c9-a755-b79880f27308
-:TYPE:     built-in
 :END:
 
 =org-clock= is a built-in package that provides time logging functions for
@@ -7925,7 +7752,6 @@ tracking the time you spend on a particular task.
 *** org-agenda
 :PROPERTIES:
 :ID:       efa9d237-b055-4bfb-a1f9-86d964b5f007
-:TYPE:     built-in
 :END:
 
 **** settings
@@ -7947,7 +7773,6 @@ tracking the time you spend on a particular task.
 *** org-refile
 :PROPERTIES:
 :ID:       6dfc0415-2945-4259-a782-b569fcb397ea
-:TYPE:     built-in
 :END:
 
 **** org refile
@@ -7961,6 +7786,14 @@ tracking the time you spend on a particular task.
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-reverse-note-order t)
 (setq org-outline-path-complete-in-steps nil)
+#+end_src
+
+**** refile to current buffer
+:PROPERTIES:
+:ID:       e09b0485-e57b-471b-abb0-86eda545efd0
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 **** refile to org buffers
@@ -7985,24 +7818,71 @@ tracking the time you spend on a particular task.
 
 *** org-id
 :PROPERTIES:
-:ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
-:TYPE:     built-in
+:ID:       95f2a096-2cf4-4634-aa32-13f00b31ea19
 :END:
 
 =org-id= is a built-in package that creates that provides tools for creating and
 storing universally unique IDs. This is primarily used to disguish and
 referenance org headlines.
 
-#+begin_src emacs-lisp
-(autoload #'org-id-get-create "org-id")
+**** where ids are stored
+:PROPERTIES:
+:ID:       3be3c65d-ce48-4b93-a1e7-84f3e547dc69
+:END:
 
+#+begin_src emacs-lisp
 (setq org-id-locations-file (concat VOID-DATA-DIR "org-id-locations"))
 (setq org-id-locations-file-relative t)
+#+end_src
 
+**** when creating a link use an org id instead
+:PROPERTIES:
+:ID:       c10e5674-1fee-4715-975c-36ccb021fcc9
+:END:
+
+This setting tells org-mode to use heading IDs when storing and inserting links.
+
+#+begin_src emacs-lisp
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+#+end_src
+
+**** automatically add an id when we create a headline
+:PROPERTIES:
+:ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
+:END:
+
+#+begin_src emacs-lisp
 (void-add-hook 'org-insert-heading-hook #'org-id-get-create)
 #+end_src
 
 *** org-superstar
+:PROPERTIES:
+:ID:       c4428756-a804-47e8-9586-f63b82dd1561
+:RECIPE:   [[id:a6ccef06-5001-4c86-bab4-3cd22db1645c][org-superstar]]
+:END:
+
+**** init
+:PROPERTIES:
+:ID:       67e4a3c7-b1bb-4f8c-991f-53dc304e8450
+:END:
+
+#+begin_src emacs-lisp
+(void-add-hook 'org-mode-hook #'org-superstar-mode)
+(autoload #'org-superstar-mode "org-superstar" nil t nil)
+#+end_src
+
+**** remove leading bullets
+:PROPERTIES:
+:ID:       840ed952-e5ab-4092-ba71-ff1637500afc
+:END:
+
+This variable specifies the.
+
+#+begin_src emacs-lisp
+(setq org-superstar-leading-bullet ?\s)
+#+end_src
+
+**** settings
 :PROPERTIES:
 :ID: c43700f5-ff24-46b2-aed5-a12f8d8bb347
 :END:
@@ -8010,11 +7890,7 @@ referenance org headlines.
 [[package:org-superstar][org-superstar]] is a an =org-bullets= remake redesigned from the ground up.
 
 #+begin_src emacs-lisp
-(void-add-hook 'org-mode-hook #'org-superstar-mode)
-(autoload #'org-superstar-mode "org-superstar" nil t nil)
-
 (setq org-superstar-special-todo-items t)
-(setq org-superstar-leading-bullet ?\s)
 #+end_src
 
 * Asthetic
@@ -8039,11 +7915,7 @@ text to take up most of the screen.
 *** zoom-frm
 :PROPERTIES:
 :ID:       15b8577e-3f98-420a-81a5-c7b91292aca3
-:TYPE:     git
-:HOST:     github
-:REPO:     "emacsmirror/zoom-frm"
-:PACKAGE:  "zoom-frm"
-:LOCAL-REPO: "zoom-frm"
+:RECIPE:   [[id:38a0f1df-106c-43ea-a860-184c9c786718][zoom-frm]]
 :END:
 
 This package increases or decreases the font of the current frame. It differs
@@ -8060,6 +7932,7 @@ from [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale
 ** mini-modeline
 :PROPERTIES:
 :ID:       51768ba1-170f-497b-9479-541e7c6aadd6
+:RECIPE:   [[id:4fba2478-f146-4f75-9d73-a4209b9c16fd][mini-modeline]]
 :END:
 
 *** setup
@@ -8148,20 +8021,21 @@ This headline is for customizing info nodes.
 ** helpful
 :PROPERTIES:
 :ID:       5340ddb3-92bc-42e5-bf0e-9f9650c41cd9
-:END:
-
-*** helpful
-:PROPERTIES:
-:ID: 25270809-b64e-4b9a-b0c2-95ffd047280c
+:RECIPE:   [[id:e2df3435-7e56-4070-8703-7ee12e96270e][helpful]]
 :END:
 
 [[github:wilfred/helpful][helpful]] provides a complete replacement for the built-in
 Emacs help facility which provides much more contextual information
 in a better format.
 
+*** init
+:PROPERTIES:
+:ID:       ff7b784e-3510-4f6c-9770-30f7dcf5e1c8
+:END:
+
 #+begin_src emacs-lisp
 (--each (list #'helpful-callable #'helpful-command
-	      #'helpful-variable #'helpful-key)
+	          #'helpful-variable #'helpful-key)
   (autoload it "helpful" nil t nil))
 
 (general-def
@@ -8169,13 +8043,21 @@ in a better format.
   [remap describe-command]  #'helpful-command
   [remap describe-variable] #'helpful-variable
   [remap describe-key]      #'helpful-key)
+#+end_src
 
+*** popup rule
+:PROPERTIES:
+:ID: 25270809-b64e-4b9a-b0c2-95ffd047280c
+:END:
+
+#+begin_src emacs-lisp
 (dbc-add-rule "bottom" "help" :newname "\\*help.+")
 #+end_src
 
 ** which-key
 :PROPERTIES:
 :ID:       2ad092a3-ff63-49cd-91b9-380c91dbe9f5
+:RECIPE:   [[id:eb37400a-a7fd-4366-8d9a-816ab75f190d][which-key]]
 :END:
 
 Emacs is full of so many keybindings, that it can be difficult to keep track of
@@ -8241,6 +8123,7 @@ you can "discover" the commands as you go along.
 ** dashboard
 :PROPERTIES:
 :ID: 20926522-b78b-4bca-b70e-9ef4213c4344
+:RECIPE:   [[id:d3035f59-65ca-4a68-bb1d-ea28b630d0fc][dashboard]]
 :END:
 
 [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is an extensible emacs startup screen. I love the idea of =dashboard=:
@@ -8324,7 +8207,6 @@ instead.
 ** window divider
 :PROPERTIES:
 :ID:       2cdd6e24-5153-4585-8f1f-206b33445359
-:TYPE:     built-in
 :END:
 
 Emacs can add border to windows using a mode called [[helpfn:window-divider-mode][window-divider-mode]].
@@ -8428,11 +8310,6 @@ Somtimes I might want to adjust this.
   (interactive)
   (frame:adjust-window-divider-size -1))
 #+end_src
-
-** themes
-:PROPERTIES:
-:ID:       ee63aedb-beb7-4857-9af6-0b52afc2672e
-:END:
 
 * Keybindings
 :PROPERTIES:
@@ -8698,3 +8575,4 @@ These are keybindings I use most frequently.
   "w" (list :def #'engine/search-duckduckgo :wk "web")
   "h" (list :def #'consult-outline          :wk "jump to outline heading"))
 #+end_src
+
