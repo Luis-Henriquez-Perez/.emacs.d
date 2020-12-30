@@ -169,7 +169,7 @@ another machine by installing the same packages with the same versions.
 (setq straight-recipes-emacsmirror-use-mirror t)
 #+end_src
 
-**** bootstrap code
+**** straight initialization code
 :PROPERTIES:
 :ID:       ab38beca-2f26-4718-ab73-e4e4409f1563
 :END:
