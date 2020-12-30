@@ -185,7 +185,8 @@ another machine by installing the same packages with the same versions.
     (unless (file-exists-p bootstrap-file)
       (make-directory straight-repo-dir t)
       (shell-command (format "git -C %s clone %s"
-			     straight-repo-dir straight-el-link))
+			     straight-repo-dir
+			     straight-el-link))
       (shell-command (format "git -C %s checkout %s"
 			     straight-repo-dir
 			     (plist-get (alist-get 'straight void-recipe-list) :commit))))
