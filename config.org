@@ -65,6 +65,9 @@ Files that need to exist, but I don't typically want to see go here.")
 :ID:       96efba8a-9935-4684-8063-b7e043ced4bd
 :END:
 
+I want my configuration to be fully reproducible. Therefore, I have a file that
+contains the recipes.
+
 #+begin_src emacs-lisp
 (defconst VOID-RECIPE-FILE (concat VOID-EMACS-DIR "recipes.org")
   "File that contains recipes for my installed packages.")
@@ -208,7 +211,7 @@ where that controls the setup of my files--my init file.
 
 #+begin_src emacs-lisp
 (defun void-package-recipes ()
-  "Return a list of all package recipes."
+  "Return a list of all package recipes in `VOID-RECIPE-FILE'."
   (with-temp-buffer
     (let (forms)
       (insert-file-contents VOID-RECIPE-FILE)
