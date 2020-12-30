@@ -7838,6 +7838,17 @@ referenance org headlines.
 (setq org-id-locations-file-relative t)
 #+end_src
 
+**** where to look for ids
+:PROPERTIES:
+:ID:       41c0db80-94ad-4a99-b27d-7e043c0d7c1f
+:END:
+
+For org links to work they need to know where to search for these files.
+
+#+begin_src emacs-lisp
+(setq org-id-files (list VOID-MAIN-ORG-FILE VOID-RECIPE-FILE))
+#+end_src
+
 **** when creating a link use an org id instead
 :PROPERTIES:
 :ID:       c10e5674-1fee-4715-975c-36ccb021fcc9
