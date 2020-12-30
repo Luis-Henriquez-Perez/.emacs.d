@@ -126,7 +126,9 @@ another machine by installing the same packages with the same versions.
 :END:
 
 #+begin_src emacs-lisp
+(setq straight-vc-git-default-clone-depth 1)
 (setq straight-base-dir VOID-PACKAGES-DIR)
+(setq straight-repo-dir (concat straight-base-dir VOID-PACKAGES-DIR))
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
 (setq straight-enable-package-integration t)
@@ -166,8 +168,6 @@ This code is available from the [[https://github.com/raxod502/straight.el/blob/m
 :END:
 
 #+begin_src emacs-lisp
-(setq straight-use-package-by-default t)
-(setq straight-vc-git-default-clone-depth 1)
 (defvar bootstrap-version)
 (let* ((straight-repo-dir
         (expand-file-name "straight/repos" user-emacs-directory))
