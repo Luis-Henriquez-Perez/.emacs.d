@@ -216,6 +216,14 @@ This function is based on one provided by "" in [[][]].
 	(magit-rev-parse "HEAD")))))
 #+end_src
 
+**** freeze versions
+:PROPERTIES:
+:ID:       f2e8dab3-690c-4efd-9c04-6109d310ac18
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 *** package installation
 :PROPERTIES:
 :ID:       350ebc50-cb45-43c3-994a-754658110ea4
