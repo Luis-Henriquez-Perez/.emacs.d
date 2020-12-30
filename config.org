@@ -180,11 +180,12 @@ another machine by installing the same packages with the same versions.
   (let* ((straight-base-dir straight-base-dir)
 	 (straight-repo-dir (concat straight-base-dir "straight/repos/"))
 	 (bootstrap-file (concat straight-repo-dir "straight.el/bootstrap.el"))
-	 (bootstrap-version 5))
+	 (bootstrap-version 5)
+	 (straight-el-link "https://github.com/raxod502/straight.el.git"))
     (unless (file-exists-p bootstrap-file)
       (make-directory straight-repo-dir t)
-      (shell-command (format "git -C %s clone https://github.com/raxod502/straight.el.git"
-			     straight-repo-dir))
+      (shell-command (format "git -C %s clone %s"
+			     straight-repo-dir straight-el-link))
       (shell-command (format "git -C %s checkout %s"
 			     straight-repo-dir
 			     (plist-get (alist-get 'straight void-recipe-list) :commit))))
