@@ -166,13 +166,23 @@ This code is available from the [[https://github.com/raxod502/straight.el/blob/m
 :END:
 
 #+begin_src emacs-lisp
-(unless (file-exists-p bootstrap-file)
-  (shell-command
-   (concat
-    "mkdir -p " straight-repo-dir " && "
-    "git -C " straight-repo-dir " clone "
-    "https://github.com/raxod502/straight.el.git && "
-    "git -C " straight-repo-dir " checkout 2d407bc")))
+(setq straight-use-package-by-default t)
+(setq straight-vc-git-default-clone-depth 1)
+(defvar bootstrap-version)
+(let* ((straight-repo-dir
+        (expand-file-name "straight/repos" user-emacs-directory))
+       (bootstrap-file
+        (concat straight-repo-dir "/straight.el/bootstrap.el"))
+       (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (shell-command
+     (concat
+      "mkdir -p " straight-repo-dir " && "
+      "git -C " straight-repo-dir " clone "
+      "https://github.com/raxod502/straight.el.git && "
+      "git -C " straight-repo-dir " checkout 2d407bc")))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
 #+end_src
 
 **** utility functions
