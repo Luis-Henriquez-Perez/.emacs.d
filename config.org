@@ -108,6 +108,33 @@ The purpose of this headline is to set up the package manager and install all of
 my packages so the rest of the file can assume the packages are already
 installed. The idea is to separate package installation and package configuration.
 
+*** package recipes
+:PROPERTIES:
+:ID:       e8860d22-6070-4bc7-a5fc-0f155f566624
+:END:
+
+#+begin_src emacs-lisp
+(defun void-package-recipes ()
+  "Return a list of all package recipes in `VOID-RECIPE-FILE'."
+  (with-temp-buffer
+    (let (forms)
+      (insert-file-contents VOID-RECIPE-FILE)
+      (goto-char (point-min))
+      (while (re-search-forward (rx bol "(") nil t nil)
+        (goto-char (match-beginning 0))
+        (push (read (current-buffer)) forms))
+      forms)))
+#+end_src
+
+*** recipe list
+:PROPERTIES:
+:ID:       05b4ade0-2e46-4976-b43d-da09b134d602
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-recipe-list (void-package-recipes))
+#+end_src
+
 *** straight.el
 :PROPERTIES:
 :ID:       86037015-ca61-48f9-96bf-df8fc625a35d
@@ -128,7 +155,6 @@ another machine by installing the same packages with the same versions.
 #+begin_src emacs-lisp
 (setq straight-vc-git-default-clone-depth 1)
 (setq straight-base-dir VOID-PACKAGES-DIR)
-(setq straight-repo-dir (concat straight-base-dir VOID-PACKAGES-DIR))
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
 (setq straight-enable-package-integration t)
@@ -141,147 +167,34 @@ another machine by installing the same packages with the same versions.
 
 **** bootstrap code
 :PROPERTIES:
-:ID: 7816be80-4db8-4219-b7d1-9a6b1ea96035
-:END:
-
-This code is available from the [[https://github.com/raxod502/straight.el/blob/master/README.md][straight's README]]. Straight can't install itself
-(chicken-egg problem), so this it's what's used to get it.
-
-#+begin_src emacs-lisp
-(defun straight:initialize ()
-  "Initialize `straight.el'."
-  (defvar bootstrap-version)
-  (let* ((url "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el")
-         (bootstrap-file (concat VOID-PACKAGES-DIR "straight/repos/straight.el/bootstrap.el"))
-         (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously url 'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage)))
-#+end_src
-
-**** bootstrap code
-:PROPERTIES:
 :ID:       ab38beca-2f26-4718-ab73-e4e4409f1563
 :END:
 
 #+begin_src emacs-lisp
-(defvar bootstrap-version)
-(let* ((straight-repo-dir
-        (expand-file-name "straight/repos" user-emacs-directory))
-       (bootstrap-file
-        (concat straight-repo-dir "/straight.el/bootstrap.el"))
-       (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (shell-command
-     (concat
-      "mkdir -p " straight-repo-dir " && "
-      "git -C " straight-repo-dir " clone "
-      "https://github.com/raxod502/straight.el.git && "
-      "git -C " straight-repo-dir " checkout 2d407bc")))
-  (load bootstrap-file nil 'nomessage))
-(straight-use-package 'use-package)
+(defun void-init-straight ()
+  (defvar bootstrap-version)
+  (let* ((straight-base-dir straight-base-dir)
+	 (straight-repo-dir (concat straight-base-dir "straight/repos/"))
+	 (bootstrap-file (concat straight-repo-dir "straight.el/bootstrap.el"))
+	 (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (make-directory straight-repo-dir)
+      (shell-command (format "git -C %s clone https://github.com/raxod502/straight.el.git"))
+      (shell-command (format "git -C %s checkout %s"
+			     (plist-get (alist-get 'straight void-recipe-list) :commit))))
+    (load bootstrap-file nil 'nomessage)))
 #+end_src
 
-**** utility functions
-:PROPERTIES:
-:ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
-:END:
-
-Straight is very minimal. It lacks some utility functions.
-
-**** straight-install-fn
-:PROPERTIES:
-:ID:       e63813c4-f321-4544-94f3-96b46cd38cf4
-:END:
-
-=straight= actually has two sources of truth: the recipes you specify in your init
-file and the lockfile. The lockfile is a file that contains an alist of packages
-and their commit (or revision). To actually reproduce the state of your emacs
-configuration after you install your packages, you call [[helpfn:straight-thaw-versions][straight-thaw-versions]].
-I would prefer having only one souce of truth--the recipes; and only one place
-where that controls the setup of my files--my init file.
-
-#+begin_src emacs-lisp
-(defun straight:install-fn (recipe)
-  "Function that."
-    ;; After installing, set the package to the correct commit.
-  (when-let ((local-repo (plist-get (cdr recipe) :local-repo))
-             (commit (plist-get (cdr recipe) :commit)))
-    (when (file-exists-p (straight--repos-dir local-repo))
-      (unless (straight-vc-commit-present-p (cdr recipe) commit)
-        (straight-vc-fetch-from-remote recipe))
-      (straight-vc-check-out-commit recipe commit))))
-#+end_src
-
-**** initialize straight
-:PROPERTIES:
-:ID:       9011497f-098d-4d7d-b4fc-a816f121f23b
-:END:
-
-#+begin_src emacs-lisp
-(straight:initialize)
-#+end_src
-
-**** revision
-:PROPERTIES:
-:ID:       0f8d5286-2b4f-4f3f-a0a7-259c7d279171
-:END:
-
-This function is based on one provided by "" in [[][]].
-
-#+begin_src emacs-lisp
-(defun straight:revision (package)
-  "Return the revision of PACKAGE."
-  (straight--with-plist (hash-get (symbol-name package) straight--recipe-cache)
-      (local-repo type)
-    (when (and (eq type 'git) local-repo)
-      (let ((default-directory (straight--repos-dir local-repo)))
-	(magit-rev-parse "HEAD")))))
-#+end_src
-
-**** freeze versions
-:PROPERTIES:
-:ID:       f2e8dab3-690c-4efd-9c04-6109d310ac18
-:END:
-
-#+begin_src emacs-lisp
-(defun void-freeze-versions ()
-  "")
-#+end_src
-
-*** package installation
-:PROPERTIES:
-:ID:       350ebc50-cb45-43c3-994a-754658110ea4
-:END:
-
-**** package recipes
-:PROPERTIES:
-:ID:       e8860d22-6070-4bc7-a5fc-0f155f566624
-:END:
-
-#+begin_src emacs-lisp
-(defun void-package-recipes ()
-  "Return a list of all package recipes in `VOID-RECIPE-FILE'."
-  (with-temp-buffer
-    (let (forms)
-      (insert-file-contents VOID-RECIPE-FILE)
-      (goto-char (point-min))
-      (while (re-search-forward (rx bol "(") nil t nil)
-        (goto-char (match-beginning 0))
-        (push (read (current-buffer)) forms))
-      forms)))
-#+end_src
-
-**** install packages
+*** install packages
 :PROPERTIES:
 :ID:       a694267f-b37d-487b-ac68-c1da9e1fe776
 :END:
 
 #+begin_src emacs-lisp
-(mapc #'straight-use-package (void-package-recipes))
+(void-init-straight)
+(mapc #'straight-use-package
+      (progn (require 'map)
+	     (map-delete (void-package-recipes) 'straight)))
 #+end_src
 
 ** Library
