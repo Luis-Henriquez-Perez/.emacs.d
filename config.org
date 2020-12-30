@@ -85,7 +85,7 @@ contains the recipes for the packages I install.
 
 *** debug-p
 :PROPERTIES:
-:ID: b9e28d90-cdbe-412f-8ed8-1b8b97c1ab07
+:ID:       39197346-c420-4518-b8f8-8ea247d6decb
 :END:
 
 [[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
@@ -350,57 +350,6 @@ Some functions are very expensive and deserve.
 (defun void-message-with-void-log (fn)
   "Use `void-log' instead of `message'."
   (void-add-advice fn :around #'void--message-with-void-log-advice))
-#+end_src
-
-*** ht
-:PROPERTIES:
-:ID:       56bb0ff4-6ad1-44b7-a9a4-54abf48ed253
-:RECIPE:   [[id:30bcab5a-24ba-4146-929a-fe760d5f4363][ht]]
-:END:
-
-=ht= is a package that tries to provide a consistently named API for dealing with
-hash-tables.
-
-*** elog
-:PROPERTIES:
-:ID:       d73fd7b1-5610-4d93-8802-1aa57c8c1918
-:RECIPE:   [[id:5a599a4d-5a47-4aa2-98d4-6e9bb5a413a0][elog]]
-:END:
-
-=elog= is a library for generating logging functions. I use [[][]] to generate a
-function that logs to the buffer =*void-log*=.
-
-**** init
-:PROPERTIES:
-:ID:       1a550471-3434-4980-9de4-6f708e0fc8f1
-:END:
-
-#+begin_src emacs-lisp
-(require 'elog)
-#+end_src
-
-**** open elog
-:PROPERTIES:
-:ID:       f507fcff-f3c5-4dff-b5d8-c4bcec34b58b
-:END:
-
-This form creates a set of functions for logging.
-
-#+begin_src emacs-lisp
-(elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
-#+end_src
-
-**** void-log
-:PROPERTIES:
-:ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
-:END:
-
-#+begin_src emacs-lisp
-(defun void-log (format-string &rest args)
-  "Log to *Messages* if `void-debug-p' is on.
-Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
-Accept the same arguments as `message'."
-  (void--log 1 (apply #'format format-string args)))
 #+end_src
 
 *** macro writing tools
@@ -1870,10 +1819,11 @@ hierarchy.
 :ID:       adf94410-e747-4d5a-b9dc-7b7b249b8c76
 :END:
 
-Tangling during startup is the most inconvenient time to tangle an org file. And
-should only be done as a last resort. This heading provides hooks that try to
-"sneak in" a tangle during the current emacs session so that I can avoid a
-slower startup.
+The most inconvenient time to tangle an org file is during emacs startup because
+it can significantly increase startup time. Tangling at this time should be done
+only as a last resort. This heading provides hooks that try to sneak in a tangle
+during the current emacs session to minimize this "worst-case" scenario and
+thereby minimize startup time.
 
 **** determine whether to tangle
 :PROPERTIES:
@@ -1951,7 +1901,7 @@ is single-threaded, so doing it synchronously will likely cause a significant
 		 (when log-output-p #'void-log-tangling-outcome))))
 #+end_src
 
-**** quitting (or killing in emacs parlance)
+**** tangle on quit
 :PROPERTIES:
 :ID:       d7ee4164-61a3-4b82-bc68-4673446707b9
 :END:
@@ -1960,7 +1910,7 @@ is single-threaded, so doing it synchronously will likely cause a significant
 (void-add-hook 'kill-emacs-hook #'void-tangle-async-maybe)
 #+end_src
 
-**** saving
+**** tangle on save
 :PROPERTIES:
 :ID:       585b1e28-950b-4901-ac90-487facdf0b70
 :END:
@@ -3232,6 +3182,57 @@ Orderless will do this."
 
 * Utility
 
+** elog
+:PROPERTIES:
+:ID:       d73fd7b1-5610-4d93-8802-1aa57c8c1918
+:RECIPE:   [[id:5a599a4d-5a47-4aa2-98d4-6e9bb5a413a0][elog]]
+:END:
+
+=elog= is a library for generating logging functions. I use [[][]] to generate a
+function that logs to the buffer =*void-log*=.
+
+*** init
+:PROPERTIES:
+:ID:       1a550471-3434-4980-9de4-6f708e0fc8f1
+:END:
+
+#+begin_src emacs-lisp
+(require 'elog)
+#+end_src
+
+*** open elog
+:PROPERTIES:
+:ID:       f507fcff-f3c5-4dff-b5d8-c4bcec34b58b
+:END:
+
+This form creates a set of functions for logging.
+
+#+begin_src emacs-lisp
+(elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
+#+end_src
+
+*** void-log
+:PROPERTIES:
+:ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
+:END:
+
+#+begin_src emacs-lisp
+(defun void-log (format-string &rest args)
+  "Log to *Messages* if `void-debug-p' is on.
+Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
+Accept the same arguments as `message'."
+  (void--log 1 (apply #'format format-string args)))
+#+end_src
+
+** ht
+:PROPERTIES:
+:ID:       56bb0ff4-6ad1-44b7-a9a4-54abf48ed253
+:RECIPE:   [[id:30bcab5a-24ba-4146-929a-fe760d5f4363][ht]]
+:END:
+
+=ht= is a package that tries to provide a consistently named API for dealing with
+hash-tables.
+
 ** system-packages
 :PROPERTIES:
 :ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
@@ -4125,7 +4126,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 #+begin_src emacs-lisp
 (after! eshell
   (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name)
-  (setq eshell:z-file . (expand-file-name "z" eshell-directory-name))
+  (setq eshell:z-file (expand-file-name "z" eshell-directory-name))
   (autoload #'eshell-z "eshell-z" nil t nil))
 #+end_src
 
@@ -7757,34 +7758,6 @@ tracking the time you spend on a particular task.
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-reverse-note-order t)
 (setq org-outline-path-complete-in-steps nil)
-#+end_src
-
-**** refile to current buffer
-:PROPERTIES:
-:ID:       e09b0485-e57b-471b-abb0-86eda545efd0
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-**** refile to org buffers
-:PROPERTIES:
-:ID:       c6194791-8ac6-40a8-adb0-35041faaaa5a
-:END:
-
-#+begin_src emacs-lisp
-(defun org/refile-to-other-buffer (arg)
-  (interactive)
-  (let ((org-refile-keep arg)
-        org-refile-targets
-        current-prefix-arg)
-    (dolist (buf (delq (current-buffer)
-                       (doom-buffers-in-mode 'org-mode)))
-      (with-current-buffer buf
-        (and buffer-file-name
-             (cl-pushnew (cons buffer-file-name (cons :maxlevel 10))
-                         org-refile-targets))))
-    (call-interactively #'org-refile)))
 #+end_src
 
 *** org-id
