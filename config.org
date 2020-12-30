@@ -178,7 +178,7 @@ another machine by installing the same packages with the same versions.
 	 (bootstrap-file (concat straight-repo-dir "straight.el/bootstrap.el"))
 	 (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
-      (make-directory straight-repo-dir)
+      (make-directory straight-repo-dir t)
       (shell-command (format "git -C %s clone https://github.com/raxod502/straight.el.git"))
       (shell-command (format "git -C %s checkout %s"
 			     (plist-get (alist-get 'straight void-recipe-list) :commit))))
