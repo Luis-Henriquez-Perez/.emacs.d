@@ -42,6 +42,9 @@ Files that need to exist, but I don't typically want to see go here.")
 
 (defconst VOID-PACKAGES-DIR (concat VOID-LOCAL-DIR "packages/")
   "Path to the directory where packages are stored.")
+
+(defconst VOID-ORG-DIR (concat VOID-EMACS-DIR "org/")
+  "Directory where org files should go.")
 #+end_src
 
 **** important files
@@ -69,7 +72,7 @@ I want my configuration to be fully reproducible. Therefore, I have a file that
 contains the recipes for the packages I install.
 
 #+begin_src emacs-lisp
-(defconst VOID-RECIPE-FILE (concat VOID-EMACS-DIR "recipes.org")
+(defconst VOID-RECIPE-FILE (concat VOID-ORG-DIR "recipes.org")
   "File that contains recipes for my installed packages.")
 #+end_src
 
