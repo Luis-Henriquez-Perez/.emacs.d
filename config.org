@@ -209,7 +209,7 @@ This function is based on one provided by "" in [[][]].
 #+begin_src emacs-lisp
 (defun straight:revision (package)
   "Return the revision of PACKAGE."
-  (straight--with-plist (straight-recipes-retrieve package)
+  (straight--with-plist (hash-get (symbol-name package) straight--recipe-cache)
       (local-repo type)
     (when (and (eq type 'git) local-repo)
       (let ((default-directory (straight--repos-dir local-repo)))
