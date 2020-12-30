@@ -3026,7 +3026,7 @@ This heading is for configuring snippet.
 (dbc-add-rule "bottom" "snippet test" :newname "*testing snippet:")
 #+end_src
 
-**** ensure each yasnippet directory
+***** ensure each yasnippet directory
 :PROPERTIES:
 :ID:       0dae1585-e454-4740-b8c6-bad7bf1e4bb0
 :END:
