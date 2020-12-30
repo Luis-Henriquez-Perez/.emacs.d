@@ -135,7 +135,8 @@ installed. The idea is to separate package installation and package configuratio
 :END:
 
 #+begin_src emacs-lisp
-(defvar void-recipe-list (void-package-recipes))
+(defvar void-recipe-list (void-package-recipes)
+  "List of package recipes.")
 #+end_src
 
 *** straight.el
