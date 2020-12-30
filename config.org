@@ -66,7 +66,7 @@ Files that need to exist, but I don't typically want to see go here.")
 :END:
 
 I want my configuration to be fully reproducible. Therefore, I have a file that
-contains the recipes.
+contains the recipes for the packages I install.
 
 #+begin_src emacs-lisp
 (defconst VOID-RECIPE-FILE (concat VOID-EMACS-DIR "recipes.org")
