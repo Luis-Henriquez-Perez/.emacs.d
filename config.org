@@ -160,6 +160,21 @@ This code is available from the [[https://github.com/raxod502/straight.el/blob/m
     (load bootstrap-file nil 'nomessage)))
 #+end_src
 
+**** bootstrap code
+:PROPERTIES:
+:ID:       ab38beca-2f26-4718-ab73-e4e4409f1563
+:END:
+
+#+begin_src emacs-lisp
+(unless (file-exists-p bootstrap-file)
+  (shell-command
+   (concat
+    "mkdir -p " straight-repo-dir " && "
+    "git -C " straight-repo-dir " clone "
+    "https://github.com/raxod502/straight.el.git && "
+    "git -C " straight-repo-dir " checkout 2d407bc")))
+#+end_src
+
 **** utility functions
 :PROPERTIES:
 :ID:       3ed810d4-2f5a-4ba8-95c4-dfb5ca0a2165
