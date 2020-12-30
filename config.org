@@ -384,33 +384,6 @@ Some functions are very expensive and deserve.
   (void-add-advice fn :around #'void--message-with-void-log-advice))
 #+end_src
 
-*** mmt
-:PROPERTIES:
-:ID:       a4377985-fe0e-4980-b839-08c334bde76c
-:RECIPE:   [[id:d9fee386-dc24-40d5-8d55-a775a3d7f675][mmt]]
-:END:
-
-=mmt= is a library of tools for writing macros. Specifically, it provides the
-quintessential =once-only= and =with-gensyms= macros which are used to prevent
-variable leaking.
-
-#+begin_src emacs-lisp
-(defalias 'once-only! 'mmt-once-only)
-(defalias 'with-gensyms! 'mmt-with-gensyms)
-(defalias 'with-unique-names! 'mmt-with-gensyms)
-#+end_src
-
-*** loopy
-:PROPERTIES:
-:ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
-:END:
-
-=loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
-[[][Common Lisp's iter]]. dash's functions and macros are good for most
-cases. But they are not as good in my opinion when you're dealing with a complex loop
-that involves accumulating several variables or atypical control-flow (as in, break
-statements or return statements).
-
 *** ht
 :PROPERTIES:
 :ID:       56bb0ff4-6ad1-44b7-a9a4-54abf48ed253
@@ -461,12 +434,6 @@ Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
 Accept the same arguments as `message'."
   (void--log 1 (apply #'format format-string args)))
 #+end_src
-
-*** ellocate
-:PROPERTIES:
-:ID:       e3590042-52fb-47ee-a5eb-a7860a3cdb17
-:RECIPE:   [[id:66150582-79e7-4ce6-ab8e-e26f604e3684][ellocate]]
-:END:
 
 *** macro writing tools
 :PROPERTIES:
@@ -1341,55 +1308,6 @@ to use =defadvice!= or =anaphoric-defadvice!=.
     `(progn
        ,@(--map `(,advice-macro ,name (,@before ,it ,@after) ,@body)
                 fns))))
-#+end_src
-
-*** system-packages
-:PROPERTIES:
-:ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
-:RECIPE:   [[id:6c452231-9d3e-4ea0-a0b7-933b278a8dd9][system-packages]]
-:END:
-
-=system-packages= provides an api for installing system packages. This api strives
-to abstract package installation on different operating systems. Unfortunately,
-it does not include an interactive function that uses [[helpfn:completing-read][completing-read]] to list
-packages
-
-**** settings
-:PROPERTIES:
-:ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
-:END:
-
-#+begin_src emacs-lisp
-(setq system-packages-noconfirm t)
-#+end_src
-
-**** popup rule
-:PROPERTIES:
-:ID:       69631be9-ce8f-4f65-b112-229bf1722621
-:END:
-
-#+begin_src emacs-lisp
-(dbc-add-rule "bottom" "system-packages" :newname "\\*system-packages")
-#+end_src
-
-**** use yay for arch
-:PROPERTIES:
-:ID:       2fc48e66-83f3-4e35-8b2c-ef9113cb9b45
-:END:
-
-If we're in arch and we have yay intalled, use that.
-
-#+begin_src emacs-lisp
-(after! system-packages
-  (when (and (eq system-packages-package-manager 'pacman)
-             (system-packages-package-installed-p "yay"))
-    (alet (alist-get 'pacman system-packages-supported-package-managers)
-      (push `(yay (default-sudo . nil)
-                  ,@(-map (-lambda ((action . command))
-			    (cons action (s-replace "pacman" "yay" command)))
-                          (cdr it)))
-            system-packages-supported-package-managers))
-    (setq system-packages-package-manager 'yay)))
 #+end_src
 
 *** list mutation
@@ -3345,6 +3263,88 @@ Orderless will do this."
 #+end_src
 
 * Utility
+
+** system-packages
+:PROPERTIES:
+:ID:       74bd0e5a-f6b0-48eb-a91e-3932eae23516
+:RECIPE:   [[id:6c452231-9d3e-4ea0-a0b7-933b278a8dd9][system-packages]]
+:END:
+
+=system-packages= provides an api for installing system packages. This api strives
+to abstract package installation on different operating systems. Unfortunately,
+it does not include an interactive function that uses [[helpfn:completing-read][completing-read]] to list
+packages
+
+*** settings
+:PROPERTIES:
+:ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
+:END:
+
+#+begin_src emacs-lisp
+(setq system-packages-noconfirm t)
+#+end_src
+
+*** popup rule
+:PROPERTIES:
+:ID:       69631be9-ce8f-4f65-b112-229bf1722621
+:END:
+
+#+begin_src emacs-lisp
+(dbc-add-rule "bottom" "system-packages" :newname "\\*system-packages")
+#+end_src
+
+*** use yay for arch
+:PROPERTIES:
+:ID:       2fc48e66-83f3-4e35-8b2c-ef9113cb9b45
+:END:
+
+If we're in arch and we have yay intalled, use that.
+
+#+begin_src emacs-lisp
+(after! system-packages
+  (when (and (eq system-packages-package-manager 'pacman)
+             (system-packages-package-installed-p "yay"))
+    (alet (alist-get 'pacman system-packages-supported-package-managers)
+      (push `(yay (default-sudo . nil)
+                  ,@(-map (-lambda ((action . command))
+			    (cons action (s-replace "pacman" "yay" command)))
+                          (cdr it)))
+            system-packages-supported-package-managers))
+    (setq system-packages-package-manager 'yay)))
+#+end_src
+
+** mmt
+:PROPERTIES:
+:ID:       a4377985-fe0e-4980-b839-08c334bde76c
+:RECIPE:   [[id:d9fee386-dc24-40d5-8d55-a775a3d7f675][mmt]]
+:END:
+
+=mmt= is a library of tools for writing macros. Specifically, it provides the
+quintessential =once-only= and =with-gensyms= macros which are used to prevent
+variable leaking.
+
+#+begin_src emacs-lisp
+(defalias 'once-only! 'mmt-once-only)
+(defalias 'with-gensyms! 'mmt-with-gensyms)
+(defalias 'with-unique-names! 'mmt-with-gensyms)
+#+end_src
+
+** loopy
+:PROPERTIES:
+:ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
+:END:
+
+=loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
+[[][Common Lisp's iter]]. dash's functions and macros are good for most
+cases. But they are not as good in my opinion when you're dealing with a complex loop
+that involves accumulating several variables or atypical control-flow (as in, break
+statements or return statements).
+
+** ellocate
+:PROPERTIES:
+:ID:       e3590042-52fb-47ee-a5eb-a7860a3cdb17
+:RECIPE:   [[id:66150582-79e7-4ce6-ab8e-e26f604e3684][ellocate]]
+:END:
 
 ** epa
 :PROPERTIES:
