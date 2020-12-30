@@ -2987,6 +2987,11 @@ This heading is for configuring snippet.
 
 **** init
 :PROPERTIES:
+:ID:       19c03205-f56e-4e3b-b258-181d67abaa25
+:END:
+
+***** init
+:PROPERTIES:
 :ID:       9ccba3e4-072e-4838-9461-b962740f02c6
 :END:
 
@@ -2996,7 +3001,7 @@ This heading is for configuring snippet.
 (setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
 #+end_src
 
-**** settings
+***** settings
 :PROPERTIES:
 :ID:       eeebeb45-18a3-41ab-a540-3fc67e272b89
 :END:
@@ -3009,7 +3014,7 @@ This heading is for configuring snippet.
 (setq yas-triggers-in-field t)
 #+end_src
 
-**** popup rule
+***** popup rule
 :PROPERTIES:
 :ID:       585c6a1e-9fa0-4b89-8899-6faf40fa1644
 :END:
