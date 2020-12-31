@@ -3067,6 +3067,13 @@ This heading is for configuring snippet.
 Tempo is a built-in snippet package. It's advantage over =yasnippet= is that it
 can define a template using a lisp form as opposed to a string.
 
+**** tempo snippet
+:PROPERTIES:
+:ID:       d11c9cc1-f2e7-4ae0-8e54-696f1b41f028
+:END:
+
+=tempo-snippet= is a package that provides a macro.
+
 
 ** selectrum
 :PROPERTIES:
