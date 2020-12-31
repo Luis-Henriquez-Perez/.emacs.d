@@ -7878,26 +7878,6 @@ This variable specifies the.
 (setq org-superstar-special-todo-items t)
 #+end_src
 
-*** snippets
-:PROPERTIES:
-:ID:       25acd1ed-d0be-4df0-b9c0-bdebbac379e5
-:END:
-
-**** helpvar
-:PROPERTIES:
-:ID:       67895dc7-0bbe-4397-8df4-a6bcdffe0ccb
-:END:
-
-#+begin_src emacs-lisp
-(with-temp-buffer
-  (insert ()))
-#+end_src
-
-**** helpfn
-:PROPERTIES:
-:ID:       eada61cf-4673-4488-92eb-1b57ca68e044
-:END:
-
 * Asthetic
 :PROPERTIES:
 :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
