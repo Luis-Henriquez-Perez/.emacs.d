@@ -3059,24 +3059,6 @@ This heading is for configuring snippet.
   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
 #+end_src
 
-**** snippets
-:PROPERTIES:
-:ID:       f350fdea-f060-4331-9eec-105e56e43652
-:END:
-
-***** org mode
-:PROPERTIES:
-:ID:       76cffc35-36bd-4038-9aec-c98fd2f11746
-:END:
-
-****** helpful link
-:PROPERTIES:
-:ID:       8bba6b7b-4c79-4431-973d-2ac3704827f9
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 ** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
