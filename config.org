@@ -3064,19 +3064,6 @@ This heading is for configuring snippet.
 :ID:       f350fdea-f060-4331-9eec-105e56e43652
 :END:
 
-***** elisp
-:PROPERTIES:
-:ID:       07fa5a7b-e4f6-467f-bfd7-761488ab8a36
-:END:
-
-****** defun
-:PROPERTIES:
-:ID:       6f0aaa41-8485-469a-ac5c-e519325704ca
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
 ***** org mode
 :PROPERTIES:
 :ID:       76cffc35-36bd-4038-9aec-c98fd2f11746
@@ -7890,6 +7877,16 @@ This variable specifies the.
 #+begin_src emacs-lisp
 (setq org-superstar-special-todo-items t)
 #+end_src
+
+*** snippets
+:PROPERTIES:
+:ID:       25acd1ed-d0be-4df0-b9c0-bdebbac379e5
+:END:
+
+**** helpvar
+:PROPERTIES:
+:ID:       67895dc7-0bbe-4397-8df4-a6bcdffe0ccb
+:END:
 
 * Asthetic
 :PROPERTIES:
