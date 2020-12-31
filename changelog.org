@@ -1,3 +1,25 @@
+* Version 0.2
+:PROPERTIES:
+:ID:       1f815a51-e606-4c36-afa4-435a761f9d27
+:END:
+
+** introduction of recipe file
+:PROPERTIES:
+:ID:       68f724cb-c827-436e-8674-0de6e2172e8a
+:END:
+
+=straight.el= provides a lockfile where an alist of the package name and it's
+version are stored.
+
+** init heading
+:PROPERTIES:
+:ID:       b21cd437-e447-4c01-a03b-98f701359a81
+:END:
+
+Eventually, I plan to implement more control for the loading of
+headlines. Specifically, I want to designate a certain headline name for code
+that should be loaded immediately. So for a package headline.
+
 * Version 0.1
 :PROPERTIES:
 :ID:       8fd5fdb0-d8e1-4f7e-a6db-4d033a05371d

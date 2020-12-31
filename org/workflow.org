@@ -1,0 +1,24 @@
+* Purpose
+:PROPERTIES:
+:ID:       a35172de-fdd6-4b2a-a54d-d7bbe6fcbf43
+:END:
+
+It has become apparent to me that having an emacs config even one as extensively
+documented as mine is still not enough. It's like providing the pieces of a
+puzzle but not explaining how things are supposed to be put together. I need to
+have a description of my workflows for certain tasks.
+
+* capturing workflow
+:PROPERTIES:
+:ID:       7dcbc762-8b4d-46c7-b760-00a81867833f
+:END:
+
+* searching workflow
+:PROPERTIES:
+:ID:       706f5816-ed46-4515-971f-790d16129a0f
+:END:
+
+* editing and navigation
+:PROPERTIES:
+:ID:       0027606d-1ddc-4e33-844a-79f7e1a05757
+:END:

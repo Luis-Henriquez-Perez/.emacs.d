@@ -2957,109 +2957,6 @@ worth quoting here:
 #+end_src
 
 
-** snippets
-:PROPERTIES:
-:ID:       02dd54d0-f545-447e-89cf-c0cfcd941c76
-:END:
-
-This heading is for configuring snippet.
-
-*** auto-yasnippet
-:PROPERTIES:
-:ID:       21fad08d-485b-4498-b47b-571cc48e5384
-:RECIPE:   [[id:7238d32e-4a73-4aff-80e1-ce6f1629b926][auto-yasnippet]]
-:END:
-
-#+begin_src emacs-lisp
-(autoload #'aya-expand "auto-yasnippet" nil t nil)
-
-(setq aya-persist-snippets-dir (concat VOID-LOCAL-DIR "auto-snippets/"))
-
-(after! auto-yasnippet
-  (void-add-advice 'aya-expand :after #'evil-insert-state))
-#+end_src
-
-*** yasnippet
-:PROPERTIES:
-:ID:       22b3c8d9-5560-4e47-b3d9-71a82e4b9fc7
-:RECIPE:   [[id:c2d2579c-351b-4bb8-b5a1-4b7040ecefd4][yasnippet]]
-:END:
-
-=yasnippet= is a snippet framework for emacs.
-
-**** init
-:PROPERTIES:
-:ID:       19c03205-f56e-4e3b-b258-181d67abaa25
-:END:
-
-***** init
-:PROPERTIES:
-:ID:       9ccba3e4-072e-4838-9461-b962740f02c6
-:END:
-
-#+begin_src emacs-lisp
-(void-add-hook 'prog-mode-hook #'yas-minor-mode-on)
-(autoload #'yas-minor-mode-on "yasnippet" nil t nil)
-(setq yas-snippet-dirs (list (concat VOID-DATA-DIR "snippets/")))
-#+end_src
-
-***** settings
-:PROPERTIES:
-:ID:       eeebeb45-18a3-41ab-a540-3fc67e272b89
-:END:
-
-#+begin_src emacs-lisp
-(setq yas-verbosity (if void-debug-p 3 0))
-(setq yas-indent-line 'auto)
-(setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
-(setq yas-use-menu nil)
-(setq yas-triggers-in-field t)
-#+end_src
-
-***** popup rule
-:PROPERTIES:
-:ID:       585c6a1e-9fa0-4b89-8899-6faf40fa1644
-:END:
-
-=+snippet+= is the name of the buffer where you create a new snippet.
-
-#+begin_src emacs-lisp
-(dbc-add-rule "bottom" "snippet" :newname "\\+snippet\\+")
-(dbc-add-rule "bottom" "snippet test" :newname "*testing snippet:")
-#+end_src
-
-***** ensure each yasnippet directory
-:PROPERTIES:
-:ID:       0dae1585-e454-4740-b8c6-bad7bf1e4bb0
-:END:
-
-#+begin_src emacs-lisp
-(defhook! ensure-yasnippet-dirs (yas-minor-mode-hook)
-  (--each yas-snippet-dirs
-    (mkdir (if (stringp it) it (symbol-value it)) t)))
-#+end_src
-
-**** delete yasnippet prompt
-:PROPERTIES:
-:ID:       c66234de-3bd7-48bd-a518-538002fbaa6c
-:END:
-
-#+begin_src emacs-lisp
-(after! yasnippet
-  (delq #'yas-dropdown-prompt yas-prompt-functions))
-#+end_src
-
-**** dont interfere with yasnippet
-:PROPERTIES:
-:ID:       72229078-6419-4bc2-a2b5-44f218a1ec71
-:END:
-
-#+begin_src elisp
-(after! (smartparens yasnippet)
-  (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
-#+end_src
-
-
 ** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
@@ -3191,6 +3088,60 @@ Orderless will do this."
   (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
         (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
     (apply <orig-fn> <args>)))
+#+end_src
+
+** tempo                                                                   :WIP:
+:PROPERTIES:
+:ID:       36573b5e-f880-4079-840f-625c0b39704c
+:END:
+
+Tempo is a built-in snippet package. It's advantage over =yasnippet= is that it
+can define a template using a lisp form as opposed to a string.
+
+*** company integration
+:PROPERTIES:
+:ID:       d6c830b5-7b51-4b4e-bcb5-e8a3c246306a
+:END:
+
+The goal here is to use tempo in company. Fortunately, company comes with a
+tempo backend. So that it actually expands the snippets when you select the
+tempo tag, you need to set =company-tempo-expand= to =t=.
+
+#+begin_src emacs-lisp
+(after! company (setq company-tempo-expand t))
+#+end_src
+
+*** snippet macro
+:PROPERTIES:
+:ID:       33550f12-c282-48cb-8737-5f4240f51121
+:END:
+
+#+begin_src emacs-lisp
+(defmacro defsnippet! (name args docstring &rest body)
+  "Define a snippet."
+  (declare (indent defun))
+  (-let ((name (symbol-name name))
+	 ((tag taglist) args))
+    `(after! tempo
+       (tempo-define-snippet ,name ',body ,tag ,docstring ',taglist))))
+#+end_src
+
+*** use tab and backtab
+:PROPERTIES:
+:ID:       7205d26c-b01b-4619-a8d4-f374be0a2006
+:END:
+
+By default the tempo-snippet uses the standard =M-n= and =M-p=
+bindings. However, I prefer the more mainstream =TAB= and =BACKTAB=.
+
+#+begin_src emacs-lisp
+(general-def '(insert normal) tempo-snippets-keymap
+  "TAB" #'tempo-snippets-next-field
+  [backtab] #'tempo-snippets-previous-field)
+
+(general-def tempo-snippets-keymap
+  "TAB" #'tempo-snippets-next-field
+  [backtab] #'tempo-snippets-previous-field)
 #+end_src
 
 * Utility
@@ -6978,6 +6929,11 @@ know what you're dealing with. For example, I've wanted to see what a straight
 recipe looks like. The problem is by default [[][]] prints something on one
 line. And to avoid long lines, emacs truncates the output so you can't even see
 the whole thing.
+
+*** elisp snippets
+:PROPERTIES:
+:ID:       bbb2299f-6960-43c2-bf1d-b849ef8ecff0
+:END:
 
 ** org
 :PROPERTIES:

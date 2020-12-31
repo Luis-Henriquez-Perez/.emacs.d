@@ -17,6 +17,15 @@
 (straight :type git :host github :repo "emacsmirror/straight.el" :commit "f6663b1de0fb5d9c64528e4f7f8bb914f49bb6d2")
 #+end_src
 
+* loopy
+:PROPERTIES:
+:ID:       caaef5ee-1d74-42d9-87c3-7cca70c9efad
+:END:
+
+#+begin_src emacs-lisp
+(loopy :host github :type git :repo "okamsn/loopy" :commit "7e1bb34251d8d6a2d87781ec241f14794f37ac5c")
+#+end_src
+
 * consult
 :PROPERTIES:
 :ID:       e81a0d79-39f0-492c-9636-ddc701cd85be
