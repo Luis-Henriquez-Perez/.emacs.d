@@ -3069,10 +3069,13 @@ This heading is for configuring snippet.
 :ID:       07fa5a7b-e4f6-467f-bfd7-761488ab8a36
 :END:
 
-****** 
+****** defun
 :PROPERTIES:
 :ID:       6f0aaa41-8485-469a-ac5c-e519325704ca
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 ***** org mode
 :PROPERTIES:
