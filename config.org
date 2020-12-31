@@ -3074,6 +3074,13 @@ can define a template using a lisp form as opposed to a string.
 
 =tempo-snippet= is a package that provides a macro.
 
+**** company backend for tempo
+:PROPERTIES:
+:ID:       9b3358ea-0713-4da6-83cb-9c566d97dc32
+:END:
+
+I want tempo snippets to show up for company.
+
 
 ** selectrum
 :PROPERTIES:
