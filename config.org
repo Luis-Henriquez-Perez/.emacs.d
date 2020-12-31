@@ -3059,6 +3059,15 @@ This heading is for configuring snippet.
   (void-add-advice #'yas-expand :before #'sp-remove-active-pair-overlay))
 #+end_src
 
+*** tempo
+:PROPERTIES:
+:ID:       36573b5e-f880-4079-840f-625c0b39704c
+:END:
+
+Tempo is a built-in snippet package. It's advantage over =yasnippet= is that it
+can define a template using a lisp form as opposed to a string.
+
+
 ** selectrum
 :PROPERTIES:
 :ID:       294a9fde-e76f-40ce-9552-dd5801318717
