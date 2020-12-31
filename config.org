@@ -1961,6 +1961,8 @@ I find it convenient to be able to view the init time in the =*void-log*= buffer
 :ID:       84d8e85a-a6a1-49cd-b46e-e5cd3f825438
 :END:
 
+Fill column refers to the column where line-wrapping will occur.
+
 #+begin_src emacs-lisp
 (setq-default fill-column 80)
 #+end_src
