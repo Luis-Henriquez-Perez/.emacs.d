@@ -6525,6 +6525,7 @@ editing environment.
 #+begin_src emacs-lisp
 (ryo-modal-key "p" "C-p")
 (ryo-modal-key "k" "C-k")
+(ryo-modal-key "f" "C-f")
 #+end_src
 
 * Languages
