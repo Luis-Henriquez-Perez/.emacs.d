@@ -3741,6 +3741,8 @@ therefore, has the most support (in the form of setup blogs and packages).
 :END:
 
 #+begin_src emacs-lisp
+(defconst VOID-EMAIL-DIR "~/.mail/")
+
 (autoload #'mu4e "mu4e" nil t nil)
 #+end_src
 
