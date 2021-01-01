@@ -3764,13 +3764,23 @@ therefore, has the most support (in the form of setup blogs and packages).
 (setq mu4e-compose-signature-auto-include t)
 (setq mu4e-compose-format-flowed t)
 (setq mu4e-get-mail-command "mbsync -a")
-(setq mu4e-index-cleanup t)
-(setq mu4e-index-lazy-check nil)
-(setq mu4e-update-interval 180)
-(setq mu4e-headers-auto-update t)
 (setq mu4e-context-policy 'pick-first)
 (setq mu4e-compose-context-policy 'ask-if-none)
 (setq mu4e-confirm-quit nil)
+#+end_src
+
+***** indexing
+:PROPERTIES:
+:ID:       002f7170-60bf-425c-be60-39262a84d0a3
+:END:
+
+I don't want mu4e to handle indexing. I can do it myself.
+
+#+begin_src emacs-lisp
+(setq mu4e-index-cleanup t)
+(setq mu4e-index-lazy-check nil)
+(setq mu4e-update-interval nil)
+(setq mu4e-headers-auto-update t)
 #+end_src
 
 ***** mu4e
