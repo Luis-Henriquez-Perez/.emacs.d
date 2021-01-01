@@ -6517,6 +6517,11 @@ editing environment.
 #+begin_src emacs-lisp
 #+end_src
 
+**** making emacs bindings more manageable
+:PROPERTIES:
+:ID:       b3001984-9297-4f49-9298-7ce631c0e632
+:END:
+
 * Languages
 :PROPERTIES:
 :ID:       fa8dc2fc-96f4-4820-b368-4d61d1db0ee5
