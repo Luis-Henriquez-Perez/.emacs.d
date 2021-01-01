@@ -2902,16 +2902,15 @@ of things that we actually want at this moment.
 #+begin_src emacs-lisp
 (defun company::backends ()
   "Return a list of company backends for major-mode."
-  (or
-   (-when-let (((mode type backends) (assoc major-mode company:backend-alist)))
-     (when (eq type :only) backends))
-   (-mapcat (-lambda ((mode type backends))
-              (when (or (and (eq type :derived) (derived-mode-p mode))
-                        (and (eq type :exact)
-                             (or (eq major-mode mode)
-                                 (and (boundp mode) (symbol-value mode)))))
-                backends))
-            company:backend-alist)))
+  ;; (-when-let (((mode type backends) (assoc major-mode company:backend-alist)))
+  ;;   (when (eq type :only) backends))
+  (loopy ((list (mode type backends) company:backend-alist)
+	  (expr derived-p (and (eq type :derived) (derived-mode-p mode)))
+	  (expr exact-p (eq type exact-p))
+	  (expr mm-enabled-p (or (eq major-mode mode)
+                                 (and (boundp mode) (symbol-value mode))))
+	  (when (or derived-p (and exact-p mm-enabled-p))
+	    (append new-backends backends)))))
 #+end_src
 
 *** company-prescient
