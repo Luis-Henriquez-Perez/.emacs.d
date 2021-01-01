@@ -7914,7 +7914,9 @@ This variable specifies the.
 :END:
 
 #+begin_src emacs-lisp
-(defsnippet! helpvar ("hvar" org-helpvar))
+(defsnippet! helpvar ("hvar")
+  "Help function link."
+  '("[[helpvar:" (p "var" var) "][" (s function) "]"))
 #+end_src
 
 **** helpfn
