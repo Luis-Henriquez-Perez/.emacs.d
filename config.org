@@ -2906,7 +2906,7 @@ worth quoting here:
 
 #+begin_src emacs-lisp
 (defun company::backends ()
-  "Compute company backends."
+  "Return a list of company backends for major-mode."
   (or
    (-when-let (((mode type backends) (assoc major-mode company:backend-alist)))
      (when (eq type :only) backends))
