@@ -2891,7 +2891,8 @@ of things that we actually want at this moment.
   "Set `company-backends' for the current buffer."
   (when (and (bound-and-true-p company-mode)
              (not (eq major-mode 'fundamental-mode)))
-    (set (make-local-variable 'company-backends) (company::backends))))
+    (set (make-local-variable 'company-backends)
+	 (company:backends-for-major-mode))))
 #+end_src
 
 **** get backends
