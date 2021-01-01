@@ -6491,6 +6491,11 @@ This is better than evil escape as it only binds in insert.
   (general-chord "kj") 'evil-force-normal-state)
 #+end_src
 
+*** ryo-modal
+:PROPERTIES:
+:ID:       84ae464f-39bf-41a1-a709-6a4c7c926065
+:END:
+
 * Languages
 :PROPERTIES:
 :ID:       fa8dc2fc-96f4-4820-b368-4d61d1db0ee5
