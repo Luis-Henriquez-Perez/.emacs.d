@@ -2873,14 +2873,13 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(defvar company:backend-alist nil
+(defvar company:backend-alist
+  '((text-mode :derived (company-dabbrev company-tempo company-ispell))
+    (prog-mode :derived ((:separate company-capf company-tempo))))
   "An alist modes to company backends.")
-
-'((text-mode :derived (company-dabbrev company-tempo company-ispell))
-  (prog-mode :derived ((:separate company-capf company-tempo))))
 #+end_src
 
-**** initialize a backend
+**** initialize backends
 :PROPERTIES:
 :ID:       4e82e869-b144-44aa-bc19-bb58b8c5ff2a
 :END:
