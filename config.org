@@ -2900,7 +2900,7 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(defun company:backends-for-major-mode (major-mode)
+(defun company:backends-for-major-mode ()
   "Return a list of company backends for major-mode."
   (loopy ((list (mode type backends) company:backend-alist)
 	  (expr derived-p (and (eq type :derived) (derived-mode-p mode)))
