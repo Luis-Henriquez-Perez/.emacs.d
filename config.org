@@ -7912,6 +7912,18 @@ This variable specifies the.
   '("[[helpfn:" (p "function" function) "][" (s function) "]"))
 #+end_src
 
+**** source block
+:PROPERTIES:
+:ID:       f7f03efe-f519-42f9-98cd-0afe74904e36
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! source ("src")
+  "Org source block."
+  '("#+begin_src " (p "lang" lang) n> r
+    "#+end_src" n>))
+#+end_src
+
 * Asthetic
 :PROPERTIES:
 :ID: bd21a69a-794c-4ff1-97d0-9e5911a26ad7
