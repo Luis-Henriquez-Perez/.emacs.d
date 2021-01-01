@@ -3131,37 +3131,6 @@ Functions such as.
        (tempo-define-snippet ,name ,(car body) ,tag ,docstring ',taglist))))
 #+end_src
 
-*** tempo-snippets
-:PROPERTIES:
-:ID:       fa5d20be-f873-4b64-b218-33fc0a54bea6
-:END:
-
-**** use tab and backtab
-:PROPERTIES:
-:ID:       7205d26c-b01b-4619-a8d4-f374be0a2006
-:END:
-
-By default the tempo-snippet uses the standard =M-n= and =M-p=
-bindings. However, I prefer the more mainstream =TAB= and =BACKTAB=.
-
-#+begin_src emacs-lisp
-(general-def '(insert normal) tempo-snippets-keymap
-  "TAB" #'tempo-snippets-next-field
-  [backtab] #'tempo-snippets-previous-field)
-
-(general-def tempo-snippets-keymap
-  "TAB" #'tempo-snippets-next-field
-  [backtab] #'tempo-snippets-previous-field)
-#+end_src
-
-**** stop template after completion
-:PROPERTIES:
-:ID:       7b1d005f-f743-4ce1-88f0-dd68de5fd3ee
-:END:
-The overlays from =tempo-snippets= don't disappear after you reach the last
-mark. I need to call.
-
-
 * Utility
 
 ** elog
