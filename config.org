@@ -6498,10 +6498,13 @@ This is better than evil escape as it only binds in insert.
 =ryo-modal= provides a minor mode with tools for designing your own modal
 editing environment.
 
-**** mo
+**** movement keys
 :PROPERTIES:
 :ID:       cc2ea6d6-eace-40b4-89b6-85137afc3555
 :END:
+
+#+begin_src emacs-lisp
+#+end_src
 
 
 * Languages
