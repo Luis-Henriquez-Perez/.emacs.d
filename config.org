@@ -3,17 +3,6 @@
 :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
 :END:
 
-** loopy
-:PROPERTIES:
-:ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
-:END:
-
-=loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
-[[][Common Lisp's iter]]. dash's functions and macros are good for most
-cases. But they are not as good in my opinion when you're dealing with a complex loop
-that involves accumulating several variables or atypical control-flow (as in, break
-statements or return statements).
-
 ** Initialize
 :PROPERTIES:
 :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
@@ -306,6 +295,45 @@ But if you're only.
 
 #+begin_src emacs-lisp
 (require 'anaphora)
+#+end_src
+
+**** loopy
+:PROPERTIES:
+:ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
+:END:
+
+=loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
+[[][Common Lisp's iter]]. dash's functions and macros are good for most
+cases. But they are not as good in my opinion when you're dealing with a complex loop
+that involves accumulating several variables or atypical control-flow (as in, break
+statements or return statements).
+
+**** dbc
+:PROPERTIES:
+:ID:       b3351a74-b2d0-42b8-9895-b6baad0adb0b
+:RECIPE:   [[id:dc4a89b0-70b7-4594-b0ac-e5edcd155bed][dbc]]
+:END:
+
+=dbc= stands for "display-buffer-control". This package provides an interface for
+working with [[helpfn:display-buffer-alist][display-buffer-alist]].
+
+***** define rulesets
+:PROPERTIES:
+:ID:       577ff03c-40e0-4ac4-a3ab-47cd9d24992e
+:END:
+
+For now, I haven't found a buffer I'd like to display in any place other than
+the bottom. I don't like it when buffer text is cutt off or truncated on the
+side windows.
+
+#+begin_src emacs-lisp
+(require 'dbc)
+
+(thread-last '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5)))
+  (dbc-add-ruleset "bottom"))
+
+(thread-last '(display-buffer-in-side-window . ((side . top) (window-height . 0.4)))
+  (dbc-add-ruleset "top"))
 #+end_src
 
 *** generic advices
@@ -607,34 +635,6 @@ loading it. To remedy this I wrap the block with [[][condition-case]].
           (progn ,@body)
         (error
          (message "Error in `eval-after-load': %S" error)))))
-#+end_src
-
-*** dbc
-:PROPERTIES:
-:ID:       b3351a74-b2d0-42b8-9895-b6baad0adb0b
-:RECIPE:   [[id:dc4a89b0-70b7-4594-b0ac-e5edcd155bed][dbc]]
-:END:
-
-=dbc= stands for "display-buffer-control". This package provides an interface for
-working with [[helpfn:display-buffer-alist][display-buffer-alist]].
-
-**** define rulesets
-:PROPERTIES:
-:ID:       577ff03c-40e0-4ac4-a3ab-47cd9d24992e
-:END:
-
-For now, I haven't found a buffer I'd like to display in any place other than
-the bottom. I don't like it when buffer text is cutt off or truncated on the
-side windows.
-
-#+begin_src emacs-lisp
-(require 'dbc)
-
-(thread-last '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5)))
-  (dbc-add-ruleset "bottom"))
-
-(thread-last '(display-buffer-in-side-window . ((side . top) (window-height . 0.4)))
-  (dbc-add-ruleset "top"))
 #+end_src
 
 *** after!
