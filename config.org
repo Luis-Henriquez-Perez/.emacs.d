@@ -3136,8 +3136,7 @@ Functions such as.
 :ID:       ef9b06b1-826f-4030-950e-1884ce546654
 :END:
 
-#+begin_src emacs-lisp
-#+end_src
+Making sure that tempo can completing read.
 
 * Utility
 
