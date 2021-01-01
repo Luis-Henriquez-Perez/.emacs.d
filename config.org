@@ -3722,8 +3722,8 @@ ways to read and send emails in Emacs.
 
 *** mu4e
 :PROPERTIES:
-:ID: 1ec73e33-5b94-4199-976d-1d72f8fb5a8e
 :RECIPE:   [[id:179c0195-e24b-45f5-8558-b31a2114620d][mu4e]]
+:ID:       905ba1b5-bafc-4855-b772-fa750c294327
 :END:
 
 The most popular emacs mail client is =mu4e=. And, there is good reason why. =mu4e=
