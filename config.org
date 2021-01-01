@@ -2940,12 +2940,10 @@ worth quoting here:
 #+begin_src emacs-lisp
 (defhook! close-tooltip (void-escape-hook)
   "Close company tooltip."
-  (when (and (boundp 'company-mode)
-             (eq company-mode t))
+  (when (and (boundp 'company-mode) (eq company-mode t))
     (company-abort)
     t))
 #+end_src
-
 
 ** selectrum
 :PROPERTIES:
