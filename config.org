@@ -7920,7 +7920,7 @@ This variable specifies the.
 #+begin_src emacs-lisp
 (defsnippet! source ("src")
   "Org source block."
-  '("#+begin_src " (p "lang" lang) n> r
+  '("#+begin_src " (p "emacs-lisp" lang) n> r
     "#+end_src" n>))
 #+end_src
 
