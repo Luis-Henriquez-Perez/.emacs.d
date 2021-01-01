@@ -3138,6 +3138,24 @@ Functions such as.
 
 Making sure that tempo can completing read.
 
+**** tempo completing read
+:PROPERTIES:
+:ID:       2995030d-3848-42b8-8954-3d2366db641c
+:END:
+
+#+begin_src emacs-lisp
+(defun tempo-completing-read (save-name &rest args)
+  (let ((insertion (apply #'completing-read args)))
+    (when save-name
+      (tempo-save-named save-name insertion))
+    (insert insertion)))
+#+end_src
+
+**** 
+:PROPERTIES:
+:ID:       5a8794f7-3b19-4be0-8138-5039b691b6a6
+:END:
+
 * Utility
 
 ** elog
