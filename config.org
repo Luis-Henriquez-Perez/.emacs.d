@@ -3096,7 +3096,16 @@ Orderless will do this."
 :END:
 
 Tempo is a built-in snippet package. It's advantage over =yasnippet= is that it
-can define a template using a lisp form as opposed to a string.
+can define a template using a lisp form as opposed to a string. This means it's
+more hackable and more expressive.
+
+Because yasnippets are strings it makes them less friendly for storing as a lisp
+form. You still could, mind you, but essentally you'd fill your config with long
+template strings. I never liked storing snippets in their own directory and as
+many little files. One thing is that you have to deal with making sure the files
+exist and that they're in the right path. Another thing is that you need to
+manage snippet file loading because it's expensive to load all the snippets at
+once if you have alot.
 
 *** company integration
 :PROPERTIES:
@@ -3109,12 +3118,18 @@ tempo tag, you need to set =company-tempo-expand= to =t=.
 
 #+begin_src emacs-lisp
 (after! company (setq company-tempo-expand t))
+
+;; Add `company-tempo' to backends during `prog-mode'.
+(after! company
+  ())
 #+end_src
 
 *** snippet macro
 :PROPERTIES:
 :ID:       33550f12-c282-48cb-8737-5f4240f51121
 :END:
+
+Functions such as.
 
 #+begin_src emacs-lisp
 (defmacro defsnippet! (name args docstring &rest body)
@@ -3149,6 +3164,14 @@ bindings. However, I prefer the more mainstream =TAB= and =BACKTAB=.
   "TAB" #'tempo-snippets-next-field
   [backtab] #'tempo-snippets-previous-field)
 #+end_src
+
+**** stop template after completion
+:PROPERTIES:
+:ID:       7b1d005f-f743-4ce1-88f0-dd68de5fd3ee
+:END:
+The overlays from =tempo-snippets= don't disappear after you reach the last
+mark. I need to call.
+
 
 * Utility
 
@@ -6941,6 +6964,28 @@ the whole thing.
 :ID:       bbb2299f-6960-43c2-bf1d-b849ef8ecff0
 :END:
 
+**** define a variable
+:PROPERTIES:
+:ID:       38ecee81-18e8-482e-ae91-280bdcaf096e
+:END:
+
+#+begin_src emacs-lisp
+(defvar void-elisp-tempo-tags nil
+  "Variable containing elisp tempo tags.")
+#+end_src
+
+**** defvar
+:PROPERTIES:
+:ID:       bbbba4d9-a2f4-47b1-8447-082f8ea4cf86
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! defvar ("dvar")
+  "Insert a defvar expression."
+  '("(defvar " (p "var" varname) " " (p "initial-value" value)
+    n> "\"" (p "docstring" docstring) "\"" ")"))
+#+end_src
+
 **** defun
 :PROPERTIES:
 :ID:       3fdb199e-b76e-41ea-85fb-4f62c398453d
@@ -6953,6 +6998,27 @@ the whole thing.
     n> "\"" (p "docstring" docstring) "\""
     n> (p "body" body)
     ")" (p "")))
+#+end_src
+
+**** when
+:PROPERTIES:
+:ID:       8eb34ddf-ae81-42dd-bf7a-4be9562ceae5
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! when ("when")
+  "Insert a when expression"
+  '("(when " (p "condition" condition) n> (r "body" body) ")" (p "" last)))
+#+end_src
+
+**** cond
+:PROPERTIES:
+:ID:       cd622b5f-92f5-48a0-9f54-b2526b079c49
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! cond ("cond")
+  '("(cond (("   ")"))
 #+end_src
 
 ** org
@@ -7835,6 +7901,31 @@ This variable specifies the.
 
 #+begin_src emacs-lisp
 (setq org-superstar-special-todo-items t)
+#+end_src
+
+*** snippets
+:PROPERTIES:
+:ID:       cd25f425-a4db-4a4c-be9e-4b672116048c
+:END:
+
+**** helpvar
+:PROPERTIES:
+:ID:       cc0ae97d-4cce-42de-bea0-7e195bd6168b
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! helpvar ("hvar" org-helpvar))
+#+end_src
+
+**** helpfn
+:PROPERTIES:
+:ID:       7bd2651e-e3f8-4e76-822c-2208b71af0c3
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! helpfn ("hfn")
+  "Help function link."
+  '("[[helpfn:" (p "function" function) "][" (s function)))
 #+end_src
 
 * Asthetic
