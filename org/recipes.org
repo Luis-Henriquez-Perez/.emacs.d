@@ -17,6 +17,15 @@
 (straight :type git :host github :repo "emacsmirror/straight.el" :commit "f6663b1de0fb5d9c64528e4f7f8bb914f49bb6d2")
 #+end_src
 
+* tempo-snippets
+:PROPERTIES:
+:ID:       40d0091e-34ab-41c4-824d-bdf7a4618a47
+:END:
+
+#+begin_src emacs-lisp
+(tempo-snippets :type git :host github :repo "emacsmirror/tempo-snippets")
+#+end_src
+
 * loopy
 :PROPERTIES:
 :ID:       caaef5ee-1d74-42d9-87c3-7cca70c9efad
