@@ -6492,6 +6492,7 @@ This is better than evil escape as it only binds in insert.
 :PROPERTIES:
 :ID:       84ae464f-39bf-41a1-a709-6a4c7c926065
 :END:
+
 =ryo-modal= provides a minor mode with tools for designing your own modal
 editing environment.
 
@@ -6512,6 +6513,9 @@ editing environment.
 :ID:       6637fa4b-589f-4b91-9ccb-0f4385d7719e
 :END:
 
+
+#+begin_src emacs-lisp
+#+end_src
 
 * Languages
 :PROPERTIES:
