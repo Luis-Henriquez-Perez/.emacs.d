@@ -2877,9 +2877,7 @@ of things that we actually want at this moment.
   "An alist matching modes to company backends.")
 
 '((text-mode :derived (company-dabbrev company-tempo company-ispell))
-  (prog-mode :derived ((:separate company-capf company-tempo)))
-  (conf-mode :derived (company-capf company-dabbrev-code company-tempo))
-  (org-mode :only (company-tempo)))
+  (prog-mode :derived ((:separate company-capf company-tempo))))
 #+end_src
 
 **** initialize a backend
