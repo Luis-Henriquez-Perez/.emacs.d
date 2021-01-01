@@ -3792,7 +3792,8 @@ therefore, has the most support (in the form of setup blogs and packages).
   "Initialize mu4e."
   (interactive)
   (require 'password-store)
-  (let ((email-dirs (--map (concat VOID-EMAIL-DIR it) (pass:email-list))))
+  (let* ((VOID-EMAIL-DIR (expand-file-name "~/.mail"))
+	 (email-dirs (--map (concat VOID-EMAIL-DIR it) (pass:email-list))))
     (when (or (not (-all-p #'f-exists-p email-dirs))
               (-some-p #'f-empty-p email-dirs))
       (message "creating directories that don't exist.")
