@@ -3110,10 +3110,6 @@ tempo tag, you need to set =company-tempo-expand= to =t=.
 
 #+begin_src emacs-lisp
 (after! company (setq company-tempo-expand t))
-
-;; Add `company-tempo' to backends during `prog-mode'.
-(after! company
-  ())
 #+end_src
 
 *** snippet macro
