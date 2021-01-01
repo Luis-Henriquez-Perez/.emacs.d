@@ -6504,7 +6504,16 @@ editing environment.
 :END:
 
 #+begin_src emacs-lisp
+(ryo-modal-key "h" #'backward-char)
+(ryo-modal-key "l" #'forward-char)
+(ryo-modal-key "j" #'next-line)
+(ryo-modal-key "k" #'previous-line)
 #+end_src
+
+**** digit arguments
+:PROPERTIES:
+:ID:       6637fa4b-589f-4b91-9ccb-0f4385d7719e
+:END:
 
 
 * Languages
