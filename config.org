@@ -7925,7 +7925,7 @@ This variable specifies the.
 #+begin_src emacs-lisp
 (defsnippet! helpfn ("hfn")
   "Help function link."
-  '("[[helpfn:" (p "function" function) "][" (s function)))
+  '("[[helpfn:" (p "function" function) "][" (s function) "]"))
 #+end_src
 
 * Asthetic
