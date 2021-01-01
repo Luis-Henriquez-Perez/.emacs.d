@@ -3131,6 +3131,14 @@ Functions such as.
        (tempo-define-snippet ,name ,(car body) ,tag ,docstring ',taglist))))
 #+end_src
 
+*** add completing read to tempo
+:PROPERTIES:
+:ID:       ef9b06b1-826f-4030-950e-1884ce546654
+:END:
+
+#+begin_src emacs-lisp
+#+end_src
+
 * Utility
 
 ** elog
