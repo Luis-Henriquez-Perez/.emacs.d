@@ -6488,60 +6488,6 @@ This is better than evil escape as it only binds in insert.
   (general-chord "kj") 'evil-force-normal-state)
 #+end_src
 
-*** ryo-modal
-:PROPERTIES:
-:ID:       84ae464f-39bf-41a1-a709-6a4c7c926065
-:END:
-
-=ryo-modal= provides a minor mode with tools for designing your own modal
-editing environment.
-
-**** movement keys
-:PROPERTIES:
-:ID:       cc2ea6d6-eace-40b4-89b6-85137afc3555
-:END:
-
-#+begin_src emacs-lisp
-(ryo-modal-key "h" #'backward-char)
-(ryo-modal-key "l" #'forward-char)
-(ryo-modal-key "j" #'next-line)
-(ryo-modal-key "k" #'previous-line)
-#+end_src
-
-**** digit arguments
-:PROPERTIES:
-:ID:       6637fa4b-589f-4b91-9ccb-0f4385d7719e
-:END:
-
-
-#+begin_src emacs-lisp
-(ryo-modal-keys
- ;; First argument to ryo-modal-keys may be a list of keywords.
- ;; These keywords will be applied to all keybindings.
- (:norepeat t)
- ("0" "M-0")
- ("1" "M-1")
- ("2" "M-2")
- ("3" "M-3")
- ("4" "M-4")
- ("5" "M-5")
- ("6" "M-6")
- ("7" "M-7")
- ("8" "M-8")
- ("9" "M-9")))
-#+end_src
-
-**** making emacs bindings more manageable
-:PROPERTIES:
-:ID:       b3001984-9297-4f49-9298-7ce631c0e632
-:END:
-
-#+begin_src emacs-lisp
-(ryo-modal-key "p" "C-p")
-(ryo-modal-key "k" "C-k")
-(ryo-modal-key "f" "C-f")
-#+end_src
-
 * Languages
 :PROPERTIES:
 :ID:       fa8dc2fc-96f4-4820-b368-4d61d1db0ee5
