@@ -3123,10 +3123,16 @@ tempo tag, you need to set =company-tempo-expand= to =t=.
   (-let ((name (symbol-name name))
 	 ((tag taglist) args))
     `(after! tempo
-       (tempo-define-snippet ,name ',body ,tag ,docstring ',taglist))))
+       (require 'tempo-snippets nil t)
+       (tempo-define-snippet ,name ,(car body) ,tag ,docstring ',taglist))))
 #+end_src
 
-*** use tab and backtab
+*** tempo-snippets
+:PROPERTIES:
+:ID:       fa5d20be-f873-4b64-b218-33fc0a54bea6
+:END:
+
+**** use tab and backtab
 :PROPERTIES:
 :ID:       7205d26c-b01b-4619-a8d4-f374be0a2006
 :END:
@@ -6934,6 +6940,20 @@ the whole thing.
 :PROPERTIES:
 :ID:       bbb2299f-6960-43c2-bf1d-b849ef8ecff0
 :END:
+
+**** defun
+:PROPERTIES:
+:ID:       3fdb199e-b76e-41ea-85fb-4f62c398453d
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! defun ("defn")
+  "Insert a defun form"
+  '(> "(defun " (p "name" name) " " "(" (p "args" it) ")"
+    n> "\"" (p "docstring" docstring) "\""
+    n> (p "body" body)
+    ")" (p "")))
+#+end_src
 
 ** org
 :PROPERTIES:
