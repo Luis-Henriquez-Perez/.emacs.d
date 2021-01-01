@@ -3139,6 +3139,7 @@ Functions such as.
 	 ((tag taglist) args))
     `(after! tempo
        (require 'tempo-snippets nil t)
+       (defvar)
        (tempo-define-snippet ,name ,(car body) ,tag ,docstring ',taglist))))
 #+end_src
 
