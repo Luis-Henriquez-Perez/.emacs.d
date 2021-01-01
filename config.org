@@ -2879,10 +2879,10 @@ worth quoting here:
 
 #+begin_src emacs-lisp
 (defvar company:backend-alist
-  '((text-mode :derived (company-dabbrev company-yasnippet company-ispell))
-    (prog-mode :derived ((:separate company-capf company-yasnippet)))
-    (conf-mode :derived (company-capf company-dabbrev-code company-yasnippet))
-    (org-mode :only (company-yasnippet)))
+  '((text-mode :derived (company-dabbrev company-tempo company-ispell))
+    (prog-mode :derived ((:separate company-capf company-tempo)))
+    (conf-mode :derived (company-capf company-dabbrev-code company-tempo))
+    (org-mode :only (company-tempo)))
   "An alist matching modes to company backends.")
 #+end_src
 
