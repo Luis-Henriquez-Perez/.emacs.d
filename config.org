@@ -3,6 +3,17 @@
 :ID:       d68434bf-be6a-471f-ab65-e151f4f1c111
 :END:
 
+** loopy
+:PROPERTIES:
+:ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
+:END:
+
+=loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
+[[][Common Lisp's iter]]. dash's functions and macros are good for most
+cases. But they are not as good in my opinion when you're dealing with a complex loop
+that involves accumulating several variables or atypical control-flow (as in, break
+statements or return statements).
+
 ** Initialize
 :PROPERTIES:
 :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
@@ -3272,17 +3283,6 @@ variable leaking.
 (defalias 'with-gensyms! 'mmt-with-gensyms)
 (defalias 'with-unique-names! 'mmt-with-gensyms)
 #+end_src
-
-** loopy
-:PROPERTIES:
-:ID:       3102adee-0474-4cf4-847a-011c2f8f48cd
-:END:
-
-=loopy= is an alternative to =cl-loop= that preserves lisp structure. It is akin to
-[[][Common Lisp's iter]]. dash's functions and macros are good for most
-cases. But they are not as good in my opinion when you're dealing with a complex loop
-that involves accumulating several variables or atypical control-flow (as in, break
-statements or return statements).
 
 ** ellocate
 :PROPERTIES:
