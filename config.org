@@ -2867,11 +2867,6 @@ of things that we actually want at this moment.
 :ID:       bd47ec52-6428-4f37-80d2-3795f5a42d02
 :END:
 
-[[helpvar:company-backends][company-backends]] is what you have to keep in mind when you're using
-company. According to its documentation, =company-backends= contain
-individual backends or groups of backends. This is important so it's
-worth quoting here:
-
 **** backends-alist
 :PROPERTIES:
 :ID:       dac0a998-e1b1-424f-8c40-e1bc19843153
