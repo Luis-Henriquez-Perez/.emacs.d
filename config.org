@@ -5044,14 +5044,6 @@ use a typical window manager, you have to.
 
 *** init
 :PROPERTIES:
-:ID:       f1fd1ea5-2e96-4842-8bab-4080628bf357
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-*** init
-:PROPERTIES:
 :ID:       581b8529-00a0-4935-9363-60dba9dbe5f4
 :END:
 
