@@ -2864,7 +2864,7 @@ of things that we actually want at this moment.
 
 *** backends
 :PROPERTIES:
-:ID: 976f3260-992a-44ee-af91-5eff0b398b20
+:ID:       bd47ec52-6428-4f37-80d2-3795f5a42d02
 :END:
 
 [[helpvar:company-backends][company-backends]] is what you have to keep in mind when you're using
@@ -2917,16 +2917,6 @@ worth quoting here:
                                  (and (boundp mode) (symbol-value mode)))))
                 backends))
             company:backend-alist)))
-#+end_src
-
-**** local hook
-:PROPERTIES:
-:ID: 49a1e8e6-c557-4a9c-9a3a-a1aa60f90924
-:END:
-
-#+begin_src emacs-lisp
-(after! company
-  (put 'company:init-backends-h 'permanent-local-hook t))
 #+end_src
 
 *** company-prescient
