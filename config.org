@@ -3737,6 +3737,11 @@ therefore, has the most support (in the form of setup blogs and packages).
 
 **** init
 :PROPERTIES:
+:ID:       36b63d9a-a830-46de-b829-e4a6972af235
+:END:
+
+***** init
+:PROPERTIES:
 :ID:       bcd9b479-1ed6-48cb-bd2e-35a46cf614e2
 :END:
 
@@ -3746,7 +3751,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 (autoload #'mu4e "mu4e" nil t nil)
 #+end_src
 
-**** settings
+***** settings
 :PROPERTIES:
 :ID:       11a37383-0316-49fa-900e-c06f830c0e3f
 :END:
@@ -3768,7 +3773,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 (setq mu4e-confirm-quit nil)
 #+end_src
 
-**** mu4e
+***** mu4e
 :PROPERTIES:
 :ID: 565eff90-8626-4ec8-a576-4ff3dfb307ae
 :RECIPE:   [[id:9ad31e31-e46b-409a-a53b-4a9d0b39abd5][mu4e]]
@@ -3784,7 +3789,7 @@ therefore, has the most support (in the form of setup blogs and packages).
       (if (executable-find "w3m") "w3m -dump -T text/html" #'mu4e-shr2text))
 #+end_src
 
-**** setup mu4e
+***** setup mu4e
 :PROPERTIES:
 :ID:       8ed2fe81-eda9-4343-a6e1-0a6a725866a4
 :END:
@@ -3805,7 +3810,7 @@ therefore, has the most support (in the form of setup blogs and packages).
       (mu4e-update-mail-and-index t))))
 #+end_src
 
-**** mu4e headers
+***** mu4e headers
 :PROPERTIES:
 :ID:       8bc93633-f3a0-494d-ae61-c05f6490cd87
 :END:
