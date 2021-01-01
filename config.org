@@ -6523,6 +6523,8 @@ editing environment.
 :END:
 
 #+begin_src emacs-lisp
+(ryo-modal-key "p" "C-p")
+(ryo-modal-key "p" "C-p")
 #+end_src
 
 * Languages
