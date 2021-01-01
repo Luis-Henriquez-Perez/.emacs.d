@@ -6131,16 +6131,6 @@ great idea! It makes it really easy to see which parentheses go together.
 
 Modal editing is widely accepted to be more efficient than modeless editing.
 
-*** meow
-:PROPERTIES:
-:ID:       f800e27c-76b7-4981-ae9a-7cc00572175f
-:END:
-
-**** keybindings
-:PROPERTIES:
-:ID:       233a0471-a447-4af7-a955-2977c31f09e7
-:END:
-
 *** evil - the "extensible VI layer"
 :PROPERTIES:
 :ID:       9639633f-ec3d-4499-9615-db0dcc9650c9
