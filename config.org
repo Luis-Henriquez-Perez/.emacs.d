@@ -30,20 +30,20 @@
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-EMACS-DIR (file-truename user-emacs-directory)
+(defconst XL-EMACS-DIR (file-truename user-emacs-directory)
   "Path to `user-emacs-directory'.")
 
-(defconst VOID-LOCAL-DIR (concat VOID-EMACS-DIR ".local/")
+(defconst XL-LOCAL-DIR (concat XL-EMACS-DIR ".local/")
   "Path to the directory for local Emacs files.
 Files that need to exist, but I don't typically want to see go here.")
 
-(defconst VOID-DATA-DIR (concat VOID-LOCAL-DIR "data/")
+(defconst XL-DATA-DIR (concat XL-LOCAL-DIR "data/")
   "Path to the directory where Void data files are stored.")
 
-(defconst VOID-PACKAGES-DIR (concat VOID-LOCAL-DIR "packages/")
+(defconst XL-PACKAGES-DIR (concat XL-LOCAL-DIR "packages/")
   "Path to the directory where packages are stored.")
 
-(defconst VOID-ORG-DIR (concat VOID-EMACS-DIR "org/")
+(defconst XL-ORG-DIR (concat XL-EMACS-DIR "org/")
   "Directory where org files should go.")
 #+end_src
 
@@ -53,13 +53,13 @@ Files that need to exist, but I don't typically want to see go here.")
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-INIT-FILE (concat VOID-EMACS-DIR "init.el")
+(defconst XL-INIT-FILE (concat XL-EMACS-DIR "init.el")
   "Path to the elisp file that bootstraps Void startup.")
 
-(defconst VOID-MAIN-ORG-FILE (concat VOID-EMACS-DIR "config.org")
+(defconst XL-MAIN-ORG-FILE (concat XL-EMACS-DIR "config.org")
   "Path to config file used for tangling.")
 
-(defconst VOID-MAIN-ELISP-FILE (concat VOID-EMACS-DIR "main.el")
+(defconst XL-MAIN-ELISP-FILE (concat XL-EMACS-DIR "main.el")
   "Path to elisp file.")
 #+end_src
 
@@ -72,7 +72,7 @@ I want my configuration to be fully reproducible. Therefore, I have a file that
 contains the recipes for the packages I install.
 
 #+begin_src emacs-lisp
-(defconst VOID-RECIPE-FILE (concat VOID-ORG-DIR "recipes.org")
+(defconst XL-RECIPE-FILE (concat XL-ORG-DIR "recipes.org")
   "File that contains recipes for my installed packages.")
 #+end_src
 
@@ -82,7 +82,7 @@ contains the recipes for the packages I install.
 :END:
 
 #+begin_src emacs-lisp
-(dolist (dir (list VOID-LOCAL-DIR VOID-DATA-DIR VOID-PACKAGES-DIR))
+(dolist (dir (list XL-LOCAL-DIR XL-DATA-DIR XL-PACKAGES-DIR))
   (make-directory dir t))
 #+end_src
 
@@ -91,13 +91,13 @@ contains the recipes for the packages I install.
 :ID:       39197346-c420-4518-b8f8-8ea247d6decb
 :END:
 
-[[helpvar:void-debug-p][void-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
+[[helpvar:void-debug-p][xl-debug]] is snatched from [[https://github.com/hlissner/doom-emacs][Doom's]] [[https://github.com/hlissner/doom-emacs/blob/develop/core/core.el][doom-debug-mode]]. The point of this variable
 is to serve as an indicator of whether the current Void instance is run for
 debugging. When Void is set up for debugging it prints out many messages about
-what its doing via [[hfn:void-log][void-log]].
+what its doing via [[hfn:void-log][xl-log]].
 
 #+begin_src emacs-lisp
-(defvar void-debug-p (or (getenv "DEBUG") init-file-debug)
+(defvar xl-debug-p (or (getenv "DEBUG") init-file-debug)
   "When non-nil print debug messages.
 The --debug-init flag and setting the DEBUG envar will enable this at startup.")
 #+end_src
@@ -117,11 +117,11 @@ installed. The idea is to separate package installation and package configuratio
 :END:
 
 #+begin_src emacs-lisp
-(defun void-package-recipes ()
-  "Return a list of all package recipes in `VOID-RECIPE-FILE'."
+(defun xl-package-recipes ()
+  "Return a list of all package recipes in `XL-RECIPE-FILE'."
   (with-temp-buffer
     (let (forms)
-      (insert-file-contents VOID-RECIPE-FILE)
+      (insert-file-contents XL-RECIPE-FILE)
       (goto-char (point-min))
       (while (re-search-forward (rx bol "(") nil t nil)
         (goto-char (match-beginning 0))
@@ -135,7 +135,7 @@ installed. The idea is to separate package installation and package configuratio
 :END:
 
 #+begin_src emacs-lisp
-(defvar void-recipe-list (void-package-recipes)
+(defvar xl-recipe-list (xl-package-recipes)
   "List of package recipes.")
 #+end_src
 
@@ -158,7 +158,7 @@ another machine by installing the same packages with the same versions.
 
 #+begin_src emacs-lisp
 (setq straight-vc-git-default-clone-depth 1)
-(setq straight-base-dir VOID-PACKAGES-DIR)
+(setq straight-base-dir XL-PACKAGES-DIR)
 (setq straight-use-package-version 'straight)
 (setq straight-use-package-by-default t)
 (setq straight-enable-package-integration t)
@@ -175,13 +175,13 @@ another machine by installing the same packages with the same versions.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-init-straight ()
+(defun xl-init-straight ()
   (defvar bootstrap-version)
   (let* ((straight-base-dir straight-base-dir)
 	 (straight-repo-dir (concat straight-base-dir "straight/repos/"))
 	 (bootstrap-file (concat straight-repo-dir "straight.el/bootstrap.el"))
 	 (bootstrap-version 5)
-	 (straight-commit (plist-get (alist-get 'straight void-recipe-list) :commit))
+	 (straight-commit (plist-get (alist-get 'straight xl-recipe-list) :commit))
 	 (straight-el-link "https://github.com/raxod502/straight.el.git"))
     (unless (file-exists-p bootstrap-file)
       (make-directory straight-repo-dir t)
@@ -198,10 +198,10 @@ another machine by installing the same packages with the same versions.
 :END:
 
 #+begin_src emacs-lisp
-(void-init-straight)
+(xl-init-straight)
 (mapc #'straight-use-package
       (progn (require 'map)
-	     (map-delete (void-package-recipes) 'straight)))
+	     (map-delete (xl-package-recipes) 'straight)))
 #+end_src
 
 ** Library
@@ -353,13 +353,13 @@ them.
 Often I want to silence the output of certain functions.
 
 #+begin_src emacs-lisp
-(defun void--silence-output-advice (orig-fn &rest args)
+(defun xl--silence-output-advice (orig-fn &rest args)
   "Silence output for the duration of ORIGN-FN."
   (shut-up (apply orig-fn args)))
 
-(defun void-silence-output (fn)
+(defun xl-silence-output (fn)
   "Silence output for the duration of ORIGN-FN."
-  (void-add-advice fn :around #'void--silence-output-advice))
+  (xl-add-advice fn :around #'xl--silence-output-advice))
 #+end_src
 
 **** reduce gc-cons-threshold
@@ -370,14 +370,14 @@ Often I want to silence the output of certain functions.
 Some functions are very expensive and deserve.
 
 #+begin_src emacs-lisp
-(defun void--pause-garbage-collection-advice (orign-fn &rest args)
+(defun xl--pause-garbage-collection-advice (orign-fn &rest args)
   "Pause garbage collection for the duration of ORIGN-FN."
-  (let ((gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+  (let ((gc-cons-threshold XL-GC-CONS-THRESHOLD-MAX))
     (apply orign-fn args)))
 
-(defun void-pause-garbage-collection (fn)
+(defun xl-pause-garbage-collection (fn)
   "Pause garbage collection for the duration of FN."
-  (void-add-advice fn :around #'void--pause-garbage-collection-advice))
+  (xl-add-advice fn :around #'xl--pause-garbage-collection-advice))
 #+end_src
 
 **** log
@@ -386,14 +386,14 @@ Some functions are very expensive and deserve.
 :END:
 
 #+begin_src emacs-lisp
-(defun void--message-with-void-log-advice (orign-fn &rest args)
-  "Use `void-log' instead of `message'."
-  (cl-letf (((symbol-function 'message) #'void-log))
+(defun xl--message-with-xl-log-advice (orign-fn &rest args)
+  "Use `xl-log' instead of `message'."
+  (cl-letf (((symbol-function 'message) #'xl-log))
     (apply orig-fn args)))
 
-(defun void-message-with-void-log (fn)
-  "Use `void-log' instead of `message'."
-  (void-add-advice fn :around #'void--message-with-void-log-advice))
+(defun xl-message-with-xl-log (fn)
+  "Use `xl-log' instead of `message'."
+  (xl-add-advice fn :around #'xl--message-with-xl-log-advice))
 #+end_src
 
 *** macro writing tools
@@ -415,7 +415,7 @@ doesn't help that emacs functions tend towards longer names due to a lack of
 namespaces. Therefore, I support keyword args in the function body.
 
 #+begin_src emacs-lisp
-(defun void--keyword-macro-args (body)
+(defun xl--keyword-macro-args (body)
   "Return list of (docstring KEYWORD-ARGS BODY)."
   (list (when (stringp (car body)) (pop body))
         (--unfold (when (keywordp (car it))
@@ -439,10 +439,10 @@ macro-writing.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-symbol-intern (&rest args)
+(defun xl-symbol-intern (&rest args)
   "Return ARGS as a symbol."
   (declare (pure t) (side-effect-free t))
-  (intern (apply #'void-to-string args)))
+  (intern (apply #'xl-to-string args)))
 #+end_src
 
 ***** keyword intern
@@ -454,10 +454,10 @@ Sometimes I want to create a keyword by interning a string or a symbol. This
 commands saves me having to add the colon at the beginning before interning.
 
 #+begin_src emacs-lisp
-(defun void-keyword-intern (&rest args)
+(defun xl-keyword-intern (&rest args)
   "Return ARGS as a keyword."
   (declare (pure t) (side-effect-free t))
-  (apply #'void-symbol-intern ":" args))
+  (apply #'xl-symbol-intern ":" args))
 #+end_src
 
 ***** keyword name
@@ -470,10 +470,10 @@ don't want the prepended colon on they keyword. This function is for that
 occasion.
 
 #+begin_src emacs-lisp
-(defun void-keyword-name (keyword)
+(defun xl-keyword-name (keyword)
   "Return the name of the KEYWORD without the prepended `:'."
   (declare (pure t) (side-effect-free t))
-  (substring-no-properties (void-to-string keyword) 1))
+  (substring-no-properties (xl-to-string keyword) 1))
 #+end_src
 
 ***** convert to string
@@ -485,7 +485,7 @@ This function is for converting something to a string, no questions asked. I use
 it when I don't want to be bothered with details and just want a string.
 
 #+begin_src emacs-lisp
-(defun void-to-string (&rest args)
+(defun xl-to-string (&rest args)
   "Return ARGS as a string."
   (declare (pure t) (side-effect-free t))
   (with-output-to-string
@@ -498,7 +498,7 @@ it when I don't want to be bothered with details and just want a string.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-hook-symbol-p (symbol)
+(defun xl-hook-symbol-p (symbol)
   "Return true if symbol is a hook symbol."
   (s-matches-p ".+-hook\\'" (symbol-name symbol)))
 #+end_src
@@ -509,7 +509,7 @@ it when I don't want to be bothered with details and just want a string.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-mode-symbol-p (symbol)
+(defun xl-mode-symbol-p (symbol)
   "Return non-nil if symbol is a mode symbol."
   (s-matches-p ".+-mode\\'" (symbol-name symbol)))
 #+end_src
@@ -524,13 +524,13 @@ nest a form within some number of other forms (for an example, see [[id][after!]
 macro makes this problem much easier.
 
 #+begin_src emacs-lisp
-(defun void-wrap-form (wrappers form)
+(defun xl-wrap-form (wrappers form)
   "Wrap FORM with each wrapper in WRAPPERS.
 WRAPPERS are a list of forms to wrap around FORM."
   (declare (pure t) (side-effect-free t))
   (setq wrappers (reverse wrappers))
   (if (consp wrappers)
-      (void-wrap-form (cdr wrappers)
+      (xl-wrap-form (cdr wrappers)
                       (append (car wrappers)
                               (list form)))
     form))
@@ -558,7 +558,7 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-ANAPHORIC-SYMBOL-REGEXP
+(defconst XL-ANAPHORIC-SYMBOL-REGEXP
   (eval-when-compile (rx "<" (group (1+ (not (any white ">" "<")))) ">"))
   "Regular expression that matches an anaphoric symbol.")
 #+end_src
@@ -569,10 +569,10 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 :END:
 
 #+begin_src emacs-lisp
-(defun void-anaphoric-symbol-p (obj)
+(defun xl-anaphoric-symbol-p (obj)
   "Return non-nil if OBJ is an anaphoric symbol."
   (and (symbolp obj)
-       (string-match-p VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name obj))))
+       (string-match-p XL-ANAPHORIC-SYMBOL-REGEXP (symbol-name obj))))
 #+end_src
 
 ***** true anaphora name
@@ -581,10 +581,10 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 :END:
 
 #+begin_src emacs-lisp
-(defun void-anaphoric-true-symbol (symbol)
+(defun xl-anaphoric-true-symbol (symbol)
   "Return the symbol that corresponds to the anaphoric symbol."
   (save-match-data
-    (string-match VOID-ANAPHORIC-SYMBOL-REGEXP (symbol-name symbol))
+    (string-match XL-ANAPHORIC-SYMBOL-REGEXP (symbol-name symbol))
     (intern (match-string 1 (symbol-name symbol)))))
 #+end_src
 
@@ -594,10 +594,10 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 :END:
 
 #+begin_src emacs-lisp
-(defun void-anaphoric-symbols (body)
+(defun xl-anaphoric-symbols (body)
   "Return all the anaphoric symbols in body."
   (->> (-flatten body)
-       (-filter #'void-anaphoric-symbol-p)
+       (-filter #'xl-anaphoric-symbol-p)
        (-uniq)))
 #+end_src
 
@@ -607,9 +607,9 @@ https://en.wikipedia.org/wiki/Anaphoric_macro
 :END:
 
 #+begin_src emacs-lisp
-(defun void-anaphoric-symbols-in-obj (obj)
+(defun xl-anaphoric-symbols-in-obj (obj)
   "Return a list of anaphoric symbols in OBJ."
-  (s-match-strings-all VOID-ANAPHORIC-SYMBOL-REGEXP (void-to-string obj)))
+  (s-match-strings-all XL-ANAPHORIC-SYMBOL-REGEXP (xl-to-string obj)))
 #+end_src
 
 *** eval-after-load!
@@ -660,7 +660,7 @@ from pulling (or failing to pull) in autoloaded macros/features.
          (macroexp-progn
           (--map `(after! ,it ,@body) (cdr features))))
         ((eq 'and (car-safe features))
-         (void-wrap-form (--map `(after! ,it) (cdr features))
+         (xl-wrap-form (--map `(after! ,it) (cdr features))
                          (macroexp-progn body)))
         ((listp features)
          `(after! ,(cons 'and features) ,@body))
@@ -719,7 +719,7 @@ emacs. Their purpose is to fascillitate customization of what happens before or
 after particular events.
 
 In this headline, I strive to establish a common naming convention for
-"void-defined" hooks, so I can clearly distinguish them from pre-defined hooks.
+"xl-defined" hooks, so I can clearly distinguish them from pre-defined hooks.
 
 **** void specific hook regexp
 :PROPERTIES:
@@ -735,8 +735,8 @@ In this headline, I strive to establish a common naming convention for
 :END:
 
 #+begin_src emacs-lisp
-(defun void-defined-hook-symbol-p (symbol)
-  "Return non-nil if SYMBOL is a void-specific hook."
+(defun xl-defined-hook-symbol-p (symbol)
+  "Return non-nil if SYMBOL is a xl-specific hook."
   (alet "\\`[^[:space:]]+&[^[:space:]]+\\'"
     (s-matches-p it (symbol-name symbol))))
 #+end_src
@@ -754,7 +754,7 @@ This section pertains to functions that help with the naming convention.
 :END:
 
 #+begin_src emacs-lisp
-(defsubst void--hook-info (hook-fn i)
+(defsubst xl--hook-info (hook-fn i)
   (intern (nth i (split-string (symbol-name hook-fn) "&" t))))
 #+end_src
 
@@ -769,10 +769,10 @@ which hook variable a function resides in based on looking at the name
 example). This proves to be useful for [[id:8506fa78-c781-4ca8-bd58-169cce23a504][expire advice]].
 
 #+begin_src emacs-lisp
-(defsubst void-hook-variable (hook-fn)
+(defsubst xl-hook-variable (hook-fn)
   "Return the hook variable HOOK-FN is in.
 HOOK-FN is a function named with Void naming conventions."
-  (void--hook-info hook-fn 0))
+  (xl--hook-info hook-fn 0))
 #+end_src
 
 ***** hook function
@@ -781,9 +781,9 @@ HOOK-FN is a function named with Void naming conventions."
 :END:
 
 #+begin_src emacs-lisp
-(defun void-hook-function (hook-fn)
+(defun xl-hook-function (hook-fn)
   "Return the function HOOK-FN."
-  (void--hook-info hook-fn 1))
+  (xl--hook-info hook-fn 1))
 #+end_src
 
 ***** hook name
@@ -791,21 +791,21 @@ HOOK-FN is a function named with Void naming conventions."
 :ID:       6b14ea72-b8ef-493d-82e2-962f889736a2
 :END:
 
-This function determines how void-defined hooks are named. When possible they
+This function determines how xl-defined hooks are named. When possible they
 should be in the form of some action so that the hook name will be of the form
 =hook-variable&do-something=. Having the names like this makes it so you can
 actually read through hook functions like reading a todo-list. It will be
 apparent what's being done.
 
 #+begin_src emacs-lisp
-(defun void-hook-function-name (hook function)
-  "Return name to give to void-defined hook function."
-  (alet (acond ((void-mode-symbol-p function)
-		(void-symbol-intern 'enable- function))
-	       ((nth 1 (s-match "void--\\(.+\\)-hook" (symbol-name function)))
+(defun xl-hook-function-name (hook function)
+  "Return name to give to xl-defined hook function."
+  (alet (acond ((xl-mode-symbol-p function)
+		(xl-symbol-intern 'enable- function))
+	       ((nth 1 (s-match "xl--\\(.+\\)-hook" (symbol-name function)))
 		it)
 	       (t function))
-    (void-symbol-intern hook '& it)))
+    (xl-symbol-intern hook '& it)))
 #+end_src
 
 **** generate a hook
@@ -818,7 +818,7 @@ variable, it interferes with the running of the hook variable. Evaluation
 stops at the error; as a result hooks following the bugged function aren't
 evaluated. All in all, you get an unpleasant experience with partially
 evaluated code. I've faced this problem numerous times, mostly when I failed
-to autoload the hook for a mode and as a result get a =void-function= error
+to autoload the hook for a mode and as a result get a =xl-function= error
 in the middle of the mode's hook.
 
 I would prefer an elegant failure. By this, I mean I'd like the "problem"
@@ -826,16 +826,16 @@ function to report the problem to me without short-circuiting. This is why I
 wrap hook functions in a [[helpfn:condition-case][condition-case]] block.
 
 #+begin_src emacs-lisp
-(defun void-generate-hook-function (hook function)
+(defun xl-generate-hook-function (hook function)
   "Return a Void hook function.
 The function does the same thing as FUNCTION, but errors are caught."
-  (alet (void-hook-function-name hook function)
+  (alet (xl-hook-function-name hook function)
     (fset it
 	  `(lambda (&rest args)
 	     (condition-case err
 		 (apply #',function args)
 	       (error
-		(void-log "%s failed." ',function)))))
+		(xl-log "%s failed." ',function)))))
     it))
 #+end_src
 
@@ -853,13 +853,13 @@ Add a hook that follow naming conventions. When adding a hook, if it is a void
 function, change it to a hook.
 
 #+begin_src emacs-lisp
-(defun void--add-hook (hook function &optional depth local expire-fn)
+(defun xl--add-hook (hook function &optional depth local expire-fn)
   "Generate a Void hook function and add it to HOOK."
-  (let ((hook-fn (void-generate-hook-function hook function)))
+  (let ((hook-fn (xl-generate-hook-function hook function)))
     (add-hook hook hook-fn depth local)
-    (void-log-function hook-fn)
+    (xl-log-function hook-fn)
     (when expire-fn
-      (alet (void-expire-advice hook-fn expire-fn t)
+      (alet (xl-expire-advice hook-fn expire-fn t)
 	(advice-add new-hook :around it)))))
 #+end_src
 
@@ -868,15 +868,15 @@ function, change it to a hook.
 :ID:       10dcca8f-7dd0-45da-a413-43608c098b10
 :END:
 
-This is a simple wrapper around [[id:][void--add-hook]] that handles multiple hook
+This is a simple wrapper around [[id:][xl--add-hook]] that handles multiple hook
 variables and hook functions.
 
 #+begin_src emacs-lisp
-(defun void-add-hook (hooks functions &optional depth local expire-fn)
+(defun xl-add-hook (hooks functions &optional depth local expire-fn)
   "Generate Void hook functions and add them to HOOKS."
   (dolist (hook (-list hooks))
     (dolist (fn (-list functions))
-      (void--add-hook hook fn depth local expire-fn))))
+      (xl--add-hook hook fn depth local expire-fn))))
 #+end_src
 
 **** removing hooks
@@ -885,9 +885,9 @@ variables and hook functions.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-remove-hook (fn)
+(defun xl-remove-hook (fn)
   "Remove a void hook."
-  (remove-hook (void-hook-var fn) fn))
+  (remove-hook (xl-hook-var fn) fn))
 #+end_src
 
 **** defhook!
@@ -909,12 +909,12 @@ function.
   (-let* ((hooks (-take-while (-not #'keywordp) args))
           (local (plist-get hooks :local))
           (depth (or (plist-get hooks :append) (plist-get hooks :depth)))
-          ((docstring _ body) (void--keyword-macro-args body))
-          (hook-name (void-symbol-intern 'void-- name '-hook)))
+          ((docstring _ body) (xl--keyword-macro-args body))
+          (hook-name (xl-symbol-intern 'xl-- name '-hook)))
     `(progn
        ,@(mapcar (lambda (hook)
                    `(aprog1 (defun ,hook-name (&rest _) ,docstring ,@body)
-                      (void-add-hook ',hook it ,depth ,local)))
+                      (xl-add-hook ',hook it ,depth ,local)))
                  hooks))))
 #+end_src
 
@@ -945,7 +945,7 @@ This function should be used to distinguish advices I add to functions over
 advices that have been added by Emacs or other packages.
 
 #+begin_src emacs-lisp
-(defun void-defined-advice-symbol-p (fn)
+(defun xl-defined-advice-symbol-p (fn)
   "Return non-nil if FN is a void advice."
   (s-matches-p (rx (1+ (not white)) "@" (1+ (not white)))
                (symbol-name fn)))
@@ -966,17 +966,17 @@ want to log it differently.
 :END:
 
 #+begin_src emacs-lisp
-(defun void--log-message (fn)
+(defun xl--log-message (fn)
   "Return the message logged."
   (pcase fn
-    ((pred void-defined-hook-symbol-p)
+    ((pred xl-defined-hook-symbol-p)
      (format "& %s -> %s"
-	     (void-hook-variable fn)
-	     (void-hook-function fn)))
-    ((pred void-defined-advice-symbol-p)
+	     (xl-hook-variable fn)
+	     (xl-hook-function fn)))
+    ((pred xl-defined-advice-symbol-p)
      (format "@ %s -> %s"
-	     (void-advice-symbol fn)
-	     (void-advice-function fn)))
+	     (xl-advice-symbol fn)
+	     (xl-advice-function fn)))
     (_
      (format "%s called" fn))))
 #+end_src
@@ -990,13 +990,13 @@ Maybe it's overkill having an advice just to log a function. But it helps
 maintain maximum purity and extensibility.
 
 #+begin_src emacs-lisp
-(defun void-log-function (fn &optional after)
+(defun xl-log-function (fn &optional after)
   "Log calls to FN.
-Add a log to *void-log* after function is called.
+Add a log to *xl-log* after function is called.
 This function should be primarly used for side-effect but does incidentally return the
 log function that is added to FN."
-  (aprog1 (void-symbol-intern fn '@ 'log)
-    (fset it `(lambda (&rest _) (void-log ,(void--log-message fn))))
+  (aprog1 (xl-symbol-intern fn '@ 'log)
+    (fset it `(lambda (&rest _) (xl-log ,(xl--log-message fn))))
     (advice-add fn (if after :after :before) it)))
 #+end_src
 
@@ -1011,7 +1011,7 @@ log function that is added to FN."
 :END:
 
 #+begin_src emacs-lisp
-(defun void-advice-symbol-p (symbol)
+(defun xl-advice-symbol-p (symbol)
   (s-match "\\(.+\\)@.+" (symbol-name symbol)))
 #+end_src
 
@@ -1027,7 +1027,7 @@ it's possible for a given advice to advise multiple functions. With the naming
 system I provide, doing this is trivial.
 
 #+begin_src emacs-lisp
-(defun void-advice-symbol (fn)
+(defun xl-advice-symbol (fn)
   "Return the symbol."
   (->> (symbol-name fn)
        (s-match "\\([^[:space:]]+\\)@[^[:space:]]+")
@@ -1043,10 +1043,10 @@ system I provide, doing this is trivial.
 This is where I try to convert a symbol and an advice into a symbol@action.
 
 #+begin_src emacs-lisp
-(defun void-advice-name (symbol advice)
+(defun xl-advice-name (symbol advice)
   "Return advice name that meets Void naming conventions."
-  (alet (nth 1 (s-match "void--\\(.+\\)-advice" (symbol-name advice)))
-    (void-symbol-intern symbol '@ (or it advice))))
+  (alet (nth 1 (s-match "xl--\\(.+\\)-advice" (symbol-name advice)))
+    (xl-symbol-intern symbol '@ (or it advice))))
 #+end_src
 
 **** adding advice
@@ -1063,18 +1063,18 @@ Since adding an advice to multiple functions is done frequently.
 
 Often, I advise functions with other existing functions (such as =#'ignore=)
 instead of defining my own advices. To maintain consistency with the naming
-convention I created [[helpfn:void-add-advice][void-add-advice]]. It will create an advice with an
+convention I created [[helpfn:xl-add-advice][xl-add-advice]]. It will create an advice with an
 appropriate name to target.
 
 #+begin_src emacs-lisp
-(defun void--add-advice (symbol where fn &optional props expire-fn)
+(defun xl--add-advice (symbol where fn &optional props expire-fn)
   "Advise SYMBOLS with Void ADVICES."
-  (let ((advice (void-advice-name symbol fn)))
+  (let ((advice (xl-advice-name symbol fn)))
     (defalias advice fn)
     (advice-add symbol where advice props)
-    (void-log-function advice)
+    (xl-log-function advice)
     (when expire-fn
-      (alet (void-expire-advice advice expire-fn t)
+      (alet (xl-expire-advice advice expire-fn t)
 	(advice-add advice :around it)))))
 #+end_src
 
@@ -1084,11 +1084,11 @@ appropriate name to target.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-add-advice (symbols where advices &optional props expire-fn)
+(defun xl-add-advice (symbols where advices &optional props expire-fn)
   "Advise TARGETS with Void ADVICES."
   (dolist (symbol (-list symbols))
     (dolist (advice (-list advices))
-      (void--add-advice symbol where advice props expire-fn))))
+      (xl--add-advice symbol where advice props expire-fn))))
 #+end_src
 
 **** remove advice
@@ -1100,9 +1100,9 @@ Since we can get the advisee from the advise name, or remove advice only needs
 one argument--the advice to remove.
 
 #+begin_src emacs-lisp
-(defun void-remove-advice (advice)
+(defun xl-remove-advice (advice)
   "Remove advice."
-  (advice-remove (void-advice-symbol advice) advice))
+  (advice-remove (xl-advice-symbol advice) advice))
 #+end_src
 
 **** advice action
@@ -1111,7 +1111,7 @@ one argument--the advice to remove.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-advice-function (advice)
+(defun xl-advice-function (advice)
   "Return the action for advice."
   (->> (symbol-name advice)
        (s-match (rx "@" (group (1+ (not (any "@" white)))) eos))
@@ -1132,23 +1132,23 @@ The way I handle this situation is by creating a function that generates an
 Note that this function returns must be evaluated with lexical binding to work.
 
 #+begin_src emacs-lisp
-(defun void-expire-advice (fn &optional expire-fn unbind)
+(defun xl-expire-advice (fn &optional expire-fn unbind)
   "Return an advice that causes FN to expire when EXPIRE-FN returns true.
 FN is a function. EXPIRE-FN is a function that returns true when FN
 should expire."
-  (let ((expire-advice (void-advice-name fn 'expire))
+  (let ((expire-advice (xl-advice-name fn 'expire))
         (expire-fn (or expire-fn t)))
     (fset expire-advice
           `(lambda (orig-fn &rest args)
              (aprog1 (apply orig-fn args)
                (when (or (eq t #',expire-fn) (funcall #',expire-fn))
-                 (when (void-defined-advice-symbol-p #',fn)
-                   (void-remove-advice #',fn))
-                 (when (void-defined-hook-symbol-p #',fn)
-                   (void-remove-hook #',fn))
+                 (when (xl-defined-advice-symbol-p #',fn)
+                   (xl-remove-advice #',fn))
+                 (when (xl-defined-hook-symbol-p #',fn)
+                   (xl-remove-hook #',fn))
                  (advice-remove #',fn #',expire-advice)
                  (when ,unbind (fmakunbound #',expire-advice))
-                 (void-log "%s has expired." #',fn)
+                 (xl-log "%s has expired." #',fn)
                  (when ,unbind (fmakunbound #',fn))))))))
 #+end_src
 
@@ -1181,9 +1181,9 @@ passed in.
   (unless (listp args)
     (signal 'wrong-type-argument (list #'listp args)))
   (-let (((where lambda-args fn props) args)
-         (advice-name (intern (format "void--%s-advice" name))))
+         (advice-name (intern (format "xl--%s-advice" name))))
     `(aprog1 (defun ,name ,lambda-args ,@body)
-       (void-add-advice #',fn ,where it ,props))))
+       (xl-add-advice #',fn ,where it ,props))))
 #+end_src
 
 ***** anaphoric defadvice!
@@ -1303,15 +1303,15 @@ and convenient way to do this.
 :END:
 
 #+begin_src emacs-lisp
-(defun void--load-on-call (package where functions &optional enable)
+(defun xl--load-on-call (package where functions &optional enable)
   "Load packages FUNCTIONS are called."
-  (alet (void-symbol-intern 'void--load- package '-advice)
+  (alet (xl-symbol-intern 'xl--load- package '-advice)
     (fset it `(lambda (&rest _)
-                (void-log "Loading %s" ',package)
+                (xl-log "Loading %s" ',package)
                 (require ',package)
                 (when ,enable
-                  (funcall-interactively #',(void-symbol-intern package '-mode) 1))))
-    (void-add-advice functions where it nil t)))
+                  (funcall-interactively #',(xl-symbol-intern package '-mode) 1))))
+    (xl-add-advice functions where it nil t)))
 #+end_src
 
 **** load before call
@@ -1320,8 +1320,8 @@ and convenient way to do this.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-load-before-call (package functions &optional enable)
-  (void--load-on-call package :before functions enable))
+(defun xl-load-before-call (package functions &optional enable)
+  (xl--load-on-call package :before functions enable))
 #+end_src
 
 **** load after call
@@ -1330,8 +1330,8 @@ and convenient way to do this.
 :END:
 
 #+begin_src emacs-lisp
-(defun void-load-after-call (package functions &optional enable)
-  (void--load-on-call package :after functions enable))
+(defun xl-load-after-call (package functions &optional enable)
+  (xl--load-on-call package :after functions enable))
 #+end_src
 
 
@@ -1354,10 +1354,10 @@ is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacem
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-LEADER-KEY "SPC"
+(defconst XL-LEADER-KEY "SPC"
   "The evil leader prefix key.")
 
-(defconst VOID-LEADER-ALT-KEY "M-SPC"
+(defconst XL-LEADER-ALT-KEY "M-SPC"
   "The leader prefix key used for Insert and Emacs states.")
 #+end_src
 
@@ -1367,17 +1367,17 @@ is to bind them in a tree-like fashion (see [[https://github.com/syl20bnr/spacem
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-LOCALLEADER-KEY "SPC m"
+(defconst XL-LOCALLEADER-KEY "SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
-(defconst VOID-LOCALLEADER-ALT-KEY "C-SPC m"
+(defconst XL-LOCALLEADER-ALT-KEY "C-SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
-(defconst VOID-LOCALLEADER-SHORT-KEY ","
-  "A shorter alternative `void-localleader-key'.")
+(defconst XL-LOCALLEADER-SHORT-KEY ","
+  "A shorter alternative `xl-localleader-key'.")
 
-(defconst VOID-LOCALLEADER-SHORT-ALT-KEY "M-,"
-  "A short non-normal  `void-localleader-key'.")
+(defconst XL-LOCALLEADER-SHORT-ALT-KEY "M-,"
+  "A short non-normal  `xl-localleader-key'.")
 #+end_src
 
 *** general
@@ -1426,8 +1426,8 @@ This form creates a macro =define-leader-key!= that.
 
 #+begin_src emacs-lisp
 (general-create-definer define-leader-key!
-  :prefix VOID-LEADER-KEY
-  :non-normal-prefix VOID-LEADER-ALT-KEY
+  :prefix XL-LEADER-KEY
+  :non-normal-prefix XL-LEADER-ALT-KEY
   :keymaps 'override
   :states '(normal motion insert emacs))
 #+end_src
@@ -1451,12 +1451,12 @@ make a difference. That's why.
 	  :states '(normal motion insert emacs)
 	  ,@args)
     `(progn (general-def
-              :prefix VOID-LOCALLEADER-KEY
-              :non-normal-prefix VOID-LOCALLEADER-ALT-KEY
+              :prefix XL-LOCALLEADER-KEY
+              :non-normal-prefix XL-LOCALLEADER-ALT-KEY
               ,@it)
             (general-def
-              :prefix VOID-LOCALLEADER-SHORT-KEY
-              :non-normal-prefix VOID-LOCALLEADER-SHORT-ALT-KEY
+              :prefix XL-LOCALLEADER-SHORT-KEY
+              :non-normal-prefix XL-LOCALLEADER-SHORT-ALT-KEY
               ,@it))))
 #+end_src
 
@@ -1518,7 +1518,7 @@ In addition to providing keybinding stuff, =general= also provides.
 (setq inhibit-startup-buffer-menu t)
 (setq initial-major-mode 'fundamental-mode)
 (setq initial-scratch-message nil)
-(setq initial-buffer-choice #'void-initial-buffer)
+(setq initial-buffer-choice #'xl-initial-buffer)
 #+end_src
 
 *** paren
@@ -1529,7 +1529,7 @@ In addition to providing keybinding stuff, =general= also provides.
 
 #+begin_src emacs-lisp
 (setq show-paren-delay 0)
-(void-add-hook 'prog-mode-hook #'show-paren-mode)
+(xl-add-hook 'prog-mode-hook #'show-paren-mode)
 #+end_src
 
 *** clipboard
@@ -1598,7 +1598,7 @@ How to ask for confirmation when leaving Emacs.
 (setq auto-save-default nil)
 (setq auto-save-interval 300)
 (setq auto-save-timeout 30)
-(setq backup-directory-alist (list (cons ".*" (concat VOID-DATA-DIR "backup/"))))
+(setq backup-directory-alist (list (cons ".*" (concat XL-DATA-DIR "backup/"))))
 (setq make-backup-files nil)
 (setq version-control nil)
 (setq kept-old-versions 2)
@@ -1636,7 +1636,7 @@ Don't ping things that look like domain names.
 
 #+begin_src emacs-lisp
 (after! server
-  (setq server-auth-dir (concat VOID-DATA-DIR "server/")))
+  (setq server-auth-dir (concat XL-DATA-DIR "server/")))
 #+end_src
 
 *** tramp
@@ -1648,8 +1648,8 @@ Don't ping things that look like domain names.
 #+begin_src emacs-lisp
 (after! tramp
   (setq tramp-backup-directory-alist backup-directory-alist)
-  (setq tramp-auto-save-directory (concat VOID-DATA-DIR "tramp-auto-save/"))
-  (setq tramp-persistency-file-name (concat VOID-DATA-DIR "tramp-persistency.el")))
+  (setq tramp-auto-save-directory (concat XL-DATA-DIR "tramp-auto-save/"))
+  (setq tramp-persistency-file-name (concat XL-DATA-DIR "tramp-persistency.el")))
 #+end_src
 
 *** cus-edit
@@ -1659,7 +1659,7 @@ Don't ping things that look like domain names.
 
 #+begin_src emacs-lisp
 (setq custom-file null-device)
-(setq custom-theme-directory (concat VOID-LOCAL-DIR "themes/"))
+(setq custom-theme-directory (concat XL-LOCAL-DIR "themes/"))
 #+end_src
 
 *** url
@@ -1668,8 +1668,8 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(setq url-cache-directory (concat VOID-DATA-DIR "url/cache/"))
-(setq url-configuration-directory (concat VOID-DATA-DIR "url/configuration/"))
+(setq url-cache-directory (concat XL-DATA-DIR "url/cache/"))
+(setq url-configuration-directory (concat XL-DATA-DIR "url/configuration/"))
 #+end_src
 
 *** bytecomp
@@ -1678,7 +1678,7 @@ Don't ping things that look like domain names.
 :END:
 
 #+begin_src emacs-lisp
-(setq byte-compile-verbose void-debug-p)
+(setq byte-compile-verbose xl-debug-p)
 (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
 #+end_src
 
@@ -1759,7 +1759,7 @@ Non-nil means animated images loop forever, rather than playing once.
 ;; :ID:       4ad7e704-f490-40e4-b2bc-8a30a10a7bb7
 ;; :END:
 
-(setq diary-file (concat VOID-DATA-DIR "diary"))
+(setq diary-file (concat XL-DATA-DIR "diary"))
 
 (after! calendar
   (require 'f)
@@ -1771,7 +1771,7 @@ Non-nil means animated images loop forever, rather than playing once.
 :ID:       e48e925e-1f1e-4c79-8652-c92aafe06290
 :END:
 
-(setq prefer-coding-system VOID-DEFAULT-CODING-SYSTEM)
+(setq prefer-coding-system XL-DEFAULT-CODING-SYSTEM)
 
 *** gv
 :PROPERTIES:
@@ -1792,7 +1792,7 @@ https://emacs.stackexchange.com/questions/59314/how-can-i-make-setf-work-with-pl
 :END:
 
 #+begin_src emacs-lisp
-(setq nsm-settings-file (concat VOID-DATA-DIR "network-settings.data"))
+(setq nsm-settings-file (concat XL-DATA-DIR "network-settings.data"))
 #+end_src
 
 *** browse-url
@@ -1851,10 +1851,10 @@ this function. I define it here from scratch so this file will be independent of
 my =init.el=.
 
 #+begin_src emacs-lisp
-(defun void-needs-tangling-p ()
+(defun xl-needs-tangling-p ()
   "Return t if void needs taggling."
-  (or (not (file-exists-p VOID-MAIN-ELISP-FILE))
-      (file-newer-than-file-p VOID-MAIN-ORG-FILE VOID-MAIN-ORG-FILE)))
+  (or (not (file-exists-p XL-MAIN-ELISP-FILE))
+      (file-newer-than-file-p XL-MAIN-ORG-FILE XL-MAIN-ORG-FILE)))
 #+end_src
 
 **** load tangling functions
@@ -1872,7 +1872,7 @@ process but that would only work if the function's definiton only depends on
 built-in emacs variables and functions.
 
 #+begin_src emacs-lisp
-(defun void-load-init-file-only ()
+(defun xl-load-init-file-only ()
   "Load init file."
   (let ((old-fn (symbol-function 'load))
 	(user-init-file (concat user-emacs-directory "init.el")))
@@ -1893,10 +1893,10 @@ The purpose of this function is simply to log the outcome of whether tangling
 has been successful or not. It's used as the second argument of =async-start=.
 
 #+begin_src emacs-lisp
-(defun void-log-tangling-outcome ()
+(defun xl-log-tangling-outcome ()
   "Log whether tangling successful."
-  (alet (if (void-needs-tangling-p) "✕ failed" "✓ succeeded")
-    (void-log "%s tangling `VOID-MAIN-ORG-FILE'." it)))
+  (alet (if (xl-needs-tangling-p) "✕ failed" "✓ succeeded")
+    (xl-log "%s tangling `XL-MAIN-ORG-FILE'." it)))
 #+end_src
 
 **** tangle asyncronously
@@ -1910,11 +1910,11 @@ is single-threaded, so doing it synchronously will likely cause a significant
 "hangs" or pauses after each save.
 
 #+begin_src emacs-lisp
-(defun void-tangle-async-maybe (&optional log-output-p)
-  "Tangle `VOID-MAIN-ORG-FILE' asynchronously."
-  (when (void-needs-tangling-p)
-    (async-start #'void-load-init-file-only
-		 (when log-output-p #'void-log-tangling-outcome))))
+(defun xl-tangle-async-maybe (&optional log-output-p)
+  "Tangle `XL-MAIN-ORG-FILE' asynchronously."
+  (when (xl-needs-tangling-p)
+    (async-start #'xl-load-init-file-only
+		 (when log-output-p #'xl-log-tangling-outcome))))
 #+end_src
 
 **** tangle on quit
@@ -1923,7 +1923,7 @@ is single-threaded, so doing it synchronously will likely cause a significant
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'kill-emacs-hook #'void-tangle-async-maybe)
+(xl-add-hook 'kill-emacs-hook #'xl-tangle-async-maybe)
 #+end_src
 
 **** tangle on save
@@ -1936,10 +1936,10 @@ don't tangle needlessly.
 
 #+begin_src emacs-lisp
 (defhook! tangle-async-maybe (after-save-hook)
-  "When I'm saving from `VOID-MAIN-ORG-FILE', tangle it."
+  "When I'm saving from `XL-MAIN-ORG-FILE', tangle it."
   (when (aand (buffer-file-name)
-	      (string= VOID-MAIN-ELISP-FILE it))
-    (void-tangle-async-maybe)))
+	      (string= XL-MAIN-ELISP-FILE it))
+    (xl-tangle-async-maybe)))
 #+end_src
 
 *** disable =auto-save-directory= from being created
@@ -1959,12 +1959,12 @@ being created.
 :ID:       36e2113f-a28f-4ef2-bb90-141f82291c91
 :END:
 
-I find it convenient to be able to view the init time in the =*void-log*= buffer.
+I find it convenient to be able to view the init time in the =*xl-log*= buffer.
 
 #+begin_src emacs-lisp
 (defhook! log-init-time (emacs-startup-hook :append t)
   "Log the init time."
-  (void-log "emacs-init-time -> %s" (emacs-init-time)))
+  (xl-log "emacs-init-time -> %s" (emacs-init-time)))
 #+end_src
 
 *** set the fill-column
@@ -2000,7 +2000,7 @@ If you just set [[helpvar:inhibit-startup-echo-area-message][inhibit-startup-ech
 So it's best just to override the function entirely.
 
 #+begin_src emacs-lisp
-(void-add-advice #'display-startup-echo-area-message :override #'ignore)
+(xl-add-advice #'display-startup-echo-area-message :override #'ignore)
 #+end_src
 
 *** use yes or no
@@ -2011,7 +2011,7 @@ So it's best just to override the function entirely.
 It suffices typing =y= or =n= as opposed to =yes= or =no=.
 
 #+begin_src emacs-lisp
-(void-add-advice #'yes-or-no-p :override #'y-or-n-p)
+(xl-add-advice #'yes-or-no-p :override #'y-or-n-p)
 #+end_src
 
 *** utf-8 text encoding
@@ -2111,7 +2111,7 @@ prefer not seeing that. I have my own [[][dashboard]] anyway.
 #+begin_src emacs-lisp
 (gsetq inhibit-startup-message t)
 (gsetq inhibit-splash-screen t)
-(void-add-advice 'startup-echo-area-message :override #'ignore)
+(xl-add-advice 'startup-echo-area-message :override #'ignore)
 #+end_src
 
 *** disable cursor blinking
@@ -2156,16 +2156,16 @@ I define three levels on frequency with which emacs should perform garbage
 collection.
 
 #+begin_src emacs-lisp
-(defconst VOID-GC-CONS-THRESHOLD-MAX most-positive-fixnum
+(defconst XL-GC-CONS-THRESHOLD-MAX most-positive-fixnum
   "The upper limit for `gc-cons-threshold'.
 When VOID is performing computationally intensive operations,
 `gc-cons-threshold' is set to this value.")
 
-(defconst VOID-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
+(defconst XL-GC-CONS-THRESHOLD (eval-when-compile (* 16 1024 1024))
   "The default value for `gc-cons-threshold'.
 This is the value of `gc-cons-threshold' that should be used in typical usages.")
 
-(defconst VOID-GC-CONS-THRESHOLD-MIN (eval-when-compile (* 4 1024 1024))
+(defconst XL-GC-CONS-THRESHOLD-MIN (eval-when-compile (* 4 1024 1024))
   "The value for `gc-cons-threshold'.")
 #+end_src
 
@@ -2184,12 +2184,12 @@ are done before setting the =gc-cons-threshold= back to a normal value.
 
 #+begin_src emacs-lisp
 (setq gcmh-idle-delay 5)
-(setq gcmh-verbose void-debug-p)
-(setq gcmh-high-cons-threshold VOID-GC-CONS-THRESHOLD)
-(setq gcmh-low-cons-threshold VOID-GC-CONS-THRESHOLD-MIN)
+(setq gcmh-verbose xl-debug-p)
+(setq gcmh-high-cons-threshold XL-GC-CONS-THRESHOLD)
+(setq gcmh-low-cons-threshold XL-GC-CONS-THRESHOLD-MIN)
 
 (autoload #'gcmh-mode "gcmh" nil t nil)
-(void-add-hook 'emacs-startup-hook #'gcmh-mode t)
+(xl-add-hook 'emacs-startup-hook #'gcmh-mode t)
 #+end_src
 
 **** minibuffer
@@ -2219,12 +2219,12 @@ hook variables use action verbs in their names not nouns. So the =exit= in
 (defvaralias 'minibuffer-enter-hook 'minibuffer-setup-hook)
 
 (defhook! boost-garbage-collection (minibuffer-enter-hook)
-  "Boost garbage collection settings to `VOID-GC-CONS-THRESHOLD-MAX'."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD-MAX))
+  "Boost garbage collection settings to `XL-GC-CONS-THRESHOLD-MAX'."
+  (setq gc-cons-threshold XL-GC-CONS-THRESHOLD-MAX))
 
 (defhook! defer-garbage-collection (minibuffer-exit-hook :append t)
-  "Reset garbage collection settings to `void-gc-cons-threshold' after delay."
-  (setq gc-cons-threshold VOID-GC-CONS-THRESHOLD))
+  "Reset garbage collection settings to `xl-gc-cons-threshold' after delay."
+  (setq gc-cons-threshold XL-GC-CONS-THRESHOLD))
 #+end_src
 
 *** theme
@@ -2254,13 +2254,13 @@ Sometimes there are things that need tidying up after loading a theme. For
 example, if I'm using evil I need to update the cursor color.
 
 #+begin_src emacs-lisp
-(defvar void-after-load-theme-hook nil
+(defvar xl-after-load-theme-hook nil
   "Hook run after the theme is loaded with `load-theme'.")
 
 (defadvice! run-after-load-theme-hook (:after load-theme)
-  "Set up `void-load-theme-hook' to run after `load-theme' is called."
-  (setq void-theme <theme>)
-  (run-hooks 'void-after-load-theme-hook))
+  "Set up `xl-load-theme-hook' to run after `load-theme' is called."
+  (setq xl-theme <theme>)
+  (run-hooks 'xl-after-load-theme-hook))
 #+end_src
 
 **** disable old themes first
@@ -2288,7 +2288,7 @@ Loading a theme qualifies as an intensive operation as all the faces on the
 screen need to be redisplayed.
 
 #+begin_src emacs-lisp
-(void-pause-garbage-collection #'load-theme)
+(xl-pause-garbage-collection #'load-theme)
 #+end_src
 
 *** disable terminal initialization
@@ -2300,7 +2300,7 @@ When running emacs in terminal tty is *tremendously* slow.
 
 #+begin_src emacs-lisp
 (unless (display-graphic-p)
-  (void-add-advice #'tty-run-terminal-initialization :override #'ignore)
+  (xl-add-advice #'tty-run-terminal-initialization :override #'ignore)
   (defhook! init-tty (window-setup-hook)
     (advice-remove #'tty-run-terminal-initialization #'ignore)
     (tty-run-terminal-initialization (selected-frame) nil t)))
@@ -2328,10 +2328,10 @@ to [[https://github.com/rememberYou/.emacs.d][rememberYou's Emacs]].
 :END:
 
 #+begin_src emacs-lisp
-(defun void-initial-buffer ()
+(defun xl-initial-buffer ()
   "Return the initial buffer to be displayed.
 This function is meant to be used as the value of `initial-buffer-choice'."
-  (alet (if void-debug-p  "*void-log*" "*scratch")
+  (alet (if xl-debug-p  "*xl-log*" "*scratch")
     (get-buffer-create it)))
 #+end_src
 
@@ -2373,7 +2373,7 @@ commands more discoverable and naming schemes more consistent.
 =keyfreq= records the frequency of key strokes.
 
 #+begin_src emacs-lisp
-(void-add-hook 'emacs-startup-hook #'keyfreq-mode)
+(xl-add-hook 'emacs-startup-hook #'keyfreq-mode)
 (autoload #'keyfreq-mode "keyfreq" nil t nil)
 #+end_src
 
@@ -2411,7 +2411,7 @@ require loads.
 (setq idle-require-idle-delay 10)
 #+end_src
 
-**** make idle require use void-log
+**** make idle require use xl-log
 :PROPERTIES:
 :ID:       109011ee-ab24-4f3e-867f-21d6f6f534a8
 :END:
@@ -2421,8 +2421,8 @@ when it has finished idle-requiring packages. I don't want to see the message
 unless I'm debugging.
 
 #+begin_src emacs-lisp
-(void-message-with-void-log #'idle-require-mode)
-(void-message-with-void-log #'idle-require-load-next)
+(xl-message-with-xl-log #'idle-require-mode)
+(xl-message-with-xl-log #'idle-require-load-next)
 #+end_src
 
 **** increase gc-cons-threshold during idle loading
@@ -2434,7 +2434,7 @@ Since we're evaluating a good amount of lisp expressions, we should boost
 garbage collection during this time.
 
 #+begin_src emacs-lisp
-(void-pause-garbage-collection #'idle-require-load-next)
+(xl-pause-garbage-collection #'idle-require-load-next)
 #+end_src
 
 ** Commands
@@ -2477,7 +2477,7 @@ favor using it.
   (autoload it "consult" nil t nil))
 
 (--each (list #'consult-buffer #'consult-buffer-other-window)
-  (void-load-before-call 'recentf it t))
+  (xl-load-before-call 'recentf it t))
 #+end_src
 
 **** make sure commands display correctly
@@ -2531,7 +2531,7 @@ headline."
 
 #+begin_src emacs-lisp
 (alet (list #'consult-outline #'consult-line)
-  (void-add-advice it :after #'outline:show-branch-maybe))
+  (xl-add-advice it :after #'outline:show-branch-maybe))
 #+end_src
 
 ***** window display
@@ -2580,7 +2580,7 @@ th subtree should always be visible)."
 
 #+begin_src emacs-lisp
 (alet (list #'consult-outline #'consult-line)
-  (void-add-advice it :after #'outline:display-children-in-window))
+  (xl-add-advice it :after #'outline:display-children-in-window))
 #+end_src
 
 **** bindings
@@ -2608,7 +2608,7 @@ happened before and it's a huge pain resetting the font-size when the
 font is super small). Therefore, I check the code.
 
 #+begin_src emacs-lisp
-(defun void/set-font-size ()
+(defun xl/set-font-size ()
   "Set the font size interactively."
   (interactive)
   (let* ((old-font-size (face-attribute 'default :height))
@@ -2641,7 +2641,7 @@ font is super small). Therefore, I check the code.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/set-font-face ()
+(defun xl/set-font-face ()
   "Apply an existing xfont to all graphical frames."
   (interactive)
   (alet (completing-read "Choose font: " (x-list-fonts "*"))
@@ -2659,11 +2659,11 @@ font is super small). Therefore, I check the code.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/open-init-file ()
+(defun xl/open-init-file ()
   "Switch to init file."
   (interactive)
-  (alet (or (get-file-buffer VOID-INIT-FILE)
-	    (create-file-buffer VOID-INIT-FILE))
+  (alet (or (get-file-buffer XL-INIT-FILE)
+	    (create-file-buffer XL-INIT-FILE))
     (display-buffer it)))
 #+end_src
 
@@ -2676,7 +2676,7 @@ In Emacs, messages. The messages buffer is where messages displayed at the botto
 of the Emacs frame are recorded after they expire.
 
 #+begin_src emacs-lisp
-(defun void/open-messages-buffer ()
+(defun xl/open-messages-buffer ()
   (interactive)
   (alet (get-buffer-create "*Messages*")
     (display-buffer it)))
@@ -2688,12 +2688,12 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/switch-to-capture-file ()
+(defun xl/switch-to-capture-file ()
   (interactive)
-  (switch-to-buffer (find-file VOID-CAPTURE-FILE)))
+  (switch-to-buffer (find-file XL-CAPTURE-FILE)))
 #+end_src
 
-**** void-log buffer
+**** xl-log buffer
 :PROPERTIES:
 :ID:       0d696000-94bb-45af-a7af-b96f29714089
 :END:
@@ -2704,7 +2704,7 @@ of the Emacs frame are recorded after they expire.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/open-scratch ()
+(defun xl/open-scratch ()
   "Pop scratch."
   (interactive)
   (pop-to-buffer "*scratch*"))
@@ -2729,7 +2729,7 @@ Sometimes something goes wrong with [[helpvar:kill-emacs-hook][kill-emacs-hook]]
 close emacs. For that reason, I have this function.
 
 #+begin_src emacs-lisp
-(defun void/kill-emacs-no-hook ()
+(defun xl/kill-emacs-no-hook ()
   "Kill emacs, ignoring `kill-emacs-hook'."
   (interactive)
   (when (yes-or-no-p "Quit without `kill-emacs-hook'?")
@@ -2744,7 +2744,7 @@ close emacs. For that reason, I have this function.
 I've never had to use this. But better be safe than sorry.
 
 #+begin_src emacs-lisp
-(defun void/kill-emacs-brutally ()
+(defun xl/kill-emacs-brutally ()
   "Tell an external process to kill emacs."
   (interactive)
   (when (yes-or-no-p "Do you want to BRUTALLY kill emacs?")
@@ -2757,7 +2757,7 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/open-emacs-instance ()
+(defun xl/open-emacs-instance ()
   "Open a new emacs instance in debug-mode."
   (interactive)
 
@@ -2775,7 +2775,7 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/kill-emacs-processes ()
+(defun xl/kill-emacs-processes ()
   (interactive)
   (let ((count 1) (process "emacs"))
     (kill-process process)
@@ -2791,9 +2791,9 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/enable-debug-mode ()
+(defun xl/enable-debug-mode ()
   (interactive)
-  (setq void-debug-p t))
+  (setq xl-debug-p t))
 #+end_src
 
 **** quit emacs no prompt
@@ -2802,7 +2802,7 @@ I've never had to use this. But better be safe than sorry.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/quit-emacs-no-prompt ()
+(defun xl/quit-emacs-no-prompt ()
   "Quit emacs without prompting."
   (interactive)
   (let (confirm-kill-emacs)
@@ -2840,7 +2840,7 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (autoload #'company-mode "company" nil t nil)
-(void-add-hook 'prog-mode-hook #'company-mode)
+(xl-add-hook 'prog-mode-hook #'company-mode)
 #+end_src
 
 **** settings
@@ -2933,7 +2933,7 @@ of things that we actually want at this moment.
 
 #+begin_src emacs-lisp
 (autoload #'company-prescient-mode "company-prescient" nil t nil)
-(void-add-hook 'company-mode-hook #'company-prescient-mode)
+(xl-add-hook 'company-mode-hook #'company-prescient-mode)
 #+end_src
 
 *** close company on escape
@@ -2942,7 +2942,7 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! close-tooltip (void-escape-hook)
+(defhook! close-tooltip (xl-escape-hook)
   "Close company tooltip."
   (when (and (boundp 'company-mode) (eq company-mode t))
     (company-abort)
@@ -2975,7 +2975,7 @@ selectrum and its provided features.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'emacs-startup-hook #'selectrum-mode)
+(xl-add-hook 'emacs-startup-hook #'selectrum-mode)
 (autoload #'selectrum-mode "selectrum" nil t nil)
 
 (setq selectrum-fix-minibuffer-height t)
@@ -3023,9 +3023,9 @@ specifically designed to disable selectrum sorting.
 Prescient.
 
 #+begin_src emacs-lisp
-(void-add-hook 'selectrum-mode-hook #'prescient-persist-mode)
+(xl-add-hook 'selectrum-mode-hook #'prescient-persist-mode)
 
-(setq prescient-save-file (concat VOID-DATA-DIR "prescient-save-file"))
+(setq prescient-save-file (concat XL-DATA-DIR "prescient-save-file"))
 #+end_src
 
 *** selectrum-prescient
@@ -3036,7 +3036,7 @@ Prescient.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
+(xl-add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
 (autoload #'selectrum-prescient-mode "selectrum-prescient" nil t nil)
 
 (setq selectrum-preprocess-candidates-function #'selectrum-prescient--preprocess)
@@ -3168,7 +3168,7 @@ Making sure that tempo can completing read.
 :END:
 
 =elog= is a library for generating logging functions. I use [[][]] to generate a
-function that logs to the buffer =*void-log*=.
+function that logs to the buffer =*xl-log*=.
 
 *** init
 :PROPERTIES:
@@ -3187,20 +3187,20 @@ function that logs to the buffer =*void-log*=.
 This form creates a set of functions for logging.
 
 #+begin_src emacs-lisp
-(elog-open-log buffer "void-" :buffer "*void-log*" :fmt "VOID %M")
+(elog-open-log buffer "xl-" :buffer "*xl-log*" :fmt "XL %M")
 #+end_src
 
-*** void-log
+*** xl-log
 :PROPERTIES:
 :ID:       b2ceb864-d9bf-4cbb-83ab-dd5f4d8004ee
 :END:
 
 #+begin_src emacs-lisp
-(defun void-log (format-string &rest args)
-  "Log to *Messages* if `void-debug-p' is on.
+(defun xl-log (format-string &rest args)
+  "Log to *Messages* if `xl-debug-p' is on.
 Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
 Accept the same arguments as `message'."
-  (void--log 1 (apply #'format format-string args)))
+  (xl--log 1 (apply #'format format-string args)))
 #+end_src
 
 ** ht
@@ -3485,7 +3485,7 @@ option that would prompt you for the file name.
 
 #+begin_src emacs-lisp
 (setq escr-screenshot-quality 10)
-;; (setq escr-screenshot-directory VOID-SCREENSHOT-DIR)
+;; (setq escr-screenshot-directory XL-SCREENSHOT-DIR)
 #+end_src
 
 **** function for geting screenshot filename
@@ -3579,7 +3579,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
-(setq emms-directory (concat VOID-DATA-DIR "emms/"))
+(setq emms-directory (concat XL-DATA-DIR "emms/"))
 (setq emms-seek-seconds 5)
 (setq emms-player-list '(emms-player-mpv))
 (setq emms-source-file-default-directory "~/Multimedia/music")
@@ -3739,7 +3739,7 @@ therefore, has the most support (in the form of setup blogs and packages).
 :END:
 
 #+begin_src emacs-lisp
-(defconst VOID-EMAIL-DIR "~/.mail/")
+(defconst XL-EMAIL-DIR "~/.mail/")
 
 (autoload #'mu4e "mu4e" nil t nil)
 #+end_src
@@ -3802,13 +3802,13 @@ I don't want mu4e to handle indexing. I can do it myself.
   "Initialize mu4e."
   (interactive)
   (require 'password-store)
-  (let* ((VOID-EMAIL-DIR (expand-file-name "~/.mail/"))
-	 (email-dirs (--map (concat VOID-EMAIL-DIR it) (pass:email-list))))
+  (let* ((XL-EMAIL-DIR (expand-file-name "~/.mail/"))
+	 (email-dirs (--map (concat XL-EMAIL-DIR it) (pass:email-list))))
     (when (or (not (-all-p #'f-exists-p email-dirs))
               (-some-p #'f-empty-p email-dirs))
       (message "creating directories that don't exist.")
       (--each email-dirs (mkdir it t))
-      (shell-command (format "mu init -m %s" VOID-EMAIL-DIR))
+      (shell-command (format "mu init -m %s" XL-EMAIL-DIR))
       (message "Updating mail...")
       (mu4e-update-mail-and-index t))))
 #+end_src
@@ -3849,7 +3849,7 @@ it is definitely on my list of things to try out.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+(xl-add-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
 
 (setq org-mu4e-link-query-in-headers-mode nil)
 (setq org-mu4e-convert-to-html t)
@@ -3937,7 +3937,7 @@ If there is no match, return POSSIBLE-NAME."
 #+begin_src emacs-lisp
 (defun mu4e::account-context (email)
   "Return an mu4e account context for specified EMAIL."
-  (let* ((base-dir (concat VOID-EMAIL-DIR email "/"))
+  (let* ((base-dir (concat XL-EMAIL-DIR email "/"))
          (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
          (account (pass:email-account-plist email))
          (out-host (plist-get 'out-host account))
@@ -4038,7 +4038,7 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 :END:
 
 #+begin_src emacs-lisp
-(setq eshell-directory-name (concat VOID-DATA-DIR "eshell/"))
+(setq eshell-directory-name (concat XL-DATA-DIR "eshell/"))
 (setq eshell-history-file-name (concat eshell-directory-name "history"))
 #+end_src
 
@@ -4207,7 +4207,7 @@ This function generates the eshell prompt by concatenating `eshell:header' with
 valid `eshell:enabled-sections' and the `eshell-prompt-string'."
   (concat eshell:header
           (->> eshell:enabled-sections
-               (mapcar (lambda (it) (void-symbol-intern 'eshell-prompt-- it)))
+               (mapcar (lambda (it) (xl-symbol-intern 'eshell-prompt-- it)))
                (-filter #'fboundp)
                (-reduce-from #'eshell:acc ""))
           eshell-prompt-string))
@@ -4453,7 +4453,7 @@ which only some files are hidden. That's wierd, so I get rid of it.
 :END:
 
 #+begin_src emacs-lisp
-(void-silence-output #'ranger-window-check)
+(xl-silence-output #'ranger-window-check)
 #+end_src
 
 ** version control
@@ -4533,9 +4533,9 @@ address later.
 
 #+begin_src emacs-lisp
 (setq transient-default-level 5)
-(setq transient-levels-file (concat VOID-DATA-DIR "transient/levels"))
-(setq transient-values-file (concat VOID-DATA-DIR "transient/values"))
-(setq transient-history-file (concat VOID-DATA-DIR "transient/history"))
+(setq transient-levels-file (concat XL-DATA-DIR "transient/levels"))
+(setq transient-values-file (concat XL-DATA-DIR "transient/values"))
+(setq transient-history-file (concat XL-DATA-DIR "transient/history"))
 #+end_src
 
 **** magit
@@ -4550,7 +4550,7 @@ address later.
 
 (dbc-add-rule "bottom" "magit" :newname "magit: ")
 
-(ignore! (void-add-hook 'magit-popup-mode-hook #'hide-mode-line-mode))
+(ignore! (xl-add-hook 'magit-popup-mode-hook #'hide-mode-line-mode))
 
 (setq magit-completing-read-function #'completing-read)
 (setq magit-diff-refine-hunk t)
@@ -4580,8 +4580,8 @@ address later.
 #+begin_src emacs-lisp
 (setq evil-magit-state 'normal)
 (autoload #'magit-status "evil-magit" nil t nil)
-(void-load-before-call 'evil-magit #'magit-status)
-(void-silence-output #'evil-magit-init)
+(xl-load-before-call 'evil-magit #'magit-status)
+(xl-silence-output #'evil-magit-init)
 (after! evil-magit (evil-magit-init))
 #+end_src
 
@@ -4631,9 +4631,9 @@ location you left off at in a particular buffer. When you visit that buffer
 again, you are taken to the location you left off. This is very convenient.
 
 #+begin_src emacs-lisp
-(void-load-after-call #'after-find-file #'saveplace t)
+(xl-load-after-call #'after-find-file #'saveplace t)
 
-(setq save-place-file (concat VOID-DATA-DIR "saveplace"))
+(setq save-place-file (concat XL-DATA-DIR "saveplace"))
 (setq save-place-limit nil)
 #+end_src
 
@@ -4655,7 +4655,7 @@ have to set out to look for a file with =dired=.
 
 #+begin_src emacs-lisp
 (-each '(easymenu tree-widget timer) #'idle-require)
-(void-load-before-call 'recentf #'find-file t)
+(xl-load-before-call 'recentf #'find-file t)
 #+end_src
 
 **** settings
@@ -4673,9 +4673,9 @@ have to set out to look for a file with =dired=.
 	    ;; ignore private Void temp files (but not all of them)
             #'(lambda (file)
                 (-some-p (apply-partially #'file-in-directory-p file)
-		 (list VOID-DATA-DIR)))))
+		 (list XL-DATA-DIR)))))
 
-(gsetq recentf-save-file (concat VOID-DATA-DIR "recentf"))
+(gsetq recentf-save-file (concat XL-DATA-DIR "recentf"))
 (gsetq recentf-auto-cleanup 'never)
 (gsetq recentf-filename-handlers '(file-truename abbreviate-file-name))
 #+end_src
@@ -4686,7 +4686,7 @@ have to set out to look for a file with =dired=.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-advice #'recentf-save-list :before #'recentf-cleanup)
+(xl-add-advice #'recentf-save-list :before #'recentf-cleanup)
 #+end_src
 
 **** silence recentf
@@ -4698,7 +4698,7 @@ have to set out to look for a file with =dired=.
 
 #+begin_src emacs-lisp
 (-each (list #'recentf-mode #'recentf-cleanup)
-  #'void-silence-output)
+  #'xl-silence-output)
 #+end_src
 
 *** savehist
@@ -4719,10 +4719,10 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 #+begin_src emacs-lisp
 (setq savehist-save-minibuffer-history t)
 (setq savehist-autosave-interval nil)
-(setq savehist-file (concat VOID-DATA-DIR "savehist"))
+(setq savehist-file (concat XL-DATA-DIR "savehist"))
 
 (idle-require 'custom)
-(void-add-hook 'emacs-startup-hook #'savehist-mode)
+(xl-add-hook 'emacs-startup-hook #'savehist-mode)
 
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+end_src
@@ -4761,7 +4761,7 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'tab-bar-mode-hook #'tab-bar-history-mode)
+(xl-add-hook 'tab-bar-mode-hook #'tab-bar-history-mode)
 #+end_src
 
 **** tabbar-mode
@@ -4805,11 +4805,11 @@ them displayed.
 
 #+begin_src emacs-lisp
 (setq desktop-save t) ; what should happen when desktop is killed.
-(setq desktop-dirname VOID-DATA-DIR)
+(setq desktop-dirname XL-DATA-DIR)
 (setq desktop-auto-save-timeout auto-save-timeout)
 (setq desktop-base-file-name "emacs.desktop")
 (setq desktop-base-lock-name "emacs.desktop.lock")
-(setq desktop-path (list VOID-DATA-DIR))
+(setq desktop-path (list XL-DATA-DIR))
 (setq desktop-missing-file-warning nil)
 #+end_src
 
@@ -4828,7 +4828,7 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defvar desktop:base-dir (concat VOID-DATA-DIR "desktops/")
+(defvar desktop:base-dir (concat XL-DATA-DIR "desktops/")
   "Directory where desktops should go.")
 #+end_src
 
@@ -4970,7 +4970,7 @@ that it's not a lisp object; implying that it is not.
 (setq wg-control-frames nil)
 (setq wg-session-load-on-start nil)
 (setq wg-flag-modified nil)
-(setq wg-session-file (concat VOID-DATA-DIR "wg-session"))
+(setq wg-session-file (concat XL-DATA-DIR "wg-session"))
 #+end_src
 
 **** init
@@ -5010,7 +5010,7 @@ that it's not a lisp object; implying that it is not.
 
 #+begin_src emacs-lisp
 (--each (list #'wg-create-workgroup #'wg-switch-workgroup)
-  #'void-silence-output)
+  #'xl-silence-output)
 #+end_src
 
 **** by default create a new workgroup using scratch buffer
@@ -5066,10 +5066,10 @@ I don't want to use exwm. Only problem is =exwm= aborts with an annoying
 =user-error=.
 
 #+begin_src emacs-lisp
-(alet #'void--load-and-initialize-exwm-maybe-advice
-  (void-add-advice #'browse-url :before it nil t))
+(alet #'xl--load-and-initialize-exwm-maybe-advice
+  (xl-add-advice #'browse-url :before it nil t))
 
-(defun void--load-and-initialize-exwm-maybe-advice (&rest _)
+(defun xl--load-and-initialize-exwm-maybe-advice (&rest _)
   "Try to initialize exwm.
 If it's not possible, abort initialization gracefully."
   (with-os! linux
@@ -5080,7 +5080,7 @@ If it's not possible, abort initialization gracefully."
 	  ;; Enable the clipboard.
 	  (progn (require 'exwm-systemtray)
 		 (exwm-systemtray-enable))
-	(void-log "Another window manager is present (or something went wrong).")))))
+	(xl-log "Another window manager is present (or something went wrong).")))))
 #+end_src
 
 *** org capture from an exwm buffer
@@ -5120,12 +5120,12 @@ downloads a given webpage as pdf. A consequence of doing this is that you will
 have access to all the webpages you used for research offline.
 
 #+begin_src emacs-lisp
-(defun void-download-webpage-as-pdf (url webpage-title)
-  "Save the webpage at URL to `VOID-SCREENSHOT-DIR'."
+(defun xl-download-webpage-as-pdf (url webpage-title)
+  "Save the webpage at URL to `XL-SCREENSHOT-DIR'."
   (let* ((program "wkhtmltopdf")
          (process-name (format "%s - %s" program (ts-format)))
          (webpage-title (s-replace "/" "~" webpage-title))
-         (pdf-path (format "%s%s.pdf" VOID-SCREENSHOT-DIR webpage-title))
+         (pdf-path (format "%s%s.pdf" XL-SCREENSHOT-DIR webpage-title))
          (fn `(lambda (&rest _)
                 (if (file-exists-p ,pdf-path)
                     (message "Webpage saved succesfully.")
@@ -5210,7 +5210,7 @@ current url and to add it to the kill ring.
     (exwm-input::fake-key-to-id 'y fid)
     (sleep-for 0 300)
     (aprog1 (current-kill 0)
-      (void-log "Copied %S to the kill ring." it))))
+      (xl-log "Copied %S to the kill ring." it))))
 #+end_src
 
 *** appropriate name for exwm buffers
@@ -5312,8 +5312,8 @@ certain applications where I'd use it need to be loaded.
              (,(kbd "s-O") . exwm-layout-toggle-fullscreen)
              (,(kbd "s-p") . previous-buffer)
              (,(kbd "s-n") . next-buffer)
-             (,(kbd "s-q") . void/open-qutebrowser)
-             (,(kbd "s-e") . void/open-emacs-instance)))
+             (,(kbd "s-q") . xl/open-qutebrowser)
+             (,(kbd "s-e") . xl/open-emacs-instance)))
   (general-def
     "s-R" #'exwm-reset
     "s-x" #'exwm-input-toggle-keyboard
@@ -5328,8 +5328,8 @@ certain applications where I'd use it need to be loaded.
     "s-O" #'exwm-layout-toggle-fullscreen
     "s-p" #'previous-buffer
     "s-n" #'next-buffer
-    "s-q" #'void/open-qutebrowser
-    "s-e" #'void/open-emacs-instance))
+    "s-q" #'xl/open-qutebrowser
+    "s-e" #'xl/open-emacs-instance))
 #+end_src
 
 ** split-right-and-focus
@@ -5338,7 +5338,7 @@ certain applications where I'd use it need to be loaded.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/window-split-right-and-focus ()
+(defun xl/window-split-right-and-focus ()
   "Split window right and select the window created with the split."
   (interactive)
   (select-window (split-window-right)))
@@ -5350,7 +5350,7 @@ certain applications where I'd use it need to be loaded.
 :END:
 
 #+begin_src emacs-lisp
-(defun void/window-split-below-and-focus ()
+(defun xl/window-split-below-and-focus ()
   "Split window below and select the window created with the split."
   (interactive)
   (select-window (split-window-below)))
@@ -5404,8 +5404,8 @@ binding to.
 #+begin_src emacs-lisp
 (define-leader-key!
   :infix "w"
-  "S" (list :def #'void/window-split-below-and-focus :wk "split below and focus")
-  "V" (list :def #'void/window-split-right-and-focus :wk "split right and focus")
+  "S" (list :def #'xl/window-split-below-and-focus :wk "split below and focus")
+  "V" (list :def #'xl/window-split-right-and-focus :wk "split right and focus")
   "s" (list :def #'window-split-below                :wk "split below")
   "v" (list :def #'window-split-right                :wk "split right"))
 #+end_src
@@ -5660,8 +5660,8 @@ know if this is the best way to declare these dependencies. It certaintly is
 efficient.
 
 #+begin_src emacs-lisp
-(void-load-before-call 'org-ml #'org/dwim-edit-description)
-(void-load-before-call 'edit-indirect #'org/dwim-edit-description)
+(xl-load-before-call 'org-ml #'org/dwim-edit-description)
+(xl-load-before-call 'edit-indirect #'org/dwim-edit-description)
 #+end_src
 
 **** edit description
@@ -5708,7 +5708,7 @@ where I don't do this.
 
 #+begin_src emacs-lisp
 (after! evil
-  (void-add-hook 'org:description-edit-mode-hook #'evil-insert-state))
+  (xl-add-hook 'org:description-edit-mode-hook #'evil-insert-state))
 #+end_src
 
 **** custom hooks
@@ -5719,7 +5719,7 @@ where I don't do this.
 #+begin_src emacs-lisp
 (alet (list #'auto-capitalize-mode #'aggressive-fill-paragraph-mode
 	    #'org-link-minor-mode)
-  (void-add-hook 'org:description-edit-mode-hook it))
+  (xl-add-hook 'org:description-edit-mode-hook it))
 #+end_src
 
 *** editing org source blocks
@@ -5826,7 +5826,7 @@ source buffer and then finding out when you see it written to the org file. With
 this I never have to think about this again.
 
 #+begin_src emacs-lisp
-(void-add-hook 'org-edit-source-mode-hook #'delete-trailing-whitespace)
+(xl-add-hook 'org-edit-source-mode-hook #'delete-trailing-whitespace)
 #+end_src
 
 *** bindings inside edit-indirect
@@ -5929,7 +5929,7 @@ like that concern N number of things, where N could be 1 or more things.
 It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capitalize-words]].
 
 #+begin_src emacs-lisp
-(void-add-hook 'text-mode-hook #'auto-capitalize-mode)
+(xl-add-hook 'text-mode-hook #'auto-capitalize-mode)
 (autoload #'auto-capitalize-mode "auto-capitalize" nil t nil)
 (setq auto-capitalize-words '("I" "English"))
 #+end_src
@@ -5981,7 +5981,7 @@ Note that this is the same strategy employed by [[id:c550f82a-9608-47e6-972b-eca
 Saving files like this reduces the likelihood of user delays.
 
 #+begin_src emacs-lisp
-(void-load-before-call 'super-save #'find-file t)
+(xl-load-before-call 'super-save #'find-file t)
 
 (setq super-save-idle-duration 5)
 (setq super-save-auto-save-when-idle t)
@@ -6012,7 +6012,7 @@ it. It's pretty smart and very convenient.
  '(aggressive-indent :type git :flavor melpa :host github :repo "Malabarba/aggressive-indent-mode"))
 
 (autoload #'aggressive-indent-mode "aggressive-indent" nil t nil)
-(void-add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(xl-add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 #+end_src
 
 ** parentheses
@@ -6035,7 +6035,7 @@ it. It's pretty smart and very convenient.
 (autoload #'smartparens-mode "smartparens" nil t nil)
 (autoload #'smartparens-strict-mode "smartparens" nil t nil)
 (alet '(prog-mode-hook eshell-mode-hook ielm-mode-hook)
-  (void-add-hook it #'smartparens-strict-mode))
+  (xl-add-hook it #'smartparens-strict-mode))
 #+end_src
 
 **** settings
@@ -6085,7 +6085,7 @@ it. It's pretty smart and very convenient.
 :END:
 
 #+begin_src emacs-lisp
-(void-load-before-call 'smartparens (list #'evil-expression #'evil-ex) t)
+(xl-load-before-call 'smartparens (list #'evil-expression #'evil-ex) t)
 
 (after! smartparens
   (defhook! enable-smartparens-maybe (minibuffer-setup-hook)
@@ -6105,7 +6105,7 @@ it. It's pretty smart and very convenient.
 great idea! It makes it really easy to see which parentheses go together.
 
 #+begin_src emacs-lisp
-(void-add-hook '(prog-mode-hook reb-mode-hook) #'rainbow-delimiters-mode)
+(xl-add-hook '(prog-mode-hook reb-mode-hook) #'rainbow-delimiters-mode)
 (autoload #'rainbow-delimiters-mode "rainbow-delimiters" nil t nil)
 
 (setq rainbow-delimiters-max-face-count 9)
@@ -6258,7 +6258,7 @@ Why not just go to the end of the ="= like any other around operator?
 
 #+begin_src emacs-lisp
 (autoload #'evil-surround-mode "evil-surround" nil t nil)
-(void-add-hook '(prog-mode-hook text-mode-hook) #'evil-surround-mode)
+(xl-add-hook '(prog-mode-hook text-mode-hook) #'evil-surround-mode)
 #+end_src
 
 **** evil
@@ -6278,7 +6278,7 @@ and provides facilities for writing custom extensions. Also see our page on
 
 #+begin_src emacs-lisp
 (autoload #'evil-mode "evil" nil t nil)
-(void-add-hook 'window-setup-hook #'evil-mode)
+(xl-add-hook 'window-setup-hook #'evil-mode)
 #+end_src
 
 ***** custom
@@ -6349,11 +6349,11 @@ modeline indicator for this but I find that the cursor suffices.
 :END:
 
 After a theme is loaded, the cursor color won't automatically update. Therefore,
-I add a hook in [[helpvar:void-after-load-theme-hook][void-after-load-theme-hook]]. Now after a new theme is loaded, the
+I add a hook in [[helpvar:xl-after-load-theme-hook][xl-after-load-theme-hook]]. Now after a new theme is loaded, the
 cursor color will update.
 
 #+begin_src emacs-lisp
-(defhook! refresh-evil-cursor (void-after-load-theme-hook)
+(defhook! refresh-evil-cursor (xl-after-load-theme-hook)
   "Enable cursor refreshing after theme change."
   (when (bound-and-true-p evil-mode)
     (evil-refresh-cursor)))
@@ -6382,7 +6382,7 @@ Noctuid pointed out
   (-let (((mode state) <args>))
     (funcall <orig-fn> mode (if (eq state 'motion) 'normal state))))
 
-(void-add-advice #'evil-motion-state :override #'evil-normal-state)
+(xl-add-advice #'evil-motion-state :override #'evil-normal-state)
 #+end_src
 
 ***** insert state in minibuffer
@@ -6422,7 +6422,7 @@ the correct one.
 :END:
 
 #+begin_src emacs-lisp
-(void-silence-output #'keyboard-quit)
+(xl-silence-output #'keyboard-quit)
 #+end_src
 
 ****** escape
@@ -6439,7 +6439,7 @@ We want escape to be a general "quit everything".
   "Exits out of whatever is happening after escape."
   (cond ((minibuffer-window-active-p (minibuffer-window))
          (abort-recursive-edit))
-        ((run-hook-with-args-until-success 'void-escape-hook))
+        ((run-hook-with-args-until-success 'xl-escape-hook))
         ((or defining-kbd-macro executing-kbd-macro) nil)
         (t (keyboard-quit))))
 #+end_src
@@ -6465,7 +6465,7 @@ This is better than evil escape as it only binds in insert.
 (autoload #'key-chord-mode "key-chord" nil t nil)
 
 (alet (list #'evil-insert-state #'evil-emacs-state)
-  (void-load-before-call 'key-chord it t))
+  (xl-load-before-call 'key-chord it t))
 #+end_src
 
 ******* be quiet when turning on
@@ -6474,7 +6474,7 @@ This is better than evil escape as it only binds in insert.
 :END:
 
 #+begin_src emacs-lisp
-(void-silence-output #'key-chord-mode)
+(xl-silence-output #'key-chord-mode)
 #+end_src
 
 ******* keychord bindings
@@ -6517,7 +6517,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 
 #+begin_src emacs-lisp
 (autoload #'lispyville-mode "lispyville" nil t nil)
-(void-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
+(xl-add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
 #+end_src
 
 **** remappings
@@ -6584,7 +6584,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 :ID: b355e1a1-6242-47f5-b357-5c3f5adbd200
 :END:
 
-=lispyville= binds escape to [[helpfn:lipyville-normal-state][lispyville-normal-state]]. So for =void-escape-hook=
+=lispyville= binds escape to [[helpfn:lipyville-normal-state][lispyville-normal-state]]. So for =xl-escape-hook=
 to still happen on escape, I need to add [[helpfn:evil:escape-a][evil:escape-a]] as advice to
 =lispyville-normal-state=.
 
@@ -6627,7 +6627,7 @@ very useful to me.
 
 #+begin_src emacs-lisp
 (autoload #'lispy-mode "lispy" nil t nil)
-(void-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
+(xl-add-hook 'emacs-lisp-mode-hook #'lispy-mode)
 #+end_src
 
 **** settings
@@ -6712,7 +6712,7 @@ You'll get void variable if you don't do this.
 
 #+begin_src emacs-lisp
 (autoload #'evil-lispy-mode "evil-lispy" nil t nil)
-(void-add-hook 'lispy-mode-hook #'evil-lispy-mode)
+(xl-add-hook 'lispy-mode-hook #'evil-lispy-mode)
 #+end_src
 
 *** highlight-quoted
@@ -6725,7 +6725,7 @@ You'll get void variable if you don't do this.
 
 #+begin_src emacs-lisp
 (autoload #'highlight-quoted-mode "highlight-quoted" nil t nil)
-(void-add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode)
+(xl-add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode)
 #+end_src
 
 *** fix elisp indentation
@@ -6955,7 +6955,7 @@ the whole thing.
 :END:
 
 #+begin_src emacs-lisp
-(defvar void-elisp-tempo-tags nil
+(defvar xl-elisp-tempo-tags nil
   "Variable containing elisp tempo tags.")
 #+end_src
 
@@ -7185,11 +7185,11 @@ much more useful considering the specific structure of org mode documents.
 :ID:       2ca61454-a0ca-47b3-8622-91d7969653da
 :END:
 
-When I search for a headline with [[helpfn:void/goto-line][void/goto-line]] or [[helpfn:void/goto-headline][void/goto-headline]] or even their
+When I search for a headline with [[helpfn:void/goto-line][xl/goto-line]] or [[helpfn:void/goto-headline][xl/goto-headline]] or even their
 counsel equivalents, the proper headlines aren't automatically revealed.
 
 [[screenshot:][This]] is what headline structure looks after using counsel/ivy's [[helpfn:swiper][swiper]] to find
-the word =void/goto-line= in my emacs. You can see that only the headline that has
+the word =xl/goto-line= in my emacs. You can see that only the headline that has
 the target word is revealed but it's parents are (akwardly) hidden. I never want
 headlines to be unfolded like this.
 
@@ -7226,12 +7226,12 @@ Note that I use points to store the heading points and go back to them inreverse
 order. This is important because org does not unfold headlines properly if you
 start from an invisible subheading.
 
-Notably, I do not try to conserve the return value of =void/goto-line= or
-=void/jump-to-headline= because these functions are and should only be used for
+Notably, I do not try to conserve the return value of =xl/goto-line= or
+=xl/jump-to-headline= because these functions are and should only be used for
 their side-effects.
 
 #+begin_src emacs-lisp
-(defadvice! show-current-branch-in-org-mode (:after void/goto-line org/goto-headline)
+(defadvice! show-current-branch-in-org-mode (:after xl/goto-line org/goto-headline)
   "Properly unfold nearby headlines and reveal current headline."
   (when (eq major-mode 'org-mode)
     (org:show-branch)))
@@ -7454,7 +7454,7 @@ This is a minor mode for displaying links in non-org buffers.
 
 #+begin_src emacs-lisp
 (autoload #'org-link-minor-mode "org-link-minor-mode" nil t nil)
-(void-add-hook 'outshine-mode-hook #'org-link-minor-mode)
+(xl-add-hook 'outshine-mode-hook #'org-link-minor-mode)
 #+end_src
 
 *** org-ml
@@ -7552,9 +7552,9 @@ into your head while keeing disctractions to a minimum.
 (dbc-add-rule "bottom" "capture" :newname "\\`CAPTURE-")
 
 ;; Make sure dependencies for `org-capture' are pulled.
-;; (-each '(ts org-ml) (-partial #'void-load-before-call #'org-capture))
+;; (-each '(ts org-ml) (-partial #'xl-load-before-call #'org-capture))
 (--each '(ts org-ml)
-  (void-load-before-call it #'org-capture))
+  (xl-load-before-call it #'org-capture))
 #+end_src
 
 **** remove capture headerline
@@ -7641,7 +7641,7 @@ template element as you're writing it.
 :END:
 
 #+begin_src emacs-lisp
-(void-load-before-call 'doct #'org-capture)
+(xl-load-before-call 'doct #'org-capture)
 #+end_src
 
 ***** add to capture templates
@@ -7753,11 +7753,11 @@ tracking the time you spend on a particular task.
   (autoload it "org-clock" nil t nil))
 
 (setq org-clock-persist 'history)
-(setq org-clock-persist-file (concat VOID-DATA-DIR "org-clock-save.el"))
+(setq org-clock-persist-file (concat XL-DATA-DIR "org-clock-save.el"))
 (setq org-clock-in-resume t)
 
 (after! org-clock
-  (void-add-hook 'kill-emacs-hook #'org-clock-save)
+  (xl-add-hook 'kill-emacs-hook #'org-clock-save)
   (org-clock-persistence-insinuate))
 #+end_src
 
@@ -7815,7 +7815,7 @@ referenance org headlines.
 :END:
 
 #+begin_src emacs-lisp
-(setq org-id-locations-file (concat VOID-DATA-DIR "org-id-locations"))
+(setq org-id-locations-file (concat XL-DATA-DIR "org-id-locations"))
 (setq org-id-locations-file-relative t)
 #+end_src
 
@@ -7827,7 +7827,7 @@ referenance org headlines.
 For org links to work they need to know where to search for these files.
 
 #+begin_src emacs-lisp
-(setq org-id-files (list VOID-MAIN-ORG-FILE VOID-RECIPE-FILE))
+(setq org-id-files (list XL-MAIN-ORG-FILE XL-RECIPE-FILE))
 #+end_src
 
 **** when creating a link use an org id instead
@@ -7847,7 +7847,7 @@ This setting tells org-mode to use heading IDs when storing and inserting links.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'org-insert-heading-hook #'org-id-get-create)
+(xl-add-hook 'org-insert-heading-hook #'org-id-get-create)
 #+end_src
 
 *** org-superstar
@@ -7862,7 +7862,7 @@ This setting tells org-mode to use heading IDs when storing and inserting links.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'org-mode-hook #'org-superstar-mode)
+(xl-add-hook 'org-mode-hook #'org-superstar-mode)
 (autoload #'org-superstar-mode "org-superstar" nil t nil)
 #+end_src
 
@@ -7983,7 +7983,7 @@ this.
 (setq mini-modeline-display-gui-line nil)
 
 (require 'mini-modeline)
-(void-add-hook 'emacs-startup-hook #'mini-modeline-mode)
+(xl-add-hook 'emacs-startup-hook #'mini-modeline-mode)
 #+end_src
 
 *** default face
@@ -8113,7 +8113,7 @@ you can "discover" the commands as you go along.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'emacs-startup-hook #'which-key-mode)
+(xl-add-hook 'emacs-startup-hook #'which-key-mode)
 (autoload #'which-key-mode "which-key" nil t nil)
 #+end_src
 
@@ -8150,8 +8150,8 @@ you can "discover" the commands as you go along.
 
 #+begin_src emacs-lisp
 (after! which-key
-  (which-key-add-key-based-replacements VOID-LEADER-KEY "<leader>")
-  (which-key-add-key-based-replacements VOID-LOCALLEADER-KEY "<localleader>"))
+  (which-key-add-key-based-replacements XL-LEADER-KEY "<leader>")
+  (which-key-add-key-based-replacements XL-LOCALLEADER-KEY "<localleader>"))
 #+end_src
 
 ** dashboard
@@ -8181,7 +8181,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 
 #+begin_src emacs-lisp
 (require 'dashboard)
-(void-add-hook 'window-setup-hook #'dashboard-insert-startupify-lists)
+(xl-add-hook 'window-setup-hook #'dashboard-insert-startupify-lists)
 #+end_src
 
 **** open dashboard at startup
@@ -8190,8 +8190,8 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! open-dashboard-instead (:around void-initial-buffer)
-  (if void-debug-p
+(defadvice! open-dashboard-instead (:around xl-initial-buffer)
+  (if xl-debug-p
       (apply <orig-fn> <args>)
     (get-buffer-create "*dashboard*")))
 #+end_src
@@ -8203,9 +8203,10 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 
 #+begin_src emacs-lisp
 (setq dashboard-items nil)
-(setq dashboard-startup-banner 2)
+(setq dashboard-startup-banner
+      (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
 (setq dashboard-center-content t)
-(setq initial-buffer-choice #'void-initial-buffer)
+(setq initial-buffer-choice #'xl-initial-buffer)
 #+end_src
 
 *** dashboard-init-info
@@ -8213,7 +8214,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :ID: 92c199ad-5862-4fe3-be04-44c94d4286b6
 :END:
 
-[[helpvar:void-init-time][void-init-time]] is more accurate than dashboard's init time measure. So I use it
+[[helpvar:xl-init-time][xl-init-time]] is more accurate than dashboard's init time measure. So I use it
 instead.
 
 #+begin_src emacs-lisp
@@ -8235,7 +8236,7 @@ instead.
 #+begin_src emacs-lisp
 (defadvice! set-custom-banner-path (:override dashboard-get-banner-path)
   "Use the Void text banner."
-  (concat VOID-LOCAL-DIR "void-banner.txt"))
+  (concat XL-LOCAL-DIR "xl-banner.txt"))
 #+end_src
 
 ** window divider
@@ -8264,7 +8265,7 @@ makes emacs feel like a window manager with gaps.
 :END:
 
 #+begin_src emacs-lisp
-(void-add-hook 'window-setup-hook #'window-divider-mode)
+(xl-add-hook 'window-setup-hook #'window-divider-mode)
 #+end_src
 
 **** custom variables
@@ -8294,7 +8295,7 @@ makes emacs feel like a window manager with gaps.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! update-window-divider (void-after-load-theme-hook)
+(defhook! update-window-divider (xl-after-load-theme-hook)
   "Ensure window divider persists after theme change."
   (unless (bound-and-true-p window-divider-mode)
     (window-divider-mode 1)))
@@ -8425,8 +8426,8 @@ press as well and even faster than =SPC SPC=.
 #+begin_src emacs-lisp
 (define-localleader-key!
   "a" (list :def #'org-agenda         :wk "agenda")
-  "s" (list :def #'void/open-scratch  :wk "scratch")
-  "f" (list :def #'void/set-font-size :wk "font size")
+  "s" (list :def #'xl/open-scratch  :wk "scratch")
+  "f" (list :def #'xl/set-font-size :wk "font size")
   "c" (list :def #'org-capture        :wk "capture"))
 
 (define-leader-key!
@@ -8505,8 +8506,8 @@ press as well and even faster than =SPC SPC=.
   "t" (list :def #'load-theme            :wk "load theme")
   "c" (list :def #'caps-lock-mode        :wk "caps lock")
   "d" (list :def #'toggle-debug-on-error :wk "debug")
-  "F" (list :def #'void/set-font-face    :wk "set font")
-  "f" (list :def #'void/set-font-size    :wk "font size"))
+  "F" (list :def #'xl/set-font-face    :wk "set font")
+  "f" (list :def #'xl/set-font-size    :wk "font size"))
 
 (define-leader-key!
   :infix "t"
@@ -8552,11 +8553,11 @@ prompt asking me if I'm sure.
   :infix "q"
   ""  (list :ignore t                        :wk "quit")
   "q" (list :def #'evil-quit-all             :wk "normally")
-  "s" (list :def #'void/quit-emacs-no-prompt :wk "with no prompt")
+  "s" (list :def #'xl/quit-emacs-no-prompt :wk "with no prompt")
   "Q" (list :def #'evil-save-and-quit        :wk "and save")
-  "x" (list :def #'void/kill-emacs-no-hook   :wk "with no hook")
-  "e" (list :def #'void/kill-emacs-processes :wk "emacs processes")
-  "b" (list :def #'void/kill-emacs-brutally  :wk "brutally")
+  "x" (list :def #'xl/kill-emacs-no-hook   :wk "with no hook")
+  "e" (list :def #'xl/kill-emacs-processes :wk "emacs processes")
+  "b" (list :def #'xl/kill-emacs-brutally  :wk "brutally")
   ;; "r" (list :def #'restart-emacs             :wk "and restart")
   )
 #+end_src
@@ -8584,9 +8585,9 @@ prompt asking me if I'm sure.
 (define-leader-key!
   :infix "b c"
   ""  (list :ignore t                  :wk "common buffers")
-  "m" (list :def #'void/open-messages  :wk "*Messages*")
-  "s" (list :def #'void/open-scratch   :wk "*scratch*")
-  "i" (list :def #'void/open-init-file :wk "init"))
+  "m" (list :def #'xl/open-messages  :wk "*Messages*")
+  "s" (list :def #'xl/open-scratch   :wk "*scratch*")
+  "i" (list :def #'xl/open-init-file :wk "init"))
 #+end_src
 
 *** code
@@ -8618,13 +8619,13 @@ These are keybindings I use most frequently.
 
 (define-leader-key!
   :infix "a"
-  "a" (list :def #'void/open-org-agenda        :wk "agenda")
+  "a" (list :def #'xl/open-org-agenda        :wk "agenda")
   "m" (list :def #'mu4e                        :wk "mu4e")
   "l" (list :def #'org-store-link              :wk "store link")
   "f" (list :def #'elfeed                      :wk "elfeed")
   "d" (list :def #'deer                        :wk "deer")
   "r" (list :def #'ranger                      :wk "ranger")
-  "e" (list :def #'void/open-emacs-instance    :wk "emacs")
+  "e" (list :def #'xl/open-emacs-instance    :wk "emacs")
   "q" (list :def #'engine/search-duckduckgo    :wk "browse web")
   "j" (list :def #'org/avy-goto-headline       :wk "heading jump")
   "c" (list :def #'org-capture/choose-template :wk "capture"))
