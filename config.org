@@ -641,6 +641,43 @@ a brilliant synopsis of emacs variables.
   `(funcall (or (get ',sym 'custom-set-default) 'set-default) ',sym ,val))
 #+end_src
 
+*** make a place to store load-path
+:PROPERTIES:
+:ID:       697cedf2-6689-4318-9c52-0fc805dfd5ab
+:END:
+
+#+begin_src emacs-lisp
+(mkdir (xl-data-dir "db") t)
+
+(defvar xl-load-path-database
+  (db-make `(db-hash :from-filename ,(xl-data-dir "db/load-path"))))
+#+end_src
+
+*** ensuring a package
+:PROPERTIES:
+:ID:       3033c4ea-9f43-4aac-a11d-f3af3ccc655c
+:END:
+
+I want startup to be fast even without having to compile my elisp file. One way
+to achieve this is to cache package load-paths.
+
+#+begin_src emacs-lisp
+(defun xl-ensure-package (package)
+  "Make sure the package is installed.
+First check if a package's load-path is cached. If it is, add its load-paths to
+the thing."
+  (acond ((db-get package xl-load-path-database)
+	  (dolist (package) (cl-pushnew it load-path)))
+	 ((alist-get package (xl-get-create-recipe-list))
+	  (let ((load-path xl-base-load-path)
+		(pre-install-load-path xl-base-load-path))
+	    (straight-use-package it)
+	    (-difference pre-install-load-path load-path))
+	  (db-put package (list new-paths) x-package-database))
+	 (t
+	  (straight-use-package package))))
+#+end_src
+
 *** use-package
 :PROPERTIES:
 :ID:       29e1513a-e12a-4818-870e-8d5fab7fe1a0
@@ -1231,24 +1268,6 @@ side windows.
 
 #+begin_src emacs-lisp
 (use-package! db :demand t)
-#+end_src
-
-***** make a directory where persistence is stored
-:PROPERTIES:
-:ID:       9b921e24-3083-4ee5-9086-48acdfa3ab26
-:END:
-
-#+begin_src emacs-lisp
-(mkdir (xl-data-dir "db") t)
-#+end_src
-
-***** make a place to store load-path
-:PROPERTIES:
-:ID:       697cedf2-6689-4318-9c52-0fc805dfd5ab
-:END:
-
-#+begin_src emacs-lisp
-(db-make `(db-hash :filename ,(concat XL-DATA-DIR "load-path")))
 #+end_src
 
 **** elog
