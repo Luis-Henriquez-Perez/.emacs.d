@@ -105,16 +105,6 @@ The purpose of this headline is to set up the package manager and install all of
 my packages so the rest of the file can assume the packages are already
 installed. The idea is to separate package installation and package configuration.
 
-*** initial load-path
-:PROPERTIES:
-:ID:       1f927177-0dde-40fc-ad35-325b175a15b6
-:END:
-
-#+begin_src emacs-lisp
-(defconst XL-BASE-LOAD-PATH load-path
-  "Load-path without any external packages installed.")
-#+end_src
-
 *** straight.el
 :PROPERTIES:
 :ID:       86037015-ca61-48f9-96bf-df8fc625a35d
@@ -639,43 +629,6 @@ a brilliant synopsis of emacs variables.
 #+begin_src emacs-lisp
 (defmacro set-default! (sym val)
   `(funcall (or (get ',sym 'custom-set-default) 'set-default) ',sym ,val))
-#+end_src
-
-*** make a place to store load-path
-:PROPERTIES:
-:ID:       697cedf2-6689-4318-9c52-0fc805dfd5ab
-:END:
-
-#+begin_src emacs-lisp
-(mkdir (xl-data-dir "db") t)
-
-(defvar xl-load-path-database
-  (db-make `(db-hash :from-filename ,(xl-data-dir "db/load-path"))))
-#+end_src
-
-*** ensuring a package
-:PROPERTIES:
-:ID:       3033c4ea-9f43-4aac-a11d-f3af3ccc655c
-:END:
-
-I want startup to be fast even without having to compile my elisp file. One way
-to achieve this is to cache package load-paths.
-
-#+begin_src emacs-lisp
-(defun xl-ensure-package (package)
-  "Make sure the package is installed.
-First check if a package's load-path is cached. If it is, add its load-paths to
-the thing."
-  (acond ((db-get package xl-load-path-database)
-	  (dolist (package) (cl-pushnew it load-path)))
-	 ((alist-get package (xl-get-create-recipe-list))
-	  (let ((load-path xl-base-load-path)
-		(pre-install-load-path xl-base-load-path))
-	    (straight-use-package it)
-	    (-difference pre-install-load-path load-path))
-	  (db-put package (list new-paths) x-package-database))
-	 (t
-	  (straight-use-package package))))
 #+end_src
 
 *** use-package
@@ -2938,6 +2891,7 @@ garbage collection during this time.
 
 #+begin_src emacs-lisp
 (use-package! idle-require
+  :demand t
   ;; :xl-use-xl-log idle-require-mode idle-require-load-next
   :xl-gc-pause idle-require-load-next
   :xl-set
@@ -4201,7 +4155,7 @@ like the outorg buffer has less whitespace in between headlines than it should.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! ert
+(use-feature! ert
   :xl-rule ("bottom" "ert" :newname "\\*ert\\*"))
 #+end_src
 
@@ -5244,7 +5198,7 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 :END:
 
 #+begin_src emacs-lisp
-(use-package! savehist
+(use-feature! savehist
   :xl-idle-require custom
   :xl-hook emacs-startup-hook
   :xl-set
@@ -5325,7 +5279,7 @@ them displayed.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! desktop
+(use-feature! desktop
   :xl-set
   (desktop-save                 . t)
   (desktop-dirname              . XL-DATA-DIR)
@@ -8399,7 +8353,7 @@ does not seem to be needed (feebleline doesn't do it and it works fine).
 This headline is for customizing info nodes.
 
 #+begin_src emacs-lisp
-(use-package! info
+(use-feature! info
   :xl-rule ("top" "info" :newname (rx "*info")))
 #+end_src
 
