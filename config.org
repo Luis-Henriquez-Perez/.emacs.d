@@ -3479,7 +3479,6 @@ of things that we actually want at this moment.
 ** company
 :PROPERTIES:
 :ID:       5c0ed97e-da66-42ab-a033-381ac9dd8972
-:RECIPE:   [[id:0bcfacb9-7bd2-49f2-aa57-3ec62fcf1123][company]]
 :END:
 
 *** setup
@@ -5472,12 +5471,10 @@ I want the tabs to exist as a concept, but (ironically) I don't actually want
 them displayed.
 
 #+begin_src emacs-lisp
-(config-feature! tab-bar-mode
-  :xl-config
-  (defadvice! inhibit-tab-display (:after tab-bar-mode make-frame)
-    "Inhibit the display of tags in tab-bar-mode."
-    (--each (frame-list)
-      (set-frame-parameter it 'tab-bar-lines 0))))
+(defadvice! inhibit-tab-display (:after tab-bar-mode make-frame)
+  "Inhibit the display of tags in tab-bar-mode."
+  (--each (frame-list)
+    (set-frame-parameter it 'tab-bar-lines 0)))
 #+end_src
 
 *** desktop
@@ -8586,7 +8583,6 @@ variable should be anyway.
 #+begin_src emacs-lisp
 (setq mini-modeline-l-format
       '("%e" mode-line-buffer-identification))
-
 #+end_src
 
 *** right format
