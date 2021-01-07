@@ -6517,7 +6517,7 @@ like that concern N number of things, where N could be 1 or more things.
 #+begin_src emacs-lisp
 (config-package! plural
   :commands plural-make-plural
-  :config
+  :xl-config
   (push '("\\`is\\'" . "are") plural-knowledge)
   (push '("\\`thas\\'" . "those") plural-knowledge)
   (push '("\\`this\\'" . "these") plural-knowledge))
