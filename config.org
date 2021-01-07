@@ -895,7 +895,7 @@ instead of =add-hook=.
 (uuse-package-defnormalize! xl-hook ()
   (cl-assert (-all-p (-orfn #'-cons-pair-p #'symbolp) <args>))
   (->> <args>
-       (--map-when (symbolp it) (cons it <name>))
+       (--map-when (symbolp it) (cons it (xl-modeify <name>)))
        (-mapcat #'uuse-package-normalize-cons)
        (--map (cons (xl-hookify-symbol (car it)) (cdr it)))))
 
