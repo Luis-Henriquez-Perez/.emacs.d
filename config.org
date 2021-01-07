@@ -917,7 +917,7 @@ instead of =add-hook=.
       (uuse-package-insert-keyword 'before :hook :xl-before-call))
 
 (uuse-package-defnormalize! xl-before-call ()
-  (cl-assert (-all-p (-orfn #'symbolp #'-cons-pair-p) <args>))
+  (cl-assert (-all-p (-orfn #'symbolp #'listp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it <name>))
        (-mapcat #'uuse-package-normalize-cons)))
@@ -940,7 +940,7 @@ instead of =add-hook=.
       (uuse-package-insert-keyword 'after :hook :xl-after-call))
 
 (uuse-package-defnormalize! xl-after-call ()
-  (cl-assert (-all-p (-orfn #'symbolp #'-cons-pair-p) <args>))
+  (cl-assert (-all-p (-orfn #'symbolp #'listp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it <name>))
        (-mapcat #'uuse-package-normalize-cons)))
