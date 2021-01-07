@@ -2191,21 +2191,21 @@ think you want to use =smtp=.
 #+begin_src emacs-lisp
 (config-feature! files
   :xl-set
-  (auto-mode-case-fold                . nil)
   (confirm-nonexistent-file-or-buffer . nil)
-  (confirm-kill-emacs                 . #'y-or-n-p)
-  (require-final-newline              . nil)
-  (trash-directory                    . (expand-file-name "Trash" "~"))
   (backup-by-copying-when-linked      . t)
   (backup-directory-alist             . (list (cons ".*" (xl-data-dir "backup/"))))
+  (require-final-newline              . nil)
   (delete-old-versions                . t)
+  (auto-mode-case-fold                . nil)
+  (confirm-kill-emacs                 . #'y-or-n-p)
   (auto-save-interval                 . 300)
+  (backup-by-copying                  . t)
   (auto-save-default                  . nil)
   (auto-save-timeout                  . 30)
   (make-backup-files                  . nil)
   (kept-old-versions                  . 2)
   (kept-new-versions                  . 2)
-  (backup-by-copying                  . t)
+  (trash-directory                    . (expand-file-name "Trash" "~"))
   (version-control                    . nil))
 #+end_src
 
