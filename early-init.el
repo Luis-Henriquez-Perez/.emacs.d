@@ -44,7 +44,8 @@
 ;; for available fonts. I don't do this yet. I just use inconsolata for now. I
 ;; will address this in time.
 
-(push (cons 'font (concat "Inconsolata-19")) default-frame-alist)
+;; (push (cons 'font (concat "JetBrains Mono-19")) default-frame-alist)
+(push (cons 'font (concat "Anonymous Pro-19")) default-frame-alist)
 
 ;; * Ignore x-resources
 
