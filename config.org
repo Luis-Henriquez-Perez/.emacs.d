@@ -7987,7 +7987,7 @@ question]]. I need to disable =org-capture's= header-line.
 =org-capture= deletes all the other windows in the frame.
 
 #+begin_src emacs-lisp
-(config-package! org-capture
+(config-feature! org-capture
   :config
   (defadvice! dont-delete-other-windows (:around org-capture-place-template)
     "Don't delete other windows when opening a capture template."
