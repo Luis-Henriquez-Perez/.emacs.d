@@ -8125,7 +8125,8 @@ template element as you're writing it.
 :END:
 
 #+begin_src emacs-lisp
-(xl-load-before-call 'doct #'org-capture)
+(config-package! doct
+  :xl-before-call org-capture)
 #+end_src
 
 ***** add to capture templates
