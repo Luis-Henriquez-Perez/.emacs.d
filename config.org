@@ -2184,8 +2184,7 @@ In addition to providing keybinding stuff, =general= also provides.
 :END:
 
 #+begin_src emacs-lisp
-(config-feature! subr-x
-    :demand t)
+(config-feature! subr-x :demand t)
 #+end_src
 
 *** startup
