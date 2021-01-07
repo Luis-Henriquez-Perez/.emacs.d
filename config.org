@@ -922,9 +922,7 @@ instead of =add-hook=.
   <args>)
 
 (uuse-package-defhander! xl-rule ()
-  `((after! <name>
-      (require 'dbc)
-      ,@(--map `(dbc-add-rule ,@it) <value>))
+  `(,@(--map `(dbc-add-rule ,@it) <value>)
     ,@<body>))
 #+end_src
 
@@ -8354,7 +8352,7 @@ This headline is for customizing info nodes.
 
 #+begin_src emacs-lisp
 (use-feature! info
-  :xl-rule ("top" "info" :newname (rx "*info")))
+  :xl-rule ("top" "info" :newname "\\*info"))
 #+end_src
 
 ** helpful
