@@ -180,51 +180,6 @@ another machine by installing the same packages with the same versions.
     (load bootstrap-file nil 'nomessage)))
 #+end_src
 
-*** recipe database
-:PROPERTIES:
-:ID:       e5dc1b31-da5f-4fb9-a940-c93e45a1ac96
-:END:
-
-**** package recipes
-:PROPERTIES:
-:ID:       e8860d22-6070-4bc7-a5fc-0f155f566624
-:END:
-
-#+begin_src emacs-lisp
-(defun xl-package-recipes ()
-  "Return a list of all package recipes in `XL-RECIPE-FILE'."
-  (with-temp-buffer
-    (let (forms)
-      (insert-file-contents XL-RECIPE-FILE)
-      (goto-char (point-min))
-      (while (re-search-forward (rx bol "(") nil t nil)
-        (goto-char (match-beginning 0))
-        (push (read (current-buffer)) forms))
-      forms)))
-#+end_src
-
-**** recipe list
-:PROPERTIES:
-:ID:       05b4ade0-2e46-4976-b43d-da09b134d602
-:END:
-
-#+begin_src emacs-lisp
-(defvar xl-recipe-list nil
-  "List of package recipes.")
-#+end_src
-
-**** get or create recipes
-:PROPERTIES:
-:ID:       20c409f9-f153-4748-be07-a5aa602765c1
-:END:
-
-#+begin_src emacs-lisp
-(defun xl-get-create-recipe-list ()
-  "Return `xl-recipe-list', generating the recipes if not exist."
-  (or xl-recipe-list
-      (setq xl-recipe-list (xl-package-recipes))))
-#+end_src
-
 *** install packages
 :PROPERTIES:
 :ID:       a694267f-b37d-487b-ac68-c1da9e1fe776
@@ -1409,14 +1364,6 @@ after particular events.
 
 In this headline, I strive to establish a common naming convention for
 "xl-defined" hooks, so I can clearly distinguish them from pre-defined hooks.
-
-**** void specific hook regexp
-:PROPERTIES:
-:ID:       91c9237a-9c47-48c0-abfc-c873155d5921
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
 
 **** hook-p
 :PROPERTIES:
@@ -3061,10 +3008,10 @@ favor using it.
 (config-package! consult
   :xl-before-call ((consult-buffer-other-window consult-buffer) . recentf)
   :xl-set
-  (consult-preview-theme . nil)
+  (consult-preview-theme   . nil)
   (consult-preview-outline . t)
-  (consult-preview-buffer . nil)
-  (consult-preview-line . t))
+  (consult-preview-buffer  . nil)
+  (consult-preview-line    . t))
 #+end_src
 
 **** autoload commands
@@ -3879,16 +3826,8 @@ packages
 
 #+begin_src emacs-lisp
 (config-package! system-packages
-  :xl-rule ("bottom" "system-packages" :newname "\\*system-packages"))
-#+end_src
-
-*** settings
-:PROPERTIES:
-:ID:       e43a8862-4e3a-4050-a15e-d39fd25dfccb
-:END:
-
-#+begin_src emacs-lisp
-(setq system-packages-noconfirm t)
+  :xl-rule ("bottom" "system-packages" :newname "\\*system-packages")
+  :xl-set (system-packages-noconfirm . t))
 #+end_src
 
 *** use yay for arch
