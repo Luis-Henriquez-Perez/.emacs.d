@@ -8297,46 +8297,21 @@ tracking the time you spend on a particular task.
 storing universally unique IDs. This is primarily used to disguish and
 referenance org headlines.
 
-**** where ids are stored
+**** init
 :PROPERTIES:
-:ID:       3be3c65d-ce48-4b93-a1e7-84f3e547dc69
+:ID:       e70c0d87-ebd8-453d-a643-91accc0a286a
 :END:
 
 #+begin_src emacs-lisp
-(setq org-id-locations-file (concat XL-DATA-DIR "org-id-locations"))
-(setq org-id-locations-file-relative t)
+(config-feature! org-id
+  :xl-hook (org-insert-hook . org-id-get-create)
+  :xl-set
+  (org-id-locations-file-relative . t)
+  (org-id-link-to-org-use-id      . 'create-if-interactive-and-no-custom-id)
+  (org-id-locations-file          . (xl-data-dir "org-id-locations"))
+  (org-id-files                   . (list XL-MAIN-ORG-FILE)))
 #+end_src
 
-**** where to look for ids
-:PROPERTIES:
-:ID:       41c0db80-94ad-4a99-b27d-7e043c0d7c1f
-:END:
-
-For org links to work they need to know where to search for these files.
-
-#+begin_src emacs-lisp
-(setq org-id-files (list XL-MAIN-ORG-FILE XL-RECIPE-FILE))
-#+end_src
-
-**** when creating a link use an org id instead
-:PROPERTIES:
-:ID:       c10e5674-1fee-4715-975c-36ccb021fcc9
-:END:
-
-This setting tells org-mode to use heading IDs when storing and inserting links.
-
-#+begin_src emacs-lisp
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-#+end_src
-
-**** automatically add an id when we create a headline
-:PROPERTIES:
-:ID: e7ecff83-7ba6-4620-ac05-ebac2f250b7a
-:END:
-
-#+begin_src emacs-lisp
-(xl-add-hook 'org-insert-heading-hook #'org-id-get-create)
-#+end_src
 
 *** org-superstar
 :PROPERTIES:
