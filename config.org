@@ -369,7 +369,7 @@ it when I don't want to be bothered with details and just want a string.
 :END:
 
 #+begin_src emacs-lisp
-(defun xl-hookify-symbol (symbol)
+(defun xl-hookify (symbol)
   "Return SYMBOL converted to hook.
 If SYMBOL is already a hook symbol, return it unchanged."
   (if (xl-hook-symbol-p symbol)
@@ -891,7 +891,7 @@ instead of =add-hook=.
   (->> <args>
        (--map-when (symbolp it) (cons it (xl-modeify <name>)))
        (-mapcat #'uuse-package-normalize-cons)
-       (--map (cons (xl-hookify-symbol (car it)) (cdr it)))))
+       (--map (cons (xl-hookify (car it)) (cdr it)))))
 
 (uuse-package-defhander! xl-hook ()
   "Expect an alist of (HOOK FN)."
