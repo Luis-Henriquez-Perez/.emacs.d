@@ -225,16 +225,6 @@ another machine by installing the same packages with the same versions.
       (setq xl-recipe-list (xl-package-recipes))))
 #+end_src
 
-*** pre-install packages
-:PROPERTIES:
-:ID:       a9cf4492-f583-4d21-a5e6-38c93e26583b
-:END:
-
-#+begin_src emacs-lisp
-(defvar xl-pre-install-packages '(dash anaphora db use-package)
-  "Packages that need to be loaded before package configuration.")
-#+end_src
-
 *** install packages
 :PROPERTIES:
 :ID:       a694267f-b37d-487b-ac68-c1da9e1fe776
