@@ -886,8 +886,9 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (defun uuse-package-normalize-cons (cons-pair)
-  (loopy ((list car (-list (car cons-pair)))
-	  (collect (cons car (cdr cons-pair))))))
+  (-table-flat #'cons
+	       (-list (car cons-pair))
+	       (-list (cdr cons-pair))))
 
 (setq use-package-keywords
       (uuse-package-insert-keyword 'before :hook :xl-hook))
