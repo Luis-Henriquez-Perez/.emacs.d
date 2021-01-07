@@ -705,22 +705,8 @@ a brilliant synopsis of emacs variables.
 :END:
 
 #+begin_src emacs-lisp
-#+end_src
-
-**** defmacro!
-:PROPERTIES:
-:ID:       985ed5d5-a4fd-49ad-a61e-9d6d8e09d65d
-:END:
-
-#+begin_src emacs-lisp
-#+end_src
-
-**** defun!
-:PROPERTIES:
-:ID:       abcffa37-08f6-4ec4-b98e-d9b394344099
-:END:
-
-#+begin_src emacs-lisp
+(defmacro set-default! (sym val)
+  `(funcall (or (get ',sym 'custom-set-default) 'set-default) ',sym ,val))
 #+end_src
 
 *** use-package
@@ -4220,21 +4206,16 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
-(autoload #'gif-screencast-start-or-stop "gif-screencast" nil t nil)
+(config-package! gif-screencast
+  :commands gif-screencast-start-or-stop
+  :xl-set 
+  (gif-screencast-program . "scrot")
+  (gif-screencast-args . '("--quality" "25" "--focused"))
+  (gif-screencast-cropping-program . "mogrify")
+  (gif-screencast-optimize-program . "gifsicle")
+  (gif-screencast-capture-format . "png"))
 
 (define-key! "<f9>" 'gif-screencast-start-or-stop)
-
-(setq gif-screencast-program "scrot")
-(setq gif-screencast-args '("--quality" "25" "--focused"))
-
-;; To shut up the shutter sound of `screencapture' (see `gif-screencast-command').
-
-(setq gif-screencast-cropping-program "mogrify")
-
-;; Optional: Used to crop the capture to the Emacs frame.
-
-(setq gif-screencast-optimize-program "gifsicle")
-(setq gif-screencast-capture-format "png")
 #+end_src
 
 *** emms
@@ -4966,7 +4947,8 @@ keep readonly and what not to.
 :END:
 
 #+begin_src emacs-lisp
-(autoload #'shrink-path-file "shrink-path" nil t nil)
+(config-package! shrink-path-file
+  :commands shrink-path)
 #+end_src
 
 ** file browsing
@@ -5078,20 +5060,19 @@ inspired file manager]] of also called =ranger=.
 :END:
 
 #+begin_src emacs-lisp
-(--each (list #'deer #'ranger)
-  (autoload it "ranger" nil t nil))
-
-(setq ranger-override-dired-mode t)
-(setq ranger-cleanup-eagerly t)
-(setq ranger-cleanup-on-disable t)
-(setq ranger-omit-regexp "^.DS_Store$")
-(setq ranger-excluded-extensions
-      '("mkv" "iso" "mp4"))
-(setq ranger-deer-show-details nil)
-(setq ranger-max-preview-size 10)
-(setq ranger-modify-header t)
-(setq ranger-hide-cursor t)
-(setq ranger-dont-show-binary t)
+(config-package! ranger
+  :commands deer ranger
+  :xl-set
+  (ranger-override-dired-mode . t)
+  (ranger-cleanup-eagerly     . t)
+  (ranger-cleanup-on-disable  . t)
+  (ranger-omit-regexp         . "^.DS_Store$")
+  (ranger-excluded-extensions .'("mkv" "iso" "mp4"))
+  (ranger-deer-show-details   . nil)
+  (ranger-max-preview-size    . 10)
+  (ranger-modify-header       . t)
+  (ranger-hide-cursor         . t)
+  (ranger-dont-show-binary    . t))
 #+end_src
 
 **** refresh contents
@@ -5269,7 +5250,8 @@ address later.
 :END:
 
 #+begin_src emacs-lisp
-(autoload #'git-gutter-mode "git-gutter" nil t nil)
+(config-package! git-gutter
+  :commands git-gutter-mode)
 #+end_src
 
 ** persistence
@@ -5404,10 +5386,10 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
 (config-feature! tab-bar-mode
   :xl-hook (tab-bar-mode-hook . tab-bar-history-mode)
   :xl-set
-  (tab-bar-history-limit . 25)
   (tab-bar-new-tab-choice . "*scratch*")
-  (tab-bar-tab-hints . nil)
-  (tab-bar-show . nil))
+  (tab-bar-history-limit  . 25)
+  (tab-bar-tab-hints      . nil)
+  (tab-bar-show           . nil))
 #+end_src
 
 **** dont actually display the tabs
@@ -5440,12 +5422,12 @@ them displayed.
 #+begin_src emacs-lisp
 (config-package! desktop
   :xl-set
-  (desktop-save . t)
-  (desktop-dirname . XL-DATA-DIR)
-  (desktop-auto-save-timeout . auto-save-timeout)
-  (desktop-base-file-name . "emacs.desktop")
-  (desktop-base-lock-name . "emacs.desktop.lock")
-  (desktop-path . (list XL-DATA-DIR))
+  (desktop-save                 . t)
+  (desktop-dirname              . XL-DATA-DIR)
+  (desktop-auto-save-timeout    . auto-save-timeout)
+  (desktop-base-file-name       . "emacs.desktop")
+  (desktop-base-lock-name       . "emacs.desktop.lock")
+  (desktop-path                 . (list XL-DATA-DIR))
   (desktop-missing-file-warning . nil))
 #+end_src
 
@@ -5635,6 +5617,16 @@ afterwards.
 There are benefits and drawbacks to making emacs your window manager. One
 benefit is that you get a super consistent window management experience. If you
 use a typical window manager, you have to.
+
+*** init
+:PROPERTIES:
+:ID:       7b83cab0-d599-46c4-b20c-19ff33345ae3
+:END:
+
+#+begin_src emacs-lisp
+(config-package! exwm
+  :xl-before-call browse-url)
+#+end_src
 
 *** init
 :PROPERTIES:
@@ -5872,9 +5864,9 @@ Concerning the loading of exwm-edit. Ideally, I should load it after
 certain applications where I'd use it need to be loaded.
 
 #+begin_src emacs-lisp
-(autoload #'exwm-edit "exwm-edit" nil t nil)
-
-(after! exwm
+(config-package! exwm-edit
+  :commands exwm-edit
+  :xl-config
   (funcall (get 'exwm-input-global-keys 'custom-set)
 	   'exwm-input-global-keys
 	   `((,(kbd "C-'") . exwm-edit))))
@@ -6339,6 +6331,17 @@ source block editing tools used by org mode.
 
 #+begin_src emacs-lisp
 (dbc-add-rule "bottom" "org source blocks" :newname "\\*Org[[:space:]]\\(?:S\\(?:ource\\|rc\\)\\).+")
+#+end_src
+
+**** before load
+:PROPERTIES:
+:ID:       2605fd28-b61f-46b7-a212-6291e5fd0b0a
+:END:
+
+#+begin_src emacs-lisp
+(alet (list #'org/dwim-edit-source-block #'org/dwim-edit-description)
+  (xl-load-before-call 'org-ml it)
+  (xl-load-before-call 'edit-indirect it))
 #+end_src
 
 **** minor mode for org source buffers
@@ -7521,9 +7524,12 @@ the whole thing.
 :END:
 
 #+begin_src emacs-lisp
-(setq org-directory (concat user-emacs-directory "org/"))
-(setq org-archive-location (concat org-directory "archive.org::"))
-(setq org-default-notes-file (concat org-directory "notes.org"))
+(config-package! org
+  :xl-ensure (:host github :type git)
+  :xl-set
+  (org-directory (concat user-emacs-directory "org/"))
+  (org-archive-location (concat org-directory "archive.org::"))
+  (org-default-notes-file (concat org-directory "notes.org")))
 #+end_src
 
 **** define capture file
@@ -7541,20 +7547,22 @@ the whole thing.
 :END:
 
 #+begin_src emacs-lisp
-(setq org-fontify-emphasized-text t)
-(setq org-hide-emphasis-markers t)
-(setq org-pretty-entities t)
-(setq org-fontify-whole-heading-line t)
-(setq org-fontify-done-headline t)
-(setq org-fontify-quote-and-verse-blocks t)
-(setq org-adapt-indentation nil)
-(setq org-cycle-separator-lines 2)
-(setq outline-blank-line t)
-(setq org-enforce-todo-dependencies t)
-(setq org-use-fast-tag-selection nil)
-(setq org-tags-column -80)
-(setq org-tag-alist nil)
-(setq org-log-done 'time)
+(config-package! org
+  :xl-set
+  (org-fontify-emphasized-text        . t)
+  (org-hide-emphasis-markers          . t)
+  (org-pretty-entities                . t)
+  (org-fontify-whole-heading-line     . t)
+  (org-fontify-done-headline          . t)
+  (org-fontify-quote-and-verse-blocks . t)
+  (org-adapt-indentation              . nil)
+  (org-cycle-separator-lines          . 2)
+  (outline-blank-line                 . t)
+  (org-enforce-todo-dependencies      . t)
+  (org-use-fast-tag-selection         . nil)
+  (org-tags-column                    . -80)
+  (org-tag-alist                      . nil)
+  (org-log-done                       . 'time))
 #+end_src
 
 **** required packages
@@ -8649,7 +8657,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :END:
 
 #+begin_src emacs-lisp
-(defadvice! open-dashboard-instead (:around xl-initial-buffer)
+(defadvice! open-dashboard-instead (:around xl-initial-buffer-choice)
   (if xl-debug-p
       (apply <orig-fn> <args>)
     (get-buffer-create "*dashboard*")))
