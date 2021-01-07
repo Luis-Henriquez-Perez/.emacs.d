@@ -8458,7 +8458,7 @@ This setting tells org-mode to use heading IDs when storing and inserting links.
   :xl-hook org-mode-hook
   :xl-set
   (org-superstar-leading-bullet . ?\s)
-  (org-superstar-special-todo-items . t)
+  (org-superstar-special-todo-items . t))
 #+end_src
 
 *** org mode snippets
