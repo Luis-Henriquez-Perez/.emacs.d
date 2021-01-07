@@ -6528,9 +6528,9 @@ It will also upcase any word I add to [[helpvar:auto-capitalize-words][auto-capi
 #+begin_src emacs-lisp
 (config-package! spell-number
   :xl-set
-  (spelln-language . 'english-us)
-  (spelln-country . 'united-states)
-  (spelln-period-character . ?,)
+  (spelln-language          . 'english-us)
+  (spelln-country           . 'united-states)
+  (spelln-period-character  . ?,)
   (spelln-decimal-character . ?.))
 #+end_src
 
