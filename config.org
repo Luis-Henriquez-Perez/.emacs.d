@@ -785,8 +785,6 @@ the macro =use-package!=.
 :ID:       62cec5ac-a2f9-435b-96a7-4db0d9691f25
 :END:
 
-There are two parts to adding a leaf-keyword.
-
 ***** hook
 :PROPERTIES:
 :ID:       02e42811-3b97-44f1-ad0c-d59787173ffb
@@ -3820,10 +3818,11 @@ variable leaking.
 
 #+begin_src emacs-lisp
 (use-package! mmt
-  :init
-  (defalias 'once-only! 'mmt-once-only)
-  (defalias 'with-gensyms! 'mmt-with-gensyms)
-  (defalias 'with-unique-names! 'mmt-with-gensyms))
+  ;; :xl-alias
+  ;; (once-only! . mmt-once-only)
+  ;; (with-gensyms! . mmt-with-gensyms)
+  ;; (with-gensyms! . mmt-with-gensyms)
+  )
 #+end_src
 
 ** ellocate
