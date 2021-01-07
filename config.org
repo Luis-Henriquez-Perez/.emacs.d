@@ -7991,23 +7991,9 @@ diary/journal using =org-mode=.
 :ID:       e00378a1-adcf-4e83-8533-b6b442b5f362
 :END:
 
-**** control org src popup
-:PROPERTIES:
-:ID:       f0f6ad72-b7bc-4894-86fe-32851698c319
-:END:
-
 #+begin_src emacs-lisp
 (config-feature! org-src
-  :xl-rule ("bottom" "org source" :newfile "\\*Org Src"))
-#+end_src
-
-************* settings
-:PROPERTIES:
-:ID:       0f51ce73-d54e-4e89-8977-56c769940c5f
-:END:
-
-#+begin_src emacs-lisp
-(config-feature! org-src
+  :xl-rule ("bottom" "org source" :newfile "\\*Org Src")
   :xl-set
   (org-src-ask-before-returning-to-edit-buffer . nil)
   (org-edit-src-persistent-message             . nil)
