@@ -282,14 +282,7 @@ namespaces. Therefore, I support keyword args in the function body.
     (while (keywordp (car body))
       (push (pop body) plist)
       (push (pop body) plist))
-    (list docstring (nreverse plist) body))
-  ;; (loopy (with (docstring (when (stringp (car body)) (pop body))))
-  ;; 	 ((cons (key value . rest) body #'cddr)
-  ;; 	  (unless (keywordp key)
-  ;; 	    (return (list docstring plist `(,key ,value ,@rest))))
-  ;; 	  (append plist (list key value)))
-  ;; 	 (else-do (return (list docstring plist rest))))
-  )
+    (list docstring (nreverse plist) body)))
 #+end_src
 
 **** symbols
