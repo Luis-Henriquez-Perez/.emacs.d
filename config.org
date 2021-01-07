@@ -7480,14 +7480,13 @@ The change to this function."
 
 #+begin_src emacs-lisp
 (config-package! macrostep
-  :commands
-  macrostep-expand macrostep-collapse macrostep-collapse-all
-  :general
-  (:infix "m"
-   :keymaps 'emacs-lisp-mode-map
-   "e" (list :def #'macrostep-expand :wk "expand")
-   "c" (list :def #'macrostep-collapse :wk "collapse")
-   "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
+  :commands macrostep-expand
+  :init
+  (define-localleader-key!
+    :keymaps 'emacs-lisp-mode-map
+    "e" (list :def #'macrostep-expand :wk "expand")
+    "c" (list :def #'macrostep-collapse :wk "collapse")
+    "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
 #+end_src
 
 *** ppp
