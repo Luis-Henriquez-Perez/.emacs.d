@@ -3485,13 +3485,11 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(config-package! company
-  :general
-  (:keymaps 'company-active-map
+(define-key! company-active-map
    [tab]     #'company-select-next
    [backtab] #'company-select-previous
    "C-k"     #'company-select-previous
-   "C-j"     #'company-select-next))
+   "C-j"     #'company-select-next)
 #+end_src
 
 *** backends
@@ -3554,7 +3552,8 @@ of things that we actually want at this moment.
 [[https://github.com/raxod502/prescient.el][company-prescient]] is the same as =prescient= but for =company= instead of =ivy=.
 
 #+begin_src emacs-lisp
-(config-package! company-prescient :hook company-mode-hook)
+(config-package! company-prescient
+  :xl-hook company-mode-hook)
 #+end_src
 
 *** close company on escape
@@ -7067,7 +7066,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 :END:
 
 #+begin_src emacs-lisp
-(config-package! lispyville :hook emacs-lisp-mode-hook)
+(config-package! lispyville :xl-hook emacs-lisp-mode-hook)
 #+end_src
 
 **** remappings
@@ -7484,8 +7483,8 @@ The change to this function."
   :init
   (define-localleader-key!
     :keymaps 'emacs-lisp-mode-map
-    "e" (list :def #'macrostep-expand :wk "expand")
-    "c" (list :def #'macrostep-collapse :wk "collapse")
+    "e" (list :def #'macrostep-expand       :wk "expand")
+    "c" (list :def #'macrostep-collapse     :wk "collapse")
     "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
 #+end_src
 
@@ -8699,9 +8698,9 @@ makes emacs feel like a window manager with gaps.
 (config-feature! window-divider
   :xl-hook (window-setup-hook . window-divider-mode)
   :xl-set
-  (window-divider-default-places . t)
   (window-divider-default-bottom-width . 7)
-  (window-divider-default-right-width .  7))
+  (window-divider-default-right-width  . 7)
+  (window-divider-default-places       . t))
 #+end_src
 
 *** window divider face
