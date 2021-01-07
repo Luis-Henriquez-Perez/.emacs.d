@@ -6477,11 +6477,10 @@ larger text objects. It's saves me keystrokes.
 :END:
 
 #+begin_src emacs-lisp
-(config-package! expand-region :config
-  (defadvice! quit-expand-region (:before evil-escape)
-    "Properly abort an expand-region region."
-    (when (memq last-command '(er/expand-region er/contract-region))
-      (er/contract-region 0))))
+(defadvice! quit-expand-region (:before evil-escape)
+  "Properly abort an expand-region region."
+  (when (memq last-command '(er/expand-region er/contract-region))
+    (er/contract-region 0)))
 #+end_src
 
 *** expand-region
