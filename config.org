@@ -8042,7 +8042,7 @@ into your head while keeing disctractions to a minimum.
 
 #+begin_src emacs-lisp
 (config-feature! org-capture
-  ;; :xl-before-call (org-capture . (ts org-ml))
+  :xl-before-call (org-capture . (ts org-ml))
   :xl-rule ("bottom" "capture" :newname "\\`CAPTURE-"))
 #+end_src
 
