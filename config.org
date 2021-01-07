@@ -7985,7 +7985,7 @@ diary/journal using =org-mode=.
   :xl-set
   (org-journal-file-type . 'yearly)
   (org-journal-find-file . 'find-file)
-  (org-journal-dir .       (concat org-directory "journal/")))
+  (org-journal-dir       . (concat org-directory "journal/")))
 #+end_src
 
 *** org-src
@@ -8253,8 +8253,6 @@ tracking the time you spend on a particular task.
   (org-clock-in-resume    . t)
   :xl-config
   (org-clock-persistence-insinuate))
-
-
 #+end_src
 
 *** org-agenda
@@ -8262,20 +8260,17 @@ tracking the time you spend on a particular task.
 :ID:       efa9d237-b055-4bfb-a1f9-86d964b5f007
 :END:
 
-**** settings
-:PROPERTIES:
-:ID:       168100e3-7157-411a-ad46-6389d1d0242a
-:END:
-
 #+begin_src emacs-lisp
-(setq org-agenda-files (list org:capture-file))
-(setq org-agenda-start-on-weekday 0)
-(setq org-agenda-timegrid-use-ampm nil)
-(setq org-agenda-skip-unavailable-files t)
-(setq org-agenda-time-leading-zero t)
-(setq org-agenda-text-search-extra-files '(agenda-archives))
-(setq org-agenda-dim-blocked-tasks t)
-(setq org-agenda-inhibit-startup t)
+(config-feature! org-agenda
+  :xl-set
+  (org-agenda-text-search-extra-files . '(agenda-archives))
+  (org-agenda-skip-unavailable-files  . t)
+  (org-agenda-files                   . (list org:capture-file))
+  (org-agenda-start-on-weekday        . 0)
+  (org-agenda-timegrid-use-ampm       . nil)
+  (org-agenda-time-leading-zero       . t)
+  (org-agenda-dim-blocked-tasks       . t)
+  (org-agenda-inhibit-startup         . t))
 #+end_src
 
 *** org-refile
@@ -8283,17 +8278,14 @@ tracking the time you spend on a particular task.
 :ID:       6dfc0415-2945-4259-a782-b569fcb397ea
 :END:
 
-**** org refile
-:PROPERTIES:
-:ID: 0174a708-8043-403e-b024-8ae29868564d
-:END:
-
 #+begin_src emacs-lisp
-(setq org-refile-targets nil)
-(setq org-refile-use-outline-path 'file)
-(setq org-refile-allow-creating-parent-nodes t)
-(setq org-reverse-note-order t)
-(setq org-outline-path-complete-in-steps nil)
+(config-feature! org-refile
+  :xl-set
+  (org-refile-targets                     . nil)
+  (org-refile-use-outline-path            . 'file)
+  (org-refile-allow-creating-parent-nodes . t)
+  (org-reverse-note-order                 . t)
+  (org-outline-path-complete-in-steps     . nil))
 #+end_src
 
 *** org-id
@@ -8349,11 +8341,6 @@ This setting tells org-mode to use heading IDs when storing and inserting links.
 *** org-superstar
 :PROPERTIES:
 :ID:       c4428756-a804-47e8-9586-f63b82dd1561
-:END:
-
-**** init
-:PROPERTIES:
-:ID:       67e4a3c7-b1bb-4f8c-991f-53dc304e8450
 :END:
 
 #+begin_src emacs-lisp
