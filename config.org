@@ -2246,7 +2246,7 @@ being created.
   (defun xl-initial-buffer-choice ()
     "Return the initial buffer to be displayed.
 This function is meant to be used as the value of `initial-buffer-choice'."
-    (alet "*scratch*"
+    (alet (if xl-debug-p "*xl-log*" "*scratch*")
       (get-buffer-create it))))
 #+end_src
 
