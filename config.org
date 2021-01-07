@@ -7141,7 +7141,7 @@ You'll get void variable if you don't do this.
 :END:
 
 #+begin_src emacs-lisp
-(gsetq evil-lispy-state-cursor  '((bar . 4) "red"))
+(set! evil-lispy-state-cursor  '((bar . 4) "red"))
 #+end_src
 
 **** run after lispy
