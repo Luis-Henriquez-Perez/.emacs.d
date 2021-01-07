@@ -5343,7 +5343,9 @@ have to set out to look for a file with =dired=.
   (recentf-max-saved-items   . 700)
   (recentf-save-file         . (concat XL-DATA-DIR "recentf"))
   (recentf-auto-cleanup      . 'never)
-  (recentf-filename-handlers . '(file-truename abbreviate-file-name)))
+  (recentf-filename-handlers . '(file-truename abbreviate-file-name))
+  :xl-config
+  (recentf-mode 1))
 #+end_src
 
 *** savehist
