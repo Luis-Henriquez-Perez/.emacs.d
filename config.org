@@ -8422,7 +8422,7 @@ from [[helpfn:text-scale-increase][text-scale-increase]] and [[helpfn:text-scale
 (config-package! zoom-frm
   :xl-set
   (frame-zoom-font-difference . 0.5)
-  (zoom-frame/buffer . 'buffer))
+  (zoom-frame/buffer          . 'buffer))
 #+end_src
 
 ** mini-modeline
@@ -8521,11 +8521,6 @@ does not seem to be needed (feebleline doesn't do it and it works fine).
 
 This headline is for customizing info nodes.
 
-*** setup
-:PROPERTIES:
-:ID:       497be1b0-0cbf-46df-9dd8-f54363a8ae21
-:END:
-
 #+begin_src emacs-lisp
 (config-package! info
   :xl-rule ("top" "info" :newname (rx "*info")))
@@ -8573,13 +8568,13 @@ you can "discover" the commands as you go along.
   :xl-hook emacs-startup-hook
   :xl-set
   (which-key-sort-uppercase-first . nil)
-  (which-key-max-display-columns . nil)
-  (which-key-add-column-padding . 1)
-  (which-key-min-display-lines . 6)
-  (which-key-side-window-slot . -10)
-  (which-key-sort-order . #'which-key-prefix-then-key-order)
-  (which-key-popup-type . 'minibuffer)
-  (which-key-idle-delay . 0.8))
+  (which-key-max-display-columns  . nil)
+  (which-key-add-column-padding   . 1)
+  (which-key-min-display-lines    . 6)
+  (which-key-side-window-slot     . -10)
+  (which-key-sort-order           . #'which-key-prefix-then-key-order)
+  (which-key-popup-type           . 'minibuffer)
+  (which-key-idle-delay           . 0.8))
 #+end_src
 
 *** set line spacing
