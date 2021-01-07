@@ -7946,7 +7946,8 @@ options. For this reason I wrote my own insert heading functions.
 This is a minor mode for displaying links in non-org buffers.
 
 #+begin_src emacs-lisp
-(config-package! org-link-minor-mode :xl-hook outshine-mode-hook)
+(config-package! org-link-minor-mode
+  :xl-hook outshine-mode-hook)
 #+end_src
 
 *** org-ml
