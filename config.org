@@ -8297,11 +8297,6 @@ tracking the time you spend on a particular task.
 storing universally unique IDs. This is primarily used to disguish and
 referenance org headlines.
 
-**** init
-:PROPERTIES:
-:ID:       e70c0d87-ebd8-453d-a643-91accc0a286a
-:END:
-
 #+begin_src emacs-lisp
 (config-feature! org-id
   :xl-hook (org-insert-hook . org-id-get-create)
