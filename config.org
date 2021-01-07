@@ -3492,7 +3492,8 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(config-package! company :general
+(config-package! company
+  :general
   (:keymaps 'company-active-map
    [tab]     #'company-select-next
    [backtab] #'company-select-previous
