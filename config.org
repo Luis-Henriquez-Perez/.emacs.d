@@ -243,7 +243,7 @@ another machine by installing the same packages with the same versions.
 #+begin_src emacs-lisp
 (xl-init-straight)
 
-(dolist (package xl-pre-install-packages)
+(dolist (package '(dash anaphora db use-package))
   (straight-use-package package)
   (require package))
 #+end_src
