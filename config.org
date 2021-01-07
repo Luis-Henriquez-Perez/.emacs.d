@@ -1250,21 +1250,22 @@ side windows.
 
 **** elog
 :PROPERTIES:
-:ID:       84e366d4-076e-4deb-92d0-37ba71114a6e
+:ID:       d73fd7b1-5610-4d93-8802-1aa57c8c1918
 :END:
 
-=elog= is a logging library. It has a macro that defines functions for logging.
+=elog= is a library for generating logging functions. I use [[][]] to generate a
+function that logs to the buffer =*xl-log*=.
 
 #+begin_src emacs-lisp
-;; (config-package! elog
-;;   :demand t
-;;   :xl-config
-;;   (elog-open-log buffer "xl-" :buffer "*xl*")
-
-;;   (defun xl-log (format-string &rest args)
-;;     (xl--log 1 (apply #'format format-string args))))
-(defun xl-log (format-string &rest args)
-  (message format-string args))
+(config-package! elog
+  :demand t
+  :xl-config
+  (elog-open-log buffer "xl-" :buffer "*xl-log*" :fmt "XL %M")
+  (defun xl-log (format-string &rest args)
+    "Log to *Messages* if `xl-debug-p' is on.
+Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
+Accept the same arguments as `message'."
+    (xl--log 1 (apply #'format format-string args))))
 #+end_src
 
 *** generic advices
@@ -1916,26 +1917,6 @@ and convenient way to do this.
   (xl--load-on-call package :after functions enable))
 #+end_src
 
-
-*** elog
-:PROPERTIES:
-:ID:       d73fd7b1-5610-4d93-8802-1aa57c8c1918
-:END:
-
-=elog= is a library for generating logging functions. I use [[][]] to generate a
-function that logs to the buffer =*xl-log*=.
-
-#+begin_src emacs-lisp
-(config-package! elog
-  :demand t
-  :xl-config
-  (elog-open-log buffer "xl-" :buffer "*xl-log*" :fmt "XL %M")
-  (defun xl-log (format-string &rest args)
-    "Log to *Messages* if `xl-debug-p' is on.
-Does not interrupt the minibuffer if it is in use, but still log to *Messages*.
-Accept the same arguments as `message'."
-    (xl--log 1 (apply #'format format-string args))))
-#+end_src
 
 *** nameless
 :PROPERTIES:
