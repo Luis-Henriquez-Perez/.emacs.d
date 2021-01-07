@@ -1918,21 +1918,6 @@ and convenient way to do this.
 #+end_src
 
 
-*** nameless
-:PROPERTIES:
-:ID:       695aeb73-89d3-47f8-bee8-2721111dd2bf
-:END:
-
-=nameless= is a package that truncates namespace prefixes that you specify
-in. Shortening aliases allows for more concise, easier to read, and less
-redundant code.
-
-#+begin_src emacs-lisp
-(config-package! nameless
-  :xl-hook emacs-lisp-mode-hook
-  :xl-set (nameless-private-prefix . t))
-#+end_src
-
 ** Keybindings
 :PROPERTIES:
 :ID:       b0680fe6-23eb-412f-a357-bfa5e5bb7af7
@@ -3722,6 +3707,21 @@ Making sure that tempo can completing read.
 #+end_src
 
 * Utility
+
+** nameless
+:PROPERTIES:
+:ID:       695aeb73-89d3-47f8-bee8-2721111dd2bf
+:END:
+
+=nameless= is a package that truncates namespace prefixes that you specify
+in. Shortening aliases allows for more concise, easier to read, and less
+redundant code.
+
+#+begin_src emacs-lisp
+(config-package! nameless
+  :xl-hook emacs-lisp-mode-hook
+  :xl-set (nameless-private-prefix . t))
+#+end_src
 
 ** fortune-cookie
 :PROPERTIES:
