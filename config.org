@@ -2077,12 +2077,6 @@ In addition to providing keybinding stuff, =general= also provides.
 
 #+begin_src emacs-lisp
 (defalias 'define-key! 'general-def)
-
-(defalias 'set! 'general-setq)
-(defalias 'set-default! 'gsetq-default)
-
-(defalias 'gsetq 'general-setq)
-(defalias 'gsetq-default 'general-setq-default)
 #+end_src
 
 ** Packages
