@@ -7514,9 +7514,9 @@ the whole thing.
 (config-package! org
   :xl-ensure (:host github :type git)
   :xl-set
-  (org-directory (concat user-emacs-directory "org/"))
-  (org-archive-location (concat org-directory "archive.org::"))
-  (org-default-notes-file (concat org-directory "notes.org")))
+  (org-directory          . (xl-emacs-dir "org/"))
+  (org-archive-location   . (concat org-directory "archive.org::"))
+  (org-default-notes-file . (concat org-directory "notes  .org")))
 #+end_src
 
 **** define capture file
