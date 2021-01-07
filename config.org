@@ -6081,9 +6081,7 @@ buffer. It's the same concept as org-src buffers but is not tied to org-mode.
 
 #+begin_src emacs-lisp
 (config-package! edit-indirect
-  :commands edit-indirect
-  ;; :nameless (edit-indirect . ei)
-  )
+  :commands edit-indirect)
 #+end_src
 
 *** editing org descriptions
@@ -6610,7 +6608,7 @@ it. It's pretty smart and very convenient.
 
 #+begin_src emacs-lisp
 (config-package! aggressive-indent
-  :hook emacs-lisp-mode-hook)
+  :xl-hook emacs-lisp-mode-hook)
 #+end_src
 
 ** parentheses
