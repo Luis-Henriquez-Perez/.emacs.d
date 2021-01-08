@@ -676,7 +676,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar uuse-package-orig-keywords use-package-keywords)
+(defvar +use-package-orig-keywords use-package-keywords)
 #+end_src
 
 **** miscellaneous
@@ -685,7 +685,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defun uuse-package-insert-keyword (where place key)
+(defun +use-package-insert-keyword (where place key)
   (--splice (eq place it)
 	    (funcall (if (eq where 'before) #'identity #'reverse) (list key it))
 	    use-package-keywords))
@@ -697,7 +697,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defun uuse-package-autoload (package fn)
+(defun +use-package-autoload (package fn)
   "Return form for FN."
   `(unless (fboundp ',fn)
      (autoload #',fn ,(symbol-name package) nil t nil)))
@@ -714,7 +714,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar uuse-package-default-place '(after :init)
+(defvar +use-package-default-place '(after :init)
   "Place where keywords should be inserted by default.")
 #+end_src
 
@@ -724,7 +724,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar uuse-package-handler-args '(name key value rest state)
+(defvar +use-package-handler-args '(name key value rest state)
   "Args passed into handler functions.")
 #+end_src
 
@@ -734,12 +734,12 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro uuse-package-defhander! (name args &rest body)
+(defmacro +use-package-defhander! (name args &rest body)
   "Define a `use-package' handler."
   (declare (indent defun))
   (let ((handler-name (xl-symbol-intern 'use-package-handler/: name))
 	(docstring (when (stringp (car body)) (pop body))))
-    `(defun ,handler-name (,@(-map #'xl-anaphoric-symbol uuse-package-handler-args))
+    `(defun ,handler-name (,@(-map #'xl-anaphoric-symbol +use-package-handler-args))
        ,docstring
        (let ((<body> (use-package-process-keywords <name> <rest> <state>)))
 	 ,@body))))
@@ -751,7 +751,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar uuse-package-normalize-args '(name key args)
+(defvar +use-package-normalize-args '(name key args)
   "Args passed into normalize functions.")
 #+end_src
 
@@ -761,12 +761,12 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro uuse-package-defnormalize! (key args &rest body)
+(defmacro +use-package-defnormalize! (key args &rest body)
   "Define a `use-package' normalizer."
   (declare (indent defun))
   (let* ((prefix 'use-package-normalize/:)
 	 (name (xl-symbol-intern prefix key)))
-    `(defun ,name (,@(-map #'xl-anaphoric-symbol uuse-package-normalize-args))
+    `(defun ,name (,@(-map #'xl-anaphoric-symbol +use-package-normalize-args))
        ,@body)))
 #+end_src
 
@@ -784,25 +784,25 @@ Here I override the default hook keyword with my own which uses =void-add-hook=
 instead of =add-hook=.
 
 #+begin_src emacs-lisp
-(defun uuse-package-normalize-cons (cons-pair)
+(defun +use-package-normalize-cons (cons-pair)
   (-table-flat #'cons
 	       (-list (car cons-pair))
 	       (-list (cdr cons-pair))))
 
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-hook))
+      (+use-package-insert-keyword 'before :hook :xl-hook))
 
-(uuse-package-defnormalize! xl-hook ()
+(+use-package-defnormalize! xl-hook ()
   (cl-assert (-all-p (-orfn #'-cons-pair-p #'symbolp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it (xl-modeify <name>)))
-       (-mapcat #'uuse-package-normalize-cons)
+       (-mapcat #'+use-package-normalize-cons)
        (--map (cons (xl-hookify (car it)) (cdr it)))))
 
-(uuse-package-defhander! xl-hook ()
+(+use-package-defhander! xl-hook ()
   "Expect an alist of (HOOK FN)."
   `(,@(-map (-lambda ((hook . fn)) `(xl-add-hook ',hook ',fn)) <value>)
-    ,@(-map (-partial #'uuse-package-autoload <name>) (-map #'cdr <value>))
+    ,@(-map (-partial #'+use-package-autoload <name>) (-map #'cdr <value>))
     ,@<body>))
 #+end_src
 
@@ -813,16 +813,16 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-before-call))
+      (+use-package-insert-keyword 'before :hook :xl-before-call))
 
-(uuse-package-defnormalize! xl-before-call ()
+(+use-package-defnormalize! xl-before-call ()
   (cl-assert (-all-p (-orfn #'symbolp #'listp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it <name>))
-       (-mapcat #'uuse-package-normalize-cons)))
+       (-mapcat #'+use-package-normalize-cons)))
 
-(uuse-package-defhander! xl-before-call ()
-  `(,@(-map (-partial #'uuse-package-autoload <name>)
+(+use-package-defhander! xl-before-call ()
+  `(,@(-map (-partial #'+use-package-autoload <name>)
 	    (-map #'car <value>))
     ,@(-map (-lambda ((fn . package)) `(xl-load-before-call #',fn ',package))
 	    <value>)
@@ -836,16 +836,16 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'after :hook :xl-after-call))
+      (+use-package-insert-keyword 'after :hook :xl-after-call))
 
-(uuse-package-defnormalize! xl-after-call ()
+(+use-package-defnormalize! xl-after-call ()
   (cl-assert (-all-p (-orfn #'symbolp #'listp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it <name>))
-       (-mapcat #'uuse-package-normalize-cons)))
+       (-mapcat #'+use-package-normalize-cons)))
 
-(uuse-package-defhander! xl-after-call ()
-  `(,@(-map (-partial #'uuse-package-autoload <name>)
+(+use-package-defhander! xl-after-call ()
+  `(,@(-map (-partial #'+use-package-autoload <name>)
 	    (-map #'car <value>))
     ,@(-map (-lambda ((fn . package)) `(xl-load-after-call #',fn ',package))
 	    <value>)
@@ -859,14 +859,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-silence))
+      (+use-package-insert-keyword 'before :hook :xl-silence))
 
-(uuse-package-defnormalize! xl-silence ()
+(+use-package-defnormalize! xl-silence ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(uuse-package-defhander! xl-silence ()
-  `(,@(-map (-partial #'uuse-package-autoload <name>) <value>)
+(+use-package-defhander! xl-silence ()
+  `(,@(-map (-partial #'+use-package-autoload <name>) <value>)
     ,@(--map `(xl-silence-output #',it) <value>)
     ,@<body>))
 #+end_src
@@ -878,14 +878,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-ignore))
+      (+use-package-insert-keyword 'before :hook :xl-ignore))
 
-(uuse-package-defnormalize! xl-ignore ()
+(+use-package-defnormalize! xl-ignore ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(uuse-package-defhander! xl-ignore ()
-  `(,@(-map (-partial #'uuse-package-autoload <name>) <value>)
+(+use-package-defhander! xl-ignore ()
+  `(,@(-map (-partial #'+use-package-autoload <name>) <value>)
     ,@(--map `(xl-ignore #',it) <value>)
     ,@<body>))
 #+end_src
@@ -897,13 +897,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-set))
+      (+use-package-insert-keyword 'before :hook :xl-set))
 
-(uuse-package-defnormalize! xl-set ()
+(+use-package-defnormalize! xl-set ()
   (cl-assert (-all-p #'listp <args>))
   <args>)
 
-(uuse-package-defhander! xl-set ()
+(+use-package-defhander! xl-set ()
   `(,@(-map (-lambda ((var . val)) `(set! ,var ,val)) <value>)
     ,@<body>))
 #+end_src
@@ -915,13 +915,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-rule))
+      (+use-package-insert-keyword 'before :hook :xl-rule))
 
-(uuse-package-defnormalize! xl-rule ()
+(+use-package-defnormalize! xl-rule ()
   (cl-assert (-all-p #'xl-true-list-p <args>))
   <args>)
 
-(uuse-package-defhander! xl-rule ()
+(+use-package-defhander! xl-rule ()
   `(,@(--map `(dbc-add-rule ,@it) <value>)
     ,@<body>))
 #+end_src
@@ -933,13 +933,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-idle-require))
+      (+use-package-insert-keyword 'before :hook :xl-idle-require))
 
-(uuse-package-defnormalize! xl-idle-require ()
+(+use-package-defnormalize! xl-idle-require ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(uuse-package-defhander! xl-idle-require ()
+(+use-package-defhander! xl-idle-require ()
   `((use-package! idle-require :config
       ,@(--map `(idle-require ',it nil t) <value>))
     ,@<body>))
@@ -952,12 +952,12 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-config))
+      (+use-package-insert-keyword 'before :hook :xl-config))
 
-(uuse-package-defnormalize! xl-config ()
+(+use-package-defnormalize! xl-config ()
   <args>)
 
-(uuse-package-defhander! xl-config ()
+(+use-package-defhander! xl-config ()
   `((after! ,<name> ,@<value>)
     ,@<body>))
 #+end_src
@@ -969,13 +969,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-alias))
+      (+use-package-insert-keyword 'before :hook :xl-alias))
 
-(uuse-package-defnormalize! xl-alias ()
+(+use-package-defnormalize! xl-alias ()
   <args>)
 
-(uuse-package-defhander! xl-alias ()
-  `(,@(-map #'uuse-package-autoload (-map #'car <value>))
+(+use-package-defhander! xl-alias ()
+  `(,@(-map #'+use-package-autoload (-map #'car <value>))
     ,@(--map (-lambda ((sym . def)) `(defalias ',sym #',def))
 	     <value>)
     ,@<body>))
@@ -988,14 +988,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :ensure :xl-ensure))
+      (+use-package-insert-keyword 'before :ensure :xl-ensure))
 
-(uuse-package-defnormalize! xl-ensure ()
+(+use-package-defnormalize! xl-ensure ()
   (cl-assert (alet (car-safe <args>)
 	       (or (listp it) (booleanp it))))
   (car <args>))
 
-(uuse-package-defhander! xl-ensure ()
+(+use-package-defhander! xl-ensure ()
   `(,@(cond ((null <value>) nil)
 	    ((eq t <value>) `((straight-use-package ',<name>)))
 	    ((listp <value>) `((straight-use-package ',(cons <name> <value>)))))
@@ -1009,14 +1009,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'before :hook :xl-gc-pause))
+      (+use-package-insert-keyword 'before :hook :xl-gc-pause))
 
-(uuse-package-defnormalize! xl-gc-pause ()
+(+use-package-defnormalize! xl-gc-pause ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(uuse-package-defhander! xl-gc-pause ()
-  `(,@(--map (uuse-package-autoload <name> it) <value>)
+(+use-package-defhander! xl-gc-pause ()
+  `(,@(--map (+use-package-autoload <name> it) <value>)
     ,@(--map `(xl-pause-garbage-collection #',it) <value>)
     ,@<body>))
 #+end_src
@@ -1028,9 +1028,9 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (uuse-package-insert-keyword 'after :ensure :built-in))
+      (+use-package-insert-keyword 'after :ensure :built-in))
 
-(uuse-package-defnormalize! built-in ()
+(+use-package-defnormalize! built-in ()
   (cl-assert (and (xl-one-p (length <args>)) (eq t (car <args>))))
   <args>)
 
@@ -2974,7 +2974,7 @@ This function is designed to reveal the current outline branch hierarchy so that
 you can see the point where consult takes you.
 
 #+begin_src emacs-lisp
-(defun outline:show-branch-maybe ()
+(defun +outline-show-branch-maybe ()
   "Reveal the current outline branch.
 Show all of the current headine's parents and their children. This includes this
 headline."
@@ -2998,7 +2998,7 @@ headline."
 
 #+begin_src emacs-lisp
 (alet (list #'consult-outline #'consult-line)
-  (xl-add-advice it :after #'outline:show-branch-maybe))
+  (xl-add-advice it :after #'+outline-show-branch-maybe))
 #+end_src
 
 ***** window display
@@ -3018,7 +3018,7 @@ problem.
 By default when you search a subtree with consult, you end up.
 
 #+begin_src emacs-lisp
-(defun outline:display-children-in-window ()
+(defun +outline-display-children-in-window ()
   "Scroll up window to maximize view of unfolded subtree.
 If the subtree is unfolded and the end of the current subtree is outside of the
 visible window, scroll up until the whole subtree is visible. If the whole
@@ -3047,7 +3047,7 @@ th subtree should always be visible)."
 
 #+begin_src emacs-lisp
 (alet (list #'consult-outline #'consult-line)
-  (xl-add-advice it :after #'outline:display-children-in-window))
+  (xl-add-advice it :after #'+outline-display-children-in-window))
 #+end_src
 
 **** bindings
@@ -3655,7 +3655,7 @@ Making sure that tempo can completing read.
 :END:
 
 #+begin_src emacs-lisp
-(defun ttempo-completing-read (save-name &rest args)
+(defun +tempo-completing-read (save-name &rest args)
   (let ((insertion (apply #'completing-read args)))
     (when save-name
       (tempo-save-named save-name insertion))
@@ -4200,9 +4200,9 @@ ways to read and send emails in Emacs.
 :END:
 
 #+begin_src emacs-lisp
-(setq send-mail-function #'sendmail-send-it)
-(setq sendmail-program (executable-find "msmtp"))
-(setq mail-specify-envelope-from t)
+(set! send-mail-function #'sendmail-send-it)
+(set! sendmail-program (executable-find "msmtp"))
+(set! mail-specify-envelope-from t)
 #+end_src
 
 **** smtpmail
@@ -4211,10 +4211,10 @@ ways to read and send emails in Emacs.
 :END:
 
 #+begin_src emacs-lisp
-(setq smtp-default-mail-server "mail.example.com")
-(setq smtp-smtp-server "mail.example.com")
-(setq smtpmail-smtp-service 587)
-(setq smtpmail-debug-info t)
+(set! smtp-default-mail-server "mail.example.com")
+(set! smtp-smtp-server "mail.example.com")
+(set! smtpmail-smtp-service 587)
+(set! smtpmail-debug-info t)
 #+end_src
 
 **** message
@@ -4235,6 +4235,10 @@ ways to read and send emails in Emacs.
 :PROPERTIES:
 :ID:       3c57590c-1507-4369-b615-795965d4b182
 :END:
+
+#+begin_src emacs-lisp
+(use-package! password-store)
+#+end_src
 
 *** mu4e
 :PROPERTIES:
@@ -5992,7 +5996,7 @@ property drawer, at least for now. In my usage it's a good assumption because
 every headline in my org file should have a property drawer.
 
 #+begin_src emacs-lisp
-(defun org:description-bounds ()
+(defun +org-description-bounds ()
   "Return the bounds of description at headline.
 If there is no existing description return nil."
   (interactive)
@@ -6019,7 +6023,7 @@ It is my preference to have one blank line after a description--or any org item
 for that matter. I just find it much more readable and less cluttered.
 
 #+begin_src emacs-lisp
-(defvar org:description-default-post-blanks 1
+(defvar +org-description-default-post-blanks 1
   "Number of blank lines that should follow a description.")
 #+end_src
 
@@ -6040,7 +6044,7 @@ want the cursor to start at the last non-whitespace character of the
 description.
 
 #+begin_src emacs-lisp
-(defun org:description-goto-last-non-white ()
+(defun +org-description-goto-last-non-white ()
   (goto-char (point-max))
   (skip-chars-backward "\n\s"))
 #+end_src
@@ -6056,10 +6060,10 @@ will be placed properly in relation to what's below it. This hook is designed to
 make sure this happens.
 
 #+begin_src emacs-lisp
-(defun org:description-add-newlines ()
+(defun +org-description-add-newlines ()
   "Add newlines."
   (save-excursion
-    (--dotimes (1+ org:description-default-post-blanks)
+    (--dotimes (1+ +org-description-default-post-blanks)
       (insert "\n"))))
 #+end_src
 
@@ -6075,11 +6079,11 @@ inadvertently edit the source buffer in this case. So this hook is to remove any
 newlines added in the case that nothing was changed.
 
 #+begin_src emacs-lisp
-(defun org:description-maybe-remove-newline ()
+(defun +org-description-maybe-remove-newline ()
   "Remove newline if that's all there is."
   (alet (buffer-string)
     (when (and (seq-every-p (lambda (char) (= 10 char)) it)
-	       (= (1+ org:description-default-post-blanks) (length it)))
+	       (= (1+ +org-description-default-post-blanks) (length it)))
       (erase-buffer))))
 #+end_src
 
@@ -6093,7 +6097,7 @@ to be adding hooks and maybe even binding keys with editing descriptions in mind
 Therefore, I think it's worthy to give it it's own mode.
 
 #+begin_src emacs-lisp
-(define-minor-mode org:description-edit-mode
+(define-minor-mode +org-description-edit-mode
   "Mode for editing org descriptions.")
 #+end_src
 
@@ -6127,19 +6131,19 @@ worth it to consider creating a hook specifically for org descriptions.
 #+begin_src emacs-lisp
 (defun org/dwim-edit-description ()
   (interactive)
-  (-let* (((beg . end) (org:description-bounds))
+  (-let* (((beg . end) (+org-description-bounds))
 	  (was-empty-p (= beg end)))
     (unless beg (user-error "No description at headline."))
     (let ((edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
 	  (headline (org-get-heading t t t t)))
       (when was-empty-p
-	(add-hook 'edit-indirect-after-creation-hook #'org:description-add-newlines 0))
-      (add-hook 'edit-indirect-after-creation-hook #'org:description-goto-last-non-white 0)
+	(add-hook 'edit-indirect-after-creation-hook #'+org-description-add-newlines 0))
+      (add-hook 'edit-indirect-after-creation-hook #'+org-description-goto-last-non-white 0)
       (with-current-buffer (edit-indirect-region beg end)
 	(rename-buffer (format "*Org Desc - %s*" headline) t)
-	(org:description-edit-mode 1)
+	(+org-description-edit-mode 1)
 	(add-hook 'edit-indirect-before-commit-hook
-		  #'org:description-maybe-remove-newline nil t)
+		  #'+org-description-maybe-remove-newline nil t)
 	(select-window (display-buffer (buffer-name)))))))
 #+end_src
 
@@ -6155,7 +6159,7 @@ where I don't do this.
 
 #+begin_src emacs-lisp
 (after! evil
-  (xl-add-hook 'org:description-edit-mode-hook #'evil-insert-state))
+  (xl-add-hook '+org-description-edit-mode-hook #'evil-insert-state))
 #+end_src
 
 **** custom hooks
@@ -6166,7 +6170,7 @@ where I don't do this.
 #+begin_src emacs-lisp
 (alet (list #'auto-capitalize-mode #'aggressive-fill-paragraph-mode
 	    #'org-link-minor-mode)
-  (xl-add-hook 'org:description-edit-mode-hook it))
+  (xl-add-hook '+org-description-edit-mode-hook it))
 #+end_src
 
 *** editing org source blocks
@@ -6206,7 +6210,7 @@ source block editing tools used by org mode.
 :END:
 
 #+begin_src emacs-lisp
-(define-minor-mode org:source-mode ())
+(define-minor-mode +org-source-mode ())
 #+end_src
 
 **** hooks
@@ -6234,7 +6238,7 @@ It is my preference to have one blank line after a description--or any org item
 for that matter. I just find it much more readable and less cluttered.
 
 #+begin_src emacs-lisp
-(defvar org:source-default-post-blanks 1
+(defvar +org-source-default-post-blanks 1
   "Number of blank lines that should follow a description.")
 #+end_src
 
@@ -7385,8 +7389,8 @@ the whole thing.
 	      :branch "feature/org-fold" :files (:defaults "contrib/lisp/*.el"))
   :xl-set
   (org-directory          . (xl-emacs-dir "org/"))
-  (org-archive-location   . (concat org-directory "archive.org::"))
-  (org-default-notes-file . (concat org-directory "notes  .org")))
+  (org-archive-location   . (concat org-directory "archive.org"))
+  (org-default-notes-file . (concat org-directory "notes.org")))
 #+end_src
 
 **** define capture file
@@ -7395,7 +7399,7 @@ the whole thing.
 :END:
 
 #+begin_src emacs-lisp
-(defvar org:capture-file (concat org-directory "capture.org"))
+(defvar +org-capture-file (concat org-directory "capture.org"))
 #+end_src
 
 **** general settings
@@ -7536,7 +7540,7 @@ much more useful considering the specific structure of org mode documents.
 :END:
 
 #+begin_src emacs-lisp
-(defun org:heading-goto-start ()
+(defun +org-heading-goto-start ()
   "Go to the end of headline."
   (save-match-data
     (beginning-of-line)
@@ -7567,7 +7571,7 @@ their children. This is the typical behavior you would expect in any outlining
 program.
 
 #+begin_src emacs-lisp
-(defun org:show-branch ()
+(defun +org-show-branch ()
   "Reveal the current org branch.
 Show all of the current headine's parents and their children. This includes this
 headline."
@@ -7598,7 +7602,7 @@ their side-effects.
 (defadvice! show-current-branch-in-org-mode (:after xl/goto-line org/goto-headline)
   "Properly unfold nearby headlines and reveal current headline."
   (when (eq major-mode 'org-mode)
-    (org:show-branch)))
+    (+org-show-branch)))
 #+end_src
 
 ***** return
@@ -7629,7 +7633,7 @@ If DIR is a negative integer, go the opposite direction: the start of the
   (interactive)
   (outline-next-visible-heading (if backward -1 1))
   (when (org-at-heading-p)
-    (org:heading-goto-start)))
+    (+org-heading-goto-start)))
 #+end_src
 
 ***** navigation
@@ -7650,7 +7654,7 @@ If DIR is a negative integer, go the opposite direction: the start of the
   (interactive)
   (outline-next-visible-heading (if backward -1 1))
   (when (org-at-heading-p)
-    (org:heading-goto-start)))
+    (+org-heading-goto-start)))
 #+end_src
 
 ****** previous-line
@@ -7680,7 +7684,7 @@ options. For this reason I wrote my own insert heading functions.
 :END:
 
 #+begin_src emacs-lisp
-(defvar org:newlines-between-headings "\n\n"
+(defvar +org-newlines-between-headings "\n\n"
   "Number of newlines between headings.")
 #+end_src
 
@@ -7706,7 +7710,7 @@ options. For this reason I wrote my own insert heading functions.
   "Insert heading below."
   (interactive)
   (let* ((on-heading-p (ignore-errors (org-back-to-heading)))
-         (newlines org:newlines-between-headings)
+         (newlines +org-newlines-between-headings)
          (level (or (org-current-level) 1))
          (heading (concat (make-string level ?*) "\s")))
     (cond ((not on-heading-p)
@@ -8089,7 +8093,7 @@ Instead of passing in the string I use =org-ml= to print the string.
    (list "emacs"
 	 :keys "e"
 	 :template #'doct:emacs-template-string
-	 :file org:capture-file
+	 :file +org-capture-file
 	 :prepend t
 	 :empty-lines 1)))
 #+end_src
@@ -8124,7 +8128,7 @@ tracking the time you spend on a particular task.
   :xl-set
   (org-agenda-text-search-extra-files . '(agenda-archives))
   (org-agenda-skip-unavailable-files  . t)
-  (org-agenda-files                   . (list org:capture-file))
+  (org-agenda-files                   . (list +org-capture-file))
   (org-agenda-start-on-weekday        . 0)
   (org-agenda-timegrid-use-ampm       . nil)
   (org-agenda-time-leading-zero       . t)
