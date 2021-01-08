@@ -3,14 +3,6 @@
 :ID:       1f815a51-e606-4c36-afa4-435a761f9d27
 :END:
 
-** introduction of recipe file
-:PROPERTIES:
-:ID:       68f724cb-c827-436e-8674-0de6e2172e8a
-:END:
-
-=straight.el= provides a lockfile where an alist of the package name and it's
-version are stored.
-
 ** init heading
 :PROPERTIES:
 :ID:       b21cd437-e447-4c01-a03b-98f701359a81
@@ -19,6 +11,12 @@ version are stored.
 Eventually, I plan to implement more control for the loading of
 headlines. Specifically, I want to designate a certain headline name for code
 that should be loaded immediately. So for a package headline.
+
+** introduce use-package
+
+** add naming convention to extensions
+
+** *breaking change* prefix changed from void to xl
 
 * Version 0.1
 :PROPERTIES:

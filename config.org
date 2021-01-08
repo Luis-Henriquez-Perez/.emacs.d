@@ -4617,7 +4617,7 @@ This replaces the default popup window at the bottom of eshell. By using the
 ;; :ID: 76bd909c-901c-4bc6-8848-d84b121a06c3
 ;; :END:
 
-(defun eshell:goto-prompt-on-insert-h ()
+(defun +eshell-goto-prompt-on-insert-h ()
   "Move cursor to the prompt when switching to insert state."
   (when (< (point) eshell-last-output-end)
     (goto-char
@@ -4714,27 +4714,27 @@ task and make it much simpler than it would be otherwise.
 :END:
 
 Eshell prompt function finds eshell section functions specified by
-[[helpvar:eshell:enabled-sections][+eshell-enabled-sections]] and concatenates their results in order to
+[[helpvar:+eshell-enabled-sections][+eshell-enabled-sections]] and concatenates their results in order to
 generate the body of the eshell prompt.
 
 #+begin_src emacs-lisp
-(defun eshell:acc (acc x)
-  "Accumulator for evaluating and concatenating `eshell:enabled-sections'."
+(defun +eshell-acc (acc x)
+  "Accumulator for evaluating and concatenating `+eshell-enabled-sections'."
   (--if-let (funcall x)
       (if (s-blank? acc)
           it
-        (concat acc eshell:sep it))
+        (concat acc +eshell-sep it))
     acc))
 
-(defun eshell:prompt-func ()
+(defun +eshell-prompt-func ()
   "Generate the eshell prompt.
-This function generates the eshell prompt by concatenating `eshell:header' with
-valid `eshell:enabled-sections' and the `eshell-prompt-string'."
-  (concat eshell:header
-          (->> eshell:enabled-sections
+This function generates the eshell prompt by concatenating `+eshell-header' with
+valid `+eshell-enabled-sections' and the `eshell-prompt-string'."
+  (concat +eshell-header
+          (->> +eshell-enabled-sections
                (mapcar (lambda (it) (xl-symbol-intern 'eshell-prompt-- it)))
                (-filter #'fboundp)
-               (-reduce-from #'eshell:acc ""))
+               (-reduce-from #'+eshell-acc ""))
           eshell-prompt-string))
 #+end_src
 
@@ -4748,16 +4748,16 @@ header, the separator, the section delimiter and, the meat of the prompt, the
 actual eshell sections.
 
 #+begin_src emacs-lisp
-(defvar eshell:sep "\s|\s"
+(defvar +eshell-sep "\s|\s"
   "Separator between eshell sections.")
 
-(defvar eshell:section-delim "\s"
+(defvar +eshell-section-delim "\s"
   "Separator between an eshell section icon and form.")
 
-(defvar eshell:header "\s"
+(defvar +eshell-header "\s"
   "Eshell prompt header.")
 
-(defvar eshell:enabled-sections '(dir git)
+(defvar +eshell-enabled-sections '(dir git)
   "List of enabled eshell sections.
 Each element of the list is an abbreviated.")
 #+end_src
@@ -6608,7 +6608,7 @@ practice, this is rarely an issue.
 
 #+begin_src emacs-lisp
 (after! evil
-  (evil-define-text-object evil:textobj-inner-form (count &rest _)
+  (evil-define-text-object +evil-textobj-inner-form (count &rest _)
     "Inner sexp object."
     (-if-let ((beg . end)
               (->> (list (lispy--bounds-list) (lispy--bounds-string))
@@ -6618,7 +6618,7 @@ practice, this is rarely an issue.
         (evil-range (1+ beg) (1- end) 'inclusive :expanded t)
       (error "No surrounding form found.")))
 
-  (evil-define-text-object evil:textobj-outer-form (count &rest _)
+  (evil-define-text-object +evil-textobj-outer-form (count &rest _)
     "Smartparens inner sexp object."
     (-if-let ((beg . end)
               (->> (list (lispy--bounds-list) (lispy--bounds-string))
@@ -6629,9 +6629,9 @@ practice, this is rarely an issue.
       (error "No surrounding form found.")))
 
   (general-def evil-inner-text-objects-map
-    "f" #'evil:textobj-inner-form)
+    "f" #'+evil-textobj-inner-form)
   (general-def evil-outer-text-objects-map
-    "f" #'evil:textobj-outer-form))
+    "f" #'+evil-textobj-outer-form))
 #+end_src
 
 ***** fix vim/evil around =""=
@@ -6648,14 +6648,14 @@ Why not just go to the end of the ="= like any other around operator?
 
 #+begin_src emacs-lisp
 (after! evil
-  (evil-define-text-object evil:textobj-a-string (count &rest _)
+  (evil-define-text-object +evil-textobj-a-string (count &rest _)
     "An outer comment text object as defined by `lispy--bounds-string'."
     (-if-let ((beg . end) (lispy--bounds-string))
         (evil-range beg end 'exclusive :expanded t)
       (error "Not inside a comment.")))
 
   (general-def evil-outer-text-objects-map
-    "\"" #'evil:textobj-a-string))
+    "\"" #'+evil-textobj-a-string))
 #+end_src
 
 **** evil-lion
@@ -6835,21 +6835,21 @@ Before I just used ~(evil-change-state evil-previous-state)~ to revert the
 state back to what it last was. But this fails with ~evil-force-normal-state~
 which is what I'm currently using to exit the minibuffer because then the
 last state is normal state if the minibuffer is aborted. Using a
-=evil:state-before-minibuffer= ensures that the state will be reverted to
+=+evil-state-before-minibuffer= ensures that the state will be reverted to
 the correct one.
 
 #+begin_src emacs-lisp
 (defhook! preserve-prior-evil-state (minibuffer-enter-hook)
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
-    (setq evil:state-before-minibuffer evil-state)
+    (setq +evil-state-before-minibuffer evil-state)
     (evil-insert-state)))
 
 (defhook! restore-prior-evil-state (minibuffer-exit-hook)
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
-    (evil-change-state evil:state-before-minibuffer)
-    (setq evil:state-before-minibuffer nil)))
+    (evil-change-state +evil-state-before-minibuffer)
+    (setq +evil-state-before-minibuffer nil)))
 #+end_src
 
 ***** escape
@@ -7001,7 +7001,7 @@ commands (like [[helpfn:lispyville-delete][lispyville-delete]]) which preserve p
 :END:
 
 =lispyville= binds escape to [[helpfn:lipyville-normal-state][lispyville-normal-state]]. So for =xl-escape-hook=
-to still happen on escape, I need to add [[helpfn:evil:escape-a][evil:escape-a]] as advice to
+to still happen on escape, I need to add [[helpfn:+evil-escape-a][evil:escape-a]] as advice to
 =lispyville-normal-state=.
 
 Sometimes =evil-normal-state= enters visual state.
@@ -7124,8 +7124,8 @@ You'll get void variable if you don't do this.
 :END:
 
 #+begin_src emacs-lisp
-(autoload #'evil-lispy-mode "evil-lispy" nil t nil)
-(xl-add-hook 'lispy-mode-hook #'evil-lispy-mode)
+(use-package! evil-lispy
+  :hook lispy-mode-hook)
 #+end_src
 
 *** highlight-quoted
@@ -7136,8 +7136,8 @@ You'll get void variable if you don't do this.
 [[https://github.com/Fanael/highlight-quoted][highlight-quoted]] highlights quotes, backticks and.
 
 #+begin_src emacs-lisp
-(autoload #'highlight-quoted-mode "highlight-quoted" nil t nil)
-(xl-add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode)
+(use-package! highlight-quoted
+  :hook emacs-lisp-mode-hook)
 #+end_src
 
 *** fix elisp indentation
@@ -7956,7 +7956,7 @@ let's me choose the template via completing-read.
 :END:
 
 #+begin_src emacs-lisp
-(defun org-capture:template-list ()
+(defun +org-capture-template-list ()
   "Return a list of capture templates."
   (thread-first org-capture-templates
     (org-capture-upgrade-templates)
@@ -7975,7 +7975,7 @@ let's me choose the template via completing-read.
     "Choose a capture template."
     (interactive)
     (let* ((read-string (seq-map (lambda (it) (format "%s %s" (car it) (cadr it)))
-				 (org-capture:template-list)))
+				 (+org-capture-template-list)))
 	   (selection (completing-read "Capture template: " read-string nil :require-match))
 	   (key (car (split-string selection "\s" t))))
       (org-capture nil key))))
@@ -8040,7 +8040,7 @@ same key as the one(s) being added."
 For capture templates that have deadlines, I set a start and an end date.
 
 #+begin_src emacs-lisp
-(defun org-capture::default-planning-node (&optional days-difference)
+(defun +org-capture--default-planning-node (&optional days-difference)
   "Return the default planning node for `org-capture-templates'."
   (let* ((days-difference (or days-difference 7))
          (now (ts-now))
@@ -8563,7 +8563,7 @@ makes emacs feel like a window manager with gaps.
 Somtimes I might want to adjust this.
 
 #+begin_src emacs-lisp
-(defun frame:adjust-window-divider-size (amount)
+(defun +frame-adjust-window-divider-size (amount)
   "Adjust the gap size of window-divider by AMOUNT."
   (general-setq window-divider-default-bottom-width
                 (+ amount window-divider-default-bottom-width))
@@ -8580,7 +8580,7 @@ Somtimes I might want to adjust this.
 (defun frame/increment-window-divider-size ()
   "Increase window divider size."
   (interactive)
-  (frame:adjust-window-divider-size 1))
+  (+frame-adjust-window-divider-size 1))
 #+end_src
 
 **** decrease
@@ -8592,7 +8592,7 @@ Somtimes I might want to adjust this.
 (defun frame/decrement-window-divider-size ()
   "Decrease window divider size."
   (interactive)
-  (frame:adjust-window-divider-size -1))
+  (+frame-adjust-window-divider-size -1))
 #+end_src
 
 * Keybindings
