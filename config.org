@@ -7882,6 +7882,12 @@ source blocks.
 =org-capture= is a feature that allows you to quickly save a thought that popped
 into your head while keeing disctractions to a minimum.
 
+**** ts
+
+#+begin_src emacs-lisp
+(use-package! ts)
+#+end_src
+
 **** init
 :PROPERTIES:
 :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
@@ -7902,11 +7908,9 @@ By default org capture templates display a header line. This was the answer to [
 question]]. I need to disable =org-capture's= header-line.
 
 #+begin_src emacs-lisp
-(use-feature! org-capture
-  :xl-config
-  (defhook! disable-header-line (org-capture-mode-hook)
-    "Turn of the header line message."
-    (setq-local header-line-format nil)))
+(defhook! disable-header-line (org-capture-mode-hook)
+  "Turn of the header line message."
+  (setq-local header-line-format nil))
 #+end_src
 
 **** prevent capture templates from deleting windows
@@ -7917,12 +7921,10 @@ question]]. I need to disable =org-capture's= header-line.
 =org-capture= deletes all the other windows in the frame.
 
 #+begin_src emacs-lisp
-(use-feature! org-capture
-  :config
-  (defadvice! dont-delete-other-windows (:around org-capture-place-template)
-    "Don't delete other windows when opening a capture template."
-    (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
-      (apply <orig-fn> <args>))))
+(defadvice! dont-delete-other-windows (:around org-capture-place-template)
+  "Don't delete other windows when opening a capture template."
+  (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
+    (apply <orig-fn> <args>)))
 #+end_src
 
 **** completing-read org-capture
@@ -7953,16 +7955,13 @@ let's me choose the template via completing-read.
 :END:
 
 #+begin_src emacs-lisp
-(use-feature! org-capture
-  :xl-config
-  (defun org-capture/choose-template ()
-    "Choose a capture template."
-    (interactive)
-    (let* ((read-string (seq-map (lambda (it) (format "%s %s" (car it) (cadr it)))
-				 (+org-capture-template-list)))
-	   (selection (completing-read "Capture template: " read-string nil :require-match))
-	   (key (car (split-string selection "\s" t))))
-      (org-capture nil key))))
+(defun +org/capture-template ()
+  (interactive)
+  (let* ((read-string (seq-map (lambda (it) (format "%s %s" (car it) (cadr it)))
+			       (+org-capture-template-list)))
+	 (selection (completing-read "Capture template: " read-string nil :require-match))
+	 (key (car (split-string selection "\s" t))))
+    (org-capture nil key)))
 #+end_src
 
 **** doct
@@ -7998,7 +7997,7 @@ freely re-evaluate it without cluttering my capture templates with duplicate
 entries.
 
 #+begin_src emacs-lisp
-(defun doct:add-to-templates (declarations)
+(defun +doct-add-to-templates (declarations)
   "Set `org-capture-templates' to the result of (doct DECLARATIONS).
 Before adding result, remove any members of `org-capture-templates' with the
 same key as the one(s) being added."
@@ -8055,7 +8054,7 @@ This is a capture template for emacs usage.
 Instead of passing in the string I use =org-ml= to print the string.
 
 #+begin_src emacs-lisp
-(defun doct:emacs-template-string ()
+(defun +org-capture-emacs-template ()
   "Return emacs capture template."
   (->> (org-ml-build-headline! :title-text "%?")
        (org-ml-headline-set-node-property "ID" (org-id-new))
@@ -8072,11 +8071,10 @@ Instead of passing in the string I use =org-ml= to print the string.
 
 #+begin_src emacs-lisp
 (after! org-capture
-  (require 'doct)
-  (doct:add-to-templates
+  (+doct-add-to-templates
    (list "emacs"
 	 :keys "e"
-	 :template #'doct:emacs-template-string
+	 :template #'+org-capture-emacs-template
 	 :file +org-capture-file
 	 :prepend t
 	 :empty-lines 1)))
