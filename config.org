@@ -4000,18 +4000,9 @@ option that would prompt you for the file name.
 :END:
 
 #+begin_src emacs-lisp
-(--each '(escr-window-screenshot escr-frame-screenshot escr-window-screenshot)
-  (autoload it "escr" nil t nil))
-#+end_src
-
-**** settings
-:PROPERTIES:
-:ID:       4ec97ac8-cad6-4536-be21-6ae2ee1655f3
-:END:
-
-#+begin_src emacs-lisp
-(setq escr-screenshot-quality 10)
-;; (setq escr-screenshot-directory XL-SCREENSHOT-DIR)
+(use-package! escr
+  :xl-ensure (:host github :type git :repo "atykhonov/escr")
+  :commands escr-window-screenshot escr-frame-screenshot)
 #+end_src
 
 **** function for geting screenshot filename
@@ -4088,23 +4079,16 @@ capturing the prompt for the filename (like in [[][this example]]).
 :END:
 
 #+begin_src emacs-lisp
-(--each (list #'emms-play-directory #'emms-play-file)
-  (autoload it "emms" nil t nil))
-#+end_src
-
-**** settings
-:PROPERTIES:
-:ID:       3861c03d-b08e-463b-a28e-e88c191993fc
-:END:
-
-#+begin_src emacs-lisp
-(setq emms-directory (xl-data-dir "emms/"))
-(setq emms-seek-seconds 5)
-(setq emms-player-list '(emms-player-mpv))
-(setq emms-source-file-default-directory "~/Multimedia/music")
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-(setq emms-playlist-buffer-name "*EMMS-PLAYLIST*")
-(setq mpc-host "127.0.0.1:6600")
+(use-package! emms
+  :xl-set
+  (emms-source-file-directory-tree-function . 'emms-source-file-directory-tree-find)
+  (emms-source-file-default-directory       . "~/Multimedia/music")
+  (emms-playlist-buffer-name                . "*EMMS-PLAYLIST*")
+  (emms-seek-seconds                        . 5)
+  (emms-directory                           . (xl-data-dir "emms/"))
+  (emms-player-list                         . '(emms-player-mpv))
+  ;; (mpc-host . "127.0.0.1:6600")
+  )
 #+end_src
 
 **** quitting
