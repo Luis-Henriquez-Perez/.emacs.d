@@ -3368,7 +3368,7 @@ of things that we actually want at this moment.
 (use-package! company :config
   (defun ccompany-backends-for-major-mode ()
     "Return a list of company backends for major-mode."
-    (loopy ((list (mode type backends) company:backend-alist)
+    (loopy ((list (mode type backends) +company-backend-alist)
 	    (expr derived-p (and (eq type :derived) (derived-mode-p mode)))
 	    (expr exact-p (eq type exact-p))
 	    (expr mm-enabled-p (or (eq major-mode mode)
@@ -4025,7 +4025,7 @@ need to invest time in looking at the screenshots again so you can properly name
 them.
 
 #+begin_src emacs-lisp
-(defun escr:get-filename ()
+(defun +escr-get-filename ()
   "Return the filename."
   (alet (format "%s-%s.png"
                 (alet (read-string "Image name: ")
@@ -4046,7 +4046,7 @@ capturing the prompt for the filename (like in [[][this example]]).
 (defadvice! use-miam (:override (x y width height) escr--screenshot)
   (let ((window-id (frame-parameter (selected-frame) 'window-id))
         (crop (format "%sx%s+%s+%s" width height x y))
-        (filename (escr:get-filename)))
+        (filename (+escr-get-filename)))
     (alet `(lambda ()
              (call-process "maim" nil nil nil
                            "--window" ,window-id
@@ -4328,7 +4328,7 @@ I don't want mu4e to handle indexing. I can do it myself.
   (interactive)
   (require 'password-store)
   (let* ((XL-EMAIL-DIR (expand-file-name "~/.mail/"))
-	 (email-dirs (--map (concat XL-EMAIL-DIR it) (pass:email-list))))
+	 (email-dirs (--map (concat XL-EMAIL-DIR it) (+pass-email-list))))
     (when (or (not (-all-p #'f-exists-p email-dirs))
               (-some-p #'f-empty-p email-dirs))
       (message "creating directories that don't exist.")
@@ -4413,7 +4413,7 @@ reason I spent so much time setting this up is because.
 :END:
 
 #+begin_src emacs-lisp
-(defun pass:email-list ()
+(defun +pass-email-list ()
   "Return a list of emails."
   (->> (password-store-list)
        (--map (elt (s-match "email/\\(.*\\)" it) 1))
@@ -4426,7 +4426,7 @@ reason I spent so much time setting this up is because.
 :END:
 
 #+begin_src emacs-lisp
-(defun pass:email-account-plist (email)
+(defun +pass-email-account-plist (email)
   "Return a plist of the relevant values of an email."
   (shut-up
     (->> (cdr (password-store-parse-entry email))
@@ -4446,7 +4446,7 @@ their directories varies. For example, outlook names its sent directory as =Sent
 Items=.
 
 #+begin_src emacs-lisp
-(defun mu4e:guess-folder (base-dir possible-name &rest other-possible-names)
+(defun +mu4e-guess-folder (base-dir possible-name &rest other-possible-names)
   "Return the first file in BASE-DIR that matches POSSIBLE-NAME or any POSSIBLE-NAMES.
 If there is no match, return POSSIBLE-NAME."
   (alet (or (--first (-some-p (-cut s-contains-p <> it t)
@@ -4462,16 +4462,16 @@ If there is no match, return POSSIBLE-NAME."
 :END:
 
 #+begin_src emacs-lisp
-(defun mu4e::account-context (email)
+(defun +mu4e--account-context (email)
   "Return an mu4e account context for specified EMAIL."
   (let* ((base-dir (concat XL-EMAIL-DIR email "/"))
          (name (cl-second (s-match ".*@\\([^.]*\\)" email)))
-         (account (pass:email-account-plist email))
+         (account (+pass-email-account-plist email))
          (out-host (plist-get 'out-host account))
          (out-port (plist-get 'out-port account)))
-    (alet `((mu4e-sent-folder      . ,(mu4e:guess-folder base-dir "sent"))
-            (mu4e-drafts-folder    . ,(mu4e:guess-folder base-dir "draft"))
-            (mu4e-trash-folder     . ,(mu4e:guess-folder base-dir "trash" "delete" "junk"))
+    (alet `((mu4e-sent-folder      . ,(+mu4e-guess-folder base-dir "sent"))
+            (mu4e-drafts-folder    . ,(+mu4e-guess-folder base-dir "draft"))
+            (mu4e-trash-folder     . ,(+mu4e-guess-folder base-dir "trash" "delete" "junk"))
             (user-email-address    . ,email)
             (smtpmail-smtp-server  . ,out-host)
             (smtpmail-smtp-user    . ,base-dir)
@@ -4488,7 +4488,7 @@ If there is no match, return POSSIBLE-NAME."
 (defadvice! setup-contexts (:before mu4e)
   "Initiaize context for each email account."
   (require 'password-store)
-  (--each (-map #'mu4e::account-context (pass:email-list))
+  (--each (-map #'+mu4e--account-context (+pass-email-list))
     (cl-pushnew it mu4e-contexts)))
 #+end_src
 
@@ -4768,7 +4768,7 @@ keep readonly and what not to.
 (setq eshell-prompt-regexp (rx (*? anything) "-> "))
 (setq eshell-prompt-string " -> ")
 
-(setq eshell-prompt-function #'eshell:prompt-func)
+(setq eshell-prompt-function #'+eshell-prompt-func)
 #+end_src
 
 ***** text wrapping
@@ -4840,7 +4840,7 @@ keep readonly and what not to.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! dired:sort-directories-first (dired-after-readin-hook)
+(defhook! +dired-sort-directories-first (dired-after-readin-hook)
   "List directories first in dired buffers."
   (save-excursion
     (let (buffer-read-only)
@@ -4858,7 +4858,7 @@ keep readonly and what not to.
 :END:
 
 #+begin_src emacs-lisp
-(defun dired:create-non-existent-directory-h ()
+(defun +dired-create-non-existent-directory-h ()
   "Automatically create missing directories when creating new file."
   (let ((parent-directory (file-name-directory buffer-file-name)))
     (when (and (not (file-exists-p parent-directory))
@@ -4866,7 +4866,7 @@ keep readonly and what not to.
       (make-directory parent-directory t))))
 
 (after! dired
-  (add-to-list 'find-file-not-found-functions 'dired:create-non-existent-directory-h nil #'eq))
+  (add-to-list 'find-file-not-found-functions '+dired-create-non-existent-directory-h nil #'eq))
 #+end_src
 
 *** ranger
@@ -5003,7 +5003,7 @@ you save your file--which for me is all the time because I use [[id:bd455e73-403
 (use-package! git-auto-commit-mode)
 (setq gac-automatically-push-p nil)
 (setq gac-ask-for-summary nil)
-(setq gac-default-message #'gac:commit-message)
+(setq gac-default-message #'+gac-commit-message)
 (setq gac-commit-additional-flag "-S")
 (setq gac-silent-message-p t)
 #+end_src
@@ -5037,7 +5037,7 @@ replacement of a name throughout a document). This is something I plan to
 address later.
 
 #+begin_src emacs-lisp
-(defun gac:commit-message (file)
+(defun +gac-commit-message (file)
   "Return the commit message for changes to FILE."
   (format "Update %s" (f-base file)))
 #+end_src
@@ -5307,7 +5307,7 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defvar desktop:base-dir (concat XL-DATA-DIR "desktops/")
+(defvar +desktop-base-dir (concat XL-DATA-DIR "desktops/")
   "Directory where desktops should go.")
 #+end_src
 
@@ -5317,10 +5317,10 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun desktop:dirname (name)
+(defun +desktop-dirname (name)
   "Return the path where desktop named NAME should go."
   (require 'f)
-  (f-join desktop:base-dir name))
+  (f-join +desktop-base-dir name))
 #+end_src
 
 ***** ensure the base directory
@@ -5330,8 +5330,8 @@ really have been done by =desktop.el= but oh well.
 
 #+begin_src emacs-lisp
 (defhook! ensure-desktop-directory (desktop-mode-hook)
-  "Make `desktop:base-dir' if it does not exist."
-  (mkdir desktop:base-dir t))
+  "Make `+desktop-base-dir' if it does not exist."
+  (mkdir +desktop-base-dir t))
 #+end_src
 
 ***** desktop names
@@ -5340,9 +5340,9 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun desktop:list ()
+(defun +desktop-list ()
   "Return a list of the names of all desktops."
-  (-difference (directory-files desktop:base-dir)
+  (-difference (directory-files +desktop-base-dir)
 	       (list ".." ".")))
 #+end_src
 
@@ -5352,9 +5352,9 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun desktop:create-desktop (name)
+(defun +desktop-create-desktop (name)
   "Create a new desktop named NAME."
-  (let ((desktop-dirname (desktop:dirname name)))
+  (let ((desktop-dirname (+desktop-dirname name)))
     (desktop-kill)
     (make-directory desktop-dirname 'parents)
     (desktop-save desktop-dirname)))
@@ -5366,8 +5366,8 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun desktop:load-desktop (name)
-  (desktop-change-dir (desktop:dirname name)))
+(defun +desktop-load-desktop (name)
+  (desktop-change-dir (+desktop-dirname name)))
 #+end_src
 
 **** create desktop in new tab
@@ -5382,10 +5382,10 @@ This is an integration with desktop and tab mode.
   "Create desktop named NAME in new tab.
 The tab's new name is the same as the desktop name."
   (interactive
-   (list (completing-read "Create desktop:" (desktop:list))))
+   (list (completing-read "Create +desktop-" (desktop:list))))
   (tab-bar-new-tab)
   (tab-bar-rename-tab name)
-  (desktop:create-desktop name))
+  (+desktop-create-desktop name))
 #+end_src
 
 **** load desktop in a new tab
@@ -5398,10 +5398,10 @@ The tab's new name is the same as the desktop name."
   "Create desktop named NAME in new tab.
 The tab's new name is the same as the desktop name."
   (interactive
-   (list (completing-read "Load desktop: " (desktop:list))))
+   (list (completing-read "Load +desktop- " (desktop:list))))
   (tab-bar-new-tab)
   (tab-bar-rename-tab name)
-  (desktop:load-desktop name))
+  (+desktop-load-desktop name))
 #+end_src
 
 **** desktop restore functions
@@ -5415,7 +5415,7 @@ The tab's new name is the same as the desktop name."
 :END:
 
 #+begin_src emacs-lisp
-(defun desktop:restore-helpful-buffer ()
+(defun +desktop-restore-helpful-buffer ()
   "Restore helpful buffer.")
 #+end_src
 
@@ -5545,7 +5545,7 @@ https://www.reddit.com/r/emacs/comments/f6zzux/capturing_website_url_with_orgcap
 :END:
 
 #+begin_src emacs-lisp
-(defun exwm::title-info (title)
+(defun +exwm--title-info (title)
   "Return the webpage and the program."
   (-let [(_ webpage program) (s-match "\\([^z-a]+\\) - \\([^z-a]+\\)\\'" title)]
     (list webpage program)))
@@ -5620,7 +5620,7 @@ Emacs simulates a keypress to firefox--specifically the keypresses to select the
 current url and to add it to the kill ring.
 
 #+begin_src emacs-lisp
-(defun exwm::firefox-url ()
+(defun +exwm--firefox-url ()
   "Save the current firefox url to kill ring."
   ;; We get the xwindow id of the buffer named Firefox
   (let ((fid (exwm--buffer->id (current-buffer))))
@@ -5642,7 +5642,7 @@ current url and to add it to the kill ring.
 :END:
 
 #+begin_src emacs-lisp
-(defun exwm::qutebrowser-url ()
+(defun +exwm--qutebrowser-url ()
   (interactive)
   (let ((fid (exwm--buffer->id (current-buffer))))
     (sleep-for 0 300)
@@ -5692,7 +5692,7 @@ windows).
 :END:
 
 #+begin_src emacs-lisp
-(defvar exwm:char-mode-apps (list "emacs" "next" "nyxt" "qutebrowser")
+(defvar +exwm-char-mode-apps (list "emacs" "next" "nyxt" "qutebrowser")
   "List of applications to exwm should start in char-mode.")
 #+end_src
 
@@ -5703,8 +5703,8 @@ windows).
 
 #+begin_src emacs-lisp
 (defhook! start-in-char-mode (exwm-manage-finish-hook)
-  "Start a program in char-mode if it's in `exwm:char-mode-apps'."
-  (when (--any-p (string-prefix-p it exwm-instance-name) exwm:char-mode-apps)
+  "Start a program in char-mode if it's in `+exwm-char-mode-apps'."
+  (when (--any-p (string-prefix-p it exwm-instance-name) +exwm-char-mode-apps)
     (exwm-input-release-keyboard (exwm--buffer->id (window-buffer)))))
 #+end_src
 
