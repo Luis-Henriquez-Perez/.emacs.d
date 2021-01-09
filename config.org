@@ -3332,13 +3332,26 @@ of things that we actually want at this moment.
 :ID:       bd47ec52-6428-4f37-80d2-3795f5a42d02
 :END:
 
+**** determining which modes are active
+:PROPERTIES:
+:ID:       b8603ca5-9a24-4684-a75b-e0c3845bfff0
+:END:
+
+[[https://stackoverflow.com/questions/1511737/how-do-you-list-the-active-minor-modes-in-emacs][listing active minor modes]]
+
+#+begin_src emacs-lisp
+(defun xl-active-minor-modes ()
+  "Return active minor modes in current buffer."
+  (--select (and (boundp it) (symbol-value it)) minor-mode-list))
+#+end_src
+
 **** backends-alist
 :PROPERTIES:
 :ID:       dac0a998-e1b1-424f-8c40-e1bc19843153
 :END:
 
 #+begin_src emacs-lisp
-(defvar ccompany-backend-alist
+(defvar company:backend-alist
   '((text-mode :derived (company-dabbrev company-tempo company-ispell))
     (prog-mode :derived ((:separate company-capf company-tempo))))
   "An alist modes to company backends.")
@@ -3349,14 +3362,14 @@ of things that we actually want at this moment.
 :ID:       4e82e869-b144-44aa-bc19-bb58b8c5ff2a
 :END:
 
+When the user
+
 #+begin_src emacs-lisp
-(use-package! company :config
-  (defhook! setup-company-backends (after-change-major-mode-hook)
-    "Set `company-backends' for the current buffer."
-    (when (and (bound-and-true-p company-mode)
-	       (not (eq major-mode 'fundamental-mode)))
-      (set (make-local-variable 'company-backends)
-	   (ccompany-backends-for-major-mode)))))
+(defhook! setup-company-backends (company-mode-hook)
+  "Set `company-backends' for the current buffer."
+  (alet (company:backends-for-mode major-mode)
+    (xl-log "Set up %S backends: %S" major-mode it)
+    (set (make-local-variable 'company-backends) it)))
 #+end_src
 
 **** get backends
@@ -3365,18 +3378,19 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! company :config
-  (defun ccompany-backends-for-major-mode ()
-    "Return a list of company backends for major-mode."
-    (loopy ((list (mode type backends) +company-backend-alist)
-	    (expr derived-p (and (eq type :derived) (derived-mode-p mode)))
-	    (expr exact-p (eq type exact-p))
-	    (expr mm-enabled-p (or (eq major-mode mode)
-				   (and (boundp mode) (symbol-value mode))))
-	    (when (and (eq type :only) (eq mode major-mode))
-	      (return backends))
-	    (when (or derived-p (and exact-p mm-enabled-p))
-	      (append new-backends backends))))))
+(cl-defun company:backends-for-mode (&optional (current-major-mode major-mode))
+  "Return a list of company backends for major-mode."
+  (loopy (with (active-minor-modes (xl-active-minor-modes)))
+	 ((list (mode type backends) company:backend-alist)
+	  (expr derived-p (and (eq type :derived) (derived-mode-p mode)))
+	  (expr mm-enabled-p (or (eq current-major-mode mode)
+				 (and (boundp mode) (symbol-value mode))))
+	  (expr active-minor-mode-p (member mode active-minor-modes))
+	  (cond ((and (eq type :only) (or mm-enabled-p active-minor-mode-p))
+		 (return backends))
+		((or (or derived-p (and (eq type :exact) mm-enabled-p))
+		     active-minor-mode-p)
+		 (append new-backends backends))))))
 #+end_src
 
 *** company-prescient
@@ -3397,12 +3411,11 @@ of things that we actually want at this moment.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! company :config
-  (defhook! close-tooltip (xl-escape-hook)
-    "Close company tooltip."
-    (when (and (boundp 'company-mode) (eq company-mode t))
-      (company-abort)
-      t)))
+(defhook! close-tooltip (xl-escape-hook)
+  "Close company tooltip."
+  (when (and (boundp 'company-mode) (eq company-mode t))
+    (company-abort)
+    t))
 #+end_src
 
 ** selectrum
@@ -3463,7 +3476,7 @@ For most functions, sorting their candidates is good. This is advice
 specifically designed to disable selectrum sorting.
 
 #+begin_src emacs-lisp
-(defun sselectrum-disable-selectrum-sorting-advice (orig-fn &rest args)
+(defun selectrum:disable-selectrum-sorting-advice (orig-fn &rest args)
   (if (bound-and-true-p selectrum-mode)
       (let (selectrum-should-sort-p) (apply orig-fn args))
     (apply orig-fn args)))
@@ -3556,26 +3569,6 @@ once if you have alot.
   (after! company (set! company-tempo-expand t)))
 #+end_src
 
-*** snippet macro
-:PROPERTIES:
-:ID:       33550f12-c282-48cb-8737-5f4240f51121
-:END:
-
-The purpose of this macro is to provide a "defun-like" syntax for defining tempo
-snippets. Additionally, I'd like to have a way of cross-configuring snippets.
-
-#+begin_src emacs-lisp
-(defmacro defsnippet! (name args docstring &rest body)
-  "Define a snippet."
-  (declare (indent defun))
-  (-let* ((name (symbol-name name))
-	  (tag nil)
-	  (taglist nil)
-	  (body (car body)))
-    `(after! tempo
-       (tempo-define-template ,name ,body ,tag ,docstring nil))))
-#+end_src
-
 *** tempo-snippets
 :PROPERTIES:
 :ID:       fa5d20be-f873-4b64-b218-33fc0a54bea6
@@ -3584,16 +3577,9 @@ snippets. Additionally, I'd like to have a way of cross-configuring snippets.
 =tempo-snippets= is a package that adds overlays.
 
 **** tempo-snippets
-:PROPERTIES:
-:ID:       2ec023ff-3345-4563-95bf-fe4f42899a59
-:END:
 
 #+begin_src emacs-lisp
-(use-package! tempo-snippets
-  :general
-  (:keymaps 'tempo-snippets-keymap
-   "TAB" #'tempo-snippets-next-field
-   [backtab] #'tempo-snippets-previous-field))
+(use-package! tempo-snippets)
 #+end_src
 
 **** use tab and backtab
@@ -3631,15 +3617,44 @@ mark. I need to call.
 ignored. Specifically, the original value is overwritten in *. The purpose of
 this headline is to address this problem.
 
-*** making sure it's enabled on a mode basis
-:PROPERTIES:
-:ID:       74771730-c5a6-40c7-a095-e5225140e7fb
-:END:
+**** defining snippets
 
-I want only certain tempo snippets to be available for certain modes.
+***** taglist name
 
 #+begin_src emacs-lisp
-;; (defhook! )
+(defun tempo:taglist-name (mode)
+  "Return a variable name for taglist."
+  (xl-symbol-intern 'tempo: mode '-taglist))
+#+end_src
+
+***** snippet macro
+:PROPERTIES:
+:ID:       33550f12-c282-48cb-8737-5f4240f51121
+:END:
+
+The purpose of this macro is to provide a "defun-like" syntax for defining tempo
+snippets. Additionally, it should be a uniform way to configure snippets across
+several different packages.
+
+#+begin_src emacs-lisp
+(defmacro defsnippet! (name args docstring &rest body)
+  "Define a `tempo' snippet for MODE.
+Define a snippet via `tempo-define-snippet'. Also create a taglist variable for
+MODE if one does not exist."
+  (declare (indent defun))
+  (-let* ((name (symbol-name name))
+	  (tag (-first-item args))
+	  ((mode other-modes) (-list (-second-item args)))
+	  (taglist (tempo:taglist-name mode)))
+    `(after! tempo
+       (defvar ,taglist nil
+	 ,(format "List of `tempo' tags for `%s'" mode))
+       (defhook! declare-tempo-tags (,(xl-hookify mode))
+	 ,(format "Declare taglist to be used for `%s'." mode)
+	 (tempo-use-tag-list ',taglist))
+       (tempo-define-snippet ,name ,(car body) ,tag ,docstring ',taglist)
+       ,@(when other-modes
+	   '((defsnippet! ,name (,tag ,other-modes) ,docstring ,body))))))
 #+end_src
 
 *** add completing read to tempo
@@ -3655,7 +3670,7 @@ Making sure that tempo can completing read.
 :END:
 
 #+begin_src emacs-lisp
-(defun +tempo-completing-read (save-name &rest args)
+(defun tempo:completing-read (save-name &rest args)
   (let ((insertion (apply #'completing-read args)))
     (when save-name
       (tempo-save-named save-name insertion))
@@ -3670,14 +3685,13 @@ Making sure that tempo can completing read.
 [[helpfn:tempo-completing-read+][tempo-completing-read+]] already takes care of inserting the correct value.
 
 #+begin_src emacs-lisp
-(use-feature! tempo
-  :xl-config
-  (defun tempo-C-keyword+ (element)
+(after! tempo
+  (defun tempo:C-keyword (element)
     (when (eq (car-safe element) 'C)
       (let ((tempo-interactive t))
-	(apply 'tempo-completing-read+ (cdr element)))
+	(apply 'tempo:completing-read (cdr element)))
       ""))
-  (push #'tempo-C-keyword+ tempo-user-elements))
+  (push #'tempo:C-keyword tempo-user-elements))
 #+end_src
 
 * Utility
@@ -5942,6 +5956,19 @@ There are two cases when editing a description. There's the case of an existing
 description and there's the case of a new one.
 
 **** init
+
+#+begin_src emacs-lisp
+(defhook! enable-org-tempo-templates (org:description-edit-mode-hook)
+  (tempo-use-tag-list 'tempo:org-mode-taglist))
+
+(xl-add-hook 'org:description-edit-mode-hook #'company-mode)
+
+;; Add an element to the company alist.
+(after! company
+  (push '(org:description-edit-mode :only (company-tempo)) company:backend-alist))
+#+end_src
+
+**** init
 :PROPERTIES:
 :ID:       8eb7b300-4df2-4a27-bae5-12bb982060f6
 :END:
@@ -8177,10 +8204,9 @@ referenance org headlines.
 :END:
 
 #+begin_src emacs-lisp
-(defsnippet! helpvar ("hvar")
+(defsnippet! helpvar ("hvar" org-mode)
   "Help function link."
-  '("[[helpvar:" (p "var" var) "][" (s function) "]"))
-#+end_src
+  `("[[helpvar:" (C var "variable: " ,obarray helpful--variable-p) "][" (s var) "]]"))#+end_src
 
 **** helpfn
 :PROPERTIES:
@@ -8188,9 +8214,9 @@ referenance org headlines.
 :END:
 
 #+begin_src emacs-lisp
-(defsnippet! helpfn ("hfn")
+(defsnippet! helpfn ("hfn" org-mode)
   "Help function link."
-  '("[[helpfn:" (p "function" function) "][" (s function) "]"))
+  '("[[helpfn:" (C fn "function: " help--symbol-completion-table) "][" (s fn) "]]"))
 #+end_src
 
 **** source block
