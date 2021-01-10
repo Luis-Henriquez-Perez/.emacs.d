@@ -7157,7 +7157,8 @@ You'll get void variable if you don't do this.
 
 #+begin_src emacs-lisp
 (use-package! highlight-quoted
-  :hook emacs-lisp-mode-hook)
+  :xl-hook emacs-lisp-mode-hook)
+#+end_src
 #+end_src
 
 *** fix elisp indentation
