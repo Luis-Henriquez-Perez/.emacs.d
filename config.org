@@ -31,7 +31,10 @@
 
 #+begin_src emacs-lisp
 (defmacro xl-dir! (name value &optional docstring)
-  "Macro used for declaring `xl' directories."
+  "Macro used for declaring `xl' directories.
+Declare a variable named NAME with value VALUE and docstring DOCSTRING.
+VALUE should be a path to a directory (as a string). Create the directory at
+path VALUE. Create a function."
   (declare (indent 2))
   `(progn
      (defconst ,name ,value ,docstring)
