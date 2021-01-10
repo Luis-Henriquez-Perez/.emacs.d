@@ -679,7 +679,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar +use-package-orig-keywords use-package-keywords)
+(defvar use-package:orig-keywords use-package-keywords)
 #+end_src
 
 **** miscellaneous
@@ -688,7 +688,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defun +use-package-insert-keyword (where place key)
+(defun use-package:insert-keyword (where place key)
   (--splice (eq place it)
 	    (funcall (if (eq where 'before) #'identity #'reverse) (list key it))
 	    use-package-keywords))
@@ -700,7 +700,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defun +use-package-autoload (package fn)
+(defun use-package:autoload (package fn)
   "Return form for FN."
   `(unless (fboundp ',fn)
      (autoload #',fn ,(symbol-name package) nil t nil)))
@@ -717,7 +717,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar +use-package-default-place '(after :init)
+(defvar use-package:default-place '(after :init)
   "Place where keywords should be inserted by default.")
 #+end_src
 
@@ -727,7 +727,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar +use-package-handler-args '(name key value rest state)
+(defvar use-package:handler-args '(name key value rest state)
   "Args passed into handler functions.")
 #+end_src
 
@@ -737,12 +737,12 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro +use-package-defhander! (name args &rest body)
+(defmacro use-package:defhander! (name args &rest body)
   "Define a `use-package' handler."
   (declare (indent defun))
   (let ((handler-name (xl-symbol-intern 'use-package-handler/: name))
 	(docstring (when (stringp (car body)) (pop body))))
-    `(defun ,handler-name (,@(-map #'xl-anaphoric-symbol +use-package-handler-args))
+    `(defun ,handler-name (,@(-map #'xl-anaphoric-symbol use-package:handler-args))
        ,docstring
        (let ((<body> (use-package-process-keywords <name> <rest> <state>)))
 	 ,@body))))
@@ -754,7 +754,7 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defvar +use-package-normalize-args '(name key args)
+(defvar use-package:normalize-args '(name key args)
   "Args passed into normalize functions.")
 #+end_src
 
@@ -764,12 +764,12 @@ the macro =use-package!=.
 :END:
 
 #+begin_src emacs-lisp
-(defmacro +use-package-defnormalize! (key args &rest body)
+(defmacro use-package:defnormalize! (key args &rest body)
   "Define a `use-package' normalizer."
   (declare (indent defun))
   (let* ((prefix 'use-package-normalize/:)
 	 (name (xl-symbol-intern prefix key)))
-    `(defun ,name (,@(-map #'xl-anaphoric-symbol +use-package-normalize-args))
+    `(defun ,name (,@(-map #'xl-anaphoric-symbol use-package:normalize-args))
        ,@body)))
 #+end_src
 
@@ -787,25 +787,25 @@ Here I override the default hook keyword with my own which uses =void-add-hook=
 instead of =add-hook=.
 
 #+begin_src emacs-lisp
-(defun +use-package-normalize-cons (cons-pair)
+(defun use-package:normalize-cons (cons-pair)
   (-table-flat #'cons
 	       (-list (car cons-pair))
 	       (-list (cdr cons-pair))))
 
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-hook))
+      (use-package:insert-keyword 'before :hook :xl-hook))
 
-(+use-package-defnormalize! xl-hook ()
+(use-package:defnormalize! xl-hook ()
   (cl-assert (-all-p (-orfn #'-cons-pair-p #'symbolp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it (xl-modeify <name>)))
-       (-mapcat #'+use-package-normalize-cons)
+       (-mapcat #'use-package:normalize-cons)
        (--map (cons (xl-hookify (car it)) (cdr it)))))
 
-(+use-package-defhander! xl-hook ()
+(use-package:defhander! xl-hook ()
   "Expect an alist of (HOOK FN)."
   `(,@(-map (-lambda ((hook . fn)) `(xl-add-hook ',hook ',fn)) <value>)
-    ,@(-map (-partial #'+use-package-autoload <name>) (-map #'cdr <value>))
+    ,@(-map (-partial #'use-package:autoload <name>) (-map #'cdr <value>))
     ,@<body>))
 #+end_src
 
@@ -816,16 +816,16 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-before-call))
+      (use-package:insert-keyword 'before :hook :xl-before-call))
 
-(+use-package-defnormalize! xl-before-call ()
+(use-package:defnormalize! xl-before-call ()
   (cl-assert (-all-p (-orfn #'symbolp #'listp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it <name>))
-       (-mapcat #'+use-package-normalize-cons)))
+       (-mapcat #'use-package:normalize-cons)))
 
-(+use-package-defhander! xl-before-call ()
-  `(,@(-map (-partial #'+use-package-autoload <name>)
+(use-package:defhander! xl-before-call ()
+  `(,@(-map (-partial #'use-package:autoload <name>)
 	    (-map #'car <value>))
     ,@(-map (-lambda ((fn . package)) `(xl-load-before-call #',fn ',package))
 	    <value>)
@@ -839,16 +839,16 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'after :hook :xl-after-call))
+      (use-package:insert-keyword 'after :hook :xl-after-call))
 
-(+use-package-defnormalize! xl-after-call ()
+(use-package:defnormalize! xl-after-call ()
   (cl-assert (-all-p (-orfn #'symbolp #'listp) <args>))
   (->> <args>
        (--map-when (symbolp it) (cons it <name>))
-       (-mapcat #'+use-package-normalize-cons)))
+       (-mapcat #'use-package:normalize-cons)))
 
-(+use-package-defhander! xl-after-call ()
-  `(,@(-map (-partial #'+use-package-autoload <name>)
+(use-package:defhander! xl-after-call ()
+  `(,@(-map (-partial #'use-package:autoload <name>)
 	    (-map #'car <value>))
     ,@(-map (-lambda ((fn . package)) `(xl-load-after-call #',fn ',package))
 	    <value>)
@@ -862,14 +862,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-silence))
+      (use-package:insert-keyword 'before :hook :xl-silence))
 
-(+use-package-defnormalize! xl-silence ()
+(use-package:defnormalize! xl-silence ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(+use-package-defhander! xl-silence ()
-  `(,@(-map (-partial #'+use-package-autoload <name>) <value>)
+(use-package:defhander! xl-silence ()
+  `(,@(-map (-partial #'use-package:autoload <name>) <value>)
     ,@(--map `(xl-silence-output #',it) <value>)
     ,@<body>))
 #+end_src
@@ -881,14 +881,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-ignore))
+      (use-package:insert-keyword 'before :hook :xl-ignore))
 
-(+use-package-defnormalize! xl-ignore ()
+(use-package:defnormalize! xl-ignore ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(+use-package-defhander! xl-ignore ()
-  `(,@(-map (-partial #'+use-package-autoload <name>) <value>)
+(use-package:defhander! xl-ignore ()
+  `(,@(-map (-partial #'use-package:autoload <name>) <value>)
     ,@(--map `(xl-ignore #',it) <value>)
     ,@<body>))
 #+end_src
@@ -900,13 +900,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-set))
+      (use-package:insert-keyword 'before :hook :xl-set))
 
-(+use-package-defnormalize! xl-set ()
+(use-package:defnormalize! xl-set ()
   (cl-assert (-all-p #'listp <args>))
   <args>)
 
-(+use-package-defhander! xl-set ()
+(use-package:defhander! xl-set ()
   `(,@(-map (-lambda ((var . val)) `(set! ,var ,val)) <value>)
     ,@<body>))
 #+end_src
@@ -918,13 +918,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-rule))
+      (use-package:insert-keyword 'before :hook :xl-rule))
 
-(+use-package-defnormalize! xl-rule ()
+(use-package:defnormalize! xl-rule ()
   (cl-assert (-all-p #'xl-true-list-p <args>))
   <args>)
 
-(+use-package-defhander! xl-rule ()
+(use-package:defhander! xl-rule ()
   `(,@(--map `(dbc-add-rule ,@it) <value>)
     ,@<body>))
 #+end_src
@@ -936,13 +936,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-idle-require))
+      (use-package:insert-keyword 'before :hook :xl-idle-require))
 
-(+use-package-defnormalize! xl-idle-require ()
+(use-package:defnormalize! xl-idle-require ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(+use-package-defhander! xl-idle-require ()
+(use-package:defhander! xl-idle-require ()
   `((use-package! idle-require :config
       ,@(--map `(idle-require ',it nil t) <value>))
     ,@<body>))
@@ -955,12 +955,12 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-config))
+      (use-package:insert-keyword 'before :hook :xl-config))
 
-(+use-package-defnormalize! xl-config ()
+(use-package:defnormalize! xl-config ()
   <args>)
 
-(+use-package-defhander! xl-config ()
+(use-package:defhander! xl-config ()
   `((after! ,<name> ,@<value>)
     ,@<body>))
 #+end_src
@@ -972,13 +972,13 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-alias))
+      (use-package:insert-keyword 'before :hook :xl-alias))
 
-(+use-package-defnormalize! xl-alias ()
+(use-package:defnormalize! xl-alias ()
   <args>)
 
-(+use-package-defhander! xl-alias ()
-  `(,@(-map #'+use-package-autoload (-map #'car <value>))
+(use-package:defhander! xl-alias ()
+  `(,@(-map #'use-package:autoload (-map #'car <value>))
     ,@(--map (-lambda ((sym . def)) `(defalias ',sym #',def))
 	     <value>)
     ,@<body>))
@@ -991,14 +991,14 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :ensure :xl-ensure))
+      (use-package:insert-keyword 'before :ensure :xl-ensure))
 
-(+use-package-defnormalize! xl-ensure ()
+(use-package:defnormalize! xl-ensure ()
   (cl-assert (alet (car-safe <args>)
 	       (or (listp it) (booleanp it))))
   (car <args>))
 
-(+use-package-defhander! xl-ensure ()
+(use-package:defhander! xl-ensure ()
   `(,@(cond ((null <value>) nil)
 	    ((eq t <value>) `((straight-use-package ',<name>)))
 	    ((listp <value>) `((straight-use-package ',(cons <name> <value>)))))
@@ -1012,36 +1012,27 @@ instead of =add-hook=.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'before :hook :xl-gc-pause))
+      (use-package:insert-keyword 'before :hook :xl-gc-pause))
 
-(+use-package-defnormalize! xl-gc-pause ()
+(use-package:defnormalize! xl-gc-pause ()
   (cl-assert (-all-p #'symbolp <args>))
   <args>)
 
-(+use-package-defhander! xl-gc-pause ()
-  `(,@(--map (+use-package-autoload <name> it) <value>)
+(use-package:defhander! xl-gc-pause ()
+  `(,@(--map (use-package:autoload <name> it) <value>)
     ,@(--map `(xl-pause-garbage-collection #',it) <value>)
     ,@<body>))
 #+end_src
 
-***** built-in
-:PROPERTIES:
-:ID:       c5972e7d-02c7-4962-a41b-b5e8836327e5
-:END:
+***** nameless
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (+use-package-insert-keyword 'after :ensure :built-in))
+      (use-package:insert-keyword 'before :hook :xl-gc-pause))
 
-(+use-package-defnormalize! built-in ()
-  (cl-assert (and (xl-one-p (length <args>)) (eq t (car <args>))))
-  <args>)
-
-;; This one's different because I need to modify state.
-(defun use-package-handler/:built-in (name key value rest state)
-  (when value (callf plist-put rest :ensure nil))
-  (let ((body (use-package-process-keywords name rest state)))
-    `(,@body)))
+;; (use-package:defnormalize! xl-gc-pause ()
+;; 			   (cl-assert (-all-p #'symbolp <args>))
+;; 			   <args>)
 #+end_src
 
 *** essential libraries
