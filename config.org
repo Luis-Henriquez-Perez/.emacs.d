@@ -7470,7 +7470,7 @@ the whole thing.
 :END:
 
 #+begin_src emacs-lisp
-(defvar +org-capture-file (concat org-directory "capture.org"))
+(defvar org-capture:file (concat org-directory "capture.org"))
 #+end_src
 
 **** general settings
@@ -8029,7 +8029,7 @@ let's me choose the template via completing-read.
 :END:
 
 #+begin_src emacs-lisp
-(defun +org-capture-template-list ()
+(defun org-capture:template-list ()
   "Return a list of capture templates."
   (thread-first org-capture-templates
     (org-capture-upgrade-templates)
@@ -8045,7 +8045,7 @@ let's me choose the template via completing-read.
 (defun +org/capture-template ()
   (interactive)
   (let* ((read-string (seq-map (lambda (it) (format "%s %s" (car it) (cadr it)))
-			       (+org-capture-template-list)))
+			       (org-capture:template-list)))
 	 (selection (completing-read "Capture template: " read-string nil :require-match))
 	 (key (car (split-string selection "\s" t))))
     (org-capture nil key)))
@@ -8110,7 +8110,7 @@ same key as the one(s) being added."
 For capture templates that have deadlines, I set a start and an end date.
 
 #+begin_src emacs-lisp
-(defun +org-capture--default-planning-node (&optional days-difference)
+(defun org-capture:-default-planning-node (&optional days-difference)
   "Return the default planning node for `org-capture-templates'."
   (let* ((days-difference (or days-difference 7))
          (now (ts-now))
@@ -8141,7 +8141,7 @@ This is a capture template for emacs usage.
 Instead of passing in the string I use =org-ml= to print the string.
 
 #+begin_src emacs-lisp
-(defun +org-capture-emacs-template ()
+(defun org-capture:emacs-template ()
   "Return emacs capture template."
   (->> (org-ml-build-headline! :title-text "%?")
        (org-ml-headline-set-node-property "ID" (org-id-new))
@@ -8161,8 +8161,8 @@ Instead of passing in the string I use =org-ml= to print the string.
   (+doct-add-to-templates
    (list "emacs"
 	 :keys "e"
-	 :template #'+org-capture-emacs-template
-	 :file +org-capture-file
+	 :template #'org-capture:emacs-template
+	 :file org-capture:file
 	 :prepend t
 	 :empty-lines 1)))
 #+end_src
@@ -8187,17 +8187,26 @@ tracking the time you spend on a particular task.
   (org-clock-persistence-insinuate))
 #+end_src
 
-*** org-agenda
+*** org agenda
+:PROPERTIES:
+:ID:       389bcdde-e2fb-401d-b4ec-47c73c8cf545
+:END:
+
+For any todo workflow, having a way to get an overview of the essential tasks
+for a certain block of time is a must. =org-agenda= is this overview.
+
+**** org-agenda
 :PROPERTIES:
 :ID:       efa9d237-b055-4bfb-a1f9-86d964b5f007
 :END:
 
 #+begin_src emacs-lisp
 (use-feature! org-agenda
+  ;; :xl-rule ()
   :xl-set
   (org-agenda-text-search-extra-files . '(agenda-archives))
   (org-agenda-skip-unavailable-files  . t)
-  (org-agenda-files                   . (list +org-capture-file))
+  (org-agenda-files                   . (list org-capture:file))
   (org-agenda-start-on-weekday        . 0)
   (org-agenda-timegrid-use-ampm       . nil)
   (org-agenda-time-leading-zero       . t)
