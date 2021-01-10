@@ -8,6 +8,9 @@
 :ID:       71dbf82e-cf4f-4e8a-b14d-df78bea5b20f
 :END:
 
+This headline is for things I need to do before anything else. The main thing I
+do here is declare directory names.
+
 *** don't garbage collect during initialization
 :PROPERTIES:
 :ID:       4913461b-8421-4a64-b09a-18c54673d7d7
