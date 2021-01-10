@@ -781,6 +781,9 @@ the macro =use-package!=.
 :ID:       62cec5ac-a2f9-435b-96a7-4db0d9691f25
 :END:
 
+One thing to note is that I don't allow arguments to be optionally in a
+list. This makes things much more complicated and it makes.
+
 ***** hook
 :PROPERTIES:
 :ID:       02e42811-3b97-44f1-ad0c-d59787173ffb
@@ -7162,9 +7165,26 @@ You'll get void variable if you don't do this.
 (use-package! highlight-quoted
   :xl-hook emacs-lisp-mode-hook)
 #+end_src
+
+*** macrostep
+:PROPERTIES:
+:ID:       fefc5700-3bd7-4a89-ae7b-bf68368e8bc4
+:END:
+
+#+begin_src emacs-lisp
+(use-package! macrostep
+  :commands macrostep-expand
+  :init
+  (define-localleader-key!
+    :keymaps 'emacs-lisp-mode-map
+    "e" (list :def #'macrostep-expand       :wk "expand")
+    "c" (list :def #'macrostep-collapse     :wk "collapse")
+    "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
 #+end_src
 
-*** fix elisp indentation
+*** elisp
+
+**** fix elisp indentation
 :PROPERTIES:
 :ID: aa7f846f-8802-4c75-88d8-a438e2f63ccd
 :END:
@@ -7348,34 +7368,7 @@ The change to this function."
                normal-indent))))))
 #+end_src
 
-*** elisp-demos
-:PROPERTIES:
-:ID:       2c419004-a7c1-4de5-bada-8420505cea90
-:END:
-
-#+begin_src emacs-lisp
-(use-package! elisp-demos
-  ;; :xl-advice (helpful-update :after #'elisp-demos-advice-helpful-update)
-  )
-#+end_src
-
-*** macrostep
-:PROPERTIES:
-:ID:       fefc5700-3bd7-4a89-ae7b-bf68368e8bc4
-:END:
-
-#+begin_src emacs-lisp
-(use-package! macrostep
-  :commands macrostep-expand
-  :init
-  (define-localleader-key!
-    :keymaps 'emacs-lisp-mode-map
-    "e" (list :def #'macrostep-expand       :wk "expand")
-    "c" (list :def #'macrostep-collapse     :wk "collapse")
-    "C" (list :def #'macrostep-collapse-all :wk "collapse all")))
-#+end_src
-
-*** ppp
+**** ppp
 :PROPERTIES:
 :ID:       82dbb88a-4bce-4ca3-90fe-38cfbea7abc6
 :END:
@@ -7390,6 +7383,59 @@ the whole thing.
 
 #+begin_src emacs-lisp
 (use-package! ppp)
+#+end_src
+
+**** elisp-demos
+:PROPERTIES:
+:ID:       2c419004-a7c1-4de5-bada-8420505cea90
+:END:
+
+#+begin_src emacs-lisp
+(use-package! elisp-demos
+  ;; :xl-advice (helpful-update :after #'elisp-demos-advice-helpful-update)
+  )
+#+end_src
+
+**** elisp snippets
+:PROPERTIES:
+:ID:       bbb2299f-6960-43c2-bf1d-b849ef8ecff0
+:END:
+
+***** defvar
+:PROPERTIES:
+:ID:       bbbba4d9-a2f4-47b1-8447-082f8ea4cf86
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! defvar ("dvar" emacs-lisp-mode)
+  "Insert a defvar expression."
+  '("(defvar " (p "var" varname) " " (p "initial-value" value)
+    n> "\"" (p "docstring" docstring) "\"" ")"))
+#+end_src
+
+***** defun
+:PROPERTIES:
+:ID:       3fdb199e-b76e-41ea-85fb-4f62c398453d
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! defun ("defn" emacs-lisp-mode)
+  "Insert a defun form"
+  '("(defun " (p "name" name) " " "(" (p "args" it) ")"
+    n> "\"" (p "docstring" docstring) "\""
+    n> (p "body" body)
+    ")" (p "")))
+#+end_src
+
+***** when
+:PROPERTIES:
+:ID:       8eb34ddf-ae81-42dd-bf7a-4be9562ceae5
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! when ("when" emacs-lisp-mode)
+  "Insert a when expression"
+  '("(when " (p "condition" condition) n> (r "body" body) ")" (p "" last)))
 #+end_src
 
 ** org
@@ -8219,7 +8265,8 @@ referenance org headlines.
 #+begin_src emacs-lisp
 (defsnippet! helpvar ("hvar" org-mode)
   "Help function link."
-  `("[[helpvar:" (C var "variable: " ,obarray helpful--variable-p) "][" (s var) "]]"))#+end_src
+  `("[[helpvar:" (C var "variable: " ,obarray helpful--variable-p) "][" (s var) "]]"))
+#+end_src
 
 **** helpfn
 :PROPERTIES:
@@ -8230,18 +8277,6 @@ referenance org headlines.
 (defsnippet! helpfn ("hfn" org-mode)
   "Help function link."
   '("[[helpfn:" (C fn "function: " help--symbol-completion-table) "][" (s fn) "]]"))
-#+end_src
-
-**** source block
-:PROPERTIES:
-:ID:       f7f03efe-f519-42f9-98cd-0afe74904e36
-:END:
-
-#+begin_src emacs-lisp
-(defsnippet! source ("src")
-  "Org source block."
-  '("#+begin_src " (p "emacs-lisp" lang) n> r
-    "#+end_src" n>))
 #+end_src
 
 * Asthetic
