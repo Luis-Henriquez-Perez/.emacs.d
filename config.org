@@ -8252,6 +8252,16 @@ referenance org headlines.
   (org-superstar-special-todo-items . t))
 #+end_src
 
+*** org-fancy-priorities
+:PROPERTIES:
+:ID:       c4ff4407-774c-4028-bb9d-01412fdfc8d2
+:END:
+
+#+begin_src emacs-lisp
+(use-package! org-fancy-priorities
+  :xl-hook org-mode-hook)
+#+end_src
+
 *** org mode snippets
 :PROPERTIES:
 :ID:       cd25f425-a4db-4a4c-be9e-4b672116048c
