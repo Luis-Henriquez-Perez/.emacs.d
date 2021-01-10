@@ -2403,6 +2403,15 @@ the web.
 This headline contains headings for which I have not yet determined a good
 hierarchy.
 
+*** don't echo keystrokes
+:PROPERTIES:
+:ID:       b8856ebe-6208-4271-ad5a-d352fabec8bb
+:END:
+
+#+begin_src emacs-lisp
+(setq-default echo-keystrokes 0)
+#+end_src
+
 *** tangling
 :PROPERTIES:
 :ID:       adf94410-e747-4d5a-b9dc-7b7b249b8c76
