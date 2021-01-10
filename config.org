@@ -1207,7 +1207,9 @@ side windows.
   (dbc-add-ruleset "bottom"
 		   '(display-buffer-in-side-window . ((side . bottom) (window-height . 0.5))))
   (dbc-add-ruleset "top"
-		   '(display-buffer-in-side-window . ((side . top) (window-height . 0.4)))))
+		   '(display-buffer-in-side-window . ((side . top) (window-height . 0.4))))
+  (dbc-add-ruleset "left"
+		   '(display-buffer-in-side-window . ((side . left)))))
 #+end_src
 
 **** db
