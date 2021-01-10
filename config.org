@@ -5320,7 +5320,7 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defvar +desktop-base-dir (concat XL-DATA-DIR "desktops/")
+(defvar desktop:base-dir (concat XL-DATA-DIR "desktops/")
   "Directory where desktops should go.")
 #+end_src
 
@@ -5330,10 +5330,10 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun +desktop-dirname (name)
+(defun desktop:dirname (name)
   "Return the path where desktop named NAME should go."
   (require 'f)
-  (f-join +desktop-base-dir name))
+  (f-join desktop:base-dir name))
 #+end_src
 
 ***** ensure the base directory
@@ -5343,8 +5343,8 @@ really have been done by =desktop.el= but oh well.
 
 #+begin_src emacs-lisp
 (defhook! ensure-desktop-directory (desktop-mode-hook)
-  "Make `+desktop-base-dir' if it does not exist."
-  (mkdir +desktop-base-dir t))
+  "Make `desktop:base-dir' if it does not exist."
+  (mkdir desktop:base-dir t))
 #+end_src
 
 ***** desktop names
@@ -5353,9 +5353,9 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun +desktop-list ()
+(defun desktop:list ()
   "Return a list of the names of all desktops."
-  (-difference (directory-files +desktop-base-dir)
+  (-difference (directory-files desktop:base-dir)
 	       (list ".." ".")))
 #+end_src
 
@@ -5365,9 +5365,9 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun +desktop-create-desktop (name)
+(defun desktop:create-desktop (name)
   "Create a new desktop named NAME."
-  (let ((desktop-dirname (+desktop-dirname name)))
+  (let ((desktop-dirname (desktop:dirname name)))
     (desktop-kill)
     (make-directory desktop-dirname 'parents)
     (desktop-save desktop-dirname)))
@@ -5379,8 +5379,8 @@ really have been done by =desktop.el= but oh well.
 :END:
 
 #+begin_src emacs-lisp
-(defun +desktop-load-desktop (name)
-  (desktop-change-dir (+desktop-dirname name)))
+(defun desktop:load-desktop (name)
+  (desktop-change-dir (desktop:dirname name)))
 #+end_src
 
 **** create desktop in new tab
@@ -5395,10 +5395,10 @@ This is an integration with desktop and tab mode.
   "Create desktop named NAME in new tab.
 The tab's new name is the same as the desktop name."
   (interactive
-   (list (completing-read "Create +desktop-" (desktop:list))))
+   (list (completing-read "Create desktop:" (desktop:list))))
   (tab-bar-new-tab)
   (tab-bar-rename-tab name)
-  (+desktop-create-desktop name))
+  (desktop:create-desktop name))
 #+end_src
 
 **** load desktop in a new tab
@@ -5411,10 +5411,10 @@ The tab's new name is the same as the desktop name."
   "Create desktop named NAME in new tab.
 The tab's new name is the same as the desktop name."
   (interactive
-   (list (completing-read "Load +desktop- " (desktop:list))))
+   (list (completing-read "Load desktop: " (desktop:list))))
   (tab-bar-new-tab)
   (tab-bar-rename-tab name)
-  (+desktop-load-desktop name))
+  (desktop:load-desktop name))
 #+end_src
 
 **** desktop restore functions
@@ -5428,7 +5428,7 @@ The tab's new name is the same as the desktop name."
 :END:
 
 #+begin_src emacs-lisp
-(defun +desktop-restore-helpful-buffer ()
+(defun desktop:restore-helpful-buffer ()
   "Restore helpful buffer.")
 #+end_src
 
