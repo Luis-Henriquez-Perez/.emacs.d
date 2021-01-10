@@ -5973,23 +5973,22 @@ description and there's the case of a new one.
 **** init
 
 #+begin_src emacs-lisp
-(defhook! enable-org-tempo-templates (org:description-edit-mode-hook)
+(use-package! org-desc
+  :ensure nil
+  :xl-rule ("bottom" "org description" :newname "\\*Org Desc - .+"))
+#+end_src
+
+**** set up tempo completion
+
+#+begin_src emacs-lisp
+(defhook! enable-org-tempo-templates (org-desc:edit-mode-hook)
   (tempo-use-tag-list 'tempo:org-mode-taglist))
 
-(xl-add-hook 'org:description-edit-mode-hook #'company-mode)
+(xl-add-hook 'org-desc:edit-mode-hook #'company-mode)
 
 ;; Add an element to the company alist.
 (after! company
-  (push '(org:description-edit-mode :only (company-tempo)) company:backend-alist))
-#+end_src
-
-**** init
-:PROPERTIES:
-:ID:       8eb7b300-4df2-4a27-bae5-12bb982060f6
-:END:
-
-#+begin_src emacs-lisp
-(dbc-add-rule "bottom" "org description" :newname "\\*Org Desc - .+")
+  (push '(org-desc:edit-mode :only (company-tempo)) company:backend-alist))
 #+end_src
 
 **** description bounds
@@ -5997,32 +5996,8 @@ description and there's the case of a new one.
 :ID:       74367212-cbd0-4871-94d5-24980e997bd7
 :END:
 
-=edit-indirect= requires the beginning and end of the editing region, so I need
-to determine the beginning and end of the description.
-
-I want my descriptions after property drawers (and any whitespace that follows
-them).
-
-After an org heading node there is a section subnode which is the parent of all
-the heading's contents. If it has more than one child, the blank following the
-property drawer child pertains to the property drawer. However, if it's only
-child is the property drawer then the post blank pertains to the section
-itself.
-
-The approach I took to doing figuring this out is using the =org-element= parser
-to determine.
-
-It is important to note that my
-tendency in org mode is to have a headline with at most one description and at
-most one source block.
-
-When there is no existing description, the beginning and the end are the
-same--the end point of the property drawer. And yes, I assume the heading has a
-property drawer, at least for now. In my usage it's a good assumption because
-every headline in my org file should have a property drawer.
-
 #+begin_src emacs-lisp
-(defun +org-description-bounds ()
+(defun org-desc:bounds ()
   "Return the bounds of description at headline.
 If there is no existing description return nil."
   (interactive)
@@ -6049,7 +6024,7 @@ It is my preference to have one blank line after a description--or any org item
 for that matter. I just find it much more readable and less cluttered.
 
 #+begin_src emacs-lisp
-(defvar +org-description-default-post-blanks 1
+(defvar org-desc:default-post-blanks 1
   "Number of blank lines that should follow a description.")
 #+end_src
 
@@ -6070,7 +6045,7 @@ want the cursor to start at the last non-whitespace character of the
 description.
 
 #+begin_src emacs-lisp
-(defun +org-description-goto-last-non-white ()
+(defun org-desc:goto-last-non-white ()
   (goto-char (point-max))
   (skip-chars-backward "\n\s"))
 #+end_src
@@ -6086,10 +6061,10 @@ will be placed properly in relation to what's below it. This hook is designed to
 make sure this happens.
 
 #+begin_src emacs-lisp
-(defun +org-description-add-newlines ()
+(defun org-desc:add-newlines ()
   "Add newlines."
   (save-excursion
-    (--dotimes (1+ +org-description-default-post-blanks)
+    (--dotimes (1+ org-desc:default-post-blanks)
       (insert "\n"))))
 #+end_src
 
@@ -6105,11 +6080,11 @@ inadvertently edit the source buffer in this case. So this hook is to remove any
 newlines added in the case that nothing was changed.
 
 #+begin_src emacs-lisp
-(defun +org-description-maybe-remove-newline ()
+(defun org-desc:maybe-remove-newline ()
   "Remove newline if that's all there is."
   (alet (buffer-string)
     (when (and (seq-every-p (lambda (char) (= 10 char)) it)
-	       (= (1+ +org-description-default-post-blanks) (length it)))
+	       (= (1+ org-desc:default-post-blanks) (length it)))
       (erase-buffer))))
 #+end_src
 
@@ -6123,7 +6098,7 @@ to be adding hooks and maybe even binding keys with editing descriptions in mind
 Therefore, I think it's worthy to give it it's own mode.
 
 #+begin_src emacs-lisp
-(define-minor-mode +org-description-edit-mode
+(define-minor-mode org-desc:edit-mode
   "Mode for editing org descriptions.")
 #+end_src
 
@@ -6157,19 +6132,19 @@ worth it to consider creating a hook specifically for org descriptions.
 #+begin_src emacs-lisp
 (defun org/dwim-edit-description ()
   (interactive)
-  (-let* (((beg . end) (+org-description-bounds))
+  (-let* (((beg . end) (org-desc:bounds))
 	  (was-empty-p (= beg end)))
     (unless beg (user-error "No description at headline."))
     (let ((edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
 	  (headline (org-get-heading t t t t)))
       (when was-empty-p
-	(add-hook 'edit-indirect-after-creation-hook #'+org-description-add-newlines 0))
-      (add-hook 'edit-indirect-after-creation-hook #'+org-description-goto-last-non-white 0)
+	(add-hook 'edit-indirect-after-creation-hook #'org-desc:add-newlines 0))
+      (add-hook 'edit-indirect-after-creation-hook #'org-desc:goto-last-non-white 0)
       (with-current-buffer (edit-indirect-region beg end)
 	(rename-buffer (format "*Org Desc - %s*" headline) t)
-	(+org-description-edit-mode 1)
+	(org-desc:edit-mode 1)
 	(add-hook 'edit-indirect-before-commit-hook
-		  #'+org-description-maybe-remove-newline nil t)
+		  #'org-desc:maybe-remove-newline nil t)
 	(select-window (display-buffer (buffer-name)))))))
 #+end_src
 
@@ -6185,7 +6160,7 @@ where I don't do this.
 
 #+begin_src emacs-lisp
 (after! evil
-  (xl-add-hook '+org-description-edit-mode-hook #'evil-insert-state))
+  (xl-add-hook 'org-desc:edit-mode-hook #'evil-insert-state))
 #+end_src
 
 **** custom hooks
@@ -6196,7 +6171,7 @@ where I don't do this.
 #+begin_src emacs-lisp
 (alet (list #'auto-capitalize-mode #'aggressive-fill-paragraph-mode
 	    #'org-link-minor-mode)
-  (xl-add-hook '+org-description-edit-mode-hook it))
+  (xl-add-hook 'org-desc:edit-mode-hook it))
 #+end_src
 
 *** editing org source blocks
