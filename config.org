@@ -2387,6 +2387,17 @@ the web.
     (setq browse-url-browser-function it)))
 #+end_src
 
+*** bookmarks
+:PROPERTIES:
+:ID:       a4514b36-6e08-4a66-a595-cd40fc9acc0b
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! bookmark
+  :xl-set
+  (bookmark-default-file . (xl-data-dir "bookmarks")))
+#+end_src
+
 ** Miscellaneous
 :PROPERTIES:
 :ID:       65edb4e7-0fe1-4e37-ae9b-027c9f15162a
