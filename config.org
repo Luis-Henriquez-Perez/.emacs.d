@@ -4256,6 +4256,15 @@ ways to read and send emails in Emacs.
   (message-kill-buffer-on-exit . t))
 #+end_src
 
+*** pass
+:PROPERTIES:
+:ID:       6f3268a1-4606-435d-9bf4-05d1c54c28a9
+:END:
+
+#+begin_src emacs-lisp
+(use-package! pass)
+#+end_src
+
 *** password-store
 :PROPERTIES:
 :ID:       3c57590c-1507-4369-b615-795965d4b182
