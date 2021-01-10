@@ -3670,13 +3670,15 @@ MODE if one does not exist."
   (-let* ((name (symbol-name name))
 	  (tag (-first-item args))
 	  ((mode other-modes) (-list (-second-item args)))
+	  (hook (xl-symbol-intern 'set-tempo-tags-for- mode))
 	  (taglist (tempo:taglist-name mode)))
     `(after! tempo
        (defvar ,taglist nil
 	 ,(format "List of `tempo' tags for `%s'" mode))
-       (defhook! declare-tempo-tags (,(xl-hookify mode))
-	 ,(format "Declare taglist to be used for `%s'." mode)
-	 (tempo-use-tag-list ',taglist))
+       (unless (fboundp ',hook)
+	 (defhook! ,hook (,(xl-hookify mode))
+	   ,(format "Set taglist to be used for `%s'." mode)
+	   (tempo-use-tag-list ',taglist)))
        (tempo-define-snippet ,name ,(car body) ,tag ,docstring ',taglist)
        ,@(when other-modes
 	   '((defsnippet! ,name (,tag ,other-modes) ,docstring ,body))))))
