@@ -65,6 +65,9 @@ Files that need to exist, but I don't typically want to see go here.")
 
 (xl-dir! XL-ORG-DIR (xl-emacs-dir "org/")
   "Directory where org files should go.")
+
+(xl-dir! XL-SCREENSHOT-DIR (xl-emacs-dir "screenshots/")
+  "Directory where screenshots should go.")
 #+end_src
 
 **** important files
