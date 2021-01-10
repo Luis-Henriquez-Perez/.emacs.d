@@ -6000,7 +6000,7 @@ description and there's the case of a new one.
 
 #+begin_src emacs-lisp
 (use-package! org-desc
-  :ensure nil
+  :xl-ensure nil
   :xl-rule ("bottom" "org description" :newname "\\*Org Desc - .+"))
 #+end_src
 
@@ -8187,7 +8187,7 @@ tracking the time you spend on a particular task.
   (org-clock-persistence-insinuate))
 #+end_src
 
-*** org agenda
+*** org-agenda
 :PROPERTIES:
 :ID:       389bcdde-e2fb-401d-b4ec-47c73c8cf545
 :END:
