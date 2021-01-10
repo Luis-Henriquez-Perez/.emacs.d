@@ -4030,7 +4030,11 @@ option that would prompt you for the file name.
 #+begin_src emacs-lisp
 (use-package! escr
   :xl-ensure (:host github :type git :repo "atykhonov/escr")
-  :commands escr-window-screenshot escr-frame-screenshot)
+  :commands (escr-window-screenshot
+	     escr-frame-screenshot
+	     escr-region-screenshot)
+  :xl-set
+  (escr-screenshot-directory . (xl-emacs-dir "screenshots")))
 #+end_src
 
 **** function for geting screenshot filename
@@ -4044,7 +4048,7 @@ need to invest time in looking at the screenshots again so you can properly name
 them.
 
 #+begin_src emacs-lisp
-(defun +escr-get-filename ()
+(defun escr:get-filename ()
   "Return the filename."
   (alet (format "%s-%s.png"
                 (alet (read-string "Image name: ")
