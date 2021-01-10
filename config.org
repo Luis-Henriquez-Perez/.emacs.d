@@ -8214,7 +8214,7 @@ referenance org headlines.
 
 #+begin_src emacs-lisp
 (use-feature! org-id
-  :xl-hook (org-insert-hook . org-id-get-create)
+  :xl-hook (org-insert-heading-hook . org-id-get-create)
   :xl-set
   (org-id-locations-file-relative . t)
   (org-id-link-to-org-use-id      . 'create-if-interactive-and-no-custom-id)
