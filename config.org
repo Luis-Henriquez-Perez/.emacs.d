@@ -63,7 +63,7 @@ Files that need to exist, but I don't typically want to see go here.")
 (xl-dir! XL-PACKAGES-DIR (xl-local-dir "packages/")
   "Path to the directory where packages are stored.")
 
-(xl-dir! XL-ORG-DIR (xl-local-dir "org/")
+(xl-dir! XL-ORG-DIR (xl-emacs-dir "org/")
   "Directory where org files should go.")
 #+end_src
 
