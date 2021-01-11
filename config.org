@@ -8583,6 +8583,18 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :ID:       de94c9a8-fc05-46ec-ac06-510f1014e02d
 :END:
 
+**** random logo
+:PROPERTIES:
+:ID:       80e5fa17-d18a-4ec0-af8d-728d77843c69
+:END:
+
+#+begin_src emacs-lisp
+(defun dashboard:random-logo (logo)
+  "Display a random logo."
+  (seq-random-elt
+   (append '(1 2 3) (if (display-graphic-p) '(official logo)))))
+#+end_src
+
 **** require
 :PROPERTIES:
 :ID:       73d00f99-4b70-44d1-8359-01bd2c94b330
@@ -8594,7 +8606,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
   :xl-hook (window-setup-hook . dashboard-insert-startupify-lists)
   :xl-set
   (dashboard-items . nil)
-  (dashboard-startup-banner . (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
+  (dashboard-startup-banner . (dashboard:random-logo))
   (dashboard-center-content . t)
   (initial-buffer-choice . #'xl-initial-buffer-choice))
 #+end_src
@@ -8628,6 +8640,14 @@ instead.
                       ((featurep 'package) (length package-activated-list))
                       (t 0))
                 (string-to-number (emacs-init-time)))))
+#+end_src
+
+*** add icons to dashboard
+:PROPERTIES:
+:ID:       d4714639-919c-4691-9f7f-004cfa627089
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 ** window divider
