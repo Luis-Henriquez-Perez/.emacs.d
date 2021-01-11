@@ -8088,7 +8088,7 @@ freely re-evaluate it without cluttering my capture templates with duplicate
 entries.
 
 #+begin_src emacs-lisp
-(defun +doct-add-to-templates (declarations)
+(defun doct:add-to-templates (declarations)
   "Set `org-capture-templates' to the result of (doct DECLARATIONS).
 Before adding result, remove any members of `org-capture-templates' with the
 same key as the one(s) being added."
@@ -8162,7 +8162,7 @@ Instead of passing in the string I use =org-ml= to print the string.
 
 #+begin_src emacs-lisp
 (after! org-capture
-  (+doct-add-to-templates
+  (doct:add-to-templates
    (list "emacs"
 	 :keys "e"
 	 :template #'org-capture:emacs-template
