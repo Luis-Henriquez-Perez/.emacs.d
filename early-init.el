@@ -31,22 +31,6 @@
 
 (setq frame-inhibit-implied-resize t)
 
-;; * Set Font
-
-;; We want to have a robust setup. If you try to set the emacs default font to
-;; one that does not exist, you'll get an error. In fact if you do this in
-;; =early-init.el= your emacs simply won't start. I have preferences over which
-;; fonts I like but fonts that are available on each machine differ. So I want
-;; emacs to try it's best to choose a font I like and yet gracefully fall back
-;; on the next best font when it can't find one that's available.
-
-;; The rub is that I have to wait until the frame is created before I can check
-;; for available fonts. I don't do this yet. I just use inconsolata for now. I
-;; will address this in time.
-
-;; (push (cons 'font (concat "JetBrains Mono-19")) default-frame-alist)
-(push (cons 'font (concat "Anonymous Pro-19")) default-frame-alist)
-
 ;; * Ignore x-resources
 
 ;; Ignore X resources; its settings would be redundant with the other settings
