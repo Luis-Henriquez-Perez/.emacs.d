@@ -8206,7 +8206,8 @@ for a certain block of time is a must. =org-agenda= is this overview.
 
 #+begin_src emacs-lisp
 (use-feature! org-agenda
-  ;; :xl-rule ()
+  :xl-rule ("left" "org agenda" :newname "\\*Org Agenda\\*")
+  :xl-gc-pause org-agenda-list
   :xl-set
   (org-agenda-text-search-extra-files . '(agenda-archives))
   (org-agenda-skip-unavailable-files  . t)
@@ -8216,6 +8217,48 @@ for a certain block of time is a must. =org-agenda= is this overview.
   (org-agenda-time-leading-zero       . t)
   (org-agenda-dim-blocked-tasks       . t)
   (org-agenda-inhibit-startup         . t))
+#+end_src
+
+**** respect display-buffer
+:PROPERTIES:
+:ID:       50933d82-1208-481d-8dc7-42630f3f3b41
+:END:
+
+=org= functions are known to try to configure buffer displays themselves. This
+forces agenda view to rely on [[helpvar:display-buffer-alist][display-buffer-alist]] for it's display.
+
+#+begin_src emacs-lisp
+(defadvice! use-display-buffer (:override (abuf filter-alist) org-agenda-prepare-window)
+  "Use `display-buffer' to display the agenda buffer.
+Unlike `org-agenda-prepare-window', this function does not store the window configuration."
+  (display-buffer abuf)
+  (setq org-agenda-tag-filter (cdr (assq 'tag filter-alist)))
+  (setq org-agenda-category-filter (cdr (assq 'cat filter-alist)))
+  (setq org-agenda-effort-filter (cdr (assq 'effort filter-alist)))
+  (setq org-agenda-regexp-filter (cdr (assq 're filter-alist)))
+
+  (unless (equal (current-buffer) abuf)
+    (pop-to-buffer-same-window abuf)))))
+#+end_src
+
+**** org-super-agenda
+:PROPERTIES:
+:ID:       d708a7e8-0c24-4b1d-b57b-7ebd91a3ae05
+:END:
+
+=org-super-agenda= provides a powerful and convenient way to organize how the
+org agenda buffer is displayed.
+
+***** org-super-agenda
+:PROPERTIES:
+:ID:       e1fdf658-1fe4-40d5-9dbf-626a39f7d2ae
+:END:
+
+#+begin_src emacs-lisp
+(use-package! org-super-agenda
+  :xl-before-call org-agenda-list
+  :xl-config
+  (org-super-agenda-mode))
 #+end_src
 
 *** org-refile
