@@ -8589,7 +8589,7 @@ startup. If I start my emacs with =dashboard= I can avoid this.
 :END:
 
 #+begin_src emacs-lisp
-(defun dashboard:random-logo (logo)
+(defun dashboard:random-logo ()
   "Display a random logo."
   (seq-random-elt
    (append '(1 2 3) (if (display-graphic-p) '(official logo)))))
