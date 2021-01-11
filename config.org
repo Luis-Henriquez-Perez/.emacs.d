@@ -1019,6 +1019,9 @@ instead of =add-hook=.
 :ID:       70dba953-1a83-4de8-9a63-43e20c50fe5a
 :END:
 
+The keyword pauses emacs gargbage collection (e.g increases the [[helpvar:gc-cons-threshold][gc-cons-threshold]]
+to [[helpvar:most-positive-fixnum][most-positive-fixnum]]) for the duration of functions that it's passed in.
+
 #+begin_src emacs-lisp
 (setq use-package-keywords
       (use-package:insert-keyword 'before :hook :xl-gc-pause))
@@ -1034,14 +1037,25 @@ instead of =add-hook=.
 #+end_src
 
 ***** nameless
+:PROPERTIES:
+:ID:       e27d6d69-6efb-49c8-8c31-e477422a3d58
+:END:
+
+This keyword provides integration with.
 
 #+begin_src emacs-lisp
 (setq use-package-keywords
-      (use-package:insert-keyword 'before :hook :xl-gc-pause))
+      (use-package:insert-keyword 'before :hook :xl-nameless))
 
-;; (use-package:defnormalize! xl-gc-pause ()
-;; 			   (cl-assert (-all-p #'symbolp <args>))
-;; 			   <args>)
+(use-package:defnormalize! xl-nameless ()
+  (cl-assert (-all-p (-orfn #'-cons-pair-p #'stringp #'symbolp) <args>))
+  (--map-when (or (stringp it) (symbolp it))
+	      (cons (xl-to-string it) (xl-to-string <package>))
+	      <args>))
+
+(use-package:defhander! xl-nameless ()
+  `((after! nameless ,@(--map `(push ',it nameless-global-aliases) <value>))
+    ,@<body>))
 #+end_src
 
 *** essential libraries
@@ -7875,6 +7889,36 @@ options. For this reason I wrote my own insert heading functions.
 :PROPERTIES:
 :ID:       f70f36ae-1ef1-4dce-ad84-e4a8430f40a5
 :END:
+
+**** link snippets
+:PROPERTIES:
+:ID:       fd297eb5-e7b0-4dd5-b9f4-6d76f1426ade
+:END:
+
+This headline contains various snippets that help me insert org links quickly
+and painlessly.
+
+***** helpvar
+:PROPERTIES:
+:ID:       cc0ae97d-4cce-42de-bea0-7e195bd6168b
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! helpvar ("hvar" org-mode)
+  "Help function link."
+  `("[[helpvar:" (C var "variable: " ,obarray helpful--variable-p) "][" (s var) "]]"))
+#+end_src
+
+***** helpfn
+:PROPERTIES:
+:ID:       7bd2651e-e3f8-4e76-822c-2208b71af0c3
+:END:
+
+#+begin_src emacs-lisp
+(defsnippet! helpfn ("hfn" org-mode)
+  "Help function link."
+  '("[[helpfn:" (C fn "function: " help--symbol-completion-table) "][" (s fn) "]]"))
+#+end_src
 
 **** org-super-links
 :PROPERTIES:
