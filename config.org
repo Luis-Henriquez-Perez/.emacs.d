@@ -7987,10 +7987,16 @@ into your head while keeing disctractions to a minimum.
 :ID:       8fc5d248-ff21-45e4-a48b-57cecd57b7a3
 :END:
 
+Note, that I can't use =evil-set-initial-state= here because it only works
+for major modes.
+
 #+begin_src emacs-lisp
 (use-feature! org-capture
   :xl-before-call (org-capture . (ts org-ml))
-  :xl-rule ("bottom" "capture" :newname "\\`CAPTURE-"))
+  :xl-rule ("bottom" "capture" :newname "\\`CAPTURE-")
+  :xl-config
+  (after! evil
+    (xl-add-hook 'org-capture-mode-hook #'evil-insert-state)))
 #+end_src
 
 **** remove capture headerline
@@ -8049,10 +8055,10 @@ let's me choose the template via completing-read.
 :END:
 
 #+begin_src emacs-lisp
-(defun +org/capture-template ()
+(defun org-capture/choose-template ()
   (interactive)
-  (let* ((read-string (seq-map (lambda (it) (format "%s %s" (car it) (cadr it)))
-			       (org-capture:template-list)))
+  (let* ((read-string (--map (format "%s %s" (car it) (cadr it))
+			     (org-capture:template-list)))
 	 (selection (completing-read "Capture template: " read-string nil :require-match))
 	 (key (car (split-string selection "\s" t))))
     (org-capture nil key)))
