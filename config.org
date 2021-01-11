@@ -8247,7 +8247,7 @@ Unlike `org-agenda-prepare-window', this function does not store the window conf
   (setq org-agenda-regexp-filter (cdr (assq 're filter-alist)))
 
   (unless (equal (current-buffer) abuf)
-    (pop-to-buffer-same-window abuf)))))
+    (pop-to-buffer-same-window abuf)))
 #+end_src
 
 **** org-super-agenda
