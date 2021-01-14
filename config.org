@@ -949,11 +949,10 @@ instead of =add-hook=.
 
 (use-package:defnormalize! xl-idle-require ()
   (cl-assert (-all-p #'symbolp <args>))
-  <args>)
+  (--map-when (eq t it) <name> <args>))
 
 (use-package:defhander! xl-idle-require ()
-  `((use-package! idle-require :config
-      ,@(--map `(idle-require ',it nil t) <value>))
+  `(,@(--map `(idle-require ',it nil t) <value>)
     ,@<body>))
 #+end_src
 
@@ -1165,24 +1164,6 @@ statements or return statements).
   :demand t)
 #+end_src
 
-***** while parser for loopy
-:PROPERTIES:
-:ID:       06bdeea6-4238-4c2d-a782-eb589a99343c
-:END:
-
-#+begin_src emacs-lisp
-(use-package! loopy :xl-config
-  (cl-defun lloopy-while-command-parser ((_ condition))
-    "Loop while CONDITION is true."
-    (let* ((pred (make-symbol "predicate")))
-      `((loopy--implicit-vars . (,pred ,condition))
-	(loopy--pre-conditions . ,pred)
-	(loopy--main-body . (setq ,pred ,condition)))))
-
-  (alet (cons 'while #'lloopy-while-command-parser)
-    (add-to-list 'loopy-custom-command-parsers it)))
-#+end_src
-
 **** noflet
 :PROPERTIES:
 :ID:       27f06ae0-ed4d-45ca-b451-fa05a47b8fe0
@@ -1223,7 +1204,9 @@ side windows.
   (dbc-add-ruleset "top"
 		   '(display-buffer-in-side-window . ((side . top) (window-height . 0.4))))
   (dbc-add-ruleset "left"
-		   '(display-buffer-in-side-window . ((side . left)))))
+		   '(display-buffer-in-side-window . ((side . left) (window-width 0.4))))
+  (dbc-add-ruleset "right"
+		   '(display-buffer-in-side-window . ((side . right) (window-width 0.4)))))
 #+end_src
 
 **** db
@@ -2158,6 +2141,15 @@ think you want to use =smtp=.
 (use-feature! loaddefs
   :xl-set
   (disabled-command-function . nil))
+#+end_src
+
+*** backup
+:PROPERTIES:
+:ID:       f55fe748-209b-4450-a948-b0a7f8861dcf
+:END:
+
+#+begin_src emacs-lisp
+(setq make-backup-files t)
 #+end_src
 
 *** files
@@ -3752,6 +3744,37 @@ Making sure that tempo can completing read.
 
 * Utility
 
+** yadm integraton
+:PROPERTIES:
+:ID:       ab5bf5e2-bfc6-45e9-9427-818f2f8d8ce7
+:END:
+
+#+begin_src emacs-lisp
+(alet '("yadm"
+	(tramp-login-program "yadm")
+	(tramp-login-args (("enter")))
+	(tramp-login-env (("SHELL") ("/bin/sh")))
+	(tramp-remote-shell "/bin/sh")
+	(tramp-remote-shell-args ("-c")))
+  (push it tramp-methods))
+
+(defun magit/yadm-status ()
+  "Use yadm status."
+  (interactive)
+  (require 'tramp)
+  (magit-status  "/yadm::"))
+#+end_src
+
+** man
+:PROPERTIES:
+:ID:       3982b034-90e1-4961-90d9-224e913c0b8c
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! man
+  :xl-rule ("left" "man" :newname "\\*man.+"))
+#+end_src
+
 ** passwords and security
 :PROPERTIES:
 :ID:       7ca7587e-d94b-408b-8656-c6a09d6ee8b6
@@ -3881,12 +3904,7 @@ quintessential =once-only= and =with-gensyms= macros which are used to prevent
 variable leaking.
 
 #+begin_src emacs-lisp
-(use-package! mmt
-  ;; :xl-alias
-  ;; (once-only! . mmt-once-only)
-  ;; (with-gensyms! . mmt-with-gensyms)
-  ;; (with-gensyms! . mmt-with-gensyms)
-  )
+(use-package! mmt)
 #+end_src
 
 ** ellocate
@@ -4120,29 +4138,6 @@ them.
                   (if (string-empty-p it) "screenshot" it))
                 (format-time-string "%Y-%m-%d-%H-%M-%S.png"))
     (expand-file-name it escr-screenshot-directory)))
-#+end_src
-
-**** tell =escr--screenshot= to use maim
-:PROPERTIES:
-:ID:       3b17fb6e-a15b-4b4a-bdcf-a756961c00d3
-:END:
-
-If we don't use an short idle timer to take the screenshot, we'll end up
-capturing the prompt for the filename (like in [[][this example]]).
-
-#+begin_src emacs-lisp
-(defadvice! use-miam (:override (x y width height) escr--screenshot)
-  (let ((window-id (frame-parameter (selected-frame) 'window-id))
-        (crop (format "%sx%s+%s+%s" width height x y))
-        (filename (+escr-get-filename)))
-    (alet `(lambda ()
-             (call-process "maim" nil nil nil
-                           "--window" ,window-id
-                           "--geometry" ,crop
-                           "--quality" ,(number-to-string escr-screenshot-quality)
-                           ,filename)
-             (message "Screenshot Taken!"))
-      (run-with-timer 1 nil it))))
 #+end_src
 
 *** gif-screencast
@@ -4587,68 +4582,35 @@ portable and customizable as emacs itself. It can run elisp functions as
 commands. There's a good article about it in [[https://masteringemacs.org/article/complete-guide-mastering-eshell][mastering-emacs]]. Other articles I
 have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell post]], [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][Howard Abram's Post]].
 
-**** init
+**** eshell
 :PROPERTIES:
-:ID:       f91b3d13-3470-4108-aae3-2b8b4e5f5edb
-:END:
-
-***** idle require
-:PROPERTIES:
-:ID:       9ff94547-b138-41dc-836f-71fc37171ec3
+:ID:       b2b473c8-78d7-4f41-9be3-842b6c5acdbb
 :END:
 
 #+begin_src emacs-lisp
-(-each '(em-alias em-banner em-basic em-cmpl
-         em-dirs em-glob em-hist em-ls em-prompt
-         em-script em-term em-unix)
-  #'idle-require)
+(use-package! eshell
+  :xl-rule ("bottom" "eshell" :newname "\\*eshell\\*")
+  :xl-set
+  (eshell-directory-name             . (xl-data-dir "eshell/"))
+  (eshell-history-file-name          . (concat eshell-directory-name "history"))
+  (eshell-banner-message             . "")
+  (eshell-prefer-lisp-functions      . nil)
+  (eshell-scroll-to-bottom-on-input  . 'all)
+  (eshell-scroll-to-bottom-on-output . 'all)
+  (eshell-buffer-shorthand           . t)
+  (eshell-kill-processes-on-exit     . t)
+  (eshell-hist-ignoredups            . t)
+  (eshell-input-filter               . #'eshell-input-filter-initial-space)
+  (eshell-glob-case-insensitive      . t)
+  (eshell-error-if-no-glob           . t))
 #+end_src
 
-***** settings
+**** save things typed into the eshell buffer
 :PROPERTIES:
-:ID:       e8c08c7b-9b62-45c2-aa3e-b901bbcd66a1
+:ID:       ba7e682d-2f6b-4fc2-8197-0906e9e9ce41
 :END:
 
-#+begin_src emacs-lisp
-(setq eshell-banner-message "")
-(setq eshell-prefer-lisp-functions nil)
-(setq eshell-scroll-to-bottom-on-input 'all)
-(setq eshell-scroll-to-bottom-on-output 'all)
-(setq eshell-buffer-shorthand t)
-(setq eshell-kill-processes-on-exit t)
-(setq eshell-hist-ignoredups t)
-(setq eshell-input-filter #'eshell-input-filter-initial-space)
-(setq eshell-glob-case-insensitive t)
-(setq eshell-error-if-no-glob t)
-#+end_src
-
-***** popup rule
-:PROPERTIES:
-:ID:       bd580e0c-1736-4855-8cfb-e4e365ecd8d3
-:END:
-
-#+begin_src emacs-lisp
-(dbc-add-rule "bottom" "eshell" :newname "\\*eshell\\*")
-#+end_src
-
-***** directories
-:PROPERTIES:
-:ID:       4923faac-1630-4389-8f2c-d9e75c88eecf
-:END:
-
-#+begin_src emacs-lisp
-(setq eshell-directory-name (xl-data-dir "eshell/"))
-(setq eshell-history-file-name (concat eshell-directory-name "history"))
-#+end_src
-
-***** bootstrap
-:PROPERTIES:
-:ID: 8ed5b69c-be1f-4181-bd01-88fc33b148d6
-:END:
-
-#+begin_src emacs-lisp
-(remove-hook 'eshell-output-filter-functions #'eshell-postoutput-scroll-to-bottom)
-#+end_src
+I want to know what I did in the eshell buffer.
 
 **** em-hist
 :PROPERTIES:
@@ -4657,9 +4619,10 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 
 #+begin_src emacs-lisp
 (use-feature! em-hist
+  :xl-idle-require t
   :xl-set
   (eshell-history-file-name    . (concat eshell-directory-name "history"))
-  (eshell-history-size         . )
+  (eshell-history-size         . 2000)
   (eshell-hist-ignoredups      . nil)
   (eshell-save-history-on-exit . t))
 #+end_src
@@ -4671,79 +4634,27 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 
 #+begin_src emacs-lisp
 (use-feature! em-term
+  :xl-idle-require t
   :xl-config
   (--each '("tmux" "htop" "bash" "zsh" "fish" "vim" "nvim" "ncmpcpp")
     (add-to-list 'eshell-visual-commands it)))
 #+end_src
-
-**** improvements
-:PROPERTIES:
-:ID: b3da5d39-1591-4a19-ae96-45a117a13f24
-:END:
-
-Eshell uses pcomplete as its completion engine.
-
-***** pcomplete
-:PROPERTIES:
-:ID: 63de7a7f-431c-4652-aa55-45973b5a4c2a
-:END:
-
-This replaces the default popup window at the bottom of eshell. By using the
-=completion-in-region= backend, it triggers ivy/helm for completion.
-
-#+begin_src emacs-lisp
-(defun eshell/pcomplete ()
-  "Use pcomplete with completion-in-region backend."
-  (interactive)
-  (require 'pcomplete)
-  (ignore-errors (pcomplete-std-complete)))
-#+end_src
-
-***** go to prompt on insert
-;; :PROPERTIES:
-;; :ID: 76bd909c-901c-4bc6-8848-d84b121a06c3
-;; :END:
-
-(defun +eshell-goto-prompt-on-insert-h ()
-  "Move cursor to the prompt when switching to insert state."
-  (when (< (point) eshell-last-output-end)
-    (goto-char
-     (if (memq this-command '(evil-append evil-append-line))
-         (point-max)
-       eshell-last-output-end))))
 
 **** eshell commands
 :PROPERTIES:
 :ID: 4a7074f6-7f53-4950-9c92-be39b23e1d70
 :END:
 
-****** eshell-z
+***** eshell-z
 :PROPERTIES:
 :ID: 497798a0-7b62-4779-bf15-f67500528f03
 :END:
 
 #+begin_src emacs-lisp
-(after! eshell
-  (defalias 'eshell:z-file 'eshell-z-freq-dir-hash-table-file-name)
-  (setq eshell:z-file (expand-file-name "z" eshell-directory-name))
-  (autoload #'eshell-z "eshell-z" nil t nil))
-#+end_src
-
-***** eshell-up
-:PROPERTIES:
-:ID: 478219b9-1c6f-4907-b428-a2dfe0f45e5c
-:END:
-
-This is an Emacs package for quickly navigating to a specific parent directory
-in ~eshell~ without having to repeatedly typing ~cd ..~.
-
-#+begin_src emacs-lisp
-(defalias 'eshell/up 'eshell-up)
-(defalias 'eshell/pk 'eshell-up-peek)
-(defalias 'eshell/peek 'eshell-up-peek)
-
-(--each '(eshell-up eshell-up-peek)
-  (autoload it "eshell-up" nil t nil))
+(use-package! eshell-z
+  :commands eshell-z
+  :xl-set
+  (eshell-z-freq-dir-hash-table-file-name . (expand-file-name "z" eshell-directory-name)))
 #+end_src
 
 ***** eshell-clear
@@ -4770,124 +4681,21 @@ The effect of this is to clear the contents of the eshell buffer."
   (progn (call-interactively #'evil-scroll-line-to-top) nil))
 #+end_src
 
-**** display
+***** eshell-up
 :PROPERTIES:
-:ID: 66d647e3-b83b-4469-bb62-75546c2fee64
+:ID: 478219b9-1c6f-4907-b428-a2dfe0f45e5c
 :END:
 
-***** prompt
-:PROPERTIES:
-:ID: c21591c9-43a2-4c6b-aac8-b46b41f4dc63
-:END:
-
-I got a lot of inspiration from the [[http://www.modernemacs.com/post/custom-eshell/][modern emacs blog]]. I think the
-author's code is in general a good example of how to use macros to abstract a
-task and make it much simpler than it would be otherwise.
-
-****** with-face
-:PROPERTIES:
-:ID: ae757b22-27e1-4243-8da0-35c3a8e6ff65
-:END:
+This is an Emacs package for quickly navigating to a specific parent directory
+in ~eshell~ without having to repeatedly typing ~cd ..~.
 
 #+begin_src emacs-lisp
-(defmacro with-face! (string &rest props)
-  "Return STR propertized with PROPS."
-  `(propertize ,string 'face '(,@props)))
+(use-package! eshell-up
+  ;; :xl-alias
+  ;; (eshell/up . eshell-up)
+  ;; (eshell/peek . eshell-up-peek)
+  )
 #+end_src
-
-****** helpers
-:PROPERTIES:
-:ID: c29bac50-32e4-4128-8446-6f4153d3a7a0
-:END:
-
-Eshell prompt function finds eshell section functions specified by
-[[helpvar:+eshell-enabled-sections][+eshell-enabled-sections]] and concatenates their results in order to
-generate the body of the eshell prompt.
-
-#+begin_src emacs-lisp
-(defun +eshell-acc (acc x)
-  "Accumulator for evaluating and concatenating `+eshell-enabled-sections'."
-  (--if-let (funcall x)
-      (if (s-blank? acc)
-          it
-        (concat acc +eshell-sep it))
-    acc))
-
-(defun +eshell-prompt-func ()
-  "Generate the eshell prompt.
-This function generates the eshell prompt by concatenating `+eshell-header' with
-valid `+eshell-enabled-sections' and the `eshell-prompt-string'."
-  (concat +eshell-header
-          (->> +eshell-enabled-sections
-               (mapcar (lambda (it) (xl-symbol-intern 'eshell-prompt-- it)))
-               (-filter #'fboundp)
-               (-reduce-from #'+eshell-acc ""))
-          eshell-prompt-string))
-#+end_src
-
-****** eshell components
-:PROPERTIES:
-:ID: c22a9cdb-9b9f-4f06-9c09-f330d454ab1f
-:END:
-
-This heading contains the parts that make up the eshell prompt. They are the
-header, the separator, the section delimiter and, the meat of the prompt, the
-actual eshell sections.
-
-#+begin_src emacs-lisp
-(defvar +eshell-sep "\s|\s"
-  "Separator between eshell sections.")
-
-(defvar +eshell-section-delim "\s"
-  "Separator between an eshell section icon and form.")
-
-(defvar +eshell-header "\s"
-  "Eshell prompt header.")
-
-(defvar +eshell-enabled-sections '(dir git)
-  "List of enabled eshell sections.
-Each element of the list is an abbreviated.")
-#+end_src
-
-This is a regex that matches your eshell prompt so that eshell knows what to
-keep readonly and what not to.
-#+begin_src emacs-lisp
-(setq eshell-prompt-regexp (rx (*? anything) "-> "))
-(setq eshell-prompt-string " -> ")
-
-(setq eshell-prompt-function #'+eshell-prompt-func)
-#+end_src
-
-***** text wrapping
-:PROPERTIES:
-:ID: 7d155cf8-a90c-4183-a9be-5ffdc266d82a
-:END:
-
-#+begin_src emacs-lisp
-(defhook! enable-text-wrapping (eshell-mode-hook)
-  "Enable text wrapping."
-  (visual-line-mode +1)
-  (set-display-table-slot standard-display-table 0 ?\ ))
-#+end_src
-
-***** fringes
-:PROPERTIES:
-:ID: 312652e5-9975-4241-b709-7ed5b8537202
-:END:
-
-#+begin_src emacs-lisp
-(defhook! remove-fringes (eshell-mode-hook)
-  "Remove fringes for eshell."
-  (set-window-fringes nil 0 0)
-  (set-window-margins nil 1 nil))
-#+end_src
-
-***** hide modeline
-:PROPERTIES:
-:ID: 6dc13e60-abd4-40d0-be15-55b11c1faeb2
-:END:
-
-(add-hook 'eshell-mode-hook #'hide-mode-line-mode)
 
 **** shrink-path
 :PROPERTIES:
@@ -4904,21 +4712,33 @@ keep readonly and what not to.
 :ID:       324ede5f-4606-40f2-a424-1cdf0c974853
 :END:
 
+*** all-the-icons-dired
+:PROPERTIES:
+:ID:       8e2fe483-5da1-47c7-8d80-a8e68b21fa39
+:END:
+
+#+begin_src emacs-lisp
+(use-package! all-the-icons-dired
+  :xl-hook dired-mode-hook)
+#+end_src
+
 *** dired
 :PROPERTIES:
 :ID:       877b66c0-7952-4b37-839a-4a9aa5af164a
 :END:
 
-**** settings
+**** dired
 :PROPERTIES:
-:ID: 55109eeb-8e59-4d15-926e-fbe42ed28056
+:ID:       8a5f8bb6-dce2-4fac-b9c4-068e39f4cfcc
 :END:
 
 #+begin_src emacs-lisp
-(setq dired-recursive-copies 'always)
-(setq dired-recursive-deletes 'top)
-(setq dired-hide-details-hide-symlink-targets nil)
-(setq dired-clean-confirm-killing-deleted-buffers nil)
+(use-package! dired
+  :xl-set
+  (dired-recursive-copies                      . 'always)
+  (dired-recursive-deletes                     . 'top)
+  (dired-hide-details-hide-symlink-targets     . nil)
+  (dired-clean-confirm-killing-deleted-buffers . nil))
 #+end_src
 
 **** sort directories first
@@ -4927,7 +4747,7 @@ keep readonly and what not to.
 :END:
 
 #+begin_src emacs-lisp
-(defhook! +dired-sort-directories-first (dired-after-readin-hook)
+(defhook! dired:sort-directories-first (dired-after-readin-hook)
   "List directories first in dired buffers."
   (save-excursion
     (let (buffer-read-only)
@@ -4945,7 +4765,7 @@ keep readonly and what not to.
 :END:
 
 #+begin_src emacs-lisp
-(defun +dired-create-non-existent-directory-h ()
+(defun dired:create-non-existent-directory-h ()
   "Automatically create missing directories when creating new file."
   (let ((parent-directory (file-name-directory buffer-file-name)))
     (when (and (not (file-exists-p parent-directory))
@@ -4953,7 +4773,7 @@ keep readonly and what not to.
       (make-directory parent-directory t))))
 
 (after! dired
-  (add-to-list 'find-file-not-found-functions '+dired-create-non-existent-directory-h nil #'eq))
+  (add-to-list 'find-file-not-found-functions 'dired:create-non-existent-directory-h nil #'eq))
 #+end_src
 
 *** ranger
@@ -5310,7 +5130,7 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
                (-non-nil kill-ring))))
 #+end_src
 
-* Window management
+* Window Management
 :PROPERTIES:
 :ID:       f8f186bd-a701-4bd4-a249-86ec4faff83b
 :END:
@@ -6047,25 +5867,27 @@ description and there's the case of a new one.
 **** init
 
 #+begin_src emacs-lisp
-(use-package! org-desc
+(use-package! org-edit-paragraph
   :xl-ensure nil
+  :xl-nameless ("oep" . "org-edit-paragraph")
   :xl-rule ("bottom" "org description" :newname "\\*Org Desc - .+")
+  ;; :xl-before-call ()
   :xl-config
   (after! (evil evil-surround)
-    (xl-add-hook 'org-desc:edit-mode-hook #'evil-surround-mode)))
+    (xl-add-hook 'org-edit-paragraph:mode-hook #'evil-surround-mode)))
 #+end_src
 
 **** set up tempo completion
 
 #+begin_src emacs-lisp
-(defhook! enable-org-tempo-templates (org-desc:edit-mode-hook)
+(defhook! enable-org-tempo-templates (org-edit-paragraph:mode-hook)
   (tempo-use-tag-list 'tempo:org-mode-taglist))
 
-(xl-add-hook 'org-desc:edit-mode-hook #'company-mode)
+(xl-add-hook 'org-edit-paragraph:mode-hook #'company-mode)
 
 ;; Add an element to the company alist.
 (after! company
-  (push '(org-desc:edit-mode :only (company-tempo)) company:backend-alist))
+  (push '(org-edit-paragraph:mode :only (company-tempo)) company:backend-alist))
 #+end_src
 
 **** description bounds
@@ -6074,7 +5896,7 @@ description and there's the case of a new one.
 :END:
 
 #+begin_src emacs-lisp
-(defun org-desc:bounds ()
+(defun org-edit-paragraph:bounds ()
   "Return the bounds of description at headline.
 If there is no existing description return nil."
   (interactive)
@@ -6101,7 +5923,7 @@ It is my preference to have one blank line after a description--or any org item
 for that matter. I just find it much more readable and less cluttered.
 
 #+begin_src emacs-lisp
-(defvar org-desc:default-post-blanks 1
+(defvar org-edit-paragraph:default-post-blanks 1
   "Number of blank lines that should follow a description.")
 #+end_src
 
@@ -6122,7 +5944,7 @@ want the cursor to start at the last non-whitespace character of the
 description.
 
 #+begin_src emacs-lisp
-(defun org-desc:goto-last-non-white ()
+(defun org-edit-paragraph:goto-last-non-white ()
   (goto-char (point-max))
   (skip-chars-backward "\n\s"))
 #+end_src
@@ -6138,10 +5960,10 @@ will be placed properly in relation to what's below it. This hook is designed to
 make sure this happens.
 
 #+begin_src emacs-lisp
-(defun org-desc:add-newlines ()
+(defun org-edit-paragraph:add-newlines ()
   "Add newlines."
   (save-excursion
-    (--dotimes (1+ org-desc:default-post-blanks)
+    (--dotimes (1+ org-edit-paragraph:default-post-blanks)
       (insert "\n"))))
 #+end_src
 
@@ -6157,11 +5979,11 @@ inadvertently edit the source buffer in this case. So this hook is to remove any
 newlines added in the case that nothing was changed.
 
 #+begin_src emacs-lisp
-(defun org-desc:maybe-remove-newline ()
+(defun org-edit-paragraph:maybe-remove-newline ()
   "Remove newline if that's all there is."
   (alet (buffer-string)
     (when (and (seq-every-p (lambda (char) (= 10 char)) it)
-	       (= (1+ org-desc:default-post-blanks) (length it)))
+	       (= (1+ org-edit-paragraph:default-post-blanks) (length it)))
       (erase-buffer))))
 #+end_src
 
@@ -6175,7 +5997,7 @@ to be adding hooks and maybe even binding keys with editing descriptions in mind
 Therefore, I think it's worthy to give it it's own mode.
 
 #+begin_src emacs-lisp
-(define-minor-mode org-desc:edit-mode
+(define-minor-mode org-edit-paragraph:mode
   "Mode for editing org descriptions.")
 #+end_src
 
@@ -6209,19 +6031,19 @@ worth it to consider creating a hook specifically for org descriptions.
 #+begin_src emacs-lisp
 (defun org/dwim-edit-description ()
   (interactive)
-  (-let* (((beg . end) (org-desc:bounds))
+  (-let* (((beg . end) (org-edit-paragraph:bounds))
 	  (was-empty-p (= beg end)))
     (unless beg (user-error "No description at headline."))
     (let ((edit-indirect-after-creation-hook edit-indirect-after-creation-hook)
 	  (headline (org-get-heading t t t t)))
       (when was-empty-p
-	(add-hook 'edit-indirect-after-creation-hook #'org-desc:add-newlines 0))
-      (add-hook 'edit-indirect-after-creation-hook #'org-desc:goto-last-non-white 0)
+	(add-hook 'edit-indirect-after-creation-hook #'org-edit-paragraph:add-newlines 0))
+      (add-hook 'edit-indirect-after-creation-hook #'org-edit-paragraph:goto-last-non-white 0)
       (with-current-buffer (edit-indirect-region beg end)
 	(rename-buffer (format "*Org Desc - %s*" headline) t)
-	(org-desc:edit-mode 1)
+	(org-edit-paragraph:mode 1)
 	(add-hook 'edit-indirect-before-commit-hook
-		  #'org-desc:maybe-remove-newline nil t)
+		  #'org-edit-paragraph:maybe-remove-newline nil t)
 	(select-window (display-buffer (buffer-name)))))))
 #+end_src
 
@@ -6237,7 +6059,7 @@ where I don't do this.
 
 #+begin_src emacs-lisp
 (after! evil
-  (xl-add-hook 'org-desc:edit-mode-hook #'evil-insert-state))
+  (xl-add-hook 'org-edit-paragraph:mode-hook #'evil-insert-state))
 #+end_src
 
 **** custom hooks
@@ -6248,7 +6070,7 @@ where I don't do this.
 #+begin_src emacs-lisp
 (alet (list #'auto-capitalize-mode #'aggressive-fill-paragraph-mode
 	    #'org-link-minor-mode)
-  (xl-add-hook 'org-desc:edit-mode-hook it))
+  (xl-add-hook 'org-edit-paragraph:mode-hook it))
 #+end_src
 
 *** editing org source blocks
@@ -6262,13 +6084,16 @@ implementations for editing in an indirect buffer, I'd rather just use
 one. =edit-indirect= is simpler, more general and more customizable than the
 source block editing tools used by org mode.
 
-**** popup rule
+**** init
 :PROPERTIES:
-:ID:       56dc7e88-35a1-471d-8123-fcd0fdd85590
+:ID:       e0ed611a-e3ec-4d7b-9768-3d7e947d9c9e
 :END:
 
 #+begin_src emacs-lisp
-(dbc-add-rule "bottom" "org source blocks" :newname "\\*Org[[:space:]]\\(?:S\\(?:ource\\|rc\\)\\).+")
+(use-package! org-source
+  :xl-rule ("bottom" "org source blocks" :newname "\\*Org[[:space:]]\\(?:S\\(?:ource\\|rc\\)\\).+")
+  :xl-before-call
+  :xl-ensure nil)
 #+end_src
 
 **** before load
@@ -6288,7 +6113,7 @@ source block editing tools used by org mode.
 :END:
 
 #+begin_src emacs-lisp
-(define-minor-mode +org-source-mode ())
+(define-minor-mode org-source:mode ())
 #+end_src
 
 **** hooks
@@ -6316,7 +6141,7 @@ It is my preference to have one blank line after a description--or any org item
 for that matter. I just find it much more readable and less cluttered.
 
 #+begin_src emacs-lisp
-(defvar +org-source-default-post-blanks 1
+(defvar org-source:default-post-blanks 1
   "Number of blank lines that should follow a description.")
 #+end_src
 
@@ -6521,7 +6346,7 @@ Saving files like this reduces the likelihood of user delays.
   :xl-before-call find-file
   :xl-set
   (super-save-auto-save-when-idle . t)
-  (super-save-idle-duration .       5))
+  (super-save-idle-duration       . 5))
 #+end_src
 
 ** spacing & indentation
@@ -6965,15 +6790,12 @@ press =jk= really quickly to invoke escape.
 
 This is better than evil escape as it only binds in insert.
 
-******* init
-:PROPERTIES:
-:ID:       6d02f80a-6d77-4a02-911e-98b7f4004048
-:END:
-
 #+begin_src emacs-lisp
 (use-package! key-chord
   :xl-silence key-chord-mode
   :xl-before-call evil-insert-state evil-emacs-state
+  :xl-config
+  (key-chord-mode 1)
   :general
   (:states '(visual insert)
    (general-chord "jk") 'evil-force-normal-state
@@ -7561,6 +7383,21 @@ the whole thing.
   org-capture)
 #+end_src
 
+**** org version problems
+:PROPERTIES:
+:ID:       a1d9c8d1-192e-4986-b78c-aa8f3c1fef95
+:END:
+
+This hack should be improved, but for now it is what it is.
+
+#+begin_src emacs-lisp
+(after! org
+  (when (zerop (string-to-number (org-version)))
+    (defadvice! use-a-fake-version (:override org-version)
+      "10")
+    (set! org-version (org-version))))
+#+end_src
+
 *** customization
 :PROPERTIES:
 :ID:       3f0570f0-436b-4a53-92c4-52b06ae26a15
@@ -7976,6 +7813,23 @@ This is a minor mode for displaying links in non-org buffers.
   :xl-hook outshine-mode-hook)
 #+end_src
 
+*** org-todo-keywords
+:PROPERTIES:
+:ID:       aaa98680-d9b4-4726-b3ba-a50b3442e8e8
+:END:
+
+I like the terms "issue" and "closed" because they are more general than the
+corresponding "todo" and "done". "Issue" simply implies a problem that needs to
+be fixed. When I use =todo= I feel obligated to write what I have to do and
+often I don't know that. Who knows? It could even be that nothing needs to be
+done.
+
+#+begin_src emacs-lisp
+(set! org-todo-keywords
+      '((sequence "ISSUE" "CLOSED")
+	(sequence "TODO" "DONE")))
+#+end_src
+
 *** org-ml
 :PROPERTIES:
 :ID:       7f3ec0ad-45f8-4100-970e-773cfb9a625b
@@ -8066,11 +7920,14 @@ for major modes.
 
 #+begin_src emacs-lisp
 (use-feature! org-capture
-  :xl-before-call (org-capture . (ts org-ml))
-  :xl-rule ("bottom" "capture" :newname "\\`CAPTURE-")
+  ;; :xl-before-call ((ts org-ml) . org-capture)
+  :xl-rule ("bottom" "capture" :newname "\\`CAPTURE-.+")
   :xl-config
   (after! evil
-    (xl-add-hook 'org-capture-mode-hook #'evil-insert-state)))
+    (xl-add-hook 'org-capture-mode-hook #'evil-insert-state))
+  :init
+  (xl-load-before-call 'org-ml #'org-capture)
+  (xl-load-before-call 'ts #'org-capture))
 #+end_src
 
 **** remove capture headerline
@@ -8099,6 +7956,14 @@ question]]. I need to disable =org-capture's= header-line.
   "Don't delete other windows when opening a capture template."
   (cl-letf (((symbol-function #'delete-other-windows) #'ignore))
     (apply <orig-fn> <args>)))
+#+end_src
+
+**** allow display-buffer-alist to control org-capture
+:PROPERTIES:
+:ID:       f7902aec-a02f-473b-a91e-662841d3d901
+:END:
+
+#+begin_src emacs-lisp
 #+end_src
 
 **** completing-read org-capture
@@ -8131,6 +7996,7 @@ let's me choose the template via completing-read.
 #+begin_src emacs-lisp
 (defun org-capture/choose-template ()
   (interactive)
+  (require 'org-capture)
   (let* ((read-string (--map (format "%s %s" (car it) (cadr it))
 			     (org-capture:template-list)))
 	 (selection (completing-read "Capture template: " read-string nil :require-match))
@@ -8233,7 +8099,7 @@ Instead of passing in the string I use =org-ml= to print the string.
   (->> (org-ml-build-headline! :title-text "%?")
        (org-ml-headline-set-node-property "ID" (org-id-new))
        (org-ml-headline-set-node-property "CREATED" (ts-format))
-       (org-ml-set-property :todo-keyword "TODO")
+       (org-ml-set-property :todo-keyword "ISSUE")
        (org-ml-set-property :tags '("emacs"))
        (org-ml-to-trimmed-string)))
 #+end_src
@@ -8819,6 +8685,11 @@ Somtimes I might want to adjust this.
   (interactive)
   (+frame-adjust-window-divider-size -1))
 #+end_src
+
+** zone
+:PROPERTIES:
+:ID:       fe176959-3134-4b18-8abb-a962347b8df0
+:END:
 
 * Keybindings
 :PROPERTIES:
