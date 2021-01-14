@@ -2422,6 +2422,19 @@ the web.
 This headline contains headings for which I have not yet determined a good
 hierarchy.
 
+*** delete duplicates in history
+:PROPERTIES:
+:ID:       1c381491-c4fa-4b5e-99de-ec6bd33df77c
+:END:
+
+This variable tells savehist not to record duplicate entries in history. Note
+this is not apart of savehist technically; it is a variable defined in C source
+code.
+
+#+begin_src emacs-lisp
+(set! history-delete-duplicates t)
+#+end_src
+
 *** don't echo keystrokes
 :PROPERTIES:
 :ID:       b8856ebe-6208-4271-ad5a-d352fabec8bb
