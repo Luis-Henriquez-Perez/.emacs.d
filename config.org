@@ -3744,6 +3744,15 @@ Making sure that tempo can completing read.
 
 * Utility
 
+** avy
+:PROPERTIES:
+:ID:       78064d92-2dde-4067-8a10-208ca6e88852
+:END:
+
+#+begin_src emacs-lisp
+(use-package! avy)
+#+end_src
+
 ** hide-mode-line
 :PROPERTIES:
 :ID:       e8f53422-9d24-4119-9b0f-9b6d1e10c1b0
