@@ -3744,25 +3744,14 @@ Making sure that tempo can completing read.
 
 * Utility
 
-** yadm integraton
+** hide-mode-line
 :PROPERTIES:
-:ID:       ab5bf5e2-bfc6-45e9-9427-818f2f8d8ce7
+:ID:       e8f53422-9d24-4119-9b0f-9b6d1e10c1b0
 :END:
 
 #+begin_src emacs-lisp
-(alet '("yadm"
-	(tramp-login-program "yadm")
-	(tramp-login-args (("enter")))
-	(tramp-login-env (("SHELL") ("/bin/sh")))
-	(tramp-remote-shell "/bin/sh")
-	(tramp-remote-shell-args ("-c")))
-  (push it tramp-methods))
-
-(defun magit/yadm-status ()
-  "Use yadm status."
-  (interactive)
-  (require 'tramp)
-  (magit-status  "/yadm::"))
+(use-package! hide-mode-line
+  :commands hide-mode-line-mode)
 #+end_src
 
 ** man
