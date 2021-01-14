@@ -4733,7 +4733,7 @@ in ~eshell~ without having to repeatedly typing ~cd ..~.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! dired
+(use-feature! dired
   :xl-set
   (dired-recursive-copies                      . 'always)
   (dired-recursive-deletes                     . 'top)
