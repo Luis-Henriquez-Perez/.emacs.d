@@ -4664,6 +4664,14 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
   (eshell-save-history-on-exit . t))
 #+end_src
 
+**** em-term
+:PROPERTIES:
+:ID:       d2afb853-15c3-4d3f-b8fa-a1075f84bbac
+:END:
+
+#+begin_src emacs-lisp
+(use-feature! em-term
+  :xl-config
   (--each '("tmux" "htop" "bash" "zsh" "fish" "vim" "nvim" "ncmpcpp")
     (add-to-list 'eshell-visual-commands it)))
 #+end_src
