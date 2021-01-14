@@ -4637,13 +4637,20 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
 (remove-hook 'eshell-output-filter-functions #'eshell-postoutput-scroll-to-bottom)
 #+end_src
 
-**** visual commands
+**** em-hist
 :PROPERTIES:
-:ID: fedfa200-7d17-408d-ba42-da401cba6419
+:ID:       aaea54da-bd51-4a73-9dad-fe0b49d0f617
 :END:
 
 #+begin_src emacs-lisp
-(after! em-term
+(use-feature! em-hist
+  :xl-set
+  (eshell-history-file-name    . (concat eshell-directory-name "history"))
+  (eshell-history-size         . )
+  (eshell-hist-ignoredups      . nil)
+  (eshell-save-history-on-exit . t))
+#+end_src
+
   (--each '("tmux" "htop" "bash" "zsh" "fish" "vim" "nvim" "ncmpcpp")
     (add-to-list 'eshell-visual-commands it)))
 #+end_src
