@@ -3335,6 +3335,144 @@ through on our own. It's not much different in Emacs. We're constantly sifting
 though files, buffers, commands, words--all to try to get through to the subset
 of things that we actually want at this moment.
 
+** helm
+:PROPERTIES:
+:ID:       4123691d-216b-4ba5-8d3d-b09f83143f60
+:END:
+
+Helm is the most popular emacs completion framework. It is full-featured and
+extremely customizable. I haven't found an official manual for it but I often
+see people reference [[http://tuhdo.github.io/helm-intro.html][this helm intro]] that showcase many useful helm commands. A huge
+advantage helm has is the breath of its support. The biggest complaint heard
+about Helm is that it's too bloated and slow.
+
+*** helm-core
+:PROPERTIES:
+:ID:       19d42b82-03ec-4458-9771-d992ad25cd6b
+:END:
+
+#+begin_src emacs-lisp
+(use-package! helm
+  :commands helm-M-x
+  :xl-hook emacs-startup-hook
+  :xl-rule ("bottom" "helm" :newname "\\*Helm.+")
+  :xl-set
+  (helm-default-display-buffer-functions . nil)
+  (helm-display-buffer-height            . 0.6)
+  (helm-display-buffer-default-height    . 0.6)
+  (helm-candidate-number-limit           . 50)
+  (helm-display-header-line              . nil)
+  (helm-mode-line-string                 . nil))
+#+end_src
+
+*** helm-mode
+:PROPERTIES:
+:ID:       5659f309-43ec-4718-959b-a161e837fb92
+:END:
+
+#+begin_src emacs-lisp
+(use-package! helm-files
+  :xl-ensure nil
+  :xl-set
+  (helm-ff-auto-update-initial-value . nil)
+  (helm-ff-lynx-style-map . nil)
+  (helm-find-files-doc-header . nil)
+  :bind
+  ([remap apropos]                  . helm-apropos)
+  ([remap find-library]             . helm-locate-library)
+  ([remap execute-extended-command] . helm-M-x)
+  ([remap find-file]                . helm-find-files)
+  ([remap locate]                   . helm-locate)
+  ([remap imenu]                    . helm-semantic-or-imenu)
+  ([remap noop-show-kill-ring]      . helm-show-kill-ring)
+  ([remap recentf]                  . helm-recentf)
+  ([remap switch-to-buffer]         . helm-mini))
+#+end_src
+
+*** helm descbinds
+:PROPERTIES:
+:ID:       8f42e055-50f6-42dd-b850-5e6eb09d6da2
+:END:
+
+#+begin_src emacs-lisp
+(use-package! helm-descbinds
+  :xl-hook (helm-mode-hook . helm-descbinds-mode))
+#+end_src
+
+*** helm-map
+:PROPERTIES:
+:ID:       cb8b2bc0-9956-4e79-a7b0-b0463807eea0
+:END:
+
+#+begin_src emacs-lisp
+(general-def '(emacs insert) helm-map
+  "C-o"     #'helm-toggle-visible-mark-forward
+  "C-j"     #'helm-next-line
+  "C-k"     #'helm-previous-line
+  "C-n"     #'helm-next-page
+  "C-a"     #'helm-select-action
+  "TAB"     #'helm-next-line
+  "C-l"     #'helm-execute-persistent-action
+  [backtab] #'helm-previous-line
+  "<RET>"   #'helm-maybe-exit-minibuffer)
+#+end_src
+
+*** helm-system-packages
+:PROPERTIES:
+:ID:       72e73fd5-4c63-4b96-98d7-2dd123e62436
+:END:
+
+[[https://github.com/emacs-helm/helm-system-packages][helm-system-packages]] incorporates helm with your operating system's package manager.
+
+#+begin_src emacs-lisp
+(use-package! helm-system-packages
+  :commands helm-system-packages)
+#+end_src
+
+*** helm-dash
+:PROPERTIES:
+:ID:       6dd9a08b-382d-4bb7-baa5-d65d0e136869
+:END:
+
+#+begin_src emacs-lisp
+(use-package! helm-dash
+  :commands helm-dash
+  :xl-set
+  (helm-dash-docsets-path . (xl-data-dir "/dash-docsets"))
+  (helm-dash-browser-func . (if (executable-find "w3m") #'w3m #'browse-url)))
+#+end_src
+
+*** helm-org
+:PROPERTIES:
+:ID:       1e19a081-d107-4593-8af4-e72c84bbaeff
+:END:
+
+#+begin_src emacs-lisp
+(use-package! helm-org)
+#+end_src
+
+*** ace-helm-jump-line
+:PROPERTIES:
+:ID:       e74e6b9b-cdd7-4d6b-888f-0e9ec9584b32
+:END:
+
+[[https://github.com/cute-jumper/ace-jump-helm-line/issues][ace-jump-helm-line]] allows me to jump to helm candidates using [[https://github.com/abo-abo/avy][avy]].
+
+#+begin_src emacs-lisp
+(use-package! ace-jump-helm-line
+  :commands ace-jump-helm-line
+  :init
+  (general-def '(insert emacs) helm-map "C-'" #'ace-jump-helm-line)
+  (general-def '(insert emacs) helm-map "C-;" #'ace-jump-helm-line)
+  :xl-set
+  (ace-jump-helm-line-idle-delay     . 0)
+  (ace-jump-helm-line-default-action . 'select)
+  (ace-jump-helm-line-style          . 'pre)
+  (ace-jump-helm-line-select-key     . ?e)
+  (ace-jump-helm-line-move-only-key  . ?o)
+  (ace-jump-helm-line-persistent-key . ?p))
+#+end_src
+
 ** company
 :PROPERTIES:
 :ID:       5c0ed97e-da66-42ab-a033-381ac9dd8972
@@ -3462,129 +3600,6 @@ When the user
   (when (and (boundp 'company-mode) (eq company-mode t))
     (company-abort)
     t))
-#+end_src
-
-** selectrum
-:PROPERTIES:
-:ID:       294a9fde-e76f-40ce-9552-dd5801318717
-:END:
-
-Selectrum is another completion framework. It distinguishes itself from the rest
-by striving to work with the built-in emacs [[helpfn:completing-read][completing-read]] instead of
-replacing it like [[https://github.com/emacs-helm/helm][helm]] and [[https://github.com/emacs-helm/helm][ivy]] do.
-
-Because helm and ivy replace the existing framework, it means that whenever you
-want a command be capable of using all of helm or ivy's features, you need to
-define it their way. Otherwise, there's no guarantee their features will work at
-least any features besides the basic choosing of a single candidate. That's a
-big reason why there are [[][so many]] helm and ivy packages: many of those
-packages are just ivy and helm wrappers around existing commands.
-
-In contrast, any command defined via completing-read should work consistently with
-selectrum and its provided features.
-
-*** init
-:PROPERTIES:
-:ID:       6e670980-7794-4505-a285-184416a5b377
-:END:
-
-#+begin_src emacs-lisp
-(use-package! selectrum
-  :xl-hook emacs-startup-hook
-  :xl-set
-  (selectrum-fix-minibuffer-height    . t)
-  (selectrum-should-sort-p            . t)
-  (selectrum-count-style              . nil)
-  (selectrum-num-candidates-displayed . 15))
-#+end_src
-
-*** minibuffer bindings
-:PROPERTIES:
-:ID:       f9bc79b9-ec16-4311-aa4c-8fef5add8b55
-:END:
-
-#+begin_src emacs-lisp
-(define-key! '(insert emacs) selectrum-minibuffer-map
-  "TAB" #'selectrum-next-candidate
-  "C-k" #'selectrum-previous-candidate
-  "C-j" #'selectrum-next-candidate
-  "C-;" #'selectrum-insert-current-candidate
-  "C-l" #'selectrum/mark-candidate
-  [backtab] #'selectrum-previous-candidate)
-#+end_src
-
-*** advice for disable
-:PROPERTIES:
-:ID:       1e39a4d2-8d4a-4413-a86e-3f92547cff14
-:END:
-
-For most functions, sorting their candidates is good. This is advice
-specifically designed to disable selectrum sorting.
-
-#+begin_src emacs-lisp
-(defun selectrum:disable-selectrum-sorting-advice (orig-fn &rest args)
-  (if (bound-and-true-p selectrum-mode)
-      (let (selectrum-should-sort-p) (apply orig-fn args))
-    (apply orig-fn args)))
-#+end_src
-
-*** prescient
-:PROPERTIES:
-:ID:       4445c814-9899-4d54-affe-0cee38642690
-:END:
-
-Prescient.
-
-#+begin_src emacs-lisp
-(use-package! prescient
-  :xl-set
-  (prescient-save-file . (xl-data-dir "prescient-save-file"))
-  :xl-config
-  (prescient-persist-mode))
-#+end_src
-
-*** selectrum-prescient
-:PROPERTIES:
-:ID:       70668ed8-9c83-42d2-8dce-d8f7de923569
-:END:
-
-#+begin_src emacs-lisp
-(use-package! selectrum-prescient
-  :xl-hook selectrum-mode-hook
-  :xl-set
-  (selectrum-preprocess-candidates-function . #'selectrum-prescient--preprocess))
-#+end_src
-
-*** orderless
-:PROPERTIES:
-:ID:       2278ca33-dbf2-45a7-bba7-8c73942b08be
-:END:
-
-**** init
-:PROPERTIES:
-:ID:       9702810e-2013-4c41-ba12-0b55de6ceb38
-:END:
-
-#+begin_src emacs-lisp
-(use-package! orderless
-  :commands orderless-filter orderless-highlight-matches
-  :xl-set
-  (selectrum-refine-candidates-function . #'orderless-filter)
-  (selectrum-highlight-candidates-function . #'orderless-highlight-matches))
-#+end_src
-
-**** stop selectrum filtering and highlight
-:PROPERTIES:
-:ID:       a6720cdc-9d51-463b-9ffe-f9341c6bd967
-:END:
-
-#+begin_src emacs-lisp
-(defadvice! inhibit-filtering-and-highlighting (:around selectrum-prescient-mode)
-    "Don't let `selectrum-prescient' filter or highlight.
-Orderless will do this."
-    (let ((selectrum-refine-candidates-function selectrum-refine-candidates-function)
-	  (selectrum-highlight-candidates-function selectrum-highlight-candidates-function))
-      (apply <orig-fn> <args>)))
 #+end_src
 
 ** tempo
