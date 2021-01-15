@@ -4095,7 +4095,7 @@ javascript code.
 
 *** escr
 :PROPERTIES:
-:ID: 0038e1ed-ac6a-4529-9ecd-dfa8a44d40c9
+:ID:       d0ff59fe-4de8-4ddc-9f64-4732014585b6
 :END:
 
 Pictures or GIFs of behaviors can relate emacs behaviors in away descriptions
@@ -4106,7 +4106,9 @@ often not utilized at all).
 There are three screenshot packages I know of [[https://github.com/emacsmirror/screenshot][screenshot]], [[https://github.com/dakra/scrot.el][scrot]] and [[https://github.com/atykhonov/escr][escr]]. But
 they all have their downsides. Screenshot's main command, =screenshot=, assumes
 that you want. =escr= doesn't provide prompt you for the filename or provide any
-option that would prompt you for the file name.
+option you can customize to prompt you for the file name.
+
+Another caviat for =escr= is that it doesn't seem to handle exwm.
 
 **** init
 :PROPERTIES:
@@ -4123,24 +4125,45 @@ option that would prompt you for the file name.
   (escr-screenshot-directory . (xl-emacs-dir "screenshots")))
 #+end_src
 
-**** function for geting screenshot filename
+**** function for getting screenshot filename
 :PROPERTIES:
 :ID:       58405f4f-e891-494e-afc7-a227415ec12b
 :END:
 
 =escr= doesn't prompt for the filename. While this is faster in the shortrun and
-may be useful for situations when you're short on time, it does mean that I'll
-need to invest time in looking at the screenshots again so you can properly name
-them.
+may be useful for situations when I'm short on time, it does mean that I'll need
+to invest time in looking at the screenshots again so you can properly name
+them. There's no way I'll recognize which screenshot is which based on the
+=escr='s default naming scheme. Therefore, I'd rather just name them properly in
+the first place.
 
 #+begin_src emacs-lisp
 (defun escr:get-filename ()
   "Return the filename."
-  (alet (format "%s-%s.png"
-                (alet (read-string "Image name: ")
-                  (if (string-empty-p it) "screenshot" it))
-                (format-time-string "%Y-%m-%d-%H-%M-%S.png"))
-    (expand-file-name it escr-screenshot-directory)))
+  (alet (read-string "Image name: ")
+    (when (not (seq-empty-p it))
+      (format "%s.png" it))))
+#+end_src
+
+**** make =escr= prompt for filename
+:PROPERTIES:
+:ID:       8ee6a3fa-e9bb-4cc8-ac5c-5796583747c9
+:END:
+
+The way that =escr= was written makes it difficult to get it to return the
+filename without some [[helpfn:flet][flet]] hack or ovewritting one if it's functions. I hate
+completely rewriting functions that already mostly work. The particular function
+=escr= computes the filename in is [[helpfn:escr--screenshot][escr--screenshot]]. This function uses
+[[helpfn:format-time-string][format-time-string]] to compute the screenshot name. So I just hijack that
+function.
+
+The result is I get prompted for the filename, but if I leave it blank then it
+defaults to =escr='s default filename names.
+
+#+begin_src emacs-lisp
+(defadvice! prompt-me-for-filename (:around escr--screenshot)
+  (noflet ((format-time-string (&rest args) (or (escr:get-filename) (apply this-fn args))))
+    (apply <orig-fn> <args>)))
 #+end_src
 
 *** gif-screencast
