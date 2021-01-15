@@ -2150,6 +2150,8 @@ think you want to use =smtp=.
 
 #+begin_src emacs-lisp
 (setq make-backup-files t)
+(setq delete-by-moving-to-trash t)
+(setq trash-directory (expand-file-name "~/Trash"))
 #+end_src
 
 *** files
