@@ -3750,7 +3750,10 @@ Making sure that tempo can completing read.
 :END:
 
 #+begin_src emacs-lisp
-(use-package! avy)
+(use-package! avy
+  :xl-set
+  (avy-style . 'pre)
+  (avy-keys . (number-sequence ?a ?z)))
 #+end_src
 
 ** hide-mode-line
