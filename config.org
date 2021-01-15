@@ -4631,13 +4631,6 @@ have like about eshell: [[https://ambrevar.xyz/emacs-eshell/][ambrevar's eshell 
   (eshell-error-if-no-glob           . t))
 #+end_src
 
-**** save things typed into the eshell buffer
-:PROPERTIES:
-:ID:       ba7e682d-2f6b-4fc2-8197-0906e9e9ce41
-:END:
-
-I want to know what I did in the eshell buffer.
-
 **** em-hist
 :PROPERTIES:
 :ID:       aaea54da-bd51-4a73-9dad-fe0b49d0f617
@@ -4666,12 +4659,7 @@ I want to know what I did in the eshell buffer.
     (add-to-list 'eshell-visual-commands it)))
 #+end_src
 
-**** eshell commands
-:PROPERTIES:
-:ID: 4a7074f6-7f53-4950-9c92-be39b23e1d70
-:END:
-
-***** eshell-z
+**** eshell-z
 :PROPERTIES:
 :ID: 497798a0-7b62-4779-bf15-f67500528f03
 :END:
@@ -4683,31 +4671,7 @@ I want to know what I did in the eshell buffer.
   (eshell-z-freq-dir-hash-table-file-name . (expand-file-name "z" eshell-directory-name)))
 #+end_src
 
-***** eshell-clear
-:PROPERTIES:
-:ID: 6ae332e7-f2e8-4a78-9bb8-c9b4f271a6a2
-:END:
-
-The shell often gets cluttered with many commands. It's often useful to clear it
-and indeed there are many suggestions on how to do so online. However, many of
-them involve erasing the eshell buffer or making it's previous contents
-inaccessable. I don't like getting rid of information that could be important.
-All I really wanted is to just scroll up to the top of the window so that the
-previous contents weren't visible. Note that it is important that this command
-returns nil. Eshell shell ignores output returns nil. However, when it returns
-non-nil it prints it to the eshell buffer, which results in a residue
-line--that's not what we want.
-
-https://emacs.stackexchange.com/questions/28819/eshell-goes-to-the-bottom-of-the-page-after-executing-a-command
-
-#+begin_src emacs-lisp
-(defadvice! scroll-to-top (:override eshell/clear)
-  "Scroll eshell buffer to top.
-The effect of this is to clear the contents of the eshell buffer."
-  (progn (call-interactively #'evil-scroll-line-to-top) nil))
-#+end_src
-
-***** eshell-up
+**** eshell-up
 :PROPERTIES:
 :ID: 478219b9-1c6f-4907-b428-a2dfe0f45e5c
 :END:
@@ -4723,15 +4687,6 @@ in ~eshell~ without having to repeatedly typing ~cd ..~.
   )
 #+end_src
 
-**** shrink-path
-:PROPERTIES:
-:ID: eef8ea28-4de2-44ab-a09d-26f58c0a75ac
-:END:
-
-#+begin_src emacs-lisp
-(use-package! shrink-path
-  :commands shrink-path)
-#+end_src
 
 ** file browsing
 :PROPERTIES:
@@ -5154,6 +5109,16 @@ ones you want to save to [[helpvar:savehist-additional-variables][savehist-addit
   (setq kill-ring
         (--map (when (stringp it) (substring-no-properties it))
                (-non-nil kill-ring))))
+#+end_src
+
+** shrink-path
+:PROPERTIES:
+:ID: eef8ea28-4de2-44ab-a09d-26f58c0a75ac
+:END:
+
+#+begin_src emacs-lisp
+(use-package! shrink-path
+  :commands shrink-path)
 #+end_src
 
 * Window Management
