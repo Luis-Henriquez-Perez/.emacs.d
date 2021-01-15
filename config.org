@@ -4204,9 +4204,7 @@ defaults to =escr='s default filename names.
   (emms-playlist-buffer-name                . "*EMMS-PLAYLIST*")
   (emms-seek-seconds                        . 5)
   (emms-directory                           . (xl-data-dir "emms/"))
-  (emms-player-list                         . '(emms-player-mpv))
-  ;; (mpc-host . "127.0.0.1:6600")
-  )
+  (emms-player-list                         . '(emms-player-mpv)))
 #+end_src
 
 **** quitting
