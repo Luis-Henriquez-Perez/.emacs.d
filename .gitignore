@@ -1,0 +1,4 @@
+*.elc
+.eldev/
+.local/
+packages/
