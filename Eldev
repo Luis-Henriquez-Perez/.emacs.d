@@ -1,0 +1,165 @@
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+
+;; This code and commentary was taken from [[https://d12frosted.io/posts/2021-04-09-emacs-d.html][this post]].  This file defines a
+;; "project" for =eldev=.  I want things like project management.
+
+;; One thing I wish was mentioned in the post is that to run any of the shell
+;; commands for =eldev=, the =eldev= executable needs to be in your path.
+;;; eldev
+;; A very important note, d12frosted did not use package.el for eldev, he only
+;; used straight.el or elpaca.  The issue with using it with your emacs config
+;; if you use package.el is that eldev also uses package.el.  So you need to
+;; tell it not to use it when you're loading your project somehow.  Honestly,
+;; you might just have to declare all your packages to eldev as dependencies.
+;; It is kind of tricky because for testing eldev uses its own.  And I want to
+;; note this is not eldev's fault as eldev is designed to manage packages and
+;; it's wrong for packages to install other packages when they're loaded.  In
+;; theory -X option could be used for.
+(setq user-emacs-directory eldev-real-user-emacs-directory)
+;;;; tell eldev where to load
+(setq eldev-project-main-file "init.el")
+;; Eldev seems to be looking recursively in directories for any file named
+;; =init.el= or =early-init.el= unless you specifically put the "./" before the
+;; file name.  It was catching a file in
+;; "elpaca/repos/elpaca/doc/early-init.el".  So for precision I recommend adding
+;; "./".
+(setq eldev-main-fileset '("./init.el"
+                           "./early-init.el"
+                           "lisp/init-*.el"
+                           "lisp/base*.el"
+                           "lisp/config*.el"
+                           "lisp/+abbrev*.el"))
+(setq eldev-test-fileset '("test/base*.el"))
+;; Emacs doesn't allow to add directory containing init.el to load
+;; path, so we have to put other Emacs Lisp files in directory. Help
+;; Eldev commands to locate them.
+;; (setq eldev-project-source-dirs "lisp")
+(eldev-add-loading-roots 'build "lisp")
+(eldev-add-loading-roots 'bootstrap "lisp")
+(eldev-add-loading-roots 'bootstrap "elpaca-test")
+(eldev-add-loading-roots 'test "lisp")
+;; Tell eldev that I need the tests directory in the load-path for running tests.
+(eldev-add-loading-roots 'test "test")
+;; Provides the ability to intelligently inference from commands.
+;; (setq eldev-dwim t)
+;; Eldev changes this to something else.  I need it so my init file will load
+;; the proper things.
+;; (cl-pushnew (expand-file-name "packages/" eldev-real-user-emacs-directory) package-directory-list)
+;; (setf eldev-project-source-dirs "lisp")
+;;;; specify test directory
+;; There are dependencies for testing and linting phases, they should
+;; be installed by Eldev from MELPA and GNU ELPA (latter is enabled by
+;; default).
+(eldev-use-package-archive 'melpa)
+;;;; define bootstrap command
+;; We set the value of elpa-bootstrap-p to t, so that autoloads file is not
+;; required from init.el (we are going to generate it during bootstrap flow). We
+;; also set load-prefer-newer to t so that Emacs prefers newer files instead of
+;; byte compiled (again, we are going to compile .el to .elc).
+
+;; We hook this function into any build command in order to install packages and
+;; get proper load-path in all phases.
+(defun elpa-bootstrap ()
+  "Bootstrap personal configurations."
+  ;; This is used by d12frosted's environment to signal whether autoloads should
+  ;; be genenerated from the lisp directory.  I do not know whether I will use
+  ;; this yet and if I use it whether it will be for the same thing.
+  ;; (setq-default elpa-bootstrap t)
+  (setq-default load-prefer-newer t)
+  (eldev--inject-loading-roots 'bootstrap)
+  (let ((init-file (expand-file-name "init.el" eldev-real-user-emacs-directory)))
+    (message "BOOTSTRAPPING!")
+    (message "eldev-real-user-emacs-directory: %S" eldev-real-user-emacs-directory)
+    (load init-file))
+  ;; (add-to-list 'load-path (expand-file-name "lisp/" eldev-real-user-emacs-directory))
+  ;; (add-to-list 'load-path (expand-file-name "straight/" eldev-real-user-emacs-directory))
+  ;; Any time I try to add to the `load-path' something from my
+  ;; `user-emacs-directory', remember to use `eldev-real-user-emacs-directory'
+  ;; instead.
+  )
+
+;; We want to run this before any build command. This is also needed
+;; for `flyspell-eldev` to be aware of packages installed via
+;; straight.el.
+(add-hook 'eldev-build-system-hook #'elpa-bootstrap)
+;;;; define update command
+;; In [[][d12frosted's configuration]] he defined "upgrading" the configuration
+;; as all the packages which are not pinned.  However, I pin all of my packages
+;; because I want complete control over.  I do not ever want to upgrade
+;; everything at once like this; bad idea.
+(defun elpa-upgrade ()
+  "Bootstrap personal configurations."
+  (message "No upgrading steps yet."))
+
+(add-hook 'eldev-upgrade-hook #'elpa-upgrade)
+;;;; linting
+;; (defun eldev-lint-find-files-absolute (f &rest args)
+;;   "Call F with ARGS and ensure that result is absolute paths."
+;;   (seq-map (lambda (p)
+;;              (expand-file-name p eldev-project-dir))
+;;            (seq-filter (lambda (p)
+;;                          (not (string-suffix-p "autoloads.el" p)))
+;;                        (apply f args))))
+
+;; (advice-add 'eldev-lint-find-files :around #'eldev-lint-find-files-absolute)
+
+;; Use elisp-lint by default
+(setf eldev-lint-default '(elisp))
+
+(with-eval-after-load 'elisp-lint
+  (setf elisp-lint-ignored-validators '("byte-compile")))
+
+;; This is the original comment from d12frosted.
+;; In general, `package-lint' is useful. But package prefix naming
+;; policy is not useful for personal configurations. So we chop
+;; lib/init part from the package name.
+;;
+;; And `eval-after-load'. In general it's not a good idea to use it in
+;; packages, but these are configurations.
+(with-eval-after-load 'package-lint
+  ;; (defun package-lint--package-prefix-cleanup (f &rest args)
+  ;;   "Call F with ARGS and cleanup it's result."
+  ;;   (let ((r (apply f args)))
+  ;;     (replace-regexp-in-string "\\(init\\|lib\\|config\\|compat\\)-?" "" r)))
+  ;; (advice-add 'package-lint--get-package-prefix :around #'package-lint--package-prefix-cleanup)
+  (defun package-lint--package-prefix-cleanup (prefix)
+    "Cleanup PREFIX."
+    (replace-regexp-in-string
+     "\\(private\\)-?" ""
+     (replace-regexp-in-string
+      "\\(init\\|lib\\|config\\|compat\\)-?" ""
+      prefix)))
+
+  (defun package-lint--get-package-prefix-wrapper (f &rest args)
+    "Call F with ARGS and cleanup it's result."
+    (let ((r (apply f args)))
+      (package-lint--package-prefix-cleanup r)))
+  (advice-add 'package-lint--get-package-prefix :around #'package-lint--get-package-prefix-wrapper)
+
+  (defun package-lint--check-defs-prefix-wrapper (f prefix definitions)
+    "Call F with cleared PREFIX and DEFINITIONS."
+    (funcall f (package-lint--package-prefix-cleanup prefix) definitions))
+  (advice-add 'package-lint--check-defs-prefix :around #'package-lint--check-defs-prefix-wrapper)
+
+  (defun package-lint--check-defalias-wrapper (f prefix def)
+    "Call F with cleared PREFIX and DEF."
+    (funcall f (package-lint--package-prefix-cleanup prefix) def))
+  (advice-add 'package-lint--check-defalias :around #'package-lint--check-defalias-wrapper)
+
+  (defun package-lint--check-eval-after-load ()
+    "Do nothing."))
+
+;; Tell checkdoc not to demand two spaces after a period.
+(setq-default sentence-end-double-space t)
+;; Bump up the fill-column from 70 to 80.
+(setq-default fill-column 80)
+
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+
+(eldev-defoption test-no-truncate ()
+  "Do not limit the lisp output for failed tests."
+  :options        (-t --no-truncate)
+  :for-command test
+  (setq ert-batch-print-level nil)
+  (setq ert-batch-print-length nil))

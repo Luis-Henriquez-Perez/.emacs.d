@@ -1,0 +1,133 @@
+#+begin_html
+<h1 align="center">OO Emacs</h1>
+<p align="center">
+  <img width="1024px" src="emacs-screenshot.png" alt="Banner">
+</p>
+#+end_html
+
+* Introduction
+:PROPERTIES:
+:ID:       20240408T163238.363404
+:END:
+OO Emacs is my personal emacs configuration.  By design it is intended to be:
+- *performant*
+  OO emacs should startup as fast as possible and consequently my startup time
+  should be as low as possible (as of writing my startup time is
+  =1.64= seconds but I want it to be even lower).  Furthermore, the experience
+  while using emacs should be responsive fast and snappy.
+- *introspectable*
+  I want to know what is happening and when it is happening.  I want my
+  configuration to be such that I keep track of any changes I make where a
+  "change" could be adding a hook or adding an advice or even binding a key.
+- *expressive*
+  I want expressive and powerful functions and macros at my disposal that help
+  me do what I want sanely, concisely and with precision.
+- *stable*
+  I should be able to count on things working properly.
+- *correct*
+  My configuration should follow standards determined by the compiler
+  whenever they are reasonable and make sense.  Compiling my configuration
+  should result in no warnings.
+- *reproducable*
+  I should be able to recreate my exact configuration--with all my
+  external packages and their exact committs.
+- *well-documented*
+  Every function and macro should have a thorough docstring explaining what it
+  does.  Moreover, each file should have its own commentary explaining its
+  purpose as well as any other tidbits I deem useful.
+- *tested*
+  Every function and macro should have evidence that it does what it claims to
+  do in the form of a test.  This helps me not only ensure that any refactoring
+  preserves the expected behavior of a function or macro but also it provides me
+  with sanity checks in case something goes wrong.
+- *easy and predictable to extend (for me)*
+  It should be easy to add some new functionality to my configuration.  All I
+  should have to do is create a file and load it from the right place.  I should
+  not have to think about it as there should be a standard procedure.
+* Features
+:PROPERTIES:
+:ID:       20240408T163225.997099
+:END:
+- Optimized for speed by evaluating macros during compilation
+- Extensive abbrev configuration
+- Spacemacs-like keybinding scheme
+- Uses [[https://github.com/progfolio/elpaca][elpaca]] an advanced package manager
+- Advanced macros such as [[./lisp/oo-progn-macro.el][block!]], [[./lisp/oo-let-macro.el][lef!]], and [[./lisp/oo-let-macro.el][let!]]
+- Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and
+  [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
+- Generated functions specifically designed to be hooks and advices
+- Extensively log events using [[https://github.com/Fuco1/emacs-lgr][lgr]]
+* File Structure
+:PROPERTIES:
+:ID:       20240408T164104.628646
+:END:
+- [[file:./init.el][init.el]] - Loads everything else.
+- base files - Define tools that will help me configure emacs and that will be
+  used pervasively throughout init and after-load files.
+- init files (init-FEATURE.el) - These are files that can be loaded immediately.  Their objective
+  is to initialize a package to be used in my configuration.  Usually
+  that means adding hooks, setting bindings and autoloading functions.
+- config files (config-FEATURE.el) - These are files that by init files after some feature is loaded.
+  These files should not be loaded immediately because they contain funtionality
+  or perform computations that are only needed when a particular package is
+  loaded.
+The init and config files are named strictly after packages.  Typically in Emacs
+configurations these files are named after some functionality the files are
+adding--a name might be for example "init-editing" or "init-completion".  I
+specifically choose not to do this because I find that the category is
+opinionated an has a tendency to become nebulous and obscure.
+* Naming Convention
+I prefix internal functions and variables with =oo=, the kind that are not related
+to a specific package but that are for generally managing my configuration.  But
+if I feel a function is an extension for another feature then I make the
+extension =+FEATURE=.  I took this idea from doom and the reasoning--for me at
+least, I do not know for doom--is that this name is concise and it connotes that
+it is an extension for said feature.  Without this naming scheme there would be
+/many/ more functions prefixed with =oo=.  It greatly reduces the amount of
+functions prefixed with =oo=.
+* why the name =OO=?
+:PROPERTIES:
+:ID:       20240408T215953.404277
+:END:
+I chose the prefix "oo" that I use because it is short and something that I
+thought would not likely to be the prefix for an emacs package.  Also, I thought
+that the characters =oo= were smooth an easy to read as opposed to something like
+=xx= which I had tried prior. I do not know why I did not do just a single =o=
+though I remember having thought about it.  Later, I wanted some gimmick related
+to the name/main prefix of my configuration as I see several configurations
+have.  Consider [[https://github.com/syl20bnr/spacemacs][Spacemacs]] and [[https://github.com/doomemacs/doomemacs][Doom Emacs]] for example.  Then I thought that two
+Os next to each other kind of look like the infinity sign hence the name infinity emacs.
+* Acknowledgements
+:PROPERTIES:
+:ID:       20240408T163913.888904
+:END:
+There are countless websites as well as several configurations--it would be hard
+for me to cite everything.  But I do want to mention [[https://github.com/d12frosted/environment/tree/master/emacs][d12frosted's environment]]
+from which I took influence as to using eldev, as well as the file structure.
+And I also want to mention [[https://github.com/doomemacs/doomemacs][Doom Emacs]] from which this README is based on and
+from which a lot of code in my configuration was inspired.
+* roadmap
+:PROPERTIES:
+:ID:       20240410T155100.874569
+:END:
+This is a roadmap for what I need of get done to go up a version.
+** 0.2
+:PROPERTIES:
+:ID:       20240410T154926.870213
+:END:
+*** TODO there should not be any compiler warnings anymore
+:PROPERTIES:
+:ID:       20240410T154944.800073
+:END:
+*** TODO all functions and macros should have a test
+:PROPERTIES:
+:ID:       20240410T155016.682063
+:END:
+*** TODO a keybinding macro, =bind!= that binds my keys
+:PROPERTIES:
+:ID:       20240410T155525.987034
+:END:
+*** TODO should be able to reproduce dotfiles on another machine with one command
+:PROPERTIES:
+:ID:       20240410T155808.253874
+:END:
