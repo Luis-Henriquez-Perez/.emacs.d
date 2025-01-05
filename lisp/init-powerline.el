@@ -471,9 +471,9 @@ This means the line number and percentage."
   "Return my main modeline."
   (set! active (powerline-selected-window-active))
   (set! face1 (if active 'oo-modeline-segment-1 'powerline-inactive1))
-  (set! face2 (if active 'powerline-active0 'powerline-inactive0))
+  (set! face2 (if active 'mode-line 'mode-line-inactive))
   (set! face3 (if active 'powerline-active2 'powerline-inactive2))
-  (set! fill-face (if active 'mode-line 'mode-line-inactive))
+  (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
   (set! evil-face (spaceline-highlight-face-evil-state))
   (oo-modeline-render '(evil-state buffer-info version-control)
                       '(pomodoro battery buffer-location current-time)
