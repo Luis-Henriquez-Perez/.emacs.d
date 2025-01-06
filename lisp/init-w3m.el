@@ -33,6 +33,7 @@
 ;; This is in the same spirit as `w3m-display-mode'.  The stock `w3m-find-file'
 ;; reuses an existing w3m buffer instead of creating a new one--this is not want
 ;; I want.
+(declare-function w3m-expand-file-name-as-url "w3m")
 (defun +w3m-find-file-new-session (file)
   (interactive "fFilename: ")
   (w3m-goto-url-new-session (w3m-expand-file-name-as-url file)
