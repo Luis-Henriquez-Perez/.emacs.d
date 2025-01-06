@@ -79,13 +79,14 @@
 
 ;; TODO: potentially kill the buffers corresponding to the workspace, maybe that
 ;; should be an option.
-(defun oo-workspace-close ()
-  ""
-  (interactive)
-  (burly-bookmark-windows name)
-  (tab-bar-close)
-  (dolist (buffer (workspace-buffers))
-	(kill-buffer buffer)))
+;; (defun oo-workspace-close ()
+;;   ""
+;;   (interactive)
+;;   ;; (burly-bookmark-windows name)
+;;   ;; (tab-bar-close)
+;;   ;; (dolist (buffer (workspace-buffers))
+;;   ;;   (kill-buffer buffer))
+;;   )
 ;;; provide
 (provide 'oo-workspace)
 ;;; oo-workspace.el ends here
