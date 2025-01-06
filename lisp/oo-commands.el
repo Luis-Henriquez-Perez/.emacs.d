@@ -76,7 +76,7 @@
 ;; This is meant to sort the great number of `require' forms in the init file.
 (defun! oo-sort-require-forms (beg end)
   "Sort require forms lexicographically by feature name."
-  (set! rx (rx (seq "(require" (one-or-more blank) "'" (group (1+ nonl))")")))
+  (set! rx "(require[[:blank:]]+'\\(.+\\))")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
 (defun! oo-sort-dwim (beg end)
