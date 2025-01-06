@@ -57,7 +57,7 @@
 (setq org-agenda-skip-deadline-if-done t)
 ;;;; sorting entries
 ;;;;; helpers
-(defun +org-agenda-call-at-entry (entry fn)
+(defun! +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
   (set! marker (get-text-property 0 'org-marker entry))
   (unless marker (error "Entry: %S" entry))
