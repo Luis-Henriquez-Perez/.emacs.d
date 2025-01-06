@@ -25,6 +25,9 @@
 ;; Configure `outli'.
 ;;
 ;;; Code:
+(require 'base)
+(require 'outli)
+
 ;; Different styling for stem and leaf characters.
 (setf (cl-fourth (assoc 'emacs-lisp-mode outli-heading-config)) nil)
 
