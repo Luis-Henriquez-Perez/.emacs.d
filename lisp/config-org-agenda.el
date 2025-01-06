@@ -202,17 +202,13 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 
 (setq org-agenda-cmp-user-defined #'+org-agenda-main-comparator)
 
-(defvar +org-agenda-comparators nil
+(defvar +org-agenda-comparators '(+org-agenda-priority-comparator
+                                  +org-agenda-closest-deadline-comparator
+                                  +org-agenda-tag-comparator
+                                  +org-agenda-effort-comparator
+                                  +org-agenda-tsid-comparator)
   "Comparators used for sorting org agenda.
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
-
-(setq +org-agenda-comparators '(
-                                ;; +org-agenda-overdue-deadline-comparator
-                                +org-agenda-priority-comparator
-                                +org-agenda-closest-deadline-comparator
-                                +org-agenda-tag-comparator
-                                +org-agenda-effort-comparator
-                                +org-agenda-tsid-comparator))
 ;;;;; dealing with composite tasks
 ;; Composite tasks are entries that contain one or more subtasks.  These are
 ;; created when.  They have certain props.
@@ -222,7 +218,7 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
   (interactive)
   (flet! not-done-p ()
     (aand! (substring-no-properties (org-get-todo-state))
-          (not (member it '("DONE" "CANCELLED")))))
+           (not (member it '("DONE" "CANCELLED")))))
   (save-excursion
     (when (org-goto-first-child)
       (when (not-done-p)
@@ -270,19 +266,19 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
          (set! days (/ seconds seconds-in-day))
          (format "due in %d days " days))
         ((> seconds seconds-in-day)
-         (format "due in 1 day "))
+         "due in 1 day")
         ((> seconds (* 2 seconds-in-hour))
          (set! hours (round (/ seconds seconds-in-hour)))
          (format "due in %d hours " hours))
         ((> seconds seconds-in-hour)
          (set! minutes (round (/ seconds 60.0)))
-         (format "due in 1 hour"))
+         "due in 1 hour")
         ((> seconds (* 2 60))
          (set! minutes (round (/ seconds 60.0)))
-         (format "due in %d minutes " minutes))
+         (format "due in %d minutes" minutes))
         ((> seconds 60)
          (set! minutes (round (/ seconds 60.0)))
-         (format "due in 1 minute " minutes (* 100 (1- minutes))))
+         "due in 1 minute")
         ((> seconds 0)
          (format "due %d seconds " seconds))
         ((> (abs seconds) (* 2 seconds-in-week))
@@ -306,7 +302,7 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
         ((> (abs seconds) 60)
          "1 minute overdue ")
         ((> (abs seconds) 0)
-         (format "%s seconds overdue " (round (abs seconds))))))
+         (format "%s seconds overdue" (round (abs seconds))))))
 
 (defun! +org-agenda-deadline-string ()
   "Return string indicating deadline status."
