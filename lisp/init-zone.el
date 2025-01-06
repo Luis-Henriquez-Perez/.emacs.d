@@ -25,6 +25,7 @@
 ;; Initialize `zone'.
 ;;
 ;;; Code:
+(defvar zone-programs)
 ;; I intentionally set the timer object returned to a variable so I can cancel
 ;; zoning if I want to.
 (defvar oo-zone-timer nil
