@@ -359,7 +359,6 @@ If the current buffer is modified."
 
 (defun! oo-modeline-component--battery ()
   "Return component."
-  (require 'battery)
   (set! status (funcall battery-status-function))
   (set! percentage (thread-last (battery-format "%p" status)
                                 (string-to-number)
