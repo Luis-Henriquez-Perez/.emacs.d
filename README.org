@@ -9,28 +9,32 @@
 :PROPERTIES:
 :ID:       20240408T163238.363404
 :END:
+"GNU Emacs 29.4 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.43, cairo version 1.18.2)"
 OO Emacs is my personal emacs configuration.  By design it is intended to be:
 - *performant*
   OO emacs should startup as fast as possible and consequently my startup time
-  should be as low as possible (as of writing my startup time is
-  =1.64= seconds but I want it to be even lower).  Furthermore, the experience
-  while using emacs should be responsive fast and snappy.
+  should be as low as possible.  Furthermore, the experience
+  while using emacs should be responsive fast and snappy.  As of this version,
+  ~(emacs-init-time)~ is "3.882691 seconds" without compilation.
 - *introspectable*
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
-  "change" could be adding a hook or adding an advice or even binding a key.
+  "change" could be adding a hook or adding an advice or even binding a key.  To
+  this end I use [[][lgr]] to create an extensive log buffer.
 - *expressive*
   I want expressive and powerful functions and macros at my disposal that help
-  me do what I want sanely, concisely and with precision.
+  me do what I want sanely, concisely and with precision.  See my.
 - *stable*
-  I should be able to count on things working properly.
+  I should be able to count on things working properly.  To this end I created
+  tests.
 - *correct*
   My configuration should follow standards determined by the compiler
   whenever they are reasonable and make sense.  Compiling my configuration
   should result in no warnings.
 - *reproducable*
   I should be able to recreate my exact configuration--with all my
-  external packages and their exact committs.
+  external packages and their exact committs.  Right now I use package.el but I
+  will eventually migrate to either [[][elpaca]] or [[][borg]].
 - *well-documented*
   Every function and macro should have a thorough docstring explaining what it
   does.  Moreover, each file should have its own commentary explaining its
@@ -40,7 +44,7 @@ OO Emacs is my personal emacs configuration.  By design it is intended to be:
   do in the form of a test.  This helps me not only ensure that any refactoring
   preserves the expected behavior of a function or macro but also it provides me
   with sanity checks in case something goes wrong.
-- *easy and predictable to extend (for me)*
+- *easy and predictable to extend*
   It should be easy to add some new functionality to my configuration.  All I
   should have to do is create a file and load it from the right place.  I should
   not have to think about it as there should be a standard procedure.
@@ -51,11 +55,9 @@ OO Emacs is my personal emacs configuration.  By design it is intended to be:
 - Optimized for speed by evaluating macros during compilation
 - Extensive abbrev configuration
 - Spacemacs-like keybinding scheme
-- Uses [[https://github.com/progfolio/elpaca][elpaca]] an advanced package manager
-- Advanced macros such as [[./lisp/oo-progn-macro.el][block!]], [[./lisp/oo-let-macro.el][lef!]], and [[./lisp/oo-let-macro.el][let!]]
-- Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and
-  [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
-- Generated functions specifically designed to be hooks and advices
+- Advanced macros such as [[./lisp/oo-progn-macro.el][block!]] and [[./lisp/oo-let-macro.el][lef!]]
+- Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
+- Generates functions specifically designed to be hooks and advices
 - Extensively log events using [[https://github.com/Fuco1/emacs-lgr][lgr]]
 * File Structure
 :PROPERTIES:
