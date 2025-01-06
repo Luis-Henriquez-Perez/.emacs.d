@@ -30,8 +30,6 @@
 ;;; Code:
 (require 'base)
 ;;;; opening specific files
-;; A complicating factor is the fact that I use the chezmoi directory as the
-;; main way to edit these files.
 (defun oo-open-emacs-config ()
   "Open Emacs configuration."
   (interactive)
@@ -182,7 +180,6 @@ is already narrowed."
   (interactive)
   (display-buffer (generate-new-buffer "untitled")))
 
-;;;###autoload
 ;; (defun oo-ensure-file-header ()
 ;;   (interactive)
 ;;   (oo--ensure-file-header))
