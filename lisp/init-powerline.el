@@ -25,6 +25,7 @@
 ;; Initialize powerline.
 ;;
 ;;; Code:
+(require 'battery)
 (require 'dash)
 (require 'powerline)
 (require 'spaceline)
