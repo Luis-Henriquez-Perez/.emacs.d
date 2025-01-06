@@ -425,7 +425,7 @@ Returns whether current track is playing."
     (cond ((bound-and-true-p emms-player-paused-p)
            (pcase oo-modeline-icons
              ('nerd-icons
-              (nerd-icons-codicon))
+              (nerd-icons-faicon "nf-fa-circle_pause"))
              ('all-the-icons
               (all-the-icons-faicon "pause-circle"))
              (_
