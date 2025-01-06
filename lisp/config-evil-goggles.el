@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'base)
 ;;;; register lispyville commands
+(defvar evil-goggles--commands)
+
 (autolet!
  (set! list '((+evil-eval-operator evil-change)
               (+evil-eval-replace-operator evil-change)
