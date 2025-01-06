@@ -516,7 +516,7 @@ take the following forms:
   "Evaluate BODY after EXPR is satisfied."
   (declare (indent defun))
   `(progn
-     (defun! ,name nil ,@body)
+     (defun! ,name nil (with-no-warnings ,@body))
      (oo-call-after-load ',expr #',name)))
 ;;;;; defhook!
 (defmacro hook! (hook function &rest args)
