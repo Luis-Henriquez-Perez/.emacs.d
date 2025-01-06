@@ -55,7 +55,14 @@
 ;; old-fashionish.
 (setq org-agenda-block-separator ?-)
 (setq org-agenda-skip-deadline-if-done t)
-;;;; sorting entries
+
+(defvar +org-agenda-comparators '(+org-agenda-priority-comparator
+                                  +org-agenda-closest-deadline-comparator
+                                  +org-agenda-tag-comparator
+                                  +org-agenda-effort-comparator
+                                  +org-agenda-tsid-comparator)
+  "Comparators used for sorting org agenda.
+This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 ;;;;; helpers
 (defun! +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
@@ -201,14 +208,6 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
   0)
 
 (setq org-agenda-cmp-user-defined #'+org-agenda-main-comparator)
-
-(defvar +org-agenda-comparators '(+org-agenda-priority-comparator
-                                  +org-agenda-closest-deadline-comparator
-                                  +org-agenda-tag-comparator
-                                  +org-agenda-effort-comparator
-                                  +org-agenda-tsid-comparator)
-  "Comparators used for sorting org agenda.
-This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 ;;;;; dealing with composite tasks
 ;; Composite tasks are entries that contain one or more subtasks.  These are
 ;; created when.  They have certain props.
