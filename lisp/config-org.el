@@ -32,8 +32,8 @@
 (defun! +org-choose-tags ()
   "Choose tags to add to current headline.
 If you choose a tag that is already in the current headline, remove it.  Any
-tags that are not in the current headline are added to it.  The Resulting tags are
-in alphabetical order."
+tags that are not in the current headline are added to it.  The Resulting tags
+are in alphabetical order."
   (interactive)
   (set! all (save-restriction (widen) (org-get-buffer-tags)))
   (set! current (mapcar #'substring-no-properties (org-get-tags (point) t)))
