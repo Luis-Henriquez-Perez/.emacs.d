@@ -155,7 +155,6 @@ with no deadline."
 ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
   (let* ((date-str (substring org-id 0 8))
          (time-str (substring org-id 9 15))
-         (microseconds-str (substring org-id 16))
          (year (string-to-number (substring date-str 0 4)))
          (month (string-to-number (substring date-str 4 6)))
          (day (string-to-number (substring date-str 6 8)))
