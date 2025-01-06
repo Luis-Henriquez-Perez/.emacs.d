@@ -170,13 +170,12 @@ EXPRS in (CDR CONDITION) is met."
                       (condition-case err
                           (funcall #',fn)
                         (error
-                         (cond (oo-debug-p
-                                (signal (car err) (cdr err)))
-                               (t
-                                (error! "`%s` : %s -> %s"
-                                        ',fn
-                                        (car err)
-                                        (cdr err)))))))))
+                         (if oo-debug-p
+                             (signal (car err) (cdr err))
+                           (error! "`%s` : %s -> %s"
+                                   ',fn
+                                   (car err)
+                                   (cdr err))))))))
                t)
     (oo--call-after-load expr it)))
 ;;;; bind macro
