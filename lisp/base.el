@@ -117,7 +117,7 @@ generated function does not pass in any of its given arguments to FUNCTION."
                      (error
                       (if oo-debug-p
                           (signal (car err) (cdr err))
-                        (error! "`%s` : `%s' : `%s' -> `%s'"
+                        (error! "%s : %s : %s -> %s"
                                 #',function
                                 ',hook
                                 (car err)
