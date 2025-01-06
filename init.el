@@ -90,6 +90,7 @@
 (require 'init-corfu-history)
 (require 'init-corfu-quick)
 (require 'init-dashboard)
+(require 'init-pomodoro)
 (require 'init-easy-escape)
 (require 'init-emmet)
 (require 'init-emms)
