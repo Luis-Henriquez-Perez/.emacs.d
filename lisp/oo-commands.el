@@ -99,15 +99,16 @@
 	  ("elpaca" (oo-sort-elpaca-forms beg end))
 	  (_ (error "No sorting method detected")))))
 ;;;; alignment
-(defun! oo-dwim-align (beg end)
+(defun! oo-dwim-align ()
   (interactive
-   (cond ((region-active-p)
-	      (list (region-beginning) (region-end)))
-	     ((save-excursion (goto-char (point-min))
-                          (re-search-forward "^(define-abbrev" (point-max) t nil))
-          (list (match-beginning 0) (point-max)))
-         (t
-          (list nil nil))))
+   ;; (cond ((region-active-p)
+   ;;        (list (region-beginning) (region-end)))
+   ;;       ((save-excursion (goto-char (point-min))
+   ;;                        (re-search-forward "^(define-abbrev" (point-max) t nil))
+   ;;        (list (match-beginning 0) (point-max)))
+   ;;       (t
+   ;;        (list nil nil)))
+   )
   (set! regexp "(define-abbrev\\(?1:\\s-+\\)\\S-+\\(?2:\\s-+\\)\".*?\"\\(?3:\\s-+\\)\".*?\"\\(?4:\\s-+\\)\\S-+\\(?5:\\s-+\\):enable-function\\(?6:\\s-+\\).+)")
   (set! rules `((rule1 . ((regexp . ,regexp) (group . (1 2 3 4 5 6))))))
   (align (point-min) (point-max) nil rules))
@@ -136,7 +137,7 @@ is already narrowed."
 (defun! oo-dwim-space ()
   "Replace two consecutive spaces with a period."
   (interactive)
-  (set! rx "\\([[:word:]]\\)\\([[:space:]][[:space:]]\\)\\([^[:space:]]+\\)")
+  ;; (set! rx "\\([[:word:]]\\)\\([[:space:]][[:space:]]\\)\\([^[:space:]]+\\)")
   (cond ((and (or (derived-mode-p 'text-mode)
                   (oo-in-string-or-comment-p))
               (looking-back "\\([[:word:]]\\)[[:space:]]\\{2,\\}" nil))
@@ -168,7 +169,8 @@ is already narrowed."
       (progn (load-theme theme)
              (push theme oo-loaded-themes)
              (message "Loaded theme `%s'..." theme))
-    (signal (car err) (cdr err))))
+    (error
+     (signal (car err) (cdr err)))))
 
 ;; This idea is based on the following link where xah lee talks about why the
 ;; scratch buffer is outdated.  It does not follow the trend of "untitled1",
@@ -185,7 +187,7 @@ is already narrowed."
 ;;   (interactive)
 ;;   (oo--ensure-file-header))
 
-(defun oo--create-lisp-dir-file (name dir comment1 comment2)
+(defun! oo--create-lisp-dir-file (name dir comment1 comment2)
   "Auxiliary function."
   (set! filename (expand-file-name name dir))
   (cl-assert (not (file-exists-p filename)))
