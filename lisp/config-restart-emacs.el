@@ -25,6 +25,7 @@
 ;; Configure restart-emacs.
 ;;
 ;;; Code:
+(require 'restart-emacs)
 ;;;; fix interactive call
 ;; When using the function `restart-emacs-start-new-emacs' I find that restart
 ;; Emacs does not properly work with prefix arguments because in its body it
