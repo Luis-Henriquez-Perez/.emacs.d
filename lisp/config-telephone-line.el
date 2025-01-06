@@ -25,10 +25,12 @@
 ;; Configure telephone-line.
 ;;
 ;;; Code:
+(require 'base)
+(require 'telephone-line)
 ;;;; custom segments
 ;;;;; major-mode information
 (defun +telephone-line-major-mode-segment nil
-  (lambda (_) (alet! (format-mode-line (funcall (telephone-line-major-mode-segment) face)) (if (string-match "\\`ELisp" it) (substring it (match-beginning 0) (match-end 0)) it))))
+  (lambda (face) (alet! (format-mode-line (funcall (telephone-line-major-mode-segment) face)) (if (string-match "\\`ELisp" it) (substring it (match-beginning 0) (match-end 0)) it))))
 ;;;;; kbd-macro information
 (defun +telephone-line-kbd-macro-segment nil
   (lambda (_) (oo-modeline-component--kbd-macro)))
