@@ -27,42 +27,38 @@
 ;;; Code:
 ;;;; custom segments
 ;;;;; major-mode information
-(telephone-line-defsegment* +telephone-line-major-mode-segment ()
-  ;; Do not show the ugly "\l" that indicates lexical binding.
-  (alet! (format-mode-line (funcall (telephone-line-major-mode-segment) face))
-    (if (string-match "\\`ELisp" it)
-        (substring it (match-beginning 0) (match-end 0))
-      it)))
+(defun +telephone-line-major-mode-segment nil
+  (lambda (_) (alet! (format-mode-line (funcall (telephone-line-major-mode-segment) face)) (if (string-match "\\`ELisp" it) (substring it (match-beginning 0) (match-end 0)) it))))
 ;;;;; kbd-macro information
-(telephone-line-defsegment* +telephone-line-kbd-macro-segment ()
-  (oo-modeline-component--kbd-macro))
+(defun +telephone-line-kbd-macro-segment nil
+  (lambda (_) (oo-modeline-component--kbd-macro)))
 ;;;;; narrowing information
-(telephone-line-defsegment* +telephone-line-narrow-segment ()
-  (oo-modeline-component--narrow))
+(defun +telephone-line-narrow-segment nil
+  (lambda (_) (oo-modeline-component--narrow)))
 ;;;;; buffer
-(telephone-line-defsegment* +telephone-line-buffer-segment ()
-  (oo-modeline-component--buffer-name))
+(defun +telephone-line-buffer-segment nil
+  (lambda (_) (oo-modeline-component--buffer-name)))
 ;;;;; pomodoro
-(telephone-line-defsegment* +telephone-line-pomodoro-segment ()
-  (oo-modeline-component--pomodoro))
+(defun +telephone-line-pomodoro-segment nil
+  (lambda (_) (oo-modeline-component--pomodoro)))
 ;;;;; org timer (what I use as pomodoro)
 ;;;;; current-time
 ;; TODO: how to display somet
-(telephone-line-defsegment* +telephone-line-current-time-segment ()
-  (oo-modeline-component--current-time))
+(defun +telephone-line-current-time-segment nil
+  (lambda (_) (oo-modeline-component--current-time)))
 ;;;;; battery
-(telephone-line-defsegment* +telephone-line-battery-segment ()
-  (oo-modeline-component--battery))
+(defun +telephone-line-battery-segment nil
+  (lambda (_) (oo-modeline-component--battery)))
 ;;;;; emms
 ;; TODO: Add how much time is left plaing...
-(telephone-line-defsegment* +telephone-line-emms-segment ()
-  (oo-modeline-component--emms))
+(defun +telephone-line-emms-segment nil
+  (lambda (_) (oo-modeline-component--emms)))
 ;;;;; version control information
-(telephone-line-defsegment* +telephone-line-vc-segment ()
-  (oo-modeline-component--version-control))
+(defun +telephone-line-vc-segment nil
+  (lambda (_) (oo-modeline-component--version-control)))
 ;;;;; read-only
-(telephone-line-defsegment* +telephone-line-read-only-segment ()
-  (oo-modeline-component--read-only))
+(defun +telephone-line-read-only-segment nil
+  (lambda (_) (oo-modeline-component--read-only)))
 ;;;; add utilities for updating the modeline
 (defun! +telephone-line-update ()
   "Update the telephone-line modeline."
