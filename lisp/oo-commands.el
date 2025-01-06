@@ -135,7 +135,6 @@ is already narrowed."
 (defun! oo-dwim-space ()
   "Replace two consecutive spaces with a period."
   (interactive)
-  ;; (set! rx "\\([[:word:]]\\)\\([[:space:]][[:space:]]\\)\\([^[:space:]]+\\)")
   (cond ((and (or (derived-mode-p 'text-mode)
                   (oo-in-string-or-comment-p))
               (looking-back "\\([[:word:]]\\)[[:space:]]\\{2,\\}" nil))
