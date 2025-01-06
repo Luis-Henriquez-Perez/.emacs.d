@@ -121,7 +121,7 @@ If an error is raised from component function."
   (alet2! (length segment-names) (length faces)
     (when (> it other)
       (cons (car faces) (-take (1- it) (-cycle (cdr faces))))))
-  (for! (reverse (name . face) (-zip segment-names faces))
+  (for! (reverse (name . face) (-zip-pair segment-names faces))
     (set! segment (funcall (intern (format "oo-modeline-segment--%s" name))))
     (when (and (stringp segment) (not (string-empty-p segment)))
       (pushing! lhs (funcall sep prev-face face))
