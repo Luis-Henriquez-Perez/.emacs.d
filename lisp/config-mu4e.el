@@ -25,6 +25,9 @@
 ;; Configure mu4e.
 ;;
 ;;; Code:
+(require 'base)
+(require 'mu4e)
+
 (defmacro only-once! (&rest forms)
   "Evaluate FORMS only once."
   `(funcall ',(eval `(let (evaluated-p)
