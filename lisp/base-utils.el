@@ -190,10 +190,10 @@ destructured."
         ,@bindings))))
 
 (defun oo-pcase-bindings (match-form value)
-  "Generate `pcase`-compatible bindings from MATCH-FORM and VALUE.
+  "Generate pcase-compatible bindings from MATCH-FORM and VALUE.
 
-MATCH-FORM is the destructuring pattern that specifies how VALUE should be decomposed.
-VALUE is the data to be matched and destructured.
+MATCH-FORM is the destructuring pattern that specifies how VALUE should be
+decomposed.  VALUE is the data to be matched and destructured.
 
 Return a list of bindings compatible with `pcase`."
   (mapcar (pcase-lambda (`(,mf ,val)) (list (oo-into-pcase-pattern mf) val))
