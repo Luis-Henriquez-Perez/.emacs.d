@@ -40,6 +40,13 @@ the modeline is updated."
 ;; (opt! telephone-line-height 30)
 (opt! telephone-line-height 24)
 (opt! telephone-line-evil-use-short-tag nil)
+;;;; fn for updating the ml
+(defun! +telephone-line-update ()
+  "Update the telephone-line modeline."
+  (interactive)
+  (set! modeline (if telephone-line-mode `("%e" ,@(telephone-line--generate-mode-line)) telephone-line--default-mode-line))
+  (setq-default mode-line-format modeline)
+  (oo-update-modeline))
 ;;;; allow toggling different separators
 (defun +telephone-line-apply-gradient-separator (&optional update)
   (interactive)

@@ -60,13 +60,6 @@
 ;;;;; read-only
 (defun +telephone-line-read-only-segment nil
   (lambda (_) (oo-modeline-component--read-only)))
-;;;; add utilities for updating the modeline
-(defun! +telephone-line-update ()
-  "Update the telephone-line modeline."
-  (interactive)
-  (set! modeline (if telephone-line-mode `("%e" ,@(telephone-line--generate-mode-line)) telephone-line--default-mode-line))
-  (setq-default mode-line-format modeline)
-  (oo-update-modeline))
 ;;; provide
 (provide 'config-telephone-line)
 ;;; config-telephone-line.el ends here
