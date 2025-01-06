@@ -70,7 +70,7 @@
   (declare (debug (form body)) (indent 1))
   `(dolist (it ,list) ,@body))
 
-(defmacro! alet2! (form1 form2 &rest body)
+(defmacro alet2! (form1 form2 &rest body)
   "Bind FORM1 and FORM2 to `it' and `other' and evaluate BODY."
   (declare (debug let) (indent 2))
   `(let ((it ,form1)
