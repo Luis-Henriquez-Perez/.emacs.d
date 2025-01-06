@@ -125,7 +125,7 @@ If an error is raised from component function."
   (for! (reverse (name . face) (-zip-pair segment-names faces))
     (set! segment (funcall (intern (format "oo-modeline-segment--%s" name))))
     (when (and (stringp segment) (not (string-empty-p segment)))
-      (pushing! lhs (funcall sep prev-face face))
+      (pushing! lhs (funcall sep face prev-face))
       (add-face-text-property 0 (length segment) face t segment)
       (pushing! lhs segment)
       (set! prev-face face)))
