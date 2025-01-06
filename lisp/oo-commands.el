@@ -221,7 +221,7 @@ is already narrowed."
 (defun! oo-create-new-test-file (feature)
   "Create a new config file for feature."
   (interactive "sFeature: ")
-  (set! dir (expand-file-name "test" user-emacs-directory))
+  (set! test-dir (expand-file-name "test" user-emacs-directory))
   (set! filename (format "base-%s-test.el" feature))
   (set! comment1 (format "Test %s" feature))
   (set! comment2 (format "Test %s." feature))
