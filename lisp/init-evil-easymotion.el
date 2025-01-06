@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'base)
 
+(defvar evil-set-command-properties)
+
 (opt! evilem-style 'at)
 (opt! evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
 
