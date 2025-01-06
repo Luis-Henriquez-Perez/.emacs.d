@@ -9,7 +9,6 @@
 :PROPERTIES:
 :ID:       20240408T163238.363404
 :END:
-"GNU Emacs 29.4 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.43, cairo version 1.18.2)"
 OO Emacs is my personal emacs configuration.  By design it is intended to be:
 - *performant*
   OO emacs should startup as fast as possible and consequently my startup time
@@ -20,7 +19,7 @@ OO Emacs is my personal emacs configuration.  By design it is intended to be:
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
   "change" could be adding a hook or adding an advice or even binding a key.  To
-  this end I use [[][lgr]] to create an extensive log buffer.
+  this end I use [[https://github.com/Fuco1/emacs-lgr][lgr]] to create an extensive log buffer.
 - *expressive*
   I want expressive and powerful functions and macros at my disposal that help
   me do what I want sanely, concisely and with precision.  See my.
@@ -99,6 +98,8 @@ though I remember having thought about it.  Later, I wanted some gimmick related
 to the name/main prefix of my configuration as I see several configurations
 have.  Consider [[https://github.com/syl20bnr/spacemacs][Spacemacs]] and [[https://github.com/doomemacs/doomemacs][Doom Emacs]] for example.  Then I thought that two
 Os next to each other kind of look like the infinity sign hence the name infinity emacs.
+* specs
+(emacs-version) - "GNU Emacs 29.4 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.43, cairo version 1.18.2)"
 * Acknowledgements
 :PROPERTIES:
 :ID:       20240408T163913.888904
