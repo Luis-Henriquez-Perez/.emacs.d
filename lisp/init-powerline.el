@@ -169,7 +169,7 @@ If an error is raised from component function."
          (_
           "untracked"))))
 
-(defun oo-modeline-component--line-number ()
+(defun! oo-modeline-component--line-number ()
   "Return the line-number component for the mode line."
   (set! ln (powerline-raw "%l"))
   (pcase oo-modeline-icons
@@ -249,30 +249,30 @@ If 0, do not display anything."
   (when (> count 0)
     (pcase oo-modeline-icons
       ('all-the-icons
-        (set! long-arrow (all-the-icons-faicon "long-arrow-up" :v-adjust 0.01))
-        (propertize (format "%s%s" count long-arrow) 'face 'success))
+       (set! long-arrow (all-the-icons-faicon "long-arrow-up" :v-adjust 0.01))
+       (propertize (format "%s%s" count long-arrow) 'face 'success))
       ('nerd-icons
-        (set! long-arrow (nerd-icons-faicon "nf-fa-arrow_up_long" :v-adjust 0.01))
-        (propertize (format "%s%s" count long-arrow) 'face 'success))
+       (set! long-arrow (nerd-icons-faicon "nf-fa-arrow_up_long" :v-adjust 0.01))
+       (propertize (format "%s%s" count long-arrow) 'face 'success))
       (_
        (propertize (format "%s@" count) 'face 'success)))))
 
-(defun! oo-modeline-component--log-error ()
-  "Notify of error appearing in my log."
-  (with-current-buffer "*log*"
-    (save-excursion
-      (goto-char (point-min))
-      (when (re-search-forward (rx "[ERROR]") nil t)
-        ;; Find the error type.
-        (re-search )
-        (pcase oo-modeline-icons
-          ('all-the-icons
-            (set! icon (all-the-icons-material "warning" :face 'error))
-            (format "%s %s" icon 'void-function))
-          ('nerd-icons
-            ;; (set! error (all-the-icons-material "warning" :face 'error))
-            )
-          (_))))))
+;; (defun! oo-modeline-component--log-error ()
+;;   "Notify of error appearing in my log."
+;;   (with-current-buffer "*log*"
+;;     (save-excursion
+;;       (goto-char (point-min))
+;;       (when (re-search-forward (rx "[ERROR]") nil t)
+;;         ;; Find the error type.
+;;         (re-search )
+;;         (pcase oo-modeline-icons
+;;           ('all-the-icons
+;;             (set! icon (all-the-icons-material "warning" :face 'error))
+;;             (format "%s %s" icon 'void-function))
+;;           ('nerd-icons
+;;             ;; (set! error (all-the-icons-material "warning" :face 'error))
+;;             )
+;;           (_))))))
 
 (defun! oo-modeline-component--narrow ()
   "Return an indicator for a narrowed buffer in the modeline."
