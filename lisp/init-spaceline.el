@@ -29,7 +29,6 @@
 (require 'spaceline)
 (require 'spaceline-segments)
 (require 'all-the-icons)
-(require 'base-modeline-utils)
 ;;;; settings
 (opt! spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
 (opt! powerline-height 40)
