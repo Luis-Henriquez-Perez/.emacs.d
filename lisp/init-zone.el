@@ -25,13 +25,18 @@
 ;; Initialize `zone'.
 ;;
 ;;; Code:
+;; I intentionally set the timer object returned to a variable so I can cancel
+;; zoning if I want to.
+(defvar oo-zone-timer nil
+  "Timer for when to zone out.")
+
 ;; (autoload #'+zone-choose "zone" nil t 'function)
 ;; https://www.emacswiki.org/emacs/ZoneMode
 (defun +zone-choose (pgm)
   "Choose a PGM to run for `zone'."
-  (interactive (list (completing-read "Program: " (mapcar 'symbol-name zone-programs))))
-  (require 'zone)
-  (zone))
+  (interactive (list (awhen! (completing-read "Program: " (mapcar #'symbol-name (append zone-programs nil)))
+                       (intern it))))
+  (zone pgm))
 
 (defun oo-enable-zone ()
   (require 'zone nil t)
@@ -43,11 +48,6 @@
 
 (defun oo-cancel-zone ()
   (cancel-timer oo-zone-timer))
-
-;; I intentionally set the timer object returned to a variable so I can cancel
-;; zoning if I want to.
-(defvar oo-zone-timer nil
-  "Timer for when to zone out.")
 ;;; provide
 (provide 'init-zone)
 ;;; init-zone.el ends here
