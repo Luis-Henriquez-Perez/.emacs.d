@@ -33,7 +33,7 @@ OO Emacs is my personal emacs configuration.  By design it is intended to be:
 - *reproducable*
   I should be able to recreate my exact configuration--with all my
   external packages and their exact committs.  Right now I use package.el but I
-  will eventually migrate to either [[][elpaca]] or [[][borg]].
+  will eventually migrate to either [[https://github.com/progfolio/elpaca][elpaca]] or [[https://github.com/emacscollective/borg?tab=readme-ov-file][borg]].
 - *well-documented*
   Every function and macro should have a thorough docstring explaining what it
   does.  Moreover, each file should have its own commentary explaining its
