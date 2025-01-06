@@ -43,7 +43,6 @@
 ;;;;; pomodoro
 (defun +telephone-line-pomodoro-segment nil
   (lambda (_) (oo-modeline-component--pomodoro)))
-;;;;; org timer (what I use as pomodoro)
 ;;;;; current-time
 ;; TODO: how to display somet
 (defun +telephone-line-current-time-segment nil
