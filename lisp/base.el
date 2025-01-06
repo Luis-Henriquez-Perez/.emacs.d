@@ -117,10 +117,10 @@ generated function does not pass in any of its given arguments to FUNCTION."
                      (error
                       (if oo-debug-p
                           (signal (car err) (cdr err))
-                        (error! "`%s' error from calling `%s' from `%s' because of `%s'"
-                                (car err)
+                        (error! "`%s` : `%s' : `%s' -> `%s'"
                                 #',function
                                 ',hook
+                                (car err)
                                 (cdr err))))))))
 
   (add-hook hook fname depth local))
@@ -173,7 +173,7 @@ EXPRS in (CDR CONDITION) is met."
                          (cond (oo-debug-p
                                 (signal (car err) (cdr err)))
                                (t
-                                (error! "Error calling %s in %s because of %s"
+                                (error! "`%s` : %s -> %s"
                                         ',fn
                                         (car err)
                                         (cdr err)))))))))
