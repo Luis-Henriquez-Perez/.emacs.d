@@ -86,6 +86,8 @@
 (require 'rx)
 (require 'dash)
 (require 'evil-easymotion)
+
+(declare-function evil-set-command-properties "evil")
 ;;;; ignore overlay
 ;; TODO: abbrev that specifies only words isolated by spaces.
 ;; I got this idea from writing some function name suffixed with "-fn" and
