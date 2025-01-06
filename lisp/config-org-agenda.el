@@ -119,14 +119,14 @@ Return -1 if B is more overdue than A.  Otherwise return 0."
         ((and (oo-negative-p diff-a) (oo-negative-p diff-b) (/= diff-a diff-b))
          (if (> diff-a diff-b) 1 -1))))
 ;;;;;; deadline comparator
-(defun +org-agenda-has-deadline-comparator (a b)
+(defun! +org-agenda-has-deadline-comparator (a b)
   (set! da (org-with-entry! a (org-get-deadline-time (point))))
   (set! db (org-with-entry! b (org-get-deadline-time (point))))
   (cond ((and da (not db)) 1)
         ((and (not da) db) -1)
         (t 0)))
 ;;;;;; closest deadline comparator
-(defun +org-agenda-closest-deadline-comparator (a b)
+(defun! +org-agenda-closest-deadline-comparator (a b)
   "Prioritize entries with the closest non-overdue deadline.
 This assumes that an entry with a non-overdue deadline is always closer than one
 with no deadline."
