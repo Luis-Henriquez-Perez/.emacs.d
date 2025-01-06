@@ -115,7 +115,7 @@ If an error is raised from component function."
       (concat "\s" (string-join (nreverse strings) "\s") "\s")
     ""))
 
-(defun! oo--modeline-render-lhs (segment-names faces &optional sep)
+(defun! oo--modeline-render-lhs (segment-names faces)
   "Render the left-hand side of the modeline."
   (set! sep (or sep (oo-modeline-left-separator)))
   (set! prev-face (pop faces))
@@ -133,8 +133,19 @@ If an error is raised from component function."
 
 (defun! oo--modeline-render-rhs (segment-names faces)
   "Render the right-hand side of the modeline."
-  (set! faces (cons (car faces) (reverse (cdr faces))))
-  (oo--modeline-render-lhs segment-names faces (oo-modeline-right-separator)))
+  (set! sep (oo-modeline-right-separator))
+  (set! prev-face (pop faces))
+  (alet2! (length segment-names) (length faces)
+    (when (> it other)
+      (set! faces (cons (car faces) (-take (1- it) (-cycle (cdr faces)))))))
+  (for! (reverse (name . face) (-zip-pair (reverse segment-names) faces))
+    (set! segment (funcall (intern (format "oo-modeline-segment--%s" name))))
+    (when (and (stringp segment) (not (string-empty-p segment)))
+      (collecting! rhs (funcall sep prev-face face))
+      (add-face-text-property 0 (length segment) face t segment)
+      (collecting! rhs segment)
+      (set! prev-face face)))
+  rhs)
 
 (defun oo-modeline-left-separator (&optional right-p)
   "Return the left separator."
