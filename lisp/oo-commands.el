@@ -218,9 +218,9 @@ is already narrowed."
   (set! comment2 (format "Configure %s." feature))
   (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
 
-(defun! oo-create-new-test-file (file)
+(defun! oo-create-new-test-file (feature)
   "Create a new config file for feature."
-  (interactive "sFile: ")
+  (interactive "sFeature: ")
   (set! dir (expand-file-name "test" user-emacs-directory))
   (set! filename (format "base-%s-test.el" feature))
   (set! comment1 (format "Test %s" feature))
