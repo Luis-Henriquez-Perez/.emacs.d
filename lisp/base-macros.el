@@ -115,6 +115,7 @@ writes to `standard-output'."
      (lef! ((message #'ignore)
             (load
              (lambda (file &optional noerror nomessage nosuffix must-suffix)
+               (ignore nomessage)
                (funcall this-fn file noerror t nosuffix must-suffix)))
             (write-region
              (lambda (start end filename &optional append visit lockname mustbenew)
@@ -544,6 +545,7 @@ take the following forms:
     (set! name (intern (format "oo--%s--set-local-var--%s" hook symbol)))
     (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
     (set! lambda `(lambda (&rest _)
+                    ,docstring
                     (info! "HOOK: %s -> %s" ',hook ',name)
                     (condition-case err
                         (setq-local ,symbol ,value)
