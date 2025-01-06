@@ -25,10 +25,10 @@
 ;; Initialize pomodoro.
 ;;
 ;;; Code:
-(set! pomodoro-sound-player "mpv")
-(set! pomodoro-work-start-sound (expand-file-name "~/bell.wav"))
-(set! pomodoro-work-end-sound (expand-file-name "~/bell.wav"))
-(set! pomodoro-break-start-sound (expand-file-name "~/bell.wav"))
+(opt! pomodoro-sound-player "mpv")
+(opt! pomodoro-work-start-sound (expand-file-name "~/bell.wav"))
+(opt! pomodoro-work-end-sound (expand-file-name "~/bell.wav"))
+(opt! pomodoro-break-start-sound (expand-file-name "~/bell.wav"))
 ;;; provide
 (provide 'init-pomodoro)
 ;;; init-pomodoro.el ends here

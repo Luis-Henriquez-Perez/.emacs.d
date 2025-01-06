@@ -25,6 +25,8 @@
 ;; Initialize logger.
 ;;
 ;;; Code:
+(require 'base)
+
 (defvar oo-logger (lgr-get-logger "main")
   "Object used for logging.")
 
@@ -32,27 +34,22 @@
   "Object used for logging errors.")
 
 ;; Define a formatter.
-(set! ts "%Y-%m-%d %H:%M:%S")
-(set! format "%t [%L] %m")
-(set! formatter (lgr-layout-format :format format :timestamp-format ts))
-(set! message-format "[%L] %m")
-(set! message-formatter (lgr-layout-format :format message-format))
-;; Define the appenders.
-(set! log-buffer-appender (lgr-appender-buffer :buffer (get-buffer-create "*log*")))
-(set! message-buffer-appender (lgr-appender-buffer :buffer (get-buffer "*Messages*")))
-;; Add the formatter to the appenders.
-(lgr-set-layout log-buffer-appender formatter)
-(lgr-set-layout message-buffer-appender message-formatter)
-;; Add the appenders to the logger.
-(lgr-add-appender oo-logger log-buffer-appender)
-(lgr-add-appender oo-error-logger message-buffer-appender)
-(lgr-add-appender oo-error-logger log-buffer-appender)
+(autolet! (set! ts "%Y-%m-%d %H:%M:%S")
+          (set! format "%t [%L] %m")
+          (set! formatter (lgr-layout-format :format format :timestamp-format ts))
+          (set! message-format "[%L] %m")
+          (set! message-formatter (lgr-layout-format :format message-format))
+          ;; Define the appenders.
+          (set! log-buffer-appender (lgr-appender-buffer :buffer (get-buffer-create "*log*")))
+          (set! message-buffer-appender (lgr-appender-buffer :buffer (get-buffer "*Messages*")))
+          ;; Add the formatter to the appenders.
+          (lgr-set-layout log-buffer-appender formatter)
+          (lgr-set-layout message-buffer-appender message-formatter)
+          ;; Add the appenders to the logger.
+          (lgr-add-appender oo-logger log-buffer-appender)
+          (lgr-add-appender oo-error-logger message-buffer-appender)
+          (lgr-add-appender oo-error-logger log-buffer-appender))
 
-(when
-    (>=
-     (lgr-get-threshold oo-logger)
-     lgr-level-info)
-  (lgr-log oo-logger lgr-level-info "foo"))
 ;; I do not want to have to pass in the logger every single time.
 (defmacro info! (msg &rest meta)
   `(lgr-info oo-logger ,msg ,@meta))

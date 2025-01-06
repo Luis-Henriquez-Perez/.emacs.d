@@ -45,16 +45,16 @@ With prefix argument, SELECT-P, prompt for specific icon type to display."
   (interactive "P")
   (if select-p
       (alet! (list 'all-the-icons 'nerd-icons 'none)
-        (completing-read "Choose type of icons: " choices))
+        (completing-read "Choose type of icons: " it))
     (pcase oo-modeline-icons
       ('all-the-icons
-        (require 'all-the-icons)
-        (setq oo-modeline-icons 'nerd-icons))
+       (require 'all-the-icons)
+       (setq oo-modeline-icons 'nerd-icons))
       ('nerd-icons
-        (require 'nerd-icons)
-        (setq oo-modeline-icons nil))
+       (require 'nerd-icons)
+       (setq oo-modeline-icons nil))
       ('nil
-        (setq oo-modeline-icons 'all-the-icons)))))
+       (setq oo-modeline-icons 'all-the-icons)))))
 
 (defun! oo-modeline-cycle-separators (select-p)
   "Cycle through available powerline separators.
