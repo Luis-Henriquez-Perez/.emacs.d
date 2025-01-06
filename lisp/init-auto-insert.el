@@ -25,6 +25,8 @@
 ;; Initialize auto-insert.
 ;;
 ;;; Code:
+(require 'base)
+
 (opt! auto-insert-query nil)
 (hook! on-first-file-hook auto-insert-mode)
 

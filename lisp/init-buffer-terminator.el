@@ -25,6 +25,8 @@
 ;; Initialize buffer-terminator.
 ;;
 ;;; Code:
+(require 'base)
+
 (opt! buffer-terminator-verbose nil)
 (opt! buffer-terminator-inactivity-timeout (* 15 60))
 (hook! on-first-input-hook buffer-terminator-mode)
