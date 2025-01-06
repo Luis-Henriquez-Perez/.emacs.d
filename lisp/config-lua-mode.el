@@ -25,7 +25,7 @@
 ;; Configure lua-mode.
 ;;
 ;;; Code:
-(set! lua-indent-level 4)
+(opt! lua-indent-level 4)
 ;;; provide
 (provide 'config-lua-mode)
 ;;; config-lua-mode.el ends here
