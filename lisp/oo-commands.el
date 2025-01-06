@@ -85,7 +85,7 @@
    (cond ((region-active-p)
 	      (list (region-beginning) (region-end)))
 	     ((save-excursion (aand! "(\\(\\(?:autoload\\|elpaca\\|require\\)\\)"
-                                (re-search-forward it end t nil)))
+                                 (re-search-forward it (point-max) t nil)))
           (list (match-beginning 0) (point-max)))
          (t
           (list nil nil))))
