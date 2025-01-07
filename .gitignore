@@ -5,3 +5,4 @@
 .local/etc/*
 !.local/etc/.gitkeep
 packages/
+./
