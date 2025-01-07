@@ -229,50 +229,62 @@ is already narrowed."
   (oo-ensure-file-header)
   (oo-ensure-provide))
 
+(defun! oo-dwim-vc-push ()
+  (interactive)
+  (pushing! display-buffer-alist '("\\*vc-git"
+                                   (display-buffer-no-window)
+                                   (allow-no-window . t)))
+  (vc-git--pushpull "push" nil (list "--force")))
+
+(defalias 'eshell/dotadd 'oo-dwim-vc-action)
+(defun! oo-dwim-vc-action (file)
+  "Register, stage, commit and push FILE to dotfiles repository.
+If FILE is not in registered in dotfile repo, register it.  In any case commit
+the file.  Additionally, push the file but only if the battery is charging or
+
+the battery percentage is greater than 90%."
+  (interactive (list (or (buffer-file-name)
+                         (read-file-name "Select file to add to dofiles:"))))
+  (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+  (set! root (vc-root-dir))
+  (set! commit-msg (format "%s" (f-relative file root)))
+  ;; Adding the log-edit-files to the display-buffer-alist and even nopping
+  ;; display-buffer does not work.  I have to actually nope the function
+  ;; `log-edit-show-files'.
+  ;; https://mail.gnu.org/archive/html/help-gnu-emacs/2021-02/msg00197.html
+  ;; (noflet! display-buffer #'ignore)
+  ;; ("\\*log-edit-files\\*"
+  ;;  (display-buffer-no-window)
+  ;;  (allow-no-window . t))
+  ;; (noflet! pop-to-buffer #'ignore)
+  (noflet! log-edit-show-files #'ignore)
+  (set! display-buffer-alist `(("\\*vc-git.+\\*"
+                                (display-buffer-no-window)
+                                (allow-no-window . t))
+                               ,@display-buffer-alist))
+  (pcase (vc-state file)
+    ('edited
+     (vc-checkin (list file) backend commit-msg)
+     (oo-dwim-vc-push))
+    ('unregistered
+     (vc-register)
+     (vc-checkin (list file) backend commit-msg)
+     (oo-dwim-vc-push))
+    (_
+     nil)))
+
 (defhook! oo-auto-commit-and-push-dotfile-h (after-save-hook)
   "Commit and push changes to dotfile on save.
 When a buffer is saved, check whether the saved file is part of the dotfiles
 repository and if it is, commit and push all changes.  Otherwise, do nothing."
-  (set! default-directory (expand-file-name "~/"))
-  (aand! (buffer-file-name)
-         (set! command (format "git ls-files %s" (shell-quote-argument (expand-file-name it))))
-         (set! output (shell-command-to-string command))
-         (not (string-empty-p output))
-         (oo-add-dotfile it)))
-
-(defalias 'eshell/dotadd 'oo-add-dotfile)
-(defun! oo-add-dotfile (file)
-  "Register, stage, commit and push FILE to dotfiles repository.
-If FILE is not in registered in dotfile repo, register it.  In any case commit
-the file.  Additionally, push the file but only if the battery is charging or
-the battery percentage is greater than 60%."
-  (interactive (list (or (buffer-file-name)
-                         (read-file-name "Select file to add to dofiles:"))))
-  (set! default-directory (expand-file-name "~/"))
-  (message "Adding dotfile %s" file)
-  (set! fname (expand-file-name (convert-standard-filename file) "~/"))
-  (set! tracked-p (not (string-empty-p (shell-command-to-string (format "git ls-files %s" (shell-quote-argument fname))))))
-  (set! modified-p (not (string-empty-p (shell-command-to-string (format "git diff %s" (shell-quote-argument fname))))))
-  ;; Do not do anything if the file is already tracked and has no changes.
-  (when (and (not modified-p) tracked-p)
-    (return!))
-  (if tracked-p
-      (set! msg (abbreviate-file-name fname))
-    (set! msg (format "Add %s." (abbreviate-file-name fname))))
-  (flet! status (_ status)
-    (if (string-match-p "finished" status)
-        (message "pushed successfully -> %S" status)
-      (message "failed push -> %S" status)))
-  (set! command (format "git add %s && git commit -m %S %s" fname msg fname))
-  (call-process-shell-command command)
-  ;; Do not push if there is a risk of suddenly shutting down and losing
-  ;; information.
-  (require 'battery)
-  (set! battery-percent (string-to-number (battery-format "%p" (funcall battery-status-function))))
-  (set! battery-status (battery-format "%r" (funcall battery-status-function)))
-  (when (or (equal battery-status "N/a") (> battery-percent 60))
-    (set! proc (start-process "git" "*git-auto-push*" "git" "push" "--force"))
-    (set-process-sentinel proc #'status)))
+  (aand! (vc-root-dir)
+         (buffer-file-name)
+         (or (not (equal "Discharging" (battery-format "%B" (funcall battery-status-function))))
+             (> (string-to-number (battery-format "%p" (funcall battery-status-function))) 90))
+         (or (f-same-p it (f-full user-emacs-directory))
+             (f-same-p it (f-full "~")))
+         (not (equal (vc-state (buffer-file-name)) 'unregistered))
+         (oo-dwim-vc-action (buffer-file-name))))
 
 (defun! oo-one-line (beg end)
   "Join lines in the region between BEG and END into a single line.
