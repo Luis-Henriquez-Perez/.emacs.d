@@ -266,7 +266,7 @@ the battery percentage is greater than 90%."
     ('edited
      (vc-checkin (list file) backend commit-msg)
      (oo-dwim-vc-push))
-    (nil
+    ('nil
      (vc-register)
      (vc-checkin (list file) backend commit-msg)
      (oo-dwim-vc-push))
