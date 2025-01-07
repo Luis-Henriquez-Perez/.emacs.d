@@ -236,7 +236,7 @@ If an error is raised from component function."
 
 (defun! oo-modeline-component--branch ()
   "Return the branch name as a modeline segment."
-  (set! (and vc-mode (cadr (split-string (string-trim vc-mode) "^[A-Z]+[-:]+"))))
+  (set! branch (and vc-mode (cadr (split-string (string-trim vc-mode) "^[A-Z]+[-:]+"))))
   (pcase oo-modeline-icons
     ('nerd-icons
      (require 'nerd-icons)
