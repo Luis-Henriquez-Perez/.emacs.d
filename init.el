@@ -56,6 +56,7 @@
 ;; Don't render the modeline on startup.  For one thing, the startup looks
 ;; better without flashing stuff on the screen.  Additionally, the more that's
 ;; saved on rendering, the faster the startup.
+(set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
