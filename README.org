@@ -1,20 +1,22 @@
 #+begin_html
 <h1 align="center">OO Emacs</h1>
 <p align="center">
-  <img width="1024px" src="emacs-screenshot-d585a4a.png" alt="Banner">
+  <img width="1024px" src=".local/share/screenshots/emacs-screenshot-d585a4a.png" alt="Banner">
 </p>
 #+end_html
 
-* Introduction
+This is my personal emacs configuration.
+
+* Principles and Goals
 :PROPERTIES:
 :ID:       20240408T163238.363404
 :END:
-OO Emacs is my personal emacs configuration.  By design it is intended to be:
-- *performant*
-  OO emacs should startup as fast as possible and consequently my startup time
-  should be as low as possible.  Furthermore, the experience
-  while using emacs should be responsive fast and snappy.  As of this version,
-  ~(emacs-init-time)~ is "3.882691 seconds" without compilation.
+- *performant* (Work in progress)
+  Startup should be as fast as possible (ideally
+  less than a second) and consequently my startup time should be as low as
+  possible.  Furthermore, the experience while using emacs should be responsive
+  fast and snappy.  As of this version, ~(emacs-init-time)~ is "3.882691 seconds"
+  without compilation.
 - *introspectable*
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
@@ -22,23 +24,23 @@ OO Emacs is my personal emacs configuration.  By design it is intended to be:
   this end I use [[https://github.com/Fuco1/emacs-lgr][lgr]] to create an extensive log buffer.
 - *expressive*
   I want expressive and powerful functions and macros at my disposal that help
-  me do what I want sanely, concisely and with precision.  See my.
+  me do what I want sanely, concisely and with precision.
 - *stable*
   I should be able to count on things working properly.  To this end I created
   tests.
-- *correct*
+- *correct* (Work in Progress)
   My configuration should follow standards determined by the compiler
   whenever they are reasonable and make sense.  Compiling my configuration
   should result in no warnings.
-- *reproducable*
+- *reproducable* (Work in Progress)
   I should be able to recreate my exact configuration--with all my
   external packages and their exact committs.  Right now I use package.el but I
   will eventually migrate to either [[https://github.com/progfolio/elpaca][elpaca]] or [[https://github.com/emacscollective/borg?tab=readme-ov-file][borg]].
-- *well-documented*
+- *well-documented* (Work In Progress)
   Every function and macro should have a thorough docstring explaining what it
   does.  Moreover, each file should have its own commentary explaining its
   purpose as well as any other tidbits I deem useful.
-- *tested*
+- *tested* (Work In Progress)
   Every function and macro should have evidence that it does what it claims to
   do in the form of a test.  This helps me not only ensure that any refactoring
   preserves the expected behavior of a function or macro but also it provides me
@@ -51,45 +53,77 @@ OO Emacs is my personal emacs configuration.  By design it is intended to be:
 :PROPERTIES:
 :ID:       20240408T163225.997099
 :END:
-- Optimized for speed by evaluating macros during compilation
-- Extensive abbrev configuration
+- +Optimized for speed by evaluating macros during compilation+ (Work in Progress)
+- Extensive abbrev configuration with over 1000 abbrevs
 - Spacemacs-like keybinding scheme
 - Advanced macros such as [[./lisp/oo-progn-macro.el][block!]] and [[./lisp/oo-let-macro.el][lef!]]
 - Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
-- Generates functions specifically designed to be hooks and advices
+- Gracefully handle errors raised in hooks with custom hook functions
 - Extensively log events using [[https://github.com/Fuco1/emacs-lgr][lgr]]
+- Custom modeline created with [[https://github.com/milkypostman/powerline][powerline]]
+- Ensures using [[https://github.com/emacscollective/no-littering][no-littering]]
+- Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 * File Structure
 :PROPERTIES:
 :ID:       20240408T164104.628646
 :END:
-- [[file:./init.el][init.el]] - Loads everything else.
-- base files - Define tools that will help me configure emacs and that will be
-  used pervasively throughout init and after-load files.
-- init files (init-FEATURE.el) - These are files that can be loaded immediately.  Their objective
-  is to initialize a package to be used in my configuration.  Usually
-  that means adding hooks, setting bindings and autoloading functions.
-- config files (config-FEATURE.el) - These are files that by init files after some feature is loaded.
-  These files should not be loaded immediately because they contain funtionality
-  or perform computations that are only needed when a particular package is
-  loaded.
-The init and config files are named strictly after packages.  Typically in Emacs
-configurations these files are named after some functionality the files are
-adding--a name might be for example "init-editing" or "init-completion".  I
-specifically choose not to do this because I find that the category is
-opinionated an has a tendency to become nebulous and obscure.
+There were several motivators behind how I designed my file system.  First, I
+wanted to avoid the segregation of packages into self-ordained categories.  An
+example would be placing packages concerning editing into a file like
+"init-editing.el".  To me this inevitably creates confusion as to which packages
+are "editing" packages and which are not.  This in mind, files are named
+strictly after the primary feature to which they pertain.  And although this
+means that I will likely have several times more configuration files than the
+average user, it does make it immediately apparent which files concern which
+package.  Furthermore, I wanted the code files to lend themselves deferred
+loading.  For me this means.  The following files and their functions are the
+result of these needs.
+
+  - [[file:./init.el][init.el]] /Initialize my emacs configuration/.
+
+  This means adding the lisp directory to the load-path,  loading all of the
+  =init-FEATURE.el= files, and setting up necessary initial variables.
+
+  - *lisp/base-SOMETHING.el* - /Provide configuration functions and macros./
+
+  Usually these files will set some initial variables or provide me with macros
+  and functions for helping me configure emacs.  These are loaded before.
+
+  - *lisp/init-FEATURE.el* - /Initialize FEATURE./
+
+  Typically that means adding hooks or advices, setting variables, binding keys
+  and autoloading functions.  Crucially, refrain from loading FEATURE or any
+  other features unless absolutely necessary.
+
+  - *lisp/config-FEATURE.el* - /Configure FEATURE./
+
+  This *should not* be Loaded immediately because it will require FEATURE. it
+  contains funtionality that is only needed after FEATURE is already loaded.
+  This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~
+
+  - *lisp/oo-SOMENAME* - /Some file I use but do not know what to do with yet./
+
+  These are files that do not fit into the category of the other lisp files I
+  have mentioned.  This is an unfleshed out part of my design which needs
+  further consideration and improvement.
+
+  - *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
+
+    Use [[https://www.gnu.org/software/emacs/manual/html_node/ert/][ert]] to thoroughly test functions and macros in BASEFILE.  These test are
+    designed to be run with [[https://emacs-eldev.github.io/eldev/][eldev]] but of course can also be run.
+
+  - *.local/var/* - /Store Persistent data/.
+
+    This directory is for storing cache data which is inappropriate to version
+    control.  The =recentf-save-file= is an example.
+
+  - *.local/etc/* - /Store autogenerated configuration./
+
+  - *.local/share* - /Store things I want stored but do not want seen./
+
+    For now this just contains screenshots.
+
 * Naming Convention
-I prefix internal functions and variables with =oo=, the kind that are not related
-to a specific package but that are for generally managing my configuration.  But
-if I feel a function is an extension for another feature then I make the
-extension =+FEATURE=.  I took this idea from doom and the reasoning--for me at
-least, I do not know for doom--is that this name is concise and it connotes that
-it is an extension for said feature.  Without this naming scheme there would be
-/many/ more functions prefixed with =oo=.  It greatly reduces the amount of
-functions prefixed with =oo=.
-* why the name =OO=?
-:PROPERTIES:
-:ID:       20240408T215953.404277
-:END:
 I chose the prefix "oo" that I use because it is short and something that I
 thought would not likely to be the prefix for an emacs package.  Also, I thought
 that the characters =oo= were smooth an easy to read as opposed to something like
@@ -97,40 +131,50 @@ that the characters =oo= were smooth an easy to read as opposed to something lik
 though I remember having thought about it.  Later, I wanted some gimmick related
 to the name/main prefix of my configuration as I see several configurations
 have.  Consider [[https://github.com/syl20bnr/spacemacs][Spacemacs]] and [[https://github.com/doomemacs/doomemacs][Doom Emacs]] for example.  Then I thought that two
-Os next to each other kind of look like the infinity sign hence the name infinity emacs.
-* specs
-(emacs-version) - "GNU Emacs 29.4 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.43, cairo version 1.18.2)"
+Os next to each other kind of look like the infinity sign hence the name
+infinity emacs.
+
+I prefix internal functions and variables with =oo=, the kind that are not related
+to a specific package but that are for generally managing my configuration.  But
+if I feel a function is an extension for another feature then I make the
+extension =+FEATURE=.  I took this idea from doom and my reasoning is that this
+name is concise and it connotes that it is an extension for said feature.
+Without this naming scheme there would be /many/ more functions prefixed with =oo=.
+* How to Install
+Simply clone the repo.  You may also want to install nerd-fonts.  I will note
+that my emacs config is not a distribution like doom, spacemacs or prelude.  I
+did not write it with the intention of it being used by others.  Not that others
+cannot use it.
+#+begin_src
+git clone https://github.com/Luis-Henriquez-Perez/.emacs.d ~/.config/emacs/
+#+end_src
 * Acknowledgements
 :PROPERTIES:
 :ID:       20240408T163913.888904
 :END:
-There are countless websites as well as several configurations--it would be hard
-for me to cite everything.  But I do want to mention [[https://github.com/d12frosted/environment/tree/master/emacs][d12frosted's environment]]
-from which I took influence as to using eldev, as well as the file structure.
-And I also want to mention [[https://github.com/doomemacs/doomemacs][Doom Emacs]] from which this README is based on and
-from which a lot of code in my configuration was inspired.
-* roadmap
-:PROPERTIES:
-:ID:       20240410T155100.874569
-:END:
-This is a roadmap for what I need of get done to go up a version.
-** 0.2
-:PROPERTIES:
-:ID:       20240410T154926.870213
-:END:
-*** TODO there should not be any compiler warnings anymore
-:PROPERTIES:
-:ID:       20240410T154944.800073
-:END:
-*** TODO all functions and macros should have a test
-:PROPERTIES:
-:ID:       20240410T155016.682063
-:END:
-*** TODO a keybinding macro, =bind!= that binds my keys
-:PROPERTIES:
-:ID:       20240410T155525.987034
-:END:
-*** TODO should be able to reproduce dotfiles on another machine with one command
-:PROPERTIES:
-:ID:       20240410T155808.253874
-:END:
+There are too many to list and thank.  I should be thanking all those who have
+contributed to emacs as well as all the authors and contributors to the packages
+I use.  Additionally, I should thank the writers of countless blog posts, reddit
+posts and youtube videos I have learned from.  Because of my limited memory I
+will only name a few of these that I remember well.
+- [[https://github.com/d12frosted/environment/tree/master/emacs][d12frosted's environment]]
+
+  This configuration inspired me to organize my
+  emacs-lisp files into init and config files, to use eldev and to compile my
+  lisp files.  In turn, this lead me to discover standard conventions
+  such as using a copyright header, ending each file with a =provide= form.
+
+- [[https://github.com/doomemacs/doomemacs][Doom Emacs]]
+
+  Doom inspired my naming conventions as well as some macros such as =quietly!=.
+
+- [[https://www.spacemacs.org/][Spacemacs]]
+
+  Spacemacs was actually the first framework that I used when starting emacs.
+  It inspired how I organize my keybindings and it also introduced me to
+  evil and gave me the idea to have varying cursor colors.
+
+- Xah Lee
+
+  Xah Lee has created a great repository of information for emacs
+  usage in [[http://xahlee.info/emacs/][his website]].  It is an excellent supplement to the manual.
