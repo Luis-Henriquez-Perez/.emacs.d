@@ -166,19 +166,17 @@ If an error is raised from component function."
 ;;;; components
 (defun oo-modeline-component--untracked ()
   "Indicate if a file is apart of a project directory but is not tracked."
-  (and (buffer-file-name)
-       (locate-dominating-file (buffer-file-name) ".git")
-       (string-empty-p (shell-command-to-string (format "git ls-files %s" buffer-file-name)))
+  (and (equal (vc-state (buffer-file-name)) 'unregistered)
        (pcase oo-modeline-icons
          ('nerd-icons
-           (require 'nerd-icons)
-           ;; (format "%s %s" (nerd-icons-powerline "nf-pl-line_number") ln)
-           (all-the-icons-faicon "times" :v-adjust +0.02))
+          (require 'nerd-icons)
+          ;; (format "%s %s" (nerd-icons-powerline "nf-pl-line_number") ln)
+          (all-the-icons-faicon "times" :v-adjust +0.02))
          ('all-the-icons
-           (require 'all-the-icons)
-           (all-the-icons-faicon "times" :v-adjust +0.02))
+          (require 'all-the-icons)
+          (all-the-icons-faicon "times" :v-adjust +0.02))
          (_
-          "untracked"))))
+          "UNTRACKED"))))
 
 (defun! oo-modeline-component--line-number ()
   "Return the line-number component for the mode line."
@@ -238,18 +236,16 @@ If an error is raised from component function."
 
 (defun! oo-modeline-component--branch ()
   "Return the branch name as a modeline segment."
-  (set! branch (string-trim (shell-command-to-string "git rev-parse --abbrev-ref HEAD")))
+  (set! (and vc-mode (cadr (split-string (string-trim vc-mode) "^[A-Z]+[-:]+"))))
   (pcase oo-modeline-icons
     ('nerd-icons
-      (require 'nerd-icons)
-      (set! icon (nerd-icons-devicon "nf-dev-git_branch" :v-adjust -0.01))
-      (format "%s %s" icon branch))
+     (require 'nerd-icons)
+     (set! icon (nerd-icons-devicon "nf-dev-git_branch" :v-adjust -0.01))
+     (format "%s %s" icon branch))
     ('all-the-icons
-      (require 'all-the-icons)
-      (set! icon (all-the-icons-octicon "git-branch"  :v-adjust -0.01))
-      ;; (set! remote (shell-command-to-string "git rev-parse --abbrev-ref --symbolic-full-name @{u}"))
-      ;; (set! unmerged-commits (shell-command-to-string "git rev-list --count HEAD..%s" remote))
-      (format "%s %s" icon branch))
+     (require 'all-the-icons)
+     (set! icon (all-the-icons-octicon "git-branch"  :v-adjust -0.01))
+     (format "%s %s" icon branch))
     (_
      branch)))
 
