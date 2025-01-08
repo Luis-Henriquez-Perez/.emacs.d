@@ -4,7 +4,7 @@
 ** TODO Fix =powerline-width= correctly computing the width with icons.
 ** TODO 
 ** TODO 
-** TODO Fix =powerline-width= correctly computing the width with icons.
+** TODO 
 ** TODO Fix =powerline-width= correctly computing the width with icons.
  - [ ] 
  - [ ] Replace bind macro with much simpler function.
