@@ -3,4 +3,4 @@
 * 0.1.0
  - [ ] Fix =powerline-width= correctly computing the width with icons.
  - [ ] Replace bind macro with much simpler function.
- - [ ] Use 
+ - [ ] Move all keybindings into a single file 
