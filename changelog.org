@@ -4,3 +4,4 @@
 ** TODO Fix =powerline-width= correctly computing the width with icons.
 ** TODO Replace bind macro with much simpler function.
 ** TODO Move all keybindings into a single file 
+** Fix org appear error
