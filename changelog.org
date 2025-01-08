@@ -5,4 +5,4 @@
 ** TODO Replace bind macro with much simpler function.
 ** TODO Move all keybindings into a single file 
 ** TODO Fix org appear error
-** TODO 
+** TODO eliminate all compilation warnings
