@@ -2,11 +2,7 @@
 
 * 0.1.0
 ** TODO Fix =powerline-width= correctly computing the width with icons.
+** TODO Replace bind macro with much simpler function.
+** TODO Move all keybindings into a single file 
 ** TODO 
 ** TODO 
-** TODO 
-** TODO 
- - [ ] 
- - [ ] Replace bind macro with much simpler function.
- - [ ] Move all keybindings into a single file 
- - [ ]
