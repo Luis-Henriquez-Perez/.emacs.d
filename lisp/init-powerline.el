@@ -163,6 +163,7 @@ If an error is raised from component function."
     (concat (powerline-render (oo--modeline-render-lhs left faces))
             (powerline-fill (car faces) (powerline-width it))
             (powerline-render it))))
+
 ;;;; components
 (defun oo-modeline-component--untracked ()
   "Indicate if a file is apart of a project directory but is not tracked."
