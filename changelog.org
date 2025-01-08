@@ -3,7 +3,7 @@
 * 0.1.0
 ** TODO Fix =powerline-width= correctly computing the width with icons.
 ** TODO 
-** TODO Fix =powerline-width= correctly computing the width with icons.
+** TODO 
 ** TODO Fix =powerline-width= correctly computing the width with icons.
 ** TODO Fix =powerline-width= correctly computing the width with icons.
  - [ ] 
