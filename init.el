@@ -78,6 +78,7 @@
 (require 'init-startup)
 (require 'init-vc-hooks)
 (require 'init-window)
+(require 'init-saveplace)
 ;; External packages
 (require 'init-ace-window)
 (require 'init-aggressive-indent)
