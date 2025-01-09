@@ -130,7 +130,6 @@
 (require 'init-outli)
 (require 'init-outline)
 (require 'init-pomodoro)
-(require 'init-powerline)
 (require 'init-rainbow-delimiters)
 (require 'init-re-builder)
 (require 'init-recentf)
