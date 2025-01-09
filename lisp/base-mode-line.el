@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize powerline.
+;; Initialize my modeline.
 ;;
 ;;; Code:
 (require 'base)
