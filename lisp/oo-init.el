@@ -320,6 +320,37 @@ file is loaded."
            (set! fn `(lambda () (require ',feature ,path nil)))
            (info! "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
+;;;; Mark certain places as read-only
+;; Be cautious about opening certain files, particular those not under version
+;; control because I not be able to undo changes.
+(defvar oo-auto-read-only-patterns (list (regexp-quote (expand-file-name "~/.config/emacs/packages/"))
+                                         (regexp-quote (expand-file-name "~/Documents/"))
+                                         #'oo--vc-untracked-file-p)
+  "File paths matching any pattern in list will be started in read-only-mode.
+A pattern is either a regular expression or a function that takes one argument,
+the file path, and returns true if the path should be opened in view-mode.")
+
+(defun oo--vc-untracked-file-p (&optional file)
+  "Return non-nil if FILE is untracked by version control."
+  (or (not vc-mode)
+      (member (vc-status (or file (buffer-file-name))) '(unregistered nil))))
+
+(defun! oo--auto-read-only-maybe (&rest _)
+  "Make file read-only if it matches any pattern in `oo-auto-read-only-patterns`."
+  (set! file-path buffer-file-name)
+  (dolist (item oo-auto-read-only-patterns)
+    (cond ((stringp item)
+           (when (string-match-p item file-path)
+             (info! "opening %s in view-mode matched %S" file-path item)
+             (view-mode t)
+             (return!)))
+          ((functionp item)
+           (when (funcall item file-path)
+             (info! "opening %s in view-mode matched %S" file-path item)
+             (view-mode t)
+             (return!))))))
+
+(add-hook 'find-file-hook #'oo--auto-read-only-maybe)
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
