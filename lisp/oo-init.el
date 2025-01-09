@@ -95,7 +95,7 @@ file is loaded."
   ;; I need to put the modeline in a variable so that the modeline does not
   ;; treat any strings as modeline constructs.  Why?  I want to do it myself so
   ;; that I can precompute the length of the segment.
-  (require 'init-powerline)
+  (require 'base-mode-line)
   (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-modeline-main (oo-modeline-main)) "")) oo-modeline-main))
   (oo-modeline-update))
 ;;;; keybindings
