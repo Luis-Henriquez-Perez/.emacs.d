@@ -221,12 +221,12 @@ file is loaded."
 ;; This is very basic font setting based on available faces.  I have seen much
 ;; more complex font setups like in minemacs (which probably got its from doom)
 ;; but for now this will do.
-(defvar oo-default-fonts (list (font-spec :family "CaskaydiaCove Nerd Font Mono"
+(defvar oo-default-fonts (list (font-spec :family "RecMonoDuotone Nerd Font"
                                           :weight 'regular
                                           :slant 'normal
                                           :width 'normal
                                           :size 18)
-                               (font-spec :family "RecMonoDuotone Nerd Font"
+                               (font-spec :family "CaskaydiaCove Nerd Font Mono"
                                           :weight 'regular
                                           :slant 'normal
                                           :width 'normal
