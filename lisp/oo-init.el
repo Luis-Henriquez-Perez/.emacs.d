@@ -97,7 +97,7 @@ file is loaded."
   ;; that I can precompute the length of the segment.
   (require 'base-mode-line)
   (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-modeline-main (oo-modeline-main)) "")) oo-modeline-main))
-  (oo-modeline-update))
+  (oo-mode-line-update))
 ;;;; keybindings
 ;;;;; declare override-mode
 (require 'bind-key)
