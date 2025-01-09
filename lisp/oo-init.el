@@ -96,7 +96,7 @@ file is loaded."
   ;; treat any strings as modeline constructs.  Why?  I want to do it myself so
   ;; that I can precompute the length of the segment.
   (require 'base-mode-line)
-  (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-modeline-main (oo-modeline-main)) "")) oo-modeline-main))
+  (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
   (oo-mode-line-update))
 ;;;; keybindings
 ;;;;; declare override-mode
@@ -221,7 +221,7 @@ file is loaded."
 ;; This is very basic font setting based on available faces.  I have seen much
 ;; more complex font setups like in minemacs (which probably got its from doom)
 ;; but for now this will do.
-(defvar oo-default-fonts (list (font-spec :family "RecMonoDuotone Nerd Font"
+(defvar oo-default-fonts (list (font-spec :family "JetBrainsMono Nerd Font"
                                           :weight 'regular
                                           :slant 'normal
                                           :width 'normal
@@ -236,7 +236,7 @@ file is loaded."
                                           :slant 'normal
                                           :width 'normal
                                           :size 18)
-                               (font-spec :family "JetBrainsMono Nerd Font"
+                               (font-spec :family "RecMonoDuotone Nerd Font"
                                           :weight 'regular
                                           :slant 'normal
                                           :width 'normal
