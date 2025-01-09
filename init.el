@@ -80,6 +80,7 @@
 (require 'init-window)
 (require 'init-saveplace)
 ;; External packages
+(require 'init-auto-read-only)
 (require 'init-ace-window)
 (require 'init-aggressive-indent)
 (require 'init-avy)
