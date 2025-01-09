@@ -1,7 +1,16 @@
 * 0.4.0
 
 * 0.1.0
-** TODO Fix =powerline-width= correctly computing the width with icons.
+** DONE Fix =powerline-width= correctly computing the width with icons.
+CLOSED: [2025-01-09 Thu 14:14]
+- CLOSING NOTE [2025-01-09 Thu 14:14] \\
+  One problem was that the mode line string I was using had mode line constructs.
+  To get the proper measurements of the mode line so that I could right-align it I
+  would use =string-pixel-width= on said string and then when passing them into
+  =:eval= the mode line would expand them--often changing the width of the mode line
+  string I had measured.  As a result, the mode line was always off.
+
+  The other problem is I was not accounting for the fringe.
 Modeline now does not "overflow"--all the segments are visible.  But sometimes
 it fails to fill the entire window.
 ** TODO Replace bind macro with much simpler function.
