@@ -1,7 +1,14 @@
 * 0.4.0
 
-* 
-* 0.3.0
- - [ ] Fix =powerline-width= correctly computing the width with icons.
- - [ ] Replace bind macro with much simpler function.
- - [ ] Use 
+* 0.1.0
+** TODO Fix =powerline-width= correctly computing the width with icons.
+Modeline now does not "overflow"--all the segments are visible.  But sometimes
+it fails to fill the entire window.
+** TODO Replace bind macro with much simpler function.
+** TODO Move all keybindings into a single file
+** TODO Fix org appear error
+** TODO Eliminate all compilation warnings
+** TODO Add option to toggle the use of separators to modeline
+** TODO Add lisp-indent hack to my config
+** TODO stop abbrev from aggressively going to previous newline
+** TODO incorporate read-only package
