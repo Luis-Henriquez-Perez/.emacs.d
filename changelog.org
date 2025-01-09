@@ -15,4 +15,4 @@ it fails to fill the entire window.
 CLOSED: [2025-01-09 Thu 14:12]
 - CLOSING NOTE [2025-01-09 Thu 14:12] \\
   The read-only package was small enough for me to just add.
-** TODO 
+** TODO definiteively make a standard for adding hooks
