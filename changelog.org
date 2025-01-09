@@ -26,3 +26,4 @@ CLOSED: [2025-01-09 Thu 14:12]
   The read-only package was small enough for me to just add.
 ** TODO definiteively make a standard for adding hooks
 ** TODO use =trace!= for some hooks because they are polluting the log
+** TODO rice up the dashboard
