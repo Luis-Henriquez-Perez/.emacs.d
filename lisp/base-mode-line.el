@@ -1,4 +1,4 @@
-;;;  --- Initialize powerline -*- lexical-binding: t; -*-
+;;; Base-mode-line.el --- Initialize powerline -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -564,5 +564,5 @@ With prefix argument, SELECT-P, select one explicitly."
     (setq powerline-default-separator (seq-random-elt separators))
     (powerline-reset)))
 ;;; provide
-(provide 'init-powerline)
-;;; init-powerline.el ends here
+(provide 'Base-mode-line)
+;;; Base-mode-line.el ends here
