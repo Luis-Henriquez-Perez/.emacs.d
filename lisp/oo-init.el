@@ -320,7 +320,7 @@ file is loaded."
            (set! fn `(lambda () (require ',feature ,path nil)))
            (info! "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
-;;;; Mark certain places as read-only
+;;;; mark certain places as read-only
 ;; Be cautious about opening certain files, particular those not under version
 ;; control because I not be able to undo changes.
 (defvar oo-auto-read-only-patterns (list (regexp-quote (expand-file-name "~/.config/emacs/packages/"))
