@@ -1,4 +1,4 @@
-;;; init-powerline.el --- Initialize powerline -*- lexical-binding: t; -*-
+;;;  --- Initialize powerline -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
