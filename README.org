@@ -11,12 +11,11 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T163238.363404
 :END:
-- *performant* (Work in progress)
-  Startup should be as fast as possible (ideally
-  less than a second) and consequently my startup time should be as low as
-  possible.  Furthermore, the experience while using emacs should be responsive
-  fast and snappy.  As of this version, ~(emacs-init-time)~ is "3.882691 seconds"
-  without compilation.
+- *performant* (WIP) Startup should be as fast as possible (ideally less than a
+  second) and consequently my startup time should be as low as possible.
+  Furthermore, the experience while using emacs should be responsive fast and
+  snappy.  As of this version, ~(emacs-init-time)~ is "3.882691 seconds" without
+  compilation.
 - *introspectable*
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
@@ -25,22 +24,22 @@ This is my personal emacs configuration.
 - *expressive*
   I want expressive and powerful functions and macros at my disposal that help
   me do what I want sanely, concisely and with precision.
-- *stable*
+- *stable* (WIP)
   I should be able to count on things working properly.  To this end I created
   tests.
-- *correct* (Work in Progress)
+- *correct* (WIP)
   My configuration should follow standards determined by the compiler
   whenever they are reasonable and make sense.  Compiling my configuration
   should result in no warnings.
-- *reproducable* (Work in Progress)
+- *reproducable* (WIP)
   I should be able to recreate my exact configuration--with all my
   external packages and their exact committs.  Right now I use package.el but I
   will eventually migrate to either [[https://github.com/progfolio/elpaca][elpaca]] or [[https://github.com/emacscollective/borg?tab=readme-ov-file][borg]].
-- *well-documented* (Work In Progress)
+- *well-documented* (WIP)
   Every function and macro should have a thorough docstring explaining what it
   does.  Moreover, each file should have its own commentary explaining its
   purpose as well as any other tidbits I deem useful.
-- *tested* (Work In Progress)
+- *tested* (WIP)
   Every function and macro should have evidence that it does what it claims to
   do in the form of a test.  This helps me not only ensure that any refactoring
   preserves the expected behavior of a function or macro but also it provides me
@@ -53,7 +52,7 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T163225.997099
 :END:
-- +Optimized for speed by evaluating macros during compilation+ (Work in Progress)
+- Optimized for speed by evaluating macros during compilation (WIP)
 - Extensive abbrev configuration with over 1000 abbrevs
 - Spacemacs-like keybinding scheme
 - Advanced macros such as [[./lisp/oo-progn-macro.el][block!]] and [[./lisp/oo-let-macro.el][lef!]]
@@ -67,18 +66,6 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T164104.628646
 :END:
-There were several motivators behind how I designed my file system.  First, I
-wanted to avoid the segregation of packages into self-ordained categories.  An
-example would be placing packages concerning editing into a file like
-"init-editing.el".  To me this inevitably creates confusion as to which packages
-are "editing" packages and which are not.  This in mind, files are named
-strictly after the primary feature to which they pertain.  And although this
-means that I will likely have several times more configuration files than the
-average user, it does make it immediately apparent which files concern which
-package.  Furthermore, I wanted the code files to lend themselves deferred
-loading.  For me this means.  The following files and their functions are the
-result of these needs.
-
   - [[file:./init.el][init.el]] /Initialize my emacs configuration/.
 
   This means adding the lisp directory to the load-path,  loading all of the
@@ -123,28 +110,20 @@ result of these needs.
 
     For now this just contains screenshots.
 
-* Naming Convention
+* Naming Convention (WIP)
 I chose the prefix "oo" that I use because it is short and something that I
 thought would not likely to be the prefix for an emacs package.  Also, I thought
 that the characters =oo= were smooth an easy to read as opposed to something like
 =xx= which I had tried prior. I do not know why I did not do just a single =o=
-though I remember having thought about it.  Later, I wanted some gimmick related
-to the name/main prefix of my configuration as I see several configurations
-have.  Consider [[https://github.com/syl20bnr/spacemacs][Spacemacs]] and [[https://github.com/doomemacs/doomemacs][Doom Emacs]] for example.  Then I thought that two
-Os next to each other kind of look like the infinity sign hence the name
-infinity emacs.
+though I remember having thought about it.
 
-I prefix internal functions and variables with =oo=, the kind that are not related
-to a specific package but that are for generally managing my configuration.  But
-if I feel a function is an extension for another feature then I make the
-extension =+FEATURE=.  I took this idea from doom and my reasoning is that this
-name is concise and it connotes that it is an extension for said feature.
-Without this naming scheme there would be /many/ more functions prefixed with =oo=.
+Sometimes if I feel a function is an extension for another feature then I make
+the extension =+FEATURE=.  I took this idea from doom and my reasoning is that
+this name is concise and it connotes that it is an extension for said feature.
 * How to Install
-Simply clone the repo.  You may also want to install nerd-fonts.  I will note
+Simply clone the repo.  You may also want to install nerd-fonts.  Note
 that my emacs config is not a distribution like doom, spacemacs or prelude.  I
-did not write it with the intention of it being used by others.  Not that others
-cannot use it.
+did not write it with the specific intention of it being used by others.
 #+begin_src
 git clone https://github.com/Luis-Henriquez-Perez/.emacs.d ~/.config/emacs/
 #+end_src
