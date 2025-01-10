@@ -357,7 +357,6 @@ If the current buffer is modified."
   (when (bound-and-true-p evil-mode)
     (symbol-name evil-state)))
 
-(oo-mode-line-component--battery)
 (defun! oo-mode-line-component--battery ()
   "Return mode line battery indicator."
   (set! status (funcall battery-status-function))
@@ -366,8 +365,8 @@ If the current buffer is modified."
   (set! battery-status (battery-format "%B" (funcall battery-status-function)))
   (pcase oo-mode-line-icons
     ('nerd-icons
-     ;; If the battery's good, why display it.
-     (cond ((not display-charging-p)
+     (cond ((and (not display-charging-p) (equal battery-status "Charging"))
+            ;; If the battery's good, why display it?
             "")
            ((equal battery-status "Charging")
             (set! name (format "nf-md-battery_charging_%s" (* (/ percentage 10) 10)))
