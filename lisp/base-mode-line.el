@@ -497,9 +497,9 @@ This means the line number and percentage."
   (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
   (set! evil-face (spaceline-highlight-face-evil-state))
   (set! lhs '(evil-state (narrow read-only kbd-macro buffer-modified buffer-name) version-control))
-  (set! rhs )
+  (set! rhs '(text-scale pomodoro battery buffer-location current-time))
   (oo-mode-line-render '(evil-state buffer-info version-control)
-                       '(text-scale pomodoro battery buffer-location current-time)
+                       lhs
                        `(,fill-face ,evil-face ,face1 ,face2 ,face3)))
 ;;;; commands
 (defun oo-mode-line-increment-height ()
