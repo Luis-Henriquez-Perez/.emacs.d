@@ -496,6 +496,7 @@ This means the line number and percentage."
   (set! face3 (if active 'powerline-active2 'powerline-inactive2))
   (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
   (set! evil-face (spaceline-highlight-face-evil-state))
+  (set! lhs '(evil-state ()))
   (oo-mode-line-render '(evil-state buffer-info version-control)
                        '(text-scale pomodoro battery buffer-location current-time)
                        `(,fill-face ,evil-face ,face1 ,face2 ,face3)))
