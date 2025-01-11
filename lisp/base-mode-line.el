@@ -381,7 +381,10 @@ If the current buffer is modified."
   (set! battery-status (battery-format "%B" status))
   (pcase oo-mode-line-icons
     ('nerd-icons
-     (cond ((and (not display-charging-p) (equal battery-status "Charging"))
+     (cond ((and (not display-charging-p)
+                 (or (equal battery-status "Charging")
+                     (and (equal battery-status "Not charging")
+                          (> percentage 95))))
             ;; If the battery's good, why display it?
             "")
            ;; There's a distinction between charging, not charging and
