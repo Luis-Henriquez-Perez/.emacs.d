@@ -378,12 +378,15 @@ If the current buffer is modified."
   (set! status (funcall battery-status-function))
   (set! display-charging-p nil)
   (set! percentage (round (string-to-number (battery-format "%p" status))))
-  (set! battery-status (battery-format "%B" (funcall battery-status-function)))
+  (set! battery-status (battery-format "%B" status))
   (pcase oo-mode-line-icons
     ('nerd-icons
      (cond ((and (not display-charging-p) (equal battery-status "Charging"))
             ;; If the battery's good, why display it?
             "")
+           ;; There's a distinction between charging, not charging and
+           ;; discharging.  When the battery's completely full the computer's
+           ;; status becomes "Not charging" even though it is already plugged in.
            ((equal battery-status "Charging")
             (set! name (format "nf-md-battery_charging_%s" (* (/ percentage 10) 10)))
             (set! icon (nerd-icons-mdicon name :face 'success))
@@ -391,22 +394,21 @@ If the current buffer is modified."
             (format "%s %s" percent-indicator icon))
            (t
             (set! face (cond ((> percentage 80) 'success) ((> percentage 40) 'warning) (t 'error)))
-            (set! name (format "nf-md-battery_%s" (* (/ percentage 10) 10)))
+            (set! name (alet! (* (/ percentage 10) 10)
+                         (if (= 100 it)
+                             (format "nf-md-battery" it)
+                           (format "nf-md-battery_%s" it))))
             (set! icon (nerd-icons-mdicon name))
             (propertize (format "%s %s" (concat (number-to-string percentage) "%") icon) 'face face))))
-    ;; ('all-the-icons
-    ;;  (cond (charging-p "")
-    ;;        ((> percentage 90)
-    ;;         (all-the-icons-faicon "battery-full" :v-adjust 0.01))
-    ;;        ((> percentage 80)
-    ;;         (format "%s %s" (all-the-icons-faicon "battery-three-quarters") percentage))
-    ;;        ((> percentage 70)
-    ;;         (format "%s %s" (all-the-icons-faicon "battery-three-quarters") percentage))
-    ;;        ((> percentage 60)
-    ;;         (format "%s %s" (all-the-icons-faicon "battery-three-quarters") percentage))
-    ;;        ((> percentage 50)
-    ;;         ())))
-    ))
+    ('all-the-icons
+     (cond ((> percentage 90)
+            (all-the-icons-faicon "battery-full" :v-adjust 0.01))
+           ((> percentage 60)
+            (format "%s %s" (all-the-icons-faicon "battery-three-quarters") percentage))
+           ((> percentage 50)
+            (format "%s %s" (all-the-icons-faicon "battery-half") percentage))
+           ((> percentage 25)
+            (format "%s %s" (all-the-icons-faicon "battery-quarter") percentage))))))
 
 (declare-function emms-track-description "emms")
 (declare-function emms-playlist-current-selected-track "emms")
