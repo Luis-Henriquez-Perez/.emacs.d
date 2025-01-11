@@ -357,6 +357,22 @@ If the current buffer is modified."
   (when (bound-and-true-p evil-mode)
     (symbol-name evil-state)))
 
+(defun oo-mode-line-component--text-scale ()
+  "Indicate whether the text is scaled and by how much."
+  (and (boundp 'text-scale-mode-amount)
+       (/= text-scale-mode-amount 0)
+       (pcase oo-mode-line-icons
+         ('all-the-icons
+          (all-the-icons-material "save" :face 'error))
+         ('nerd-icons
+          (cond ((> text-scale-mode-amount 0)
+                 (format "%s+%d" (nerd-icons-mdicon "nf-md-magnify_plus") text-scale-mode-amount))
+                (t
+                 (format "%s%d" (nerd-icons-mdicon "nf-md-magnify_minus") text-scale-mode-amount))))
+         (_
+          (alet! (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
+            (propertize (format it text-scale-mode-amount) 'face 'success))))))
+
 (defun! oo-mode-line-component--battery ()
   "Return mode line battery indicator."
   (set! status (funcall battery-status-function))
@@ -457,6 +473,9 @@ This means the line number and percentage."
 
 (defun oo-mode-line-segment--log-error ()
   (oo-mode-line-join-components '(log-error)))
+
+(defun oo-mode-line-segment--text-scale ()
+  (oo-mode-line-join-components '(text-scale)))
 ;;;; custom modelines
 (defvar oo-mode-line-main ""
   "Contain the value of the main modeline.")
@@ -471,7 +490,7 @@ This means the line number and percentage."
   (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
   (set! evil-face (spaceline-highlight-face-evil-state))
   (oo-mode-line-render '(evil-state buffer-info version-control)
-                       '(pomodoro battery buffer-location current-time)
+                       '(text-scale pomodoro battery buffer-location current-time)
                        `(,fill-face ,evil-face ,face1 ,face2 ,face3)))
 ;;;; commands
 (defun oo-mode-line-increment-height ()
