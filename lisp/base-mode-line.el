@@ -338,8 +338,7 @@ If 0, do not display anything."
       ('all-the-icons
        (all-the-icons-material "lock" :face 'error))
       ('nerd-icons
-       (set! icon (nerd-icons-faicon "nf-fa-lock" :face 'error))
-       icon)
+       (nerd-icons-faicon "nf-fa-lock" :face 'error))
       (_
        "LOCKED"))))
 
