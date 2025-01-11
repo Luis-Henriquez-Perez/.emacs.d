@@ -27,3 +27,7 @@ CLOSED: [2025-01-09 Thu 14:12]
 ** TODO definiteively make a standard for adding hooks
 ** TODO use =trace!= for some hooks because they are polluting the log
 ** TODO rice up the dashboard
+** TODO add a better keybinding for going to evil-marker than =`=
+** TODO update auto-insert to create emacs-lisp templates with any file
+** TODO stop captain from capitalizing with multiple headline delimiters
+** TODO add profiling mechanism
