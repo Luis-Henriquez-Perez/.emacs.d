@@ -51,6 +51,7 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "mls"               "mode lines"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "configu" "configuration"               nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "confgi" "config"               nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "hwever" "pertaining"               nil :enable-function #'oo--use-plain-text-abbrev-p)
@@ -892,7 +893,7 @@ string or comment."
 (define-abbrev global-abbrev-table "revaled"          "re-evaluated"                  nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "idid"             "I did"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "tres"             "interesting"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
-(define-abbrev global-abbrev-table "ml"               "modeline"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "ml"               "mode line"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 ;; ("def"                                          "definitely" nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "docs"             "documentation"                 nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "doc"              "documentation"                 nil :enable-function #'oo--use-plain-text-abbrev-p)
