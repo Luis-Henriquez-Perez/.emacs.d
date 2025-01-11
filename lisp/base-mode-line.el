@@ -460,23 +460,6 @@ Returns whether current track is playing."
   "Display version control information."
   (when (and (buffer-file-name) vc-mode (string-match "Git" vc-mode))
     (oo-mode-line-join-components '(branch git-ahead))))
-
-(defun oo-mode-line-segment--current-time ()
-  "Display the current date and time."
-  (oo-mode-line-join-components '(current-time)))
-
-(defun oo-mode-line-segment--pomodoro ()
-  "Display time elapsed for work or play."
-  (oo-mode-line-join-components '(pomodoro)))
-
-(defun oo-mode-line-segment--battery ()
-  "Display the battery status."
-  (oo-mode-line-join-components '(battery)))
-
-(defun oo-mode-line-segment--buffer-location ()
-  "Display the buffer location.
-This means the line number and percentage."
-  (oo-mode-line-join-components '(line-number percentage-of-buffer)))
 ;;;; custom modelines
 (defvar oo-mode-line-main ""
   "Contain the value of the main modeline.")
@@ -490,7 +473,7 @@ This means the line number and percentage."
   (set! face3 (if active 'powerline-active2 'powerline-inactive2))
   (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
   (set! evil-face (spaceline-highlight-face-evil-state))
-  (set! lhs '(evil-state (narrow read-only kbd-macro buffer-modified buffer-name) version-control))
+  (set! lhs '(evil-state (narrow read-only kbd-macro buffer-modified buffer-name) (branch git-ahead)))
   (set! rhs '(text-scale pomodoro battery (line-num buffer-percentage) current-time))
   (oo-mode-line-render lhs rhs `(,fill-face ,evil-face ,face1 ,face2 ,face3)))
 ;;;; commands
