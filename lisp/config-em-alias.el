@@ -21,7 +21,7 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
-;;
+;;e
 ;; This file contains all of my eshell aliases.
 ;;
 ;;; Code:
