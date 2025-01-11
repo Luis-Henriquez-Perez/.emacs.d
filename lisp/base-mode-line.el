@@ -257,22 +257,25 @@ If 0, do not display anything."
       (_
        (propertize (format "%s@" count) 'face 'success)))))
 
-;; (defun! oo-mode-line-component--log-error ()
-;;   "Notify of error appearing in my log."
-;;   (with-current-buffer "*log*"
-;;     (save-excursion
-;;       (goto-char (point-min))
-;;       (when (re-search-forward (rx "[ERROR]") nil t)
-;;         ;; Find the error type.
-;;         (re-search )
-;;         (pcase oo-mode-line-icons
-;;           ('all-the-icons
-;;             (set! icon (all-the-icons-material "warning" :face 'error))
-;;             (format "%s %s" icon 'void-function))
-;;           ('nerd-icons
-;;             ;; (set! error (all-the-icons-material "warning" :face 'error))
-;;             )
-;;           (_))))))
+(defvar oo--last-error-log-point 1
+  "Point where last error was logged.")
+
+(defun! oo-mode-line-component--log-error ()
+  "Notify of error appearing in my log."
+  (with-current-buffer "*log*"
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward (rx "[ERROR]") nil t)
+        ;; Find the error type.
+        (re-search )
+        (pcase oo-mode-line-icons
+          ('all-the-icons
+           (set! icon (all-the-icons-material "warning" :face 'error))
+           (format "%s %s" icon 'void-function))
+          ('nerd-icons
+           ;; (set! error (all-the-icons-material "warning" :face 'error))
+           )
+          (_))))))
 
 (defun! oo-mode-line-component--narrow ()
   "Return an indicator for a narrowed buffer in the modeline."
@@ -319,14 +322,14 @@ If 0, do not display anything."
      (require 'nerd-icons)
      (set! dicon (nerd-icons-faicon "nf-fa-calendar"))
      (set! ticon (nerd-icons-wicon (format-time-string "nf-weather-time_%-I")))
-     (format "%s %s %s %s" dicon date ticon time))
+     (format "%s %s %s %s" ticon time dicon date))
     ('all-the-icons
      (require 'all-the-icons)
      (set! dicon (all-the-icons-faicon "calendar" :v-adjust 0.01))
      (set! ticon (all-the-icons-wicon (format-time-string "time-%-I") :v-adjust 0.01))
-     (format "%s %s %s %s" dicon date ticon time))
+     (format "%s %s %s %s" ticon time dicon date))
     (_
-     (format "%s %s" date time))))
+     (format "%s %s" time date))))
 
 (defun! oo-mode-line-component--read-only ()
   "Return indicator for whether file is read-only."
@@ -335,8 +338,7 @@ If 0, do not display anything."
       ('all-the-icons
        (all-the-icons-material "lock" :face 'error))
       ('nerd-icons
-       (set! icon (nerd-icons-faicon "nf-fa-lock" :face 'error))
-       icon)
+       (nerd-icons-faicon "nf-fa-lock" :face 'error))
       (_
        "LOCKED"))))
 
