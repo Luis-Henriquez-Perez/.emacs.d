@@ -447,19 +447,6 @@ Returns whether current track is playing."
               (all-the-icons-material "play-circle"))
              (_
               (format "PLAY %s" track)))))))
-;;;; segments
-(defun oo-mode-line-segment--evil-state ()
-  "Display segment for displaying evil state."
-  (oo-mode-line-join-components '(evil-state)))
-
-(defun oo-mode-line-segment--buffer-info ()
-  "Display general (usually buffer-related) information."
-  (oo-mode-line-join-components '(narrow read-only kbd-macro buffer-modified buffer-name)))
-
-(defun oo-mode-line-segment--version-control ()
-  "Display version control information."
-  (when (and (buffer-file-name) vc-mode (string-match "Git" vc-mode))
-    (oo-mode-line-join-components '(branch git-ahead))))
 ;;;; custom modelines
 (defvar oo-mode-line-main ""
   "Contain the value of the main modeline.")
