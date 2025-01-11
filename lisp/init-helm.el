@@ -30,21 +30,21 @@
 (oo-popup-at-bottom "\\*Helm")
 (set! helm-candidate-number-limit 50)
 
-(bind! i helm-map "TAB" #'helm-next-line)
-(bind! i helm-map [backtab] #'helm-previous-line)
-(bind! i helm-map "C-j" #'helm-next-line)
-(bind! i helm-map "C-k" #'helm-previous-line)
 
-(bind! i helm-map "C-a" #'helm-select-action)
-(bind! i helm-map "C-m" #'helm-toggle-visible-mark-forward)
+
+
+
+
+
+
 ;; (autoload '+helm-select-nth-action "config-helm" nil t 'function)
 ;; (defun +helm-select-current ()
 ;;   (interactive)
 ;;   (funcall #'helm-select-nth-action 0))
-;; (bind! i helm-map :ie "RET" #'+helm-select-nth-action)
+;; 
 ;; This binding has a problem.  (:ie "C-i" #'helm-toggle-visible-mark-backward)
-(bind! i helm-map "S-TAB" #'helm-mark-current-line)
-(bind! i helm-map "C-;" #'ace-jump-helm-line)
+
+
 ;;; provide
 (provide 'init-helm)
 ;;; init-helm.el ends here

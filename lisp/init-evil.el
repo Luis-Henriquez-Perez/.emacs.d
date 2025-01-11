@@ -78,48 +78,6 @@
                     (buffer-modified-p))
            (save-buffer))
 		 (keyboard-quit))))
-
-(require 'bind-key)
-(bind! (i e) [escape] #'oo-dwim-escape)
-
-(bind! i override-global-map oo-insert-leader-key #'oo-leader-prefix-command)
-(bind! (n m v) override-global-map oo-normal-leader-key #'oo-leader-prefix-command)
-(bind! (n m v) override-global-map ";" #'execute-extended-command)
-
-;; One of the most common--if not the most common--command you use in Emacs is
-;; [[helpfn:execute-extended-command][execute-extended-command]].  This command let's you search any other command and
-;; upon pressing enter, then you execute the command.  The fact that this command is
-;; invoked so frequently suggests it should have one of the shortest, easiest to
-;; press bindings.  I chose to give it =SPC SPC= and =;=.  =SPC SPC= is short and
-;; quick to type as well as consistent with other =SPC= bindings.  While =;= is
-;; super fast to press as well and even faster than =SPC SPC=.
-(bind! oo-leader-map oo-normal-leader-key #'execute-extended-command)
-
-(bind! i "A-x" #'execute-extended-command)
-(bind! i "M-x" #'execute-extended-command)
-
-(bind! n "+" #'text-scale-increase)
-(bind! n "-" #'text-scale-decrease)
-
-(bind! n "H" #'evil-first-non-blank)
-(bind! n "L" #'evil-last-non-blank)
-(bind! n "J" #'evil-scroll-page-down)
-(bind! n "K" #'evil-scroll-page-up)
-
-(bind! (n v) "g u" #'evil-upcase)
-(bind! (n v) "g U" #'evil-downcase)
-
-;; Pressing lowercase "o" is one less keystroke than "W" and it aligns with cio.
-;; Though I will say I am not 100% sure it is the equivalent.
-(bind! evil-motion-state-map "o" #'evil-forward-WORD-begin)
-
-;; (bind! (n v) "g t" #'evil-goto-first-line)
-;; (bind! (n v) "g b" #'evil-goto-line)
-
-(bind! (n v) "g h" #'+evil-eval-operator)
-(bind! (n v) "g r" #'+evil-eval-replace-operator)
-(bind! (n v) "g l" #'+evil-eval-print-operator)
-(bind! (n v) "g p" #'+evil-eval-print-operator)
 ;;; provide
 (provide 'init-evil)
 ;;; init-evil.el ends here

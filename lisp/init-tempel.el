@@ -42,13 +42,13 @@
   "Add the Tempel Capf to `completion-at-point-functions'."
   (pushing! completion-at-point-functions #'tempel-expand :setter setq-local))
 ;;;; keybindings
-(bind! i tempel-map "C-j" #'tempel-next)
-(bind! i tempel-map "C-k" #'tempel-previous)
-(bind! i tempel-map "TAB" #'tempel-next)
-(bind! i tempel-map [backtab] #'tempel-previous)
 
-(bind! oo-quick-map "i" #'tempel-insert)
-(bind! oo-quick-map "l" #'tempel-insert)
+
+
+
+
+
+
 ;;; provide
 (provide 'init-tempel)
 ;;; init-tempel.el ends here

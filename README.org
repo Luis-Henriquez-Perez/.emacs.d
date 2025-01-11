@@ -88,6 +88,12 @@ This is my personal emacs configuration.
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~
 
+  - *lisp/oo-keybindings.el* - /Store all of my keybindings./
+
+    This is an exception to the rule of keeping everything involving FEATURE to
+    =config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
+    easier profiling of keybindings.
+
   - *lisp/oo-SOMENAME* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I

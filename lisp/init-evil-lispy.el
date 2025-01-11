@@ -28,7 +28,7 @@
 (hook! emacs-lisp-mode-hook evil-lispy-mode)
 (hook! clojure-mode-hook evil-lispy-mode)
 
-;; (bind! emacs-lisp-mode-map)
+;; 
 ;;; provide
 (provide 'init-evil-lispy)
 ;;; init-evil-lispy.el ends here

@@ -73,8 +73,8 @@
 ;;;; silence save-buffer
 (advice-add 'save-buffer :around #'oo-funcall-quietly)
 ;;;; keybindings
-(bind! oo-find-map ";" #'save-buffer)
-(bind! oo-find-map "o" #'find-file)
+
+
 ;;; provide
 (provide 'init-files)
 ;;; init-files.el ends here

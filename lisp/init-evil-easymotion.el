@@ -39,12 +39,12 @@
 (autoload #'+evilem-motion-char              "config-evil-easymotion" nil t 'function)
 (autoload #'+evilem-motion-beginning-of-line "config-evil-easymotion" nil t 'function)
 
-;; (bind! (n v) "w" #'+evilem-motion-beginning-of-word)
-;; (bind! (n v) "W" #'+evilem-motion-beginning-of-WORD)
-;; (bind! (n v) "e" #'+evilem-motion-end-of-word)
-;; (bind! (n v) "E" #'+evilem-motion-end-of-WORD)
-;; (bind! (n v o) "f" #'+evilem-motion-char)
-;; (bind! (n v o) "H" #'+evilem-motion-beginning-of-line)
+;; 
+;; 
+;; 
+;; 
+;; 
+;; 
 ;;; provide
 (provide 'init-evil-easymotion)
 ;;; init-evil-easymotion.el ends here

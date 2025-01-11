@@ -30,11 +30,11 @@
 ;;;; popup
 (oo-popup-at-bottom "\\`magit")
 ;;;; bindings
-(bind! oo-git-map "s" #'magit-status)
-(bind! oo-git-map "g" #'magit-status)
-(bind! oo-git-map "p" #'magit-push)
-(bind! oo-git-map "c" #'magit-commit)
-(bind! oo-git-map "B" #'magit-branch)
+
+
+
+
+
 ;;; provide
 (provide 'init-magit)
 ;;; init-magit.el ends here

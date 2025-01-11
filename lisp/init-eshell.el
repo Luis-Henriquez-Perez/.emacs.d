@@ -60,7 +60,7 @@
 ;; well.
 (advice-add #'eshell-mode :around #'oo-funcall-quietly)
 
-(bind! oo-app-map "e" #'eshell)
+
 ;;; provide
 (provide 'init-eshell)
 ;;; init-eshell.el ends here

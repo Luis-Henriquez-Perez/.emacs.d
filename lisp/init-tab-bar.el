@@ -51,11 +51,11 @@
 ;; TODO: save information from tab with `burly-bookmark-windows' so when I
 ;; restore a bookmark it creates a tab with the same name as it was.  I do not
 ;; know if `burly-tabs-mode' does the exact same thing.
-(bind! oo-find-map "t" #'tab-switch)
-;; (bind! oo-workspace-map "t" #'tab-select)
-;; (bind! oo-workspace-map "n" #'tab-new)
-;; (bind! oo-workspace-map "j" #'tab-next)
-;; (bind! oo-workspace-map "k" #'tab-previous)
+
+;; 
+;; 
+;; 
+;; 
 ;;; provide
 (provide 'init-tab-bar)
 ;;; init-tab-bar.el ends here

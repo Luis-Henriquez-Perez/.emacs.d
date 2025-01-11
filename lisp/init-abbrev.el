@@ -48,7 +48,7 @@
     (require 'oo-eshell-mode-abbrevs))
   (remove-hook 'eshell-mode-hook #'oo-load-eshell-mode-abbrevs-h))
 ;;;; bindings
-(bind! "C-c k" #'unexpand-abbrev)
+
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)

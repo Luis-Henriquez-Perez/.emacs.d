@@ -50,11 +50,11 @@
                                                      (number-sequence 5 55 5))
                                              "\s"))))
 ;;;; keybindings
-(bind! n org-mode-map "T" #'org-todo)
-(bind! n org-mode-map "t" #'+org-choose-tags)
+
+
 ;;;; org-agenda
 (autoload #'+org-agenda-day-view "config-org-agenda" nil t nil)
-;; (bind! oo-leader-map ";" #'+org-agenda-day-view)
+;; 
 ;;;; org-capture
 (autoload #'+org-capture-plain "config-org-capture" nil t 'function)
 (autoload #'+org-capture-todo "config-org-capture" nil t 'function)
@@ -63,18 +63,18 @@
 (autoload #'+org-capture-bug "config-org-capture" nil t 'function)
 (autoload #'+org-capture-choose-template "config-org-capture" nil t 'function)
 
-(bind! oo-app-map "c" #'org-capture)
-(bind! oo-app-map "a c" #'org-capture)
-(bind! oo-app-map "a a" #'+org-capture-plain)
-(bind! oo-app-map "a p" #'+org-capture-plain)
-(bind! oo-app-map "a s" #'+org-capture-todo)
-(bind! oo-app-map "a j" #'+org-capture-todo)
-(bind! oo-app-map "a t" #'+org-capture-todo)
-(bind! oo-app-map "a k" #'+org-capture-bug)
-(bind! oo-app-map "a l" #'+org-capture-open)
-(bind! oo-app-map "a o" #'+org-capture-open)
-(bind! oo-app-map "a ;" #'+org-capture-question)
-(bind! oo-app-map "a q" #'+org-capture-question)
+
+
+
+
+
+
+
+
+
+
+
+
 
 (alt! org-capture +org-capture-choose-template org-capture)
 ;;;; org-refile

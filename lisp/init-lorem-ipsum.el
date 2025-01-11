@@ -25,9 +25,9 @@
 ;; Initialize lorem-ipsum.
 ;;
 ;;; Code:
-(bind! "" #'lorem-ipsum-insert-sentences)
-(bind! "" #'lorem-ipsum-insert-sentences)
-(bind! "" #'lorem-ipsum-insert-sentences)
+
+
+
 ;;; provide
 (provide 'init-lorem-ipsum)
 ;;; init-lorem-ipsum.el ends here

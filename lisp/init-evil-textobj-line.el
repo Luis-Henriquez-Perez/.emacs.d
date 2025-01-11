@@ -29,8 +29,8 @@
 
 (autoload #'evil-inner-line                    "evil-textobj-line"                 nil t 'function)
 (autoload #'evil-a-line                        "evil-textobj-line"                 nil t 'function)
-(bind! evil-inner-text-objects-map "l" #'evil-inner-line)
-(bind! evil-outer-text-objects-map "l" #'evil-a-line)
+
+
 ;;; provide
 (provide 'init-evil-textobj-line)
 ;;; init-evil-textobj-line.el ends here

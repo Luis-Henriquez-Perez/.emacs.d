@@ -32,13 +32,13 @@
 (opt! vertico-count-format '("%-6s " . "%2$s"))
 (opt! vertico-count 15)
 
-(bind! i vertico-map "TAB" #'vertico-next)
-(bind! i vertico-map "C-k" #'vertico-previous)
-(bind! i vertico-map "C-j" #'vertico-next)
-(bind! i vertico-map ";" #'vertico-quick-exit)
-(bind! i vertico-map "C-;" #'vertico-quick-exit)
-(bind! i vertico-map [backtab] #'vertico-previous)
-(bind! i vertico-map "C-o" #'embark-act)
+
+
+
+
+
+
+
 ;;; provide
 (provide 'init-vertico)
 ;;; init-vertico.el ends here

@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'base)
 
-(bind! evil-inner-text-objects-map "f" #'evil-cp-inner-form)
-(bind! evil-outer-text-objects-map "f" #'evil-cp-a-form)
+
+
 ;;; provide
 (provide 'init-evil-cleverparens)
 ;;; init-evil-cleverparens.el ends here

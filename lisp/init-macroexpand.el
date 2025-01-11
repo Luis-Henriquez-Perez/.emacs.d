@@ -27,13 +27,6 @@
 ;;; Code:
 (require 'base)
 ;;;; localleaders
-(declare-function macrostep-expand "macrostep")
-(declare-function macrostep-collapse-all "macrostep")
-(declare-function macrostep-collapse "macrostep")
-
-(oo-localleader-bind emacs-lisp-mode-map "me" #'macrostep-expand)
-(oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
-(oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
 ;;; provide
 (provide 'init-macroexpand)
 ;;; init-macroexpand.el ends here

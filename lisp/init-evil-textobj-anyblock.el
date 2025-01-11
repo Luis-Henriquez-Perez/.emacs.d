@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'base)
 
-(bind! evil-inner-text-objects-map "b" #'evil-textobj-anyblock-inner-block)
-(bind! evil-outer-text-objects-map "b" #'evil-textobj-anyblock-a-block)
+
+
 ;;; provide
 (provide 'init-evil-textobj-anyblock)
 ;;; init-evil-textobj-anyblock.el ends here

@@ -34,12 +34,12 @@
 
 (autoload #'oo-pop-to-buffer "oo-commands" nil t 'function)
 
-(bind! oo-find-map "p" #'consult-yank-pop)
-(bind! oo-find-map "k" #'consult-bookmark)
-(bind! oo-find-map "b" #'consult-bookmark)
-(bind! oo-find-map "l" #'consult-line)
-(bind! oo-find-map "h" #'consult-outline)
-(bind! oo-find-map "g" #'consult-grep)
+
+
+
+
+
+
 
 (alt! imenu consult-imenu consult)
 (alt! pop-to-buffer oo-pop-to-buffer consult)

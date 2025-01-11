@@ -36,15 +36,15 @@
 (opt! corfu-auto-prefix 1)
 (opt! corfu-bar-width 0)
 
-(bind! i corfu-map "<tab>"   #'corfu-next)
-(bind! i corfu-map [backtab] #'corfu-previous)
-(bind! i corfu-map "S-TAB"   #'corfu-previous)
-(bind! i corfu-map "C-;"     #'corfu-quick-complete)
-(bind! i corfu-map "C-j"     #'corfu-next)
-(bind! i corfu-map "C-k"     #'corfu-previous)
-(bind! i corfu-map "C-p"     #'corfu-previous)
-(bind! i corfu-map ";"       #'corfu-quick-complete)
-(bind! i corfu-map "SPC"     #'corfu-insert)
+
+
+
+
+
+
+
+
+
 ;;; provide
 (provide 'init-corfu)
 ;;; init-corfu.el ends here

@@ -25,23 +25,23 @@
 ;; Initialize window.
 ;;
 ;;; Code:
-(bind! oo-buffer-map "x" #'kill-current-buffer)
-(bind! oo-buffer-map "b" #'switch-to-buffer)
-(bind! oo-buffer-map "j" #'next-buffer)
-(bind! oo-buffer-map "k" #'previous-buffer)
-(bind! oo-buffer-map "b" #'switch-to-buffer)
-(bind! oo-find-map "f" #'switch-to-buffer)
-(bind! oo-find-map "d" #'pop-to-buffer)
-(bind! oo-window-map "v" #'split-window-horizontally)
-(bind! oo-window-map "h" #'split-window-vertically)
-(bind! oo-window-map "b" #'balance-windows)
-(bind! oo-window-map "M" #'maximize-window)
-(bind! oo-window-map "d" #'delete-window)
-(bind! oo-window-map "D" #'delete-other-windows)
-(bind! oo-window-map "k" #'display-buffer)
 
-(bind! oo-window-map "u" #'winner-undo)
-(bind! oo-window-map "t" #'transpose-frame)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;;; provide
 (provide 'init-window)
 ;;; init-window.el ends here

@@ -47,7 +47,7 @@
 ;; Increase the blink interval slightly.
 (opt! blink-cursor-interval 0.4)
 
-(bind! oo-toggle-map "c" #'blink-cursor-mode)
+
 ;;; provide
 (provide 'init-frame)
 ;;; init-frame.el ends here

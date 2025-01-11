@@ -27,10 +27,10 @@
 ;;; Code:
 (require 'base)
 
-(bind! (n v) "g x" #'evil-exchange)
-(bind! (n v) "g X" #'evil-exchange-cancel)
-(bind! (n v) "g a" #'evil-exchange)
-(bind! (n v) "g A" #'evil-exchange-cancel)
+
+
+
+
 ;;; provide
 (provide 'init-evil-exchange)
 ;;; init-evil-exchange.el ends here

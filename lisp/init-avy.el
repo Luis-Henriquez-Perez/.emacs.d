@@ -37,7 +37,7 @@
 
 ;; Probably not the best binding, but I just want it to be bound to something
 ;; for now.
-(bind! oo-find-map "z" #'ace-link)
+
 ;;; provide
 (provide 'init-avy)
 ;;; init-avy.el ends here

@@ -62,7 +62,7 @@ Replace `kill-buffer--possibly-save' as advice."
 
 (advice-add 'kill-buffer--possibly-save :around #'oo--prompt-clearly)
 ;;;; keybindings
-(bind! oo-buffer-map "x" #'kill-current-buffer)
+
 ;;; provide
 (provide 'init-simple)
 ;;; init-simple.el ends here

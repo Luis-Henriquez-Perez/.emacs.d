@@ -146,6 +146,7 @@
 (require 'init-wdired)
 (require 'init-which-key)
 (require 'init-window)
+(require 'oo-keybindings)
 (require 'oo-autoloads)
 (require 'oo-init)
 ;;; provide init

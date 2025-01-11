@@ -31,14 +31,14 @@
 (hook! emacs-lisp-mode-hook lispyville-mode)
 (opt! lispyville-key-theme nil)
 
-(bind! i lispyville-mode-map "SPC" #'lispy-space)
-(bind! i lispyville-mode-map ";" #'lispy-comment)
 
-(bind! evil-outer-text-objects-map "c" #'lispyville-outer-comment)
-(bind! evil-inner-text-objects-map "c" #'lispyville-inner-comment)
 
-(bind! (n v) "g c" #'lispyville-comment-or-uncomment)
-(bind! (n v) "g l" #'lispyville-comment-and-clone-dwim)
+
+
+
+
+
+
 ;;; provide
 (provide 'init-lispyville)
 ;;; init-lispyville.el ends here

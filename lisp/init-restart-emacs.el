@@ -32,11 +32,11 @@
 ;;; Code:
 (require 'base)
 ;;;; bindings
-(bind! oo-app-map "E" #'restart-emacs-start-new-emacs)
-(bind! oo-quit-map "R" #'restart-emacs)
-(bind! oo-quit-map "E" #'restart-emacs-start-new-emacs)
-(bind! oo-quit-map "r" #'restart-emacs)
-(bind! oo-quit-map "q" #'save-buffers-kill-emacs)
+
+
+
+
+
 ;;; provide
 (provide 'init-restart-emacs)
 ;;; init-restart-emacs.el ends here

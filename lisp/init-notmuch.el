@@ -28,7 +28,7 @@
 (require 'base)
 (opt! notmuch-search-oldest-first nil)
 
-(bind! oo-app-map "n" #'notmuch)
+
 ;;; provide
 (provide 'init-notmuch)
 ;;; init-notmuch.el ends here

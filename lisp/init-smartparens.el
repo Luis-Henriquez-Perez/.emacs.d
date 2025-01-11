@@ -44,7 +44,7 @@
 (opt! sp-highlight-wrap-overlay nil)
 (opt! sp-show-pair-delay 0.2)
 
-(bind! oo-toggle-map "s" #'smartparens-mode)
+
 ;;; provide
 (provide 'init-smartparens)
 ;;; init-smartparens.el ends here

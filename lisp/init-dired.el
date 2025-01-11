@@ -48,7 +48,7 @@
 (opt! dired-recursive-copies 'always)
 (opt! dired-recursive-deletes 'always)
 
-(bind! oo-app-map "d" #'dired-jump)
+
 ;; Dired is very picky about when these bindings happen.  It is the only package
 ;; I have had that is that picky.  I have noticed that unlike every other
 ;; package I have tried dired bindings do not work by trying to set them when
@@ -56,9 +56,9 @@
 ;; Also, even if you have the `eval-after-load' it work work from the
 ;; `oo-after-load-dired' file--do not ask me why.  Again, only package I have
 ;; had this happen with.
-(bind! (n m) dired-mode-map "h" #'dired-up-directory)
-(bind! (n m) dired-mode-map "l" #'dired-find-file)
-(bind! (n m) dired-mode-map "RET" #'dired-find-file)
+
+
+
 ;;; provide
 (provide 'init-dired)
 ;;; init-dired.el ends here
