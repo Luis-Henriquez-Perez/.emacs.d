@@ -499,7 +499,7 @@ This means the line number and percentage."
   (set! lhs '(evil-state (narrow read-only kbd-macro buffer-modified buffer-name) version-control))
   (set! rhs '(text-scale pomodoro battery buffer-location current-time))
   (oo-mode-line-render '(evil-state buffer-info version-control)
-                       lhs
+                       rhs
                        `(,fill-face ,evil-face ,face1 ,face2 ,face3)))
 ;;;; commands
 (defun oo-mode-line-increment-height ()
