@@ -526,7 +526,7 @@ Save the value of `mode-line-format' in a register, and enable my mode line in
 all buffers."
   (interactive)
   (set-register :mode-line-format mode-line-format)
-  (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-modeline-main)) "")) oo-modeline-main))
+  (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
   (oo-mode-line-update))
 
 (defun oo-mode-line-disable ()
