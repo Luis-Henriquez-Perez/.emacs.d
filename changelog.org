@@ -3,6 +3,9 @@
 * 0.1.0
 ** DONE Fix =powerline-width= correctly computing the width with icons.
 CLOSED: [2025-01-09 Thu 14:14]
+:PROPERTIES:
+:ID:       20250111T093512.701570
+:END:
 - CLOSING NOTE [2025-01-09 Thu 14:14] \\
   One problem was that the mode line string I was using had mode line constructs.
   To get the proper measurements of the mode line so that I could right-align it I
