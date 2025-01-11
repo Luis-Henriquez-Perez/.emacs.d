@@ -313,7 +313,7 @@ If 0, do not display anything."
 (defun! oo-mode-line-component--current-time ()
   "Display the current time."
   (set! time (format-time-string "%H:%M"))
-  (set! date (format-time-string "%m-%d"))
+  (set! date (format-time-string "%a %m-%d"))
   (pcase oo-mode-line-icons
     ('nerd-icons
      (require 'nerd-icons)
