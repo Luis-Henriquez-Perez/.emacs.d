@@ -45,7 +45,7 @@
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to
 ;; `project.el' and.
 (defun o.project-find-root-p (path)
-  "Search up the PATH for `project-root-markers'"
+  "Search up the PATH for a git directory."
   (let ((path (expand-file-name path)))
     (catch 'found
       (while (not (equal "/" path))
