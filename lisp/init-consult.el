@@ -41,7 +41,7 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
-;; `Consult-grep'
+;; `Consult-grep' is not detecting my emacs project
 (opt! consult-project-function #')
 ;;; provide
 (provide 'init-consult)
