@@ -44,62 +44,6 @@
 (opt! dirvish-yank-new-name-style 'append-to-filename)
 ;; dirvish-yank-new-name-style 'append-to-ext
 (opt! dirvish-mode-line-format nil)
-
-;; (set-fontset-font t 'unicode (font-spec :family "all-the-icons") nil 'append)
-;; (set-fontset-font t 'unicode (font-spec :family "file-icons") nil 'append)
-;; (set-fontset-font t 'unicode (font-spec :family "Material Icons") nil 'append)
-;; (set-fontset-font t 'unicode (font-spec :family "github-octicons") nil 'append)
-;; (set-fontset-font t 'unicode (font-spec :family "FontAwesome") nil 'append)
-;; (set-fontset-font t 'unicode (font-spec :family "Weather Icons") nil 'append)
-
-;; (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)
-;; (set-fontset-font t 'unicode (font-spec :family "all-the-icons") nil)
-;;;; make a specific modeline for dirvish
-;; (defhook! oo-set-dired-modeline-h ()
-;;   (setq-local mode-line-format))
-
-;; (telephone-line-defsegment* +telephone-line-buffer-segment ()
-;;   (telephone-line-raw mode-line-buffer-identification t))
-;; (opt! telephone-line-lhs
-;;       '((evil   telephone-line-evil-tag-segment)
-;;         (accent +telephone-line-vc-segment +telephone-line-read-only-segment +telephone-line-narrow-segment telephone-line-process-segment)
-;;         (nil    +telephone-line-buffer-segment)))
-
-;; (opt! telephone-line-rhs
-;;       '((nil    telephone-line-misc-info-segment)
-;;         (accent +telephone-line-major-mode-segment +telephone-line-kbd-macro-segment)
-;;         (evil +telephone-line-current-time-segment)))
-
-;; '(:left
-;;   (" " file-modes " " file-link-number " " file-user ":" file-group " "
-;;    symlink omit vc-info)
-;;   :right
-;;   (sort yank index))
-;; (opt! dirvish-header-line-format)
-;; '(:left
-;;   (path symlink)
-;;   :right
-;;   (free-space))
-;; :bind ; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
-;; (("C-c f" . dirvish-fd)
-;;  :map dirvish-mode-map ; Dirvish inherits `dired-mode-map'
-;;  ("a"   . dirvish-quick-access)
-;;  ("f"   . dirvish-file-info-menu)
-;;  ("y"   . dirvish-yank-menu)
-;;  ("N"   . dirvish-narrow)
-;;  ("^"   . dirvish-history-last)
-;;  ("h"   . dirvish-history-jump) ; remapped `describe-mode'
-;;  ("s"   . dirvish-quicksort)    ; remapped `dired-sort-toggle-or-edit'
-;;  ("v"   . dirvish-vc-menu)      ; remapped `dired-view-file'
-;;  ("TAB" . dirvish-subtree-toggle)
-;;  ("M-f" . dirvish-history-go-forward)
-;;  ("M-b" . dirvish-history-go-backward)
-;;  ("M-l" . dirvish-ls-switches-menu)
-;;  ("M-m" . dirvish-mark-menu)
-;;  ("M-t" . dirvish-layout-toggle)
-;;  ("M-s" . dirvish-setup-menu)
-;;  ("M-e" . dirvish-emerge-menu)
-;;  ("M-j" . dirvish-fd-jump))
 ;;; provide
 (provide 'init-dirvish)
 ;;; init-dirvish.el ends here
