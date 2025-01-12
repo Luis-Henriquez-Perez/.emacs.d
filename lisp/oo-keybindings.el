@@ -365,6 +365,7 @@
 (oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
 (oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
 ;;;; information
+(define-key )
 (bind! Info-mode-map "H" #'Info-backward-node)
 (bind! Info-mode-map "H" #'Info-backward-node)
 ;;; provide
