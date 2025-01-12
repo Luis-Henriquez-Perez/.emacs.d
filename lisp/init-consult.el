@@ -50,10 +50,7 @@
   (while (not (equal "/" path))
     (if (not (project-root-p path))
         (setq path (file-name-directory (directory-file-name path)))
-      (return! (cons 'transient path))))
-  (let (())
-    (catch 'found
-      )))
+      (return! (cons 'transient path)))))
 
 (add-to-list 'project-find-functions #'project-find-root)
 ;;; provide
