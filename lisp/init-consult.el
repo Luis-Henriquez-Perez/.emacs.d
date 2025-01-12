@@ -46,8 +46,9 @@
 ;; `project.el' and.
 (defun project-find-root (path)
   "Search up the PATH for `project-root-markers'."
-  (awhen! ((root (locate-dominating-file path #'project-root-p)))
+  (awhen! (locate-dominating-file path #'project-root-p)
     (cons 'transient (expand-file-name root))))
+
 (add-to-list 'project-find-functions #'project-find-root)
 ;;; provide
 (provide 'init-consult)
