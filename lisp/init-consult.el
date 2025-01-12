@@ -41,7 +41,7 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
-(opt! consult-project-function #'projectile-project-root)
+;; (opt! consult-project-function #'projectile-project-root)
 (opt! consult-project-function #'consult--default-project-function)
 (setq project-vc-include-untracked nil)
 ;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
