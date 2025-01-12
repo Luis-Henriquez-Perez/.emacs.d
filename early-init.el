@@ -37,6 +37,8 @@
 ;; have about compiling than having to consider loading order and
 ;; (push '(left-fringe  . 0) default-frame-alist)
 ;; (push '(right-fringe . 0) default-frame-alist)
+(push '(left-fringe  . 0) default-frame-alist)
+(push '(right-fringe . 0) default-frame-alist)
 
 (advice-add #'x-apply-session-resources :override #'ignore)
 
