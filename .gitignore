@@ -1,6 +1,7 @@
 *.elc
 .eldev/
-.local/*
+.local/var/*
 !.local/var/.gitkeep
+.local/etc/*
 !.local/etc/.gitkeep
 packages/
