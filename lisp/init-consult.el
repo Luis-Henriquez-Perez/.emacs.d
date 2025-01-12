@@ -52,6 +52,7 @@
         (if (not (project-root-p path))
             (setq path (file-name-directory (directory-file-name path)))
           (throw 'found (cons 'transient path)))))))
+
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
