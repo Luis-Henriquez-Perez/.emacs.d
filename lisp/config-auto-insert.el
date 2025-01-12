@@ -201,9 +201,7 @@
   "Insert org file header."
   (require 'tempel)
   (tempel-insert '("# TITLE: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
-                   "# AUTHOR: " user-full-name
-                   "# CREATED: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
-                   "# DESCRIPTION: " p > n)))
+                   "# AUTHOR: " user-full-name > n)))
 ;;; provide
 (provide 'config-auto-insert)
 ;;; config-auto-insert.el ends here
