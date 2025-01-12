@@ -139,23 +139,26 @@
   "Insert emacs-lisp template in file."
   (set! path (buffer-file-name))
   (set! base (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
-  (set! lisp-dir "~/.config/emacs/lisp/")
-  (when (and (f-child-of-p path lisp-dir)
-             (string-match "\\`\\(\\(?:config\\|init\\)\\)-\\(.+\\)" base))
+  (set! lisp-dir (f-full "~/.config/emacs/lisp/"))
+  (when (f-child-of-p path lisp-dir)
     (set! feature (match-string 2 base))
     (set! verb (pcase (match-string 1 base)
                  ("config" "Configure")
-                 ("init" "Initialize")))
-    (set! comment1 (format "%s %s" verb feature))
-    (set! comment2 (format "%s %s." verb feature))
+                 ("init" "Initialize")
+                 ("base" nil)))
+    (when verb
+      (set! comment1 (format "%s %s" verb feature))
+      (set! comment2 (format "%s %s." verb feature)))
     (oo--ensure-file-header)
     (goto-char (point-min))
     ;; This is a kind of roundabout way of doing it.  Not sure if it is the
     ;; "best" way whatever that means, but it works.
     (search-forward "TODO: add commentary" nil t nil)
-    (replace-match comment1)
+    (when verb
+      (replace-match comment1))
     (search-forward "TODO: add commentary" nil t nil)
-    (replace-match comment2)
+    (when verb
+      (replace-match comment2))
     (save-excursion (oo--ensure-provide path))))
 
 (defun! oo-auto-insert-html-template ()
