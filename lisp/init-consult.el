@@ -44,8 +44,12 @@
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to `project.el'.
 (defun o.project-find-root-p ()
   "Check if the current PATH"
-
-  )
+  (let ((path (expand-file-name path)))
+    (catch 'found
+      (while (not (equal "/" path))
+        (if (not (project-root-p path))
+            (setq path (file-name-directory (directory-file-name path)))
+          (throw 'found (cons 'transient path)))))))
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
