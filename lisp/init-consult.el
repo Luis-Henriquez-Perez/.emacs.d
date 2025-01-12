@@ -41,6 +41,7 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
+;; `Consult-grep'
 (opt! consult-project-function #')
 ;;; provide
 (provide 'init-consult)
