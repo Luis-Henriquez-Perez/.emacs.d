@@ -200,7 +200,7 @@
 (defun oo-auto-insert-org-file-header ()
   "Insert org file header."
   (require 'tempel)
-  (tempel-insert '("# TITLE: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
+  (tempel-insert '("# TITLE: "  > n
                    "# AUTHOR: " user-full-name " <" user-mail-address ">" > n
                    "# CREATED: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    "# DESCRIPTION: " p > n)))
