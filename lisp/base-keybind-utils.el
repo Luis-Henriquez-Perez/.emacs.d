@@ -25,7 +25,7 @@
 ;; Provide functions for binding keys.
 ;;
 ;;; Code:
-(defun oo-bind ()
+(defun oo-bind (keymap key def)
   ""
   (oo-apply))
 ;;; provide
