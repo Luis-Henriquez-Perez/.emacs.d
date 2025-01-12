@@ -41,7 +41,7 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
-;; The function `consult-grep' is not detecting my emacs project.  It defers to `project.el'
+;; The function `consult-grep' is not detecting my emacs project.  It defers to `project.el'.
 (opt! consult-project-function #')
 ;;; provide
 (provide 'init-consult)
