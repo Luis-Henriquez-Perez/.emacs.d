@@ -32,11 +32,6 @@
 ;;
 ;;
 ;;; Code:
-;; For now I put everything in a single file.  The reason I choose to
-;; do this is because it is simply easier for me with the knowledge I
-;; have about compiling than having to consider loading order and
-;; (push '(left-fringe  . 0) default-frame-alist)
-;; (push '(right-fringe . 0) default-frame-alist)
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
