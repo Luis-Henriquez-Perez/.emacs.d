@@ -27,8 +27,7 @@
 ;;; Code:
 (defun oo-bind ()
   ""
-  (oo-apply)
-  )
+  (oo-apply))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
