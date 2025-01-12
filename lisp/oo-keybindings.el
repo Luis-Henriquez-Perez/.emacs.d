@@ -25,6 +25,7 @@
 ;; Initialize keybindings.
 ;;
 ;;; Code:
+;;;; requirements
 (require 'base)
 (eval-when-compile (require 'base-macros-bind))
 (require 'bind-key)
