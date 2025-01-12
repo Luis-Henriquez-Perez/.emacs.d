@@ -197,7 +197,6 @@
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
 
-
 (defun oo-auto-insert-org-file-header ()
   "Insert org file header."
   (require 'tempel)
