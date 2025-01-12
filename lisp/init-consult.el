@@ -49,7 +49,7 @@
   (set! path (expand-file-name path))
   (while (not (equal "/" path))
     (if (not (project-root-p path))
-        (setq path (file-name-directory (directory-file-name path)))
+        (set! path (file-name-directory (directory-file-name path)))
       (return! (cons 'transient path)))))
 
 (add-to-list 'project-find-functions #'project-find-root)
