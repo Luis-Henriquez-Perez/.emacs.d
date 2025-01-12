@@ -27,6 +27,7 @@
 ;;; Code:
 (defun oo-bind ()
   ""
+  (oo-apply)
   )
 ;;; provide
 (provide 'base-keybind-utils)
