@@ -197,7 +197,7 @@
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
 
-(defun oo-auto-insert-org-file-hader ()
+(defun oo-auto-insert-org-file-header ()
   "Insert python file header."
   (require 'tempel)
   (tempel-insert '("# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
