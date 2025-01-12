@@ -2,6 +2,5 @@
 .eldev/
 .local/*
 !.local/var/.gitkeep
-.local/etc/*
 !.local/etc/.gitkeep
 packages/
