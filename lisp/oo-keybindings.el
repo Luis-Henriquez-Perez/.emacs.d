@@ -363,7 +363,10 @@
 (oo-localleader-bind emacs-lisp-mode-map "me" #'macrostep-expand)
 (oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
 (oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
-;;;; information
+;;;; info
+;; `Info-menu' prompts for the node to go to via `completing-read'.  It is
+;; useful enough that it warrants an easier binding.
+(bind! n Info-mode-map "o" #'Info-menu)
 ;;; provide
 (provide 'oo-keybindings)
 ;;; oo-keybindings.el ends here
