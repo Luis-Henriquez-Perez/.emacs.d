@@ -41,7 +41,8 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
-;; The function `consult-grep' is not detecting my emacs project.  It defers to `project.el'.
+;; The function `consult-grep' is not detecting my emacs project.  It defers to
+;; `project.el'.
 (defun o.project-find-root-p ()
   "Check if the current PATH"
   (let ((path (expand-file-name path)))
