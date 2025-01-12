@@ -25,6 +25,9 @@
 ;; Provide functions for binding keys.
 ;;
 ;;; Code:
+(defun oo-bind ()
+  ""
+  )
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
