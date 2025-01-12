@@ -52,6 +52,7 @@
   (awhen! (vc-root-dir)
     (cons 'transient (expand-file-name it))))
 
+(opt! consult)
 (add-to-list 'project-find-functions #'oo-project-find-root)
 ;;; provide
 (provide 'init-consult)
