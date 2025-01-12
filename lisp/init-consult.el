@@ -42,7 +42,7 @@
 (alt! man consult-man consult)
 
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to `project.el'.
-(defun oo-project-root-p ()
+(defun o.project-root-p ()
   "Check if the current PATH"
   )
 ;;; provide
