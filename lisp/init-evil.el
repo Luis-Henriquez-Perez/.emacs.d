@@ -51,7 +51,6 @@
 (opt! evil-search-wrap nil)
 
 ;; Disable starting any mode in motion state.
-
 ;; (opt! evil-normal-state-modes (append evil-emacs-state-modes
 ;; 									  evil-motion-state-modes
 ;; 									  evil-normal-state-modes))
