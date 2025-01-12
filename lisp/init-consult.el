@@ -47,7 +47,7 @@
 (defun project-find-root (path)
   "Search up the PATH for `project-root-markers'."
   (awhen! (vc-root-dir)
-    (cons 'transient (expand-file-name root))))
+    (cons 'transient (expand-file-name it))))
 
 (add-to-list 'project-find-functions #'project-find-root)
 ;;; provide
