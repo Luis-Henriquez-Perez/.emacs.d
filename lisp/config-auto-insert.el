@@ -200,10 +200,10 @@
 (defun oo-auto-insert-org-file-header ()
   "Insert python file header."
   (require 'tempel)
-  (tempel-insert '("# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
-                   "# Author: " user-full-name " <" user-mail-address ">" > n
-                   "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
-                   "# Description: " p > n)))
+  (tempel-insert '("# FILENAME: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
+                   "# AUTHOR: " user-full-name " <" user-mail-address ">" > n
+                   "# CREATED: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
+                   "# DESCRIPTION: " p > n)))
 ;;; provide
 (provide 'config-auto-insert)
 ;;; config-auto-insert.el ends here
