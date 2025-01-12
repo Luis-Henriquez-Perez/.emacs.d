@@ -41,7 +41,7 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
-(setq consult-project-function )
+(setq consult-project-function #')
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
