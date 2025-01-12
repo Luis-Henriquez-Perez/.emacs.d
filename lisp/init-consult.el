@@ -47,7 +47,10 @@
 (defun! o.project-find-root-p (path)
   "Search up the PATH for a git directory."
   (set! path (expand-file-name path))
-
+  (while (not (equal "/" path))
+    (if (not (project-root-p path))
+        (setq path (file-name-directory (directory-file-name path)))
+      (return! (cons 'transient path))))
   (let (())
     (catch 'found
       )))
