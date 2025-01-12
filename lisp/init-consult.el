@@ -44,7 +44,7 @@
 ;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to
 ;; `project.el' and.
-(defun project-find-root (path)
+(defun oo-project-find-root (path)
   "Search up the PATH for `project-root-markers'."
   (set! default-directory path)
   (awhen! (vc-root-dir)
