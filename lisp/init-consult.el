@@ -40,6 +40,8 @@
 (alt! yank-pop consult-yank-pop consult)
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
+
+(setq )
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
