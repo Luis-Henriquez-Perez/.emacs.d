@@ -50,7 +50,7 @@
   (awhen! (vc-root-dir)
     (cons 'transient (expand-file-name it))))
 
-(add-to-list 'project-find-functions #'project-find-root)
+(add-to-list 'project-find-functions #'oo-project-find-root)
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
