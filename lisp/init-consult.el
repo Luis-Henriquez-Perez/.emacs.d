@@ -44,15 +44,10 @@
 ;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to
 ;; `project.el' and.
-
-(defun! o.project-find-root-p (path)
-  "Search up the PATH for a git directory."
-  (set! path (expand-file-name path))
-  (while (not (equal "/" path))
-    (if (not (project-root-p path))
-        (set! path (file-name-directory (directory-file-name path)))
-      (return! (cons 'transient path)))))
-
+(defun project-find-root (path)
+  "Search up the PATH for `project-root-markers'."
+  (awhen! ((root (locate-dominating-file path #'project-root-p)))
+    (cons 'transient (expand-file-name root))))
 (add-to-list 'project-find-functions #'project-find-root)
 ;;; provide
 (provide 'init-consult)
