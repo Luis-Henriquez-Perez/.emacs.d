@@ -42,6 +42,7 @@
 (alt! man consult-man consult)
 
 (opt! consult-project-function #'projectile-project-root)
+(opt! consult-project-function #'consult--default-project-function)
 (setq project-vc-include-untracked nil)
 ;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to
@@ -52,7 +53,6 @@
   (awhen! (vc-root-dir)
     (cons 'transient (expand-file-name it))))
 
-(opt! consult)
 (add-to-list 'project-find-functions #'oo-project-find-root)
 ;;; provide
 (provide 'init-consult)
