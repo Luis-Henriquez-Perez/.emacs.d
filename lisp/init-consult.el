@@ -46,13 +46,11 @@
 ;; `project.el' and.
 (defun! o.project-find-root-p (path)
   "Search up the PATH for a git directory."
-  (set! )
-  (let ((path (expand-file-name path)))
+  (set! path (expand-file-name path))
+
+  (let (())
     (catch 'found
-      (while (not (equal "/" path))
-        (if (not (project-root-p path))
-            (setq path (file-name-directory (directory-file-name path)))
-          (throw 'found (cons 'transient path)))))))
+      )))
 
 (add-to-list 'project-find-functions #'project-find-root)
 ;;; provide
