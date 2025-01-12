@@ -24,7 +24,7 @@
 ;;
 ;; Provide a function for binding keys.
 ;;
-;; The function should.
+;; The function should record which keys have been bound.
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
