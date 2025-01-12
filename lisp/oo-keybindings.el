@@ -75,7 +75,7 @@
 (bind! i "A-x" #'execute-extended-command)
 (bind! i "M-x" #'execute-extended-command)
 (bind! i "C-c h" #'grugru)
-(bind! i "C-c k" #'unexpand-abbrev)
+(bind! (n i) "C-c k" #'unexpand-abbrev)
 (bind! i [escape] #'oo-dwim-escape)
 
 (bind! (n v) "w" #'+evilem-motion-beginning-of-word)
