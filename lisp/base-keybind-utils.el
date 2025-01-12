@@ -26,7 +26,6 @@
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
-  ""
   (oo-apply))
 ;;; provide
 (provide 'base-keybind-utils)
