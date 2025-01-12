@@ -42,7 +42,9 @@
 (alt! man consult-man consult)
 
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to `project.el'.
-(opt! consult-project-function #')
+(defun oo-project-root-p ()
+  ""
+  )
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
