@@ -51,11 +51,12 @@
 (opt! evil-search-wrap nil)
 
 ;; Disable starting any mode in motion state.
-(opt! evil-normal-state-modes (append evil-emacs-state-modes
-									  evil-motion-state-modes
-									  evil-normal-state-modes))
-(opt! evil-emacs-state-modes nil)
-(opt! evil-motion-state-modes nil)
+
+;; (opt! evil-normal-state-modes (append evil-emacs-state-modes
+;; 									  evil-motion-state-modes
+;; 									  evil-normal-state-modes))
+;; (opt! evil-emacs-state-modes nil)
+;; (opt! evil-motion-state-modes nil)
 
 (opt! savehist-additional-variables (cl-adjoin 'evil-markers-alist savehist-additional-variables))
 ;;;; bindings
