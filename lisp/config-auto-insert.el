@@ -198,7 +198,7 @@
                    ";; Description: " p > n)))
 
 (defun oo-auto-insert-org-file-header ()
-  "Insert python file header."
+  "Insert org file header."
   (require 'tempel)
   (tempel-insert '("# FILENAME: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                    "# AUTHOR: " user-full-name " <" user-mail-address ">" > n
