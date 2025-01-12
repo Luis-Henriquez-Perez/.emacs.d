@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Provide functions for binding keys.
+;; Provide a function for binding keys.
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
