@@ -34,13 +34,6 @@
 
 (autoload #'oo-pop-to-buffer "oo-commands" nil t 'function)
 
-
-
-
-
-
-
-
 (alt! imenu consult-imenu consult)
 (alt! pop-to-buffer oo-pop-to-buffer consult)
 (alt! switch-to-buffer consult-buffer consult)
