@@ -177,7 +177,7 @@
 (bind! oo-git-map "p" #'magit-push)
 (bind! oo-git-map "c" #'magit-commit)
 (bind! oo-git-map "B" #'magit-branch)
-(bind! oo-git-map "n" #'vc-create-branch)
+(bind! oo-git-map "n" #'oo-dwim-vc-action)
 ;;;;; app
 (defvar oo-app-map (make-sparse-keymap))
 (define-prefix-command 'oo-app-prefix-command 'oo-app-map)
