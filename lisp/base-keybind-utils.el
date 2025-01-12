@@ -24,6 +24,7 @@
 ;;
 ;; Provide a function for binding keys.
 ;;
+;;
 ;;; Code:
 (defun oo-bind (keymap key def)
   (oo-apply))
