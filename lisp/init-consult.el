@@ -41,7 +41,7 @@
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
 
-(setq consult-project-function #'projectile-project-root)
+(opt! consult-project-function #'projectile-project-root)
 (setq project-vc-include-untracked nil)
 ;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to
