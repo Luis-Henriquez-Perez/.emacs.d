@@ -53,6 +53,7 @@
             (setq path (file-name-directory (directory-file-name path)))
           (throw 'found (cons 'transient path)))))))
 
+(add-to-list 'project-find-functions #'project-find-root)
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
