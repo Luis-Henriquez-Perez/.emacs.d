@@ -142,6 +142,7 @@
 (bind! oo-leader-map "l" #'oo-git-prefix-command :wk "git")
 (bind! oo-leader-map "w" #'oo-window-prefix-command :wk "window")
 (bind! oo-leader-map "a" #'oo-app-prefix-command :wk "app")
+(bind! oo-leader-map "p" #'oo-package-prefix-command :wk "package")
 (bind! oo-leader-map "f" #'oo-find-prefix-command :wk "find")
 (bind! oo-leader-map "h" #'oo-help-prefix-command :wk "help")
 (bind! oo-leader-map "e" #'oo-emms-prefix-command :wk "emms")
@@ -177,7 +178,7 @@
 (bind! oo-git-map "p" #'magit-push)
 (bind! oo-git-map "c" #'magit-commit)
 (bind! oo-git-map "B" #'magit-branch)
-(bind! oo-git-map "n" #'vc-create-branch)
+(bind! oo-git-map "n" #'oo-dwim-vc-action)
 ;;;;; app
 (defvar oo-app-map (make-sparse-keymap))
 (define-prefix-command 'oo-app-prefix-command 'oo-app-map)
@@ -293,16 +294,7 @@
 (define-prefix-command 'oo/package-prefix-command 'oo-package-map)
 
 (bind! oo-package-map "i" #'package-install)
-(bind! oo-package-map "b" #'elpaca-browse)
-(bind! oo-package-map "U" #'elpaca-update-all)
-(bind! oo-package-map "u" #'elpaca-update)
-(bind! oo-package-map "v" #'elpaca-visit)
-(bind! oo-package-map "i" #'elpaca-try)
-(bind! oo-package-map "r" #'elpaca-rebuild)
-(bind! oo-package-map "d" #'elpaca-delete)
-(bind! oo-package-map "l" #'elpaca-log)
-(bind! oo-package-map "m" #'elpaca-manager)
-(bind! oo-package-map "i" #'package-install)
+(bind! oo-package-map "d" #'package-install)
 ;;;; helm
 (bind! i helm-map "TAB" #'helm-next-line)
 (bind! i helm-map [backtab] #'helm-previous-line)
@@ -367,9 +359,8 @@
 (oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
 (oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
 ;;;; information
-(define-key )
-(bind! Info-mode-map "H" #'Info-backward-node)
-(bind! Info-mode-map "H" #'Info-backward-node)
+(bind! n Info-mode-map "H" #'Info-last)
+(bind! n Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide 'oo-keybindings)
 ;;; oo-keybindings.el ends here
