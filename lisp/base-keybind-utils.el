@@ -46,7 +46,7 @@
 
 (defun oo-bind (keymap key def)
   "Bind KEY to DEF in KEYMAP."
-  (if (symbolp keymap)
+  (if (bound-and-true keymap)
       ()))
 ;;; provide
 (provide 'base-keybind-utils)
