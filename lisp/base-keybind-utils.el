@@ -47,6 +47,7 @@
 
 (defun oo--define-key ()
   ""
+  ;; Store the binding.
   (info! "")
   )
 
