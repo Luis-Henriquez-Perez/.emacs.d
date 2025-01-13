@@ -67,7 +67,7 @@
   "Initialize."
   (let ((body nil))
     (dolist ()
-      (push `(require! ,feature) ))
+      (push `(require! ,feature) feature))
     (progn ,@body)))
 ;;;; load requirements
 (init!)
