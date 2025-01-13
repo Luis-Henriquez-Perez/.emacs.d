@@ -55,6 +55,7 @@
   `(condition-case err
        (let ((start-time ))
          (require ,feature)
+
          ()
          )
      (error
