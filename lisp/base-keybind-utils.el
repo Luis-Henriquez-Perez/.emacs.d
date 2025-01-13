@@ -31,6 +31,7 @@
 ;; 5. Log the binding of keys.
 ;; The macro variant should declare the functions that are being bound so I do
 ;; not have to do that.
+;; 6. Gracefully handle errors with binding keys.
 ;;
 ;; I have written a binding function in the past.  And I do not know I think a
 ;; function would be better than a macro.  I do not know at the very least a
