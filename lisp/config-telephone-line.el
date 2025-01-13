@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'base)
+(require 'base-mode-line)
 (require 'telephone-line)
 ;;;; custom segments
 ;;;;; major-mode information
