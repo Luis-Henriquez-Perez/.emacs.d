@@ -29,7 +29,7 @@
 ;; 3. Provide a macro on top of it with flexible syntax.
 ;; 4. Defer keybindings appropriately.
 ;;
-;; I have written a binding function in the past.
+;; I have written a binding function in the past.  And I do not know I think a function would be better than a macro.
 ;;
 ;;; Code:
 (defun oo-apply-binding ()
