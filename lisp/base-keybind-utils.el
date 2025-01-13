@@ -29,6 +29,7 @@
 ;; 3. Provide a macro on top of it with flexible syntax.
 ;; 4. Defer keybindings appropriately.
 ;;
+;; I have written a binding function in the past.
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
