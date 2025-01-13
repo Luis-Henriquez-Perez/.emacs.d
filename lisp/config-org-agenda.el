@@ -24,7 +24,7 @@
 ;;
 ;; Configure `org-agenda'.
 ;;
-;;; Code:
+ag;;; Code:
 ;;;; requirements
 (require 'org-agenda)
 (require 'ts)
