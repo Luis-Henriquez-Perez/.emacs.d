@@ -64,6 +64,7 @@
      (message "Loaded %s in %.2fms" ',feature total-time)))
 
 (defmacro init! ()
+  (dolist ())
   )
 ;;;; load requirements
 (require! init-no-littering)
