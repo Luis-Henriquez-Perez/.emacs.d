@@ -53,7 +53,7 @@
 (defmacro require! (feature)
   "Require FEATURE, reporting errors and logging the time it takes to load."
   `(condition-case err
-       (let ((start-time ))
+       (let ((start-time (current-time)))
          (require ,feature)
          (* 1000 (float-time (time-subtract (current-time) start-time)))
          (message "Loaded %s in %.2fms" ',feature))
