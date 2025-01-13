@@ -61,7 +61,7 @@
 (defun oo-bind (keymap key def &optional states description)
   "Bind KEY to DEF in KEYMAP."
   (cond ((symbolp keymap)
-         (info! "Deferring binding because Symbol %s")
+         (info! "Deferring binding because symbol %s is not bound.")
          (oo-call-after-bound keymap #'apply #'oo-bind arguments))
         (t
          (oo--do-binding #'evil-define-key* states keymap key def)
