@@ -67,7 +67,7 @@
   "Initialize."
   (let ((body nil))
     (dolist ()
-      (collecting! order `(require! ,feature)))
+      (push order `(require! ,feature)))
     (progn ,@body)))
 ;;;; load requirements
 (init!)
