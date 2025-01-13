@@ -316,6 +316,7 @@
 (bind! i corfu-map "SPC"     #'corfu-insert)
 ;;;; vertico
 (bind! i vertico-map "C-n" #'vertico-scroll-down)
+(bind! i vertico-map "C-p" #'vertico-scroll-up)
 (bind! i vertico-map "TAB" #'vertico-next)
 (bind! i vertico-map "C-k" #'vertico-previous)
 (bind! i vertico-map "C-j" #'vertico-next)
