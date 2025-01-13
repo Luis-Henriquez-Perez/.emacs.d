@@ -25,9 +25,9 @@
 ;; Initialize org-appear.
 ;;
 ;;; Code:
-(set! org-appear-autoemphasis t)
-(set! org-appear-autolink t)
-(set! org-appear-trigger 'manual)
+(opt! org-appear-autoemphasis t)
+(opt! org-appear-autolink t)
+(opt! org-appear-trigger 'manual)
 
 (hook! org-mode-hook org-appear-mode)
 
