@@ -45,6 +45,10 @@
   "Call function with functions."
   )
 
+(defun  ()
+    ""
+  )
+
 (defun oo--do-binding ()
   ""
   (oo-call-with-lef (())))
