@@ -30,7 +30,7 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-;;;; disable garbage collection until I'm done with startup
+;;;; disable garbage collection until after startup
 ;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
 ;; https://news.ycombinator.com/item?id=39127859
 ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
