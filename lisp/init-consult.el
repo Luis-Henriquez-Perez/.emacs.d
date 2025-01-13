@@ -34,19 +34,26 @@
 
 (autoload #'oo-pop-to-buffer "oo-commands" nil t 'function)
 
-
-
-
-
-
-
-
 (alt! imenu consult-imenu consult)
 (alt! pop-to-buffer oo-pop-to-buffer consult)
 (alt! switch-to-buffer consult-buffer consult)
 (alt! yank-pop consult-yank-pop consult)
 (alt! apropos consult-apropos consult)
 (alt! man consult-man consult)
+
+;; (opt! consult-project-function #'projectile-project-root)
+(opt! consult-project-function #'consult--default-project-function)
+(setq project-vc-include-untracked nil)
+;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
+;; The function `consult-grep' is not detecting my emacs project.  It defers to
+;; `project.el' and.
+(defun oo-project-find-root (path)
+  "Search up the PATH for `project-root-markers'."
+  (set! default-directory path)
+  (awhen! (vc-root-dir)
+    (cons 'transient (expand-file-name it))))
+
+(add-to-list 'project-find-functions #'oo-project-find-root)
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
