@@ -66,7 +66,8 @@
 (defmacro init! ()
   (let ()
     (dolist ()
-      (collecting! order `(require!))))
+      (collecting! order `(require!)))
+    (progn ,@body))
   )
 ;;;; load requirements
 (require! init-no-littering)
