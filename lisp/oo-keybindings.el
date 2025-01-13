@@ -293,16 +293,7 @@
 (define-prefix-command 'oo/package-prefix-command 'oo-package-map)
 
 (bind! oo-package-map "i" #'package-install)
-(bind! oo-package-map "b" #'elpaca-browse)
-(bind! oo-package-map "U" #'elpaca-update-all)
-(bind! oo-package-map "u" #'elpaca-update)
-(bind! oo-package-map "v" #'elpaca-visit)
-(bind! oo-package-map "i" #'elpaca-try)
-(bind! oo-package-map "r" #'elpaca-rebuild)
-(bind! oo-package-map "d" #'elpaca-delete)
-(bind! oo-package-map "l" #'elpaca-log)
-(bind! oo-package-map "m" #'elpaca-manager)
-(bind! oo-package-map "i" #'package-install)
+(bind! oo-package-map "d" #'package-install)
 ;;;; helm
 (bind! i helm-map "TAB" #'helm-next-line)
 (bind! i helm-map [backtab] #'helm-previous-line)
