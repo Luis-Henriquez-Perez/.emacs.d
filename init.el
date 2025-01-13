@@ -57,10 +57,25 @@
              (total-time nil))
          (require ',feature)
          (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
-         (message "Loaded %s in %.2fms" ',feature ,total-time))
+         (message "Loaded %s in %.2fms" ',feature total-time))
      (error
       (message "Error loading %s: %s" ',feature (error-message-string err)))))
-(require! foo)
+(condition-case err
+    (let
+        ((start-time
+          (current-time))
+         (total-time nil))
+      (require 'foo)
+      (setq total-time
+            (* 1000
+               (float-time
+                (time-subtract
+                 (current-time)
+                 start-time))))
+      (message "Loaded %s in %.2fms" 'foo total-time))
+  (error
+   (message "Error loading %s: %s" 'foo
+            (error-message-string err))))
 ;;;; load requirements
 (require 'init-no-littering)
 ;; Built-in packages
