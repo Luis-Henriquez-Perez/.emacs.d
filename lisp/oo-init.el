@@ -28,6 +28,7 @@
 ;;;; requirements
 (require 'base)
 (require 'on)
+(require 'server)
 ;;;; hooks
 ;; I had been organizing the init file by packages and that is not entirely
 ;; useless but I think maybe an abstraction in which I look at what is happening
