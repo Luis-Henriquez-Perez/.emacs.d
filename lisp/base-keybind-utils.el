@@ -63,7 +63,6 @@
          (oo-call-after-bound keymap #'apply #'oo-bind arguments))
         (states
          (oo--do-binding #'evil-define-key* states keymap key def)
-         (oo--do-binding #'define-key keymap key def)
          )))
 ;;; provide
 (provide 'base-keybind-utils)
