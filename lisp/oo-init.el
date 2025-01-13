@@ -208,7 +208,7 @@ file is loaded."
 ;; control because I not be able to undo changes.
 (defvar oo-auto-read-only-patterns (list (regexp-quote (expand-file-name "~/.config/emacs/packages/"))
                                          (regexp-quote (expand-file-name "~/Documents/"))
-                                         )
+                                         (regexp-quote (expand-file-name "~/Downloads/")))
   "File paths matching any pattern in list will be started in read-only-mode.
 A pattern is either a regular expression or a function that takes one argument,
 the file path, and returns true if the path should be opened in view-mode.")
