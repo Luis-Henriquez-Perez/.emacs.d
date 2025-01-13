@@ -64,6 +64,7 @@
      (message "Loaded %s in %.2fms" ',feature total-time)))
 
 (defmacro init! ()
+  "Initialize."
   (let ()
     (dolist ()
       (collecting! order `(require!)))
