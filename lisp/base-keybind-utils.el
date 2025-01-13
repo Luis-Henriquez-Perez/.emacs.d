@@ -78,7 +78,6 @@
     (evil-define-key* 'normal keymap (leader oo-normal-localleader-short-key) def)
     (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
     (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
-
 ;;;; alternate bindings
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar oo-alternate-commands (make-hash-table)
