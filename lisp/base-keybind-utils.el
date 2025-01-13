@@ -57,7 +57,7 @@
 
 ;; What data structure should I use to record bindings?
 
-;; If there's an existing binding,
+;; If there's an existing binding, note what we're replacing it with.
 (defun oo-bind (keymap key def &optional states description)
   "Bind KEY to DEF in KEYMAP."
   (cond ((symbolp keymap)
