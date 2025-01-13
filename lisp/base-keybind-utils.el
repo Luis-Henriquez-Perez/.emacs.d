@@ -41,7 +41,7 @@
 ;; it is not callable.
 ;;
 ;;; Code:
-(defun oo-call-with-lef ()
+(defun oo-call-with-lef (binds fn)
   ""
   )
 (defun oo--do-binding ()
