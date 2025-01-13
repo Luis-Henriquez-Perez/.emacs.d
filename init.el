@@ -65,7 +65,7 @@
 
 (defmacro init! ()
   "Initialize."
-  (let ()
+  (let (body)
     (dolist ()
       (collecting! order `(require! ,feature)))
     (progn ,@body)))
