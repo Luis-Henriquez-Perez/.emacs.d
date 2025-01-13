@@ -31,7 +31,7 @@
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
-  (oo-apply))
+  (cond))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
