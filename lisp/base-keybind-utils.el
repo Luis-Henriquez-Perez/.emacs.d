@@ -40,7 +40,7 @@
 ;; it is not callable.
 ;;
 ;;; Code:
-(defun oo-apply-binding ()
+(defun oo--do-binding ()
   ""
   (apply))
 
