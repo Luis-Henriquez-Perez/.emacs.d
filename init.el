@@ -60,6 +60,7 @@
          (message "Loaded %s in %.2fms" ',feature ,total-time))
      (error
       (message "Error loading %s: %s" ',feature (error-message-string err)))))
+(require! foo)
 ;;;; load requirements
 (require 'init-no-littering)
 ;; Built-in packages
