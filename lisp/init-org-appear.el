@@ -31,17 +31,6 @@
 
 (hook! org-mode-hook org-appear-mode)
 
-(defhook! oo-ensure-org-appear-symbols-h (org-appear-mode-hook)
-  "Ensure proper symbols are set."
-  (when (and org-appear-autoemphasis (not org-hide-emphasis-markers))
-    (warn! "`%s' is non-nil when `%s' nil." 'org-appear-autoemphasis 'org-hide-emphasis-markers)
-    (setq org-hide-emphasis-markers t)
-    (info! "Set %s to t" 'org-hide-emphasis-markers))
-  (when (and org-appear-autolink (not org-link-descriptive))
-    (warn! "`%s' is non-nil when `%s' is nil." 'org-appear-autolink 'org-link-descriptive)
-    (setq org-link-descriptive t)
-    (info! "Set %s to t" 'org-link-descriptive)))
-
 ;; (add-hook 'org-mode-hook (lambda ()
 ;;                            (add-hook 'evil-insert-state-entry-hook
 ;;                                      #'org-appear-manual-start
