@@ -483,13 +483,13 @@ This means the line number and percentage."
 (defun oo-mode-line-increment-height ()
   "Update the mode line in all buffers to reflect the default `mode-line-format'."
   (interactive)
-  (cl-incf powerline-height (or amount 2))
+  (cl-incf powerline-height 2)
   (powerline-reset))
 
-(defun oo-mode-line-decrement-height (amount)
+(defun oo-mode-line-decrement-height ()
   "Update the mode line in all buffers to reflect the default `mode-line-format'."
-  (interactive "P")
-  (cl-incf powerline-height (or amount 2))
+  (interactive)
+  (cl-incf powerline-height 2)
   (powerline-reset))
 
 (defun oo-mode-line-update ()
