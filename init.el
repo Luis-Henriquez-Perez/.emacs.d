@@ -37,14 +37,6 @@
 (setq gc-cons-threshold most-positive-fixnum)
 (setq gc-cons-percentage 0.8)
 ;;;; don't search for whenever a package is loaded
-;; Credits to irreal for sharing that keywords can be used as registers in his
-;; blog post (https://irreal.org/blog/?p=12386).  This is my first usage of
-;; registers as far as I can tell registers for times when you want to store a
-;; value but do not want to create a variable to store it in because you only
-;; want to store the value temporarily.  Sounds kind of weird at first, but
-;; using it for startup variables like `file-name-handler-alist' is a perfect
-;; example.  Also note that registers can store arbitrary lisp forms despite
-;; that not being explicitly stated in the manual.
 (set-register :file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 ;;;; prevent flashing of unstyled modeline
