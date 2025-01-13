@@ -142,7 +142,7 @@
 (bind! oo-leader-map "l" #'oo-git-prefix-command :wk "git")
 (bind! oo-leader-map "w" #'oo-window-prefix-command :wk "window")
 (bind! oo-leader-map "a" #'oo-app-prefix-command :wk "app")
-(bind! oo-leader-map "p" #'oo-package-prefix-command :wk "app")
+(bind! oo-leader-map "p" #'oo-package-prefix-command :wk "package")
 (bind! oo-leader-map "f" #'oo-find-prefix-command :wk "find")
 (bind! oo-leader-map "h" #'oo-help-prefix-command :wk "help")
 (bind! oo-leader-map "e" #'oo-emms-prefix-command :wk "emms")
