@@ -369,6 +369,7 @@
 ;;;; information
 ;; (define-key )
 (bind! n Info-mode-map "H" #'Info-last)
+(bind! n Info-mode-map "L" #'Info-next)
 ;; (bind! Info-mode-map "H" #'Info-backward-node)
 ;; (bind! Info-mode-map "H" #'Info-backward-node)
 ;;; provide
