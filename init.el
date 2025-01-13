@@ -52,15 +52,14 @@
 ;;;; require! - help me load files robustly
 (defmacro require! (feature)
   "Require FEATURE, reporting errors and logging the time it takes to load."
-  `(let ((start-time (current-time)))
-     (condition-case err
-         (progn
-           (require ,feature)
-           (message "Loaded %s in %.2fms"
-                    ',feature
-                    (* 1000 (float-time (time-subtract (current-time) start-time)))))
-       (error
-        (message "Error loading %s: %s" ',feature (error-message-string err))))))
+  `(condition-case err
+       (progn
+         (require ,feature)
+         (message "Loaded %s in %.2fms"
+                  ',feature
+                  (* 1000 (float-time (time-subtract (current-time) start-time)))))
+     (error
+      (message "Error loading %s: %s" ',feature (error-message-string err)))))
 ;;;; load requirements
 (require 'init-no-littering)
 ;; Built-in packages
