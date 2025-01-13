@@ -31,7 +31,7 @@
 ;;
 ;;; Code:
 ;;;; startup
-;;;;; disable garbage collection until I'm done with startup
+;;;; disable garbage collection until I'm done with startup
 ;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
 ;; https://news.ycombinator.com/item?id=39127859
 ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
@@ -49,7 +49,7 @@
 ;; that not being explicitly stated in the manual.
 (set-register :file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
-;;;;;; prevent flashing of unstyled modeline
+;;;;; prevent flashing of unstyled modeline
 ;; Don't render the modeline on startup.  For one thing, the startup looks
 ;; better without flashing stuff on the screen.  Additionally, the more that's
 ;; saved on rendering, the faster the startup.
