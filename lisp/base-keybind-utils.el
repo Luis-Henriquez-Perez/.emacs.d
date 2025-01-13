@@ -44,7 +44,7 @@
   ""
   (apply))
 
-(defun oo-bind (keymap key def)
+(defun oo-bind (keymap key def &key states)
   "Bind KEY to DEF in KEYMAP."
   (if (symbolp keymap)
       (oo-call-after-bound keymap #'oo--apply-binding)))
