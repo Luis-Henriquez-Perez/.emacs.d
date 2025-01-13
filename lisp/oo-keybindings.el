@@ -327,7 +327,7 @@
 (with-eval-after-load 'which-key
   (which-key-add-keymap-based-replacements oo-leader-map "l" "localleader"))
 
-(oo-bind eww-mode-map n "R" #'eww-reload)
+(oo-bind n eww-mode-map "R" #'eww-reload)
 (oo-bind oo-find-map "t" #'tab-switch)
 (oo-bind oo-app-map "E" #'restart-emacs-start-new-emacs)
 (oo-bind oo-quick-map "j" #'grugru)
