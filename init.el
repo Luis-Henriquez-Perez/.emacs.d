@@ -51,6 +51,7 @@
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 ;;;; require! - help me load files robustly
 (defmacro require! (feature)
+  "Require FEATURE, "
   )
 ;;;; load requirements
 (require 'init-no-littering)
