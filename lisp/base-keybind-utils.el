@@ -29,6 +29,7 @@
 ;; 3. Provide a macro on top of it with flexible syntax.
 ;; 4. Defer keybindings appropriately.
 ;; 5. Log the binding of keys.
+;; 6.
 ;;
 ;; I have written a binding function in the past.  And I do not know I think a
 ;; function would be better than a macro.  I do not know at the very least a
