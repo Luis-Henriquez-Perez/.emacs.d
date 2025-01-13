@@ -79,6 +79,38 @@
     (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
     (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
 
+;;;; alternate bindings
+;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
+(defvar oo-alternate-commands (make-hash-table)
+  "A hash-table mapping command symbols to a list of command symbols.")
+
+(defun! oo-alternate-command-choose-fn (command)
+  "Return an alternate command that should be called instead of COMMAND."
+  (or (dolist (it (gethash command oo-alternate-commands))
+        (aand! (funcall it) (break! it)))
+      command))
+
+;; (defun! oo-alt-bind (map orig alt &optional condition)
+;;   "Remap keys bound to ORIG so ALT is called if CONDITION returns non-nil.
+;; ORIG and ALT are command symbols.  CONDITION is a function that returns non-nil
+;; when ALT should be invoked instead of ORIG."
+;;   (flet! oo-when-fn (condition fn)
+;;     `(lambda (&rest _) (when (funcall #',condition) #',alt)))
+;;   (push (oo-when-fn (or condition #'always) alt) (gethash orig oo-alternate-commands))
+;;   (define-key map `[remap ,orig] `(menu-item "" ,orig :filter oo-alternate-command-choose-fn)))
+
+;; (defun oo-alt-bind (orig def)
+;;   (let ((,orig ,key)
+;;         (,alt ,def))
+;;     (setq ,key (vconcat (list 'remap ,key)))
+;;     (setq ,def (list 'menu-item "" ,alt :filter #'oo-alternate-command-choose-fn))
+;;     (push ,(oo--lambda-form alt '(&rest ) `(when ,condition ,alt)) (gethash ,orig oo-alternate-commands))
+;;     ,@(oo--bind-generate-body metadata steps)))
+;;;; alt!
+(defmacro alt! (old new feature)
+  `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
+                (gethash ',old oo-alternate-commands))
+          (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
