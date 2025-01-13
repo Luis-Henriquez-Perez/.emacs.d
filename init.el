@@ -30,15 +30,13 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-;;;; startup
 ;;;; disable garbage collection until I'm done with startup
 ;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
 ;; https://news.ycombinator.com/item?id=39127859
 ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
 (setq gc-cons-threshold most-positive-fixnum)
-;; This is the percentage of the heap before.
 (setq gc-cons-percentage 0.8)
-;;;;; don't search for whenever a package is loaded
+;;;; don't search for whenever a package is loaded
 ;; Credits to irreal for sharing that keywords can be used as registers in his
 ;; blog post (https://irreal.org/blog/?p=12386).  This is my first usage of
 ;; registers as far as I can tell registers for times when you want to store a
