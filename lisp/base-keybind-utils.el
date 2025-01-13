@@ -42,7 +42,7 @@
 ;;
 ;;; Code:
 (defun oo-call-with-lef (binds fn)
-  "Call function with."
+  "Call function with functions."
   )
 
 (defun oo--do-binding ()
