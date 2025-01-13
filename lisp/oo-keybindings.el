@@ -290,7 +290,7 @@
 (bind! oo-emms-map "s" #'emms-seek-to)
 ;;;;; package
 (defvar oo-package-map (make-sparse-keymap))
-(define-prefix-command 'oo/package-prefix-command 'oo-package-map)
+(define-prefix-command 'oo-package-prefix-command 'oo-package-map)
 
 (bind! oo-package-map "i" #'package-install)
 (bind! oo-package-map "d" #'package-install)
