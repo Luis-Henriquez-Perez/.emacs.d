@@ -47,7 +47,7 @@
 ;; that not being explicitly stated in the manual.
 (set-register :file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
-;;;;; prevent flashing of unstyled modeline
+;;;; prevent flashing of unstyled modeline
 ;; Don't render the modeline on startup.  For one thing, the startup looks
 ;; better without flashing stuff on the screen.  Additionally, the more that's
 ;; saved on rendering, the faster the startup.
