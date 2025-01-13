@@ -56,6 +56,9 @@
        (let ((start-time ))
          (require ,feature)
 
+         (message "Loaded %s in %.2fms"
+                  ',feature
+                  )
          ()
          )
      (error
