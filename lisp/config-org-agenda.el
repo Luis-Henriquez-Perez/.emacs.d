@@ -68,9 +68,7 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
                                 +org-agenda-closest-deadline-comparator
                                 +org-agenda-tag-comparator
                                 +org-agenda-effort-comparator
-                                +org-agenda-tsid-comparator)
-      "Comparators used for sorting org agenda.
-This is a more flexible replacement for `org-agenda-sorting-strategy'.")
+                                +org-agenda-tsid-comparator))
 ;;;;; helpers
 (defun! +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
