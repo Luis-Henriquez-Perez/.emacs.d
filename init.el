@@ -53,6 +53,7 @@
 (defmacro require! ()
   "Require FEATURE, reporting any errors in messages buffer and logging the time."
   )
+
 ;;;; load requirements
 (require 'init-no-littering)
 ;; Built-in packages
