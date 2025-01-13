@@ -32,9 +32,6 @@
 ;;; Code:
 ;;;; startup
 ;;;;; disable garbage collection until I'm done with startup
-;; This variable controls how often.  Setting it to =most-positive-fixnum=, a
-;; very big number, essentially disables garbage collection.  The garbage
-;; collection is later reset to a reasonable value.
 ;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
 ;; https://news.ycombinator.com/item?id=39127859
 ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
