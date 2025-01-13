@@ -31,6 +31,7 @@
 (hook! text-mode-hook captain-mode)
 
 (setq-hook! text-mode-hook captain-predicate #'always)
+(declare-function captain--default-sentence-start "captain")
 (setq-hook! text-mode-hook captain-sentence-start-function #'captain--default-sentence-start)
 
 (declare-function +captain--prog-mode-sentence-start "config-captain")

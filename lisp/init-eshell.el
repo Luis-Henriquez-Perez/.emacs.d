@@ -51,16 +51,11 @@
 ;; boost eshell history-size
 ;; Increase the history size from 128 to 1000.
 (opt! eshell-history-size 1000)
-;; Eshell prints various messages about loading modules.  These messages
-;; originate from the function [[][eshell-unload-all-modules]].  I would rather
-;; not see these messages.
+;; Stop eshell from printing messages.
+(declare-function eshell-unload-all-modules "eshell")
 (advice-add #'eshell-unload-all-modules :around #'oo-funcall-quietly)
-;; At first I thought the culprit was this function, but I was wrong.  The
-;; printing comes from =eshell-mode=.  In any case, however, I silence it as
-;; well.
+
 (advice-add #'eshell-mode :around #'oo-funcall-quietly)
-
-
 ;;; provide
 (provide 'init-eshell)
 ;;; init-eshell.el ends here
