@@ -45,8 +45,8 @@
   "Call function with functions."
   )
 
-(defun  ()
-    ""
+(defun oo--define-key ()
+  ""
   )
 
 (defun oo--do-binding ()
