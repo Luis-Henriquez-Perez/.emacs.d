@@ -56,7 +56,7 @@
 
 ;; What data structure should I use to record bindings?
 
-(defun oo-bind (keymap key def &key states)
+(defun oo-bind (keymap key def &key states which-key)
   "Bind KEY to DEF in KEYMAP."
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
