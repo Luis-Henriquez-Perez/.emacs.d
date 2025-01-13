@@ -41,8 +41,7 @@
 ;;
 ;;; Code:
 (defun oo-apply-binding ()
-  ""
-  )
+  "")
 
 (defun oo-bind (keymap key def)
   "Bind KEY to DEF in KEYMAP."
