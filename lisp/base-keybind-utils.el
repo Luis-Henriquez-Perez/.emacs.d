@@ -43,7 +43,7 @@
 ;;; Code:
 (defun oo--do-binding ()
   ""
-  ())
+  (oo-call-with-lef (())))
 
 ;; What data structure should I use to record bindings?
 
