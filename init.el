@@ -54,7 +54,7 @@
   "Require FEATURE, reporting errors and logging the time it takes to load."
   `(condition-case err
        (let ((start-time (current-time))
-             (total-time ))
+             (total-time nil))
          (require ,feature)
          (* 1000 (float-time (time-subtract (current-time) start-time)))
          (message "Loaded %s in %.2fms" ',feature))
