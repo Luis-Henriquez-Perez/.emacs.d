@@ -32,6 +32,9 @@
 ;; I have written a binding function in the past.
 ;;
 ;;; Code:
+(defun oo-apply-binding ()
+  ""
+  )
 (defun oo-bind (keymap key def)
   "Bind KEY to DEF in KEYMAP."
   )
