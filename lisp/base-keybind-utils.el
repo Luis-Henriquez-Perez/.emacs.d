@@ -42,7 +42,7 @@
 ;;; Code:
 (defun oo--do-binding ()
   ""
-  (apply))
+  ())
 
 (defun oo-bind (keymap key def &key states)
   "Bind KEY to DEF in KEYMAP."
