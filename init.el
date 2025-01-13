@@ -62,6 +62,8 @@
         (message "Error loading %s: %s" ',feature (error-message-string err))))
      (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
      (message "Loaded %s in %.2fms" ',feature total-time)))
+
+(defmacro init! ())
 ;;;; load requirements
 (require! init-no-littering)
 ;; Built-in packages
