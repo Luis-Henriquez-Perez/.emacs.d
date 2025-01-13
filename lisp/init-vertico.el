@@ -31,14 +31,6 @@
 
 (opt! vertico-count-format '("%-6s " . "%2$s"))
 (opt! vertico-count 15)
-
-
-
-
-
-
-
-
 ;;; provide
 (provide 'init-vertico)
 ;;; init-vertico.el ends here
