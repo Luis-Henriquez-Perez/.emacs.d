@@ -55,7 +55,7 @@
   `(condition-case err
        (let ((start-time (current-time))
              (total-time nil))
-         (require ,feature)
+         (require ',feature)
          (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
          (message "Loaded %s in %.2fms" ',feature ,total-time))
      (error
