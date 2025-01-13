@@ -50,7 +50,7 @@
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind arguments))
         (t
-         (oo--do-binding))))
+         (oo--do-binding ))))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
