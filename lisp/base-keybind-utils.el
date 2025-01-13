@@ -78,6 +78,7 @@
     (evil-define-key* 'normal keymap (leader oo-normal-localleader-short-key) def)
     (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
     (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
+
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
