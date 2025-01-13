@@ -50,7 +50,8 @@
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind arguments))
         (t
-         (dolist (state states) (oo--do-binding)))))
+         (dolist (state states)
+           (oo--do-binding)))))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
