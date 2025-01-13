@@ -68,7 +68,7 @@
   (let ((body nil))
     (dolist ()
       (push `(require! ,feature) feature))
-    (progn ,@body)))
+    (progn ,@(nreverse body))))
 ;;;; load requirements
 (init!)
 ;; (require! oo-keybindings)
