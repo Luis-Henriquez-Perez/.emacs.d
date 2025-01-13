@@ -66,7 +66,8 @@
 
 (defmacro init! ()
   "Initialize."
-  (let ((body nil))
+  (let ((body nil)
+        ())
     (dolist ()
       (push `(require! ',feature) body))
     (progn ,@(nreverse body))))
