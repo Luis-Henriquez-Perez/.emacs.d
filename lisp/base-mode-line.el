@@ -257,26 +257,6 @@ If 0, do not display anything."
       (_
        (propertize (format "%s@" count) 'face 'success)))))
 
-(defvar oo--last-error-log-point 1
-  "Point where last error was logged.")
-
-(defun! oo-mode-line-component--log-error ()
-  "Notify of error appearing in my log."
-  (with-current-buffer "*log*"
-    (save-excursion
-      (goto-char (point-min))
-      (when (re-search-forward (rx "[ERROR]") nil t)
-        ;; Find the error type.
-        (re-search )
-        (pcase oo-mode-line-icons
-          ('all-the-icons
-           (set! icon (all-the-icons-material "warning" :face 'error))
-           (format "%s %s" icon 'void-function))
-          ('nerd-icons
-           ;; (set! error (all-the-icons-material "warning" :face 'error))
-           )
-          (_))))))
-
 (defun! oo-mode-line-component--narrow ()
   "Return an indicator for a narrowed buffer in the modeline."
   (when (or (buffer-narrowed-p)
