@@ -70,9 +70,9 @@
     (progn ,@body)))
 ;;;; load requirements
 (init!)
-(require! oo-keybindings)
-(require! oo-autoloads)
-(require! oo-init)
+;; (require! oo-keybindings)
+;; (require! oo-autoloads)
+;; (require! oo-init)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
