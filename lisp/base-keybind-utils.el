@@ -35,7 +35,7 @@
 ;;
 ;; I have written a binding function in the past.  And I do not know I think a
 ;; function would be better than a macro.  I do not know at the very least a
-;; function backend.
+;; function backend.  Problem with a macro is that it is harder to test.
 ;;
 ;;; Code:
 (defun oo-apply-binding ()
