@@ -51,7 +51,7 @@
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 ;;;; require! - help me load files robustly
 (defmacro require! (feature)
-  "Require FEATURE, reporting any errors in messages buffer and logging"
+  "Require FEATURE, reporting any errors in messages buffer and logging the time."
   )
 ;;;; load requirements
 (require 'init-no-littering)
