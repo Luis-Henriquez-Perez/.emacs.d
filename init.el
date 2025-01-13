@@ -67,8 +67,7 @@
   (let ()
     (dolist ()
       (collecting! order `(require!)))
-    (progn ,@body))
-  )
+    (progn ,@body)))
 ;;;; load requirements
 (require! init-no-littering)
 ;; Built-in packages
