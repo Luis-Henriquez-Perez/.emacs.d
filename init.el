@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
-;;;; Require! -
+;;;; require! - help me load files robustly
 ;;;; load requirements
 (require 'init-no-littering)
 ;; Built-in packages
