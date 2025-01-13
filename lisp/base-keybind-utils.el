@@ -27,6 +27,7 @@
 ;; 1. Record which keys have been bound.
 ;; 2. Let me undo binding keys.
 ;; 3. Provide a macro on top of it with flexible syntax.
+;; 4. Defer keybindings appropriately.
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
