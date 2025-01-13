@@ -63,6 +63,7 @@
                                   +org-agenda-tsid-comparator)
   "Comparators used for sorting org agenda.
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
+
 ;;;;; helpers
 (defun! +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
