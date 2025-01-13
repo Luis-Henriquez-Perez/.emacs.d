@@ -64,7 +64,8 @@
   "Comparators used for sorting org agenda.
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 
-(setq +org-agenda-comparators '(+org-agenda-priority-comparator
+(setq +org-agenda-comparators '(
+                                +org-agenda-priority-comparator
                                 ;; +org-agenda-closest-deadline-comparator
                                 ;; +org-agenda-tag-comparator
                                 ;; +org-agenda-effort-comparator
@@ -184,7 +185,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
             (time-b (org-with-entry! b (org-id-get)))
             (id-a (+org-id-to-time time-a))
             (id-b (+org-id-to-time time-b)))
-      (if (time-less-p id-a id-b) -1 -1)
+      (if (time-less-p id-a id-b) -1 1)
     0))
 ;;;;;; STARTED comparator
 ;; I should prefer entries that have already been started.
