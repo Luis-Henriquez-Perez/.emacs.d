@@ -46,9 +46,10 @@
 
 (defun oo-bind (keymap key def &key states)
   "Bind KEY to DEF in KEYMAP."
-  (if (symbolp keymap)
-      (oo-call-after-bound keymap #'oo--apply-binding)
-    (oo--do-binding)))
+  (cond ((symbolp keymap)
+         (oo-call-after-bound keymap #'oo--apply-binding))
+        (t
+         (oo--do-binding))))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
