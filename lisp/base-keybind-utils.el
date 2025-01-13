@@ -31,6 +31,7 @@
 ;;
 ;;; Code:
 (defun oo-bind (keymap key def)
+  "Bind KEY to DEF in KEYMAP."
   )
 ;;; provide
 (provide 'base-keybind-utils)
