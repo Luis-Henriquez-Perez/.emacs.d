@@ -48,7 +48,7 @@
   "Bind KEY to DEF in KEYMAP."
   (if (symbolp keymap)
       (oo-call-after-bound keymap #'oo--apply-binding)
-    ()))
+    (oo--do-binding )))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
