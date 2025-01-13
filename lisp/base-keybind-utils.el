@@ -65,8 +65,7 @@
          (oo--do-binding #'evil-define-key* states keymap key def)
          )
         (t
-
-         )))
+         (oo--do-binding #'define-key keymap key def))))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
