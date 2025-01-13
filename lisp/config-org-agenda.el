@@ -65,7 +65,7 @@
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 
 (setq +org-agenda-comparators '(
-                                +org-agenda-priority-comparator
+                                ;; +org-agenda-priority-comparator
                                 ;; +org-agenda-closest-deadline-comparator
                                 ;; +org-agenda-tag-comparator
                                 ;; +org-agenda-effort-comparator
