@@ -55,9 +55,8 @@
   `(condition-case err
        (let ((start-time ))
          (require ,feature)
-         (message "Loaded %s in %.2fms"
-                  ',feature
-                  (* 1000 (float-time (time-subtract (current-time) start-time)))))
+         ()
+         )
      (error
       (message "Error loading %s: %s" ',feature (error-message-string err)))))
 ;;;; load requirements
