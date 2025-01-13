@@ -277,14 +277,15 @@ the battery percentage is greater than 90%."
   "Commit and push changes to dotfile on save.
 When a buffer is saved, check whether the saved file is part of the dotfiles
 repository and if it is, commit and push all changes.  Otherwise, do nothing."
-  (aand! (vc-root-dir)
-         (buffer-file-name)
-         (or (not (equal "Discharging" (battery-format "%B" (funcall battery-status-function))))
-             (> (string-to-number (battery-format "%p" (funcall battery-status-function))) 90))
-         (or (f-same-p it (f-full user-emacs-directory))
-             (f-same-p it (f-full "~")))
-         (not (equal (vc-state (buffer-file-name)) 'unregistered))
-         (oo-dwim-vc-action (buffer-file-name))))
+  (save-restriction
+    (aand! (vc-root-dir)
+           (buffer-file-name)
+           (or (not (equal "Discharging" (battery-format "%B" (funcall battery-status-function))))
+               (> (string-to-number (battery-format "%p" (funcall battery-status-function))) 90))
+           (or (f-same-p it (f-full user-emacs-directory))
+               (f-same-p it (f-full "~")))
+           (not (equal (vc-state (buffer-file-name)) 'unregistered))
+           (oo-dwim-vc-action (buffer-file-name)))))
 
 (defun! oo-one-line (beg end)
   "Join lines in the region between BEG and END into a single line.
