@@ -369,8 +369,8 @@
 ;;;; information
 (define-key )
 (bind! n Info-mode-map "H" #'Info-last)
-(bind! Info-mode-map "H" #'Info-backward-node)
-(bind! Info-mode-map "H" #'Info-backward-node)
+;; (bind! Info-mode-map "H" #'Info-backward-node)
+;; (bind! Info-mode-map "H" #'Info-backward-node)
 ;;; provide
 (provide 'oo-keybindings)
 ;;; oo-keybindings.el ends here
