@@ -53,7 +53,8 @@
 (defmacro require! (feature)
   "Require FEATURE, reporting errors and logging the time it takes to load."
   `(let ((start-time (current-time))
-         (total-time nil))
+         (total-time nil)
+         (success-p t))
      (condition-case err
          (require ',feature)
        (error
