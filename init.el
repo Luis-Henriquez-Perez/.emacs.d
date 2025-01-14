@@ -68,10 +68,11 @@
 (defmacro init! ()
   "Initialize."
   (let ((body nil)
-        (files (cddr (directory-files "./lisp/" 'full (rx bos (opt (seq digit digit "-")) (or "init" "base") "-" (1+ nonl))))))
+        (files (cddr (directory-files "./lisp/" 'full ))))
     (dolist (file files)
       (push `(require! ',(intern (f-base file))) body))
     `(progn ,@(nreverse body))))
+
 ;;;; load requirements
 (init!)
 ;; (require! oo-keybindings)
