@@ -1,4 +1,4 @@
-;;; base-macros.el --- Initialize base-macros -*- lexical-binding: t; -*-
+;;; 03-base-macros.el --- Initialize 03-base-macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize base-macros.
+;; Initialize 03-base-macros.
 ;;
 ;;; Code:
 ;;;; requirements
@@ -570,5 +570,5 @@ If MATCH-FORM is a symbol act as `setq'."
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
 ;;; provide
-(provide 'base-macros)
-;;; base-macros.el ends here
+(provide '03-base-macros)
+;;; 03-base-macros.el ends here
