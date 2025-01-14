@@ -50,7 +50,6 @@
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 ;;;; require! - help me load files robustly
-;;
 (defmacro require! (feature)
   "Require FEATURE, reporting errors and logging the time it takes to load."
   (cl-with-gensyms (start-time total-time success-p)
