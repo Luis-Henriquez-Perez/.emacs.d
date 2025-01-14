@@ -179,7 +179,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 
 ;; The sort function accepts two entries and by entries the manual means
 ;; propertized strings.  These strings have references to the headline it refers to.
-(defun! o.org-agenda-tsid-comparator (a b)
+(defun! o.org-agenda-tsid- (a b)
   "Compare two entries A and B based on their ID property to sort by oldest first."
   (if-let* ((time-a (org-with-entry! a (org-id-get)))
             (time-b (org-with-entry! b (org-id-get)))
