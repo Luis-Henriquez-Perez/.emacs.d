@@ -34,7 +34,7 @@
 (require 'cl-lib)
 (require 'package)
 (require 'package-vc)
-(require 'base-lib)
+(require '04-base-lib)
 (eval-when-compile (require '03-base-macros))
 
 ;; This was taken from prot's recommendation.
