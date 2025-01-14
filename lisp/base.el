@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'base-vars)
+(require '00-base-vars)
 (require 'base-settings)
 (require 'base-lib)
 (eval-when-compile (require 'base-macros))
