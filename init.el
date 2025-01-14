@@ -64,7 +64,7 @@
      (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
      (message "Loaded %s in %.2fms" ',feature total-time)))
 
-(string-match-p "\\`\\(?:[[:digit:]][[:digit:]]-\\)?\\(?:base\\|init\\)-.+" "00-base-foo")
+(string-match-p "\\`\\(?:[[:digit:]][[:digit:]]-\\)?\\(?:base\\|init\\)-.+" "base-foo")
 (defmacro init! ()
   "Initialize."
   (let ((body nil)
