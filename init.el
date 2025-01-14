@@ -67,7 +67,7 @@
 (defmacro init! ()
   "Initialize."
   (let ((body nil)
-        (files (directory-files "./lisp/" :full)))
+        (files (directory-files "./lisp/" 'full)))
     (dolist (file files)
       (push `(require! ',feature) body))
     `(progn ,@(nreverse body))))
