@@ -55,7 +55,7 @@
   (cl-with-gensyms (start-time total-time success-p)
     `(let ((,start-time (current-time))
            (,total-time nil)
-           (success-p t))
+           (,success-p t))
        (condition-case err
            (require ',feature)
          (error
