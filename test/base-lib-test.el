@@ -1,4 +1,4 @@
-;;; base-lib-test.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 04-base-lib-test.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,10 +22,10 @@
 ;;
 ;;; Commentary:
 ;;
-;; Tests for `base-lib'.
+;; Tests for `04-base-lib'.
 ;;
 ;;; Code:
-(require 'base-lib)
+(require '04-base-lib)
 (require 'evil)
 
 (ert-deftest oo--evil-char-to-state ()
@@ -96,5 +96,5 @@
 ;;     (should (equal '((fn-A normal)) called))
 ;;     (should (equal '((116 fn-B)) oo-after-load-functions-alist))))
 ;;; provide
-(provide 'base-lib-test)
-;;; base-lib-test.el ends here
+(provide '04-base-lib-test)
+;;; 04-base-lib-test.el ends here
