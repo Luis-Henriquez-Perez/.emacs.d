@@ -69,7 +69,7 @@
   "Initialize."
   (let* ((body nil)
          (regexp (rx digit digit "-" "base"))
-         (files (cddr (directory-files "./lisp/" nil (rx (or (seq (opt digit digit "-") "base") "init"))))))
+         (files (cddr (directory-files "./lisp/" nil (rx (seq (opt digit digit "-") "base"))))))
     (dolist (file files)
       (push `(require! ',(intern file)) body))
     `(progn ,@(nreverse body))))
