@@ -323,7 +323,7 @@ If 0, do not display anything."
        "LOCKED"))))
 
 (defun! oo-mode-line-component--buffer-modified ()
-  "Return indicator for buffer modified.
+  "
 If the current buffer is modified."
   (when (and (buffer-file-name) (buffer-modified-p))
     (pcase oo-mode-line-icons
