@@ -187,6 +187,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
             (id-b (+org-id-to-time time-b)))
       (if (time-less-p id-a id-b) -1 1)
     0))
+
 ;;;;;; STARTED comparator
 ;; I should prefer entries that have already been started.
 (defun! +org-agenda-started-comparator (a b)
