@@ -101,7 +101,7 @@
   (interactive)
   (set! regexp "(define-abbrev\\(?1:\\s-+\\)\\S-+\\(?2:\\s-+\\)\".*?\"\\(?3:\\s-+\\)\".*?\"\\(?4:\\s-+\\)\\S-+\\(?5:\\s-+\\):enable-function\\(?6:\\s-+\\).+)")
   (set! rules `((rule1 . ((regexp . ,regexp) (group . (1 2 3 4 5 6))))))
-  (lisp-data-mode)
+  (lisp-data-mode 1)
   (align (point-min) (point-max) nil rules)
   (emacs-lisp-mode 1))
 ;;;; miscellaneous
