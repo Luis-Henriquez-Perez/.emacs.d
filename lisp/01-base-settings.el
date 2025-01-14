@@ -1,4 +1,4 @@
-;;; base-settings.el --- core settings -*- lexical-binding: t; -*-
+;;; 01-base-settings.el --- core settings -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -174,5 +174,5 @@ end-of-buffer signals; pass the rest to the default handler."
 
 (advice-add 'defvaralias :around #'oo--suppress-woman-warning)
 ;;; provide
-(provide 'base-settings)
-;;; base-settings.el ends here
+(provide '01-base-settings)
+;;; 01-base-settings.el ends here

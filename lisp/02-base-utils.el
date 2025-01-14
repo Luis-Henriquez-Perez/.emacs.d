@@ -1,4 +1,4 @@
-;;; 03-base-utils.el -*- lexical-binding: t; -*-
+;;; 02-base-utils.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -267,5 +267,5 @@ Specifically, return the symbol `string' if point is in a string, the symbol
           ((nth 4 ppss) 'comment)
           (t nil))))
 ;;; provide
-(provide '03-base-utils)
-;;; 03-base-utils.el ends here
+(provide '02-base-utils)
+;;; 02-base-utils.el ends here
