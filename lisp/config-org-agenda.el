@@ -69,7 +69,7 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
                                 ;; +org-agenda-closest-deadline-comparator
                                 ;; +org-agenda-tag-comparator
                                 ;; +org-agenda-effort-comparator
-                                o.org-agenda-tsid-up))
+                                o.org-agenda-tsid-down))
 ;;;;; helpers
 (defun! +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
