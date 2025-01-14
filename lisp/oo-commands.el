@@ -98,15 +98,7 @@
 	  (_ (error "No sorting method detected")))))
 ;;;; alignment
 (defun! oo-dwim-align ()
-  (interactive
-   ;; (cond ((region-active-p)
-   ;;        (list (region-beginning) (region-end)))
-   ;;       ((save-excursion (goto-char (point-min))
-   ;;                        (re-search-forward "^(define-abbrev" (point-max) t nil))
-   ;;        (list (match-beginning 0) (point-max)))
-   ;;       (t
-   ;;        (list nil nil)))
-   )
+  (interactive)
   (set! regexp "(define-abbrev\\(?1:\\s-+\\)\\S-+\\(?2:\\s-+\\)\".*?\"\\(?3:\\s-+\\)\".*?\"\\(?4:\\s-+\\)\\S-+\\(?5:\\s-+\\):enable-function\\(?6:\\s-+\\).+)")
   (set! rules `((rule1 . ((regexp . ,regexp) (group . (1 2 3 4 5 6))))))
   (align (point-min) (point-max) nil rules))
