@@ -102,7 +102,8 @@
   (set! regexp "(define-abbrev\\(?1:\\s-+\\)\\S-+\\(?2:\\s-+\\)\".*?\"\\(?3:\\s-+\\)\".*?\"\\(?4:\\s-+\\)\\S-+\\(?5:\\s-+\\):enable-function\\(?6:\\s-+\\).+)")
   (set! rules `((rule1 . ((regexp . ,regexp) (group . (1 2 3 4 5 6))))))
   (lisp-data-mode)
-  (align (point-min) (point-max) nil rules))
+  (align (point-min) (point-max) nil rules)
+  (emacs-lisp-mode 1))
 ;;;; miscellaneous
 (defun oo-dwim-narrow (keep-narrowing-p)
   "Widen if buffer is narrowed, narrow-dwim otherwise.
