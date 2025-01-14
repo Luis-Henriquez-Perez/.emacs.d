@@ -72,7 +72,7 @@
          (files (directory-files "./lisp/" nil (rx (seq (opt digit digit "-") "base")))))
     (dolist (file files)
       (push `(require! ',(intern (f-base file))) body))
-    `(progn ,@body)))
+    `(progn ,@(nreverse body))))
 (rx (seq digit digit "-") (or "init" "base") "-" (1+ nonl))
 ;;;; load requirements
 (init!)
