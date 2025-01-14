@@ -81,6 +81,7 @@
   "Rename the file and change all occurrences in project."
   (interactive)
   ;; Rename the file.
+  ;; Use the name and replace occur
   )
 ;;;; load requirements
 (init!)
