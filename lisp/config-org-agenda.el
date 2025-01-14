@@ -189,7 +189,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
     0))
 (defun! o.org-agenda-tsid-down (a b)
   "Compare two entries A and B based on their ID property to sort by oldest first."
-  (* -1 o.org-agenda-tsid-up))
+  (* -1 (o.org-agenda-tsid-up a b)))
 ;;;;;; STARTED comparator
 ;; I should prefer entries that have already been started.
 (defun! +org-agenda-started-comparator (a b)
