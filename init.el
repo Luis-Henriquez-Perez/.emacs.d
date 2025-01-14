@@ -69,7 +69,7 @@
   (let ((body nil))
     (dolist (feature )
       (push `(require! ',feature) body))
-    (progn ,@(nreverse body))))
+    `(progn ,@(nreverse body))))
 ;;;; load requirements
 (init! lisp-dir)
 ;; (require! oo-keybindings)
