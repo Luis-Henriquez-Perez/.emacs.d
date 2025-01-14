@@ -54,7 +54,7 @@
   "Require FEATURE, reporting errors and logging the time it takes to load."
   (cl-with-gensyms (start-time total-time success-p)
     `(let ((,start-time (current-time))
-           (total-time nil)
+           (,total-time nil)
            (success-p t))
        (condition-case err
            (require ',feature)
