@@ -73,7 +73,8 @@
       (push `(require! ',(intern (f-base file))) body))
     `(progn ,@(nreverse body))))
 
-(defun oo-rename-this-file ())
+(defun oo-rename-this-file ()
+  (interactive))
 ;;;; load requirements
 (init!)
 (require! oo-keybindings)
