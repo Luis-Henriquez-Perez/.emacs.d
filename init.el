@@ -52,7 +52,7 @@
 ;;;; require! - help me load files robustly
 (defmacro require! (feature)
   "Require FEATURE, reporting errors and logging the time it takes to load."
-  (cl-with-gensyms ()
+  (cl-with-gensyms (start-time total-time success-p)
     `(let ((start-time (current-time))
            (total-time nil)
            (success-p t))
