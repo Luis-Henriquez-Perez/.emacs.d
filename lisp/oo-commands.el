@@ -302,7 +302,7 @@ Additionally, make any duplicate spaces in line become a single space."
   (interactive)
   (set! current-file (buffer-file-name))
   (set! current-name (file-name-base current-file))
-  (new-name (read-string (format "Rename '%s' to: " current-name) current-name))
+  (set! new-name (read-string (format "Rename '%s' to: " current-name) current-name))
   (project-root (or (project-root (project-current))
                     (user-error "Not in a project.")))
   ;; Step 1: Rename the current file
