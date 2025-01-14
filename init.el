@@ -78,7 +78,7 @@
   (interactive))
 
 (defun oo-refactor-this-library ()
-  "Rename the file and change all occurrences in project."
+  "Rename the file and change all occurrences of library in project."
   (interactive)
   ;; Rename the file.
   ;; Use the name and replace occurrences in the project.
