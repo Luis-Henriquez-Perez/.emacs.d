@@ -63,7 +63,6 @@
 (require 'init-loaddefs)
 (require 'init-minibuffer)
 (require 'init-paren)
-(require 'init-project)
 (require 'init-saveplace)
 (require 'init-simple)
 (require 'init-startup)
