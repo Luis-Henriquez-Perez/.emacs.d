@@ -72,7 +72,7 @@
          (files (cddr (directory-files "./lisp/" nil (rx (seq (opt digit digit "-") "base"))))))
     (dolist (file files)
       (push `(require! ',(intern file)) body))
-    `(progn ,@(nreverse body))))
+    `(progn ,@files)))
 (rx (seq digit digit "-") (or "init" "base") "-" (1+ nonl))
 ;;;; load requirements
 (init!)
