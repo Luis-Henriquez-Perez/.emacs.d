@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Compared to `base-utils' this library has functions that on external
+;; Compared to `02-base-utils' this library has functions that on external
 ;; packages loaded in `base-requirements'.
 
 ;; This file contains functions and macros directly used for customizing Emacs
