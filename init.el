@@ -68,7 +68,7 @@
   "Initialize."
   (let ((body nil)
         (directory-files "./lisp/"))
-    (dolist (feature )
+    (dolist (file files)
       (push `(require! ',feature) body))
     `(progn ,@(nreverse body))))
 ;;;; load requirements
