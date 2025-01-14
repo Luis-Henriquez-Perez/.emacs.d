@@ -303,8 +303,8 @@ Additionally, make any duplicate spaces in line become a single space."
   (set! current-file (buffer-file-name))
   (set! current-name (file-name-base current-file))
   (set! new-name (read-string (format "Rename '%s' to: " current-name) current-name))
-  (project-root (or (project-root (project-current))
-                    (user-error "Not in a project.")))
+  (set! project-root (or (project-root (project-current))
+                         (user-error "Not in a project.")))
   ;; Step 1: Rename the current file
   (unless (string-equal current-name new-name)
     (let ((new-file-path (expand-file-name (concat new-name ".el")
