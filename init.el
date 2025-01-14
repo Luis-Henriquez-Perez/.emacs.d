@@ -72,6 +72,8 @@
     (dolist (file files)
       (push `(require! ',(intern (f-base file))) body))
     `(progn ,@(nreverse body))))
+
+(defun oo-rename-this-file ())
 ;;;; load requirements
 (init!)
 (require! oo-keybindings)
