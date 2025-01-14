@@ -28,7 +28,7 @@
 ;;;; requirements
 (require '00-base-vars)
 (require '01-base-settings)
-(require 'base-lib)
+(require '04-base-lib)
 (eval-when-compile (require '03-base-macros))
 (require 'base-packages)
 (require 'lgr)
