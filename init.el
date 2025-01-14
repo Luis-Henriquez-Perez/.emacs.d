@@ -79,7 +79,8 @@
 
 (defun oo-refactor-this-file ()
   "Rename the file and change all occurrences in project."
-  (interactive))
+  (interactive)
+  )
 ;;;; load requirements
 (init!)
 (require! oo-keybindings)
