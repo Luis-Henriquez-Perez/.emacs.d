@@ -67,9 +67,9 @@
 ;; (string-match-p "\\`\\(?:[[:digit:]][[:digit:]]-\\)?\\(?:base\\|init\\)-.+" "base-foo")
 (defmacro init! ()
   "Initialize."
-  (let ((body nil)
-        (regexp )
-        (files (cddr (directory-files "./lisp/" 'full regexp))))
+  (let* ((body nil)
+         (regexp (rx bos (opt (seq digit digit "-")) (or "base" "init")))
+         (files (cddr (directory-files "./lisp/" 'full regexp))))
     (dolist (file files)
       (push `(require! ',(intern (f-base file))) body))
     `(progn ,@(nreverse body))))
