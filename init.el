@@ -52,16 +52,16 @@
 ;;;; require! - help me load files robustly
 (defmacro require! (feature)
   "Require FEATURE, reporting errors and logging the time it takes to load."
-  `(let ((start-time (current-time))
-         (total-time nil)
-         (success-p t))
-     (condition-case err
-         (require ',feature)
-       (error
-        (setq success-p nil)
-        (message "Error loading %s: %s" ',feature (error-message-string err))))
-     (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
-     (message "Loaded %s in %.2fms" ',feature total-time)))
+  (cl-with-gensyms () `(let ((start-time (current-time))
+                             (total-time nil)
+                             (success-p t))
+                         (condition-case err
+                             (require ',feature)
+                           (error
+                            (setq success-p nil)
+                            (message "Error loading %s: %s" ',feature (error-message-string err))))
+                         (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
+                         (message "Loaded %s in %.2fms" ',feature total-time))))
 
 (defmacro init! ()
   "Initialize."
