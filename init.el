@@ -68,6 +68,7 @@
 (defmacro init! ()
   "Initialize."
   (let ((body nil)
+        (regexp )
         (files (cddr (directory-files "./lisp/" 'full regexp))))
     (dolist (file files)
       (push `(require! ',(intern (f-base file))) body))
