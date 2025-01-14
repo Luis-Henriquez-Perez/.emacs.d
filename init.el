@@ -76,7 +76,7 @@
 (defun oo-rename-this-file ()
   (interactive))
 
-(defun oo-rename-this-file ()
+(defun oo-refacor-this-file ()
   (interactive))
 ;;;; load requirements
 (init!)
