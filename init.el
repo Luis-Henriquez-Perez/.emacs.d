@@ -61,7 +61,7 @@
          (error
           (setq success-p nil)
           (message "Error loading %s: %s" ',feature (error-message-string err))))
-       (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
+       (setq total-time (* 1000 (float-time (time-subtract (current-time) ,start-time))))
        (message "Loaded %s in %.2fms" ',feature ,total-time))))
 
 (defmacro init! ()
