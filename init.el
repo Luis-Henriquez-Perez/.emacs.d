@@ -64,7 +64,6 @@
      (setq total-time (* 1000 (float-time (time-subtract (current-time) start-time))))
      (message "Loaded %s in %.2fms" ',feature total-time)))
 
-;; (string-match-p "\\`\\(?:[[:digit:]][[:digit:]]-\\)?\\(?:base\\|init\\)-.+" "base-foo")
 (defmacro init! ()
   "Initialize."
   (let* ((body nil)
@@ -73,7 +72,6 @@
     (dolist (file files)
       (push `(require! ',(intern (f-base file))) body))
     `(progn ,@(nreverse body))))
-(rx (seq digit digit "-") (or "init" "base") "-" (1+ nonl))
 ;;;; load requirements
 (init!)
 ;; (require! oo-keybindings)
