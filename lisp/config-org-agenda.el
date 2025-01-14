@@ -187,7 +187,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
             (id-b (+org-id-to-time time-b)))
       (if (time-less-p id-a id-b) -1 1)
     0))
-(defun! o.org-agenda-tsid-comparator (a b)
+(defun! o.org-agenda-tsid-down (a b)
   "Compare two entries A and B based on their ID property to sort by oldest first."
   (* -1 o.org-agenda-tsid-comparator))
 ;;;;;; STARTED comparator
