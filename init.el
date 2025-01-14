@@ -80,6 +80,7 @@
 (defun oo-refactor-this-file ()
   "Rename the file and change all occurrences in project."
   (interactive)
+  ;; Rename the file.
   )
 ;;;; load requirements
 (init!)
