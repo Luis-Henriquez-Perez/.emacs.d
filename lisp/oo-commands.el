@@ -297,7 +297,7 @@ Additionally, make any duplicate spaces in line become a single space."
   (interactive "r")
   (replace-regexp-in-region "[[:space:]]\\{2,\\}" "\s" beg end))
 
-(defun oo-refactor-this-library ()
+(defun! oo-refactor-this-library ()
   "Rename the current library file and replace occurrences of its name in the project."
   (interactive)
   (set! current-file (buffer-file-name))
