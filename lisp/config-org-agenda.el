@@ -60,7 +60,7 @@
                                   +org-agenda-closest-deadline-comparator
                                   +org-agenda-tag-comparator
                                   +org-agenda-effort-comparator
-                                  +org-agenda-tsid-comparator)
+                                  o.org-agenda-tsid-comparator)
   "Comparators used for sorting org agenda.
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 
@@ -69,7 +69,7 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
                                 ;; +org-agenda-closest-deadline-comparator
                                 ;; +org-agenda-tag-comparator
                                 ;; +org-agenda-effort-comparator
-                                +org-agenda-tsid-comparator))
+                                o.org-agenda-tsid-comparator))
 ;;;;; helpers
 (defun! +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
@@ -179,7 +179,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 
 ;; The sort function accepts two entries and by entries the manual means
 ;; propertized strings.  These strings have references to the headline it refers to.
-(defun! +org-agenda-tsid-comparator (a b)
+(defun! o.org-agenda-tsid-comparator (a b)
   "Compare two entries A and B based on their ID property to sort by oldest first."
   (if-let* ((time-a (org-with-entry! a (org-id-get)))
             (time-b (org-with-entry! b (org-id-get)))
@@ -187,7 +187,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
             (id-b (+org-id-to-time time-b)))
       (if (time-less-p id-a id-b) -1 1)
     0))
-(defun! +org-agenda-tsid-comparator (a b)
+(defun! o.org-agenda-tsid-comparator (a b)
   "Compare two entries A and B based on their ID property to sort by oldest first."
   (* -1 o.org-agenda-tsid-comparator))
 ;;;;;; STARTED comparator
