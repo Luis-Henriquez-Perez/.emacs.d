@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'base-utils)
+(require '02-base-utils)
 ;;;; macros
 ;;;;; nif!
 ;; More often than not when I am using `if', the default else clause is simpler than
