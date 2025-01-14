@@ -296,6 +296,7 @@ Additionally, make any duplicate spaces in line become a single space."
   "Replace consequtive spaces in region with a single space."
   (interactive "r")
   (replace-regexp-in-region "[[:space:]]\\{2,\\}" "\s" beg end))
+
 ;;; provide
 (provide 'oo-commands)
 ;;; oo-commands.el ends here
