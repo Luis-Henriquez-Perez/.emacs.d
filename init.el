@@ -72,7 +72,7 @@
       (push `(require! ',feature) body))
     `(progn ,@(nreverse body))))
 ;;;; load requirements
-(init! lisp-dir)
+(init!)
 ;; (require! oo-keybindings)
 ;; (require! oo-autoloads)
 ;; (require! oo-init)
