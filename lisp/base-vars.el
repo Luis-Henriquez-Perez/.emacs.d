@@ -1,4 +1,4 @@
-;;; base-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; 00-base-vars.el --- core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -44,5 +44,5 @@ HOOK-OR-ADVICE.")
   "When non-nil print debug messages.
 The --debug-init flag and setting the DEBUG envar will enable this at startup.")
 ;;; provide
-(provide 'base-vars)
-;;; base-vars.el ends here
+(provide '00-base-vars)
+;;; 00-base-vars.el ends here
