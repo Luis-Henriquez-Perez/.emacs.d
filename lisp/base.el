@@ -29,7 +29,7 @@
 (require '00-base-vars)
 (require '01-base-settings)
 (require 'base-lib)
-(eval-when-compile (require 'base-macros))
+(eval-when-compile (require '03-base-macros))
 (require 'base-packages)
 (require 'lgr)
 ;;;; logger
