@@ -69,7 +69,7 @@
   (let ((body nil)
         (files (directory-files "./lisp/" 'full)))
     (dolist (file files)
-      (push `(require! ',feature) body))
+      (push `(require! ',(f-base file)) body))
     `(progn ,@(nreverse body))))
 ;;;; load requirements
 (init!)
