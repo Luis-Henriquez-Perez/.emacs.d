@@ -77,7 +77,7 @@
   "Rename the file pertaining to the current buffer."
   (interactive))
 
-(defun oo-refactor-this-file ()
+(defun oo-refactor-this-library ()
   "Rename the file and change all occurrences in project."
   (interactive)
   ;; Rename the file.
