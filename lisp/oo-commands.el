@@ -297,7 +297,29 @@ Additionally, make any duplicate spaces in line become a single space."
   (interactive "r")
   (replace-regexp-in-region "[[:space:]]\\{2,\\}" "\s" beg end))
 
-
+(defun oo-refactor-this-library ()
+  "Rename the current library file and replace occurrences of its name in the project."
+  (interactive)
+  (let* ((current-file (buffer-file-name))
+         (current-name (file-name-base current-file))
+         (new-name (read-string (format "Rename '%s' to: " current-name) current-name))
+         (project-root (or (project-root (project-current))
+                           (user-error "Not in a project."))))
+    ;; Step 1: Rename the current file
+    (unless (string-equal current-name new-name)
+      (let ((new-file-path (expand-file-name (concat new-name ".el")
+                                             (file-name-directory current-file))))
+        (rename-file current-file new-file-path)
+        (find-alternate-file new-file-path) ;; Open the renamed file
+        (message "Renamed '%s' to '%s'" current-name new-name)))
+    ;; Step 2: Replace occurrences in the project
+    (rgrep current-name "*.el" project-root)
+    (with-current-buffer "*grep*"
+      (goto-char (point-min))
+      (while (search-forward current-name nil t)
+        (replace-match new-name))
+      (save-buffer))
+    (message "Replaced occurrences of '%s' with '%s' in the project." current-name new-name)))
 ;;; provide
 (provide 'oo-commands)
 ;;; oo-commands.el ends here
