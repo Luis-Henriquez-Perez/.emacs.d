@@ -99,6 +99,7 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
 ;;;; load requirements
 (init!)
 (require! oo-keybindings)
