@@ -74,6 +74,7 @@
     `(progn ,@(nreverse body))))
 
 (defun oo-rename-this-file ()
+  "Rename file."
   (interactive))
 
 (defun oo-refactor-this-file ()
