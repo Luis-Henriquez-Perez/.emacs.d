@@ -49,12 +49,9 @@
                                ,(string-join (mapcar (apply-partially #'format "0:%.2d")
                                                      (number-sequence 5 55 5))
                                              "\s"))))
-;;;; keybindings
-
-
+(opt! org-ellipsis " ▼")
 ;;;; org-agenda
 (autoload #'+org-agenda-day-view "config-org-agenda" nil t nil)
-;;
 ;;;; org-capture
 (autoload #'+org-capture-plain "config-org-capture" nil t 'function)
 (autoload #'+org-capture-todo "config-org-capture" nil t 'function)
@@ -110,11 +107,6 @@
 (hook! org-mode-hook org-clock-persistence-insinuate)
 (opt! org-clock-persist t)
 (opt! org-clock-sound (expand-file-name "~/Downloads/ding-101492.wav"))
-;;;; org-superstar
-;; Ellipsis configuration
-(opt! org-ellipsis " ▼")
-
-(opt! org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "ON-HOLD(h)" "BLOCKED(b)" "COOLDOWN(o)" "|" "DONE(d)" "CANCELLED(c)")))
 ;;;; org-id
 (opt! org-id-track-globally t)
 (opt! org-id-locations-file (expand-file-name "org-id-locations" oo-var-dir))
