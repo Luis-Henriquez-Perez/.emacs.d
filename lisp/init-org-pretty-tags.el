@@ -1,4 +1,4 @@
-;;; init-org-pretty-tags.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-org-pretty-tags.el --- setup org-pretty-tags -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,33 +22,36 @@
 ;;
 ;;; Commentary:
 ;;
-;; Create tags for.
+;; Cofnigure.
 ;;
 ;;; Code:
 (hook! org-mode-hook org-pretty-tags-mode)
 
 (opt! org-pretty-tags-surrogate-strings
-      `(("idea" . ,(nerd-icons-faicon "nf-fa-lightbulb"))
-        ("agenda" . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
-        ("money" . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
-        ("arch" . ,(nerd-icons-mdicon "nf-md-arch"))
-        ("blog" . ,(nerd-icons-mdicon "nf-md-arch"))
-        ("eshell" . ,(nerd-icons-devicon "nf-dev-terminal"))
-        ("python" . ,(nerd-icons-mdicon "nf-md-arch"))
-        ("linux" . ,(nerd-icons-faicon "nf-fa-linux"))
-        ("question" . ,(nerd-icons-faicon "nf-fa-question"))
-        ("void" . ,(nerd-icons-flicon "nf-linux-void"))
-        ("keybinding" . ,(nerd-icons-mdicon "nf-md-keyboard"))
-        ("bug" . ,(nerd-icons-faicon "nf-fa-bug"))
-        ("org" . ,(nerd-icons-sucicon "nf-custom-orgmode"))
-        ("gym" . ,(nerd-icons-faicon "nf-fa-dumbbell"))
-        ("emacs" . ,(nerd-icons-sucicon "nf-custom-emacs"))
-        ("windowmanager" . ,(nerd-icons-sucicon "nf-custom-emacs"))
-        ("job" . ,(nerd-icons-faicon "nf-fa-suitcase"))
-        ("evil" . ,(nerd-icons-mdicon "nf-md-emoticon_devil"))
-        ("thought" . ,(nerd-icons-mdicon "nf-md-thought_bubble_outline"))
-        ("performance" . ,(nerd-icons-faicon "nf-fa-line_chart"))
-        ("music" . ,(nerd-icons-faicon "nf-fa-music"))))
+      (progn (require 'nerd-icons)
+             `(("idea" . ,(nerd-icons-faicon "nf-fa-lightbulb"))
+               ("git" . ,(nerd-icons-mdicon "nf-md-git"))
+               ("email" . ,(nerd-icons-mdicon "nf-md-email"))
+               ("agenda" . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
+               ("money" . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
+               ("arch" . ,(nerd-icons-mdicon "nf-md-arch"))
+               ("blog" . ,(nerd-icons-mdicon "nf-md-arch"))
+               ("eshell" . ,(nerd-icons-devicon "nf-dev-terminal"))
+               ("python" . ,(nerd-icons-mdicon "nf-md-arch"))
+               ("linux" . ,(nerd-icons-faicon "nf-fa-linux"))
+               ("question" . ,(nerd-icons-faicon "nf-fa-question"))
+               ("void" . ,(nerd-icons-flicon "nf-linux-void"))
+               ("keybinding" . ,(nerd-icons-mdicon "nf-md-keyboard"))
+               ("bug" . ,(nerd-icons-faicon "nf-fa-bug"))
+               ("org" . ,(nerd-icons-sucicon "nf-custom-orgmode"))
+               ("gym" . ,(nerd-icons-faicon "nf-fa-dumbbell"))
+               ("emacs" . ,(nerd-icons-sucicon "nf-custom-emacs"))
+               ("windowmanager" . ,(nerd-icons-mdicon "nf-md-dock_window"))
+               ("job" . ,(nerd-icons-faicon "nf-fa-suitcase"))
+               ("evil" . ,(nerd-icons-mdicon "nf-md-emoticon_devil"))
+               ("thought" . ,(nerd-icons-mdicon "nf-md-thought_bubble_outline"))
+               ("performance" . ,(nerd-icons-faicon "nf-fa-line_chart"))
+               ("music" . ,(nerd-icons-faicon "nf-fa-music")))))
 ;;; provide
 (provide 'init-org-pretty-tags)
 ;;; init-org-pretty-tags.el ends here
