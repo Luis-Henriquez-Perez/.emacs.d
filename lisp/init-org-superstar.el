@@ -25,17 +25,20 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require 'base)
+
 (hook! org-mode-hook org-superstar-mode)
 
 (opt! org-superstar-leading-bullet ?\s)
 (opt! org-superstar-special-todo-items t)
-
-(opt! org-superstar-todo-bullet-alist
-      '(("TODO" "☐　")
-        ("CANCELLED" "✘　")
-        ("DONE" "✔　")))
-;; (opt! org-superstar-todo-bullet-alist `(("TODO" . ,(format "%s " (nerd-icons-mdicon "nf-md-checkbox_blank_outline")))
-;;                                         ("DONE" . ,(format "%s " (nerd-icons-mdicon "nf-md-checkbox_outline")))))
+;; (opt! org-superstar-special-todo-items 'hide)
+;; (opt! org-superstar-todo-bullet-alist
+;;       `(("TODO" . ,(seq-first "☐"))
+;;         ("CANCELLED" . ,(seq-first "✘"))
+;;         ("DONE" . ,(seq-first "✔"))))
+(opt! org-superstar-todo-bullet-alist `(("TODO" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-checkbox_blank_outline"))))
+                                        ("DONE" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-checkbox_outline"))))
+                                        ("CANCELLED" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-cancel"))))))
 ;;; provide
 (provide 'init-org-superstar)
 ;;; init-org-superstar.el ends here
