@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Cofnigure.
+;; Configure.
 ;;
 ;;; Code:
 (hook! org-mode-hook org-pretty-tags-mode)
