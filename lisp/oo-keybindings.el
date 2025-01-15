@@ -137,6 +137,7 @@
 (bind! oo-leader-map ";" #'+org-agenda-day-view)
 (bind! oo-leader-map oo-normal-leader-key #'execute-extended-command)
 (bind! oo-leader-map "b" #'oo-buffer-prefix-command :wk "buffer")
+(bind! oo-leader-map "o" #'oo-org-prefix-command :wk "org")
 (bind! oo-leader-map "g" #'oo-git-prefix-command :wk "git")
 (bind! oo-leader-map "l" #'oo-git-prefix-command :wk "git")
 (bind! oo-leader-map "w" #'oo-window-prefix-command :wk "window")
@@ -179,6 +180,13 @@
 (bind! oo-git-map "B" #'magit-branch)
 (bind! oo-git-map "n" #'oo-dwim-vc-action)
 ;;;;; app
+(defvar oo-org-map (make-sparse-keymap))
+(define-prefix-command 'oo-org-prefix-command 'oo-org-map)
+
+(bind! oo-org-map "k" #'org-capture)
+(bind! oo-org-map "l l" #'org-clock-in)
+(bind! oo-org-map "l k" #'org-capture)
+
 (defvar oo-app-map (make-sparse-keymap))
 (define-prefix-command 'oo-app-prefix-command 'oo-app-map)
 
