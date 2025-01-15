@@ -355,6 +355,20 @@ If the current buffer is modified."
           (alet! (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
             (propertize (format it text-scale-mode-amount) 'face 'success))))))
 
+(defun! oo-mode-line-component--clocked-in ()
+  "Display the current clocked-in task and the time elapsed since clocking in, with seconds included."
+  (when (and (bound-and-true-p org-clock-hd-marker)
+             (marker-buffer org-clock-hd-marker))
+    (set! elapsed-time (time-subtract (current-time) org-clock-start-time))
+    (set! total-seconds (float-time elapsed-time))
+    (set! minutes (floor (/ total-seconds 60)))
+    (set! seconds (mod (round total-seconds) 60))
+    (set! icon (nerd-icons-mdicon "nf-md-clock_in"))
+    (set! task-name (substring-no-properties (org-clock-get-clock-string)))
+    ;; (set! icon (nerd-icons-faicon "nf-fa-clock"))
+    (if 1 (format "%s %dm %02ds" icon minutes seconds)
+      (format "CLOCKED-IN %dm %02ds" minutes seconds))))
+
 (defun! oo-mode-line-component--battery ()
   "Return mode line battery indicator."
   (set! status (funcall battery-status-function))
@@ -463,6 +477,9 @@ This means the line number and percentage."
 
 (defun oo-mode-line-segment--text-scale ()
   (oo-mode-line-join-components '(text-scale)))
+
+(defun oo-mode-line-segment--clocked-in ()
+  (oo-mode-line-join-components '(clocked-in)))
 ;;;; custom modelines
 (defvar oo-mode-line-main ""
   "Contain the value of the main modeline.")
@@ -477,7 +494,7 @@ This means the line number and percentage."
   (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
   (set! evil-face (spaceline-highlight-face-evil-state))
   (oo-mode-line-render '(evil-state buffer-info version-control)
-                       '(text-scale pomodoro battery buffer-location current-time)
+                       '(text-scale clocked-in pomodoro battery buffer-location current-time)
                        `(,fill-face ,evil-face ,face1 ,face2 ,face3)))
 ;;;; commands
 (defun oo-mode-line-increment-height ()
