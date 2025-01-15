@@ -355,6 +355,12 @@ If the current buffer is modified."
           (alet! (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
             (propertize (format it text-scale-mode-amount) 'face 'success))))))
 
+(defun oo-first-words (n string)
+  "Return the first N words from STRING.
+Words are determined by splitting STRING on whitespace."
+  (let ((words (split-string string)))
+    (string-join (seq-take words n) " ")))
+
 (defun! oo-mode-line-component--clocked-in ()
   "Display the current clocked-in task and the time elapsed since clocking in, with seconds included."
   (when (and (bound-and-true-p org-clock-hd-marker)
@@ -364,9 +370,12 @@ If the current buffer is modified."
     (set! minutes (floor (/ total-seconds 60)))
     (set! seconds (mod (round total-seconds) 60))
     (set! icon (nerd-icons-mdicon "nf-md-clock_in"))
-    (set! task-name (substring-no-properties (org-clock-get-clock-string)))
-    ;; (set! icon (nerd-icons-faicon "nf-fa-clock"))
-    (if 1 (format "%s %dm %02ds" icon minutes seconds)
+    (with-current-buffer (marker-buffer org-clock-hd-marker)
+      (save-excursion
+        (goto-char org-clock-hd-marker)
+        (set! task-name (org-get-heading t t t t))))
+    (set! task-name (oo-first-words 3 task-name))
+    (if 1 (format "%s %dm %02ds - %s..." icon minutes seconds task-name)
       (format "CLOCKED-IN %dm %02ds" minutes seconds))))
 
 (defun! oo-mode-line-component--battery ()
