@@ -32,6 +32,7 @@
              `(("idea" . ,(nerd-icons-faicon "nf-fa-lightbulb"))
                ("git" . ,(nerd-icons-mdicon "nf-md-git"))
                ("email" . ,(nerd-icons-mdicon "nf-md-email"))
+               ("secret" . ,(nerd-icons-faicon "nf-fa-user_secret"))
                ("agenda" . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
                ("money" . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
                ("arch" . ,(nerd-icons-mdicon "nf-md-arch"))
