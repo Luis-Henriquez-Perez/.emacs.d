@@ -31,6 +31,7 @@
       (progn (require 'nerd-icons)
              `(("idea" . ,(nerd-icons-faicon "nf-fa-lightbulb"))
                ("git" . ,(nerd-icons-mdicon "nf-md-git"))
+               ("online" . ,(nerd-icons-mdicon "nf-md-web"))
                ("email" . ,(nerd-icons-mdicon "nf-md-email"))
                ("secret" . ,(nerd-icons-faicon "nf-fa-user_secret"))
                ("agenda" . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
