@@ -204,39 +204,6 @@ file is loaded."
            (set! fn `(lambda () (require ',feature ,path nil)))
            (info! "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
-;;;; mark certain places as read-only
-;; Be cautious about opening certain files, particular those not under version
-;; control because I not be able to undo changes.
-(defvar oo-auto-read-only-patterns (list (regexp-quote (expand-file-name "~/.config/emacs/packages/"))
-                                         (regexp-quote (expand-file-name "~/Documents/"))
-                                         (regexp-quote (expand-file-name "~/Downloads/")))
-  "File paths matching any pattern in list will be started in read-only-mode.
-A pattern is either a regular expression or a function that takes one argument,
-the file path, and returns true if the path should be opened in view-mode.")
-
-(defvar oo-auto-read-only-exclude-patterns (list (regexp-quote (expand-file-name "~/Documents/org/todo.org")))
-  "List of patterns that should not be started as read-only.
-A pattern is either a regular expression or a unary function which accepts the file path.")
-
-(defun! oo--auto-read-only-maybe (&rest _)
-  "Make file read-only if it matches any pattern in `oo-auto-read-only-patterns`."
-  (set! file-path (buffer-file-name))
-  (dolist (pattern oo-auto-read-only-exclude-patterns)
-    (when (or (and (stringp pattern)
-                   (string-match-p pattern file-path))
-              (and (functionp pattern)
-                   (funcall pattern file-path)))
-      (return!)))
-  (dolist (pattern oo-auto-read-only-patterns)
-    (when (or (and (stringp pattern)
-                   (string-match-p pattern file-path))
-              (and (functionp pattern)
-                   (funcall pattern file-path)))
-      (info! "opening %s in view-mode matched %S" file-path pattern)
-      (view-mode t)
-      (return!))))
-
-(hook! find-file-hook oo--auto-read-only-maybe)
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
