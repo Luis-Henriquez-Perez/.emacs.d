@@ -1,4 +1,4 @@
-;;; init-fancy-priorities.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-org-fancy-priorities.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,13 +27,14 @@
 ;;; Code:
 (hook! org-mode-hook org-fancy-priorities-mode)
 
-(opt! org-fancy-priorities-list `((?A . ,(nerd-icons-faicon "nf-fa-fire"))
-                                  (?B . ,(nerd-icons-mdicon "nf-md-alarm_light"))
-                                  (?C . ,(nerd-icons-faicon "nf-fa-star"))
-                                  (?D . ,(nerd-icons-octicon "nf-oct-pin"))
-                                  (?E . ,(nerd-icons-mdicon "nf-md-sleep"))
-                                  ;; (?F . ,(nerd-icons-mdicon "nf-md-exclamation_thick"))
-                                  ))
+(opt! org-fancy-priorities-list (progn (require 'nerd-icons)
+                                       `((?A . ,(nerd-icons-faicon "nf-fa-fire"))
+                                         (?B . ,(nerd-icons-mdicon "nf-md-alarm_light"))
+                                         (?C . ,(nerd-icons-faicon "nf-fa-star"))
+                                         (?D . ,(nerd-icons-octicon "nf-oct-pin"))
+                                         (?E . ,(nerd-icons-mdicon "nf-md-sleep"))
+                                         ;; (?F . ,(nerd-icons-mdicon "nf-md-exclamation_thick"))
+                                         )))
 ;;; provide
-(provide 'init-fancy-priorities)
-;;; init-fancy-priorities.el ends here
+(provide 'init-org-fancy-priorities)
+;;; init-org-fancy-priorities.el ends here
