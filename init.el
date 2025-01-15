@@ -30,29 +30,18 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-;;;; startup
-;;;;; disable garbage collection until I'm done with startup
-;; This variable controls how often.  Setting it to =most-positive-fixnum=, a
-;; very big number, essentially disables garbage collection.  The garbage
-;; collection is later reset to a reasonable value.
+;;;; disable garbage collection until after startup
 ;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
 ;; https://news.ycombinator.com/item?id=39127859
 ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
 (setq gc-cons-threshold most-positive-fixnum)
-;; This is the percentage of the heap before.
 (setq gc-cons-percentage 0.8)
-;;;;; don't search for whenever a package is loaded
+;;;; don't search for whenever a package is loaded
 ;; Credits to irreal for sharing that keywords can be used as registers in his
-;; blog post (https://irreal.org/blog/?p=12386).  This is my first usage of
-;; registers as far as I can tell registers for times when you want to store a
-;; value but do not want to create a variable to store it in because you only
-;; want to store the value temporarily.  Sounds kind of weird at first, but
-;; using it for startup variables like `file-name-handler-alist' is a perfect
-;; example.  Also note that registers can store arbitrary lisp forms despite
-;; that not being explicitly stated in the manual.
+;; blog post (https://irreal.org/blog/?p=12386).
 (set-register :file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
-;;;;;; prevent flashing of unstyled modeline
+;;;; prevent flashing of unstyled modeline
 ;; Don't render the modeline on startup.  For one thing, the startup looks
 ;; better without flashing stuff on the screen.  Additionally, the more that's
 ;; saved on rendering, the faster the startup.
@@ -74,7 +63,6 @@
 (require 'init-loaddefs)
 (require 'init-minibuffer)
 (require 'init-paren)
-(require 'init-project)
 (require 'init-saveplace)
 (require 'init-simple)
 (require 'init-startup)
@@ -148,6 +136,8 @@
 (require 'init-wdired)
 (require 'init-which-key)
 (require 'init-window)
+(require 'init-org-fancy-priorities)
+(require 'init-org-pretty-tags)
 (require 'oo-keybindings)
 (require 'oo-autoloads)
 (require 'oo-init)

@@ -54,7 +54,7 @@
 
 ;;;; org-agenda
 (autoload #'+org-agenda-day-view "config-org-agenda" nil t nil)
-;; 
+;;
 ;;;; org-capture
 (autoload #'+org-capture-plain "config-org-capture" nil t 'function)
 (autoload #'+org-capture-todo "config-org-capture" nil t 'function)
@@ -111,10 +111,10 @@
 (opt! org-clock-persist t)
 (opt! org-clock-sound (expand-file-name "~/Downloads/ding-101492.wav"))
 ;;;; org-superstar
-(hook! org-mode-hook org-superstar-mode)
+;; Ellipsis configuration
+(opt! org-ellipsis " ▼")
 
-(opt! org-superstar-leading-bullet ?\s)
-(opt! org-superstar-special-todo-items nil)
+(opt! org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "ON-HOLD(h)" "BLOCKED(b)" "COOLDOWN(o)" "|" "DONE(d)" "CANCELLED(c)")))
 ;;;; org-id
 (opt! org-id-track-globally t)
 (opt! org-id-locations-file (expand-file-name "org-id-locations" oo-var-dir))
