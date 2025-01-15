@@ -136,6 +136,7 @@
 (require 'init-wdired)
 (require 'init-which-key)
 (require 'init-window)
+(require 'init-org-superstar)
 (require 'init-org-fancy-priorities)
 (require 'init-org-pretty-tags)
 (require 'oo-keybindings)
