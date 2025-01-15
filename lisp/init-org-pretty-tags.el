@@ -30,7 +30,10 @@
 (opt! org-pretty-tags-surrogate-strings
       (progn (require 'nerd-icons)
              `(("idea" . ,(nerd-icons-faicon "nf-fa-lightbulb"))
+               ("function" . ,(nerd-icons-mdicon "nf-md-function"))
                ("git" . ,(nerd-icons-mdicon "nf-md-git"))
+               ("phonecall" . ,(nerd-icons-mdicon "nf-md-cellphone"))
+               ("phonetext" . ,(nerd-icons-mdicon "nf-md-cellphone_text"))
                ("online" . ,(nerd-icons-mdicon "nf-md-web"))
                ("email" . ,(nerd-icons-mdicon "nf-md-email"))
                ("secret" . ,(nerd-icons-faicon "nf-fa-user_secret"))
