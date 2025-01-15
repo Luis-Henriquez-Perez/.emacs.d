@@ -60,19 +60,6 @@
 (autoload #'+org-capture-bug "config-org-capture" nil t 'function)
 (autoload #'+org-capture-choose-template "config-org-capture" nil t 'function)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 (alt! org-capture +org-capture-choose-template org-capture)
 ;;;; org-refile
 (defun +org-directory-files ()
