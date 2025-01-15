@@ -40,7 +40,7 @@
                ("agenda" . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
                ("money" . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
                ("arch" . ,(nerd-icons-mdicon "nf-md-arch"))
-               ("blog" . ,(nerd-icons-mdicon "nf-md-arch"))
+               ("blog" . ,(nerd-icons-faicon "nf-fa-blog"))
                ("eshell" . ,(nerd-icons-devicon "nf-dev-terminal"))
                ("python" . ,(nerd-icons-mdicon "nf-md-arch"))
                ("linux" . ,(nerd-icons-faicon "nf-fa-linux"))
