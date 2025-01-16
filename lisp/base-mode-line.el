@@ -337,7 +337,7 @@ If the current buffer is modified."
 (defun! oo-mode-line-component--evil-state ()
   "Return indicator for evil state."
   (when (bound-and-true-p evil-mode)
-    (symbol-name evil-state)))
+    (capitalize (char-to-string (seq-first (symbol-name evil-state))))))
 
 (defun oo-mode-line-component--text-scale ()
   "Indicate whether the text is scaled and by how much."
