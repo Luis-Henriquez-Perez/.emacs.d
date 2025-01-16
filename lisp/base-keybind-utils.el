@@ -44,7 +44,7 @@
 ;; What data structure should I use to record bindings?
 (bind! i "A-x" #'execute-extended-command)
 
-(defun oo--bind-key (fn &rest args)
+(defun oo--bind (fn &rest args)
   ""
   (apply fn args))
 
@@ -54,9 +54,9 @@
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
-         (oo-call-after-load 'evil #'oo--bind-key #'evil-define-key* states keymap key def))
+         (oo-call-after-load 'evil #'oo--bind #'evil-define-key* states keymap key def))
         (t
-         (oo--bind-key #'define-key keymap key def))))
+         (oo--bind #'define-key keymap key def))))
 
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
