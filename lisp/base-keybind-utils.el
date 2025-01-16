@@ -55,7 +55,7 @@
         (states
          (oo-call-after-load 'evil #'oo--bind #'evil-define-key* arglist))
         (t
-         (oo--bind #'define-key keymap key def))))
+         (oo--bind #'define-key arglist))))
 
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
