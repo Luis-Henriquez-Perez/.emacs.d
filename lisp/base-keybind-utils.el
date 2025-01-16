@@ -56,6 +56,8 @@
 
 ;; What data structure should I use to record bindings?
 
+(bind! i "A-x" #'execute-extended-command)
+
 (defun oo-bind (keymap key def &key states)
   "Bind KEY to DEF in KEYMAP."
   (cond ((symbolp keymap)
