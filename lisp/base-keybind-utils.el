@@ -65,8 +65,7 @@
          (oo-call-after-bound keymap #'apply #'oo-bind arguments))
         (states
          (each! states
-           (oo--do-binding #'evil-define-key* it keymap key def))
-         )
+           (oo--do-binding #'evil-define-key* it keymap key def)))
         (t
          (oo--do-binding #'define-key keymap key def))))
 
