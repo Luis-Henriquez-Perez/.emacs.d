@@ -45,12 +45,10 @@
 (bind! i "A-x" #'execute-extended-command)
 
 (defun oo--bind (fn &rest args)
-  ""
   (lef! ()
     (apply fn args)))
 
 (defun oo-bind (&rest args)
-  ""
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
