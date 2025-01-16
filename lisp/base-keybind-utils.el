@@ -64,8 +64,8 @@
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind arguments))
         (states
-         (each!
-             (oo--do-binding #'evil-define-key* states keymap key def))
+         (each! states
+           (oo--do-binding #'evil-define-key* states keymap key def))
          )
         (t
          (oo--do-binding #'define-key keymap key def))))
