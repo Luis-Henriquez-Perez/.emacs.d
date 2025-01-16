@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (opt! org-appear-autoemphasis t)
-(opt! org-appear-autolink t)
+(opt! org-appear-autolinks t)
 (opt! org-appear-trigger 'always)
 
 (hook! org-mode-hook org-appear-mode)
