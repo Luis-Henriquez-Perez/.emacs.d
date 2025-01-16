@@ -39,7 +39,7 @@ are in alphabetical order."
   (set! current (mapcar #'substring-no-properties (org-get-tags (point) t)))
   (set! selected (completing-read-multiple "Choose tag: " all))
   (set! new (append (cl-set-difference selected current) (cl-set-difference current selected)))
-  (org-set-tags (sort new #'string<)))
+  (org-set-tags (sort (cl-remove-duplicates new :test #'equal) #'string<)))
 
 (defun! +org-alphabetize-tags ()
   "Alphabetize tags in current buffer."
@@ -55,6 +55,24 @@ are in alphabetical order."
   (apply orig-fn args))
 
 (advice-add 'org-capture :around #'oo--suppress-window-deletion)
+
+(defvar auto-tag)
+'(("org" "emacs" "org")
+  ("emacs" "emacs")
+  ("call" "phone")
+  ("login" "online"))
+"Tags that should be added to current headline based on its contents."
+(defun oo--auto-add-tags ()
+  "Add tags to current headline at point based on its contents."
+  (save-restriction
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-heading)
+      (buffer-string)))
+  (for! ((a . b) conten)
+    (when (s-contains-p needle s)
+      (collecting! tags a)))
+  (org-set-tags))
 ;;; provide
 (provide 'config-org)
 ;;; config-org.el ends here
