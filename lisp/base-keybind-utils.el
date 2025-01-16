@@ -47,7 +47,7 @@
 (defun oo--bind (fn &rest args)
   ""
   (lef! ()
-    ))
+    (apply fn args)))
 
 (defun oo-bind (&rest args)
   ""
