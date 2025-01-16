@@ -50,7 +50,7 @@
 (defun oo-bind (&rest args)
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
-         (oo-call-after-bound keymap #'apply #'o.key args))
+         (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
          (oo-call-after-load 'evil #'o..do-keybinding #'evil-define-key* states keymap key def))
         (t
