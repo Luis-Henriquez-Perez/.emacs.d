@@ -51,6 +51,7 @@
                ("music"         . ,(nerd-icons-faicon "nf-fa-music"))
                ("online"        . ,(nerd-icons-mdicon "nf-md-web"))
                ("org"           . ,(nerd-icons-sucicon "nf-custom-orgmode"))
+               ("package"       . ,(nerd-icons-codicon "nf-cod-package"))
                ("performance"   . ,(nerd-icons-faicon "nf-fa-line_chart"))
                ("phonecall"     . ,(nerd-icons-mdicon "nf-md-cellphone"))
                ("phonetext"     . ,(nerd-icons-mdicon "nf-md-cellphone_text"))
