@@ -38,7 +38,8 @@ are in alphabetical order."
   (set! all (save-restriction (widen) (org-get-buffer-tags)))
   (set! current (mapcar #'substring-no-properties (org-get-tags (point) t)))
   (set! selected (completing-read-multiple "Choose tag: " all))
-  (set! new (append (cl-set-difference selected current) (cl-set-difference current selected)))
+  (set! new (append (cl-set-difference selected current :test #'equal)
+                    (cl-set-difference current selected :test #'equal)))
   (org-set-tags (sort (cl-remove-duplicates new :test #'equal) #'string<)))
 
 (defun! +org-alphabetize-tags ()
