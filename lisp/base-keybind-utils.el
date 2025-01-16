@@ -41,21 +41,7 @@
 ;; it is not callable.
 ;;
 ;;; Code:
-(defun oo-call-with-lef (binds fn)
-  "Call function with functions."
-  )
-
-(defun oo--define-key ()
-  ""
-  (info! "")
-  )
-
-(defun oo--do-binding ()
-  ""
-  (oo-call-with-lef (())))
-
 ;; What data structure should I use to record bindings?
-
 (bind! i "A-x" #'execute-extended-command)
 
 (defun oo-bind (&key keymap key def states which-key)
