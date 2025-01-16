@@ -40,25 +40,24 @@
 (opt! gnus-agent-queue-mail t)
 (opt! gnus-agent-synchronize-flags nil)
 
-;; (opt! gnus-article-browse-delete-temp 'ask)
-;; (opt! gnus-article-over-scroll nil)
-;; (opt! gnus-article-show-cursor t)
-;; (opt! gnus-article-sort-functions
-;;       '(gnus-article-sort-by-most-recent-number
-;;         gnus-article-sort-by-most-recent-date))
-;; (opt! gnus-article-truncate-lines nil)
-;; ;; (gnus-html-frame-width 80)
-;; ;; (gnus-html-image-automatic-caching t)
-;; (opt! gnus-inhibit-images t)
-;; (opt! gnus-max-image-proportion 0.3)
-;; (opt! gnus-treat-display-smileys nil)
-;; ;; (gnus-article-mode-line-format "%G %S %m")
-;; (opt! gnus-visible-headers
-;;       '("^From:" "^To:" "^Cc:" "^Newsgroups:" "^Subject:" "^Date:"
-;;         "Followup-To:" "Reply-To:" "^Organization:" "^X-Newsreader:"
-;;         "^X-Mailer:"))
-;; (opt! gnus-sorted-header-list gnus-visible-headers)
-;;; provide
+(opt! gnus-article-browse-delete-temp 'ask)
+(opt! gnus-article-over-scroll nil)
+(opt! gnus-article-show-cursor t)
+(opt! gnus-article-sort-functions
+      '(gnus-article-sort-by-most-recent-number
+        gnus-article-sort-by-most-recent-date))
+(opt! gnus-article-truncate-lines nil)
+;; (gnus-html-frame-width 80)
+;; (gnus-html-image-automatic-caching t)
+(opt! gnus-inhibit-images t)
+(opt! gnus-max-image-proportion 0.3)
+(opt! gnus-treat-display-smileys nil)
+;; (gnus-article-mode-line-format "%G %S %m")
+(opt! gnus-visible-headers
+      '("^From:" "^To:" "^Cc:" "^Newsgroups:" "^Subject:" "^Date:"
+        "Followup-To:" "Reply-To:" "^Organization:" "^X-Newsreader:"
+        "^X-Mailer:"))
+(opt! gnus-sorted-header-list gnus-visible-headers);;; provide
 
 (provide 'init-gnus)
 ;;; init-gnus.el ends here
