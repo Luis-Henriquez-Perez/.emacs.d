@@ -190,6 +190,7 @@
 (bind! oo-org-map "l l" #'org-clock-in-last)
 (bind! oo-org-map "l l" #'org-clock-in)
 (bind! oo-org-map "l h" #'org-clock-out)
+(bind! oo-org-map "k f" #'org-add-note)
 (bind! oo-org-map "k a" #'+org-capture-plain)
 (bind! oo-org-map "k p" #'+org-capture-plain)
 (bind! oo-org-map "k s" #'+org-capture-todo)
