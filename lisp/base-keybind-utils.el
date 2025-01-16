@@ -45,7 +45,6 @@
 (bind! i "A-x" #'execute-extended-command)
 
 (defun oo-bind (&rest args)
-  "Bind KEY to DEF in KEYMAP."
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
