@@ -31,6 +31,7 @@
       (progn (require 'nerd-icons)
              `(("idea" . ,(nerd-icons-faicon "nf-fa-lightbulb"))
                ("function" . ,(nerd-icons-mdicon "nf-md-function"))
+               ("modeline" . ,(nerd-icons-faicon "nf-fa-grip_lines"))
                ("git" . ,(nerd-icons-mdicon "nf-md-git"))
                ("phonecall" . ,(nerd-icons-mdicon "nf-md-cellphone"))
                ("phonetext" . ,(nerd-icons-mdicon "nf-md-cellphone_text"))
