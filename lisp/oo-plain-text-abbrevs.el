@@ -51,6 +51,7 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "levl"             "level"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "checkig"          "checking"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "priv"             "private"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "accout"           "account"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
