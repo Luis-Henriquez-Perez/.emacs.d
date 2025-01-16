@@ -58,7 +58,7 @@
          (oo--bind #'define-key arglist))))
 
 (defmacro bind! (&rest args)
-  `())
+  `(oo-bind '))
 
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
