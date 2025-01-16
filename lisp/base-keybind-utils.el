@@ -45,8 +45,7 @@
 (bind! i "A-x" #'execute-extended-command)
 
 (defun oo--bind-key (fn &rest args)
-  (apply fn args)
-  )
+  (apply fn args))
 
 (defun oo-bind (&rest args)
   (cond ((symbolp keymap)
