@@ -49,7 +49,6 @@
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
-         (oo-call-after-load 'evil )
          (dolist (state states)
            (oo--do-binding #'evil-define-key* it keymap key def)))
         (t
