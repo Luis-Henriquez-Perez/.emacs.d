@@ -50,6 +50,7 @@
                                                      (number-sequence 5 55 5))
                                              "\s"))))
 (opt! org-ellipsis " ▼")
+(opt! org-log-done 'time)
 ;;;; org-agenda
 (autoload #'+org-agenda-day-view "config-org-agenda" nil t nil)
 ;;;; org-capture
