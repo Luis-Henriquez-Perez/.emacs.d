@@ -48,7 +48,7 @@
   "Bind KEY to DEF in KEYMAP."
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
-         (oo-call-after-bound keymap #'apply #'oo-bind arguments))
+         (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
          (dolist (state states)
            (oo--do-binding #'evil-define-key* it keymap key def)))
