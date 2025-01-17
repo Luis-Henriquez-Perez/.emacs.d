@@ -48,6 +48,7 @@
                ("linux"         . ,(nerd-icons-faicon "nf-fa-linux"))
                ("modeline"      . ,(nerd-icons-faicon "nf-fa-grip_lines"))
                ("money"         . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
+               ("screenshot"    . ,(nerd-icons-mdicon "nf-md-monitor_screenshot"))
                ("music"         . ,(nerd-icons-faicon "nf-fa-music"))
                ("online"        . ,(nerd-icons-mdicon "nf-md-web"))
                ("org"           . ,(nerd-icons-sucicon "nf-custom-orgmode"))
