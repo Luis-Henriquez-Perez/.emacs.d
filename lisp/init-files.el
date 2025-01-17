@@ -72,9 +72,6 @@
 (setq confirm-kill-emacs #'y-or-n-p)
 ;;;; silence save-buffer
 (advice-add 'save-buffer :around #'oo-funcall-quietly)
-;;;; keybindings
-
-
 ;;; provide
 (provide 'init-files)
 ;;; init-files.el ends here
