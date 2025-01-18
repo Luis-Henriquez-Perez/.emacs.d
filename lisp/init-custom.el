@@ -26,17 +26,6 @@
 ;;
 ;;; Code:
 (require 'base)
-;;;; don't ask me for permission to enable a theme
-;; By default Emacs will ask you whether you are sure you want to enable a theme
-;; as a precaution because a theme could contain malicious code.  Downloading
-;; themes with elpaca is safe.  I don't make a habit of grabbing random themes
-;; from wierd places online and evaluating them.  So I don't need.
-(setq custom-safe-themes t)
-;;;; don't create a custom file
-;; I don't need it.  I'll be honest; to me it seems like the emacs's custom
-;; interface is intended for people that don't know elisp.  For me it's completely
-;; unnecessary.  Every variable I customize is in my emacs configuration.
-(setq custom-file null-device)
 ;;;; disable old themes before enabling new ones
 ;; We end up with remants of the faces of old themes when we load a new
 ;; one.  For this reason, I make sure to disable any enabled themes before applying

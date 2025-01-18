@@ -60,7 +60,6 @@
 (require 'init-files)
 (require 'init-frame)
 (require 'init-hideshow)
-(require 'init-loaddefs)
 (require 'init-minibuffer)
 (require 'init-paren)
 (require 'init-saveplace)
