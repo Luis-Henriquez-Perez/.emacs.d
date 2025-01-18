@@ -27,9 +27,9 @@
 ;;; Code:
 (opt! escr-screenshot-directory (expand-file-name "~/Pictures"))
 
-;; escr-window-screenshot
-;; escr-frame-screenshot
-;; escr-region-screenshot
+(autoload #'escr-region-screenshot "escr" nil t 'function)
+(autoload #'escr-window-screenshot "escr" nil t 'function)
+(autoload #'escr-frame-screenshot "escr" nil t 'function)
 ;;; provide
 (provide 'init-escr)
 ;;; init-escr.el ends here
