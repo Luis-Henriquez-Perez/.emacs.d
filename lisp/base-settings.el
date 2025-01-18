@@ -192,6 +192,12 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; accidentally narrowed the buffer.  I am experienced enough so that I don't
 ;; Need this.
 (setq disabled-command-function nil)
+;;;; paren
+;;;;; do not auto-enable =show-paren-mode= in editing modes
+;; By default =show-paren-mode= is enabled in all editing mode (non-special
+;; modes).  I want to control when to enable this mode normally--as in, add it to
+;; hooks myself if I want it enabled.  Therefore, I disable it here.
+(setq show-paren-predicate nil)
 ;;; provide
 (provide 'base-settings)
 ;;; base-settings.el ends here
