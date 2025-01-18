@@ -25,26 +25,6 @@
 ;; Initialize startup.
 ;;
 ;;; Code:
-;;;; don't show the startup screen
-;; By default Emacs displays [[][this startup screen]] at startup.  No thanks!  I
-;; think these variables are all aliases for eachother.
-(setq inhibit-startup-message t)
-(setq inhibit-startup-screen t)
-(setq inhibit-splash-screen t)
-;;;; stop creating =auto-save-list= directory
-;; See [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][#18677]].
-(setq auto-save-list-file-prefix nil)
-;;;; set the initial major mode to =fundamental-mode=
-;; This improve startup time because packages enabled for emacs-lisp-mode are not
-;; loaded immediately.
-(setq initial-major-mode 'fundamental-mode)
-;;;; disable initial scratch message
-;; Don't display any documentation--or any message at all--in the =*scratch*=
-;; buffer.  Emacs by default displays a message in the scratch buffer.
-(setq initial-scratch-message nil)
-;;;; don't display message advertising gnu system
-;; They made the process of disabling this more difficult.
-(advice-add #'display-startup-echo-area-message :around #'ignore)
 ;;;;; garbage collection
 (defun! oo--timer--lower-garbage-collection ()
   "Lower garbage collection until it reaches default values."

@@ -198,6 +198,36 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; modes).  I want to control when to enable this mode normally--as in, add it to
 ;; hooks myself if I want it enabled.  Therefore, I disable it here.
 (setq show-paren-predicate nil)
+;;;; simple
+;;;;; always use spaces instead of tabs
+;; https://home.cs.colorado.edu/~main/cs1300/doc/emacs/emacs_24.html
+;; https://stackoverflow.com/questions/9383070/tell-emacs-never-to-insert-tabs
+(setq-default indent-tabs-mode nil)
+;;;;; do not suggest keybindings for me
+(setq suggest-key-bindings nil)
+;;;;; handle trailing whitespace
+(setq-default show-trailing-whitespace nil)
+;;;; startup
+;;;;; don't show the startup screen
+;; By default Emacs displays [[][this startup screen]] at startup.  No thanks!  I
+;; think these variables are all aliases for eachother.
+(setq inhibit-startup-message t)
+(setq inhibit-startup-screen t)
+(setq inhibit-splash-screen t)
+;;;;; stop creating =auto-save-list= directory
+;; See [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][#18677]].
+(setq auto-save-list-file-prefix nil)
+;;;;; set the initial major mode to =fundamental-mode=
+;; This improve startup time because packages enabled for emacs-lisp-mode are not
+;; loaded immediately.
+(setq initial-major-mode 'fundamental-mode)
+;;;;; disable initial scratch message
+;; Don't display any documentation--or any message at all--in the =*scratch*=
+;; buffer.  Emacs by default displays a message in the scratch buffer.
+(setq initial-scratch-message nil)
+;;;;; don't display message advertising gnu system
+;; They made the process of disabling this more difficult.
+(advice-add #'display-startup-echo-area-message :around #'ignore)
 ;;; provide
 (provide 'base-settings)
 ;;; base-settings.el ends here
