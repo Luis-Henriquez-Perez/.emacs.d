@@ -39,7 +39,7 @@
 ;;;; disable cursor blinking
 ;; By default after a certain amount of blinks the cursor becomes solid.  By
 ;; setting this to a negative value I make the cursor blink forever.
-(opt! blink-cursor-blinks -1)
+;; (opt! blink-cursor-blinks -1)
 
 ;; Increase the blink interval slightly.
 (opt! blink-cursor-interval 0.4)
