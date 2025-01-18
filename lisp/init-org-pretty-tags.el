@@ -34,7 +34,7 @@
                ("arch"          . ,(nerd-icons-mdicon "nf-md-arch"))
                ("blog"          . ,(nerd-icons-faicon "nf-fa-blog"))
                ("bug"           . ,(nerd-icons-faicon "nf-fa-bug"))
-               ("css"           . ,(nerd-icons-sucicon "nf-dev-css3"))
+               ("css"           . ,(nerd-icons-devicon "nf-dev-css3"))
                ("emacs"         . ,(nerd-icons-sucicon "nf-custom-emacs"))
                ("email"         . ,(nerd-icons-mdicon "nf-md-email"))
                ("eshell"        . ,(nerd-icons-devicon "nf-dev-terminal"))
