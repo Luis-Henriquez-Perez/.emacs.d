@@ -182,16 +182,19 @@
 (defvar oo-org-map (make-sparse-keymap))
 (define-prefix-command 'oo-org-prefix-command 'oo-org-map)
 
+(bind! oo-leader-map "o" #'oo-org-prefix-command :wk "org")
 (bind! oo-leader-map "j" #'oo-org-prefix-command :wk "org")
 
+(bind! oo-org-map "t" #'+org-capture-todo)
 (bind! oo-org-map "j" #'+org-capture-todo)
 (bind! oo-org-map "l" #'org-clock-in-last)
+(bind! oo-org-map "i" #'org-clock-in)
 (bind! oo-org-map "k" #'org-clock-in)
 (bind! oo-org-map "o" #'org-clock-out)
 (bind! oo-org-map "s" #'org-add-note)
 (bind! oo-org-map "n" #'org-add-note)
 (bind! oo-org-map "a" #'+org-capture-plain)
-(bind! oo-org-map "k" #'+org-capture-todo)
+(bind! oo-org-map "p" #'+org-capture-plain)
 ;;;;; app
 (defvar oo-app-map (make-sparse-keymap))
 (define-prefix-command 'oo-app-prefix-command 'oo-app-map)
