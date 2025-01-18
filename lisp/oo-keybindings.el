@@ -201,6 +201,10 @@
 
 (bind! oo-app-map "n" #'notmuch)
 (bind! oo-app-map "e" #'eshell)
+;; (bind! oo-app-map "s" nil :wk "screenshot")
+(bind! oo-app-map "s r" #'escr-region-screenshot)
+(bind! oo-app-map "s f" #'escr-frame-screenshot)
+(bind! oo-app-map "s w" #'escr-window-screenshot)
 ;;;;; toggle
 (defvar oo-toggle-map (make-sparse-keymap)
   "Keymap that contains bindings for things that should be toggled.")
