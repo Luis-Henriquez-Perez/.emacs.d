@@ -35,6 +35,7 @@
                ("blog"          . ,(nerd-icons-faicon "nf-fa-blog"))
                ("bug"           . ,(nerd-icons-faicon "nf-fa-bug"))
                ("css"           . ,(nerd-icons-devicon "nf-dev-css3"))
+               ("cursor"        . ,(nerd-icons-mdicon "nf-md-cursor_default_outline"))
                ("emacs"         . ,(nerd-icons-sucicon "nf-custom-emacs"))
                ("email"         . ,(nerd-icons-mdicon "nf-md-email"))
                ("eshell"        . ,(nerd-icons-devicon "nf-dev-terminal"))
