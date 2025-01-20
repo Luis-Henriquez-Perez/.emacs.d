@@ -57,7 +57,6 @@
 (require 'init-custom)
 (require 'init-dired)
 (require 'init-emacs-lock)
-(require 'init-hideshow)
 (require 'init-minibuffer)
 (require 'init-saveplace)
 (require 'init-vc-hooks)
