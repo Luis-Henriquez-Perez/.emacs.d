@@ -228,6 +228,63 @@ end-of-buffer signals; pass the rest to the default handler."
 ;;;;; don't display message advertising gnu system
 ;; They made the process of disabling this more difficult.
 (advice-add #'display-startup-echo-area-message :around #'ignore)
+;;;; files
+;;;;; backup files to trash
+(setq backup-directory-alist '((".*" . "~/.Trash")))
+;;;;; don't make backups
+(setq make-backup-files nil)
+;;;;; don't pass case-insensitive to =auto-mode-alist=
+;; This is taken from =centaur-emacs=.  By default [[file:snapshots/*helpful variable: auto-mode-case-fold*.png][auto-mode-case-fold]] is
+;; non-nil; when enabled the auto-mode-alist is traversed twice.  This double
+;; traversal can be expensive and it seems unnecessary.
+(setq auto-mode-case-fold nil)
+;;;;; stop asking me whether I want to enable file local variables
+;; When installing packages with =quelpa=, I was prompted whether I wanted to apply
+;; file local variables.  I'm guessing =straight.el= and =elpaca= disable this.
+;; The value safe tells Emacs to only apply the "safe" local variables.  I'm
+;; assuming this means ones like "mode" which tell Emacs to open the buffer at a
+;; certain major mode.  At first I had this set to nil, but I wanted to open
+;; [[][]] in =common-lisp-mode= and I realized Emacs wasn't doing it because I
+;; told it not to with this variable.
+(setq enable-local-variables :safe)
+;;;;; ensure there's always a newline at the end of files
+;; Several linux programs require a newline at the end of a file, such as
+;; chrontab--this is more or less what noctuid said and I'll take his word for
+;; it.
+(setq require-final-newline t)
+;;;;; designate location of trash
+;; designate the location of the trash directory
+;; I accidentally sent files to the trash and I could not find them in my trash
+;; directory.  I was confused because I knew that the variable
+;; [[file:_helpful_variable__delete-by-moving-to-trash_.png][delete-by-moving-to-trash]] was non-nil and I even verified this to be the case
+;; with [[file:_helpful_function__helpful-variable_.png][helpful-variable]].  After reading the documentation of [[][]] I realized
+;; that emacs uses the [[][]].  To be honest I had no idea what this actually was
+;; but I extracted what looked like the location, [[][]].
+(setq trash-directory (expand-file-name "~/Trash"))
+;;;;; diable auto-save-mode
+(setq auto-save-default nil)
+(auto-save-mode -1)
+
+(setq idle-update-delay 1.0)
+;;;;; automatically kill any processes when exiting emacs
+;; If I start a process, like the =eat= shell for example, stop me from exiting
+;; to ask me whether I want to kill it, just do it.
+;; https://emacsredux.com/blog/2020/07/18/automatically-kill-running-processes-on-exit/
+(setq confirm-kill-processes nil)
+;;;;; confirm before quitting Emacs
+(setq confirm-kill-emacs #'y-or-n-p)
+;;;; frame
+;;;;; disable cursor blinking
+;; By default after a certain amount of blinks the cursor becomes solid.  By
+;; setting this to a negative value I make the cursor blink forever.
+(blink-cursor-mode -1)
+
+;; Increase the blink interval slightly.
+(setq blink-cursor-interval 0.4)
+
+(setopt window-divider-default-bottom-width 7)
+(setopt window-divider-default-right-width 7)
+(setopt window-divider-default-places t)
 ;;; provide
 (provide 'base-settings)
 ;;; base-settings.el ends here

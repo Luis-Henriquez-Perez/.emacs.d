@@ -57,12 +57,9 @@
 (require 'init-custom)
 (require 'init-dired)
 (require 'init-emacs-lock)
-(require 'init-files)
-(require 'init-frame)
 (require 'init-hideshow)
 (require 'init-minibuffer)
 (require 'init-saveplace)
-(require 'init-startup)
 (require 'init-vc-hooks)
 (require 'init-window)
 ;; External packages

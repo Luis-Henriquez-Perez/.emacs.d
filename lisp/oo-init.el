@@ -265,6 +265,17 @@ Replace `kill-buffer--possibly-save' as advice."
   (set-register :gc-cons-threshold gc-cons-threshold)
   (info! "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
+;;;; silence save-buffer
+(advice-add 'save-buffer :around #'oo-funcall-quietly)
+;;;; window-divider
+;; TODO: The display flickers when setting the initial theme.  Maybe this is
+;; inevitable.  But maybe this has to do with me either disabling the previous
+;; theme first or the order of setting the window-divider, or maybe I can
+;; specify the default theme to load beforehand.  I need to play around with
+;; settings and see if this flickering can be avoided.
+(hook! after-init-hook window-divider-mode :depth 12)
+;;;; hideshow
+(hook! prog-mode-hook hs-minor-mode)
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
