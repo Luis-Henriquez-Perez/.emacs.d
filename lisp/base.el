@@ -57,24 +57,29 @@
  (lgr-add-appender oo-error-logger message-buffer-appender)
  (lgr-add-appender oo-error-logger log-buffer-appender))
 
-;; I do not want to have to pass in the logger every single time.
 (defmacro info! (msg &rest meta)
-  `(lgr-info oo-logger ,msg ,@meta))
+  (when oo-debug-p
+    `(lgr-info oo-logger ,msg ,@meta)))
 
 (defmacro error! (msg &rest meta)
-  `(lgr-error oo-error-logger ,msg ,@meta))
+  (when oo-debug-p
+    `(lgr-error oo-error-logger ,msg ,@meta)))
 
 (defmacro warn! (msg &rest meta)
-  `(lgr-warn oo-logger ,msg ,@meta))
+  (when oo-debug-p
+    `(lgr-warn oo-logger ,msg ,@meta)))
 
 (defmacro fatal! (msg &rest meta)
-  `(lgr-fatal oo-logger ,msg ,@meta))
+  (when oo-debug-p
+    `(lgr-fatal oo-logger ,msg ,@meta)))
 
 (defmacro trace! (msg &rest meta)
-  `(lgr-trace oo-logger ,msg ,@meta))
+  (when oo-debug-p
+    `(lgr-trace oo-logger ,msg ,@meta)))
 
 (defmacro debug! (msg &rest meta)
-  `(lgr-debug oo-logger ,msg ,@meta))
+  (when oo-debug-p
+    `(lgr-debug oo-logger ,msg ,@meta)))
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
