@@ -28,7 +28,8 @@
 ;;;; requirements
 (require 'abbrev)
 (require 'base)
-(require 'oo-plain-text-abbrevs)
+;;;; prevent greedy expansion with `backward-word'
+(abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 ;;;; automatically add period
 ;; I do not like manually adding periods to the end of sentences.  Having moved
 ;; from using one space after a sentence to two, I find it particularl daunting
