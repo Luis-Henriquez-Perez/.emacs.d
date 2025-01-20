@@ -276,6 +276,9 @@ Replace `kill-buffer--possibly-save' as advice."
 (hook! after-init-hook window-divider-mode :depth 12)
 ;;;; hideshow
 (hook! prog-mode-hook hs-minor-mode)
+;;;; spelling
+(hook! text-mode flyspell-mode)
+(hook! prog-mode-hook flyspell-progn-mode)
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
