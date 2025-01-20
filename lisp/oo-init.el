@@ -89,7 +89,34 @@ file is loaded."
   "Reset garbage collection settings to `gcmh-low-cons-threshold'."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
-;;;; Initialize the modeline
+;;;; simple
+;;;;; hooks
+;; (hook! prog-mode-hook auto-fill-mode)
+(hook! text-mode-hook auto-fill-mode)
+(hook! text-mode-hook visual-line-mode)
+
+(defhook! oo-manage-trailing-whitespace-h (prog-mode-hook conf-mode-hook)
+  "Show trailing whitespace and delete it before saving."
+  (setq show-trailing-whitespace t)
+  (oo-add-hook 'before-save-hook #'delete-trailing-whitespace :local t))
+;;;;; less confusing kill buffer
+;; https://christiantietze.de/posts/2023/09/kill-unsaved-buffer-ux-action-labels/
+(defun! oo--prompt-clearly (_ buffer &rest _)
+  "Ask user in the minibuffer whether to save before killing.
+Replace `kill-buffer--possibly-save' as advice."
+  (set! prompt (format "Buffer %s modified." (buffer-name)))
+  (set! choices '((?s "Save and kill buffer" "save the buffer and then kill it")
+                  (?d "Discard and kill buffer without saving" "kill buffer without saving")
+                  (?c "Cancel" "Exit without doing anything")))
+  (set! long-form (and (not use-short-answers) (not (use-dialog-box-p))))
+  (set! response (car (read-multiple-choice prompt (reverse choices) nil nil long-form)))
+  (cl-case response
+    (?s (with-current-buffer buffer (save-buffer)) t)
+    (?d t)
+    (t nil)))
+
+(advice-add 'kill-buffer--possibly-save :around #'oo--prompt-clearly)
+;;;; initialize the modeline
 ;;;; initialization
 (defhook! oo-initialize-modeline-h (after-init-hook :depth 90)
   "Initialize modeline."
@@ -204,6 +231,40 @@ file is loaded."
            (set! fn `(lambda () (require ',feature ,path nil)))
            (info! "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
+;;;; startup
+;;;;; garbage collection
+(defun! oo--timer--lower-garbage-collection ()
+  "Lower garbage collection until it reaches default values."
+  (flet! mb (x) (/ (float x) 1024 1024))
+  (if (minibuffer-window-active-p (minibuffer-window))
+      (run-with-timer 5 nil #'oo--timer--lower-garbage-collection)
+    (info! "Running timer for lowering garbage collection...")
+    (set! reduction (/ (get-register :gc-cons-threshold) 10))
+    (set! gc-floor (* 8 1024 1024))
+    (set! gcp-default 0.2)
+    (when (/= gc-cons-threshold gc-floor)
+      (set! old gc-cons-threshold)
+      (set! new (max (- old reduction) gc-floor))
+      (setq gc-cons-threshold new)
+      (info! "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
+    (when (/= gc-cons-percentage gcp-default)
+      (set! old (max gc-cons-percentage gcp-default))
+      (set! new (max (- gc-cons-percentage 0.1) gcp-default))
+      (info! "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
+      (setq gc-cons-percentage new))
+    (if (and (= gc-cons-threshold gc-floor)
+             (= gc-cons-percentage gcp-default))
+        (info! "Done with timer.")
+      (run-with-timer 7 nil #'oo--timer--lower-garbage-collection))))
+;;;;; emacs-startup-hook
+(defhook! oo-restore-startup-values-h (emacs-startup-hook :depth 90)
+  "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
+  (info! "Restore the value of `file-name-handler-alist'.")
+  (setq file-name-handler-alist (get-register :file-name-handler-alist))
+  (setq gc-cons-threshold (* 40 1024 1024))
+  (set-register :gc-cons-threshold gc-cons-threshold)
+  (info! "Set the value of `gc-cons-threshold' to 40 MB.")
+  (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
