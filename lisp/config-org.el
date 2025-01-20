@@ -56,24 +56,6 @@ are in alphabetical order."
   (apply orig-fn args))
 
 (advice-add 'org-capture :around #'oo--suppress-window-deletion)
-
-(defvar auto-tag)
-'(("org" "emacs" "org")
-  ("emacs" "emacs")
-  ("call" "phone")
-  ("login" "online"))
-"Tags that should be added to current headline based on its contents."
-(defun oo--auto-add-tags ()
-  "Add tags to current headline at point based on its contents."
-  (save-restriction
-    (save-excursion
-      (org-back-to-heading)
-      (org-narrow-to-heading)
-      (buffer-string)))
-  (for! ((a . b) conten)
-    (when (s-contains-p needle s)
-      (collecting! tags a)))
-  (org-set-tags))
 ;;; provide
 (provide 'config-org)
 ;;; config-org.el ends here
