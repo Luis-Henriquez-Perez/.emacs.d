@@ -37,18 +37,6 @@
   (when (derived-mode-p 'text-mode)
     (require 'oo-plain-text-abbrevs))
   (remove-hook 'abbrev-mode-hook #'oo-load-plain-text-abbrevs-h))
-
-(defhook! oo-load-emacs-lisp-mode-abbrevs-h (emacs-lisp-mode-hook)
-  (when (derived-mode-p 'emacs-lisp-mode)
-    (require 'oo-emacs-lisp-mode-abbrevs))
-  (remove-hook 'emacs-lisp-mode-hook #'oo-load-emacs-lisp-mode-abbrevs-h))
-
-(defhook! oo-load-eshell-mode-abbrevs-h (eshell-mode-hook)
-  (when (derived-mode-p 'eshell-mode)
-    (require 'oo-eshell-mode-abbrevs))
-  (remove-hook 'eshell-mode-hook #'oo-load-eshell-mode-abbrevs-h))
-;;;; bindings
-
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)
