@@ -1,4 +1,4 @@
-;;; base-settings.el --- core settings -*- lexical-binding: t; -*-
+;;; 02-base-settings.el --- core settings -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -286,5 +286,5 @@ end-of-buffer signals; pass the rest to the default handler."
 (setopt window-divider-default-right-width 7)
 (setopt window-divider-default-places t)
 ;;; provide
-(provide 'base-settings)
-;;; base-settings.el ends here
+(provide '02-base-settings)
+;;; 02-base-settings.el ends here
