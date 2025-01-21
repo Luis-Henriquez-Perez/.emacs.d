@@ -48,7 +48,7 @@
   (lef! ()
     (apply fn args)))
 
-(defun oo-bind (&rest args)
+(defun oo-bind (keymap key def &key states)
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
