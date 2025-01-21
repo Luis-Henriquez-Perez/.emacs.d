@@ -375,6 +375,7 @@
 (oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
 (oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
 ;;;; info
+(bind! n Info-mode-map "m" #'Info-menu)
 (bind! n Info-mode-map "o" #'Info-menu)
 (bind! n Info-mode-map "H" #'Info-last)
 (bind! n Info-mode-map "L" #'Info-next)
