@@ -279,6 +279,84 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; spelling
 (hook! text-mode flyspell-mode)
 (hook! prog-mode-hook flyspell-progn-mode)
+;;;; disable old themes before enabling new ones
+;; We end up with remants of the faces of old themes when we load a new
+;; one.  For this reason, I make sure to disable any enabled themes before applying
+;; a new theme.
+
+;; When you load a theme you'll end up with quite a surprise.  And it
+;; stacks as well when working on a big configuration change I didn't
+;; have this code and I could literally backtrack the themes.
+
+;; Don't know why deleting the previous theme before enabling a new
+;; one isn't the default behavior.  When would anyone want to layer
+;; the colors of one theme on top of an older one.
+(defun! oo--disable-old-themes (orig-fn &rest args)
+  "Disable old themes before loading new ones."
+  (mapc #'disable-theme custom-enabled-themes)
+  (apply orig-fn args))
+
+(advice-add 'load-theme :around #'oo--disable-old-themes)
+;;;; make setting faces actually work
+;; Surprisingly, the function `custom-theme-set-faces' and `custom-set-faces' do
+;; not by default actually change any faces.  For that to happen the variable
+;; `custom--inhibit-theme-enable' needs to be nil.  Furthermore, because I
+;; disable existing themes before enabling new ones even after customizing a
+;; theme the customization does not persist.  This function addresses both of
+;; these issues ensuring that as expected the faces are set immediately if the
+;; theme is loaded and that these changes persist even after theme change.
+(defvar oo-custom-faces-alist nil
+  "An alist of faces to be applied.
+Each element is of the form (theme . faces).  THEME is the customized theme and
+FACES is the list of customized faces for THEME.")
+
+(defun oo-custom-set-faces (theme &rest faces)
+  "Customize THEME with FACES.
+If THEME is already enabled, also applies
+faces immediately."
+  (declare (indent defun))
+  (when (and after-init-time
+             (or (equal theme 'user) (member theme custom-enabled-themes)))
+    (let ((custom--inhibit-theme-enable nil))
+      (apply #'custom-theme-set-faces theme faces)))
+  (setf (alist-get theme oo-custom-faces-alist)
+        (cl-union faces (alist-get theme oo-custom-faces-alist) :key #'car)))
+
+(defun oo-apply-custom-faces-h (current)
+  "Apply any faces that need to be applied from `oo-custom-faces-alist'."
+  (info! "Current theme -> %s" current)
+  (for! ((theme . faces) oo-custom-faces-alist)
+    (when (or (equal theme 'user) (member theme custom-enabled-themes))
+      (info! "Applying faces for %s..." theme)
+      (let ((custom--inhibit-theme-enable nil))
+        (apply #'custom-theme-set-faces theme faces)))))
+
+(add-hook 'enable-theme-functions #'oo-apply-custom-faces-h)
+;;;; minibuffer
+(defun oo-completion-in-region-function (&rest args)
+  (apply (if (and (bound-and-true-p vertico-mode) (featurep 'consult))
+             #'consult-completion-in-region
+           #'completion--in-region)
+         args))
+
+(setq completion-in-region-function #'oo-completion-in-region-function)
+;;;; prevent =*Messages*= and =*scratch*= buffers from being killed
+;; "Locking" a file can mean two different things (or both of these things at
+;; once).  It can mean that Emacs cannot be exited while there are "locked"
+;; buffers; it can also mean that the locked buffers cannot be killed (e.g. via
+;; [[file:snapshots/_helpful_command__kill-buffer_.png][kill-buffer]]).  I don't think I ever want the former behavior.  Setting
+;; [[][emacs-default-locking-mode]] to kill tells Emacs just to prevent buffers
+;; with =emacs-lock-mode= enabled from being killed.  If you were to try to kill
+;; one with something like =kill-buffer=, it would fail and you'd get a message
+;; saying the buffer cannot be killed.
+
+;; The =*Messages*= buffer could contain important information and should never
+;; really be killed. See [[https://www.emacswiki.org/emacs/ProtectingBuffers][ProtectingBuffers]].
+(setq emacs-lock-default-locking-mode 'kill)
+(with-current-buffer "*Messages*" (emacs-lock-mode 1))
+
+;; This buffer is useless.  I do not want it taking up space.
+(kill-buffer "*scratch*")
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here

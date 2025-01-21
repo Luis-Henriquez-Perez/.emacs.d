@@ -285,6 +285,12 @@ end-of-buffer signals; pass the rest to the default handler."
 (setopt window-divider-default-bottom-width 7)
 (setopt window-divider-default-right-width 7)
 (setopt window-divider-default-places t)
+;;;; don't ask me whether to follow symlinks, just do it
+;; By default Emacs will prompt you when you want to open a file a symlink
+;; references.  It will ask you whether you want to follow the symlink.  For me
+;; the answer is predominately yes.
+(setq vc-follow-symlinks t)
+(setq vc-follow-link t)
 ;;; provide
 (provide 'base-settings)
 ;;; base-settings.el ends here

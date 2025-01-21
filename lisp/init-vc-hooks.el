@@ -25,12 +25,6 @@
 ;; Initialize `vc-hooks'.
 ;;
 ;;; Code:
-;;;; don't ask me whether to follow symlinks, just do it
-;; By default Emacs will prompt you when you want to open a file a symlink
-;; references.  It will ask you whether you want to follow the symlink.  For me
-;; the answer is predominately yes.
-(setq vc-follow-symlinks t)
-(setq vc-follow-link t)
 ;;; provide
 (provide 'init-vc-hooks)
 ;;; init-vc-hooks.el ends here
