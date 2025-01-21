@@ -51,7 +51,8 @@
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 ;;;; load requirements
 (require '01-base-vars)
-(require '01-base-settings)
+(require '02-base-settings)
+(require '03-base-lib)
 (require 'init-no-littering)
 ;; Built-in packages
 (require 'init-abbrev)
