@@ -26,9 +26,6 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'base-lib)
-(eval-when-compile (require 'base-macros))
-(require 'base-packages)
 (require 'lgr)
 ;;;; logger
 (defvar oo-logger (lgr-get-logger "main")
