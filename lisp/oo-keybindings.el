@@ -185,6 +185,7 @@
 (bind! oo-leader-map "o" #'oo-org-prefix-command :wk "org")
 (bind! oo-leader-map "j" #'oo-org-prefix-command :wk "org")
 
+(bind! oo-org-map "p you" #'+org-capture-todo)
 (bind! oo-org-map "t" #'+org-capture-todo)
 (bind! oo-org-map "j" #'+org-capture-todo)
 (bind! oo-org-map "a" #'org-archive-subtree)
