@@ -221,8 +221,7 @@
              (message "package is not installed %s package" package)
              (with-demoted-errors "%S" (package-install package 'dont-select)))
            (if (package-installed-p package)
-               (progn (garbage-collect)
-                      (sleep-for 2))
+               (garbage-collect)
              (message "Failed to install package `%s'" package)))
           (t
            (message "Package %s is not available." package)))))
