@@ -211,7 +211,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(remove-hook 'kill-emacs-hook #'emms-history-save)
+;; (remove-hook 'kill-emacs-hook #'emms-history-save)
 ;; Manage garbage collection myself.  U shouldn't just disable garbage
 ;; collection altogether for this becausee ur emacs could crash if it has too
 ;; much uncollected garbage.
