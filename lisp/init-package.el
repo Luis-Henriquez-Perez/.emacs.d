@@ -211,7 +211,12 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(let ((refreshed-contents-p nil))
+(remove-hook 'kill-emacs-hook #'emms-history-save)
+;; Manage garbage collection myself.  U shouldn't just disable garbage
+;; collection altogether for this becausee ur emacs could crash if it has too
+;; much uncollected garbage.
+(let ((refreshed-contents-p nil)
+      (gc-cons-threshold most-positive-fixnum))
   (dolist (package package-selected-packages)
     (cond ((assq package package-archive-contents)
            (unless (package-installed-p package)
@@ -221,8 +226,7 @@
              (message "package is not installed %s package" package)
              (with-demoted-errors "%S" (package-install package 'dont-select)))
            (if (package-installed-p package)
-               (progn (garbage-collect)
-                      (sleep-for 2))
+               (garbage-collect)
              (message "Failed to install package `%s'" package)))
           (t
            (message "Package %s is not available." package)))))
