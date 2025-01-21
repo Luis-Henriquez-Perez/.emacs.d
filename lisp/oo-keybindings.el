@@ -188,6 +188,7 @@
 (bind! oo-org-map "t" #'+org-capture-todo)
 (bind! oo-org-map "j" #'+org-capture-todo)
 (bind! oo-org-map "a" #'org-archive-subtree)
+(bind! oo-org-map "c" #'org-clock-cancel)
 (bind! oo-org-map "l" #'org-clock-in-last)
 (bind! oo-org-map "i" #'org-clock-in)
 (bind! oo-org-map "k" #'org-clock-in)
