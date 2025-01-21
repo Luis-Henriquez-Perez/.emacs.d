@@ -44,10 +44,6 @@
 ;; What data structure should I use to record bindings?
 (bind! i "A-x" #'execute-extended-command)
 
-(defun oo--bind (fn &rest args)
-  (lef! ()
-    (apply fn args)))
-
 (cl-defun oo-bind (keymap key def &key states)
   (cond ((symbolp keymap)
          (info! "is not bound, deferring...")
