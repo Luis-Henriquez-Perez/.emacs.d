@@ -142,7 +142,7 @@ This is as opposed to character length."
   "Convenience macro for defining evil motions.
 This is a wrapper around `evilem-make-motion'."
   (declare (indent defun))
-  ;; TODO: use what I defined on base-lib for this.
+  ;; TODO: use what I defined on 04-base-lib for this.
   ;; Remove the keywords passed in after docstring.
   (when (stringp (car body))
     (set! docstring (pop body)))
