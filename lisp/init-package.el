@@ -219,10 +219,9 @@
                (package-refresh-contents)
                (setq refreshed-contents-p (not refreshed-contents-p)))
              (message "package is not installed %s package" package)
-             (with-demoted-errors "%S" (package-install package 'dont-select))
-             )
-           (unless (package-installed-p package)
-             (message "Failed to install package `%s'" package)))
+             (with-demoted-errors "%S" (package-install package 'dont-select)))
+           (if (package-installed-p package)
+               (message "Failed to install package `%s'" package)))
           (t
            (message "Package %s is not available." package)))))
 
