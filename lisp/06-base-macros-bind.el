@@ -46,7 +46,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'base-lib)
+(require '04-base-lib)
 ;;;; oo--let-bindings
 ;; I wanted a way to prevent select keys from being let-bound, the concrete case
 ;; was the character that I want to pass into
