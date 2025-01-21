@@ -53,6 +53,7 @@
 (require '01-base-vars)
 (require '02-base-settings)
 (require '03-base-lib)
+(require '04-base-utils)
 (require 'init-no-littering)
 ;; Built-in packages
 (require 'init-abbrev)
