@@ -54,7 +54,7 @@
 (require '02-base-settings)
 (require '03-base-utils)
 (require '04-base-lib)
-(require '05-base-macros)
+
 (require 'init-no-littering)
 ;; Built-in packages
 (require 'init-abbrev)
