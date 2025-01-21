@@ -1,4 +1,4 @@
-;;; base-lib.el --- external package library -*- lexical-binding: t; -*-
+;;; 04-base-lib.el --- external package library -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -168,5 +168,5 @@ SYMBOL and FN in `oo-after-load-hash-table'."
                 (gethash ',old oo-alternate-commands))
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
 ;;; provide
-(provide 'base-lib)
-;;; base-lib.el ends here
+(provide '04-base-lib)
+;;; 04-base-lib.el ends here
