@@ -81,7 +81,7 @@
 (require 'init-evil)
 (require 'init-vertico-multiform)
 (require 'init-evil-cleverparens)
-(require 'init-evil-collection)
+;; (require 'init-evil-collection)
 (require 'init-evil-easymotion)
 (require 'init-evil-exchange)
 (require 'init-evil-fringe-mark)
