@@ -55,6 +55,7 @@
 (require '03-base-utils)
 (require '04-base-lib)
 (eval-when-compile (require '05-base-macros))
+(eval-when-compile (require '05-base-macros))
 (require 'init-no-littering)
 ;; Built-in packages
 (require 'init-abbrev)
