@@ -25,6 +25,12 @@
 ;; This contains the core settings and functionality of my configuration.
 ;;
 ;;; Code:
+(require '01-base-vars)
+(require '02-base-settings)
+(require '03-base-utils)
+(require '04-base-lib)
+(eval-when-compile (require '05-base-macros))
+(eval-when-compile (require '05-base-macros))
 ;;;; requirements
 (require 'lgr)
 ;;;; logger
