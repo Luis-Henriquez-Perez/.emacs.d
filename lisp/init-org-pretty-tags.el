@@ -40,6 +40,7 @@
                ("email"         . ,(nerd-icons-mdicon "nf-md-email"))
                ("eshell"        . ,(nerd-icons-devicon "nf-dev-terminal"))
                ("evil"          . ,(nerd-icons-mdicon "nf-md-emoticon_devil"))
+               ("font"          . ,(nerd-icons-sucicon "nf-seti-font"))
                ("function"      . ,(nerd-icons-mdicon "nf-md-function"))
                ("git"           . ,(nerd-icons-mdicon "nf-md-git"))
                ("github"        . ,(nerd-icons-faicon "nf-fa-github"))
