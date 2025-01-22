@@ -202,21 +202,21 @@
   "Keymap that contains bindings for things that should be toggled.")
 (define-prefix-command 'oo-toggle-prefix-command 'oo-toggle-map)
 
-(bind! oo-toggle-map "c" #'blink-cursor-mode)
-(bind! oo-toggle-map "g" #'grugru)
-(bind! oo-toggle-map "s" #'smartparens-mode)
-(bind! oo-toggle-map "r" #'oo-load-random-theme)
-(bind! oo-toggle-map "t" #'load-theme)
-(bind! oo-toggle-map "w" #'whitespace-mode)
-(bind! oo-toggle-map "l" #'display-line-numbers-mode)
-(bind! oo-toggle-map "u" #'toggle-truncate-lines)
-(bind! oo-toggle-map "n" #'oo-dwim-narrow)
-(bind! oo-toggle-map "i" #'iedit-mode)
-(bind! oo-toggle-map "e" #'eval-expression)
-(bind! oo-toggle-map "f" #'oo-set-font-face)
-(bind! oo-toggle-map "r" #'read-only-mode)
-(bind! oo-toggle-map "d" #'toggle-debug-on-error)
-(bind! oo-toggle-map "P" #'profiler-stop)
+(defvar-keymap oo-toggle-map "c" #'blink-cursor-mode
+               "g" #'grugru
+               "s" #'smartparens-mode
+               "r" #'oo-load-random-theme
+               "t" #'load-theme
+               "w" #'whitespace-mode
+               "l" #'display-line-numbers-mode
+               "u" #'toggle-truncate-lines
+               "n" #'oo-dwim-narrow
+               "i" #'iedit-mode
+               "e" #'eval-expression
+               "f" #'oo-set-font-face
+               "r" #'read-only-mode
+               "d" #'toggle-debug-on-error
+               "P" #'profiler-stop)
 ;;;;; buffer
 (defvar oo-buffer-map (make-sparse-keymap))
 (define-prefix-command 'oo-buffer-prefix-command 'oo-buffer-map)
