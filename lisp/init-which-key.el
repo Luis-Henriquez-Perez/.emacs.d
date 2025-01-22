@@ -40,6 +40,8 @@
 (opt! which-key-allow-evil-operators t)
 (opt! which-key-show-operator-state-maps t)
 (opt! which-key-show-prefix 'top)
+
+(hook! emacs-startup-hook which-key-mode)
 ;;; provide
 (provide 'init-which-key)
 ;;; init-which-key.el ends here
