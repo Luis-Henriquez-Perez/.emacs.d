@@ -47,7 +47,8 @@
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
-      (lef! () (apply fn arglist))
+      (lef! ()
+        (apply fn arglist))
     (apply fn arglist)))
 
 (cl-defun oo-bind (keymap key def &key states which-key)
