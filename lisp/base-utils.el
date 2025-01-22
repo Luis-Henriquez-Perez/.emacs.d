@@ -268,7 +268,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
           (t nil))))
 ;;;; logging
 (defun oo-log (type message &rest args)
-  (message "[%s]" type))
+  (message "[%s] %s" type))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
