@@ -168,7 +168,6 @@
   "S" #'burly-bookmark-windows
   "b" #'burly-bookmark-windows)
 ;;;;; git
-(defvar oo-git-map (make-sparse-keymap))
 (define-prefix-command 'oo-git-prefix-command 'oo-git-map)
 (defvar-keymap oo-git-map
   "b" #'vc-switch-branch
