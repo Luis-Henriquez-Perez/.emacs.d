@@ -53,7 +53,7 @@
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
-      (lef! ((keymap-set #'oo--keymap-set))
+      (lef! ((keymap-set (apply-partially #'oo--keymap-set)))
         (apply fn arglist))
     (apply fn arglist)))
 
