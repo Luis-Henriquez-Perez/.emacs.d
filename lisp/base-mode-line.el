@@ -25,7 +25,7 @@
 ;; Initialize my modeline.
 ;;
 ;;; Code:
-(require )
+(require 'base-macros)
 (require 'battery)
 (require 'dash)
 (require 'powerline)
