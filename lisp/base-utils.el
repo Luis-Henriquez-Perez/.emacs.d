@@ -280,7 +280,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 
 (defmacro warn! (msg &rest meta)
   (when oo-debug-p
-    `(lgr-warn oo-logger ,msg ,@meta)))
+    `(oo-log 'warn oo-logger ,msg ,@meta)))
 
 (defmacro fatal! (msg &rest meta)
   (when oo-debug-p
