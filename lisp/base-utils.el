@@ -270,6 +270,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 (defun oo-log (type message &rest args)
   "Log to *Messages* buffer."
   (apply #'message "[%s] %s" type args))
+;;;; hook
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
