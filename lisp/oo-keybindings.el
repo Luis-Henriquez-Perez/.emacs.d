@@ -143,8 +143,8 @@
   "w" '("window" . oo-window-prefix-command)
   "a" '("app" . oo-app-prefix-command)
   "p" '("package" . oo-package-prefix-command)
-  "f" '("find" . #'oo-find-prefix-command)
-  "h" #'oo-help-map-prefix-command
+  "f" '("find" . oo-find-prefix-command)
+  "h" '(#'oo-help-map-prefix-command)
   "e" #'oo-emms-prefix-command
   "t" #'oo-toggle-prefix-command
   "q" #'oo-quit-prefix-command)
