@@ -137,7 +137,7 @@
   :doc ""
   ";" #'+org-agenda-day-view
   oo-normal-leader-key #'execute-extended-command
-  "b" '("buffer"oo-buffer-prefix-command)
+  "b" '("buffer" . oo-buffer-prefix-command)
   "g" #'oo-git-prefix-command
   "l" #'oo-git-prefix-command
   "w" #'oo-window-prefix-command
