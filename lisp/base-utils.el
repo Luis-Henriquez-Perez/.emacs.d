@@ -267,6 +267,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
           ((nth 4 ppss) 'comment)
           (t nil))))
 ;;;; logging
+(defun oo-log (type message))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
