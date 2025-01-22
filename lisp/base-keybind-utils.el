@@ -52,7 +52,7 @@
          (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
-         (oo-call-after-load 'evil #'oo--bind #'evil-define-key* keymap key def))
+         (oo-call-after-load 'evil #'oo--bind #'evil-define-key* states keymap key def))
         (t
          (oo--bind #'keymap-set keymap key def which-key))))
 
