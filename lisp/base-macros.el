@@ -570,9 +570,10 @@ If MATCH-FORM is a symbol act as `setq'."
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
 ;;;;; logging
-(oo-log 'info "do this %s" 4)
+(info! "do this %s" 4)
 (defmacro info! (msg &rest meta)
-  `(oo-log 'info ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'info ,msg ,@meta)))
 
 (defmacro error! (msg &rest meta)
   (when oo-debug-p
