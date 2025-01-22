@@ -242,31 +242,32 @@
 (defvar oo-find-map (make-sparse-keymap))
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
 
-(defvar-keymap oo-find-map :prefix '
-               ";" #'save-buffer
-               "o" #'find-file
-               "E" #'oo-open-emacs-config
-               "I" #'oo-open-emacs-init-file
-               "L" #'oo-open-emacs-lisp-dir
-               "G" #'rgrep
-               "p" #'consult-yank-pop
-               "k" #'consult-bookmark
-               "b" #'consult-bookmark
-               "l" #'consult-line
-               "h" #'consult-outline
-               "g" #'consult-grep
-               "z" #'ace-link
-               "b" #'burly-open-bookmark
-               ";" #'save-buffer
-               "i" #'imenu
-               "j" #'oo-dwim-narrow
-               "n" #'oo-new-buffer
-               "o" #'find-file
-               "f" #'switch-to-buffer
-               "d" #'display-buffer
-               "a" #'find-library
-               "f" #'switch-to-buffer
-               "d" #'pop-to-buffer)
+(defvar-keymap oo-find-map
+  :prefix '
+  ";" #'save-buffer
+  "o" #'find-file
+  "E" #'oo-open-emacs-config
+  "I" #'oo-open-emacs-init-file
+  "L" #'oo-open-emacs-lisp-dir
+  "G" #'rgrep
+  "p" #'consult-yank-pop
+  "k" #'consult-bookmark
+  "b" #'consult-bookmark
+  "l" #'consult-line
+  "h" #'consult-outline
+  "g" #'consult-grep
+  "z" #'ace-link
+  "b" #'burly-open-bookmark
+  ";" #'save-buffer
+  "i" #'imenu
+  "j" #'oo-dwim-narrow
+  "n" #'oo-new-buffer
+  "o" #'find-file
+  "f" #'switch-to-buffer
+  "d" #'display-buffer
+  "a" #'find-library
+  "f" #'switch-to-buffer
+  "d" #'pop-to-buffer)
 ;;;;; quit
 (defvar oo-quit-map (make-sparse-keymap))
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
