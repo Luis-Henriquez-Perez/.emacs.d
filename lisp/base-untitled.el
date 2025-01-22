@@ -75,6 +75,7 @@
   (when oo-debug-p
     `(lgr-debug oo-logger ,msg ,@meta)))
 ;;;; logging
+
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
