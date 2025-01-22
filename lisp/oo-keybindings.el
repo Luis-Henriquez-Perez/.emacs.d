@@ -239,7 +239,7 @@
 (define-prefix-command 'oo-help-prefix-command 'oo-help-map)
 
 (defvar-keymap oo-help-map
-  :prefix 'oo-help-prefix-command
+  :prefix 'oo-help-map-prefix-command
   "m" #'describe-mode
   "l" #'describe-function
   "f" #'describe-function
