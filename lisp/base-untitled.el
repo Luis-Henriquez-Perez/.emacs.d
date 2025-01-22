@@ -79,7 +79,7 @@
   "List of logs.")
 
 (defun oo-log (type message &rest args)
-  (unless))
+  (when (and (car oo-logs))))
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
