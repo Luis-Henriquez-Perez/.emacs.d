@@ -276,7 +276,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 
 (defmacro error! (msg &rest meta)
   (when oo-debug-p
-    `(oo-log oo-error-logger ,msg ,@meta)))
+    `(oo-log 'error ,msg ,@meta)))
 
 (defmacro warn! (msg &rest meta)
   (when oo-debug-p
