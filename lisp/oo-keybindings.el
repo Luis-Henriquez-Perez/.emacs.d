@@ -145,7 +145,7 @@
   "a" #'oo-app-prefix-command
   "p" #'oo-package-prefix-command
   "f" #'oo-find-prefix-command
-  "h" #'oo-help-prefix-command :wk "help"
+  "h" #'oo-help-prefix-command
   "e" #'oo-emms-prefix-command :wk "emms"
   "t" #'oo-toggle-prefix-command :wk "toggle"
   "q" #'oo-quit-prefix-command :wk "quit")
