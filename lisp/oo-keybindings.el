@@ -133,6 +133,7 @@
 
 (define-prefix-command 'oo-leader-prefix-command 'oo-leader-map)
 
+(define-key "w" '("window" . oo-window-prefix-command))
 (defvar-keymap oo-leader-map
   :doc ""
   ";" #'+org-agenda-day-view
