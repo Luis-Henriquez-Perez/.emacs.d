@@ -150,7 +150,6 @@
   "t" #'oo-toggle-prefix-command
   "q" #'oo-quit-prefix-command)
 ;;;;; window
-(defvar oo-window-map (make-sparse-keymap))
 (define-prefix-command 'oo-window-prefix-command 'oo-window-map)
 
 (defvar-keymap oo-window-map
