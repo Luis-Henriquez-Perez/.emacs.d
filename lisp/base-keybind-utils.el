@@ -45,7 +45,8 @@
 ;; (bind! i "A-x" #'execute-extended-command)
 
 (defun oo--bind (fn arglist which-key)
-  (if which-key)
+  (if which-key
+      )
   (funcall fn))
 
 (cl-defun oo-bind (keymap key def &key states which-key)
