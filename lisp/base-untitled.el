@@ -177,6 +177,12 @@ EXPRS in (CDR CONDITION) is met."
                                    (cdr err))))))))
                t)
     (oo--call-after-load expr it)))
+
+(defmacro after! (expr fn &optional feature)
+  "Call function after EXPR is met."
+  `(progn (declare-function ,fn ,(if feature (symbol-name feature) nil))
+          ,@(when feature `((autoload #',fn ,(symbol-name feature) nil nil 'function)))
+          (oo-call-after-load ',expr #',fn)))
 ;;; provide
 (provide 'base-untitled)
 ;;; base-untitled.el ends here

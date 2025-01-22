@@ -25,12 +25,6 @@
 ;; Configure evil-collection-setup.
 ;;
 ;;; Code:
-(defmacro after! (expr fn &optional feature)
-  "Call function after EXPR is met."
-  `(progn (declare-function ,fn ,(if feature (symbol-name feature) nil))
-          ,@(when feature `((autoload #',fn ,(symbol-name feature) nil nil 'function)))
-          (oo-call-after-load ',expr #',fn)))
-
 (after! 2048-game evil-collection-2048-game-setup evil-collection)
 
 (after! ag evil-collection-ag-setup evil-collection)
