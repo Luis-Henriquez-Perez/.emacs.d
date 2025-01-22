@@ -44,7 +44,7 @@
 ;; What data structure should I use to record bindings?
 (bind! i "A-x" #'execute-extended-command)
 
-(defun oo--bind (fn)
+(defun oo--bind (fn arglist which-key)
   (funcall fn))
 
 (cl-defun oo-bind (keymap key def &key states which-key)
