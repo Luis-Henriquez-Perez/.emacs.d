@@ -45,6 +45,7 @@
 ;; (bind! i "A-x" #'execute-extended-command)
 
 (set! wk-fn #'which-key-add-keymap-based-replacements)
+
 (defun oo--keymap-set (keymap key def)
   (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
   (funcall this-fn keymap key def))
