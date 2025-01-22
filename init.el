@@ -110,7 +110,7 @@
 (require 'init-orderless)
 (require 'init-org)
 (require 'init-org-appear)
-(require 'init-outli)
+;; (require 'init-outli)
 (require 'init-outline)
 (require 'init-pomodoro)
 (require 'init-rainbow-delimiters)
