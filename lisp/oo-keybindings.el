@@ -165,8 +165,7 @@
   "w" #'ace-window
   "j" #'ace-window
   "o" #'ace-window
-  "S" #'burly-bookmark-windows
-  "b" #'burly-bookmark-windows)
+  "S" #'burly-bookmark-windows)
 ;;;;; git
 (define-prefix-command 'oo-git-prefix-command 'oo-git-map)
 (defvar-keymap oo-git-map
