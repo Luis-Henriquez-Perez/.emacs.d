@@ -64,7 +64,7 @@
 
 (defmacro bind! (&rest args)
   (cond (states
-         `(oo-bind ',keymap ,key ,def :states ',states))
+         `(oo-bind ',keymap ,key ,def :states ',states :which-key ,which-key))
         (t
          `(oo-bind ,keymap ,key ,def))))
 
