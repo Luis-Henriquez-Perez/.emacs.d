@@ -243,7 +243,6 @@
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
 
 (defvar-keymap oo-find-map
-  :prefix '
   ";" #'save-buffer
   "o" #'find-file
   "E" #'oo-open-emacs-config
@@ -258,7 +257,6 @@
   "g" #'consult-grep
   "z" #'ace-link
   "b" #'burly-open-bookmark
-  ";" #'save-buffer
   "i" #'imenu
   "j" #'oo-dwim-narrow
   "n" #'oo-new-buffer
