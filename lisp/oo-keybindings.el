@@ -206,7 +206,6 @@
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
-  "r" #'oo-load-random-theme
   "t" #'load-theme
   "w" #'whitespace-mode
   "l" #'display-line-numbers-mode
