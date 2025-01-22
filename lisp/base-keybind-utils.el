@@ -48,6 +48,7 @@
 (defun oo--keymap-set (keymap key def)
   (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
   (funcall this-fn keymap key def))
+
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
