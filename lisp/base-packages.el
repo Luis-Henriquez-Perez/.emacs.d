@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; This is my configuration for .
+;; This is my configuration for.
 ;;
 ;;; Code:
 (require 'init-package)
