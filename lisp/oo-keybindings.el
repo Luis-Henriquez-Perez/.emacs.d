@@ -147,7 +147,7 @@
   "h" '("help" . oo-help-map-prefix-command)
   "e" '("emms" . oo-emms-prefix-command)
   "t" '("toggle" . oo-toggle-prefix-command)
-  "q" '(#'oo-quit-prefix-command))
+  "q" '("quit" #'oo-quit-prefix-command))
 ;;;;; window
 (define-prefix-command 'oo-window-prefix-command 'oo-window-map)
 
