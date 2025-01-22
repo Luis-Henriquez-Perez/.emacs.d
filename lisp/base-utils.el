@@ -271,6 +271,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
   "Log to *Messages* buffer."
   (apply #'message "[%s] %s" type args))
 ;;;; hook
+
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
