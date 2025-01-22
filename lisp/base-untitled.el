@@ -31,6 +31,7 @@
 Each log is a list of (type message count).")
 
 (defun oo-log (type message &rest args)
+  (set! (type message ))
   (if (and (car oo-logs) (equal message (car oo-logs)))
       nil
     (push)))
