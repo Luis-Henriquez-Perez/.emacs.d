@@ -45,6 +45,7 @@
 ;; (bind! i "A-x" #'execute-extended-command)
 
 (defun oo--bind (fn arglist which-key)
+  ""
   (if which-key
       (funcall fn)
     ))
