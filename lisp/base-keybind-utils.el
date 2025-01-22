@@ -44,7 +44,7 @@
 ;; What data structure should I use to record bindings?
 (bind! i "A-x" #'execute-extended-command)
 
-(defun oo--bind ()
+(defun oo--bind (fn)
   (funcall)
   )
 
