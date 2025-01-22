@@ -31,7 +31,8 @@
 
 (defun oo-log (type message &rest args)
   (if (and (car oo-logs) (equal message (car oo-logs)))
-      (push)))
+      nil
+    (push)))
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
