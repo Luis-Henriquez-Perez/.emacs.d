@@ -54,7 +54,7 @@
         (states
          (oo-call-after-load 'evil #'oo--bind #'evil-define-key* arglist))
         (t
-         (oo--bind #'define-key keymap key def))))
+         (oo--bind #' keymap key def))))
 
 (defmacro bind! (&rest args)
   (cond (states
