@@ -277,8 +277,8 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; hideshow
 (hook! prog-mode-hook hs-minor-mode)
 ;;;; spelling
-(hook! text-mode flyspell-mode)
-(hook! prog-mode-hook flyspell-prog-mode)
+;; (hook! text-mode flyspell-mode)
+;; (hook! prog-mode-hook flyspell-prog-mode)
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
