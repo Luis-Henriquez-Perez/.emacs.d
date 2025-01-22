@@ -134,6 +134,8 @@
 (defvar oo-leader-map (make-sparse-keymap))
 (define-prefix-command 'oo-leader-prefix-command 'oo-leader-map)
 
+(defva)
+
 (bind! oo-leader-map ";" #'+org-agenda-day-view)
 (bind! oo-leader-map oo-normal-leader-key #'execute-extended-command)
 (bind! oo-leader-map "b" #'oo-buffer-prefix-command :wk "buffer")
@@ -247,15 +249,6 @@
   "h" #'describe-variable
   "C" #'describe-char
   "k" #'describe-key)
-
-(bind! oo-help-map "m" #'describe-mode)
-(bind! oo-help-map "l" #'describe-function)
-(bind! oo-help-map "f" #'describe-function)
-(bind! oo-help-map "j" #'describe-variable)
-(bind! oo-help-map "v" #'describe-variable)
-(bind! oo-help-map "h" #'describe-variable)
-(bind! oo-help-map "C" #'describe-char)
-(bind! oo-help-map "k" #'describe-key)
 ;;;;; find
 (defvar oo-find-map (make-sparse-keymap))
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
