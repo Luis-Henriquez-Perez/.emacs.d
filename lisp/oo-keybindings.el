@@ -210,7 +210,7 @@
 (define-prefix-command 'oo-toggle-prefix-command 'oo-toggle-map)
 
 (defvar-keymap oo-toggle-map
-  :doc "Keymap that contains bindings for things that should be toggled."
+  :doc "key binding "
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
