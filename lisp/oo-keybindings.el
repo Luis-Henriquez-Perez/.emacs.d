@@ -242,8 +242,6 @@
 (defvar oo-find-map (make-sparse-keymap))
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
 
-(define-keymap )
-
 (define-keymap
   ";" #'save-buffer
   "o" #'find-file
