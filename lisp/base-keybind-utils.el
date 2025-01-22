@@ -49,7 +49,6 @@
   (funcall this-fn keymap key def))
 
 (defun oo--bind (fn arglist which-key)
-  ""
   (if which-key
       (lef! ((keymap-set (apply-partially #'oo--keymap-set wk)))
         (apply fn arglist))
