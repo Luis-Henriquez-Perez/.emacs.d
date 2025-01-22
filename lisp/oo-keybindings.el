@@ -170,16 +170,15 @@
 ;;;;; git
 (defvar oo-git-map (make-sparse-keymap))
 (define-prefix-command 'oo-git-prefix-command 'oo-git-map)
-(defvar-keymap oo-window-map
-  )
-(bind! oo-git-map "b" #'vc-switch-branch)
-(bind! oo-git-map "l" #'vc-switch-branch)
-(bind! oo-git-map "s" #'magit-status)
-(bind! oo-git-map "g" #'magit-status)
-(bind! oo-git-map "p" #'magit-push)
-(bind! oo-git-map "c" #'magit-commit)
-(bind! oo-git-map "B" #'magit-branch)
-(bind! oo-git-map "n" #'oo-dwim-vc-action)
+(defvar-keymap oo-git-map
+  "b" #'vc-switch-branch
+  "l" #'vc-switch-branch
+  "s" #'magit-status
+  "g" #'magit-status
+  "p" #'magit-push
+  "c" #'magit-commit
+  "B" #'magit-branch
+  "n" #'oo-dwim-vc-action)
 ;;;;; org
 (defvar oo-org-map (make-sparse-keymap))
 (define-prefix-command 'oo-org-prefix-command 'oo-org-map)
