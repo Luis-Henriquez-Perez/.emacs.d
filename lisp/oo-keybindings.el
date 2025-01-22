@@ -266,7 +266,28 @@
   "a" #'find-library)
 ;;;;; quit
 (defvar oo-quit-map (make-sparse-keymap))
-
+(defvar-keymap oo-quit-map
+  ";" #'save-buffer
+  "f" #'find-file
+  "o e" #'oo-open-emacs-config
+  "o i" #'oo-open-emacs-init-file
+  "o l" #'oo-open-emacs-lisp-dir
+  "E" #'oo-open-emacs-config
+  "I" #'oo-open-emacs-init-file
+  "L" #'oo-open-emacs-lisp-dir
+  "G" #'rgrep
+  "p" #'consult-yank-pop
+  "k" #'consult-bookmark
+  "b" #'consult-bookmark
+  "l" #'consult-line
+  "h" #'consult-outline
+  "g" #'consult-grep
+  "z" #'ace-link
+  "i" #'imenu
+  "j" #'oo-dwim-narrow
+  "n" #'oo-new-buffer
+  "d" #'display-buffer
+  "a" #'find-library)
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
 
 (bind! oo-quit-map "R" #'restart-emacs)
