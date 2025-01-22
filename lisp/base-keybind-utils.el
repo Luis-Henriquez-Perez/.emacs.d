@@ -64,7 +64,7 @@
 
 (defmacro bind! (&rest args)
   (pcase args
-    (`()))
+    (`(,state ,keymap ,key ,def)))
   (cond (states
          `(oo-bind ',keymap ,key ,def :states ',states :which-key ,which-key))
         (t
