@@ -242,7 +242,7 @@
 (defvar oo-find-map (make-sparse-keymap))
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
 
-(define-keymap
+(define-keymap :prefix '
   ";" #'save-buffer
   "o" #'find-file
   "E" #'oo-open-emacs-config
