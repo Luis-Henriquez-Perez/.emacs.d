@@ -138,17 +138,17 @@
   :doc ""
   ";" #'+org-agenda-day-view
   oo-normal-leader-key #'execute-extended-command
-  "b" '("buffer" . oo-buffer-prefix-command)
-  "g" '("git" . oo-git-prefix-command)
-  "l" '("git" . oo-git-prefix-command)
-  "w" '("window" . oo-window-prefix-command)
-  "a" '("app" . oo-app-prefix-command)
-  "p" '("package" . oo-package-prefix-command)
-  "f" '("find" . oo-find-prefix-command)
-  "h" '("help" . oo-help-map-prefix-command)
-  "e" '("emms" . oo-emms-prefix-command)
-  "t" '("toggle" . oo-toggle-prefix-command)
-  "q" '("quit" . oo-quit-prefix-command))
+  "b" #'oo-buffer-prefix-command
+  "g" #'oo-git-prefix-command
+  "l" #'oo-git-prefix-command
+  "w" #'oo-window-prefix-command
+  "a" #'oo-app-prefix-command
+  "p" #'oo-package-prefix-command
+  "f" #'oo-find-prefix-command
+  "h" #'oo-help-map-prefix-command
+  "e" #'oo-emms-prefix-command
+  "t" #'oo-toggle-prefix-command
+  "q" #'oo-quit-prefix-command)
 ;;;;; window
 (defvar-keymap oo-window-map
   :prefix 'oo-window-map-prefix-command
