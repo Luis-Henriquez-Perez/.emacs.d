@@ -268,7 +268,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
           (t nil))))
 ;;;; logging
 (defun oo-log (type message &rest args)
-  (message "[%s] %s" type args))
+  (apply #'message "[%s] %s" type args))
 
 (defmacro info! (msg &rest meta)
   (when oo-debug-p
