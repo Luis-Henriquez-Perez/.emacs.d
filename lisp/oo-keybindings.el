@@ -144,7 +144,7 @@
   "a" #'oo-app-prefix-command
   "p" #'oo-package-prefix-command
   "f" #'oo-find-prefix-command
-  "h" #'oo-help-prefix-command
+  "h" #'oo-help-map-prefix-command
   "e" #'oo-emms-prefix-command
   "t" #'oo-toggle-prefix-command
   "q" #'oo-quit-prefix-command)
@@ -236,7 +236,7 @@
 (bind! oo-buffer-map "b" #'switch-to-buffer)
 ;;;;; help
 (defvar oo-help-map (make-sparse-keymap))
-(define-prefix-command 'oo-help-prefix-command 'oo-help-map)
+(define-prefix-command 'oo-help-map-prefix-command 'oo-help-map)
 
 (defvar-keymap oo-help-map
   :prefix 'oo-help-map-prefix-command
