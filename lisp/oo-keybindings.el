@@ -230,14 +230,14 @@
 (defvar oo-help-map (make-sparse-keymap))
 (define-prefix-command 'oo-help-prefix-command 'oo-help-map)
 
-(bind! oo-help-map "m" #'describe-mode)
-(bind! oo-help-map "l" #'describe-function)
-(bind! oo-help-map "f" #'describe-function)
-(bind! oo-help-map "j" #'describe-variable)
-(bind! oo-help-map "v" #'describe-variable)
-(bind! oo-help-map "h" #'describe-variable)
-(bind! oo-help-map "C" #'describe-char)
-(bind! oo-help-map "k" #'describe-key)
+(defvar-keymap oo-help-map"m" #'describe-mode
+               "l" #'describe-function
+               "f" #'describe-function
+               "j" #'describe-variable
+               "v" #'describe-variable
+               "h" #'describe-variable
+               "C" #'describe-char
+               "k" #'describe-key)
 ;;;;; find
 (defvar oo-find-map (make-sparse-keymap))
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
