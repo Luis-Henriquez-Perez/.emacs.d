@@ -139,7 +139,7 @@
   ";" #'+org-agenda-day-view
   oo-normal-leader-key #'execute-extended-command
   "b" #'oo-buffer-prefix-command
-  "g" #'oo-git-prefix-command :wk "git"
+  "g" #'oo-git-prefix-command
   "l" #'oo-git-prefix-command :wk "git"
   "w" #'oo-window-prefix-command :wk "window"
   "a" #'oo-app-prefix-command :wk "app"
