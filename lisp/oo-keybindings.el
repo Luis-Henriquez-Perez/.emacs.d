@@ -152,6 +152,7 @@
 (define-prefix-command 'oo-window-prefix-command 'oo-window-map)
 
 (defvar-keymap oo-window-map
+  :prefix
   "v" #'split-window-horizontally
   "h" #'split-window-vertically
   "b" #'balance-windows
