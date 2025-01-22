@@ -146,7 +146,7 @@
   "e" #'oo-emms-prefix-command
   "t" #'oo-toggle-prefix-command
   "q" #'oo-quit-prefix-command)
-()
+(which-key-add-key)
 ;;;;; window
 (defvar-keymap oo-window-map
   :prefix 'oo-window-map-prefix-command
