@@ -238,6 +238,15 @@
 (defvar oo-help-map (make-sparse-keymap))
 (define-prefix-command 'oo-help-prefix-command 'oo-help-map)
 
+(defvar-keymap oo-help-map
+  "m" #'describe-mode
+  "l" #'describe-function
+  "f" #'describe-function
+  "j" #'describe-variable
+  "v" #'describe-variable
+  "h" #'describe-variable
+  "C" #'describe-char
+  "k" #'describe-key)
 (bind! oo-help-map "m" #'describe-mode)
 (bind! oo-help-map "l" #'describe-function)
 (bind! oo-help-map "f" #'describe-function)
