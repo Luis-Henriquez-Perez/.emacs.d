@@ -271,7 +271,28 @@ Specifically, return the symbol `string' if point is in a string, the symbol
   "Log to *Messages* buffer."
   (apply #'message "[%s] %s" type args))
 ;;;; hook
-
+(cl-defun oo-add-hook (hook function &key depth local ignore-args)
+  "Generate a function that calls FUNCTION and add it to HOOK.
+Generated function call FUNCTION and logs any errors.  If IGNORE-ARGS, then do
+generated function does not pass in any of its given arguments to FUNCTION."
+  (let ((fname (intern (format "oo--%s--%s" hook function)))
+        (funcall-form (if ignore-args `(,function) `(apply #',function arglist))))
+    (unless (fboundp fname)
+      (fset fname `(lambda (&rest arglist)
+                     (ignore arglist)
+                     ,(oo--hook-docstring hook function)
+                     (info! "HOOK: %s -> %s" ',hook ',function)
+                     (condition-case err
+                         ,funcall-form
+                       (error
+                        (if oo-debug-p
+                            (signal (car err) (cdr err))
+                          (error! "%s : %s : %s -> %s"
+                                  #',function
+                                  ',hook
+                                  (car err)
+                                  (cdr err))))))))
+    (add-hook hook fname depth local)))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
