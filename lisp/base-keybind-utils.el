@@ -47,6 +47,7 @@
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
+
       (lef! ()
         (apply fn arglist))
     (apply fn arglist)))
