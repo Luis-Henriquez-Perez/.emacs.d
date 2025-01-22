@@ -28,9 +28,11 @@
 ;;;; requirements
 (require 'base-vars)
 (require 'base-settings)
+(require 'base-utils)
 (require 'base-lib)
 (eval-when-compile (require 'base-macros))
 (require 'base-packages)
+(require 'base-mode-line)
 (require 'base-untitled)
 ;;; provide
 (provide 'base)
