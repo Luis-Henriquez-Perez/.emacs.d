@@ -141,7 +141,7 @@
   "g" '("git" . oo-git-prefix-command)
   "l" '("git" . #'oo-git-prefix-command)
   "w" '("window" . #'oo-window-prefix-command)
-  "a" '("app" #'oo-app-prefix-command)
+  "a" '("app" . #'oo-app-prefix-command)
   "p" #'oo-package-prefix-command
   "f" #'oo-find-prefix-command
   "h" #'oo-help-map-prefix-command
