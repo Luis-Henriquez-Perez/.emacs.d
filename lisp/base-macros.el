@@ -569,6 +569,7 @@ If MATCH-FORM is a symbol act as `setq'."
              (gensyms (cl-set-difference all non-gensyms)))
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
+;;;;; Logging!
 ;;; provide
 (provide 'base-macros)
 ;;; base-macros.el ends here
