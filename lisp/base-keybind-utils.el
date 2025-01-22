@@ -48,10 +48,10 @@
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
-      `((lef! ((define-key `(lambda (keymap key def)
-                              (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
-                              (funcall this-fn keymap key def))))
-          ,@forms))
+      (lef! ((define-key `(lambda (keymap key def)
+                            (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
+                            (funcall this-fn keymap key def))))
+        (apply fn arglist))
     (apply fn arglist)))
 
 (cl-defun oo-bind (keymap key def &key states which-key)
