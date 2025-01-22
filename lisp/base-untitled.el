@@ -25,55 +25,6 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require 'lgr)
-;;;; logger
-(defvar oo-logger (lgr-get-logger "main")
-  "Object used for logging.")
-
-(defvar oo-error-logger (lgr-get-logger "error")
-  "Object used for logging errors.")
-
-(autolet!
- ;; Define a formatter.
- (set! ts "%Y-%m-%d %H:%M:%S")
- (set! format "%t [%L] %m")
- (set! formatter (lgr-layout-format :format format :timestamp-format ts))
- (set! message-format "[%L] %m")
- (set! message-formatter (lgr-layout-format :format message-format))
- ;; Define the appenders.
- (set! log-buffer-appender (lgr-appender-buffer :buffer (get-buffer-create "*log*")))
- (set! message-buffer-appender (lgr-appender-buffer :buffer (get-buffer "*Messages*")))
- ;; Add the formatter to the appenders.
- (lgr-set-layout log-buffer-appender formatter)
- (lgr-set-layout message-buffer-appender message-formatter)
- ;; Add the appenders to the logger.
- (lgr-add-appender oo-logger log-buffer-appender)
- (lgr-add-appender oo-error-logger message-buffer-appender)
- (lgr-add-appender oo-error-logger log-buffer-appender))
-
-(defmacro info! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-info oo-logger ,msg ,@meta)))
-
-(defmacro error! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-error oo-error-logger ,msg ,@meta)))
-
-(defmacro warn! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-warn oo-logger ,msg ,@meta)))
-
-(defmacro fatal! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-fatal oo-logger ,msg ,@meta)))
-
-(defmacro trace! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-trace oo-logger ,msg ,@meta)))
-
-(defmacro debug! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-debug oo-logger ,msg ,@meta)))
 ;;;; logging
 (defvar oo-logs nil
   "List of logs.")
