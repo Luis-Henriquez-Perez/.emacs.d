@@ -131,7 +131,6 @@
 (bind! (n m v) override-global-map oo-normal-leader-key #'oo-leader-prefix-command)
 (bind! (n m v) override-global-map ";" #'execute-extended-command)
 
-(defvar oo-leader-map (make-sparse-keymap))
 (define-prefix-command 'oo-leader-prefix-command 'oo-leader-map)
 
 (defvar-keymap oo-leader-map
