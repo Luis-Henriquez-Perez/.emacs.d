@@ -266,6 +266,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
           (t nil))))
+;;;; logging
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
