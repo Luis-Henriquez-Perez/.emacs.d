@@ -277,8 +277,8 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; hideshow
 (hook! prog-mode-hook hs-minor-mode)
 ;;;; spelling
-(hook! text-mode flyspell-mode)
-(hook! prog-mode-hook flyspell-prog-mode)
+;; (hook! text-mode flyspell-mode)
+;; (hook! prog-mode-hook flyspell-prog-mode)
 ;;;; disable old themes before enabling new ones
 ;; We end up with remants of the faces of old themes when we load a new
 ;; one.  For this reason, I make sure to disable any enabled themes before applying
