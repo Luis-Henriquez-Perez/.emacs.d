@@ -25,6 +25,7 @@
 ;; Initialize my modeline.
 ;;
 ;;; Code:
+(require 'base-lib)
 (eval-when-compile (require 'base-macros))
 (require 'battery)
 (require 'dash)
