@@ -54,7 +54,7 @@
         (states
          (oo-call-after-load 'evil #'oo--bind #'evil-define-key* arglist))
         (t
-         (oo--bind #' keymap key def))))
+         (oo--bind #'keymap-set keymap key def))))
 
 (defmacro bind! (&rest args)
   (cond (states
@@ -66,7 +66,7 @@
   "Convenience function for defining localleader bindings."
   (flet! leader (leader)
     (kbd (concat leader "\s" key)))
-  (define-key keymap (leader oo-emacs-localleader-key) def)
+  (keymap-set keymap (leader oo-emacs-localleader-key) def)
   (with-eval-after-load 'evil
     (evil-define-key* 'emacs keymap (leader oo-emacs-localleader-key) def)
     (evil-define-key* 'normal keymap (leader oo-normal-localleader-key) def)
@@ -91,7 +91,7 @@
 ;;   (flet! oo-when-fn (condition fn)
 ;;     `(lambda (&rest _) (when (funcall #',condition) #',alt)))
 ;;   (push (oo-when-fn (or condition #'always) alt) (gethash orig oo-alternate-commands))
-;;   (define-key map `[remap ,orig] `(menu-item "" ,orig :filter oo-alternate-command-choose-fn)))
+;;   (keymap-set map `[remap ,orig] `(menu-item "" ,orig :filter oo-alternate-command-choose-fn)))
 
 ;; (defun oo-alt-bind (orig def)
 ;;   (let ((,orig ,key)
@@ -104,7 +104,7 @@
 (defmacro alt! (old new feature)
   `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
                 (gethash ',old oo-alternate-commands))
-          (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
+          (keymap-set global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
 ;;; provide
 (provide 'base-keybind-utils)
 ;;; base-keybind-utils.el ends here
