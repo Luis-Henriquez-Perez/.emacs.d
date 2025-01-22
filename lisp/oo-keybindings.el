@@ -149,10 +149,10 @@
   "t" '("toggle" . oo-toggle-prefix-command)
   "q" '("quit" . oo-quit-prefix-command))
 ;;;;; window
-(define-prefix-command 'oo-window-prefix-command 'oo-window-map)
+(define-prefix-command ' 'oo-window-map)
 
 (defvar-keymap oo-window-map
-  :prefix '
+  :prefix 'oo-window-map-prefix-command
   "v" #'split-window-horizontally
   "h" #'split-window-vertically
   "b" #'balance-windows
