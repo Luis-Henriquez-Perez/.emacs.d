@@ -257,12 +257,9 @@
   "h" #'consult-outline
   "g" #'consult-grep
   "z" #'ace-link
-  "b" #'burly-open-bookmark
   "i" #'imenu
   "j" #'oo-dwim-narrow
   "n" #'oo-new-buffer
-  "o" #'find-file
-  "f" #'switch-to-buffer
   "d" #'display-buffer
   "a" #'find-library
   "f" #'switch-to-buffer
