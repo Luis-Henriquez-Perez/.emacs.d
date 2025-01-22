@@ -170,7 +170,8 @@
 ;;;;; git
 (defvar oo-git-map (make-sparse-keymap))
 (define-prefix-command 'oo-git-prefix-command 'oo-git-map)
-
+(defvar-keymap oo-window-map
+  )
 (bind! oo-git-map "b" #'vc-switch-branch)
 (bind! oo-git-map "l" #'vc-switch-branch)
 (bind! oo-git-map "s" #'magit-status)
