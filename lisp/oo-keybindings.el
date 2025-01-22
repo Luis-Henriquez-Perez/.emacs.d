@@ -154,21 +154,21 @@
 (define-prefix-command 'oo-window-prefix-command 'oo-window-map)
 
 (defvar-keymap oo-window-map
-  ("v" #'split-window-horizontally)
-  ("h" #'split-window-vertically)
-  ("b" #'balance-windows)
-  ("M" #'maximize-window)
-  ("d" #'delete-window)
-  ("D" #'delete-other-windows)
-  ("k" #'display-buffer)
-  ("u" #'winner-undo)
-  ("t" #'transpose-frame)
-  ("s" #'ace-swap-window)
-  ("w" #'ace-window)
-  ("j" #'ace-window)
-  ("o" #'ace-window)
-  ("S" #'burly-bookmark-windows)
-  ("b" #'burly-bookmark-windows))
+  "v" #'split-window-horizontally
+  "h" #'split-window-vertically
+  "b" #'balance-windows
+  "M" #'maximize-window
+  "d" #'delete-window
+  "D" #'delete-other-windows
+  "k" #'display-buffer
+  "u" #'winner-undo
+  "t" #'transpose-frame
+  "s" #'ace-swap-window
+  "w" #'ace-window
+  "j" #'ace-window
+  "o" #'ace-window
+  "S" #'burly-bookmark-windows
+  "b" #'burly-bookmark-windows)
 ;;;;; git
 (defvar oo-git-map (make-sparse-keymap))
 (define-prefix-command 'oo-git-prefix-command 'oo-git-map)
