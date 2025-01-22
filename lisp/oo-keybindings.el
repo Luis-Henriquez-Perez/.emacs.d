@@ -146,7 +146,7 @@
   "p" #'oo-package-prefix-command
   "f" #'oo-find-prefix-command
   "h" #'oo-help-prefix-command
-  "e" #'oo-emms-prefix-command :wk "emms"
+  "e" #'oo-emms-prefix-command
   "t" #'oo-toggle-prefix-command :wk "toggle"
   "q" #'oo-quit-prefix-command :wk "quit")
 ;;;;; window
