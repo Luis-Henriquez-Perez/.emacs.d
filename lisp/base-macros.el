@@ -569,7 +569,30 @@ If MATCH-FORM is a symbol act as `setq'."
              (gensyms (cl-set-difference all non-gensyms)))
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
-;;;;; logging!
+;;;;; logging
+(defmacro info! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'info ,msg ,@meta)))
+
+(defmacro error! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'error ,msg ,@meta)))
+
+(defmacro warn! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'warn ,msg ,@meta)))
+
+(defmacro fatal! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'fatal ,msg ,@meta)))
+
+(defmacro trace! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'trace ,msg ,@meta)))
+
+(defmacro debug! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'debug ,msg ,@meta)))
 ;;; provide
 (provide 'base-macros)
 ;;; base-macros.el ends here
