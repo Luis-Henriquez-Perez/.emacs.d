@@ -49,7 +49,6 @@
 
 (cl-defun oo-bind (keymap key def &key states which-key)
   (cond ((symbolp keymap)
-         (info! "is not bound, deferring...")
          (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
          (oo-call-after-load 'evil #'oo--bind #'evil-define-key* states keymap key def which-key))
