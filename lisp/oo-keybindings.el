@@ -244,7 +244,8 @@
 
 (define-keymap )
 
-(define-keymap ";" #'save-buffer
+(define-keymap
+  ";" #'save-buffer
   "o" #'find-file
   "E" #'oo-open-emacs-config
   "I" #'oo-open-emacs-init-file
