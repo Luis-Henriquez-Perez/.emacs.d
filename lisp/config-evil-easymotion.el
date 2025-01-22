@@ -88,6 +88,7 @@
 (require 'evil)
 (require 'avy)
 (require 'evil-easymotion)
+(require 'base)
 ;;;; ignore overlay
 ;; TODO: abbrev that specifies only words isolated by spaces.
 ;; I got this idea from writing some function name suffixed with "-fn" and
