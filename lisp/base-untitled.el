@@ -51,6 +51,8 @@
  (lgr-add-appender oo-error-logger message-buffer-appender)
  (lgr-add-appender oo-error-logger log-buffer-appender))
 
+(info! "foo")
+
 (defmacro info! (msg &rest meta)
   (when oo-debug-p
     `(lgr-info oo-logger ,msg ,@meta)))
