@@ -75,7 +75,8 @@
   (when oo-debug-p
     `(lgr-debug oo-logger ,msg ,@meta)))
 ;;;; logging
-(defvar oo-logs nil)
+(defvar oo-logs nil
+  "List of logs.")
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
