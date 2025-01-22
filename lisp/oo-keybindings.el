@@ -143,7 +143,7 @@
   "l" #'oo-git-prefix-command
   "w" #'oo-window-prefix-command
   "a" #'oo-app-prefix-command
-  "p" #'oo-package-prefix-command :wk "package"
+  "p" #'oo-package-prefix-command
   "f" #'oo-find-prefix-command :wk "find"
   "h" #'oo-help-prefix-command :wk "help"
   "e" #'oo-emms-prefix-command :wk "emms"
