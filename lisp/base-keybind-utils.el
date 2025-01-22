@@ -56,7 +56,7 @@
 (defmacro bind! (&rest args)
   (if states
       `(oo-bind :states ',states :keymap ',keymap :key ,key :def ,def)
-    '(oo-bind ',keymap ,key ,def ',states)))
+    '(oo-bind ',keymap ,key ,def :states ',states)))
 
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
