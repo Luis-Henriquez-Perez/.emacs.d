@@ -244,7 +244,8 @@
 
 (defvar-keymap oo-find-map
   ";" #'save-buffer
-  "o" #'find-file
+  "f" #'find-file
+  "o"
   "E" #'oo-open-emacs-config
   "I" #'oo-open-emacs-init-file
   "L" #'oo-open-emacs-lisp-dir
@@ -260,8 +261,7 @@
   "j" #'oo-dwim-narrow
   "n" #'oo-new-buffer
   "d" #'display-buffer
-  "a" #'find-library
-  "f" #'switch-to-buffer)
+  "a" #'find-library)
 ;;;;; quit
 (defvar oo-quit-map (make-sparse-keymap))
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
