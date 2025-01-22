@@ -48,10 +48,8 @@
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
-      (let  (lef! ((keymap-set `(lambda (keymap key def)
-                                  (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
-                                  (funcall this-fn keymap key def))))
-              (apply fn arglist)))
+      (lef! ((keymap-set #'oo--keymap-set-with-which-key))
+        (apply fn arglist))
     (apply fn arglist)))
 
 (cl-defun oo-bind (keymap key def &key states which-key)
