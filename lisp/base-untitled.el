@@ -78,7 +78,8 @@
 (defvar oo-logs nil
   "List of logs.")
 
-(defun oo-log (type message &rest args))
+(defun oo-log (type message &rest args)
+  ())
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
