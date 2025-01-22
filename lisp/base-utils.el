@@ -280,19 +280,19 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 
 (defmacro warn! (msg &rest meta)
   (when oo-debug-p
-    `(oo-log 'warn oo-logger ,msg ,@meta)))
+    `(oo-log 'warn ,msg ,@meta)))
 
 (defmacro fatal! (msg &rest meta)
   (when oo-debug-p
-    `(lgr-fatal oo-logger ,msg ,@meta)))
+    `(oo-log 'fatal ,msg ,@meta)))
 
 (defmacro trace! (msg &rest meta)
   (when oo-debug-p
-    `(lgr-trace oo-logger ,msg ,@meta)))
+    `(oo-log 'trace ,msg ,@meta)))
 
 (defmacro debug! (msg &rest meta)
   (when oo-debug-p
-    `(lgr-debug oo-logger ,msg ,@meta)))
+    `(oo-log 'debug ,msg ,@meta)))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
