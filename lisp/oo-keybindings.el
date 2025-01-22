@@ -134,7 +134,7 @@
 (defvar oo-leader-map (make-sparse-keymap))
 (define-prefix-command 'oo-leader-prefix-command 'oo-leader-map)
 
-(defva)
+(defvar-keymap )
 
 (bind! oo-leader-map ";" #'+org-agenda-day-view)
 (bind! oo-leader-map oo-normal-leader-key #'execute-extended-command)
