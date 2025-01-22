@@ -134,6 +134,7 @@
 (define-prefix-command 'oo-leader-prefix-command 'oo-leader-map)
 
 (defvar-keymap oo-leader-map
+  :prefix 'oo-leader-map
   ";" #'+org-agenda-day-view
   oo-normal-leader-key #'execute-extended-command
   "b" #'oo-buffer-prefix-command
