@@ -141,7 +141,7 @@
   "b" #'oo-buffer-prefix-command
   "g" #'oo-git-prefix-command
   "l" #'oo-git-prefix-command
-  "w" #'oo-window-prefix-command :wk "window"
+  "w" #'oo-window-prefix-command
   "a" #'oo-app-prefix-command :wk "app"
   "p" #'oo-package-prefix-command :wk "package"
   "f" #'oo-find-prefix-command :wk "find"
