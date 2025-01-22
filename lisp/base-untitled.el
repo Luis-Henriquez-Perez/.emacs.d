@@ -28,7 +28,7 @@
 ;;;; logging
 (defvar oo-logs nil
   "List of logs.
-Each log is a list of (type message count)")
+Each log is a list of (type message count).")
 
 (defun oo-log (type message &rest args)
   (if (and (car oo-logs) (equal message (car oo-logs)))
