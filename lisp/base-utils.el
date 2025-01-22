@@ -270,30 +270,6 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 (defun oo-log (type message &rest args)
   "Log to *Messages* buffer."
   (apply #'message "[%s] %s" type args))
-
-(defmacro info! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'info ,msg ,@meta)))
-
-(defmacro error! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'error ,msg ,@meta)))
-
-(defmacro warn! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'warn ,msg ,@meta)))
-
-(defmacro fatal! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'fatal ,msg ,@meta)))
-
-(defmacro trace! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'trace ,msg ,@meta)))
-
-(defmacro debug! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'debug ,msg ,@meta)))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
