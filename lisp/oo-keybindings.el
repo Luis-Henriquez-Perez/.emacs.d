@@ -148,7 +148,7 @@
   "h" #'oo-help-prefix-command
   "e" #'oo-emms-prefix-command
   "t" #'oo-toggle-prefix-command
-  "q" #'oo-quit-prefix-command :wk "quit")
+  "q" #'oo-quit-prefix-command)
 ;;;;; window
 (defvar oo-window-map (make-sparse-keymap))
 (define-prefix-command 'oo-window-prefix-command 'oo-window-map)
