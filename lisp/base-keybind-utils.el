@@ -63,6 +63,7 @@
          (oo--bind #'keymap-set (list keymap key def) which-key))))
 
 (defmacro bind! (&rest args)
+  ;; The first arguments are a list of states.
   (cond (states
          `(oo-bind ',keymap ,key ,def :states ',states :which-key ,which-key))
         (t
