@@ -58,7 +58,7 @@
   (cond ((symbolp keymap)
          (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
-         (oo-call-after-load 'evil #'oo--bind #'evil-define-key* states keymap key def which-key))
+         (oo-call-after-load 'evil #'oo--bind #'evil-define-key* (list states keymap key def) which-key))
         (t
          (oo--bind #'keymap-set (list keymap key def) which-key))))
 
