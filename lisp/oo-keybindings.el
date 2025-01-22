@@ -247,6 +247,7 @@
   "h" #'describe-variable
   "C" #'describe-char
   "k" #'describe-key)
+
 (bind! oo-help-map "m" #'describe-mode)
 (bind! oo-help-map "l" #'describe-function)
 (bind! oo-help-map "f" #'describe-function)
