@@ -282,7 +282,7 @@ generated function does not pass in any of its given arguments to FUNCTION."
       (fset fname `(lambda (&rest arglist)
                      (ignore arglist)
                      ,(oo--hook-docstring hook function)
-                     (info! "HOOK: %s -> %s" ',hook ',function)
+                     (info "HOOK: %s -> %s" ',hook ',function)
                      (condition-case err
                          ,funcall-form
                        (error
