@@ -227,7 +227,6 @@
 (bind! oo-buffer-map "k" #'previous-buffer)
 (bind! oo-buffer-map "b" #'switch-to-buffer)
 ;;;;; help
-(defvar oo-help-map (make-sparse-keymap))
 (define-prefix-command 'oo-help-prefix-command 'oo-help-map)
 
 (defvar-keymap oo-help-map
@@ -240,7 +239,6 @@
   "C" #'describe-char
   "k" #'describe-key)
 ;;;;; find
-(defvar oo-find-map (make-sparse-keymap))
 (define-prefix-command 'oo-find-prefix-command 'oo-find-map)
 
 (defvar-keymap oo-find-map
