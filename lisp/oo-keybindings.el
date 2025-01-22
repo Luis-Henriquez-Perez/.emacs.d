@@ -245,7 +245,6 @@
 (defvar-keymap oo-find-map
   ";" #'save-buffer
   "f" #'find-file
-  "o"
   "o e" #'oo-open-emacs-config
   "o i" #'oo-open-emacs-init-file
   "o l" #'oo-open-emacs-lisp-dir
