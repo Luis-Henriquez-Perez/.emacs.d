@@ -136,21 +136,19 @@
 
 (defvar-keymap oo-leader-map
   :doc ""
-  )
-
-(";" #'+org-agenda-day-view)
-(oo-normal-leader-key #'execute-extended-command)
-("b" #'oo-buffer-prefix-command :wk "buffer")
-("g" #'oo-git-prefix-command :wk "git")
-("l" #'oo-git-prefix-command :wk "git")
-("w" #'oo-window-prefix-command :wk "window")
-("a" #'oo-app-prefix-command :wk "app")
-("p" #'oo-package-prefix-command :wk "package")
-("f" #'oo-find-prefix-command :wk "find")
-("h" #'oo-help-prefix-command :wk "help")
-("e" #'oo-emms-prefix-command :wk "emms")
-("t" #'oo-toggle-prefix-command :wk "toggle")
-("q" #'oo-quit-prefix-command :wk "quit")
+  ";" #'+org-agenda-day-view
+  oo-normal-leader-key #'execute-extended-command
+  "b" #'oo-buffer-prefix-command :wk "buffer"
+  "g" #'oo-git-prefix-command :wk "git"
+  "l" #'oo-git-prefix-command :wk "git"
+  "w" #'oo-window-prefix-command :wk "window"
+  "a" #'oo-app-prefix-command :wk "app"
+  "p" #'oo-package-prefix-command :wk "package"
+  "f" #'oo-find-prefix-command :wk "find"
+  "h" #'oo-help-prefix-command :wk "help"
+  "e" #'oo-emms-prefix-command :wk "emms"
+  "t" #'oo-toggle-prefix-command :wk "toggle"
+  "q" #'oo-quit-prefix-command :wk "quit")
 ;;;;; window
 (defvar oo-window-map (make-sparse-keymap))
 (define-prefix-command 'oo-window-prefix-command 'oo-window-map)
