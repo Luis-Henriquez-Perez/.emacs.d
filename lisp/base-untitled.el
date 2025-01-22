@@ -77,6 +77,8 @@
 ;;;; logging
 (defvar oo-logs nil
   "List of logs.")
+
+(defun oo-)
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
