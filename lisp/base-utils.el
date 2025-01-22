@@ -269,6 +269,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 ;;;; logging
 (defun oo-log (type message &rest args)
   (message "[%s] %s" type args))
+
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
