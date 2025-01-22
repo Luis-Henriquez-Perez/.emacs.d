@@ -144,8 +144,8 @@
   "a" '("app" . oo-app-prefix-command)
   "p" '("package" . oo-package-prefix-command)
   "f" '("find" . oo-find-prefix-command)
-  "h" '("help" .  #'oo-help-map-prefix-command)
-  "e" #'oo-emms-prefix-command
+  "h" '("help" . oo-help-map-prefix-command)
+  "e" '(#'oo-emms-prefix-command)
   "t" #'oo-toggle-prefix-command
   "q" #'oo-quit-prefix-command)
 ;;;;; window
