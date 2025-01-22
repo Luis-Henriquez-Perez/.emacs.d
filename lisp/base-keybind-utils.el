@@ -45,6 +45,7 @@
 ;; (bind! i "A-x" #'execute-extended-command)
 
 (set! wk-fn #'which-key-add-keymap-based-replacements)
+
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
