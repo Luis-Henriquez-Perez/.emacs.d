@@ -246,7 +246,7 @@
   ";" #'save-buffer
   "f" #'find-file
   "o e" #'oo-open-emacs-config "emacs"
-  "o i" #'oo-open-emacs-init-file
+  "o i" #'oo-open-emacs-init-file "ini"
   "o l" #'oo-open-emacs-lisp-dir
   "E" #'oo-open-emacs-config
   "I" #'oo-open-emacs-init-file
