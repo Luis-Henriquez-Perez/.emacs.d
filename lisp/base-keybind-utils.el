@@ -44,17 +44,14 @@
 ;; What data structure should I use to record bindings?
 ;; (bind! i "A-x" #'execute-extended-command)
 
+(set! wk-fn #'which-key-add-keymap-based-replacements)
 (defun oo--bind (fn arglist which-key)
   ""
   (if which-key
-      (with-map-keywords! metadata
-        (set! wk-fn #'which-key-add-keymap-based-replacements)
-        `((lef! ((define-key (lambda (keymap key def)
-                               (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
-                               (funcall this-fn keymap key def))))
-            ,@forms)))
-    (lef! ()
-      (apply fn arglist))
+      `((lef! ((define-key (lambda (keymap key def)
+                             (oo-call-after-load 'which-key (apply-partially #',wk-fn keymap key ,!wk))
+                             (funcall this-fn keymap key def))))
+          ,@forms))
     (apply fn arglist)))
 
 (cl-defun oo-bind (keymap key def &key states which-key)
