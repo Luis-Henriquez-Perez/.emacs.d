@@ -46,8 +46,8 @@
 
 (set! wk-fn #'which-key-add-keymap-based-replacements)
 
-(defun oo--keymap-set (keymap key def)
-  (oo-call-after-load 'which-key (apply-partially #', keymap key ,!wk))
+(defun oo--keymap-set (wk keymap key def)
+  (oo-call-after-load 'which-key (apply-partially #', keymap key wk))
   (funcall this-fn keymap key def))
 
 (defun oo--bind (fn arglist which-key)
