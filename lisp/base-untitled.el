@@ -30,7 +30,8 @@
   "List of logs.
 Each log is a list of (type message count).")
 
-(defvar oo-log-max 1000)
+(defvar oo-log-max 1000
+  "Max number of entries in the log at a given time.")
 
 (defun oo-log (type message &rest args)
   (set! (type message ))
