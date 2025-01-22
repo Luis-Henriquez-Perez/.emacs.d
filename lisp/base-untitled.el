@@ -30,7 +30,7 @@
   "List of logs.")
 
 (defun oo-log (type message &rest args)
-  (when (and (car oo-logs) (equal message))
+  (when (and (car oo-logs) (equal message (car oo-logs)))
     (push)))
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
