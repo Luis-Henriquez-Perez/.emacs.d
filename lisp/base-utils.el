@@ -269,7 +269,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 ;;;; logging
 (defun oo-log (type message &rest args)
   "Log to *Messages* buffer."
-  (apply #'message "[%s] %s" type args))
+  (apply #'message "[%s] %s" type message args))
 (oo-log 'info "foo")
 ;;;; hook
 (cl-defun oo-add-hook (hook function &key depth local ignore-args)
