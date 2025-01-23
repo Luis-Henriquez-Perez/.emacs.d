@@ -199,6 +199,7 @@ If METADATA has no keymap return."
     (`(,(and (pred letterp) letter) ,(and (pred not-keyword-p) key)
        ,(and (pred not-keyword-p) def) . ,(and (pred plist-p) plist))
      `(oo-bind global-map ,key ,def ',state))
+    ;; (Bind! k)
     (`(,(and (pred keymap-symbol-p) keymap) ,(and (pred state-p) state)
        ,(and (pred not-keyword-p) key) ,(and (pred not-keyword-p) def)
        . ,(and (pred plist-p) plist))
