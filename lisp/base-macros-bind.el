@@ -241,7 +241,7 @@ If METADATA has no keymap return."
     ;; (bind! "d" #'foo)
     (`(,(and (pred not-keyword-p) key) ,(and (pred not-keyword-p) def)
        . ,(and (pred plist-p) plist))
-     `((:keymap-symbol 'global-map :keymap global-map :key ,key :def ,def . ,plist)))
+     )
     (_
      (error "cannot parse arguments..."))))
 ;;;; bind steps
