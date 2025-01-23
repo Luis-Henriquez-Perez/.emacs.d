@@ -65,7 +65,7 @@
 (defmacro bind! (&rest args)
   (flet! states-p (it))
   (flet! state-p (it))
-  (flet! keymap-p (it) (symbolp it))
+  (flet! keymap-p (it) (and (symbolp it)))
   (flet! key-p (it) (or (stringp it) (vectorp it)))
   (pcase args
     (`(,(and (pred state-p) state) ,keymap ,key ,def ,which-key)
