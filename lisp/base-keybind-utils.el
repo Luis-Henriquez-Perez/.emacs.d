@@ -64,7 +64,7 @@
 
 (defmacro bind! (&rest args)
   (flet! letter-p ())
-  (flet! states-p (it) (cl-every))
+  (flet! states-p (it) (cl-every #'state-p ))
   (flet! state-p (it) (member it '(n m v i o e)))
   (flet! keymap-p (it) (and (symbolp it) (string-match-p x it)))
   (flet! key-p (it) (or (stringp it) (vectorp it)))
