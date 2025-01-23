@@ -63,8 +63,7 @@
          (oo--bind #'keymap-set (list keymap key def) which-key))))
 
 (defmacro bind! (&rest args)
-  (flet! states-p (it)
-    )
+  (flet! states-p (it))
   (flet! state-p (it))
   (pcase args
     (`(,state ,keymap ,key ,def ,which-key)
