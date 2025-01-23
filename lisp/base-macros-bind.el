@@ -184,7 +184,7 @@ If METADATA has no keymap return."
     ;; (bind! insert "d" #'foo)
     (`(,(and (pred state-p) state) ,(and (pred not-keyword-p) key)
        ,(and (pred not-keyword-p) def) . ,(and (pred plist-p) plist))
-     `(oo-bind ,keymap "d" #'foo 'insert))
+     `(oo-bind global-map ,key #'foo 'insert))
     ;; (bind! i org-mode-map "d" #'foo)
     (`(,(and (pred letterp) letter) ,(and (pred keymap-symbol-p) keymap)
        ,(and (pred not-keyword-p) key) ,(and (pred not-keyword-p) def)
