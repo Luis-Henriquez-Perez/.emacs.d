@@ -63,7 +63,6 @@
          (oo--bind #'keymap-set (list keymap key def) which-key))))
 
 (defmacro bind! (&rest args)
-  (flet! letter-p ())
   (flet! states-p (it) (and (oo-true-list-p) (cl-every #'state-p it)))
   (flet! state-p (it) (member it '(n m v i o e)))
   (flet! keymap-p (it) (and (symbolp it) (string-match-p x it)))
