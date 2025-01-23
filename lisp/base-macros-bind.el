@@ -64,15 +64,6 @@
       (setf (map-elt processed value-key) (map-elt metadata key))))
   processed)
 ;;;; bind steps
-;; These are functions that accept two arguments, METADATA and FORMS, and return
-;; a list of forms.  METADATA is a mapping of keys and values.  The are used to
-;; construct the list of forms `bind!' will expand into.
-(defun oo--bind-define-key (metadata forms)
-  "Prepend `define-key' form to FORMS as specified by METADATA."
-  (with-map-keywords! metadata
-    `((define-key ,!keymap ,!key ,!def)
-      ,@forms)))
-
 (defun oo--bind-evil-define-key (metadata forms)
   "Prepend `evil-define-key*' form to FORMS as specified by METADATA."
   (with-map-keywords! metadata
