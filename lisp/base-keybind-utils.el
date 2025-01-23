@@ -66,11 +66,11 @@
   (flet! key-p (it) (or (stringp it) (vectorp it)))
   (pcase args
     (`(,(and (pred state-p) state) ,(and (pred keymap-p) keymap) ,key ,def ,(and (pred stringp) which-key))
-     (oo-bind ',keymap ,key ,def :states ,states :which-key ,which-key))
+     (oo-bind ',keymap ,key ,def ,states ,which-key))
     (`(,(and (pred state-p) state) ,keymap ,key ,def)
-     (oo-bind ',keymap ,key ,def :states ,states))
+     (oo-bind ',keymap ,key ,def ,states))
     (`(,states ,keymap ,key ,def)
-     `(oo-bind ',keymap ,key ,def :states ',states :which-key ,which-key))
+     `(oo-bind ',keymap ,key ,def ',states ,which-key))
     (t
      `(oo-bind ,keymap ,key ,def))))
 
