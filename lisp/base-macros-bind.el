@@ -189,7 +189,7 @@ If METADATA has no keymap return."
     (`(,(and (pred letterp) letter) ,(and (pred keymap-symbol-p) keymap)
        ,(and (pred not-keyword-p) key) ,(and (pred not-keyword-p) def)
        . ,(and (pred plist-p) plist))
-     `(oo-bind 'org-mode-map "d"))
+     `(oo-bind 'org-mode-map "d" #'foo))
     ;; (bind! org-mode-map insert "d" #'foo)
     ;; (bind! insert org-mode-map "d" #'foo)
     (`(,(and (pred state-p) state) ,(and (pred keymap-symbol-p) keymap)
