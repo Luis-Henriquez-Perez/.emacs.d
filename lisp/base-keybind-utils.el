@@ -68,6 +68,7 @@
   (flet! keymap-p (it) (and (symbolp it) (string-match-p x it)))
   (flet! key-p (it) (or (stringp it) (vectorp it)))
   (flet! key-p (it) (or (stringp it) (vectorp it)))
+  (flet! key-p (it) (or (stringp it) (vectorp it)))
   (pcase args
     (`(,(and (pred state-p) state) ,(and (pred keymap-p) keymap) ,key ,def ,(and (pred stringp) which-key))
      (oo-bind ',keymap ,key ,def :states ,states :which-key ,which-key))
@@ -83,12 +84,11 @@
   (flet! leader (leader)
     (kbd (concat leader "\s" key)))
   (keymap-set keymap (leader oo-emacs-localleader-key) def)
-  (with-eval-after-load 'evil
-    (evil-define-key* 'emacs keymap (leader oo-emacs-localleader-key) def)
-    (evil-define-key* 'normal keymap (leader oo-normal-localleader-key) def)
-    (evil-define-key* 'normal keymap (leader oo-normal-localleader-short-key) def)
-    (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
-    (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
+  (oo-bind 'emacs keymap (leader oo-emacs-localleader-key) def)
+  (oo-bind 'normal keymap (leader oo-normal-localleader-key) def)
+  (oo-bind 'normal keymap (leader oo-normal-localleader-short-key) def)
+  (oo-bind 'insert keymap (leader oo-insert-localleader-key) def)
+  (oo-bind 'insert keymap (leader oo-insert-localleader-short-key) def))
 ;;;; alternate bindings
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar oo-alternate-commands (make-hash-table)
