@@ -208,7 +208,7 @@ If METADATA has no keymap return."
     (`(,(and (pred keymap-symbol-p) keymap) ,(and (pred letterp) letter)
        ,(and (pred not-keyword-p) key) ,(and (pred not-keyword-p) def)
        . ,(and (pred plist-p) plist))
-     `(oo-bind ',keymap ,key ,def ,state))
+     `(oo-bind ',keymap ,key ,def ',state))
     ;; (bind! (n m v) "d" #'foo)
     (`(,(and (pred letter-list-p) letters) ,(and (pred not-keyword-p) key)
        ,(and (pred not-keyword-p) def)
