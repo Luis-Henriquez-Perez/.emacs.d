@@ -65,7 +65,7 @@
 (defmacro bind! (&rest args)
   (flet! states-p (it)
     )
-  (flet! state-p)
+  (flet! state-p (it))
   (pcase args
     (`(,state ,keymap ,key ,def ,which-key)
      (oo-bind ',keymap ,key ,def :states ,states))
