@@ -51,7 +51,7 @@
         (apply fn arglist))
     (apply fn arglist)))
 
-(cl-defun oo-bind (keymap key def &optional states which-key)
+(defun oo-bind (keymap key def &optional states which-key)
   (cond ((symbolp keymap)
          (oo-call-after-bound keymap #'apply #'oo-bind args))
         (states
