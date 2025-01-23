@@ -68,7 +68,7 @@
   (flet! keymap-p (it) (and (symbolp it) (string-match-p x it)))
   (flet! key-p (it) (or (stringp it) (vectorp it)))
   (pcase args
-    (`(,(and (pred state-p) state) ,(and (pred keymap-p) keymap) ,key ,def ,which-key)
+    (`(,(and (pred state-p) state) ,(and (pred keymap-p) keymap) ,key ,def ,(and (pred stringp) which-key))
      (oo-bind ',keymap ,key ,def :states ,states :which-key ,which-key))
     (`(,(and (pred state-p) state) ,keymap ,key ,def)
      (oo-bind ',keymap ,key ,def :states ,states))
