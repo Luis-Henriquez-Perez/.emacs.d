@@ -270,7 +270,7 @@
   ("R" #'restart-emacs "restart")
   ("E" #'restart-emacs-start-new-emacs)
   ("r" #'restart-emacs "restart")
-  ("q" #'save-buffers-kill-emacs "kill"))
+  ("q" #'save-buffers-kill-emacs "quit"))
 
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
 
