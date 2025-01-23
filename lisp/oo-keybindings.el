@@ -267,7 +267,7 @@
 ;;;;; quit
 (defvar oo-quit-map (make-sparse-keymap))
 (defvar-keymap oo-quit-map
-  ("R" #'restart-emacs)
+  ("R" #'restart-emacs "restart")
   ("E" #'restart-emacs-start-new-emacs)
   ("r" #'restart-emacs)
   ("q" #'save-buffers-kill-emacs))
