@@ -267,13 +267,13 @@
 ;;;;; quit
 (defvar oo-quit-map (make-sparse-keymap))
 (defvar-keymap oo-quit-map
-  )
+  ("R" #'restart-emacs)
+  ("E" #'restart-emacs-start-new-emacs)
+  ("r" #'restart-emacs)
+  ("q" #'save-buffers-kill-emacs))
+
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
 
-(bind! oo-quit-map "R" #'restart-emacs)
-(bind! oo-quit-map "E" #'restart-emacs-start-new-emacs)
-(bind! oo-quit-map "r" #'restart-emacs)
-(bind! oo-quit-map "q" #'save-buffers-kill-emacs)
 ;;;;; workspace
 (bind! oo-workspace-map "t" #'tab-select)
 (bind! oo-workspace-map "n" #'tab-new)
