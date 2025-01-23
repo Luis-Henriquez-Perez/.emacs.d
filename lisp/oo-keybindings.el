@@ -266,7 +266,8 @@
   "a" #'find-library)
 ;;;;; quit
 (defvar oo-quit-map (make-sparse-keymap))
-(defvar-keymap oo-quit-map)
+(defvar-keymap oo-quit-map
+  )
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
 
 (bind! oo-quit-map "R" #'restart-emacs)
