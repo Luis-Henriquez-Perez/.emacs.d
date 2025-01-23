@@ -271,9 +271,6 @@
   ("E" #'restart-emacs-start-new-emacs)
   ("r" #'restart-emacs "restart")
   ("q" #'save-buffers-kill-emacs "quit"))
-
-(define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
-
 ;;;;; workspace
 (bind! oo-workspace-map "t" #'tab-select)
 (bind! oo-workspace-map "n" #'tab-new)
