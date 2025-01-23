@@ -78,6 +78,7 @@
     (t
      `(oo-bind ,keymap ,key ,def))))
 
+(defmacro defkeymap! (map))
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
   (flet! leader (leader)
