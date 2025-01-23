@@ -72,6 +72,7 @@
   (pcase args
     (`(,(and (pred state-p) state) ,keymap ,key ,def ,which-key)
      (oo-bind ',keymap ,key ,def :states ,states :which-key ,which-key))
+
     (`(,states ,keymap ,key ,def)
      `(oo-bind ',keymap ,key ,def :states ',states :which-key ,which-key))
     (t
