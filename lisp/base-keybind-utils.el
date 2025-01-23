@@ -81,8 +81,8 @@
 
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
-  (flet! leader (leader) (kbd (concat leader "\s" key)))
-  (oo-bind keymap (leader oo-emacs-localleader-key) def)
+  (concat leader "\s" key)
+  (oo-bind keymap leade def)
   (oo-bind keymap (leader oo-emacs-localleader-key) def :states 'emacs)
   (oo-bind normal keymap (leader oo-normal-localleader-key) def)
   (oo-bind normal keymap (leader oo-normal-localleader-short-key) def)
