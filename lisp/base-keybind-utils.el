@@ -66,7 +66,7 @@
   (flet! letter-p ())
   (flet! states-p (it) ())
   (flet! state-p (it) (member it '(n m v i o e)))
-  (flet! keymap-p (it) (and (symbolp it) (string-match-p )))
+  (flet! keymap-p (it) (and (symbolp it) (string-match-p x it)))
   (flet! key-p (it) (or (stringp it) (vectorp it)))
   (pcase args
     (`(,(and (pred state-p) state) ,keymap ,key ,def ,which-key)
