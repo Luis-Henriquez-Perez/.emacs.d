@@ -76,11 +76,7 @@
      `(oo-bind ',keymap ,key ,def :states ',states :which-key ,which-key)
      )
     (t
-     ))
-  (cond (states
-         )
-        (t
-         `(oo-bind ,keymap ,key ,def))))
+     `(oo-bind ,keymap ,key ,def))))
 
 (defun! oo-localleader-bind (keymap key def)
   "Convenience function for defining localleader bindings."
