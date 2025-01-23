@@ -84,7 +84,7 @@
   (flet! leader (leader)
     (kbd (concat leader "\s" key)))
   (oo-bind keymap (leader oo-emacs-localleader-key) def)
-  (oo-bind emacs keymap (leader oo-emacs-localleader-key) def)
+  (oo-bind keymap (leader oo-emacs-localleader-key) def :states emacs)
   (oo-bind normal keymap (leader oo-normal-localleader-key) def)
   (oo-bind normal keymap (leader oo-normal-localleader-short-key) def)
   (oo-bind insert keymap (leader oo-insert-localleader-key) def)
