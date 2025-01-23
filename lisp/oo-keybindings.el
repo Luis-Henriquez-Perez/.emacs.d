@@ -269,7 +269,7 @@
 (defvar-keymap oo-quit-map
   ("R" #'restart-emacs "restart")
   ("E" #'restart-emacs-start-new-emacs)
-  ("r" #'restart-emacs)
+  ("r" #'restart-emacs "restart")
   ("q" #'save-buffers-kill-emacs))
 
 (define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
