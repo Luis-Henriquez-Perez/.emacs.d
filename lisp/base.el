@@ -39,9 +39,14 @@
 (defvar oo-log-buffer-max 500
   "Maximum number of lines in log buffer.")
 
-;; After reaching `oo-log-buffer-max' lines, delete oldest line.
 (defun! oo-log (type message &rest meta)
-  "Log MESSAGE."
+  "Log a formatted MESSAGE of a given TYPE to the `oo-log-buffer`.
+
+Append a log entry to the buffer specified by `oo-log-buffer`.
+If the last log entry in the buffer matches the new message, it increments a
+repeat count at the end of the line displayed instead of creating a new entry.
+The count is displayed as '(N)' where N is the number of times the message was
+logged."
   (set! log (apply #'format message meta))
   (set! buffer (get-buffer-create oo-log-buffer))
   (set! output (format "[%s] %s" (upcase (symbol-name type)) log))
