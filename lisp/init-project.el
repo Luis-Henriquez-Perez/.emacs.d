@@ -27,15 +27,16 @@
 ;;; Code:
 (require 'base)
 
-(opt! project-vc-include-untracked nil)
+;; (opt! project-vc-include-untracked nil)
 ;; https://andreyor.st/posts/2022-07-16-project-el-enhancements/
 ;; The function `consult-grep' is not detecting my emacs project.  It defers to
-;; `project.el' and.
+;; `project.el' and that package.
 (defun oo-project-find-root (path)
   "Search up the PATH for `project-root-markers'."
-  (set! default-directory path)
-  (awhen! (vc-root-dir)
-    (cons 'transient (expand-file-name it))))
+  (let ((default-directory path))
+    ;; (vc-root-dir)
+    (awhen! (vc-root-dir)
+      (cons 'transient (expand-file-name it)))))
 
 (add-to-list 'project-find-functions #'oo-project-find-root)
 ;;; provide
