@@ -31,55 +31,58 @@
 (require 'base-lib)
 (eval-when-compile (require 'base-macros))
 (require 'base-packages)
-(require 'lgr)
 ;;;; logger
-(defvar oo-logger (lgr-get-logger "main")
-  "Object used for logging.")
+(defvar oo-log-buffer "*log*"
+  "Name of the log buffer.")
 
-(defvar oo-error-logger (lgr-get-logger "error")
-  "Object used for logging errors.")
+;; This is important because it prevents the buffer from growing indefinitely and causing performance problems.
+(defvar oo-log-buffer-max 500
+  "Maximum number of lines in log buffer.")
 
-(autolet!
- ;; Define a formatter.
- (set! ts "%Y-%m-%d %H:%M:%S")
- (set! format "%t [%L] %m")
- (set! formatter (lgr-layout-format :format format :timestamp-format ts))
- (set! message-format "[%L] %m")
- (set! message-formatter (lgr-layout-format :format message-format))
- ;; Define the appenders.
- (set! log-buffer-appender (lgr-appender-buffer :buffer (get-buffer-create "*log*")))
- (set! message-buffer-appender (lgr-appender-buffer :buffer (get-buffer "*Messages*")))
- ;; Add the formatter to the appenders.
- (lgr-set-layout log-buffer-appender formatter)
- (lgr-set-layout message-buffer-appender message-formatter)
- ;; Add the appenders to the logger.
- (lgr-add-appender oo-logger log-buffer-appender)
- (lgr-add-appender oo-error-logger message-buffer-appender)
- (lgr-add-appender oo-error-logger log-buffer-appender))
+;; After reaching `oo-log-buffer-max' lines, delete oldest line.
+(defun! oo-log (type message &rest meta)
+  "Log MESSAGE."
+  (set! log (apply #'format message meta))
+  (set! buffer (get-buffer-create oo-log-buffer))
+  (set! output (format "[%s] %s" (upcase (symbol-name type)) log))
+  (with-current-buffer buffer
+    (unless view-mode (view-mode t))
+    ;; Add to buffer without constantly moving focus to the end.
+    (let ((inhibit-read-only t))
+      (save-excursion
+        (goto-char (point-max))
+        (or (save-excursion
+              (and (zerop (forward-line -1))
+                   (looking-at (rx bol (literal output)))
+                   (goto-char (match-end 0))
+                   (or (and (looking-at (rx space "(" space (group (1+ digit)) space ")" eol))
+                            (alet! (match-string 1)
+                              (replace-match (number-to-string (+ 1 (string-to-number it))) nil nil nil 1)
+                              t))
+                       (progn (insert " ( 2 )") t))))
+            (progn (insert output)
+                   (insert "\n")))
+        (aand! (- (line-number-at-pos (point-max)) (1+ oo-log-buffer-max))
+               (goto-char (point-min))
+               (dotimes (_ it) (delete-line)))))))
 
 (defmacro info! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-info oo-logger ,msg ,@meta)))
+  `(oo-log 'info ,msg ,@meta))
 
 (defmacro error! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-error oo-error-logger ,msg ,@meta)))
+  `(oo-log 'info ,msg ,@meta))
 
 (defmacro warn! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-warn oo-logger ,msg ,@meta)))
+  `(oo-log 'warn ,msg ,@meta))
 
 (defmacro fatal! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-fatal oo-logger ,msg ,@meta)))
+  `(oo-log 'fatal ,msg ,@meta))
 
 (defmacro trace! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-trace oo-logger ,msg ,@meta)))
+  `(oo-log 'trace ,msg ,@meta))
 
 (defmacro debug! (msg &rest meta)
-  (when oo-debug-p
-    `(lgr-debug oo-logger ,msg ,@meta)))
+  `(oo-log 'debug ,msg ,@meta))
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
