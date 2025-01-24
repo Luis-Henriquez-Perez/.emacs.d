@@ -235,7 +235,7 @@ A pattern is either a regular expression or a unary function which accepts the f
       (return!))))
 
 (hook! find-file-hook oo--auto-read-only-maybe)
-(add-hook 'org-mode-hook (lambda ()))
+(add-hook 'org-mode-hook (lambda () (message "Loading org...")))
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
