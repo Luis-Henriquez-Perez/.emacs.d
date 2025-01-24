@@ -53,6 +53,7 @@
                ("money"         . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
                ("screenshot"    . ,(nerd-icons-mdicon "nf-md-camera"))
                ("music"         . ,(nerd-icons-faicon "nf-fa-music"))
+               ("theme"         . ,(nerd-icons-mdicon "nf-md-theme_light_dark"))
                ("online"        . ,(nerd-icons-mdicon "nf-md-web"))
                ("org"           . ,(nerd-icons-sucicon "nf-custom-orgmode"))
                ("package"       . ,(nerd-icons-codicon "nf-cod-package"))
