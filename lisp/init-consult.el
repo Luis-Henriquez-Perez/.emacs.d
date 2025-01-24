@@ -43,6 +43,8 @@
 
 ;; (opt! consult-project-function #'projectile-project-root)
 (opt! consult-project-function #'consult--default-project-function)
+;; Do not load bookmarks as buffer sources.  It is expensive and unnecessary.
+(opt! consult-buffer-sources (remove 'consult--source-bookmark consult-buffer-sources))
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here
