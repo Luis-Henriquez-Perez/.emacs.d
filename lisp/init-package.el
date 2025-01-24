@@ -154,6 +154,7 @@
 (cl-pushnew 'org-bookmark-heading package-selected-packages)
 (cl-pushnew 'org-fancy-priorities package-selected-packages)
 (cl-pushnew 'org-ml package-selected-packages)
+(cl-pushnew 'org-pretty-tags package-selected-packages)
 (cl-pushnew 'org-superstar package-selected-packages)
 (cl-pushnew 'org-tidy package-selected-packages)
 (cl-pushnew 'orglink package-selected-packages)
