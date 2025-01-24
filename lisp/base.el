@@ -66,23 +66,32 @@
                (goto-char (point-min))
                (dotimes (_ it) (delete-line)))))))
 
+;; I will note that logging does not seem to have any significant or even
+;; noticeable effect on performance as far as I can tell.  Maybe I will just
+;; always enable logging later.
 (defmacro info! (msg &rest meta)
-  `(oo-log 'info ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'info ,msg ,@meta)))
 
 (defmacro error! (msg &rest meta)
-  `(oo-log 'info ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'info ,msg ,@meta)))
 
 (defmacro warn! (msg &rest meta)
-  `(oo-log 'warn ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'warn ,msg ,@meta)))
 
 (defmacro fatal! (msg &rest meta)
-  `(oo-log 'fatal ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'fatal ,msg ,@meta)))
 
 (defmacro trace! (msg &rest meta)
-  `(oo-log 'trace ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'trace ,msg ,@meta)))
 
 (defmacro debug! (msg &rest meta)
-  `(oo-log 'debug ,msg ,@meta))
+  (when oo-debug-p
+    `(oo-log 'debug ,msg ,@meta)))
 ;;;; hooks
 (defun! oo--hook-docstring (hook function)
   "Generate a docstring for hook function."
