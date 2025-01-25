@@ -25,20 +25,6 @@
 ;; Initialize `emacs-lock'.
 ;;
 ;;; Code:
-;;;; prevent =*Messages*= and =*scratch*= buffers from being killed
-;; "Locking" a file can mean two different things (or both of these things at
-;; once).  It can mean that Emacs cannot be exited while there are "locked"
-;; buffers; it can also mean that the locked buffers cannot be killed (e.g. via
-;; [[file:snapshots/_helpful_command__kill-buffer_.png][kill-buffer]]).  I don't think I ever want the former behavior.  Setting
-;; [[][emacs-default-locking-mode]] to kill tells Emacs just to prevent buffers
-;; with =emacs-lock-mode= enabled from being killed.  If you were to try to kill
-;; one with something like =kill-buffer=, it would fail and you'd get a message
-;; saying the buffer cannot be killed.
-
-;; The =*Messages*= buffer could contain important information and should never
-;; really be killed. See [[https://www.emacswiki.org/emacs/ProtectingBuffers][ProtectingBuffers]].
-(setq emacs-lock-default-locking-mode 'kill)
-(with-current-buffer "*Messages*" (emacs-lock-mode 1))
 ;;; provide
 (provide 'init-emacs-lock)
 ;;; init-emacs-lock.el ends here
