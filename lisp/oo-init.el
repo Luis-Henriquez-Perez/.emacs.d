@@ -91,7 +91,7 @@ file is loaded."
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
 ;;;; simple
 ;;;;; hooks
-;; (hook! prog-mode-hook auto-fill-mode)
+(hook! prog-mode-hook auto-fill-mode)
 (hook! text-mode-hook auto-fill-mode)
 (hook! text-mode-hook visual-line-mode)
 
