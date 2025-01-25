@@ -267,32 +267,6 @@ Specifically, return the symbol `string' if point is in a string, the symbol
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
           (t nil))))
-;;;; hook
-(defun oo-add-hook (hook function &rest args)
-  "Generate a function that calls FUNCTION and add it to HOOK.
-Generated function call FUNCTION and logs any errors.  If IGNORE-ARGS, then do
-generated function does not pass in any of its given arguments to FUNCTION."
-  (let* ((fname (intern (format "oo--%s--%s" hook function)))
-         (depth (plist-get args :depth))
-         (local (plist-get args :local))
-         (ignore-args (plist-get args :ignore-args))
-         (funcall-form (if ignore-args `(,function) `(apply #',function arglist))))
-    (unless (fboundp fname)
-      (fset fname `(lambda (&rest arglist)
-                     (ignore arglist)
-                     ""
-                     (info! "HOOK: %s -> %s" ',hook ',function)
-                     (condition-case err
-                         ,funcall-form
-                       (error
-                        (if oo-debug-p
-                            (signal (car err) (cdr err))
-                          (error! "%s : %s : %s -> %s"
-                                  #',function
-                                  ',hook
-                                  (car err)
-                                  (cdr err))))))))
-    (add-hook hook fname depth local)))
 ;;;; logging
 (defvar oo-log-buffer "*log*"
   "Name of the log buffer.")
@@ -334,6 +308,31 @@ logged."
           (when (> excess 0)
             (goto-char (point-min))
             (dotimes (_ excess) (delete-line))))))))
+;;;; hook
+(defun oo-add-hook (hook function &rest args)
+  "Generate a function that calls FUNCTION and add it to HOOK.
+Generated function call FUNCTION and logs any errors.  If IGNORE-ARGS, then do
+generated function does not pass in any of its given arguments to FUNCTION."
+  (let* ((fname (intern (format "oo--%s--%s" hook function)))
+         (depth (plist-get args :depth))
+         (local (plist-get args :local))
+         (ignore-args (plist-get args :ignore-args))
+         (funcall-form (if ignore-args `(,function) `(apply #',function arglist))))
+    (unless (fboundp fname)
+      (fset fname `(lambda (&rest arglist)
+                     (ignore arglist)
+                     (info! "HOOK: %s -> %s" ',hook ',function)
+                     (condition-case err
+                         ,funcall-form
+                       (error
+                        (if oo-debug-p
+                            (signal (car err) (cdr err))
+                          (error! "%s : %s : %s -> %s"
+                                  #',function
+                                  ',hook
+                                  (car err)
+                                  (cdr err))))))))
+    (add-hook hook fname depth local)))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
