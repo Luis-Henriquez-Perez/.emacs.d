@@ -50,12 +50,6 @@ This means it is non-nil."
   (declare (pure t) (side-effect-free error-free))
   (< number 0))
 
-(defun oo-float-divide (&rest args)
-  "Perform division with ARGS, ensuring the first argument is a float.
-This behaves like `/`, but the result is always a floating-point number."
-  (declare (pure t) (side-effect-free error-free))
-  (apply #'/ (float (car args)) (cdr args)))
-
 (defsubst oo-positive-p (number)
   "Return non-nil if NUMBER is greater than zero."
   (declare (pure t) (side-effect-free error-free))
@@ -71,6 +65,7 @@ This behaves like `/`, but the result is always a floating-point number."
   (declare (pure t) (side-effect-free error-free))
   (and (null (cl-set-difference list1 list2))
        (null (cl-set-difference list2 list1))))
+
 (defun oo-cycle (list)
   "Return an infinite circular copy of LIST.
 The returned list cycles through the elements of LIST and repeats
@@ -79,6 +74,12 @@ from the beginning."
   ;; Also works with sequences that aren't lists.
   (let ((newlist (append list ())))
     (nconc newlist newlist)))
+
+(defun oo-float-divide (&rest args)
+  "Perform division with ARGS, ensuring the first argument is a float.
+This behaves like `/`, but the result is always a floating-point number."
+  (declare (pure t) (side-effect-free error-free))
+  (apply #'/ (float (car args)) (cdr args)))
 ;;;; type conversion
 (defun oo-into-string (&rest args)
   "Return ARGS as a string."
