@@ -280,6 +280,13 @@ Replace `kill-buffer--possibly-save' as advice."
 ;; (hook! text-mode flyspell-mode)
 ;; (hook! prog-mode-hook flyspell-prog-mode)
 ;;;; minibuffer
+(defun oo-completion-in-region-function (&rest args)
+  (apply (if (and (bound-and-true-p vertico-mode) (featurep 'consult))
+             #'consult-completion-in-region
+           #'completion--in-region)
+         args))
+
+(setq completion-in-region-function #'oo-completion-in-region-function)
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
