@@ -36,17 +36,6 @@
 
 (defvar evil-state-properties)
 (declare-function evil-define-key* "evil")
-;;;; oo-in-string-or-comment-p
-;; This function is used by captain and abbrev.
-(defun oo-in-string-or-comment-p ()
-  "Return non-nil if point is in a string or comment.
-Specifically, return the symbol `string' if point is in a string, the symbol
-`comment' if in a comment and nil otherwise."
-  (declare (pure t) (side-effect-free t))
-  (let ((ppss (syntax-ppss)))
-    (cond ((nth 3 ppss) 'string)
-          ((nth 4 ppss) 'comment)
-          (t nil))))
 ;;;; oo-funcall-quietly
 (defun oo-funcall-quietly (fn &rest args)
   "Call FN with ARGS without producing any output."
