@@ -285,6 +285,7 @@ end-of-buffer signals; pass the rest to the default handler."
 (setopt window-divider-default-bottom-width 7)
 (setopt window-divider-default-right-width 7)
 (setopt window-divider-default-places t)
+;;;; vc-hooks
 ;;; provide
 (provide 'base-settings)
 ;;; base-settings.el ends here
