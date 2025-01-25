@@ -55,7 +55,6 @@
 (require 'init-abbrev)
 (require 'init-auto-insert)
 (require 'init-dired)
-(require 'init-emacs-lock)
 (require 'init-saveplace)
 ;; External packages
 (require 'init-ace-window)
