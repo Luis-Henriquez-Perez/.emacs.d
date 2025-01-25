@@ -58,7 +58,6 @@
 (require 'init-dired)
 (require 'init-emacs-lock)
 (require 'init-saveplace)
-(require 'init-window)
 ;; External packages
 (require 'init-ace-window)
 (require 'init-aggressive-indent)
