@@ -129,7 +129,6 @@
 (cl-pushnew 'hydra package-selected-packages)
 (cl-pushnew 'immaterial-theme package-selected-packages)
 (cl-pushnew 'leuven-theme package-selected-packages)
-(cl-pushnew 'lgr package-selected-packages)
 (cl-pushnew 'lispy package-selected-packages)
 (cl-pushnew 'lispyville package-selected-packages)
 (cl-pushnew 'loopy package-selected-packages)
