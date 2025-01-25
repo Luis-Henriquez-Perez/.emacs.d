@@ -279,6 +279,7 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; spelling
 ;; (hook! text-mode flyspell-mode)
 ;; (hook! prog-mode-hook flyspell-prog-mode)
+;;;; minibuffer
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
