@@ -266,6 +266,73 @@ Specifically, return the symbol `string' if point is in a string, the symbol
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
           (t nil))))
+;;;; hook
+(defun oo-add-hook (hook function &rest args)
+  "Generate a function that calls FUNCTION and add it to HOOK.
+Generated function call FUNCTION and logs any errors.  If IGNORE-ARGS, then do
+generated function does not pass in any of its given arguments to FUNCTION."
+  (let* ((fname (intern (format "oo--%s--%s" hook function)))
+         (depth (plist-get args :depth))
+         (local (plist-get args :local))
+         (ignore-args (plist-get args :ignore-args))
+         (funcall-form (if ignore-args `(,function) `(apply #',function arglist))))
+    (unless (fboundp fname)
+      (fset fname `(lambda (&rest arglist)
+                     (ignore arglist)
+                     ""
+                     (info! "HOOK: %s -> %s" ',hook ',function)
+                     (condition-case err
+                         ,funcall-form
+                       (error
+                        (if oo-debug-p
+                            (signal (car err) (cdr err))
+                          (error! "%s : %s : %s -> %s"
+                                  #',function
+                                  ',hook
+                                  (car err)
+                                  (cdr err))))))))
+    (add-hook hook fname depth local)))
+;;;; logging
+(defvar oo-log-buffer "*log*"
+  "Name of the log buffer.")
+
+;; This is important because it prevents the buffer from growing indefinitely and causing performance problems.
+(defvar oo-log-buffer-max 500
+  "Maximum number of lines in log buffer.")
+
+(defun oo-log (type message &rest meta)
+  "Log a formatted MESSAGE of a given TYPE to the `oo-log-buffer`.
+
+Append a log entry to the buffer specified by `oo-log-buffer`.
+If the last log entry in the buffer matches the new message, it increments a
+repeat count at the end of the line displayed instead of creating a new entry.
+The count is displayed as '(N)' where N is the number of times the message was
+logged."
+  (let* ((log (apply #'format message meta))
+         (buffer (get-buffer-create oo-log-buffer))
+         (output (format "[%s] %s" (upcase (symbol-name type)) log))
+         (excess nil))
+    (with-current-buffer buffer
+      (unless view-mode (view-mode t))
+      ;; Add to buffer without constantly moving focus to the end.
+      (let ((inhibit-read-only t))
+        (save-excursion
+          (goto-char (point-max))
+          (or (save-excursion
+                (and (zerop (forward-line -1))
+                     (looking-at (rx bol (literal output)))
+                     (goto-char (match-end 0))
+                     (or (and (looking-at (rx space "(" space (group (1+ digit)) space ")" eol))
+                              (let ((it (match-string 1)))
+                                (replace-match (number-to-string (+ 1 (string-to-number it))) nil nil nil 1)
+                                t))
+                         (progn (insert " ( 2 )") t))))
+              (progn (insert output)
+                     (insert "\n")))
+          (setq excess (- (line-number-at-pos (point-max)) (1+ oo-log-buffer-max)))
+          (when (> excess 0)
+            (goto-char (point-min))
+            (dotimes (_ excess) (delete-line))))))))
 ;;; provide
 (provide 'base-utils)
 ;;; base-utils.el ends here
