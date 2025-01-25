@@ -39,7 +39,7 @@
 (hook! on-first-input-hook minibuffer-depth-indicate-mode)
 ;;;;; emacs-lisp-mode-hook
 (defhook! oo-enable-elisp-font-lock-h (emacs-lisp-mode-hook)
-  "Add font lock keywords for definer macros."
+  "Add custom font-lock keywords"
   (font-lock-add-keywords
    'emacs-lisp-mode
    '(("(\\(\\(?:def\\(?:\\(?:advice\\|hook\\|macro\\|un\\)!\\)\\)\\)\\_>\\s-*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
