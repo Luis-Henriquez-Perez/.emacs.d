@@ -287,6 +287,7 @@ Replace `kill-buffer--possibly-save' as advice."
          args))
 
 (setq completion-in-region-function #'oo-completion-in-region-function)
+;;;; custom
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
