@@ -126,8 +126,6 @@ Replace `kill-buffer--possibly-save' as advice."
   (require 'base-mode-line)
   (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
   (oo-mode-line-update))
-;;;; keybindings
-;;;;; declare override-mode
 ;;;; set initial font
 ;; This is very basic font setting based on available faces.  I have seen much
 ;; more complex font setups like in minemacs (which probably got its from doom)
