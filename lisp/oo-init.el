@@ -341,6 +341,7 @@ faces immediately."
         (apply #'custom-theme-set-faces theme faces)))))
 
 (add-hook 'enable-theme-functions #'oo-apply-custom-faces-h)
+;;;; locking
 ;;; provide
 (provide 'oo-init)
 ;;; oo-init.el ends here
