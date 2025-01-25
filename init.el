@@ -47,95 +47,93 @@
 ;; saved on rendering, the faster the startup.
 (set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
-;;;; set load-path
+;;;; logging
+(defvar oo-start (current-time))
+
+(defvar oo-log-buffer "*log*"
+  "Name of the log buffer.")
+
+;; This is important because it prevents the buffer from growing indefinitely and causing performance problems.
+(defvar oo-log-buffer-max 500
+  "Maximum number of lines in log buffer.")
+
+(defun oo-log (type message &rest meta)
+  "Log a formatted MESSAGE of a given TYPE to the `oo-log-buffer`.
+
+Append a log entry to the buffer specified by `oo-log-buffer`.
+If the last log entry in the buffer matches the new message, it increments a
+repeat count at the end of the line displayed instead of creating a new entry.
+The count is displayed as '(N)' where N is the number of times the message was
+logged."
+  (let* ((log (apply #'format message meta))
+         (timestamp (float-time (time-subtract (current-time) oo-start)))
+         (buffer (get-buffer-create oo-log-buffer))
+         (output (format "[%s] %.3f %s" (upcase (symbol-name type)) timestamp log))
+         (excess nil))
+    (with-current-buffer buffer
+      (unless view-mode (view-mode t))
+      ;; Add to buffer without constantly moving focus to the end.
+      (let ((inhibit-read-only t))
+        (save-excursion
+          (goto-char (point-max))
+          (or (save-excursion
+                (and (zerop (forward-line -1))
+                     (looking-at (rx bol (literal output)))
+                     (goto-char (match-end 0))
+                     (or (and (looking-at (rx space "(" space (group (1+ digit)) space ")" eol))
+                              (let ((it (match-string 1)))
+                                (replace-match (number-to-string (+ 1 (string-to-number it))) nil nil nil 1)
+                                t))
+                         (progn (insert " ( 2 )") t))))
+              (progn (insert output)
+                     (insert "\n")))
+          (setq excess (- (line-number-at-pos (point-max)) (1+ oo-log-buffer-max)))
+          (when (> excess 0)
+            (goto-char (point-min))
+            (dotimes (_ excess) (delete-line))))))))
+;;;; loader
+(defvar oo-init-data nil)
+
+;; (defmacro time-elapsed! (&rest body)
+;;   `(let ((start (current-time))
+;;          (time nil))
+;;      (condition-case err
+;;          (prog1 (progn ,@body)
+;;            (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
+;;            (message "Form %s in %f seconds" (string-truncate-left (format "%S" ',body) 50) time))
+;;        (error
+;;         (message "Error evaluating %S: %s" ',body err)))))
+
+;; Sort init info by the amount of time taken.  Then put the longest times on
+;; top.  Compute the total and place the percentages.
+(defmacro require! (feature &optional path)
+  "Catch any errors, record and log the time taken to require FEATURE."
+  `(let ((start (current-time))
+         (feature ',feature)
+         (time nil))
+     (condition-case err
+         (progn
+           (require ',feature ,path)
+           (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
+           (oo-log 'info "Required '%s in %.2f seconds" feature time))
+       (error
+        (oo-log 'error "Error requiring '%s: %s" feature err)))
+     (push (list feature time) oo-init-data)))
+
+(defmacro load! (dir)
+  (let (forms feature)
+    (setq dir (expand-file-name dir user-emacs-directory))
+    (dolist (path (directory-files dir t "^[[:digit:]][[:digit:]][[:digit:]].+\\.el$"))
+      (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
+      ;; It is a bit faster if you specify the path because then emacs does not have to look through the directory.
+      (push `(require! ,feature ,path) forms))
+    `(progn ,@(nreverse forms))))
+;;;; rest
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
-;;;; load requirements
-(require 'init-no-littering)
-;; Built-in packages
-(require 'init-abbrev)
-(require 'init-auto-insert)
-(require 'init-custom)
-(require 'init-dired)
-(require 'init-emacs-lock)
-(require 'init-minibuffer)
-(require 'init-saveplace)
-(require 'init-vc-hooks)
-(require 'init-window)
-;; External packages
-(require 'init-ace-window)
-(require 'init-aggressive-indent)
-(require 'init-avy)
-(require 'init-buffer-terminator)
-(require 'init-burly)
-(require 'init-captain)
-(require 'init-consult)
-(require 'init-corfu)
-(require 'init-corfu-history)
-(require 'init-corfu-quick)
-(require 'init-dashboard)
-(require 'init-dirvish)
-(require 'init-easy-escape)
-(require 'init-emmet)
-(require 'init-emms)
-(require 'init-eshell)
-(require 'init-evil)
-(require 'init-vertico-multiform)
-(require 'init-elfeed)
-(require 'init-evil-cleverparens)
-(require 'init-evil-collection)
-(require 'init-evil-easymotion)
-(require 'init-evil-exchange)
-(require 'init-evil-fringe-mark)
-(require 'init-evil-goggles)
-(require 'init-evil-surround)
-(require 'init-evil-textobj-anyblock)
-(require 'init-evil-textobj-line)
-(require 'init-evil-textobj-syntax)
-(require 'init-eww)
-(require 'init-expreg)
-(require 'init-fill-adapt)
-(require 'init-grugru)
-(require 'init-helm)
-(require 'init-helpful)
-(require 'init-highlight-quoted)
-(require 'init-htmlize)
-(require 'init-hungry-delete)
-(require 'init-hy-mode)
-(require 'init-lispyville)
-(require 'init-macroexpand)
-(require 'init-magit)
-(require 'init-marginalia)
-(require 'init-modus-themes)
-(require 'init-mu4e)
-(require 'init-notmuch)
-(require 'init-orderless)
-(require 'init-org)
-(require 'init-org-appear)
-(require 'init-outli)
-(require 'init-outline)
-(require 'init-pomodoro)
-(require 'init-rainbow-delimiters)
-(require 'init-re-builder)
-(require 'init-recentf)
-(require 'init-restart-emacs)
-(require 'init-savehist)
-(require 'init-smartparens)
-(require 'init-super-save)
-(require 'init-tab-bar)
-(require 'init-tempel)
-(require 'init-vertico)
-(require 'init-vertico-buffer)
-(require 'init-vertico-quick)
-(require 'init-w3m)
-(require 'init-wdired)
-(require 'init-which-key)
-(require 'init-window)
-(require 'init-org-superstar)
-(require 'init-org-fancy-priorities)
-(require 'init-org-pretty-tags)
-(require 'oo-keybindings)
-(require 'oo-autoloads)
-(require 'oo-init)
+
+;; (eval-when-compile (require 'init-loader "./init-loader.el"))
+
+(load! "lisp/")
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
