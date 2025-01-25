@@ -59,7 +59,6 @@
   (require 'org-ml)
   (thread-last (org-ml-build-headline! :level 1 :todo-keyword todo-keyword :title-text "%?")
                (org-ml-headline-set-node-property "ID" (org-id-new))
-               (org-ml-headline-set-node-property "Effort" "0:05")
                (org-ml-to-string)))
 
 (defun +org-capture-plain-template ()
