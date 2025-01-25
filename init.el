@@ -126,7 +126,6 @@
 (require 'init-w3m)
 (require 'init-wdired)
 (require 'init-which-key)
-(require 'init-window)
 (require 'init-org-superstar)
 (require 'init-org-fancy-priorities)
 (require 'init-org-pretty-tags)
