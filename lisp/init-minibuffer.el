@@ -25,13 +25,6 @@
 ;; Initialize minibuffer.
 ;;
 ;;; Code:
-(defun oo-completion-in-region-function (&rest args)
-  (apply (if (and (bound-and-true-p vertico-mode) (featurep 'consult))
-             #'consult-completion-in-region
-           #'completion--in-region)
-         args))
-
-(setq completion-in-region-function #'oo-completion-in-region-function)
 ;;; provide
 (provide 'init-minibuffer)
 ;;; init-minibuffer.el ends here
