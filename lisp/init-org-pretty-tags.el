@@ -32,6 +32,7 @@
              `(("agenda"        . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
                ("arch"          . ,(nerd-icons-mdicon "nf-md-arch"))
                ("blog"          . ,(nerd-icons-faicon "nf-fa-blog"))
+               ("browser"       . ,(nerd-icons-faicon "nf-fa-internet_explorer"))
                ("bug"           . ,(nerd-icons-faicon "nf-fa-bug"))
                ("css"           . ,(nerd-icons-devicon "nf-dev-css3"))
                ("cursor"        . ,(nerd-icons-mdicon "nf-md-cursor_default_outline"))
