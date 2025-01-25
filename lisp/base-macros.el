@@ -569,6 +569,33 @@ If MATCH-FORM is a symbol act as `setq'."
              (gensyms (cl-set-difference all non-gensyms)))
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
+;;;;; logging
+;; I will note that logging does not seem to have any significant or even
+;; noticeable effect on performance as far as I can tell.  Maybe I will just
+;; always enable logging later.
+(defmacro info! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'info ,msg ,@meta)))
+
+(defmacro error! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'info ,msg ,@meta)))
+
+(defmacro warn! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'warn ,msg ,@meta)))
+
+(defmacro fatal! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'fatal ,msg ,@meta)))
+
+(defmacro trace! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'trace ,msg ,@meta)))
+
+(defmacro debug! (msg &rest meta)
+  (when oo-debug-p
+    `(oo-log 'debug ,msg ,@meta)))
 ;;; provide
 (provide 'base-macros)
 ;;; base-macros.el ends here
