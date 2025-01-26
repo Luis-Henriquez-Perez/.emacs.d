@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defmacro require! (feature)
-  `())
+  `(condition-case error))
 ()
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
