@@ -55,7 +55,7 @@
 
 (defmacro init! (dir)
   (dolist (path (directory-files dir t (rx bol (1+ nonl) ".el" eol)))
-    `(require! ',feature ,path)))
+    (push `(require! ',feature ,path))))
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/base/" user-emacs-directory))
