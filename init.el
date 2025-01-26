@@ -77,6 +77,7 @@
 (require! base-vars)
 (require! base-settings)
 (require! base-utils)
+(require 'base-macros)
 (require! base-lib)
 (require! base-packages)
 ;; (init! "lisp/base/")
