@@ -58,7 +58,7 @@
     (dolist (path (directory-files dir t (rx bol (1+ nonl) ".el" eol)))
       (setq feature (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
       (push `(require! ',feature ,path) forms))
-    `(progn (nreverse forms))))
+    `(progn ,@(nreverse forms))))
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/base/" user-emacs-directory))
