@@ -52,7 +52,7 @@
   "Catch any errors and record time taken."
   `(let ((start (current-time)))
      (condition-case err
-         (require ',feature)
+         (require ',feature ,path)
        (error
         ()))))
 
