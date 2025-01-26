@@ -55,7 +55,17 @@
          (require ',feature ,path)
        (error
         ()))))
-
+(defmacro require! (feature &optional path)
+  "Catch any errors, record and log the time taken to require FEATURE."
+  `(let ((start (current-time)))
+     (condition-case err
+         (progn
+           (require ',feature ,path)
+           (message "Required '%s in %.3f seconds"
+                    ',feature
+                    (float-time (time-subtract (current-time) start))))
+       (error
+        (message "Error requiring '%s: %s" ',feature err)))))
 
 (defmacro init! (dir)
   (let (forms feature)
