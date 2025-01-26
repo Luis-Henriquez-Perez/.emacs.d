@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
-(add-to-list 'load-path (expand-file-name "base/" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp/base/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "init/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "config/" user-emacs-directory))
 ;;;; load requirements
