@@ -55,6 +55,7 @@
          (require ',feature ,path)
        (error
         ()))))
+
 (defmacro require! (feature &optional path)
   "Catch any errors, record and log the time taken to require FEATURE."
   `(let ((start (current-time)))
