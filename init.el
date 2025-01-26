@@ -52,6 +52,7 @@
 (add-to-list 'load-path (expand-file-name "lisp/base/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/init/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/config/" user-emacs-directory))
+(require 'init-loader)
 ;;;; load requirements
 (require 'oo-keybindings)
 (require 'oo-autoloads)
