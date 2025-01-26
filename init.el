@@ -74,6 +74,7 @@
 (add-to-list 'load-path (expand-file-name "lisp/config/" user-emacs-directory))
 ;; (require 'init-loader)
 (require 'base)
+(require! base-vars)
 ;; (init! "lisp/base/")
 (init! "lisp/init/")
 ;;;; load requirements
