@@ -53,7 +53,8 @@
   `(let (())
      (condition-case err
          (require ',feature)
-       ())))
+       (error
+        ()))))
 
 (defmacro init! (dir)
   (let (forms feature)
