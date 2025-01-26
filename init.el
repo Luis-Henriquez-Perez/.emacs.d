@@ -62,6 +62,7 @@
 
 (defmacro init! (dir)
   (let (forms feature)
+    (setq dir (expand-file-name dir user-emacs-directory))
     (dolist (path (directory-files dir t (rx bol (1+ nonl) ".el" eol)))
       (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
       (push `(require! ,feature ,path) forms))
