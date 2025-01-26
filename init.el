@@ -50,7 +50,7 @@
 ;;;; loader
 (defmacro require! (feature)
   "Catch any errors and record time taken."
-  `(let (())
+  `(let ((start (current-time)))
      (condition-case err
          (require ',feature)
        (error
