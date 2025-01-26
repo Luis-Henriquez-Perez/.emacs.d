@@ -49,14 +49,6 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defmacro require! (feature &optional path)
-  "Catch any errors and record time taken."
-  `(let ((start (current-time)))
-     (condition-case err
-         (require ',feature ,path)
-       (error
-        ()))))
-
-(defmacro require! (feature &optional path)
   "Catch any errors, record and log the time taken to require FEATURE."
   `(let ((start (current-time)))
      (condition-case err
