@@ -48,7 +48,7 @@
 (set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
 ;;;; loader
-(defmacro require! (feature)
+(defmacro require! (feature &optional path)
   "Catch any errors and record time taken."
   `(let ((start (current-time)))
      (condition-case err
