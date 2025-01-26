@@ -50,6 +50,7 @@
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "base/" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "base/" user-emacs-directory))
 ;;;; load requirements
 (require 'oo-keybindings)
 (require 'oo-autoloads)
