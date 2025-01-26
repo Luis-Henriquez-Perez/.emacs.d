@@ -1,4 +1,4 @@
-;;; init-no-littering.el --- initialize no-littering -*- lexical-binding: t; -*-
+;;; 00-init-no-littering.el --- initialize no-littering -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
 
 (require 'no-littering)
 ;;; provide
-(provide 'init-no-littering)
-;;; init-no-littering.el ends here
+(provide '00-init-no-littering)
+;;; 00-init-no-littering.el ends here
