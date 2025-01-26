@@ -48,7 +48,8 @@
 (set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
 ;;;; loader
-(defmacro require! (feature))
+(defmacro require! (feature)
+  ())
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/base/" user-emacs-directory))
