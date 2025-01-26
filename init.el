@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defmacro require! (feature)
-  ""
+  "Catch any errors nad."
   `(let (())
      (condition-case error
          (require ',feature)
