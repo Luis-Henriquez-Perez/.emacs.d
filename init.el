@@ -77,6 +77,7 @@
 (require! base-vars)
 (require! base-settings)
 (require! base-utils)
+(require! base-lib)
 ;; (init! "lisp/base/")
 (init! "lisp/init/")
 ;;;; load requirements
