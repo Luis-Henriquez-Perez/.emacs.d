@@ -52,6 +52,7 @@
   `(condition-case error
        (require ',feature)
      ()))
+
 (defmacro init! ()
   )
 ;;;; set load-path
