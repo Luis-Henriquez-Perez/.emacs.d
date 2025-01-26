@@ -49,6 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defmacro require! (feature)
+  ""
   `(let (())
      (condition-case error
          (require ',feature)
