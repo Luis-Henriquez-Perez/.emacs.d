@@ -56,6 +56,7 @@
        (error
         ()))))
 
+
 (defmacro init! (dir)
   (let (forms feature)
     (dolist (path (directory-files dir t (rx bol (1+ nonl) ".el" eol)))
