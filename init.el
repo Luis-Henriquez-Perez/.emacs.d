@@ -51,7 +51,7 @@
 (defmacro require! (feature)
   "Catch any errors nad."
   `(let (())
-     (condition-case error
+     (condition-case err
          (require ',feature)
        ())))
 
