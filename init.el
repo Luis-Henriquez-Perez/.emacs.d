@@ -54,7 +54,8 @@
      ()))
 
 (defmacro init! ()
-  (dolist (directory-files))
+  (dolist (directory-files)
+    (require ',feature))
   )
 ;;;; set load-path
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
