@@ -54,7 +54,7 @@
                ("log"           . ,(nerd-icons-octicon "nf-oct-log"))
                ("modeline"      . ,(nerd-icons-faicon "nf-fa-grip_lines"))
                ("money"         . ,(nerd-icons-faicon "nf-fa-money_bill_1"))
-               ("mouse"         . ,(nerd-icons-mdicon "nf-fa-mouse"))
+               ("mouse"         . ,(nerd-icons-mdicon "nf-md-mouse"))
                ("music"         . ,(nerd-icons-faicon "nf-fa-music"))
                ("online"        . ,(nerd-icons-mdicon "nf-md-web"))
                ("org"           . ,(nerd-icons-sucicon "nf-custom-orgmode"))
