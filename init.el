@@ -49,9 +49,10 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defmacro require! (feature)
-  `(let (()) (condition-case error
-                 (require ',feature)
-               ())))
+  `(let (())
+     (condition-case error
+         (require ',feature)
+       ())))
 
 (defmacro init! (dir)
   (let (forms feature)
