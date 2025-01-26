@@ -56,6 +56,7 @@
 (defmacro init! (dir)
   (let (forms feature)
     (dolist (path (directory-files dir t (rx bol (1+ nonl) ".el" eol)))
+      (setq feature )
       (push `(require! ',feature ,path) forms))
     `(progn (nreverse forms))))
 ;;;; set load-path
