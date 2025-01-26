@@ -53,7 +53,7 @@
        (require ',feature)
      ()))
 
-(defmacro init! ()
+(defmacro init! (dir)
   (dolist (directory-files)
     `(require! ',feature path)))
 ;;;; set load-path
