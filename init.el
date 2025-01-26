@@ -54,7 +54,7 @@
      ()))
 
 (defmacro init! (dir)
-  (let (forms)
+  (let (forms feature)
     (dolist (path (directory-files dir t (rx bol (1+ nonl) ".el" eol)))
       (push `(require! ',feature ,path) forms))
     `(progn (nreverse forms))))
