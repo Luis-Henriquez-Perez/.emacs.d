@@ -83,7 +83,7 @@
 ;; (init! "lisp/base/")
 (init! "lisp/init/")
 ;;;; load requirements
-(require 'oo-keybindings)
+(require! 'oo-keybindings)
 (require 'oo-autoloads)
 (require 'oo-init)
 ;;; provide init
