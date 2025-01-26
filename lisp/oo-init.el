@@ -214,7 +214,7 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; setup loading config files
 (defhook! oo-initialize-config-files-h (emacs-startup-hook :depth 91)
   "Setup config files to be loaded after their feature."
-  (set! lisp-dir (expand-file-name "lisp/" user-emacs-directory))
+  (set! lisp-dir (expand-file-name "lisp/config/" user-emacs-directory))
   (set! rx "\\`config-\\([^[:space:]]+\\)\\.el\\'")
   (dolist (path (directory-files lisp-dir t rx))
     (set! filename (file-name-nondirectory (directory-file-name path)))
