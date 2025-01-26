@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defmacro require! (feature)
-  "Catch any errors nad."
+  "Catch any errors and record time taken."
   `(let (())
      (condition-case err
          (require ',feature)
