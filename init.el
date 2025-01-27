@@ -66,7 +66,8 @@
            (setq time (float-time (time-subtract (current-time) start)))
            (message "Required '%s in %.2f seconds" ',feature time))
        (error
-        (message "Error requiring '%s: %s" ',feature err)))))
+        (message "Error requiring '%s: %s" ',feature err)))
+     (push )))
 
 (defmacro init! (dir)
   (let (forms feature)
