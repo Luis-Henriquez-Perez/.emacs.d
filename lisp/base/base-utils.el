@@ -81,9 +81,8 @@ This behaves like `/`, but the result is always a floating-point number."
   (declare (pure t) (side-effect-free error-free))
   (apply #'/ (float (car args)) (cdr args)))
 
-(defalias)
-(defun oo-snoc (item list)
-  (append list (list item)))
+;; (defun oo-snoc (item list)
+;;   (append list (list item)))
 ;;;; type conversion
 (defun oo-into-string (&rest args)
   "Return ARGS as a string."
