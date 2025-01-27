@@ -123,6 +123,7 @@
 (cl-pushnew 'highlight-indent-guides package-selected-packages)
 (cl-pushnew 'highlight-quoted package-selected-packages)
 (cl-pushnew 'htmlize package-selected-packages)
+(cl-pushnew 'ctable package-selected-packages)
 (cl-pushnew 'humanoid-themes package-selected-packages)
 (cl-pushnew 'hungry-delete package-selected-packages)
 (cl-pushnew 'hy-mode package-selected-packages)
