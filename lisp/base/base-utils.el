@@ -82,7 +82,7 @@ This behaves like `/`, but the result is always a floating-point number."
   (apply #'/ (float (car args)) (cdr args)))
 
 (defalias)
-(defun oo-affix (item list)
+(defun oo-snoc (item list)
   (append list (list item)))
 ;;;; type conversion
 (defun oo-into-string (&rest args)
