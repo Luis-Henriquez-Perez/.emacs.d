@@ -59,7 +59,7 @@
      (condition-case err
          (progn
            (require ',feature ,path)
-           (message "Required '%s in %.3f seconds"
+           (message "Required '%s in %.2f seconds"
                     ',feature
                     (float-time (time-subtract (current-time) start))))
        (error
