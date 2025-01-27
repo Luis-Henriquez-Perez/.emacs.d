@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defvar oo-init-info nil)
-(defun oo-)
+;; (defun oo-)
 (defmacro require! (feature &optional path)
   "Catch any errors, record and log the time taken to require FEATURE."
   `(let ((start (current-time)))
