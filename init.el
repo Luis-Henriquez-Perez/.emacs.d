@@ -48,7 +48,7 @@
 (set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
 ;;;; loader
-(defvar oo-init-info nil)
+(defvar oo-init-data nil)
 (defun oo-startup-time-table ()
   (interactive)
   )
