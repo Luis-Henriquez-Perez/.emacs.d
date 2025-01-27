@@ -58,7 +58,8 @@
 ;; (defun oo-)
 (defmacro require! (feature &optional path)
   "Catch any errors, record and log the time taken to require FEATURE."
-  `(let ((start (current-time)))
+  `(let ((start (current-time))
+         (time nil))
      (condition-case err
          (progn
            (require ',feature ,path)
