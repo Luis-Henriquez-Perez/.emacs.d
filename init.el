@@ -99,6 +99,7 @@
   (flet! add-percentage (datum) (append datum (list (round (* 100 (oo-float-divide (cl-second datum) total))))))
   (setq oo-init-data (mapcar #'add-percentage oo-init-data))
   (setq oo-init-data (sort oo-init-data (lambda (o1 o2) (> (cl-second o1) (cl-second o2)))))
+  (message "total -> %s")
   (let* ((column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
                              (make-ctbl:cmodel :title "Time (seconds)" :align 'center)
                              (make-ctbl:cmodel :title "Percent of Total" :align 'center)))
