@@ -67,7 +67,7 @@
            (message "Required '%s in %.2f seconds" ',feature time))
        (error
         (message "Error requiring '%s: %s" ',feature err)))
-     (push )))
+     (push (list :feature feature :time time))))
 
 (defmacro init! (dir)
   (let (forms feature)
