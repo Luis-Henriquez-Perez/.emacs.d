@@ -49,9 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defvar oo-init-data nil)
-(defun oo-startup-time-table ()
-  (interactive)
-  )
+
 ;; Sort init info by the amount of time taken.  Then put the longest times on
 ;; top.  Compute the total and place the percentages.
 ;; (apply #'+ )
