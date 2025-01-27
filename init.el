@@ -49,7 +49,7 @@
 (setq-default mode-line-format nil)
 ;;;; loader
 (defvar oo-init-info nil)
-;; Sort init info by the amount of time taken.
+;; Sort init info by the amount of time taken.  Then
 ;; (defun oo-)
 (defmacro require! (feature &optional path)
   "Catch any errors, record and log the time taken to require FEATURE."
