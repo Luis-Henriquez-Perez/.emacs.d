@@ -51,6 +51,7 @@
 (defvar oo-init-info nil)
 ;; Sort init info by the amount of time taken.  Then put the longest times on
 ;; top.  Compute the total and place the percentages.
+(apply #'+ )
 ;; (defun oo-)
 (defmacro require! (feature &optional path)
   "Catch any errors, record and log the time taken to require FEATURE."
