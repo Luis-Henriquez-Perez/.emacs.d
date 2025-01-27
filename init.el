@@ -91,6 +91,20 @@
 (require! oo-autoloads)
 (require! oo-init)
 
+(defun! oo-startup-time-table ()
+  (interactive)
+  (require 'ctable)
+  (set! total (apply #'+ (mapcar #'cl-second oo-init-data)))
+  (flet! add-percentage (datum) (append datum (list (oo-float-divide (plist-get datum :time) total))))
+  (setq oo-init-data (mapcar #'add-percentage oo-init-data))
+  (let* ((column-model ; column model
+          (list (make-ctbl:cmodel :title "Feature" :align 'left)
+                (make-ctbl:cmodel :title "Time (seconds)" :align 'center)
+                (make-ctbl:cmodel :title "Percent of Total" :align 'center)))
+         (data oo-init-data)
+         (model (make-ctbl:model :column-model column-model :data data))
+         (component (ctbl:create-table-component-buffer :model model)))
+    (pop-to-buffer (ctbl:cp-get-buffer component))))
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
