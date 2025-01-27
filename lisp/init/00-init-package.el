@@ -1,4 +1,4 @@
-;;; init-package.el --- Initialize package -*- lexical-binding: t; -*-
+;;; 00-init-package.el --- Initialize package -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -226,14 +226,14 @@
                (package-refresh-contents)
                (setq refreshed-contents-p (not refreshed-contents-p)))
              (message "package is not installed %s package" package)
-             (with-demoted-errors "%S" (package-install package 'dont-select)))
-           (if (package-installed-p package)
-               (garbage-collect)
-             (message "Failed to install package `%s'" package)))
+             (with-demoted-errors "%S" (package-install package 'dont-select))
+             (if (package-installed-p package)
+                 (garbage-collect)
+               (message "Failed to install package `%s'" package))))
           (t
            (message "Package %s is not available." package)))))
 
 (package-vc-install-selected-packages)
 ;;; provide
-(provide 'init-package)
-;;; init-package.el ends here
+(provide '00-init-package)
+;;; 00-init-package.el ends here
