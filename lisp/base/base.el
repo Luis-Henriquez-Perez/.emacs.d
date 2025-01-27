@@ -29,7 +29,6 @@
 (require 'base-settings)
 (require 'base-utils)
 (require 'base-lib)
-(require 'base-packages)
 ;;; provide
 (provide 'base)
 ;;; base.el ends here
