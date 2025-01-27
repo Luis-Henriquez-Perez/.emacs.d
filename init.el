@@ -97,7 +97,7 @@
   (set! total (apply #'+ (mapcar #'cl-second oo-init-data)))
   (flet! add-percentage (datum) (append datum (list (oo-float-divide (plist-get datum :time) total))))
   (setq oo-init-data (mapcar #'add-percentage oo-init-data))
-  (setq oo-init-data (sort oo-init-data (lambda (01 02) (> (cl-second 01)))))
+  (setq oo-init-data (sort oo-init-data (lambda (01 02) (> (cl-second 01) (cl-second 01)))))
   (let* ((column-model ; column model
           (list (make-ctbl:cmodel :title "Feature" :align 'left)
                 (make-ctbl:cmodel :title "Time (seconds)" :align 'center)
