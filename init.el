@@ -56,7 +56,7 @@
      (condition-case err
          (prog1 (progn ,@body)
            (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
-           (message "Form '%S in %f seconds" form time))
+           (message "Form %S in %f seconds" body time))
        (error
         (message "Error evaluating %S: %s" form err)))))
 
