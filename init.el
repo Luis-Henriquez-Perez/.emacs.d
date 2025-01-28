@@ -98,6 +98,7 @@
   (set! total (apply #'+ (mapcar #'cl-second oo-init-data)))
   (flet! add-percentage (datum) (append datum (list (round (* 100 (oo-float-divide (cl-second datum) total))))))
   (flet! add-init-per (datum) (append datum (list (round (* 100 (oo-float-divide (cl-second datum) (string-to-number (emacs-init-time "%.2f"))))))))
+  (for! (()))
   (setq oo-init-data (mapcar #'add-percentage oo-init-data))
   (setq oo-init-data (mapcar #'add-init-per oo-init-data))
   (setq oo-init-data (sort oo-init-data (lambda (o1 o2) (> (cl-second o1) (cl-second o2)))))
