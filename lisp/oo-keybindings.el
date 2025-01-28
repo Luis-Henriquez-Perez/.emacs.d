@@ -303,7 +303,6 @@
 ;;;;; package
 (defvar oo-package-map (make-sparse-keymap))
 (define-prefix-command 'oo-package-prefix-command 'oo-package-map)
-
 (keymap-set oo-package-map "i" #'package-install)
 (keymap-set oo-package-map "d" #'package-install)
 ;;;; helm
