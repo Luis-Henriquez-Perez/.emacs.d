@@ -54,13 +54,6 @@
   `(let ((start (current-time))
          (feature ',feature)
          (time nil))
-     (condition-case err
-         (progn
-           (require ',feature ,path)
-           (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
-           (message "Required '%s in %f seconds" feature time))
-       (error
-        (message "Error requiring '%s: %s" feature err)))
      (push (list feature time) oo-init-data)))
 
 ;; Sort init info by the amount of time taken.  Then put the longest times on
