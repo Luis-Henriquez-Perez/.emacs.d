@@ -52,7 +52,6 @@
 
 (defmacro time-elapsed! (&rest body)
   `(let ((start (current-time))
-         (feature ',feature)
          (time nil))
      (condition-case err
          (prog1 (progn ,@body)
