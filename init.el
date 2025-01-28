@@ -96,7 +96,7 @@
   (interactive)
   (require 'ctable)
   (set! total (apply #'+ (mapcar #'cl-second oo-init-data)))
-  (flet! add-percentage (time) (round (* 100 (oo-float-divide (cl-second time) total))))
+  (flet! total-per (time) (round (* 100 (oo-float-divide (cl-second time) total))))
   (flet! add-init-per (time) (round (* 100 (oo-float-divide (cl-second time) (string-to-number (emacs-init-time "%.2f"))))))
   (setq data (sort data (lambda (o1 o2) (> (cl-second o1) (cl-second o2)))))
   (for! ((feature time) oo-init-data)
