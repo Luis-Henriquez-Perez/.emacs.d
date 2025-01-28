@@ -182,7 +182,7 @@
 (defvar oo-org-map (make-sparse-keymap))
 (define-prefix-command 'oo-org-prefix-command 'oo-org-map)
 
-(keymap-set oo-leader-map "o" #'oo-org-prefix-command :wk "org")
+(bind! oo-leader-map "o" #'oo-org-prefix-command :wk "org")
 (keymap-set oo-leader-map "j" #'oo-org-prefix-command :wk "org")
 
 (keymap-set oo-org-map "t" #'+org-capture-todo)
