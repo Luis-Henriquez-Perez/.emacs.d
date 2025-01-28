@@ -98,7 +98,7 @@
   (set! total (apply #'+ (mapcar #'cl-second oo-init-data)))
   (flet! total-per (time) (round (* 100 (oo-float-divide (cl-second time) total))))
   (flet! init-per (time) (round (* 100 (oo-float-divide (cl-second time) (string-to-number (emacs-init-time "%.2f"))))))
-  (flet! percent (time) (round (* 100 (oo-float-divide (cl-second time) (string-to-number (emacs-init-time "%.2f"))))))
+  (flet! percent (time) (format ""))
   (setq data (sort data (lambda (o1 o2) (> (cl-second o1) (cl-second o2)))))
   (for! ((feature time) oo-init-data)
     (collecting! data (list feature time (total-per time) (init-per time))))
