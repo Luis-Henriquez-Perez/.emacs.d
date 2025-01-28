@@ -55,8 +55,7 @@
          (feature ',feature)
          (time nil))
      (condition-case err
-         (progn
-           (progn ,@body)
+         (prog1 (progn ,@body)
            (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
            (message "Form '%S in %f seconds" form time))
        (error
