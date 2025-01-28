@@ -213,7 +213,7 @@
 
 (unless package-archive-contents
   (message "Refreshing contents...")
-  (package-refresh-contents))
+  (time-elapsed! (package-refresh-contents)))
 
 ;; (remove-hook 'kill-emacs-hook #'emms-history-save)
 ;; Manage garbage collection myself.  U shouldn't just disable garbage
