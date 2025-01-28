@@ -209,7 +209,7 @@
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem fo rme.
 (unless (bound-and-true-p package--initialized)
-  (package-initialize))
+  (time-elapsed! (package-initialize)))
 
 (unless package-archive-contents
   (message "Refreshing contents...")
