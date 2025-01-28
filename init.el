@@ -59,8 +59,7 @@
            (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
            (message "Form '%S in %f seconds" form time))
        (error
-        (message "Error evaluating '%S: %s" form err)))
-     (push (list feature time) oo-init-data)))
+        (message "Error evaluating %S: %s" form err)))))
 
 ;; Sort init info by the amount of time taken.  Then put the longest times on
 ;; top.  Compute the total and place the percentages.
