@@ -58,7 +58,7 @@
          (progn
            (require ',feature ,path)
            (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
-           (message "Required '%s in %f seconds" feature time))
+           (message "Form '%S in %f seconds" feature time))
        (error
         (message "Error requiring '%s: %s" feature err)))
      (push (list feature time) oo-init-data)))
