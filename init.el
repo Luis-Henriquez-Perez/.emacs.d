@@ -101,7 +101,7 @@
   (flet! percent (time) (format "%3d%%" time))
   (setq data (sort data (lambda (o1 o2) (> (cl-second o1) (cl-second o2)))))
   (for! ((feature time) oo-init-data)
-    (collecting! data (list feature time (percent (total-per time)) (percent (init-per time)))))
+    (pushing! data (list feature time (percent (total-per time)) (percent (init-per time)))))
   (message "total -> %s" total)
   (let* ((column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
                              (make-ctbl:cmodel :title "Time (seconds)" :align 'center)
