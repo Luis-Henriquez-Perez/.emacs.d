@@ -50,6 +50,8 @@
 ;;;; loader
 (defvar oo-init-data nil)
 
+(defmacro )
+
 ;; Sort init info by the amount of time taken.  Then put the longest times on
 ;; top.  Compute the total and place the percentages.
 (defmacro require! (feature &optional path)
