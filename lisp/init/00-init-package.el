@@ -235,7 +235,7 @@
           (t
            (message "Package %s is not available." package)))))
 
-(package-vc-install-selected-packages)
+(time-elapsed! (package-vc-install-selected-packages))
 ;;; provide
 (provide '00-init-package)
 ;;; 00-init-package.el ends here
