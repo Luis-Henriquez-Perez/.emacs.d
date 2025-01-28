@@ -286,10 +286,10 @@
 (keymap-set oo-quit-map "r" #'restart-emacs)
 (keymap-set oo-quit-map "q" #'save-buffers-kill-emacs)
 ;;;;; workspace
-(keymap-set oo-workspace-map "t" #'tab-select)
-(keymap-set oo-workspace-map "n" #'tab-new)
-(keymap-set oo-workspace-map "j" #'tab-next)
-(keymap-set oo-workspace-map "k" #'tab-previous)
+;; (keymap-set oo-workspace-map "t" #'tab-select)
+;; (keymap-set oo-workspace-map "n" #'tab-new)
+;; (keymap-set oo-workspace-map "j" #'tab-next)
+;; (keymap-set oo-workspace-map "k" #'tab-previous)
 ;;;;; emms
 (defvar oo-emms-map (make-sparse-keymap))
 (define-prefix-command 'oo-emms-prefix-command 'oo-emms-map)
