@@ -35,6 +35,7 @@
                ("browser"       . ,(nerd-icons-faicon "nf-fa-internet_explorer"))
                ("bug"           . ,(nerd-icons-faicon "nf-fa-bug"))
                ("css"           . ,(nerd-icons-devicon "nf-dev-css3"))
+               ("rss"           . ,(nerd-icons-faicon "nf-fa-rss"))
                ("cursor"        . ,(nerd-icons-mdicon "nf-md-cursor_default_outline"))
                ("desktop"       . ,(nerd-icons-mdicon "nf-md-desktop_tower"))
                ("emacs"         . ,(nerd-icons-sucicon "nf-custom-emacs"))
