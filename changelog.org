@@ -17,20 +17,25 @@ CLOSED: [2025-01-09 Thu 14:14]
 Modeline now does not "overflow"--all the segments are visible.  But sometimes
 it fails to fill the entire window.
 ** TODO Replace bind macro with much simpler function.
-** TODO Move all keybindings into a single file
-** TODO Fix org appear error
+** DONE Move all keybindings into a single file
+CLOSED: [2025-01-29 Wed 11:09]
+** DONE Fix org appear error
+CLOSED: [2025-01-29 Wed 11:09]
 ** TODO Eliminate all compilation warnings
-** TODO Add option to toggle the use of separators to modeline
+** DONE Add option to toggle the use of separators to modeline
+CLOSED: [2025-01-29 Wed 11:53]
 ** TODO Add lisp-indent hack to my config
-** TODO stop abbrev from aggressively going to previous newline
+** DONE stop abbrev from aggressively going to previous newline
+CLOSED: [2025-01-29 Wed 11:09]
 ** CANCELLED incorporate read-only package
 CLOSED: [2025-01-09 Thu 14:12]
 - CLOSING NOTE [2025-01-09 Thu 14:12] \\
   The read-only package was small enough for me to just add.
-** TODO definiteively make a standard for adding hooks
+** TODO definitively make a standard for adding hooks
 ** TODO use =trace!= for some hooks because they are polluting the log
 ** TODO rice up the dashboard
 ** TODO add a better keybinding for going to evil-marker than =`=
 ** TODO update auto-insert to create emacs-lisp templates with any file
 ** TODO stop captain from capitalizing with multiple headline delimiters
-** TODO add profiling mechanism
+** DONE add profiling mechanism
+CLOSED: [2025-01-29 Wed 11:09]
