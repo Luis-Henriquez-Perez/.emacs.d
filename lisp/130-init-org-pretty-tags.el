@@ -29,7 +29,7 @@
 
 (opt! org-pretty-tags-surrogate-strings
       (progn (require 'nerd-icons)
-             `(("agenda"        . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))
+             `(("account"       . ,(nerd-icons-mdicon "nf-md-account"))
                ("arch"          . ,(nerd-icons-mdicon "nf-md-arch"))
                ("blog"          . ,(nerd-icons-faicon "nf-fa-blog"))
                ("browser"       . ,(nerd-icons-faicon "nf-fa-internet_explorer"))
@@ -50,6 +50,7 @@
                ("idea"          . ,(nerd-icons-faicon "nf-fa-lightbulb"))
                ("job"           . ,(nerd-icons-faicon "nf-fa-suitcase"))
                ("keybinding"    . ,(nerd-icons-mdicon "nf-md-keyboard"))
+               ("laptop"        . ,(nerd-icons-faicon "nf-fa-laptop"))
                ("linux"         . ,(nerd-icons-faicon "nf-fa-linux"))
                ("log"           . ,(nerd-icons-octicon "nf-oct-log"))
                ("modeline"      . ,(nerd-icons-faicon "nf-fa-grip_lines"))
@@ -71,7 +72,7 @@
                ("toggle"        . ,(nerd-icons-faicon "nf-fa-toggle_on"))
                ("void"          . ,(nerd-icons-flicon "nf-linux-void"))
                ("windowmanager" . ,(nerd-icons-mdicon "nf-md-dock_window"))
-               ("account"       . ,(nerd-icons-mdicon "nf-md-account")))))
+               ("agenda"        . ,(nerd-icons-mdicon "nf-md-view_agenda_outline")))))
 ;;; provide
 (provide '130-init-org-pretty-tags)
 ;;; 130-init-org-pretty-tags.el ends here
