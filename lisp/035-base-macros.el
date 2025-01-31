@@ -574,28 +574,22 @@ If MATCH-FORM is a symbol act as `setq'."
 ;; noticeable effect on performance as far as I can tell.  Maybe I will just
 ;; always enable logging later.
 (defmacro info! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'info ,msg ,@meta)))
+  `(oo-log 'info ,msg ,@meta))
 
 (defmacro error! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'info ,msg ,@meta)))
+  `(oo-log 'info ,msg ,@meta))
 
 (defmacro warn! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'warn ,msg ,@meta)))
+  `(oo-log 'warn ,msg ,@meta))
 
 (defmacro fatal! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'fatal ,msg ,@meta)))
+  `(oo-log 'fatal ,msg ,@meta))
 
 (defmacro trace! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'trace ,msg ,@meta)))
+  (ignore `(oo-log 'trace ,msg ,@meta)))
 
 (defmacro debug! (msg &rest meta)
-  (when oo-debug-p
-    `(oo-log 'debug ,msg ,@meta)))
+  (ignore `(oo-log 'debug ,msg ,@meta)))
 ;;; provide
 (provide '035-base-macros)
 ;;; 035-base-macros.el ends here
