@@ -123,7 +123,7 @@ logged."
 (defmacro load! (dir)
   (let (forms feature)
     (setq dir (expand-file-name dir user-emacs-directory))
-    (dolist (path (directory-files dir t "^[[:digit:]][[:digit:]][[:digit:]].+\\.el$"))
+    (dolist (path (directory-files dir t "^[0-8][[:digit:]][[:digit:]].+\\.el$"))
       (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
       ;; It is a bit faster if you specify the path because then emacs does not have to look through the directory.
       (push `(require! ,feature ,path) forms))
