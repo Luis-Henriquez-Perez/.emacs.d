@@ -216,7 +216,10 @@
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem fo rme.
 (unless (bound-and-true-p package--initialized)
-  (package-initialize))
+  (package-initialize)
+  ;; This is inspired by centaur-emacs.  I add the the lisp directory to the
+  ;; front of the load-path so files from here can load faster.
+  (push (expand-file-name "lisp/" user-emacs-directory) load-path))
 
 (unless package-archive-contents
   (oo-log 'info "Refreshing contents...")
