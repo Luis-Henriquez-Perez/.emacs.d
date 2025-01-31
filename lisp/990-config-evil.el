@@ -1,4 +1,4 @@
-;;; config-evil.el --- evil configuration -*- lexical-binding: t; -*-
+;;; 990-config-evil.el --- evil configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -181,5 +181,5 @@
 ;; `git-commit-mode' is a minor-mode.
 (hook! git-commit-mode-hook +evil-enter-insert-state-hook)
 ;;; provide
-(provide 'config-evil)
-;;; config-evil.el ends here
+(provide '990-config-evil)
+;;; 990-config-evil.el ends here

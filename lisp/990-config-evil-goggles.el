@@ -1,4 +1,4 @@
-;;; config-evil-goggles.el --- Configure evil-goggles -*- lexical-binding: t; -*-
+;;; 990-config-evil-goggles.el --- Configure evil-goggles -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -58,5 +58,5 @@
 (custom-set-faces
  '(evil-goggles-default-face ((t (:inherit spaceline-evil-operator)))))
 ;;; provide
-(provide 'config-evil-goggles)
-;;; config-evil-goggles.el ends here
+(provide '990-config-evil-goggles)
+;;; 990-config-evil-goggles.el ends here

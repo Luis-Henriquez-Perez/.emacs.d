@@ -1,4 +1,4 @@
-;;; config-outli.el --- Configure outli -*- lexical-binding: t; -*-
+;;; 990-config-outli.el --- Configure outli -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -44,5 +44,5 @@
 
 (hook! enable-theme-functions outli-reset-all-faces :ignore-args t)
 ;;; provide
-(provide 'config-outli)
-;;; config-outli.el ends here
+(provide '990-config-outli)
+;;; 990-config-outli.el ends here

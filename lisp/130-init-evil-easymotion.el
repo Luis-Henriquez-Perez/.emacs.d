@@ -32,12 +32,12 @@
 (opt! evilem-style 'at)
 (opt! evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
 
-(autoload #'+evilem-motion-beginning-of-word "config-evil-easymotion" nil t 'function)
-(autoload #'+evilem-motion-beginning-of-WORD "config-evil-easymotion" nil t 'function)
-(autoload #'+evilem-motion-end-of-word       "config-evil-easymotion" nil t 'function)
-(autoload #'+evilem-motion-end-of-WORD       "config-evil-easymotion" nil t 'function)
-(autoload #'+evilem-motion-char              "config-evil-easymotion" nil t 'function)
-(autoload #'+evilem-motion-beginning-of-line "config-evil-easymotion" nil t 'function)
+(autoload #'+evilem-motion-beginning-of-word "990-config-evil-easymotion" nil t 'function)
+(autoload #'+evilem-motion-beginning-of-WORD "990-config-evil-easymotion" nil t 'function)
+(autoload #'+evilem-motion-end-of-word       "990-config-evil-easymotion" nil t 'function)
+(autoload #'+evilem-motion-end-of-WORD       "990-config-evil-easymotion" nil t 'function)
+(autoload #'+evilem-motion-char              "990-config-evil-easymotion" nil t 'function)
+(autoload #'+evilem-motion-beginning-of-line "990-config-evil-easymotion" nil t 'function)
 
 ;; 
 ;; 

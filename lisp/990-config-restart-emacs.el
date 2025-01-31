@@ -1,4 +1,4 @@
-;;; config-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
+;;; 990-config-restart-emacs.el --- Configure restart-emacs -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,27 +22,21 @@
 ;;
 ;;; Commentary:
 ;;
-;; This is my configuration for smartparens.
+;; Configure restart-emacs.
 ;;
 ;;; Code:
-(require 'smartparens)
+(require 'restart-emacs)
+;;;; fix interactive call
+;; When using the function `restart-emacs-start-new-emacs' I find that restart
+;; Emacs does not properly work with prefix arguments because in its body it
+;; converts the prefix argument to shell arguments only if its called
+;; interactively but its not.
+(defun oo--work-interactively (&optional args)
+  "Call `restart-emacs' interactively."
+  (let ((restart-emacs--inhibit-kill-p t))
+    (funcall-interactively #'restart-emacs args)))
 
-(opt! sp-highlight-wrap-tag-overlay nil)
-
-(opt! sp-highlight-pair-overlay nil)
-
-(opt! sp-highlight-wrap-overlay nil)
-
-(opt! sp-show-pair-delay 0.2)
-
-(sp-local-pair sp-lisp-modes "'" nil :actions nil)
-
-(sp-local-pair sp-lisp-modes "`" "'" :when '(sp-in-string-p sp-in-comment-p))
-
-(sp-local-pair 'minibuffer-mode "'" nil :actions nil)
-(sp-local-pair 'minibuffer-mode "`" nil :actions nil)
-
-(require 'smartparens-config)
+(advice-add 'restart-emacs-start-new-emacs :override #'oo--work-interactively)
 ;;; provide
-(provide 'config-smartparens)
-;;; config-smartparens.el ends here
+(provide '990-config-restart-emacs)
+;;; 990-config-restart-emacs.el ends here

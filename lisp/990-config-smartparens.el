@@ -1,4 +1,4 @@
-;;; config-lua-mode.el --- Configure lua-mode -*- lexical-binding: t; -*-
+;;; 990-config-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,10 +22,27 @@
 ;;
 ;;; Commentary:
 ;;
-;; Configure lua-mode.
+;; This is my configuration for smartparens.
 ;;
 ;;; Code:
-(opt! lua-indent-level 4)
+(require 'smartparens)
+
+(opt! sp-highlight-wrap-tag-overlay nil)
+
+(opt! sp-highlight-pair-overlay nil)
+
+(opt! sp-highlight-wrap-overlay nil)
+
+(opt! sp-show-pair-delay 0.2)
+
+(sp-local-pair sp-lisp-modes "'" nil :actions nil)
+
+(sp-local-pair sp-lisp-modes "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+
+(sp-local-pair 'minibuffer-mode "'" nil :actions nil)
+(sp-local-pair 'minibuffer-mode "`" nil :actions nil)
+
+(require 'smartparens-config)
 ;;; provide
-(provide 'config-lua-mode)
-;;; config-lua-mode.el ends here
+(provide '990-config-smartparens)
+;;; 990-config-smartparens.el ends here

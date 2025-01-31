@@ -1,4 +1,4 @@
-;;; config-eshell.el --- configuration for eshell -*- lexical-binding: t; -*-
+;;; 990-config-eshell.el --- configuration for eshell -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -75,5 +75,5 @@
 	(when rest
 	  (mapc #'view-file-other-window rest))))
 ;;; provide
-(provide 'config-eshell)
-;;; config-eshell.el ends here
+(provide '990-config-eshell)
+;;; 990-config-eshell.el ends here

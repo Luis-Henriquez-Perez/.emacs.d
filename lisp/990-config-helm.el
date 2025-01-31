@@ -1,4 +1,4 @@
-;;; config-helm.el --- Configure helm -*- lexical-binding: t; -*-
+;;; 990-config-helm.el --- Configure helm -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -26,5 +26,5 @@
 ;;
 ;;; Code:
 ;;; provide
-(provide 'config-helm)
-;;; config-helm.el ends here
+(provide '990-config-helm)
+;;; 990-config-helm.el ends here

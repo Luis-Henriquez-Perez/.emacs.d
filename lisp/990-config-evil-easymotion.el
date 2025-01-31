@@ -1,4 +1,4 @@
-;;; config-evil-easymotion.el --- evil-easymotion configuration -*- lexical-binding: t; -*-
+;;; 990-config-evil-easymotion.el --- evil-easymotion configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -225,5 +225,5 @@ This is a wrapper around `evilem-make-motion'."
                        (re-search-forward (rx-to-string (char-to-string char)) nil t nil))
        (goto-char (match-beginning 0))))
 ;;; provide
-(provide 'config-evil-easymotion)
-;;; config-evil-easymotion.el ends here
+(provide '990-config-evil-easymotion)
+;;; 990-config-evil-easymotion.el ends here

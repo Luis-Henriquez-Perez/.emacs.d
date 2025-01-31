@@ -52,14 +52,14 @@
 (opt! org-ellipsis " ▼")
 (opt! org-log-done 'time)
 ;;;; org-agenda
-(autoload #'+org-agenda-day-view "config-org-agenda" nil t nil)
+(autoload #'+org-agenda-day-view "990-config-org-agenda" nil t nil)
 ;;;; org-capture
-(autoload #'+org-capture-plain "config-org-capture" nil t 'function)
-(autoload #'+org-capture-todo "config-org-capture" nil t 'function)
-(autoload #'+org-capture-open "config-org-capture" nil t 'function)
-(autoload #'+org-capture-question "config-org-capture" nil t 'function)
-(autoload #'+org-capture-bug "config-org-capture" nil t 'function)
-(autoload #'+org-capture-choose-template "config-org-capture" nil t 'function)
+(autoload #'+org-capture-plain "990-config-org-capture" nil t 'function)
+(autoload #'+org-capture-todo "990-config-org-capture" nil t 'function)
+(autoload #'+org-capture-open "990-config-org-capture" nil t 'function)
+(autoload #'+org-capture-question "990-config-org-capture" nil t 'function)
+(autoload #'+org-capture-bug "990-config-org-capture" nil t 'function)
+(autoload #'+org-capture-choose-template "990-config-org-capture" nil t 'function)
 
 (alt! org-capture +org-capture-choose-template org-capture)
 ;;;; org-refile

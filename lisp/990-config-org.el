@@ -1,4 +1,4 @@
-;;; config-org.el --- Configure nil -*- lexical-binding: t; -*-
+;;; 990-config-org.el --- Configure nil -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -59,5 +59,5 @@ are in alphabetical order."
 ;;;; Start notaking in insert mode
 (oo-add-hook 'org-log-buffer-setup-hook #'evil-insert-state)
 ;;; provide
-(provide 'config-org)
-;;; config-org.el ends here
+(provide '990-config-org)
+;;; 990-config-org.el ends here

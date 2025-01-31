@@ -28,7 +28,7 @@
 ;; Enable `evil-collection' bindings after evil-mode.  I want to have precise
 ;; control of when evil is loaded.
 (defhook! oo-initialize-evil-collection-h (evil-mode-hook)
-  (require 'config-evil-collection-setup))
+  (require '990-config-evil-collection-setup))
 ;;; provide
 (provide '130-init-evil-collection)
 ;;; 130-init-evil-collection.el ends here

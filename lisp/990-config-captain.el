@@ -1,4 +1,4 @@
-;;; config-captain.el --- captain configuration. -*- lexical-binding: t; -*-
+;;; 990-config-captain.el --- captain configuration. -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -91,5 +91,5 @@
      (aand! (car (oo--in-elisp-docstring-p))
     	   (max it (or (car (bounds-of-thing-at-point 'sentence)) it))))))
 ;;; provide
-(provide 'config-captain)
-;;; config-captain.el ends here
+(provide '990-config-captain)
+;;; 990-config-captain.el ends here

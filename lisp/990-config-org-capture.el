@@ -1,4 +1,4 @@
-;;; config-org-capture.el --- Configure org-capture -*- lexical-binding: t; -*-
+;;; 990-config-org-capture.el --- Configure org-capture -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -117,5 +117,5 @@
                                 :file org-default-notes-file
                                 :template #'+org-capture-plain-template)))))
 ;;; provide
-(provide 'config-org-capture)
-;;; config-org-capture.el ends here
+(provide '990-config-org-capture)
+;;; 990-config-org-capture.el ends here

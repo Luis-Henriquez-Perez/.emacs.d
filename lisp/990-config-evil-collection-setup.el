@@ -1,4 +1,4 @@
-;;; config-evil-collection-setup.el --- Configure evil-collection-setup -*- lexical-binding: t; -*-
+;;; 990-config-evil-collection-setup.el --- Configure evil-collection-setup -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -442,5 +442,5 @@
 
 (after! ztree evil-collection-ztree-setup evil-collection)
 ;;; provide
-(provide 'config-evil-collection-setup)
-;;; config-evil-collection-setup.el ends here
+(provide '990-config-evil-collection-setup)
+;;; 990-config-evil-collection-setup.el ends here

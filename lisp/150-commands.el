@@ -209,7 +209,7 @@ is already narrowed."
 (defun! oo-create-new-config-file (feature)
   "Create a new config file for feature."
   (interactive "sFeature: ")
-  (set! filename (format "config-%s.el" feature))
+  (set! filename (format "990-config-%s.el" feature))
   (set! comment1 (format "Configure %s" feature))
   (set! comment2 (format "Configure %s." feature))
   (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))

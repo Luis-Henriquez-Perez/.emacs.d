@@ -43,9 +43,9 @@
 (advice-add 'abbrev--possibly-save :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; setup advices
-(autoload 'oo--pulse-expansion "config-abbrev" nil nil 'function)
-(autoload 'oo--add-period-maybe "config-abbrev" nil nil 'function)
-(autoload 'oo--ensure-self-insert "config-abbrev" nil nil 'function)
+(autoload 'oo--pulse-expansion "990-config-abbrev" nil nil 'function)
+(autoload 'oo--add-period-maybe "990-config-abbrev" nil nil 'function)
+(autoload 'oo--ensure-self-insert "990-config-abbrev" nil nil 'function)
 
 (advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
 (advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)

@@ -1,4 +1,4 @@
-;;; config-auto-insert.el --- Configure auto-insert -*- lexical-binding: t; -*-
+;;; 990-config-auto-insert.el --- Configure auto-insert -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -200,5 +200,5 @@
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
 ;;; provide
-(provide 'config-auto-insert)
-;;; config-auto-insert.el ends here
+(provide '990-config-auto-insert)
+;;; 990-config-auto-insert.el ends here

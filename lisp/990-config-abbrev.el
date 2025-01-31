@@ -1,4 +1,4 @@
-;;; config-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
+;;; 990-config-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -75,5 +75,5 @@
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
 ;;; provide
-(provide 'config-abbrev)
-;;; config-abbrev.el ends here
+(provide '990-config-abbrev)
+;;; 990-config-abbrev.el ends here

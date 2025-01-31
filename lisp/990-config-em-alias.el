@@ -1,4 +1,4 @@
-;;; config-em-alias.el --- em-alias configuration -*- lexical-binding: t; -*-
+;;; 990-config-em-alias.el --- em-alias configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -107,5 +107,5 @@
 (eshell/alias "open" "find-file $1")
 (eshell/alias "d" "dired $1")
 ;;; provide
-(provide 'config-em-alias)
-;;; config-em-alias.el ends here
+(provide '990-config-em-alias)
+;;; 990-config-em-alias.el ends here
