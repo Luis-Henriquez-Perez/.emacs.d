@@ -27,13 +27,6 @@
 ;;; Code:
 (require '045-base)
 
-;; This was specifically inspired by dired buffers not updating new files when I
-;; switch to them.
-(defhook! oo-refresh-buffer-h (buffer-list-update-hook)
-  (when (and (buffer-file-name) (derived-mode-p 'dired-mode))
-    (revert-buffer :ignore-auto :noconfirm :preseve-modes)))
-
-;; Whenever
 (opt! dired-deletion-confirmer #'always)
 (hook! dired-mode-hook hl-line-mode)
 ;; This omits:
