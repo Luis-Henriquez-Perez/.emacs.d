@@ -57,30 +57,47 @@ This is my personal emacs configuration.
 - Spacemacs-like keybinding scheme
 - Advanced macros such as [[./lisp/oo-progn-macro.el][block!]] and [[./lisp/oo-let-macro.el][lef!]]
 - Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
-- Gracefully handle errors raised in hooks with custom hook functions
-- Extensively log events using [[https://github.com/Fuco1/emacs-lgr][lgr]]
-- Custom modeline created with [[https://github.com/milkypostman/powerline][powerline]]
+- Suppress errors raised in hooks with custom hook functions
+- Extensively log events using my own custom logging function
+- Extensive, lightweight profiling of each file loaded
+- Gracefully error in initialization files and log
+- Beautiful hand-crafted modeline with [[https://github.com/milkypostman/powerline][powerline]] separators
 - Ensures using [[https://github.com/emacscollective/no-littering][no-littering]]
 - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 * File Structure
 :PROPERTIES:
 :ID:       20240408T164104.628646
 :END:
+  The file structure of my configuration is designed to be simple.
+  Other than the =init.el=, all files that are loaded immediately are named by a
+  three-digit number to reflect the order in which they are loaded.  Doing so
+  allows me to be able to programmatically load files in bulk without having to
+  specify a specific load order.  Additionally, this makes how my configuration
+  works more transparent in that someone looking at my files immediately knows
+  what is loaded in what order.  In the file names blow =xxx= refers to a three
+  digit prefix.
+
   - [[file:./init.el][init.el]] /Initialize my emacs configuration/.
 
   This means adding the lisp directory to the load-path,  loading all of the
   =init-FEATURE.el= files, and setting up necessary initial variables.
 
-  - *lisp/base-SOMETHING.el* - /Provide configuration functions and macros./
+  - *lisp/xxx-base-SOMETHING.el* - /Provide configuration functions and macros./
 
-  Usually these files will set some initial variables or provide me with macros
-  and functions for helping me configure emacs.  These are loaded before.
+  Set some initial variables or provide me with macros and functions for helping
+  me configure emacs.
 
-  - *lisp/init-FEATURE.el* - /Initialize FEATURE./
+  - *lisp/xxx-init-FEATURE.el* - /Initialize FEATURE./
 
-  Typically that means adding hooks or advices, setting variables, binding keys
-  and autoloading functions.  Crucially, refrain from loading FEATURE or any
-  other features unless absolutely necessary.
+  Add hooks or advices, setting variables, binding keys and autoloading
+  functions.  Crucially, refrain from loading FEATURE or any other features
+  unless absolutely necessary.
+
+  - *lisp/xxx-keybindings.el* - /Store all of my keybindings./
+
+    This is an exception to the rule of keeping everything involving FEATURE to
+    =config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
+    easier profiling of keybindings.
 
   - *lisp/config-FEATURE.el* - /Configure FEATURE./
 
@@ -88,13 +105,7 @@ This is my personal emacs configuration.
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~
 
-  - *lisp/oo-keybindings.el* - /Store all of my keybindings./
-
-    This is an exception to the rule of keeping everything involving FEATURE to
-    =config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
-    easier profiling of keybindings.
-
-  - *lisp/oo-SOMENAME* - /Some file I use but do not know what to do with yet./
+  - *lisp/oo-init* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
