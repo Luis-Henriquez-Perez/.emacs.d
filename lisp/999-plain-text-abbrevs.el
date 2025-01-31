@@ -53,6 +53,8 @@ string or comment."
 ;;;; define abbrevs
 (define-abbrev global-abbrev-table "initization"      "initialization"                nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "somone"           "someone"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "rmed"             "removed"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "investiage"       "investigate"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "shdntb"           "should not be"                 nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "preciesely"       "precisely"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "pretyt"           "pretty"                        nil :enable-function #'oo--use-plain-text-abbrev-p)
@@ -1343,5 +1345,5 @@ string or comment."
 (define-abbrev global-abbrev-table "probl"            "problem"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "dered"            "considered"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 ;;; provide
-(provide 'oo-plain-text-abbrevs)
+(provide '999-plain-text-abbrevs)
 ;;; oo-plain-text-abbrevs.el ends here
