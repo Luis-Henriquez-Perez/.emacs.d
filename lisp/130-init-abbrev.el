@@ -35,7 +35,7 @@
 ;; when typing a character.
 (defhook! oo-load-plain-text-abbrevs-h (abbrev-mode-hook)
   (when (derived-mode-p 'text-mode)
-    (require 'oo-plain-text-abbrevs))
+    (require '999-plain-text-abbrevs))
   (remove-hook 'abbrev-mode-hook #'oo-load-plain-text-abbrevs-h))
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
