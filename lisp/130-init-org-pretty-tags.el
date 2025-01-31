@@ -67,7 +67,7 @@
                ("phonetext"     . ,(nerd-icons-mdicon "nf-md-cellphone_text"))
                ("python"        . ,(nerd-icons-mdicon "nf-md-arch"))
                ("question"      . ,(nerd-icons-faicon "nf-fa-question"))
-               ("readme"          . ,(nerd-icons-faicon "nf-fa-readme"))
+               ("readme"        . ,(nerd-icons-faicon "nf-fa-readme"))
                ("rss"           . ,(nerd-icons-faicon "nf-fa-rss"))
                ("screenshot"    . ,(nerd-icons-mdicon "nf-md-camera"))
                ("secret"        . ,(nerd-icons-faicon "nf-fa-user_secret"))
@@ -75,7 +75,8 @@
                ("thought"       . ,(nerd-icons-mdicon "nf-md-thought_bubble_outline"))
                ("toggle"        . ,(nerd-icons-faicon "nf-fa-toggle_on"))
                ("void"          . ,(nerd-icons-flicon "nf-linux-void"))
-               ("windowmanager" . ,(nerd-icons-mdicon "nf-md-dock_window")))))
+               ("windowmanager" . ,(nerd-icons-mdicon "nf-md-dock_window"))
+               ("workflow"      . ,(nerd-icons-octicon "nf-oct-workflow")))))
 ;;; provide
 (provide '130-init-org-pretty-tags)
 ;;; 130-init-org-pretty-tags.el ends here
