@@ -51,6 +51,11 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "numberd"          "numbered"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "measore"          "measure"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "loadig"           "loading"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "loding"           "loading"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "brnach"           "branch"                        nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "initization"      "initialization"                nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "somone"           "someone"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "rmed"             "removed"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
@@ -1178,7 +1183,7 @@ string or comment."
 (define-abbrev global-abbrev-table "pkgs"             "packages"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "pkg"              "package"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "ftmp"             "for the most part"             nil :enable-function #'oo--use-plain-text-abbrev-p)
-(define-abbrev global-abbrev-table "readmee"           "README"                        nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "readmee"          "README"                        nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "sdnt"             "should not"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "cme"              "come"                          nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "imed"             "immediately"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
