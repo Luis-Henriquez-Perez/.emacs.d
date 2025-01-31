@@ -32,18 +32,40 @@
 ;;
 ;;
 ;;; Code:
-(push '(left-fringe  . 0) default-frame-alist)
-(push '(right-fringe . 0) default-frame-alist)
+
+;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
+;; https://news.ycombinator.com/item?id=39127859
+;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
+(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-percentage 0.8)
 
 (advice-add #'x-apply-session-resources :override #'ignore)
 
+(set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
 
 (setq package-enable-at-startup nil)
 
+;; In noninteractive sessions, prioritize non-byte-compiled source files to
+;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+;; to skip the mtime checks on every *.elc file.
+(setq load-prefer-newer noninteractive)
+
+;; Explicitly set the prefered coding systems to avoid annoying prompt
+;; from emacs (especially on Microsoft Windows)
+(prefer-coding-system 'utf-8)
+
+;; Prevent unwanted runtime compilation for gccemacs (native-comp) users;
+;; packages are compiled ahead-of-time when they are installed and site files
+;; are compiled when gccemacs is installed.
+(setq native-comp-deferred-compilation nil ;; obsolete since 29.1
+      native-comp-jit-compilation nil)
+
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
+(push '(left-fringe  . 0) default-frame-alist)
+(push '(right-fringe . 0) default-frame-alist)
 
 (provide 'early-init)
 ;;; early-init.el ends here
