@@ -219,7 +219,7 @@
   (package-initialize))
 
 (unless package-archive-contents
-  (message "Refreshing contents...")
+  (oo-log 'info "Refreshing contents...")
   (package-refresh-contents))
 
 ;; (remove-hook 'kill-emacs-hook #'emms-history-save)
