@@ -65,7 +65,8 @@ error message without interrupting execution."
            (require ',feature ,path)
            (setq end (current-time))
            (setq time-elapsed (float-time (time-subtract end start)))
-           (oo-log 'info "Required %s in %.3f seconds" ',feature time-elapsed)
+           (setq time-elapsed (/ (fround (* time-elapsed 100)) 100.0))
+           (oo-log 'info "Required %s in %.2f seconds" ',feature time-elapsed)
            (push (list ',feature start end nil) oo-init-data))
        (error (oo-log 'error "Error requiring '%s: %s" ',feature err)
               (push (list ',feature nil nil err) oo-init-data)))))
@@ -73,7 +74,8 @@ error message without interrupting execution."
 (defun oo--init-log-format-fn (type message meta)
   "Format function for startup."
   (let ((time (float-time (time-subtract (current-time) oo-load-start-time))))
-    (format "[%s] %.3f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
+    (setq time (/ (fround (* time 100)) 100.0))
+    (format "[%s] %.2f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
 
 (defmacro load! (dir)
   "Load numbered Emacs Lisp files from DIR in lexicographical order.
@@ -92,7 +94,8 @@ inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
          (setq oo-load-end-time (current-time))
          (setq total-time (float-time (time-subtract oo-load-end-time
                                                      oo-load-start-time))))
-       (oo-log 'info "Finished loading files in %.3f seconds." total-time))))
+       (setq total-time (/ (fround (* total-time 100)) 100.0))
+       (oo-log 'info "Finished loading files in %.2f seconds." total-time))))
 ;;; provide
 (provide '002-init-loader)
 ;;; 002-init-loader.el ends here
