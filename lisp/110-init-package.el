@@ -153,6 +153,7 @@
                                   monkeytype
                                   monokai-theme
                                   nerd-icons
+                                  nerd-icons-completion
                                   no-littering
                                   noccur
                                   notmuch
