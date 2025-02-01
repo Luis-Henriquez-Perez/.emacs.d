@@ -1,4 +1,4 @@
-;;; 001-init-log.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 001-init-log.el --- A simple log function -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Provide a simple log function that.
+;; Provide a simple log function.
 ;;
 ;;; Code:
 (defvar oo-log-buffer "*log*"

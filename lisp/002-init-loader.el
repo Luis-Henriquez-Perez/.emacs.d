@@ -1,4 +1,4 @@
-;;; 002-init-loader.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 002-init-loader.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,8 @@
 ;;
 ;;; Commentary:
 ;;
-;; Provide tools to profile my configuration as well as.
+;; Provide tools to profile my configuration as well as to gracefully handle
+;; errors in initialization.  Specifically, provide the macro `load!'.
 ;;
 ;;; Code:
 (defvar oo-init-data nil)
@@ -33,27 +34,18 @@
      (progn ,@body)
      (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start))))))
 
-(defmacro require! (feature &optional path)
-  "Catch any errors, record and log the time taken to require FEATURE."
-  `(condition-case err
-       ((require ',feature ,path)
-        (setq time (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start)))))
-        (oo-log 'info "Required '%s in %.2f seconds" feature time))
-     (error
-      (oo-log 'error "Error requiring '%s: %s" feature err))))
-
 (defmacro load! (dir)
-  "Load numbered files from DIR."
-  (let (forms feature)
+  "Load numbered files from DIR.
+Load files prefixed by three digits in lexicographical order."
+  (let (forms error-log feature)
     (setq dir (expand-file-name dir user-emacs-directory))
-    (dolist (path (directory-files dir t "^[0-8][1-9][[:digit:]].+\\.el$"))
+    (dolist (path (directory-files dir t "^[0-8][1-9][[:digit:]]-.+\\.el$"))
+      (oo-log 'error "Error requiring '%s: %s" feature err)
       (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
       ;; It is a bit faster if you specify the path because then emacs does not have to look through the directory.
-      (push  forms))
-    (or (ignore-errors (time-elapsed! (require ,feature ,path))) 0)
-    `(+ (condition-case err
-            (error
-             (oo-log 'error "Error requiring '%s: %s" feature err))))))
+      (push `(time-elapsed! (condition-case _ (require ,feature ,path) (error ,error-log))) forms)
+      (push forms))
+    `(+ ,@forms)))
 ;;; provide
 (provide '002-init-loader)
 ;;; 002-init-loader.el ends here
