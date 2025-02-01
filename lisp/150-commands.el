@@ -300,19 +300,28 @@ Additionally, make any duplicate spaces in line become a single space."
 (defun! oo-startup-time-table ()
   "Produce a table that shows the time taken by each feature during startup."
   (interactive)
+
   (require 'ctable)
-  (set! total (apply #'+ (mapcar #'cl-second oo-init-data)))
-  (flet! total-per (time) (round (* 100 (oo-float-divide time total))))
-  (flet! init-per (time) (round (* 100 (oo-float-divide time (string-to-number (emacs-init-time "%.2f"))))))
-  (flet! percent (time) (format "%3d%%" time))
-  (for! ((feature time) oo-init-data)
-    (pushing! data (list feature time (percent (total-per time)) (percent (init-per time)))))
-  (setq data (sort data (lambda (o1 o2) (> (cl-second o1) (cl-second o2)))))
-  (message "total -> %s" total)
+
+  (for! ((feature beg end err) oo-init-data)
+    (set! time (float-time (time-subtract end beg)))
+    (collecting! new (list feature time))
+    (summing! total (if beg time 0)))
+
+  (set! init-time (string-to-number (emacs-init-time "%.2f")))
+
+  (flet! percent (time total) (format "%3d%%" (* 100 (/ time total))))
+
+  (for! ((feature time) new)
+    (set! dtime (format "%.2f" (/ (fround (* time 100)) 100.0)))
+    (pushing! data (list feature dtime (percent time total) (percent time init-time))))
+
+  (setq data (sort data (-on #'> (-compose #'string-to-number #'cl-second))))
+
   (let* ((column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
-                             (make-ctbl:cmodel :title "Time (seconds)" :align 'center)
-                             (make-ctbl:cmodel :title "Percent of Total" :align 'center)
-                             (make-ctbl:cmodel :title "Percent of Init" :align 'center)))
+                             (make-ctbl:cmodel :title "Time (s)" :align 'center)
+                             (make-ctbl:cmodel :title "% of Total" :align 'center)
+                             (make-ctbl:cmodel :title "% of Init" :align 'center)))
          (model (make-ctbl:model :column-model column-model :data data))
          (component (ctbl:create-table-component-buffer :model model)))
     (pop-to-buffer (ctbl:cp-get-buffer component))))
