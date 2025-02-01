@@ -32,6 +32,12 @@
 (defvar oo-log-buffer-max 500
   "Maximum number of lines in log buffer.")
 
+(defvar oo-log-format-fn #'oo--default-log-formatter
+  "Function that formats the log messsage.")
+
+(defun oo--default-log-formatter (type message meta)
+  (format "[%s] %s" (upcase (symbol-name type)) (apply #'format message meta)))
+
 (defun oo-log (type message &rest meta)
   "Log a formatted MESSAGE of a given TYPE to the `oo-log-buffer`.
 
@@ -40,10 +46,8 @@ If the last log entry in the buffer matches the new message, it increments a
 repeat count at the end of the line displayed instead of creating a new entry.
 The count is displayed as '(N)' where N is the number of times the message was
 logged."
-  (let* ((log (apply #'format message meta))
-         (timestamp (float-time (time-subtract (current-time) oo-start)))
-         (buffer (get-buffer-create oo-log-buffer))
-         (output (format "[%s] %.3f %s" (upcase (symbol-name type)) timestamp log))
+  (let* ((buffer (get-buffer-create oo-log-buffer))
+         (output (funcall oo-log-format-fn type message meta))
          (excess nil))
     (with-current-buffer buffer
       (unless view-mode (view-mode t))

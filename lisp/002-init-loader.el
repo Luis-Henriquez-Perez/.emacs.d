@@ -23,29 +23,76 @@
 ;;; Commentary:
 ;;
 ;; Provide tools to profile my configuration as well as to gracefully handle
-;; errors in initialization.  Specifically, provide the macro `load!'.
+;; errors in initialization.  Specifically, provide the macro `load!'.  Load is
+;; designed to free me from having to explicitly manage the.  I cannot
+;; make `load' a function the compiler will not detect the `require' calls.
 ;;
 ;;; Code:
-(defvar oo-init-data nil)
+(require '001-init-log)
 
-(defmacro time-elapsed! (&rest body)
-  "Evaluate BODY."
+(defvar oo-init-data nil
+  "A record of data concerning loaded files.
+
+This is an alist where each element is of the form (feature start-time end-time
+error).  Feature is an init feature, start and end time, and error is any
+error.  If an error occurs start and end are nil.  Conversely, if start and end
+are non-nil, then error is nil.")
+
+(defvar oo-load-start-time nil
+  "Time just before files in the lisp directory are loaded.")
+
+(defvar oo-load-end-time nil
+  "Time just after files in the lisp directory are loaded.")
+
+(defvar oo-startup-end-time nil
+  "Time after `emacs-startup-hook' is done.")
+
+(defun oo--record-init-end-time-h ()
+  "Record the end of `emacs-startup-hook'."
+  (setq oo-startup-end-time (current-time)))
+
+(add-hook 'emacs-startup-hook 'oo--record-init-end-time-h 100)
+
+(defmacro require! (feature path)
+  "Require FEATURE from PATH, logging any errors.
+
+If FEATURE is successfully loaded, return the elapsed time in seconds
+as a floating-point number with two decimal places. Otherwise, log an
+error message without interrupting execution."
   `(let ((start (current-time)))
-     (progn ,@body)
-     (string-to-number (format "%.2f" (float-time (time-subtract (current-time) start))))))
+     (condition-case err
+         (let (end time-elapsed)
+           (require ',feature ,path)
+           (setq end (current-time))
+           (setq time-elapsed (float-time (time-subtract end start)))
+           (oo-log 'info "Required %s in %.3f seconds" ',feature time-elapsed)
+           (push (list ',feature start end nil) oo-init-data))
+       (error (oo-log 'error "Error requiring '%s: %s" ',feature err)
+              (push (list ',feature nil nil err) oo-init-data)))))
+
+(defun oo--init-log-format-fn (type message meta)
+  "Format function for startup."
+  (let ((time (float-time (time-subtract (current-time) oo-load-start-time))))
+    (format "[%s] %.3f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
 
 (defmacro load! (dir)
-  "Load numbered files from DIR.
-Load files prefixed by three digits in lexicographical order."
-  (let (forms error-log feature)
+  "Load numbered Emacs Lisp files from DIR in lexicographical order.
+
+A file is \"numbered\" if it is prefixed by three digits ranging from 010 to 899
+inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
+  (let (forms feature)
     (setq dir (expand-file-name dir user-emacs-directory))
     (dolist (path (directory-files dir t "^[0-8][1-9][[:digit:]]-.+\\.el$"))
-      (oo-log 'error "Error requiring '%s: %s" feature err)
       (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
-      ;; It is a bit faster if you specify the path because then emacs does not have to look through the directory.
-      (push `(time-elapsed! (condition-case _ (require ,feature ,path) (error ,error-log))) forms)
-      (push forms))
-    `(+ ,@forms)))
+      (push `(require! ,feature ,path) forms))
+    `(let (total-time)
+       (let ((oo-log-format-fn #'oo--init-log-format-fn))
+         (setq oo-load-start-time (current-time))
+         ,@(nreverse forms)
+         (setq oo-load-end-time (current-time))
+         (setq total-time (float-time (time-subtract oo-load-end-time
+                                                     oo-load-start-time))))
+       (oo-log 'info "Finished loading files in %.3f seconds." total-time))))
 ;;; provide
 (provide '002-init-loader)
 ;;; 002-init-loader.el ends here
