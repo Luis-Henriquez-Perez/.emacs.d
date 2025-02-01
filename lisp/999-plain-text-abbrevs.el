@@ -1,4 +1,4 @@
-;;; oo-plain-text-abbrevs.el -*- lexical-binding: t; -*-
+;;; 999-plain-text-abbrevs.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,7 +30,7 @@
 ;;;; requirements
 (require '045-base)
 (require 'abbrev)
-(require 'wikipedia-typo-abbrevs)
+(require '999-wikipedia-typo-abbrevs)
 ;;;; plain text abbrevs
 (defun! oo--use-plain-text-abbrev-p ()
   "Return non-nil when text abbrevs should be enabled.
@@ -1351,4 +1351,4 @@ string or comment."
 (define-abbrev global-abbrev-table "dered"            "considered"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 ;;; provide
 (provide '999-plain-text-abbrevs)
-;;; oo-plain-text-abbrevs.el ends here
+;;; 999-plain-text-abbrevs.el ends here

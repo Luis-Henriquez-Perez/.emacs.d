@@ -1,4 +1,4 @@
-;;; wikipedia-typo-abbrevs.el --- table of wikipedia typos -*- lexical-binding: t; -*-
+;;; 999-wikipedia-typo-abbrevs.el --- table of wikipedia typos -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -4127,5 +4127,5 @@
 (define-abbrev global-abbrev-table "todays"              "today's")
 (define-abbrev global-abbrev-table "wasnt"               "wasn't")
 ;;; provide
-(provide 'wikipedia-typo-abbrevs)
-;;; wikipedia-typo-abbrevs.el ends here
+(provide '999-wikipedia-typo-abbrevs)
+;;; 999-wikipedia-typo-abbrevs.el ends here
