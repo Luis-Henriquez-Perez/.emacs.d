@@ -43,8 +43,9 @@
 
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
-(require '001-init-log (expand-file-name "lisp/001-init-log" user-emacs-directory))
-(eval-when-compile (require '002-init-loader (expand-file-name "lisp/002-init-loader" user-emacs-directory)))
+(require '000-base-vars)
+(require '001-init-log)
+(eval-when-compile (require '002-init-loader))
 
 ;; Be more precise about startup.  What I will look at when I measure startup
 ;; is the time taken for my lisp files to load, the time taken to run

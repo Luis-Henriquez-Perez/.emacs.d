@@ -28,30 +28,8 @@
 ;; make `load' a function the compiler will not detect the `require' calls.
 ;;
 ;;; Code:
+(require '000-base-vars)
 (require '001-init-log)
-
-(defvar oo-init-data nil
-  "A record of data concerning loaded files.
-
-This is an alist where each element is of the form (feature start-time end-time
-error).  Feature is an init feature, start and end time, and error is any
-error.  If an error occurs start and end are nil.  Conversely, if start and end
-are non-nil, then error is nil.")
-
-(defvar oo-load-start-time nil
-  "Time just before files in the lisp directory are loaded.")
-
-(defvar oo-load-end-time nil
-  "Time just after files in the lisp directory are loaded.")
-
-(defvar oo-startup-end-time nil
-  "Time after `emacs-startup-hook' is done.")
-
-(defun oo--record-init-end-time-h ()
-  "Record the end of `emacs-startup-hook'."
-  (setq oo-startup-end-time (current-time)))
-
-(add-hook 'emacs-startup-hook 'oo--record-init-end-time-h 100)
 
 (defmacro require! (feature path)
   "Require FEATURE from PATH, logging any errors.
@@ -71,11 +49,7 @@ error message without interrupting execution."
        (error (oo-log 'error "Error requiring '%s: %s" ',feature err)
               (push (list ',feature nil nil err) oo-init-data)))))
 
-(defun oo--init-log-format-fn (type message meta)
-  "Format function for startup."
-  (let ((time (float-time (time-subtract (current-time) oo-load-start-time))))
-    (setq time (/ (fround (* time 100)) 100.0))
-    (format "[%s] %.2f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
+(defvar oo--init-log-format-fn)
 
 (defmacro load! (dir)
   "Load numbered Emacs Lisp files from DIR in lexicographical order.
@@ -84,16 +58,17 @@ A file is \"numbered\" if it is prefixed by three digits ranging from 010 to 899
 inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
   (let (forms feature)
     (setq dir (expand-file-name dir user-emacs-directory))
-    (dolist (path (directory-files dir t "^[0-8][1-9][[:digit:]]-.+\\.el$"))
+    (dolist (path (directory-files dir t "^[0-8][1-9][0-46-9]-.+\\.el$"))
       (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
-      (push `(require! ,feature ,path) forms))
+      ;; If the number ends with 5, eval-when-compile it.
+      ;; (push `(eval-when-compile ,feature nil) forms)
+      (push `(require! ,feature nil) forms))
     `(let (total-time)
-       (let ((oo-log-format-fn #'oo--init-log-format-fn))
+       (let ((oo-log-format-fn #'oo-load-time-format-fn))
          (setq oo-load-start-time (current-time))
          ,@(nreverse forms)
          (setq oo-load-end-time (current-time))
-         (setq total-time (float-time (time-subtract oo-load-end-time
-                                                     oo-load-start-time))))
+         (setq total-time (float-time (time-subtract oo-load-end-time oo-load-start-time))))
        (setq total-time (/ (fround (* total-time 100)) 100.0))
        (oo-log 'info "Finished loading files in %.2f seconds." total-time))))
 ;;; provide
