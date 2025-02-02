@@ -410,7 +410,7 @@ Words are determined by splitting STRING on whitespace."
             (set! face (cond ((> percentage 80) 'success) ((> percentage 40) 'warning) (t 'error)))
             (set! name (alet! (* (/ percentage 10) 10)
                          (if (= 100 it)
-                             (format "nf-md-battery" it)
+                             "nf-md-battery"
                            (format "nf-md-battery_%s" it))))
             (set! icon (nerd-icons-mdicon name))
             (propertize (format "%s %s" (concat (number-to-string percentage) "%") icon) 'face face))))
