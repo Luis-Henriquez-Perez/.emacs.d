@@ -313,6 +313,24 @@ faces immediately."
 
 ;; This buffer is useless.  I do not want it taking up space.
 (kill-buffer "*scratch*")
+;;;; autoload commands
+(autoload #'oo-set-font-face "989-commands" nil t 'function)
+(autoload #'oo-create-new-test-file "989-commands" nil t 'function)
+(autoload #'oo-create-new-config-file "989-commands" nil t 'function)
+(autoload #'oo-create-new-init-file "989-commands" nil t 'function)
+(autoload #'oo-kill-emacs-no-confirm "989-commands" nil t 'function)
+(autoload #'oo-open-emacs-config "989-commands" nil t 'function)
+(autoload #'oo-open-emacs-init-file "989-commands" nil t 'function)
+(autoload #'update-emacs-config "989-commands" nil t 'function)
+(autoload #'oo-new-buffer "989-commands" nil t 'function)
+(autoload #'oo-load-random-theme "989-commands" nil t 'function)
+(autoload #'oo-dwim-space "989-commands" nil t 'function)
+(autoload #'oo-sort-dwim "989-commands" nil t 'function)
+(autoload #'oo-open-emacs-lisp-dir "989-commands" nil t 'function)
+(autoload #'oo-split-window-below-and-focus "989-commands" nil t 'function)
+(autoload #'oo-split-window-right-and-focus "989-commands" nil t 'function)
+(autoload #'oo-pop-to-buffer "989-commands" nil t 'function)
+(autoload #'oo-dwim-narrow "989-commands" nil t 'function)
 ;;; provide
 (provide '140-init)
 ;;; 140-init.el ends here
