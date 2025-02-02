@@ -1,4 +1,4 @@
-;;; 123-base-mode-line.el --- Initialize powerline -*- lexical-binding: t; -*-
+;;; 123-base-mode-line.el --- My mode line -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize my modeline.
+;; My mode line.
 ;;
 ;;; Code:
 (require '045-base)
