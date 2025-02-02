@@ -25,7 +25,7 @@
 ;; Initialize dired.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! dired-deletion-confirmer #'always)
 (hook! dired-mode-hook hl-line-mode)

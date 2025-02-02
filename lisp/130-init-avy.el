@@ -25,7 +25,7 @@
 ;; This is my configuration for avy.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! avy-style 'pre)
 

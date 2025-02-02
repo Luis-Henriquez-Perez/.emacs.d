@@ -25,7 +25,7 @@
 ;; Initialize captain-mode.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! prog-mode-hook captain-mode)
 (hook! text-mode-hook captain-mode)

@@ -25,7 +25,7 @@
 ;; Initialize which-key.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! emacs-startup-hook which-key-mode)
 

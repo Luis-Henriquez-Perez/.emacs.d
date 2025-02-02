@@ -25,7 +25,7 @@
 ;; Configure auto-insert.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (require 'f)
 
 (defun oo-copyright-license ()

@@ -25,7 +25,7 @@
 ;; Initialize corfu.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 ;; TODO: make it so moving on a candidate if I press espace insert that candidate.
 (opt! corfu-preview-current t)

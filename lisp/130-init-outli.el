@@ -25,7 +25,7 @@
 ;; Initialize outli.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! prog-mode-hook outli-mode)
 (hook! conf-mode-hook outli-mode)

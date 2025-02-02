@@ -25,7 +25,7 @@
 ;; Initialize corfu-history.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! corfu-mode-hook corfu-history-mode)
 ;;; provide

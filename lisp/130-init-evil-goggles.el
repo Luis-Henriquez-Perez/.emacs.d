@@ -25,7 +25,7 @@
 ;; Initialize evil-goggles.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! evil-goggles-duration 0.1)
 ;;;; register evil commands

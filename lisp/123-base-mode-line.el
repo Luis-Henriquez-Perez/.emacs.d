@@ -25,7 +25,7 @@
 ;; My mode line.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (require 'battery)
 (require 'dash)
 (require 'powerline)
@@ -368,7 +368,7 @@ Words are determined by splitting STRING on whitespace."
     (string-join (seq-take words n) " ")))
 
 (defun! oo-mode-line-component--clocked-in ()
-  "Display the current clocked-in task and the time elapsed since clocking in, with seconds included."
+  "Display the current clocked-in task and the time elapsed since clocking in."
   (when (and (bound-and-true-p org-clock-hd-marker)
              (marker-buffer org-clock-hd-marker))
     (set! elapsed-time (time-subtract (current-time) org-clock-start-time))

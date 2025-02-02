@@ -25,7 +25,7 @@
 ;; Initialize `recentf'.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (require 'recentf)
 
 (hook! emacs-startup-hook recentf-mode)

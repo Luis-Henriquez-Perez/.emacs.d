@@ -25,7 +25,7 @@
 ;; Initialize keybindings.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (eval-when-compile (require '155-base-macros-bind))
 (require 'bind-key)
 (hook! after-init-hook override-global-mode :depth -100)

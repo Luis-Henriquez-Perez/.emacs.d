@@ -25,7 +25,7 @@
 ;; Initialize logger.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (defvar oo-logger (lgr-get-logger "main")
   "Object used for logging.")

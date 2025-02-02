@@ -25,7 +25,7 @@
 ;; Initialize wdired.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! wdired-confirm-overwrite nil)
 ;;; provide

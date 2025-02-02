@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '045-base)
+(require '050-base)
 ;;;; main
 (defhook! oo-load-evil-h (after-init-hook :depth 10)
   (require 'evil nil t))

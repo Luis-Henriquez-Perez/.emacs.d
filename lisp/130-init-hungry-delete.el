@@ -25,7 +25,7 @@
 ;; Initialize hungry-delete.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 ;; Leave one space in between instead of deleting everything.
 (opt! hungry-delete-join-reluctantly t)

@@ -28,7 +28,7 @@
 ;;; Code:
 ;;;; requirements
 (require 'abbrev)
-(require '045-base)
+(require '050-base)
 ;;;; define abbrevs
 (define-abbrev global-abbrev-table "abandonned"          "abandoned")
 (define-abbrev global-abbrev-table "aberation"           "aberration")

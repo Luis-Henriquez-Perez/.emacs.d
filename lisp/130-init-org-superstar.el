@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! org-mode-hook org-superstar-mode)
 

@@ -25,7 +25,7 @@
 ;; Initialize evil-fringe-mark.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (defun oo-enable-evil-fringe-mark-a (orig-fn &rest args)
   "Enable `evil-fringe-mark'."

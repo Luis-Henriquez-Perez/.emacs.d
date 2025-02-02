@@ -25,7 +25,7 @@
 ;; Initialize emms.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! emms-source-file-default-directory (expand-file-name "Music/" "~/"))
 (opt! emms-directory (expand-file-name "emms/" oo-var-dir))

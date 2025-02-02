@@ -25,7 +25,7 @@
 ;; Initialize notmuch.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (opt! notmuch-search-oldest-first nil)
 
 

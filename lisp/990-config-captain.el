@@ -28,7 +28,7 @@
 ;; Man, this is more involved than I thought it would be at first because
 ;; capitalization rules are different depending on whether your in prog-mode or
 ;; not and whether you are in a doc-string, or comment, or just a normal string.
-(require '045-base)
+(require '050-base)
 (require 'captain)
 (require 'rx)
 (require 'lispy)

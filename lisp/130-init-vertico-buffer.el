@@ -25,7 +25,7 @@
 ;; Initialize vertico-buffer.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! vertico-mode-hook vertico-buffer-mode)
 

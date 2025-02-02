@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '045-base)
+(require '050-base)
 ;;;; general
 (opt! org-directory (expand-file-name "~/Documents/org/"))
 (opt! org-default-notes-file (expand-file-name "notes.org" org-directory))

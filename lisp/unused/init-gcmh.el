@@ -25,7 +25,7 @@
 ;; Initialize gcmh.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! emacs-startup-hook gcmh-mode :depth 91)
 

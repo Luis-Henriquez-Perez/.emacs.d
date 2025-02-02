@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '045-base)
+(require '050-base)
 (require 'abbrev)
 ;;;; abbrev pred
 (defun oo--use-eshell-mode-abbrev-p ()

@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '045-base)
+(require '050-base)
 ;;;; popup
 (oo-popup-at-bottom "\\`magit")
 ;;;; bindings

@@ -25,7 +25,7 @@
 ;; Initialize marginalia.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! vertico-mode-hook marginalia-mode)
 ;;; provide

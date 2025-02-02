@@ -25,7 +25,7 @@
 ;; Initialize highlight-quoted.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! emacs-lisp-mode-hook highlight-quoted-mode)
 ;;; provide

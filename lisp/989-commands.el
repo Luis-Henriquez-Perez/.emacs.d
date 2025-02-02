@@ -28,7 +28,7 @@
 ;; these functions are very specific to me and my workflow.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (require 'f)
 (require 'ctable)
 ;;;; opening specific files
@@ -147,6 +147,7 @@ is already narrowed."
 (defun! oo-pop-to-buffer ()
   (interactive)
   (require 'consult)
+  (defvar consult--buffer-display)
   (set! consult--buffer-display #'pop-to-buffer)
   (call-interactively #'consult-buffer))
 

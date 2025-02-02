@@ -25,7 +25,7 @@
 ;; Initialize buffer-terminator.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! buffer-terminator-verbose nil)
 (opt! buffer-terminator-inactivity-timeout (* 15 60))

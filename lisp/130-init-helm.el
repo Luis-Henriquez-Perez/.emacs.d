@@ -25,7 +25,7 @@
 ;; Initialize helm.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (oo-popup-at-bottom "\\*Helm")
 (set! helm-candidate-number-limit 50)

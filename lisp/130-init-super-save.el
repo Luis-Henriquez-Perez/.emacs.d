@@ -25,7 +25,7 @@
 ;; Initialize super-save.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! on-first-file-hook super-save-mode)
 ;; The default auto-saving feature in emacs saves after a certain number of

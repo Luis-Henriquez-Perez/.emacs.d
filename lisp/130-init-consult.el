@@ -25,7 +25,7 @@
 ;; Initialize consult.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (opt! consult-preview-key nil)
 (opt! consult-fontify-preserve nil)

@@ -25,7 +25,7 @@
 ;; Initialize gumshoe.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 
 (hook! on-first-input-hook global-gumshoe-mode)
 ;;; provide

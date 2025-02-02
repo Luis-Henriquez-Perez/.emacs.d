@@ -25,7 +25,7 @@
 ;; Initialize dashboard.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (require 'dashboard)
 
 ;; If I put dashboard configuration in its own.

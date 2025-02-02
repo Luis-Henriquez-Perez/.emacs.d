@@ -1,4 +1,4 @@
-;;; 045-base.el --- everything needed for startup -*- lexical-binding: t; -*-
+;;; 050-base.el --- everything needed for startup -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,13 +22,16 @@
 ;;
 ;;; Commentary:
 ;;
-;; This contains the core settings and functionality of my configuration.
+;; This contains the core settings and functionality of my configuration.  This
+;; is a convenience file for loading all base settings.  The point is so I do
+;; not have to specify every single one of these files to load every single
+;; time.
 ;;
 ;;; Code:
-(require '010-base-vars)
 (require '020-base-settings)
 (require '030-base-utils)
+(eval-when-compile (require '035-base-macros))
 (require '040-base-lib)
 ;;; provide
-(provide '045-base)
-;;; 045-base.el ends here
+(provide '050-base)
+;;; 050-base.el ends here

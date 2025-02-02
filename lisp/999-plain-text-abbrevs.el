@@ -28,7 +28,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '045-base)
+(require '050-base)
 (require 'abbrev)
 (require '999-wikipedia-typo-abbrevs)
 ;;;; plain text abbrevs
@@ -51,6 +51,12 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "genl"             "generally"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "nie"              "nice"                          nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "wud"              "would"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "preff"            "preference"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "pref"             "preference"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "usin"             "using"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "numberd"          "numbered"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "measore"          "measure"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "loadig"           "loading"                       nil :enable-function #'oo--use-plain-text-abbrev-p)

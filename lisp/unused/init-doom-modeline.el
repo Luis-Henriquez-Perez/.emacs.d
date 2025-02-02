@@ -25,7 +25,7 @@
 ;; Initialize doom-modeline.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 (require 'doom-modeline)
 
 (hook! after-init-hook doom-modeline-mode)

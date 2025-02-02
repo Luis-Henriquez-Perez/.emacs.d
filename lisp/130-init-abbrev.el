@@ -25,7 +25,7 @@
 ;; Initialize abbrev-mode.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 ;;;; hooks
 (hook! prog-mode-hook abbrev-mode)
 (hook! text-mode-hook abbrev-mode)

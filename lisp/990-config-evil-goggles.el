@@ -25,7 +25,7 @@
 ;; Configure evil-goggles.
 ;;
 ;;; Code:
-(require '045-base)
+(require '050-base)
 ;;;; register lispyville commands
 (defvar evil-goggles--commands)
 
