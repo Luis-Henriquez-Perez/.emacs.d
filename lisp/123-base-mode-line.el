@@ -30,6 +30,12 @@
 (require 'dash)
 (require 'powerline)
 (require 'spaceline)
+
+;;;; Silence byte-compilation
+(defvar evil-state)
+(defvar org-clock-start-time)
+(defvar org-clock-hd-marker)
+(declare-function org-get-heading "org")
 ;;;; powerline settings
 ;; Resetting the modeline after a theme change ensures separator colors are
 ;; updated to match the current theme.
