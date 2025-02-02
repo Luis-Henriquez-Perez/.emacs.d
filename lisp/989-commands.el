@@ -1,4 +1,4 @@
-;;; 150-commands.el --- Generic commands -*- lexical-binding: t; -*-
+;;; 989-commands.el --- Generic commands -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,6 +29,8 @@
 ;;
 ;;; Code:
 (require '045-base)
+(require 'f)
+(require 'ctable)
 ;;;; opening specific files
 (defun oo-open-emacs-config ()
   "Open Emacs configuration."
@@ -303,7 +305,7 @@ Additionally, make any duplicate spaces in line become a single space."
 
   (require 'ctable)
 
-  (for! ((feature beg end err) oo-init-data)
+  (for! ((feature beg end _) oo-init-data)
     (set! time (float-time (time-subtract end beg)))
     (collecting! new (list feature time))
     (summing! total (if beg time 0)))
@@ -326,5 +328,5 @@ Additionally, make any duplicate spaces in line become a single space."
          (component (ctbl:create-table-component-buffer :model model)))
     (pop-to-buffer (ctbl:cp-get-buffer component))))
 ;;; provide
-(provide '150-commands)
-;;; 150-commands.el ends here
+(provide '989-commands)
+;;; 989-commands.el ends here

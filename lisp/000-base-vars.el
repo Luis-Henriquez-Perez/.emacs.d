@@ -1,4 +1,4 @@
-;;; 010-base-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; 000-base-vars.el --- core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -37,6 +37,29 @@
 (defvar oo-debug-p (or (getenv "DEBUG") init-file-debug)
   "When non-nil print debug messages.
 The --debug-init flag and setting the DEBUG envar will enable this at startup.")
+
+(defvar oo-init-data nil
+  "A record of data concerning loaded files.
+
+This is an alist where each element is of the form (feature start-time end-time
+error).  Feature is an init feature, start and end time, and error is any
+error.  If an error occurs start and end are nil.  Conversely, if start and end
+are non-nil, then error is nil.")
+
+(defvar oo-load-start-time nil
+  "Time just before files in the lisp directory are loaded.")
+
+(defvar oo-load-end-time nil
+  "Time just after files in the lisp directory are loaded.")
+
+(defvar oo-startup-end-time nil
+  "Time after `emacs-startup-hook' is done.")
+
+(defun oo--record-init-end-time-h ()
+  "Record the end of `emacs-startup-hook'."
+  (setq oo-startup-end-time (current-time)))
+
+(add-hook 'emacs-startup-hook 'oo--record-init-end-time-h 100)
 ;;; provide
-(provide '010-base-vars)
-;;; 010-base-vars.el ends here
+(provide '000-base-vars)
+;;; 000-base-vars.el ends here
