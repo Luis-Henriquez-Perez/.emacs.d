@@ -344,6 +344,11 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
              (f-same-p it (f-full "~")))
          (not (equal (vc-state (buffer-file-name)) 'unregistered))
          (save-restriction (oo-dwim-vc-action (buffer-file-name)))))
+;;;; xref
+(opt! xref-search-program (if (executable-find "rg") 'ripgrep xref-search-program))
+;; Select from xref candidates in minibuffer
+(opt! xref-show-definitions-function #'xref-show-definitions-completing-read)
+(opt! xref-show-xrefs-function #'xref-show-definitions-completing-read)
 ;;; provide
 (provide '140-init)
 ;;; 140-init.el ends here
