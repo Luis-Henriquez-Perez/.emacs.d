@@ -78,7 +78,7 @@
   (with-map-keywords! metadata
     `((declare-function evil-define-key* "evil")
       (evil-define-key* ,!state ,!keymap ,!key ,!def)
-      (info! "KEYBINDING: %s %s %s -> %s" ,!state ,!keymap-symbol ,!key ,!def)
+      (oo-log 'info "KEYBINDING: %s %s %s -> %s" ,!state ,!keymap-symbol ,!key ,!def)
       ,@forms)))
 
 (defun oo--bind-evil-define-minor-mode-key (metadata forms)
@@ -116,7 +116,7 @@ Evaluating resulting forms will."
       (error (if oo-debug-p
                  (signal (car err) (cdr err))
                ;; TODO: Give a better error message.
-               (error! "Error %S with binding because of %S." (car err) (cdr err)))))))
+               (oo-log 'error "Error %S with binding because of %S." (car err) (cdr err)))))))
 
 (defun! oo--bind-which-key (metadata forms)
   "Wrap FORMS with an environment."

@@ -139,9 +139,9 @@ file is loaded."
 (defhook! oo-set-default-font-h (after-init-hook :depth 90)
   "Set the default font based on available fonts."
   (dolist (font oo-default-fonts)
-    (trace! "Checking whether %s font is available..." font)
+    (oo-log 'trace "Checking whether %s font is available..." font)
     (awhen! (find-font font)
-      (info! "Setting font to...%s" it)
+      (oo-log 'info "Setting font to...%s" it)
       (set-face-attribute 'default nil :font font)
       (done!)))
   (set! default-font (face-attribute 'default :family))
@@ -150,7 +150,7 @@ file is loaded."
   ;;           `(lambda (frame)
   ;;              (with-selected-frame frame
   ;;                (set-face-attribute 'default nil :font ,default-font))))
-  (info! "Unable to set font to any in `oo-default-font-list', defaulting to `%s'." default-font))
+  (oo-log 'info "Unable to set font to any in `oo-default-font-list', defaulting to `%s'." default-font))
 ;;;; less confusing kill buffer
 ;; https://christiantietze.de/posts/2023/09/kill-unsaved-buffer-ux-action-labels/
 (defun! oo--prompt-clearly (_ buffer &rest _)
@@ -190,12 +190,12 @@ Replace `kill-buffer--possibly-save' as advice."
     (set! parent-feature (intern (match-string 1 filename)))
     (set! feature (intern (file-name-sans-extension filename)))
     (cond ((featurep parent-feature)
-           (info! "Parent feature `%S' is loaded, requiring `%s'" parent-feature feature)
-           (require feature filename nil))
+           (oo-log 'info "Parent feature `%S' is loaded, requiring `%s'" parent-feature feature)
+           (require feature nil nil))
           (t
-           (info! "Deferring `%s' until parent feature, `%s', is loaded." feature parent-feature)
-           (set! fn `(lambda () (require ',feature ,path nil)))
-           (info! "Function to load-after -> %S" fn)
+           (oo-log 'info "Deferring `%s' until parent feature, `%s', is loaded." feature parent-feature)
+           (set! fn `(lambda () (require ',feature nil nil)))
+           (oo-log 'info "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
 ;;;; startup
 ;;;;; garbage collection
@@ -204,7 +204,7 @@ Replace `kill-buffer--possibly-save' as advice."
   (flet! mb (x) (/ (float x) 1024 1024))
   (if (minibuffer-window-active-p (minibuffer-window))
       (run-with-timer 5 nil #'oo--timer--lower-garbage-collection)
-    (info! "Running timer for lowering garbage collection...")
+    (oo-log 'info "Running timer for lowering garbage collection...")
     (set! reduction (/ (get-register :gc-cons-threshold) 10))
     (set! gc-floor (* 8 1024 1024))
     (set! gcp-default 0.2)
@@ -212,24 +212,24 @@ Replace `kill-buffer--possibly-save' as advice."
       (set! old gc-cons-threshold)
       (set! new (max (- old reduction) gc-floor))
       (setq gc-cons-threshold new)
-      (info! "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
+      (oo-log 'info "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
     (when (/= gc-cons-percentage gcp-default)
       (set! old (max gc-cons-percentage gcp-default))
       (set! new (max (- gc-cons-percentage 0.1) gcp-default))
-      (info! "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
+      (oo-log 'info "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
       (setq gc-cons-percentage new))
     (if (and (= gc-cons-threshold gc-floor)
              (= gc-cons-percentage gcp-default))
-        (info! "Done with timer.")
+        (oo-log 'info "Done with timer.")
       (run-with-timer 7 nil #'oo--timer--lower-garbage-collection))))
 ;;;;; emacs-startup-hook
 (defhook! oo-restore-startup-values-h (emacs-startup-hook :depth 90)
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
-  (info! "Restore the value of `file-name-handler-alist'.")
+  (oo-log 'info "Restore the value of `file-name-handler-alist'.")
   (setq file-name-handler-alist (get-register :file-name-handler-alist))
   (setq gc-cons-threshold (* 40 1024 1024))
   (set-register :gc-cons-threshold gc-cons-threshold)
-  (info! "Set the value of `gc-cons-threshold' to 40 MB.")
+  (oo-log 'info "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
 ;;;; silence save-buffer
 (advice-add 'save-buffer :around #'oo-funcall-quietly)
@@ -287,10 +287,10 @@ faces immediately."
 
 (defun oo-apply-custom-faces-h (current)
   "Apply any faces that need to be applied from `oo-custom-faces-alist'."
-  (info! "Current theme -> %s" current)
+  (oo-log 'info "Current theme -> %s" current)
   (for! ((theme . faces) oo-custom-faces-alist)
     (when (or (equal theme 'user) (member theme custom-enabled-themes))
-      (info! "Applying faces for %s..." theme)
+      (oo-log 'info "Applying faces for %s..." theme)
       (let ((custom--inhibit-theme-enable nil))
         (apply #'custom-theme-set-faces theme faces)))))
 

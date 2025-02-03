@@ -38,19 +38,19 @@
 
 (defun +mu4e--main-enter-message ()
   ;; (only-once! (call-process "mu --init %s"))
-  (info! "Entering main account."))
+  (oo-log 'info "Entering main account."))
 
 (defun +mu4e--main-leave-message ()
   "Log when `luis@luishp.xyz' email account is left."
-  (info! "Exiting main account."))
+  (oo-log 'info "Exiting main account."))
 
 (defun +mu4e--legacy-enter-message ()
   ;; (only-once! (call-process "mu --init %s"))
-  (info! "Entering main account."))
+  (oo-log 'info "Entering main account."))
 
 (defun +mu4e--legacy-leave-message ()
   "Log when `luishenriquezperez@gmail.com' is entered."
-  (info! "Exiting main account."))
+  (oo-log 'info "Exiting main account."))
 
 (defun! +mu4e-jump-to-maildir ()
   (interactive)

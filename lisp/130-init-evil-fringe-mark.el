@@ -34,7 +34,7 @@
            (global-evil-fringe-mark-mode 1)
            (advice-remove 'evil-set-marker #'oo-enable-evil-fringe-mark-a))
           (t
-           (warn! "Could not load `evil-fringe-mark-mode'.")))))
+           (oo-log 'warn "Could not load `evil-fringe-mark-mode'.")))))
 
 (advice-add 'evil-set-marker :around #'oo-enable-evil-fringe-mark-a)
 ;;; provide

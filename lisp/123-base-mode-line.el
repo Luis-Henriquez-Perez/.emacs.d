@@ -67,7 +67,7 @@ If an error is raised from component function."
   (condition-case err
       (set! return-value (funcall (intern (format "oo-mode-line-component--%s" name))))
     (error
-     (error! "MODELINE %s : %s -> %s" name (car err) (cdr err))
+     (oo-log 'error "MODELINE %s : %s -> %s" name (car err) (cdr err))
      (return! "")))
   (pcase return-value
     ('nil

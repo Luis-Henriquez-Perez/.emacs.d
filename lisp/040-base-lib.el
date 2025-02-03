@@ -220,13 +220,13 @@ EXPRS in (CDR CONDITION) is met."
                   (lambda (&optional feature)
                     (when first-call-p
                       (setq first-call-p nil)
-                      (info! "AFTER-LOAD: %s -> %s" feature #',fn)
+                      (oo-log 'info "AFTER-LOAD: %s -> %s" feature #',fn)
                       (condition-case err
                           (funcall #',fn)
                         (error
                          (if oo-debug-p
                              (signal (car err) (cdr err))
-                           (error! "`%s` : %s -> %s"
+                           (oo-log 'error "`%s` : %s -> %s"
                                    ',fn
                                    (car err)
                                    (cdr err))))))))

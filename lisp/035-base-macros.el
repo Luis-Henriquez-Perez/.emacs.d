@@ -546,11 +546,11 @@ take the following forms:
     (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
     (set! lambda `(lambda (&rest _)
                     ,docstring
-                    (info! "HOOK: %s -> %s" ',hook ',name)
+                    ;; (oo-log 'info "HOOK: %s -> %s" ',hook ',name)
                     (condition-case err
                         (setq-local ,symbol ,value)
                       (error
-                       (error! "%s error in local hook %s because of %s"
+                       (oo-log 'error "%s error in local hook %s because of %s"
                                (car err)
                                ',hook
                                (cdr err))))))
@@ -569,27 +569,6 @@ If MATCH-FORM is a symbol act as `setq'."
              (gensyms (cl-set-difference all non-gensyms)))
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
-;;;;; logging
-;; I will note that logging does not seem to have any significant or even
-;; noticeable effect on performance as far as I can tell.  Maybe I will just
-;; always enable logging later.
-(defmacro info! (msg &rest meta)
-  `(oo-log 'info ,msg ,@meta))
-
-(defmacro error! (msg &rest meta)
-  `(oo-log 'info ,msg ,@meta))
-
-(defmacro warn! (msg &rest meta)
-  `(oo-log 'warn ,msg ,@meta))
-
-(defmacro fatal! (msg &rest meta)
-  `(oo-log 'fatal ,msg ,@meta))
-
-(defmacro trace! (msg &rest meta)
-  (ignore `(oo-log 'trace ,msg ,@meta)))
-
-(defmacro debug! (msg &rest meta)
-  (ignore `(oo-log 'debug ,msg ,@meta)))
 ;;; provide
 (provide '035-base-macros)
 ;;; 035-base-macros.el ends here
