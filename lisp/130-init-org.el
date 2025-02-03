@@ -63,14 +63,10 @@
 
 (alt! org-capture +org-capture-choose-template org-capture)
 ;;;; org-refile
-(defun +org-directory-files ()
-  "Return a list of org files."
-  (directory-files org-directory t "\\.org\\'"))
-
 (opt! org-refile-allow-creating-parent-nodes t)
 ;; The variable =org-refile-targets= specifies the places from which information
 ;; is taken to create the list of possible refile targets.  So, for example,
-(opt! org-refile-targets '((+org-directory-files :maxlevel . 10)))
+(opt! org-refile-targets '(((lambda () (directory-files org-directory t "\\.org\\'")) :maxlevel . 10)))
 (opt! org-outline-path-complete-in-steps nil)
 (opt! org-refile-use-cache nil)
 ;; Without this setting, you can't actually refile to a generic file with
