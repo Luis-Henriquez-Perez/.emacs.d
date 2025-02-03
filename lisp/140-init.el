@@ -57,6 +57,7 @@
 ;; maps that take priority (intercept) evil bindings when they have a different
 ;; binding for the same key (this is opposed to =overriding-maps=, which completely
 ;; override an evil keymap).
+(declare-function evil-make-intercept-map "evil")
 (defhook! oo-make-intercept-map-h (evil-mode-hook)
   "Register `oo-override-map' as an intercept map."
   (evil-make-intercept-map override-global-map 'all t))
