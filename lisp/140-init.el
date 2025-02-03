@@ -198,8 +198,7 @@ Replace `kill-buffer--possibly-save' as advice."
            (set! fn `(lambda () (require ',feature nil nil)))
            (oo-log 'info "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
-;;;; startup
-;;;;; garbage collection
+;;;; garbage collection
 (defun! oo--timer--lower-garbage-collection ()
   "Lower garbage collection until it reaches default values."
   (flet! mb (x) (/ (float x) 1024 1024))
@@ -223,7 +222,7 @@ Replace `kill-buffer--possibly-save' as advice."
              (= gc-cons-percentage gcp-default))
         (oo-log 'info "Done with timer.")
       (run-with-timer 7 nil #'oo--timer--lower-garbage-collection))))
-;;;;; emacs-startup-hook
+;;;; emacs-startup-hook
 (defhook! oo-restore-startup-values-h (emacs-startup-hook :depth 90)
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
   (oo-log 'info "Restore the value of `file-name-handler-alist'.")
@@ -295,7 +294,7 @@ faces immediately."
         (apply #'custom-theme-set-faces theme faces)))))
 
 (add-hook 'enable-theme-functions #'oo-apply-custom-faces-h)
-;;;; prevent =*Messages*= and =*scratch*= buffers from being killed
+;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
 ;; buffers; it can also mean that the locked buffers cannot be killed (e.g. via
