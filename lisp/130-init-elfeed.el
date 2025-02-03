@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require '050-base)
+
 (opt! elfeed-feeds
       '("http://nullprogram.com/feed/"
         "https://planet.emacslife.com/atom.xml"))

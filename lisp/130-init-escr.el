@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require '050-base)
+
 (opt! escr-screenshot-directory (expand-file-name "~/Pictures"))
 
 (autoload #'escr-region-screenshot "escr" nil t 'function)

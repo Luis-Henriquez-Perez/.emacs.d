@@ -25,6 +25,7 @@
 ;; This is my configuration for smartparens.
 ;;
 ;;; Code:
+(require '050-base)
 (require 'smartparens)
 
 (opt! sp-highlight-wrap-tag-overlay nil)

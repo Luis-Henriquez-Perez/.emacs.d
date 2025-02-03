@@ -30,6 +30,8 @@
 ;; I as in--even when I only had two open.
 ;;
 ;;; Code:
+(require '050-base)
+
 (opt! dimmer-fraction 0.5)
 ;;; provide
 (provide '130-init-dimmer)

@@ -25,6 +25,8 @@
 ;; Configure nil.
 ;;
 ;;; Code:
+(require '050-base)
+
 ;; https://emacs.stackexchange.com/questions/57677/how-to-set-effort-all-globally
 (add-to-list 'org-modules 'org-habit :append)
 ;; (string-join (--map (format "0:%.2d" it) (number-sequence 5 55 5)) "\s")

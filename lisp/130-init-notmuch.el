@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require '050-base)
+
 (opt! notmuch-search-oldest-first nil)
 
 

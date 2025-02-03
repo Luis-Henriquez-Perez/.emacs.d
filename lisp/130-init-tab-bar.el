@@ -25,6 +25,8 @@
 ;; Initialize tab-bar.
 ;;
 ;;; Code:
+(require '050-base)
+
 (defun oo-new-untitled-buffer ()
   "Return the new buffer."
   (generate-new-buffer "untitled"))

@@ -26,8 +26,8 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'abbrev)
 (require '050-base)
+(require 'abbrev)
 ;;;; prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 ;;;; automatically add period

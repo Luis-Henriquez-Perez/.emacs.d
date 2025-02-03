@@ -25,6 +25,8 @@
 ;; Initialize mu4e.
 ;;
 ;;; Code:
+(require '050-base)
+
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
 (autoload #'mu4e "mu4e" nil t 'function)

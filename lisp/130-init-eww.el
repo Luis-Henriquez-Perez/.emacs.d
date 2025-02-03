@@ -25,6 +25,8 @@
 ;; Initialize eww.
 ;;
 ;;; Code:
+(require '050-base)
+
 (opt! eww-auto-rename-buffer t)
 
 

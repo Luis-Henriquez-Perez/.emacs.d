@@ -25,6 +25,8 @@
 ;; Initialize org-appear.
 ;;
 ;;; Code:
+(require '050-base)
+
 (opt! org-appear-autoemphasis t)
 (opt! org-appear-autolinks t)
 (opt! org-appear-trigger 'always)

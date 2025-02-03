@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require '050-base)
+
 (opt! gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
 (opt! gnus-select-method '(nnnil))
 (opt! gnus-agent t)

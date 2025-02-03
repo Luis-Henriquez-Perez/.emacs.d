@@ -27,6 +27,7 @@
 ;;; Code:
 (require 'eshell-z)
 (require 'eshell-up)
+(require '050-base)
 ;;;; Make eshell prompt read-only
 ;; Using evil and pressing backspace deletes.
 (defun! oo--make-read-only (fn &rest args)

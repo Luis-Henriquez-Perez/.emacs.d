@@ -83,6 +83,7 @@
 ;; sort them based on.
 ;;
 ;;; Code:
+(require '050-base)
 (require 'rx)
 (require 'dash)
 (require 'evil)

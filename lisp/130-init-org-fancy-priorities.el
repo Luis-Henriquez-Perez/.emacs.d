@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require '050-base)
+
 (hook! org-mode-hook org-fancy-priorities-mode)
 
 (opt! org-fancy-priorities-list (progn (require 'nerd-icons)
