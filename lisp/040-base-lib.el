@@ -156,28 +156,6 @@ SYMBOL and FN in `oo-after-load-hash-table'."
   `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
                 (gethash ',old oo-alternate-commands))
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
-;;;; hooks
-(defun! oo--hook-docstring (hook function)
-  "Generate a docstring for hook function."
-  ;; This is taken directly from the `s' library.  Right now, it is the only
-  ;; function from there I use.  Not wanting to require s for just one short
-  ;; function, I copied it is body here.
-  (flet! word-wrap (len s)
-    (save-match-data
-      (with-temp-buffer
-        (insert s)
-        (let ((fill-column len))
-          (fill-region (point-min) (point-max)))
-        (buffer-substring (point-min) (point-max)))))
-  (flet! docstring (&rest lines)
-    (cond ((null lines)
-           "")
-          ((cdr lines)
-           (concat (car lines) "\n" (word-wrap 80 (string-join (cdr lines) "\s\s"))))
-          ((word-wrap 80 (car lines)))))
-  (docstring (format "Call `%s' from `%s'." function hook)
-             (format "Log call to `%s'." function)
-             (format "If `oo-debug-p' is non-nil suppress and log any error raised by `%s'." function)))
 ;;;; oo-call-after-load
 (defun oo--call-after-load (expr fn)
   "Call FN after EXPR is met."
