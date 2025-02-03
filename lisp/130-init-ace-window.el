@@ -24,17 +24,11 @@
 ;; This is my configuration for ace window.
 ;;
 ;;; Code:
-;;;; ace-window
-;;;;; swap
+(require '050-base)
+
 (opt! aw-swap-invert t)
-;;;;; set the keys used by ace-window
 ;; The character z conflicts.
 (opt! aw-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxb")))
-;;;;; keybindings
-
-
-
-
 ;;; provide
 (provide '130-init-ace-window)
 ;;; 130-init-ace-window.el ends here
