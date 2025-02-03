@@ -29,22 +29,6 @@
 (require 'cl-lib)
 (require 'pcase)
 ;;;; predicates
-(defsubst oo-true-symbol-p (object)
-  "Return non-nil if OBJECT is a non-keyword symbol."
-  (declare (pure t) (side-effect-free error-free))
-  (and object (symbolp object) (not (keywordp object))))
-
-(defsubst oo-cons-cell-p (object)
-  "Return non-nil if OBJECT is a cons-cell but not a proper list."
-  (declare (pure t) (side-effect-free error-free))
-  (and (listp object) (not (listp (cdr-safe object)))))
-
-(defsubst oo-true-list-p (object)
-  "Return non-nil if OBJECT is a non-nil proper-list.
-This means it is non-nil."
-  (declare (pure t) (side-effect-free error-free))
-  (and object (listp object) (listp (cdr-safe object))))
-
 (defsubst oo-negative-p (number)
   "Return non-nil if NUMBER is less than zero."
   (declare (pure t) (side-effect-free error-free))
@@ -54,50 +38,6 @@ This means it is non-nil."
   "Return non-nil if NUMBER is greater than zero."
   (declare (pure t) (side-effect-free error-free))
   (> number 0))
-
-(defsubst oo-contains-all-p (list1 list2)
-  "Return non-nil if"
-  (declare (pure t) (side-effect-free error-free))
-  (null (cl-set-difference list1 list2)))
-
-(defsubst oo-same-items-as-p (list1 list2)
-  "Return non-nil if LIST1 has the same items as LIST2"
-  (declare (pure t) (side-effect-free error-free))
-  (and (null (cl-set-difference list1 list2))
-       (null (cl-set-difference list2 list1))))
-
-(defun oo-cycle (list)
-  "Return an infinite circular copy of LIST.
-The returned list cycles through the elements of LIST and repeats
-from the beginning."
-  (declare (pure t) (side-effect-free t))
-  ;; Also works with sequences that aren't lists.
-  (let ((newlist (append list ())))
-    (nconc newlist newlist)))
-
-(defun oo-float-divide (&rest args)
-  "Perform division with ARGS, ensuring the first argument is a float.
-This behaves like `/`, but the result is always a floating-point number."
-  (declare (pure t) (side-effect-free error-free))
-  (apply #'/ (float (car args)) (cdr args)))
-
-;; (defun oo-snoc (item list)
-;;   (append list (list item)))
-;;;; type conversion
-(defun oo-into-string (&rest args)
-  "Return ARGS as a string."
-  (declare (pure t) (side-effect-free t))
-  (with-output-to-string (mapc #'princ args)))
-
-(defun oo-into-symbol (&rest args)
-  "Return an interned symbol from ARGS."
-  (declare (pure t) (side-effect-free t))
-  (intern (apply #'oo-into-string args)))
-
-(defun oo-into-keyword (&rest args)
-  "Return ARGS as a keyword."
-  (declare (pure t) (side-effect-free t))
-  (apply #'oo-into-symbol ":" args))
 ;;;; destructuring
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
@@ -231,45 +171,6 @@ Return a flat list of unique components in MATCH-FORM."
                          (cl-pushnew (pop stack) symbols))))
                 symbols)))
     (cl-set-difference (flatten-pattern match-form) '(\, \`))))
-;;;; uncategorized
-(defun oo-wrap-forms (wrappers forms)
-  "Return FORMS wrapped by WRAPPERS.
-FORMS is a list of forms to be wrapped.  WRAPPERS are a list of forms
-representing the wrappers to apply.  If WRAPPERS is empty, `progn' is added to
-ensure the result is syntactically valid."
-  (declare (pure t) (side-effect-free t))
-  (unless wrappers (push '(progn) wrappers))
-  (setq wrappers (reverse wrappers))
-  (setq forms (append (pop wrappers) forms))
-  (dolist (wrapper wrappers)
-    (setq forms (append wrapper (list forms))))
-  forms)
-
-(defun oo-quoted-p (form)
-  "Return non-nil if FORM is quoted."
-  (declare (pure t) (side-effect-free t))
-  (equal (car-safe form) 'quote))
-
-(defun oo-sharpquoted-p (form)
-  "Return non-nil if form is sharpquoted."
-  (declare (pure t) (side-effect-free t))
-  (equal (car-safe form) 'function))
-
-(defun oo-ensure-quote (form)
-  "Return quoted form unquoted, otherwise return form."
-  (declare (pure t) (side-effect-free t))
-  (if (oo-quoted-p form) form (macroexp-quote form)))
-
-;; This function is used by captain and abbrev.
-(defun oo-in-string-or-comment-p ()
-  "Return non-nil if point is in a string or comment.
-Specifically, return the symbol `string' if point is in a string, the symbol
-`comment' if in a comment and nil otherwise."
-  (declare (pure t) (side-effect-free t))
-  (let ((ppss (syntax-ppss)))
-    (cond ((nth 3 ppss) 'string)
-          ((nth 4 ppss) 'comment)
-          (t nil))))
 ;;;; hook
 (defun oo-add-hook (hook function &rest args)
   "Generate a function that calls FUNCTION and add it to HOOK.
@@ -295,6 +196,17 @@ generated function does not pass in any of its given arguments to FUNCTION."
                                   (car err)
                                   (cdr err))))))))
     (add-hook hook fname depth local)))
+;;;; uncategorized
+;; This function is used by captain and abbrev.
+(defun oo-in-string-or-comment-p ()
+  "Return non-nil if point is in a string or comment.
+Specifically, return the symbol `string' if point is in a string, the symbol
+`comment' if in a comment and nil otherwise."
+  (declare (pure t) (side-effect-free t))
+  (let ((ppss (syntax-ppss)))
+    (cond ((nth 3 ppss) 'string)
+          ((nth 4 ppss) 'comment)
+          (t nil))))
 ;;; provide
 (provide '030-base-utils)
 ;;; 030-base-utils.el ends here
