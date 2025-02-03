@@ -170,14 +170,14 @@ SYMBOL).  Occurrences of !!SYMBOL is let-bound to the result of evaluating
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
   (let* ((value-var (gensym "value"))
-         (main-forms `((let ((,value-var (with-demoted-errors "Error: %S" (with-no-warnings ,value))))
-                         (aif! (get ',symbol 'custom-set)
-                             (funcall it ',symbol ,value-var)
-                           (with-no-warnings (setq ,symbol ,value-var)))))))
+         (main-form (macroexpand-all `(let ((,value-var (with-demoted-errors "Error: %S" (with-no-warnings ,value))))
+                                        (aif! (get ',symbol 'custom-set)
+                                            (funcall it ',symbol ,value-var)
+                                          (with-no-warnings (setq ,symbol ,value-var)))))))
     `(if (not (boundp ',symbol))
          ;; This quote on he lambda is needed to avoid infinite recursion.
-         (push '(lambda () ,@main-forms) (gethash ',symbol oo-after-load-hash-table))
-       ,@main-forms)))
+         (push '(lambda () ,main-form) (gethash ',symbol oo-after-load-hash-table))
+       ,main-form)))
 ;;;;; destructive modification macros
 (cl-defmacro appending! (place list &key (setter 'setf))
   "Append LIST to the end of PLACE.
