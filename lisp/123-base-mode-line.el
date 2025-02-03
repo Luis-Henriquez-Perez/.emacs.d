@@ -36,6 +36,11 @@
 (defvar org-clock-start-time)
 (defvar org-clock-hd-marker)
 (declare-function org-get-heading "org")
+(declare-function all-the-icons-wicon "all-the-icons")
+(declare-function all-the-icons-octicon "all-the-icons")
+(declare-function all-the-icons-material "all-the-icons")
+(declare-function all-the-icons-icon-for-buffer "all-the-icons")
+(declare-function all-the-icons-faicon "all-the-icons")
 ;;;; powerline settings
 ;; Resetting the modeline after a theme change ensures separator colors are
 ;; updated to match the current theme.
