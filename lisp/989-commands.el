@@ -186,36 +186,36 @@ is already narrowed."
 ;;   (interactive)
 ;;   (oo--ensure-file-header))
 
-(defun! oo--create-lisp-dir-file (name dir comment1 comment2)
-  "Auxiliary function."
-  (set! filename (expand-file-name name dir))
-  (cl-assert (not (file-exists-p filename)))
-  (with-current-buffer (find-file filename)
-    (oo--ensure-file-header)
-    (goto-char (point-min))
-    ;; This is a kind of roundabout way of doing it.  Not sure if it is the
-    ;; "best" way whatever that means, but it works.
-    (search-forward "TODO: add commentary" nil t nil)
-    (replace-match comment1)
-    (search-forward "TODO: add commentary" nil t nil)
-    (replace-match comment2)
-    (save-excursion (oo--ensure-provide filename))))
+;; (defun! oo--create-lisp-dir-file (name dir comment1 comment2)
+;;   "Auxiliary function."
+;;   (set! filename (expand-file-name name dir))
+;;   (cl-assert (not (file-exists-p filename)))
+;;   (with-current-buffer (find-file filename)
+;;     (oo--ensure-file-header)
+;;     (goto-char (point-min))
+;;     ;; This is a kind of roundabout way of doing it.  Not sure if it is the
+;;     ;; "best" way whatever that means, but it works.
+;;     (search-forward "TODO: add commentary" nil t nil)
+;;     (replace-match comment1)
+;;     (search-forward "TODO: add commentary" nil t nil)
+;;     (replace-match comment2)
+;;     (save-excursion (oo--ensure-provide filename))))
 
-(defun! oo-create-new-init-file (feature)
-  "Create a new init file for feature."
-  (interactive "sFeature: ")
-  (set! filename (format "init-%s.el" feature))
-  (set! comment1 (format "Initialize %s" feature))
-  (set! comment2 (format "Initialize %s." feature))
-  (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
+;; (defun! oo-create-new-init-file (feature)
+;;   "Create a new init file for feature."
+;;   (interactive "sFeature: ")
+;;   (set! filename (format "init-%s.el" feature))
+;;   (set! comment1 (format "Initialize %s" feature))
+;;   (set! comment2 (format "Initialize %s." feature))
+;;   (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
 
-(defun! oo-create-new-config-file (feature)
-  "Create a new config file for feature."
-  (interactive "sFeature: ")
-  (set! filename (format "990-config-%s.el" feature))
-  (set! comment1 (format "Configure %s" feature))
-  (set! comment2 (format "Configure %s." feature))
-  (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
+;; (defun! oo-create-new-config-file (feature)
+;;   "Create a new config file for feature."
+;;   (interactive "sFeature: ")
+;;   (set! filename (format "990-config-%s.el" feature))
+;;   (set! comment1 (format "Configure %s" feature))
+;;   (set! comment2 (format "Configure %s." feature))
+;;   (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
 
 (defun! oo-create-new-test-file (feature)
   "Create a new config file for feature."
@@ -226,7 +226,6 @@ is already narrowed."
   (set! comment2 (format "Test %s." feature))
   (oo--create-lisp-dir-file filename test-dir comment1 comment2))
 
-;;;###autoload
 (defun oo-ensure-boilerplate ()
   (interactive)
   (oo-ensure-file-header)
@@ -275,19 +274,6 @@ the battery percentage is greater than 90%."
      (oo-dwim-vc-push))
     (_
      nil)))
-
-(defhook! oo-auto-commit-and-push-dotfile-h (after-save-hook)
-  "Commit and push changes to dotfile on save.
-When a buffer is saved, check whether the saved file is part of the dotfiles
-repository and if it is, commit and push all changes.  Otherwise, do nothing."
-  (aand! (vc-root-dir)
-         (buffer-file-name)
-         (or (not (equal "Discharging" (battery-format "%B" (funcall battery-status-function))))
-             (> (string-to-number (battery-format "%p" (funcall battery-status-function))) 90))
-         (or (f-same-p it (f-full user-emacs-directory))
-             (f-same-p it (f-full "~")))
-         (not (equal (vc-state (buffer-file-name)) 'unregistered))
-         (save-restriction (oo-dwim-vc-action (buffer-file-name)))))
 
 (defun! oo-one-line (beg end)
   "Join lines in the region between BEG and END into a single line.
