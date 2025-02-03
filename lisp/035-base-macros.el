@@ -176,7 +176,7 @@ This is like `setq' but it is meant for configuring variables."
                            (with-no-warnings (setq ,symbol ,value-var)))))))
     `(if (not (boundp ',symbol))
          ;; This quote on he lambda is needed to avoid infinite recursion.
-         (push (lambda () ,@main-forms) (gethash ',symbol oo-after-load-hash-table))
+         (push '(lambda () ,@main-forms) (gethash ',symbol oo-after-load-hash-table))
        ,@main-forms)))
 ;;;;; destructive modification macros
 (cl-defmacro appending! (place list &key (setter 'setf))
