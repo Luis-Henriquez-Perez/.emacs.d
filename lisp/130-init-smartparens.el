@@ -43,8 +43,6 @@
 (opt! sp-highlight-pair-overlay nil)
 (opt! sp-highlight-wrap-overlay nil)
 (opt! sp-show-pair-delay 0.2)
-
-
 ;;; provide
 (provide '130-init-smartparens)
 ;;; 130-init-smartparens.el ends here

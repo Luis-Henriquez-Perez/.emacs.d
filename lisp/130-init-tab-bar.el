@@ -54,10 +54,10 @@
 ;; restore a bookmark it creates a tab with the same name as it was.  I do not
 ;; know if `burly-tabs-mode' does the exact same thing.
 
-;; 
-;; 
-;; 
-;; 
+;;
+;;
+;;
+;;
 ;;; provide
 (provide '130-init-tab-bar)
 ;;; 130-init-tab-bar.el ends here
