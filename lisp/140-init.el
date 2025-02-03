@@ -41,7 +41,7 @@
 (hook! text-mode-hook visual-line-mode)
 (hook! on-first-input-hook minibuffer-depth-indicate-mode)
 (hook! after-init-hook window-divider-mode :depth 12)
-;;;;; emacs-lisp-mode-hook
+;;;; Enable custom font lock for emacs-lisp
 (defhook! oo-enable-elisp-font-lock-h (emacs-lisp-mode-hook)
   "Add custom font-lock keywords."
   (font-lock-add-keywords
@@ -51,7 +51,7 @@
       (2 font-lock-function-name-face nil t))
      ("\\_<\\(\\(?:it\\|other\\|this-fn\\)\\)\\_>"
       (1 font-lock-constant-face nil t)))))
-;;;;; override-global-map
+;;;; override-global-map
 ;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
 ;; to make it an intercept map for all evil states.  In evil, intercept maps are
 ;; maps that take priority (intercept) evil bindings when they have a different
@@ -61,7 +61,7 @@
 (defhook! oo-make-intercept-map-h (evil-mode-hook)
   "Register `oo-override-map' as an intercept map."
   (evil-make-intercept-map override-global-map 'all t))
-;;;;; emacs-startup-hook
+;;;; emacs-startup-hook
 (oo-call-after-load 'evil #'oo-call-after-load-functions)
 
 (defhook! init-after-load-functions-h (on-first-input-hook :depth 99)
@@ -70,7 +70,7 @@ Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
   (oo-call-after-load-functions)
   (hook! after-load-functions oo-call-after-load-functions))
-;;;;; load macros for init file
+;;;; load macros for init file
 ;; The macros in my configuration are expanded during compilation thereby saving
 ;; time because they do not need to be expanded during startup.  The one caviat
 ;; is that since they are already expanded at runtime my emacs configuration
@@ -79,9 +79,9 @@ file is loaded."
 ;; macros to be defined when I am actually editing emacs-lisp.  Therefore, I
 ;; load the `oo-macros' file.
 ;; This only needs to happen when emacs is compiled.
-;; (defhook! oo-require-macros-h (emacs-lisp-mode-hook)
-;;   (require '035-base-macros))
-;;;;; minibuffer
+(defhook! oo-require-macros-h (emacs-lisp-mode-hook)
+  (require '035-base-macros))
+;;;; Increase garbage collection while in minibuffer
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
 (defhook! oo-increase-garbage-collection-h (minibuffer-setup-hook :depth 10)
   "Boost garbage collection settings to `gcmh-high-cons-threshold'."
@@ -94,15 +94,15 @@ file is loaded."
   "Reset garbage collection settings to `gcmh-low-cons-threshold'."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
-;;;;; hooks
+;;;; Automatically delete trailing whitespace
 (defhook! oo-manage-trailing-whitespace-h (prog-mode-hook conf-mode-hook)
   "Show trailing whitespace and delete it before saving."
   (setq show-trailing-whitespace t)
   (oo-add-hook 'before-save-hook #'delete-trailing-whitespace :local t))
-;;;;; spelling
+;;;; spelling
 ;; (hook! text-mode flyspell-mode)
 ;; (hook! prog-mode-hook flyspell-prog-mode)
-;;;;; initialization
+;;;; Enable the mode line
 (defhook! initialize-modeline-h (after-init-hook :depth 90)
   "Initialize modeline."
   ;; I need to put the modeline in a variable so that the modeline does not
@@ -111,7 +111,7 @@ file is loaded."
   (require '123-base-mode-line)
   (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
   (oo-mode-line-update))
-;;;;; set initial font
+;;;; set initial font
 ;; This is very basic font setting based on available faces.  I have seen much
 ;; more complex font setups like in minemacs (which probably got its from doom)
 ;; but for now this will do.
@@ -242,8 +242,7 @@ Replace `kill-buffer--possibly-save' as advice."
          args))
 
 (setq completion-in-region-function #'oo-completion-in-region-function)
-;;;; custom
-;;;;; disable old themes before enabling new ones
+;;;; disable old themes before enabling new ones
 ;; We end up with remants of the faces of old themes when we load a new
 ;; one.  For this reason, I make sure to disable any enabled themes before applying
 ;; a new theme.
@@ -261,7 +260,7 @@ Replace `kill-buffer--possibly-save' as advice."
   (apply orig-fn args))
 
 (advice-add 'load-theme :around #'oo--disable-old-themes)
-;;;;; make setting faces actually work
+;;;; make setting faces actually work
 ;; Surprisingly, the function `custom-theme-set-faces' and `custom-set-faces' do
 ;; not by default actually change any faces.  For that to happen the variable
 ;; `custom--inhibit-theme-enable' needs to be nil.  Furthermore, because I
@@ -296,8 +295,7 @@ faces immediately."
         (apply #'custom-theme-set-faces theme faces)))))
 
 (add-hook 'enable-theme-functions #'oo-apply-custom-faces-h)
-;;;; locking
-;;;;; prevent =*Messages*= and =*scratch*= buffers from being killed
+;;;; prevent =*Messages*= and =*scratch*= buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
 ;; buffers; it can also mean that the locked buffers cannot be killed (e.g. via
