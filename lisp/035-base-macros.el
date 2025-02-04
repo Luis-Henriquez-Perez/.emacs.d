@@ -27,8 +27,7 @@
 ;;; Code:
 ;;;; requirements
 (require '030-base-utils)
-;;;; macros
-;;;;; anaphoric macros
+;;;; anaphoric macros
 (defmacro alet! (form &rest body)
   "Bind the result FORM to `it' for the duration of BODY."
   (declare (debug let) (indent 1))
@@ -66,7 +65,7 @@
   `(let ((it ,form1)
          (other ,form2))
      ,@body))
-;;;;; lef!
+;;;; lef!
 (defmacro lef! (bindings &rest body)
   "Bind each symbol in BINDINGS to its corresponding function during BODY.
 BINDINGS is a list of either (SYMBOL FUNCTION), where symbol is the symbol to be
@@ -113,7 +112,7 @@ writes to `standard-output'."
                (funcall this-fn start end filename append visit lockname
                         mustbenew))))
        ,@body)))
-;;;;; with-map!
+;;;; with-map!
 (defun oo--generate-with-map-body (map body &optional use-keywords-p)
   "Return a list of let-bindings for `with-map!'.
 Collect symbols matching REGEXP in BODY into an alist."
@@ -155,7 +154,7 @@ SYMBOL).  Occurrences of !!SYMBOL is let-bound to the result of evaluating
   (declare (indent 1))
   `(let* ,(oo--generate-with-map-body map body)
      ,@body))
-;;;;; opt!
+;;;; opt!
 (defmacro opt! (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
@@ -168,7 +167,7 @@ This is like `setq' but it is meant for configuring variables."
          ;; This quote on he lambda is needed to avoid infinite recursion.
          (push '(lambda () ,main-form) (gethash ',symbol oo-after-load-hash-table))
        ,main-form)))
-;;;;; destructive modification macros
+;;;; destructive modification macros
 (cl-defmacro appending! (place list &key (setter 'setf))
   "Append LIST to the end of PLACE.
 SETTER is the symbol of the macro or function used to do the setting."
@@ -251,7 +250,7 @@ SETTER, KEY, TEST, TEST-NOT are the same as in `adjoining!'."
 (defalias 'summing! 'cl-incf)
 (defalias 'subtracting! 'cl-decf)
 (defalias 'minusing! 'cl-decf)
-;;;;; autolet!
+;;;; autolet!
 ;;;;;; control flow macros
 (defmacro return! (&optional value)
   "Exit `autolet!' and return VALUE.
@@ -280,12 +279,10 @@ iteration and move to the next."
   "Indicator for defining local functions via `cl-flet' in `autolet!' forms."
   (declare (indent defun))
   (ignore name args body))
-(defalias 'macrolet! 'stub! "Indicator for defining local macros via
-`cl-macrolet' in `autolet!' forms.")
+(defalias 'macrolet! 'stub! "Indicator for defining local macros via `cl-macrolet' in `autolet!' forms.")
 (defalias 'mlet! 'macrolet!)
 (defalias 'flet! 'stub! "Same as `stub!'.")
-(defalias 'noflet! 'stub! "Indicator for temporary overriding function
-definitions via `lef!'.")
+(defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `lef!'.")
 (defalias 'nflet! 'stub! "Same as `noflet!'")
 ;;;;;; helpers
 (defmacro oo--autolet-inits (bodysym)
@@ -415,7 +412,7 @@ Enhanced looping control flow:
 `(catch \='return! (LOOP CONDITION (catch \='break! BODY)))'."
   (pcase-let ((`(,bindings ,body) (oo--autolet-data body)))
     `(let ,bindings (catch 'return! ,@body))))
-;;;;; defun! and defmacro!
+;;;; defun! and defmacro!
 (defun oo--arglist-symbols (arglist)
   "Return a list of argument symbols."
   (let (symbols)
@@ -455,7 +452,7 @@ NAME, ARGS and BODY are the same as in `defun'.
        ,@metadata
        (autolet! :noinit ,(oo--arglist-symbols arglist)
                  ,@body))))
-;;;;; for!
+;;;; for!
 (defmacro for! (loop-struct &rest body)
   "A generic looping macro and drop-in replacement for `dolist'.
 BODY is the body of the loop.  LOOP-STRUCT determines how `for!' loops and can
@@ -496,7 +493,7 @@ take the following forms:
                (dotimes (,elt ,list) ,@body))
               (t
                (error "Unknown list predicate: %S" ',loop-struct)))))))
-;;;;; after!
+;;;; after!
 ;; I made the decision to add a hook function to a hook regardless of whether
 ;; the hook has already has been run.  But if the hook has been run the hook
 ;; function is called individually.  The idea is that I do not want to just
@@ -508,7 +505,7 @@ take the following forms:
   `(progn
      (defun! ,name nil (with-no-warnings ,@body))
      (oo-call-after-load ',expr #',name)))
-;;;;; defhook!
+;;;; defhook!
 (defmacro hook! (hook function &rest args)
   "Configuration wrapper around `oo-add-hook'."
   `(progn (declare-function ,function nil)
@@ -528,7 +525,7 @@ take the following forms:
   `(progn
      (defun! ,name nil ,@metadata ,@body)
      ,@hook-forms))
-;;;;; setq-hook
+;;;; setq-hook
 (defmacro! setq-hook! (hooks symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
   (dolist (hook (ensure-list hooks))
@@ -546,7 +543,7 @@ take the following forms:
                                (cdr err))))))
     (appending! forms `((fset ',name ,lambda) (add-hook ',hook #',name nil nil))))
   (macroexp-progn forms))
-;;;;; set!
+;;;; set!
 (defmacro set! (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.
 If MATCH-FORM is a symbol act as `setq'."
