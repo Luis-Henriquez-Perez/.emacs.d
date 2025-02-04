@@ -38,6 +38,16 @@
   "Return non-nil if NUMBER is greater than zero."
   (declare (pure t) (side-effect-free error-free))
   (> number 0))
+
+(defun oo-in-string-or-comment-p ()
+  "Return non-nil if point is in a string or comment.
+Specifically, return the symbol `string' if point is in a string, the symbol
+`comment' if in a comment and nil otherwise."
+  (declare (pure t) (side-effect-free t))
+  (let ((ppss (syntax-ppss)))
+    (cond ((nth 3 ppss) 'string)
+          ((nth 4 ppss) 'comment)
+          (t nil))))
 ;;;; destructuring
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
@@ -171,7 +181,6 @@ Return a flat list of unique components in MATCH-FORM."
                          (cl-pushnew (pop stack) symbols))))
                 symbols)))
     (cl-set-difference (flatten-pattern match-form) '(\, \`))))
-;;;; hook
 (defun oo-add-hook (hook function &rest args)
   "Generate a function that calls FUNCTION and add it to HOOK.
 Generated function call FUNCTION and logs any errors.  If IGNORE-ARGS, then do
@@ -196,17 +205,6 @@ generated function does not pass in any of its given arguments to FUNCTION."
                                   (car err)
                                   (cdr err))))))))
     (add-hook hook fname depth local)))
-;;;; uncategorized
-;; This function is used by captain and abbrev.
-(defun oo-in-string-or-comment-p ()
-  "Return non-nil if point is in a string or comment.
-Specifically, return the symbol `string' if point is in a string, the symbol
-`comment' if in a comment and nil otherwise."
-  (declare (pure t) (side-effect-free t))
-  (let ((ppss (syntax-ppss)))
-    (cond ((nth 3 ppss) 'string)
-          ((nth 4 ppss) 'comment)
-          (t nil))))
 ;;; provide
 (provide '030-base-utils)
 ;;; 030-base-utils.el ends here
