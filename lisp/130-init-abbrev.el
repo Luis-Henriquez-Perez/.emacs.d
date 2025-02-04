@@ -34,9 +34,7 @@
 ;; right as your typing--but doing that would actually cause a noticable delay
 ;; when typing a character.
 (defhook! oo-load-plain-text-abbrevs-h (abbrev-mode-hook)
-  (when (derived-mode-p 'text-mode)
-    (require '999-plain-text-abbrevs))
-  (remove-hook 'abbrev-mode-hook #'oo-load-plain-text-abbrevs-h))
+  (require '999-plain-text-abbrevs))
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)
