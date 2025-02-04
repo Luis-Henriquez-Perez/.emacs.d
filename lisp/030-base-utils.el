@@ -43,7 +43,7 @@
   "Return non-nil if point is in a string or comment.
 Specifically, return the symbol `string' if point is in a string, the symbol
 `comment' if in a comment and nil otherwise."
-  (declare (pure t) (side-effect-free t))
+  (declare (side-effect-free error-free))
   (let ((ppss (syntax-ppss)))
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
