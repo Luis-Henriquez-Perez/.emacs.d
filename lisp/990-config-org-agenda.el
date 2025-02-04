@@ -233,7 +233,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 ;;;;;; Update agenda after certain actions
 (defun oo--update-agenda (orig-fn &rest args)
   (prog1 (apply orig-fn args)
-    (quietly! (call-interactively #'org-agenda-redo))))
+    (quiet! (call-interactively #'org-agenda-redo))))
 
 (advice-add 'org-agenda-todo :around #'oo--update-agenda)
 ;;;; miscellaneous

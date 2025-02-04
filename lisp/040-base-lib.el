@@ -39,7 +39,7 @@
 ;;;; oo-funcall-quietly
 (defun oo-funcall-quietly (fn &rest args)
   "Call FN with ARGS without producing any output."
-  (quietly! (apply fn args)))
+  (quiet! (apply fn args)))
 ;;;; popup
 ;; I don't yet know where to put this function.  So for now, here it goes.
 (defun oo-popup-at-bottom (regexp)

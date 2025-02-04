@@ -94,8 +94,8 @@ original function to `this-fn', otherwise bind `this-fn' to nil."
                           ,@function-body)))))
             binds))
     `(cl-letf* ,(nreverse binds) ,@body)))
-;;;;; quietly!
-(defmacro quietly! (&rest body)
+;;;; quiet!
+(defmacro quiet! (&rest body)
   "Run BODY without generating any output.
 Silence calls to `message', `load', `write-region' and anything that
 writes to `standard-output'."
