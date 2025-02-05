@@ -211,7 +211,6 @@
                                      (evil-easymotion :url "https://github.com/Luis-Henriquez-Perez/evil-easymotion" :branch "master")
                                      (on :url "https://github.com/ajgrf/on.el")
                                      (outli :url "https://github.com/jdtsmith/outli")
-                                     (spaceline :url "https://github.com/Luis-Henriquez-Perez/spaceline" :branch "add-evil-operator-state-face")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
 ;; The function `package-install-selected-packages' does not activate the
