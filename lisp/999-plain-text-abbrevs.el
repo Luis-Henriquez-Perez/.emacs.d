@@ -51,6 +51,17 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "optinally"        "optionally"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "pagkes"           "packages"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "recommendd"       "recommendation"                nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "recomn"           "recommendation"                nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "recom"            "recommend"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "recomm"           "recommend"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "icdju"            "I could just use"              nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "iwitb"            "I want it to be"               nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "iwditb"           "I wanted it to be"             nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "syncl"            "synchronously"                 nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "emacs"            "Emacs"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "eivl"             "evil"                          nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "biding"           "binding"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "abrev"            "abbrev"                        nil :enable-function #'oo--use-plain-text-abbrev-p)
