@@ -62,31 +62,31 @@
 (declare-function evil-normal-state "evil")
 ;;;; faces
 (defface +evil-emacs-state-face
-  '((t (:inherit (font-lock-builtin-face))))
+  '((t (:inherit font-lock-builtin-face :background "#3a3a3a")))
   "Face for the Emacs state tag in evil indicator.")
 
 (defface +evil-insert-state-face
-  '((t (:inherit (font-lock-keyword-face))))
+  '((t (:inherit font-lock-keyword-face :background "#005f87")))
   "Face for the insert state tag in evil indicator.")
 
 (defface +evil-motion-state-face
-  '((t (:inherit (font-lock-doc-face) :slant normal)))
+  '((t (:inherit font-lock-doc-face :slant normal :background "#005f5f")))
   "Face for the motion state tag in evil indicator.")
 
 (defface +evil-normal-state-face
-  '((t (:inherit font-lock-constant-face)))
+  '((t (:inherit font-lock-constant-face :background "#262626")))
   "Face for the normal state tag in evil indicator.")
 
 (defface +evil-operator-state-face
-  '((t (:inherit (mode-line))))
+  '((t (:inherit mode-line :background "#4e4e4e")))
   "Face for the operator state tag in evil indicator.")
 
 (defface +evil-visual-state-face
-  '((t (:inherit font-lock-warning-face)))
+  '((t (:inherit font-lock-warning-face :background "#870000")))
   "Face for the visual state tag in evil indicator.")
 
 (defface +evil-replace-state-face
-  '((t (:inherit font-lock-keyword-face)))
+  '((t (:inherit font-lock-keyword-face :background "#87005f")))
   "Face for the replace state tag in evil indicator.")
 ;;;; change cursor color and shape according to current evil state
 ;; Did not realize for the longest time that evil cursor can be a function that
