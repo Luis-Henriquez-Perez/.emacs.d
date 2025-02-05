@@ -92,6 +92,8 @@
 ;; Did not realize for the longest time that evil cursor can be a function that
 ;; changes the cursor.  With this in mind, the best way to set the cursor size
 ;; and shape dynamically is to set the corresponding cursor symbols to functions.
+(declare-function evil-set-cursor "evil")
+(defvar evil-state)
 (defun +evil-state-face ()
   "Return the cursor color for state as a string."
   (intern (format "+evil-%s-state-face" evil-state)))
