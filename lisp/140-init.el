@@ -35,6 +35,7 @@
 ;; when as opposed to the configuration for over 50 individual packages.  The
 ;; focus is now on what is happening in my configuration as opposed to the many
 ;; individual configurations.
+(hook! prog-mode-hook rainbow-mode)
 (hook! prog-mode-hook auto-fill-mode)
 (hook! prog-mode-hook hs-minor-mode)
 (hook! text-mode-hook auto-fill-mode)
