@@ -25,6 +25,9 @@
 ;; Initialize modus-themes.
 ;;
 ;;; Code:
+;; Without this the compiler will not know how to expand `modus-themes-with-colors'.
+(eval-when-compile (require 'modus-themes))
+
 (defun oo-apply-custom-faces-for-modus-themes-h (theme)
   "Add custom faces for `modus-themes'.
 This hook is meant to be added to `enabled-theme-functions'."
