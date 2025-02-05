@@ -43,6 +43,12 @@
 (adjoin! recentf-exclude (regexp-quote (recentf-expand-file-name oo-var-dir)))
 (adjoin! recentf-exclude (lambda (file) (not (file-exists-p file))))
 
+(defhook! oo--update-recentf-list (kill-buffer-hook)
+  "Update the recentf list just before killing a buffer."
+  (awhen! (buffer-file-name)
+    (recentf-add-file it)
+    (run-with-idle-timer 5 nil #'recentf-save-list)))
+
 (setq recentf-max-saved-items nil)
 ;;;; always keep important files in recentf-list
 (recentf-push (recentf-expand-file-name "~/.xinitrc"))
