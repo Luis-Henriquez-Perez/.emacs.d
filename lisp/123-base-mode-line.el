@@ -29,8 +29,6 @@
 (require 'battery)
 (require 'dash)
 (require 'powerline)
-(require 'spaceline)
-
 ;;;; Silence byte-compilation
 (defvar evil-state)
 (defvar org-clock-start-time)
@@ -512,7 +510,7 @@ This means the line number and percentage."
   (set! face2 (if active 'mode-line 'mode-line-inactive))
   (set! face3 (if active 'powerline-active2 'powerline-inactive2))
   (set! fill-face (if active 'powerline-active0 'powerline-inactive0))
-  (set! evil-face (spaceline-highlight-face-evil-state))
+  (set! evil-face (+evil-state-face))
   (oo-mode-line-render '(evil-state buffer-info version-control)
                        '(text-scale clocked-in pomodoro battery buffer-location current-time)
                        `(,fill-face ,evil-face ,face1 ,face2 ,face3)))

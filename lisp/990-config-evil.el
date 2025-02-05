@@ -101,55 +101,6 @@
   (prog1 (apply orig args)
     (unless (equal bg (face-attribute 'cursor :background))
       (set-cursor-color bg))))
-;;;; change cursor color and shape according to current evil state
-;; Did not realize for the longest time that evil cursor can be a function that
-;; changes the cursor.  With this in mind, the best way to set the cursor size
-;; and shape dynamically is to set the corresponding cursor symbols to functions.
-(defun +evil--cursor-color (state)
-  "Return the cursor color for state as a string."
-  (cond ((bound-and-true-p telephone-line-mode)
-         (face-attribute (intern (format "telephone-line-evil-%s" state)) :background nil t))
-        ((facep (intern (format "spaceline-evil-%s" state)))
-         (face-attribute (intern (format "spaceline-evil-%s" state)) :background nil t))
-        (t
-         (face-attribute 'cursor :background nil t))))
-
-(defun +evil-normal-state-cursor ()
-  "Set cursor for normal state."
-  (evil-set-cursor (list t (+evil--cursor-color 'normal))))
-
-(defun +evil-insert-state-cursor ()
-  "Set cursor for insert state."
-  (evil-set-cursor (list '(bar . 2) (+evil--cursor-color 'insert))))
-
-(defun +evil-visual-state-cursor ()
-  "Set cursor for visual state."
-  (evil-set-cursor (list t (+evil--cursor-color 'visual))))
-
-(defun +evil-motion-state-cursor ()
-  "Set cursor for motion state."
-  (evil-set-cursor (list t (+evil--cursor-color 'motion))))
-
-(defun +evil-replace-state-cursor ()
-  "Set cursor for replace state."
-  (evil-set-cursor (list t (+evil--cursor-color 'replace))))
-
-(defun +evil-operator-state-cursor ()
-  "Set cursor for operator state."
-  (evil-set-cursor (list '(hbar . 9) (+evil--cursor-color 'operator))))
-
-(defun +evil-emacs-state-cursor ()
-  "Set cursor for emacs state."
-  (evil-set-cursor (list t (+evil--cursor-color 'emacs))))
-
-(opt! evil-normal-state-cursor   #'+evil-normal-state-cursor)
-(opt! evil-insert-state-cursor   #'+evil-insert-state-cursor)
-(opt! evil-visual-state-cursor   #'+evil-visual-state-cursor)
-(opt! evil-motion-state-cursor   #'+evil-motion-state-cursor)
-(opt! evil-replace-state-cursor  #'+evil-replace-state-cursor)
-(opt! evil-operator-state-cursor #'+evil-operator-state-cursor)
-(opt! evil-emacs-state-cursor    #'+evil-emacs-state-cursor)
-;;;; make the visual selection face the same as the visual cursor color
 ;;;; insert state hook
 (defun +evil-enter-insert-state-h ()
   "Enter insert state if `evil-mode' is enabled."
@@ -180,6 +131,23 @@
 ;; Note that I cannot use `evil-set-initial-state' for this because
 ;; `git-commit-mode' is a minor-mode.
 (hook! git-commit-mode-hook +evil-enter-insert-state-hook)
+;;;; miscellaneous
+(defun oo-dwim-escape ()
+  "Exits out of whatever is happening after escape."
+  (interactive)
+  (when (bound-and-true-p evil-mode)
+    (evil-normal-state 1))
+  (cond ((minibuffer-window-active-p (minibuffer-window))
+		 (if (or defining-kbd-macro executing-kbd-macro)
+			 (minibuffer-keyboard-quit)
+           (abort-recursive-edit)))
+		((or defining-kbd-macro executing-kbd-macro) nil)
+        (t
+         (when (and (not buffer-read-only)
+                    (buffer-file-name)
+                    (buffer-modified-p))
+           (save-buffer))
+		 (keyboard-quit))))
 ;;; provide
 (provide '990-config-evil)
 ;;; 990-config-evil.el ends here
