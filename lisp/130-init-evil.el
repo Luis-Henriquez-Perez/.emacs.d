@@ -28,8 +28,10 @@
 ;;;; requirements
 (require '050-base)
 ;;;; settings
-;; Must be set before evil is loaded.
-(opt! evil-want-keybinding nil)
+;; Must be set before evil is loaded.  This, therefore, cannot be deferred with
+;; `opt!'.  If this is not set evil with add opinionated bindings to certain
+;; programs like dired which will override my own.
+(setq evil-want-keybinding nil)
 
 ;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
 ;; to make it an intercept map for all evil states.  In evil, intercept maps are
