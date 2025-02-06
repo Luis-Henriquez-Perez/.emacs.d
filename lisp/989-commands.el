@@ -147,10 +147,10 @@ is already narrowed."
         (t
          (insert "\s"))))
 
+(defvar consult--buffer-display)
 (defun! oo-pop-to-buffer ()
   (interactive)
   (require 'consult)
-  (defvar consult--buffer-display)
   (set! consult--buffer-display #'pop-to-buffer)
   (call-interactively #'consult-buffer))
 
