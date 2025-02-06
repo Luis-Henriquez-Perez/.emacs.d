@@ -341,8 +341,8 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
          (buffer-file-name)
          (or (not (equal "Discharging" (battery-format "%B" (funcall battery-status-function))))
              (> (string-to-number (battery-format "%p" (funcall battery-status-function))) 90))
-         (or (f-same-p it (f-full user-emacs-directory))
-             (f-same-p it (f-full "~")))
+         (or (file-equal-p it (expand-file-name user-emacs-directory))
+             (file-equal-p it (expand-file-name "~")))
          (not (equal (vc-state (buffer-file-name)) 'unregistered))
          (save-restriction (oo-dwim-vc-action (buffer-file-name)))))
 ;;;; xref
