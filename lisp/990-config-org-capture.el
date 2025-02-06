@@ -32,7 +32,7 @@
 (require 'ts)
 (require 'org-capture)
 ;;;; disable header-line
-(setq-hook! org-capture-mode-hook header-line-format nil)
+;; (setq-hook! org-capture-mode-hook header-line-format nil)
 ;;;; use completing-read for org-capture
 (defun! +org-capture-choose-template ()
   "Choose capture template to open."
