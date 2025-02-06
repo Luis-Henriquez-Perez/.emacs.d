@@ -113,6 +113,9 @@
   (set! rules `((rule1 . ((regexp . ,regexp) (group . (1 2 3 4 5 6))))))
   (align (point-min) (point-max) nil rules))
 ;;;; miscellaneous
+(declare-function org-narrow-to-block "org")
+(declare-function org-narrow-to-subtree "org")
+(declare-function outli-toggle-narrow-to-subtree "org")
 (defun oo-dwim-narrow (keep-narrowing-p)
   "Widen if buffer is narrowed, narrow-dwim otherwise.
 Dwim means: narrow to region, outline heading, org-src-block, org-subtree, or
