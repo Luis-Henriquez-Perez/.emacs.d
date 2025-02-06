@@ -51,9 +51,6 @@
 (setq package-quickstart-file (expand-file-name ".local/var/package-quickstart.el" user-emacs-directory))
 (setq package-quickstart t)
 
-;; (unless (file-exists-p package-quickstart-file)
-;;   (package-quickstart-refresh))
-
 (setq package-archive-priorities '(("melpa" . 10) ("gnu-elpa" . 9) ("nongnu" . 8)))
 
 (setq package-selected-packages '(ace-jump-helm-line
