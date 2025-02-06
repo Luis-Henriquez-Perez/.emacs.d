@@ -48,12 +48,11 @@
 (add-to-list 'package-archives '("melpa"          . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("nongnu"         . "https://elpa.nongnu.org/nongnu/"))
 
-;; (setq package-quickstart-file (expand-file-name ".local/var/package-quickstart.el" user-emacs-directory))
+(setq package-quickstart-file (expand-file-name ".local/var/package-quickstart.el" user-emacs-directory))
+(setq package-quickstart t)
 
 ;; (unless (file-exists-p package-quickstart-file)
 ;;   (package-quickstart-refresh))
-
-;; (setq package-quickstart t)
 
 (setq package-archive-priorities '(("melpa" . 10) ("gnu-elpa" . 9) ("nongnu" . 8)))
 
@@ -237,13 +236,13 @@
              (unless refreshed-contents-p
                (package-refresh-contents)
                (setq refreshed-contents-p (not refreshed-contents-p)))
-             (message "package is not installed %s package" package)
+             (oo-log 'info "package is not installed %s package" package)
              (with-demoted-errors "%S" (package-install package 'dont-select))
              (if (package-installed-p package)
                  (garbage-collect)
-               (message "Failed to install package `%s'" package))))
+               (oo-log 'error "Failed to install package `%s'" package))))
           (t
-           (message "Package %s is not available." package)))))
+           (oo-log 'info "Package %s is not available." package)))))
 
 (package-vc-install-selected-packages)
 ;;; provide
