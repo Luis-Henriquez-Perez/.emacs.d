@@ -904,7 +904,7 @@ string or comment."
 (define-abbrev global-abbrev-table "devv"             "development"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "mgiht"            "might"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "despa"            "desparate"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
-(define-abbrev global-abbrev-table "prog"             "programming"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "progg"             "programming"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "ttit"             "the thing is that"             nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "tti"              "the thing is"                  nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "paht"             "path"                          nil :enable-function #'oo--use-plain-text-abbrev-p)
