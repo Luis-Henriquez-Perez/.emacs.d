@@ -292,6 +292,12 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; the answer is predominately yes.
 (setq vc-follow-symlinks t)
 (setq vc-follow-link t)
+
+;; https://tychoish.com/post/towards-faster-emacs-start-times/
+(setq jit-lock-stealth-time nil)
+(setq jit-lock-defer-time nil)
+(setq jit-lock-defer-time 0.05)
+(setq jit-lock-stealth-load 200)
 ;;; provide
 (provide '020-base-settings)
 ;;; 020-base-settings.el ends here
