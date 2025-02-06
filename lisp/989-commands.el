@@ -185,55 +185,7 @@ is already narrowed."
   (interactive)
   (display-buffer (generate-new-buffer "untitled")))
 
-;; (defun oo-ensure-file-header ()
-;;   (interactive)
-;;   (oo--ensure-file-header))
-
-;; (defun! oo--create-lisp-dir-file (name dir comment1 comment2)
-;;   "Auxiliary function."
-;;   (set! filename (expand-file-name name dir))
-;;   (cl-assert (not (file-exists-p filename)))
-;;   (with-current-buffer (find-file filename)
-;;     (oo--ensure-file-header)
-;;     (goto-char (point-min))
-;;     ;; This is a kind of roundabout way of doing it.  Not sure if it is the
-;;     ;; "best" way whatever that means, but it works.
-;;     (search-forward "TODO: add commentary" nil t nil)
-;;     (replace-match comment1)
-;;     (search-forward "TODO: add commentary" nil t nil)
-;;     (replace-match comment2)
-;;     (save-excursion (oo--ensure-provide filename))))
-
-;; (defun! oo-create-new-init-file (feature)
-;;   "Create a new init file for feature."
-;;   (interactive "sFeature: ")
-;;   (set! filename (format "init-%s.el" feature))
-;;   (set! comment1 (format "Initialize %s" feature))
-;;   (set! comment2 (format "Initialize %s." feature))
-;;   (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
-
-;; (defun! oo-create-new-config-file (feature)
-;;   "Create a new config file for feature."
-;;   (interactive "sFeature: ")
-;;   (set! filename (format "990-config-%s.el" feature))
-;;   (set! comment1 (format "Configure %s" feature))
-;;   (set! comment2 (format "Configure %s." feature))
-;;   (oo--create-lisp-dir-file filename oo-lisp-dir comment1 comment2))
-
-(defun! oo-create-new-test-file (feature)
-  "Create a new config file for feature."
-  (interactive "sFeature: ")
-  (set! test-dir (expand-file-name "test" user-emacs-directory))
-  (set! filename (format "base-%s-test.el" feature))
-  (set! comment1 (format "Test %s" feature))
-  (set! comment2 (format "Test %s." feature))
-  (oo--create-lisp-dir-file filename test-dir comment1 comment2))
-
-(defun oo-ensure-boilerplate ()
-  (interactive)
-  (oo-ensure-file-header)
-  (oo-ensure-provide))
-
+(declare-function vc-git--pushpull "vc-git")
 (defun! oo-dwim-vc-push ()
   (interactive)
   (pushing! display-buffer-alist '("\\*vc-git"
