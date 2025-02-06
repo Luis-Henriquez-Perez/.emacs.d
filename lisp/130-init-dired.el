@@ -40,18 +40,6 @@
 (opt! dired-clean-confirm-killing-deleted-buffers nil)
 (opt! dired-recursive-copies 'always)
 (opt! dired-recursive-deletes 'always)
-
-
-;; Dired is very picky about when these bindings happen.  It is the only package
-;; I have had that is that picky.  I have noticed that unlike every other
-;; package I have tried dired bindings do not work by trying to set them when
-;; `dired-mode-map' is bound.  You need to use (eval-after-load 'dired ...).
-;; Also, even if you have the `eval-after-load' it work work from the
-;; `oo-after-load-dired' file--do not ask me why.  Again, only package I have
-;; had this happen with.
-
-
-
 ;;; provide
 (provide '130-init-dired)
 ;;; 130-init-dired.el ends here
