@@ -34,6 +34,17 @@
 (defvar oo-log-format-fn #'oo--default-log-formatter
   "Function that formats the log messsage.")
 
+(defvar oo-log-level-alist '((fatal . 6)
+                             (error . 5)
+                             (warn  . 4)
+                             (info  . 3)
+                             (debug . 2)
+                             (trace . 1))
+  "Alist of log level value.")
+
+(defvar oo-log-level 3
+  "Current log level.")
+
 (defun oo--default-log-formatter (type message meta)
   (format "[%s] %s" (upcase (symbol-name type)) (apply #'format message meta)))
 
@@ -42,7 +53,7 @@
     (setq time (/ (fround (* time 100)) 100.0))
     (format "[%s] %.2f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
 
-(defun oo-log (type message &rest meta)
+(defun oo-log (level message &rest meta)
   "Log a formatted MESSAGE of a given TYPE to the `oo-log-buffer`.
 
 Append a log entry to the buffer specified by `oo-log-buffer`.
@@ -50,30 +61,31 @@ If the last log entry in the buffer matches the new message, it increments a
 repeat count at the end of the line displayed instead of creating a new entry.
 The count is displayed as ‘(N)’ where N is the number of times the message was
 logged."
-  (let* ((buffer (get-buffer-create oo-log-buffer))
-         (output (funcall oo-log-format-fn type message meta))
-         (excess nil))
-    (with-current-buffer buffer
-      (unless view-mode (view-mode t))
-      ;; Add to buffer without constantly moving focus to the end.
-      (let ((inhibit-read-only t))
-        (save-excursion
-          (goto-char (point-max))
-          (or (save-excursion
-                (and (zerop (forward-line -1))
-                     (looking-at (rx bol (literal output)))
-                     (goto-char (match-end 0))
-                     (or (and (looking-at (rx space "(" space (group (1+ digit)) space ")" eol))
-                              (let ((it (match-string 1)))
-                                (replace-match (number-to-string (+ 1 (string-to-number it))) nil nil nil 1)
-                                t))
-                         (progn (insert " ( 2 )") t))))
-              (progn (insert output)
-                     (insert "\n")))
-          (setq excess (- (line-number-at-pos (point-max)) (1+ oo-log-buffer-max)))
-          (when (> excess 0)
-            (goto-char (point-min))
-            (dotimes (_ excess) (delete-line))))))))
+  (when (>= (alist-get level oo-log-level-alist) oo-log-level)
+    (let* ((buffer (get-buffer-create oo-log-buffer))
+           (output (funcall oo-log-format-fn level message meta))
+           (excess nil))
+      (with-current-buffer buffer
+        (unless view-mode (view-mode t))
+        ;; Add to buffer without constantly moving focus to the end.
+        (let ((inhibit-read-only t))
+          (save-excursion
+            (goto-char (point-max))
+            (or (save-excursion
+                  (and (zerop (forward-line -1))
+                       (looking-at (rx bol (literal output)))
+                       (goto-char (match-end 0))
+                       (or (and (looking-at (rx space "(" space (group (1+ digit)) space ")" eol))
+                                (let ((it (match-string 1)))
+                                  (replace-match (number-to-string (+ 1 (string-to-number it))) nil nil nil 1)
+                                  t))
+                           (progn (insert " ( 2 )") t))))
+                (progn (insert output)
+                       (insert "\n")))
+            (setq excess (- (line-number-at-pos (point-max)) (1+ oo-log-buffer-max)))
+            (when (> excess 0)
+              (goto-char (point-min))
+              (dotimes (_ excess) (delete-line)))))))))
 ;;; provide
 (provide '001-init-log)
 ;;; 001-init-log.el ends here
