@@ -25,11 +25,9 @@
 ;; "./".
 (setq eldev-main-fileset '("./init.el"
                            "./early-init.el"
-                           "lisp/init-*.el"
-                           "lisp/base*.el"
-                           "lisp/config*.el"
-                           "lisp/+abbrev*.el"))
-(setq eldev-test-fileset '("test/base*.el"))
+                           "./lisp/*.el"))
+
+(setq eldev-test-fileset '("test/*-test.el"))
 ;; Emacs doesn't allow to add directory containing init.el to load
 ;; path, so we have to put other Emacs Lisp files in directory. Help
 ;; Eldev commands to locate them.
@@ -67,10 +65,10 @@
   ;; (setq-default elpa-bootstrap t)
   (setq-default load-prefer-newer t)
   (eldev--inject-loading-roots 'bootstrap)
-  (let ((init-file (expand-file-name "init.el" eldev-real-user-emacs-directory)))
-    (message "BOOTSTRAPPING!")
-    (message "eldev-real-user-emacs-directory: %S" eldev-real-user-emacs-directory)
-    (load init-file))
+  ;; (let ((init-file (expand-file-name "init.el" eldev-real-user-emacs-directory)))
+  ;;   (message "BOOTSTRAPPING!")
+  ;;   (message "eldev-real-user-emacs-directory: %S" eldev-real-user-emacs-directory)
+  ;;   (load init-file))
   ;; (add-to-list 'load-path (expand-file-name "lisp/" eldev-real-user-emacs-directory))
   ;; (add-to-list 'load-path (expand-file-name "straight/" eldev-real-user-emacs-directory))
   ;; Any time I try to add to the `load-path' something from my
