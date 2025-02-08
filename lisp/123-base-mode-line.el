@@ -398,7 +398,7 @@ Words are determined by splitting STRING on whitespace."
      (cond ((and (not display-charging-p)
                  (or (equal battery-status "Charging")
                      (and (equal battery-status "Not charging")
-                          (> percentage 95))))
+                          (> percentage 90))))
             ;; If the battery's good, why display it?
             "")
            ;; There's a distinction between charging, not charging and
