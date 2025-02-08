@@ -36,7 +36,8 @@ CLOSED: [2025-01-09 Thu 14:12]
 ** TODO use =trace!= for some hooks because they are polluting the log
 ** TODO rice up the dashboard
 ** TODO add a better keybinding for going to evil-marker than =`=
-** TODO update auto-insert to create emacs-lisp templates with any file
+** DONE update auto-insert to create emacs-lisp templates with any file
+CLOSED: [2025-02-08 Sat 15:04]
 ** TODO stop captain from capitalizing with multiple headline delimiters
 ** DONE add profiling mechanism
 CLOSED: [2025-01-29 Wed 11:09]
