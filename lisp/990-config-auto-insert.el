@@ -111,9 +111,10 @@
              (goto-char (point-max))
              (insert (format ";;; provide\n(provide '%s)\n%s" feature footer-commentary)))))))
 
-(defun oo--ensure-file-header ()
-  "Ensure that file has a title, description."
-  ;; Make sure that the file has a title.
+(defun oo--ensure-file-header (comment1 comment2)
+  "Add an emacs-lisp copyright header to current buffer.
+COMMENT1 is the description of the file at the top.  COMMENT2 is the description
+in the commentary part."
   (let* ((file (buffer-file-name))
          (filename (file-name-sans-extension (file-name-nondirectory file)))
          (header-rx (oo-header-regexp))
@@ -123,14 +124,14 @@
       (if (looking-at header-rx)
           (progn (replace-match filename nil 'literal nil 1)
                  (goto-char (match-end 0)))
-        (insert (format ";;; %s.el --- TODO: add commentary -*- lexical-binding: t; -*-\n" filename)))
+        (insert (format ";;; %s.el --- %s -*- lexical-binding: t; -*-\n" filename comment1)))
       ;; Ensure license.
       (unless (looking-at lisence-rx)
         (insert (oo-copyright-license)))
       ;; Ensure commentary.
       (if (looking-at ";;; Commentary:\n\\(?:\\(?:^;;$\\)\n\\|\\(?:^;;[^;].*$\\)\n\\)*")
           (goto-char (match-end 0))
-        (insert ";;; Commentary:\n;;\n;; TODO: add commentary\n;;\n"))
+        (insert (format ";;; Commentary:\n;;\n;; %s\n;;\n" comment2)))
       (if (looking-at "\\`;;;[[:blank:]]Code:\n")
           (goto-char (match-end 0))
         (insert ";;; Code:\n")))))
@@ -138,21 +139,19 @@
 (defun! oo-auto-insert-elisp-template ()
   "Insert emacs-lisp template in file."
   (set! path (buffer-file-name))
-  (set! base (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
-  (when (f-child-of-p path user-emacs-directory)
-    (cond ((string-match base))
-          ((string-match base))
-          ((string-match base)
-           (format "Test `%s'." base)
-           (format "Test `%s'." base)))
-    (oo--ensure-file-header)
+  (set! base (f-base path))
+  (when (f-descendant-of-p path user-emacs-directory)
+    (pcase path
+      ((rx "test.el" eos)
+       (alet! (format "Test `%s'." base)
+         (oo--ensure-file-header (substring it 0 -1) it)))
+      ((rx (= 3 digit) "init-" (1+ nonl) ".el" eos)
+       (alet! (format "Initialize `%s'." base)
+         (oo--ensure-file-header (substring it 0 -1) it)))
+      ((rx (= 3 digit) "config-" (1+ nonl) ".el" eos)
+       (alet! (format "Configure `%s'." base)
+         (oo--ensure-file-header (substring it 0 -1) it))))
     (goto-char (point-min))
-    ;; This is a kind of roundabout way of doing it.  Not sure if it is the
-    ;; "best" way whatever that means, but it works.
-    (search-forward "TODO: add commentary" nil t nil)
-    (and comment1 (replace-match comment1))
-    (search-forward "TODO: add commentary" nil t nil)
-    (and comment2 (replace-match comment2))
     (save-excursion (oo--ensure-provide path))))
 
 (defun! oo-auto-insert-html-template ()
