@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (require '050-base)
-(eval-when-compile (require '155-base-macros-bind))
+(eval-when-compile (require '155-base-bind-macros))
 (require 'bind-key)
 (hook! after-init-hook override-global-mode :depth -100)
 ;;;; keybinding leaders
