@@ -27,6 +27,23 @@
 ;;; Code:
 ;;;; requirements
 (require '030-base-utils)
+
+(defun oo--arglist-symbols (arglist)
+  "Return a list of argument symbols."
+  (let (symbols)
+    (dolist (item (flatten-list arglist))
+      (when (and (symbolp item) (not (string-match "^&" (symbol-name item))))
+        (push item symbols)))
+    (nreverse symbols)))
+
+(defun oo--definer-components (args)
+  (let ((name (pop args))
+        (arglist (pop args))
+        (doc (and (stringp (car args)) (pop args)))
+        (decl (and (equal 'declare (car-safe (car args))) (pop args)))
+        (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
+    (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
+
 ;;;; anaphoric macros
 (defmacro alet! (form &rest body)
   "Bind the result FORM to `it' for the duration of BODY."
@@ -413,22 +430,6 @@ Enhanced looping control flow:
   (pcase-let ((`(,bindings ,body) (oo--autolet-data body)))
     `(let ,bindings (catch 'return! ,@body))))
 ;;;; defun! and defmacro!
-(defun oo--arglist-symbols (arglist)
-  "Return a list of argument symbols."
-  (let (symbols)
-    (dolist (item (flatten-list arglist))
-      (when (and (symbolp item) (not (string-match "^&" (symbol-name item))))
-        (push item symbols)))
-    (nreverse symbols)))
-
-(defun oo--definer-components (args)
-  (let ((name (pop args))
-        (arglist (pop args))
-        (doc (and (stringp (car args)) (pop args)))
-        (decl (and (equal 'declare (car-safe (car args))) (pop args)))
-        (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
-    (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
-
 (defmacro defmacro! (&rest args)
   "Same as `defmacro!' but wrap body with `autolet!'.
 NAME, ARGLIST and BODY are the same as `defmacro!'.

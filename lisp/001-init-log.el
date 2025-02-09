@@ -48,8 +48,8 @@
 (defun oo--default-log-formatter (type message meta)
   (format "[%s] %s" (upcase (symbol-name type)) (apply #'format message meta)))
 
-(defun oo-load-time-format-fn (type message meta)
-  (let ((time (float-time (time-subtract (current-time) oo-load-start-time))))
+(defun oo-startup-format-fn (start-time type message meta)
+  (let ((time (float-time (time-subtract (current-time) start-time))))
     (setq time (/ (fround (* time 100)) 100.0))
     (format "[%s] %.2f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
 

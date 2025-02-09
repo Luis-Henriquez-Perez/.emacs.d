@@ -28,49 +28,50 @@
 ;; make `load' a function the compiler will not detect the `require' calls.
 ;;
 ;;; Code:
+(require 'cl-lib)
 (require '000-base-vars)
 (require '001-init-log)
 
-(defmacro require! (feature path)
-  "Require FEATURE from PATH, logging any errors.
-
-If FEATURE is successfully loaded, return the elapsed time in seconds
-as a floating-point number with two decimal places. Otherwise, log an
-error message without interrupting execution."
-  `(let ((start (current-time)))
-     (condition-case err
-         (let (end time-elapsed)
-           (require ',feature ,path)
-           (setq end (current-time))
-           (setq time-elapsed (float-time (time-subtract end start)))
-           (setq time-elapsed (/ (fround (* time-elapsed 100)) 100.0))
-           (oo-log 'info "Required %s in %.2f seconds" ',feature time-elapsed)
-           (push (list ',feature start end nil) oo-init-data))
-       (error (oo-log 'error "Error requiring '%s: %s" ',feature err)
-              (push (list ',feature nil nil err) oo-init-data)))))
-
-(defvar oo--init-log-format-fn)
-
-(defmacro load! (dir)
+;; For some reason `eval-when-compile' is evaluated during macroexpansion.  So I
+;; will just leave it to the files themselves to handle the macros.
+(cl-defmacro require! (&key (from 0) (to most-positive-fixnum) profile)
   "Load numbered Emacs Lisp files from DIR in lexicographical order.
 
 A file is \"numbered\" if it is prefixed by three digits ranging from 010 to 899
 inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
-  (let (forms feature)
-    (setq dir (expand-file-name dir user-emacs-directory))
-    (dolist (path (directory-files dir t "^[0-8][1-9][0-46-9]-.+\\.el$"))
-      (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name path)))))
-      ;; If the number ends with 5, eval-when-compile it.
-      ;; (push `(eval-when-compile ,feature nil) forms)
-      (push `(require! ,feature nil) forms))
-    `(let (total-time)
-       (let ((oo-log-format-fn #'oo-load-time-format-fn))
-         (setq oo-load-start-time (current-time))
-         ,@(nreverse forms)
-         (setq oo-load-end-time (current-time))
-         (setq total-time (float-time (time-subtract oo-load-end-time oo-load-start-time))))
-       (setq total-time (/ (fround (* total-time 100)) 100.0))
-       (oo-log 'info "Finished loading files in %.2f seconds." total-time))))
+  (cl-flet* ((time-elapsed-form (form)
+               (let ((start (make-symbol "start")))
+                 `(let ((,start (float-time)))
+                    ,form
+                    (- (float-time) ,start))))
+             (profile-form (feature form)
+               (let ((time-elapsed (gensym "time-elapsed")))
+                 `(let ((,time-elapsed ,(time-elapsed-form form)))
+                    (setq ,time-elapsed (/ (fround (* ,time-elapsed 100)) 100.0))
+                    (oo-log 'info "Required %s in %.2f seconds" ',feature ,time-elapsed)
+                    (push (list ',feature ,time-elapsed) oo-init-data))))
+             (check-errors-form (feature form)
+               (let ((err (gensym "error")))
+                 `(condition-case ,err
+                      ,form
+                    (error
+                     (oo-log 'error "%s requiring %s because of %s." (car ,err) ',feature (cdr ,err)))))))
+    (let (form forms feature number base)
+      (setq dir (expand-file-name "lisp/" user-emacs-directory))
+      (dolist (path (directory-files dir t "^[0-8][1-9][0-9]-.+\\.el$"))
+        (setq base (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
+        (setq feature (intern base))
+        (string-match "\\`\\(?1:[0-8][1-9][0-9]\\)-.+$" base)
+        (setq number (string-to-number (match-string 1 base)))
+        (setq form `(require ',feature))
+        (when (and (> number from) (< number to) (not (string-match-p "macros$" base)))
+          (when profile (setq form (profile-form feature form)))
+          (unless oo-debug-p (setq form (check-errors-form feature form)))
+          (push form forms)))
+      (if profile
+          `(let ((oo-log-format-fn (apply-partially #'oo-startup-format-fn (float-time))))
+             (oo-log 'info "Finished loading features in %.2f seconds." ,(time-elapsed-form (macroexp-progn (nreverse forms)))))
+        (macroexp-progn (nreverse forms))))))
 ;;; provide
 (provide '002-init-loader)
 ;;; 002-init-loader.el ends here

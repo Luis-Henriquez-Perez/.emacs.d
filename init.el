@@ -52,7 +52,7 @@
 ;; `after-init-hook', and the time taken to run `emacs-startup-hook'.  That is
 ;; everything I am responsible for when emacs is loaded.
 
-(load! "lisp/")
+(require! :profile t)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here

@@ -28,10 +28,7 @@
 ;; time.
 ;;
 ;;; Code:
-(require '020-base-settings)
-(require '030-base-utils)
-(eval-when-compile (require '035-base-macros))
-(require '040-base-lib)
+(require! :to 49)
 ;;; provide
 (provide '050-base)
 ;;; 050-base.el ends here
