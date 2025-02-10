@@ -64,9 +64,12 @@ inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
         (string-match "\\`\\(?1:[0-8][1-9][0-9]\\)-.+$" base)
         (setq number (string-to-number (match-string 1 base)))
         (setq form `(require ',feature))
-        (when (and (> number from) (< number to) (not (string-match-p "macros$" base)))
-          (when profile (setq form (profile-form feature form)))
+        (when (and (> number from) (< number to))
           (unless oo-debug-p (setq form (check-errors-form feature form)))
+          (if (string-match-p "macros$" base)
+              (setq form `(eval-when-compile ,form))
+            (when profile
+              (setq form (profile-form feature form))))
           (push form forms)))
       (if profile
           `(let ((oo-log-format-fn (apply-partially #'oo-startup-format-fn (float-time))))
