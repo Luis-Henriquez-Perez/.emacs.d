@@ -309,9 +309,6 @@ faces immediately."
 ;; really be killed. See [[https://www.emacswiki.org/emacs/ProtectingBuffers][ProtectingBuffers]].
 (setq emacs-lock-default-locking-mode 'kill)
 (with-current-buffer "*Messages*" (emacs-lock-mode 1))
-
-;; This buffer is useless.  I do not want it taking up space.
-(kill-buffer "*scratch*")
 ;;;; autoload commands
 (autoload #'oo-open-emacs-config "989-commands" nil t 'function)
 (autoload #'oo-open-emacs-init-file "989-commands" nil t 'function)
