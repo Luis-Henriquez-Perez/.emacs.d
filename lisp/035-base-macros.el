@@ -43,7 +43,6 @@
         (decl (and (equal 'declare (car-safe (car args))) (pop args)))
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
     (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
-
 ;;;; anaphoric macros
 (defmacro alet! (form &rest body)
   "Bind the result FORM to `it' for the duration of BODY."
