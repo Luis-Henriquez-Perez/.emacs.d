@@ -16,8 +16,8 @@ This is my personal emacs configuration.
   byte-compilation).
 - *performant*
   Furthermore, the experience while using emacs should be responsive fast and
-  snappy.  As of this version, ~(emacs-init-time)~ is "0.74 seconds" without
-  compilation.
+  snappy.  As of this version my Emacs startup time is consistently less than a
+  second, fluctuating between =0.74= and =0.97= seconds.
 - *introspectable*
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
@@ -27,8 +27,8 @@ This is my personal emacs configuration.
   I want expressive and powerful functions and macros at my disposal that help
   me do what I want sanely, concisely and with precision.
 - *stable* (WIP)
-  I should be able to count on things working properly.  To this end I created
-  tests.
+  I should be able to count on things working properly at least with my master
+  branch.
 - *correct*
   My configuration should follow standards determined by the compiler
   whenever they are reasonable and make sense.  Compiling my configuration
@@ -58,7 +58,7 @@ This is my personal emacs configuration.
 - Simple and transparent top-level file organization (no modules)
 - Number-prefixed features that make load order predictable and transparent
 - Automated startup file loading with [[file:lisp/002-init-loader.el][require! macro]]
-- Startup time is =0.74= seconds
+- Startup time is under 1 second (it fluctuates from =0.74= to =0.97=)
 - Eliminated compiler warnings
 - Optimized for speed by evaluating macros during compilation
 - Extensive abbrev configuration with well over [[file:lisp/999-plain-text-abbrevs.el][1300 abbrevs]]
@@ -122,7 +122,7 @@ This is my personal emacs configuration.
     =config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
     easier profiling of keybindings.
 
-  - *lisp/oo-init* - /Some file I use but do not know what to do with yet./
+  - *lisp/xxx-init* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
