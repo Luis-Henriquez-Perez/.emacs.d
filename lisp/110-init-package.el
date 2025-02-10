@@ -265,6 +265,7 @@
     (package-refresh-contents))
   (dolist (package uninstalled)
     (package-install package)
+    (garbage-collect)
     (unless (package-installed-p package)
       (oo-log 'error "Failed to install package `%s'" package))))
 
