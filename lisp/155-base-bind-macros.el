@@ -46,6 +46,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
+(eval-and-compile (require 'map))
 (require '040-base-lib)
 ;;;; oo--let-bindings
 ;; I wanted a way to prevent select keys from being let-bound, the concrete case
