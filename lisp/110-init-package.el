@@ -216,27 +216,6 @@
                                      (outli :url "https://github.com/jdtsmith/outli")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
-;; (defun oo--package-refresh-archive-if-needed (&rest _)
-;;   "Refresh package archive contents only if it's empty."
-;;   (let ((archive-cache (expand-file-name "package-archive-cache.el" oo-var-dir)))
-;;     (cond (package-archive-contents
-;;            nil)
-;;           ((file-exists-p archive-cache)
-;;            (with-temp-buffer
-;;              (insert-file-contents archive-cache)
-;;              (setq package-archive-contents (read (current-buffer)))))
-;;           ;; (package-archive-contents
-;;           ;;  (with-temp-file archive-cache
-;;           ;;    (prin1 package-archive-contents (current-buffer))))
-;;           (t
-;;            (package-read-all-archive-contents)
-;;            (with-temp-file archive-cache
-;;              (prin1 package-archive-contents (current-buffer)))))))
-
-;; (advice-add 'package-list-packages :before #'oo--package-refresh-archive-if-needed)
-;; (advice-add 'package-install :before #'oo--package-refresh-archive-if-needed)
-;; (advice-add 'package-upgrade :before #'oo--package-refresh-archive-if-needed)
-
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem for me.
 
@@ -249,8 +228,16 @@
 (unless (bound-and-true-p package--initialized)
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
-  (setq package-alist nil)
-  (package-load-all-descriptors)
+  (setq package-alist (eval-when-compile (let ((package-alist-cache (expand-file-name "package-alist-cache.el" oo-var-dir)))
+                                           (if (file-exists-p package-alist-cache)
+                                               (with-temp-buffer
+                                                 (insert-file-contents package-alist-cache)
+                                                 (setq package-alist (read (current-buffer))))
+                                             (setq package-alist nil)
+                                             (package-load-all-descriptors)
+                                             (with-temp-file package-alist-cache
+                                               (prin1 package-alist (current-buffer)))))
+                                         package-alist))
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
@@ -263,18 +250,23 @@
 ;; Manage garbage collection myself.  U shouldn't just disable garbage
 ;; collection altogether for this becausee ur emacs could crash if it has too
 ;; much uncollected garbage.
-(let ((refreshed-contents-p nil)
-      (gc-cons-threshold most-positive-fixnum))
-  (dolist (package package-selected-packages)
+;; Refresh the contents and build `package-archive-contents' only once.
+(when-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
+  ;; Ensure `package-archive-contents' is populated.
+  (let ((archive-cache (expand-file-name "package-archive-cache.el" oo-var-dir)))
+    (if (file-exists-p archive-cache)
+        (with-temp-buffer
+          (insert-file-contents archive-cache)
+          (setq package-archive-contents (read (current-buffer))))
+      (package-read-all-archive-contents)
+      (with-temp-file archive-cache
+        (prin1 package-archive-contents (current-buffer)))))
+  (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
+    (package-refresh-contents))
+  (dolist (package uninstalled)
+    (package-install package)
     (unless (package-installed-p package)
-      (unless refreshed-contents-p
-        (package-refresh-contents)
-        (setq refreshed-contents-p (not refreshed-contents-p)))
-      (oo-log 'info "package is not installed %s package" package)
-      (with-demoted-errors "%S" (package-install package 'dont-select))
-      (if (package-installed-p package)
-          (garbage-collect)
-        (oo-log 'error "Failed to install package `%s'" package)))))
+      (oo-log 'error "Failed to install package `%s'" package))))
 
 (package-vc-install-selected-packages)
 ;;; provide
