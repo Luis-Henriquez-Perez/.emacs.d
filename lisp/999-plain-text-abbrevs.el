@@ -910,8 +910,6 @@ string or comment."
 (define-abbrev global-abbrev-table "kbind"            "keybinding"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "keybinds"         "keybindings"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "kbinds"           "keybindings"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
-;; ("abbrevs"                                      "abbreviations" nil :enable-function #'oo--use-plain-text-abbrev-p)
-;; ("abbrev"                                       "abbreviation" nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "bcomp"            "byte-compilation"              nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "unness"           "unnecessary"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "coment"           "comment"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
@@ -1146,7 +1144,6 @@ string or comment."
 (define-abbrev global-abbrev-table "idl"              "I do not like"                 nil :enable-function #'oo--use-plain-text-abbrev-p)
 ;; "id" is actually a word, but I use it so infrequently and I use the phrase.  Nil :enable-function oo-enable-text-abbrev-pI
 ;; would so frequently that it is worth having it be an abbrev for I nil :enable-function oo-enable-text-abbrev-p.
-;; ("wm"                                           "which" nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "prec"             "precedence"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "wdimbt"           "what do I mean by this"        nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "wdim"             "what do I mean"                nil :enable-function #'oo--use-plain-text-abbrev-p)
