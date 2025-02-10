@@ -45,11 +45,16 @@
                (display-buffer-no-window)
                (allow-no-window . t)))
 
-(add-to-list 'package-archives '("gnu-elpa"       . "https://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("gnu-elpa-devel" . "https://elpa.gnu.org/devel/"))
-(add-to-list 'package-archives '("melpa"          . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("nongnu"         . "https://elpa.nongnu.org/nongnu/"))
+(setq package-archives '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
+                         ("gnu-elpa" . "https://elpa.gnu.org/packages/")
+                         ("melpa"    . "https://melpa.org/packages/")
+                         ("nongnu"   . "https://elpa.nongnu.org/nongnu/")))
 
+;; The package quickstart feature puts concatenates autoloads into one file so
+;; they can be read all at once later.  This does speed up `package-initialize'
+;; but not by much--maybe 0.2 seconds.  As I mention later
+;; `package-read-archive-contents' accounts for the bulk of package-initialize's
+;; slowness.
 (setq package-quickstart-file (expand-file-name ".local/var/package-quickstart.el" user-emacs-directory))
 (setq package-quickstart t)
 
@@ -211,41 +216,44 @@
                                      (outli :url "https://github.com/jdtsmith/outli")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
-(defun oo--package-refresh-archive-if-needed (&rest _)
-  "Refresh package archive contents only if it's empty."
-  (let ((archive-cache (expand-file-name "package-archive-cache.el" oo-var-dir)))
-    (cond (package-archive-contents
-           nil)
-          ((file-exists-p archive-cache)
-           (with-temp-buffer
-             (insert-file-contents archive-cache)
-             (setq package-archive-contents (read (current-buffer)))))
-          ;; (package-archive-contents
-          ;;  (with-temp-file archive-cache
-          ;;    (prin1 package-archive-contents (current-buffer))))
-          (t
-           (package-read-all-archive-contents)
-           (with-temp-file archive-cache
-             (prin1 package-archive-contents (current-buffer)))))))
+;; (defun oo--package-refresh-archive-if-needed (&rest _)
+;;   "Refresh package archive contents only if it's empty."
+;;   (let ((archive-cache (expand-file-name "package-archive-cache.el" oo-var-dir)))
+;;     (cond (package-archive-contents
+;;            nil)
+;;           ((file-exists-p archive-cache)
+;;            (with-temp-buffer
+;;              (insert-file-contents archive-cache)
+;;              (setq package-archive-contents (read (current-buffer)))))
+;;           ;; (package-archive-contents
+;;           ;;  (with-temp-file archive-cache
+;;           ;;    (prin1 package-archive-contents (current-buffer))))
+;;           (t
+;;            (package-read-all-archive-contents)
+;;            (with-temp-file archive-cache
+;;              (prin1 package-archive-contents (current-buffer)))))))
 
-(advice-add 'package-list-packages :before #'oo--package-refresh-archive-if-needed)
-(advice-add 'package-install :before #'oo--package-refresh-archive-if-needed)
-(advice-add 'package-upgrade :before #'oo--package-refresh-archive-if-needed)
+;; (advice-add 'package-list-packages :before #'oo--package-refresh-archive-if-needed)
+;; (advice-add 'package-install :before #'oo--package-refresh-archive-if-needed)
+;; (advice-add 'package-upgrade :before #'oo--package-refresh-archive-if-needed)
 
 ;; The function `package-install-selected-packages' does not activate the
-;; packages which causes a problem fo rme.
+;; packages which causes a problem for me.
+
+;; The function `package-initialize' is really slow.  The main culprit is
+;; `package-read-all-archive-contents' which reads `package-archives' and
+;; populates `package-archive-contents', an alist of package names and
+;; package-desc objects that contains data about all available packages.  It is
+;; needed when installing packages but not when all of our packages are already
+;; installed, which is the situation most of the time.
 (unless (bound-and-true-p package--initialized)
-  ;; This all the body of `package-initialize'.  I want to make some changes to
-  ;; what happens because `package-read-all-archive-contents' is too slow.  This
-  ;; variable stores package information for each package.  It is not needed for
-  ;; loading packages that are already installed.
-  (progn (setq package-alist nil)
-         (package-load-all-descriptors)
-         (setq package--initialized t)
-         (package-activate-all)
-         ;; This uses `package--mapc' so it must be called after
-         ;; `package--initialized' is t.
-         (package--build-compatibility-table))
+  ;; The variable `package-alist' is an alist of installed packages.  It is
+  ;; populated by `package-load-all-descriptors'.
+  (setq package-alist nil)
+  (package-load-all-descriptors)
+  (setq package--initialized t)
+  (package-activate-all)
+  (package--build-compatibility-table)
 
   ;; This is inspired by centaur-emacs.  I add the the lisp directory to the
   ;; front of the load-path so files from here can load faster.
