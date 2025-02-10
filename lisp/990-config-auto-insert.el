@@ -111,7 +111,7 @@
              (goto-char (point-max))
              (insert (format ";;; provide\n(provide '%s)\n%s" feature footer-commentary)))))))
 
-(defun oo--ensure-file-header (comment1 comment2)
+(defun oo--ensure-file-header (&optional comment1 comment2)
   "Add an emacs-lisp copyright header to current buffer.
 COMMENT1 is the description of the file at the top.  COMMENT2 is the description
 in the commentary part."
@@ -119,6 +119,8 @@ in the commentary part."
          (filename (file-name-sans-extension (file-name-nondirectory file)))
          (header-rx (oo-header-regexp))
          (lisence-rx (rx-to-string (oo-copyright-license))))
+    (setq comment1 (or comment1 "TODO: add commentary"))
+    (setq comment2 (or comment2 "TODO: add commentary"))
     (save-excursion
       (goto-char (point-min))
       (if (looking-at header-rx)
@@ -150,7 +152,9 @@ in the commentary part."
          (oo--ensure-file-header (substring it 0 -1) it)))
       ((rx (= 3 digit) "config-" (1+ nonl) ".el" eos)
        (alet! (format "Configure `%s'." base)
-         (oo--ensure-file-header (substring it 0 -1) it))))
+         (oo--ensure-file-header (substring it 0 -1) it)))
+      (_
+       (oo--ensure-file-header)))
     (goto-char (point-min))
     (save-excursion (oo--ensure-provide path))))
 
