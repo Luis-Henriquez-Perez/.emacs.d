@@ -29,6 +29,8 @@
 ;; If this variable is not set beforehand, `package-gnupghome-dir' will not be
 ;; set to the right place.
 (defvar package-user-dir)
+(defvar package-archive-contents)
+
 (setq package-user-dir (locate-user-emacs-file "packages/"))
 
 (require 'cl-lib)
@@ -209,17 +211,47 @@
                                      (outli :url "https://github.com/jdtsmith/outli")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
+(defun oo--package-refresh-archive-if-needed (&rest _)
+  "Refresh package archive contents only if it's empty."
+  (let ((archive-cache (expand-file-name "package-archive-cache.el" oo-var-dir)))
+    (cond (package-archive-contents
+           nil)
+          ((file-exists-p archive-cache)
+           (with-temp-buffer
+             (insert-file-contents archive-cache)
+             (setq package-archive-contents (read (current-buffer)))))
+          ;; (package-archive-contents
+          ;;  (with-temp-file archive-cache
+          ;;    (prin1 package-archive-contents (current-buffer))))
+          (t
+           (package-read-all-archive-contents)
+           (with-temp-file archive-cache
+             (prin1 package-archive-contents (current-buffer)))))))
+
+(advice-add 'package-list-packages :before #'oo--package-refresh-archive-if-needed)
+(advice-add 'package-install :before #'oo--package-refresh-archive-if-needed)
+(advice-add 'package-upgrade :before #'oo--package-refresh-archive-if-needed)
+
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem fo rme.
 (unless (bound-and-true-p package--initialized)
-  (package-initialize)
+  ;; This all the body of `package-initialize'.  I want to make some changes to
+  ;; what happens because `package-read-all-archive-contents' is too slow.  This
+  ;; variable stores package information for each package.  It is not needed for
+  ;; loading packages that are already installed.
+  (progn (setq package-alist nil)
+         (package-load-all-descriptors)
+         ;; This saves a little bit of time, but it is better just not to read
+         ;; this in the first place because it is not needed.
+         (setq package--initialized t)
+         (package-activate-all)
+         ;; This uses `package--mapc' so it must be called after
+         ;; `package--initialized' is t.
+         (package--build-compatibility-table))
+
   ;; This is inspired by centaur-emacs.  I add the the lisp directory to the
   ;; front of the load-path so files from here can load faster.
   (push (expand-file-name "lisp/" user-emacs-directory) load-path))
-
-(unless package-archive-contents
-  (oo-log 'info "Refreshing contents...")
-  (package-refresh-contents))
 
 ;; (remove-hook 'kill-emacs-hook #'emms-history-save)
 ;; Manage garbage collection myself.  U shouldn't just disable garbage
@@ -228,18 +260,15 @@
 (let ((refreshed-contents-p nil)
       (gc-cons-threshold most-positive-fixnum))
   (dolist (package package-selected-packages)
-    (cond ((assq package package-archive-contents)
-           (unless (package-installed-p package)
-             (unless refreshed-contents-p
-               (package-refresh-contents)
-               (setq refreshed-contents-p (not refreshed-contents-p)))
-             (oo-log 'info "package is not installed %s package" package)
-             (with-demoted-errors "%S" (package-install package 'dont-select))
-             (if (package-installed-p package)
-                 (garbage-collect)
-               (oo-log 'error "Failed to install package `%s'" package))))
-          (t
-           (oo-log 'info "Package %s is not available." package)))))
+    (unless (package-installed-p package)
+      (unless refreshed-contents-p
+        (package-refresh-contents)
+        (setq refreshed-contents-p (not refreshed-contents-p)))
+      (oo-log 'info "package is not installed %s package" package)
+      (with-demoted-errors "%S" (package-install package 'dont-select))
+      (if (package-installed-p package)
+          (garbage-collect)
+        (oo-log 'error "Failed to install package `%s'" package)))))
 
 (package-vc-install-selected-packages)
 ;;; provide
