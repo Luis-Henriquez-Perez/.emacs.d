@@ -51,8 +51,13 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 ;;;; define abbrevs
-(define-abbrev global-abbrev-table "elsip"        "elisp"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
-(define-abbrev global-abbrev-table "siu"        "should I use"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "maye"             "maybe"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "concats"          "concatenates"                  nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "becausee"         "because"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "wi"               "which is"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "iatt"             "in addition to this"           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "elsip"            "elisp"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "siu"              "should I use"                  nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "bottlenek"        "bottleneck"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "importa"          "important"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "initi"            "initialize"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
@@ -1137,7 +1142,7 @@ string or comment."
 (define-abbrev global-abbrev-table "moro"             "moreover"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "orig"             "original"                      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "iat"              "in addition to"                nil :enable-function #'oo--use-plain-text-abbrev-p)
-(define-abbrev global-abbrev-table "elispp"            "emacs-lisp"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "elispp"           "emacs-lisp"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "idl"              "I do not like"                 nil :enable-function #'oo--use-plain-text-abbrev-p)
 ;; "id" is actually a word, but I use it so infrequently and I use the phrase.  Nil :enable-function oo-enable-text-abbrev-pI
 ;; would so frequently that it is worth having it be an abbrev for I nil :enable-function oo-enable-text-abbrev-p.
