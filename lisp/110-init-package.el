@@ -241,8 +241,6 @@
   ;; loading packages that are already installed.
   (progn (setq package-alist nil)
          (package-load-all-descriptors)
-         ;; This saves a little bit of time, but it is better just not to read
-         ;; this in the first place because it is not needed.
          (setq package--initialized t)
          (package-activate-all)
          ;; This uses `package--mapc' so it must be called after
