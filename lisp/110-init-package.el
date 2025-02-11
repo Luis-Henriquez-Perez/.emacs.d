@@ -175,6 +175,7 @@
                                   php-mode
                                   polymode
                                   pomodoro
+                                  powerline
                                   rainbow-delimiters
                                   rainbow-mode
                                   redacted
@@ -228,16 +229,8 @@
 (unless (bound-and-true-p package--initialized)
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
-  (setq package-alist (eval-when-compile (let ((package-alist-cache (expand-file-name "package-alist-cache.el" oo-var-dir)))
-                                           (if (file-exists-p package-alist-cache)
-                                               (with-temp-buffer
-                                                 (insert-file-contents package-alist-cache)
-                                                 (setq package-alist (read (current-buffer))))
-                                             (setq package-alist nil)
-                                             (package-load-all-descriptors)
-                                             (with-temp-file package-alist-cache
-                                               (prin1 package-alist (current-buffer)))))
-                                         package-alist))
+  (setq package-alist nil)
+  (package-load-all-descriptors)
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
@@ -246,28 +239,30 @@
   ;; front of the load-path so files from here can load faster.
   (push (expand-file-name "lisp/" user-emacs-directory) load-path))
 
-;; (remove-hook 'kill-emacs-hook #'emms-history-save)
 ;; Manage garbage collection myself.  U shouldn't just disable garbage
 ;; collection altogether for this becausee ur emacs could crash if it has too
 ;; much uncollected garbage.
 ;; Refresh the contents and build `package-archive-contents' only once.
 (when-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
   ;; Ensure `package-archive-contents' is populated.
-  (let ((archive-cache (expand-file-name "package-archive-cache.el" oo-var-dir)))
-    (if (file-exists-p archive-cache)
-        (with-temp-buffer
-          (insert-file-contents archive-cache)
-          (setq package-archive-contents (read (current-buffer))))
-      (package-read-all-archive-contents)
-      (with-temp-file archive-cache
-        (prin1 package-archive-contents (current-buffer)))))
+  (package-read-all-archive-contents)
   (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
     (package-refresh-contents))
   (dolist (package uninstalled)
-    (package-install package)
+    (condition-case _
+        (package-install package)
+      (error
+       (oo-log 'error "Failed to install package `%s'" package)
+       t))
     (garbage-collect)
-    (unless (package-installed-p package)
-      (oo-log 'error "Failed to install package `%s'" package))))
+    ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
+    ;; disabling garbage collection), accumulating too much garbage via
+    ;; installing packages will cause slowdowns, lags and freezes.  Here I need
+    ;; to ensure I periodically garbage collect.
+
+    ;; (unless (package-installed-p package)
+    ;;   (oo-log 'error "Failed to install package `%s'" package))
+    ))
 
 (package-vc-install-selected-packages)
 ;;; provide
