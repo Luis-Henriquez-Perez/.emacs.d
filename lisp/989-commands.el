@@ -193,6 +193,10 @@ is already narrowed."
                                    (allow-no-window . t)))
   (vc-git--pushpull "push" nil (list "--force")))
 
+
+(declare-function vc-checkin "vc")
+(declare-function vc-deduce-fileset "vc")
+
 (defalias 'eshell/dotadd 'oo-dwim-vc-action)
 (defun! oo-dwim-vc-action (file)
   "Register, stage, commit and push FILE to dotfiles repository.
