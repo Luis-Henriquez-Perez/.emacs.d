@@ -162,6 +162,7 @@
                                   notmuch
                                   one-themes
                                   orderless
+                                  org
                                   org-appear
                                   org-bookmark-heading
                                   org-fancy-priorities
