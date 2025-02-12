@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! emacs-startup-hook which-key-mode)
+(hook! emacs-startup-hook which-key-mode :level 'info)
 
 (opt! which-key-sort-uppercase-first nil)
 (opt! which-key-max-display-columns nil)

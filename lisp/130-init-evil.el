@@ -57,7 +57,7 @@
 (defhook! oo-load-evil-h (after-init-hook :depth 10)
   (require 'evil nil t))
 
-(hook! emacs-startup-hook evil-mode)
+(hook! emacs-startup-hook evil-mode :level 'info)
 ;; (opt! savehist-additional-variables (cl-adjoin 'evil-markers-alist savehist-additional-variables))
 ;;;; bindings
 (declare-function minibuffer-keyboard-quit "delsel")
