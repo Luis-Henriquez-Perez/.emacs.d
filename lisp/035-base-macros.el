@@ -528,21 +528,13 @@ take the following forms:
 ;;;; setq-hook
 (defmacro! setq-hook! (hooks symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (dolist (hook (ensure-list hooks))
-    (set! name (intern (format "oo--%s--set-local-var--%s" hook symbol)))
-    (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
-    (set! lambda `(lambda (&rest _)
-                    ,docstring
-                    ;; (oo-log 'info "HOOK: %s -> %s" ',hook ',name)
-                    (condition-case err
-                        (setq-local ,symbol ,value)
-                      (error
-                       (oo-log 'error "%s error in local hook %s because of %s"
-                               (car err)
-                               ',hook
-                               (cdr err))))))
-    (appending! forms `((fset ',name ,lambda) (add-hook ',hook #',name nil nil))))
-  (macroexp-progn forms))
+  (let (forms)
+    (dolist (hook (ensure-list hooks))
+      (set! name (intern (format "oo--%s--set-local-var--%s" hook symbol)))
+      (set! lambda `(lambda () (setq-local ,symbol ,value)))
+      ;; (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
+      (push `(oo-add-hook ',hook #',lambda :name ',name) forms))
+    `(progn ,@(nreverse forms))))
 ;;;; set!
 (defmacro set! (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.
