@@ -33,7 +33,8 @@ CLOSED: [2025-01-09 Thu 14:12]
 - CLOSING NOTE [2025-01-09 Thu 14:12] \\
   The read-only package was small enough for me to just add.
 ** TODO definitively make a standard for adding hooks
-** TODO use =trace!= for some hooks because they are polluting the log
+** DONE use =trace!= for some hooks because they are polluting the log
+CLOSED: [2025-02-11 Tue 22:33]
 ** TODO rice up the dashboard
 ** TODO add a better keybinding for going to evil-marker than =`=
 ** DONE update auto-insert to create emacs-lisp templates with any file
