@@ -40,6 +40,7 @@
                ("css"           . ,(nerd-icons-devicon "nf-dev-css3"))
                ("cursor"        . ,(nerd-icons-mdicon "nf-md-cursor_default_outline"))
                ("desktop"       . ,(nerd-icons-mdicon "nf-md-desktop_tower"))
+               ("editing"         . ,(nerd-icons-faicon "nf-fa-edit"))
                ("emacs"         . ,(nerd-icons-sucicon "nf-custom-emacs"))
                ("email"         . ,(nerd-icons-mdicon "nf-md-email"))
                ("eshell"        . ,(nerd-icons-devicon "nf-dev-terminal"))
