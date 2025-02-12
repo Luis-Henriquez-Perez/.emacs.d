@@ -181,30 +181,26 @@ Return a flat list of unique components in MATCH-FORM."
                          (cl-pushnew (pop stack) symbols))))
                 symbols)))
     (cl-set-difference (flatten-pattern match-form) '(\, \`))))
-(defun oo-add-hook (hook function &rest args)
-  "Generate a function that calls FUNCTION and add it to HOOK.
-Generated function call FUNCTION and logs any errors.  If IGNORE-ARGS, then do
-generated function does not pass in any of its given arguments to FUNCTION."
-  (let* ((fname (intern (format "oo--%s--%s" hook function)))
-         (depth (plist-get args :depth))
-         (local (plist-get args :local))
-         (ignore-args (plist-get args :ignore-args))
-         (funcall-form (if ignore-args `(,function) `(apply #',function arglist))))
-    (unless (fboundp fname)
-      (fset fname `(lambda (&rest arglist)
-                     (ignore arglist)
-                     (oo-log 'info "HOOK: %s -> %s" ',hook ',function)
-                     (condition-case err
-                         ,funcall-form
-                       (error
-                        (if oo-debug-p
-                            (signal (car err) (cdr err))
-                          (oo-log 'error "%s : %s : %s -> %s"
-                                  #',function
-                                  ',hook
-                                  (car err)
-                                  (cdr err))))))))
-    (add-hook hook fname depth local)))
+
+(cl-defun oo-add-hook (hook fn &key depth local name expire ignore-args (level 'trace))
+  "Generate a hook function for HOOK calls FN.
+If name is given, bind resulting function to NAME and return NAME.
+If expire is non-nil, make the hook do nothing after it is called once.
+LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
+  (setq name (if (and (not name) (symbolp fn)) (intern (format "oo--%s--%s-h" hook fn)) name))
+  (alet! `(lambda (&rest args)
+            (ignore args)
+            (when ',level (oo-log ',level "HOOK: %s -> %s" ',hook ',fn))
+            (condition-case err
+                (prog1 ,(if ignore-args `(funcall ',fn) `(apply ',fn args))
+                  (when ,expire (remove-hook ',hook ',name ,local)))
+              (error
+               (if oo-debug-p
+                   (signal (car err) (cdr err))
+                 (oo-log 'error "%s : %s : %s -> %s" #',fn ',hook (car err) (cdr err))))))
+    (setq it (if name (progn (fset name it) name) it))
+    (add-hook hook it depth local)
+    it))
 ;;; provide
 (provide '030-base-utils)
 ;;; 030-base-utils.el ends here
