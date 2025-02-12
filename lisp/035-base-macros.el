@@ -435,9 +435,9 @@ NAME, ARGLIST and BODY are the same as `defmacro!'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (cl-destructuring-bind (name arglist metadata body) (oo--definer-components args)
+  (pcase-let ((`(,name ,arglist ,meta ,body) (oo--definer-components args)))
     `(defmacro ,name ,arglist
-       ,@metadata
+       ,@meta
        (autolet! :noinit ,(oo--arglist-symbols arglist)
                  ,@body))))
 
@@ -447,7 +447,7 @@ NAME, ARGS and BODY are the same as in `defun'.
 
 \(fn NAME ARGLIST [DOCSTRING] [DECL] [INTERACTIVE] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (cl-destructuring-bind (name arglist metadata body) (oo--definer-components args)
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (oo--definer-components args)))
     `(defun ,name ,arglist
        ,@metadata
        (autolet! :noinit ,(oo--arglist-symbols arglist)
