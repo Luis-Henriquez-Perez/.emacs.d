@@ -244,26 +244,28 @@
 ;; collection altogether for this becausee ur emacs could crash if it has too
 ;; much uncollected garbage.
 ;; Refresh the contents and build `package-archive-contents' only once.
-(when-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
-  ;; Ensure `package-archive-contents' is populated.
-  (package-read-all-archive-contents)
-  (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
-    (package-refresh-contents))
-  (dolist (package uninstalled)
-    (condition-case _
-        (package-install package)
-      (error
-       (oo-log 'error "Failed to install package `%s'" package)
-       t))
-    (garbage-collect)
-    ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
-    ;; disabling garbage collection), accumulating too much garbage via
-    ;; installing packages will cause slowdowns, lags and freezes.  Here I need
-    ;; to ensure I periodically garbage collect.
+(if-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
+    ;; Ensure `package-archive-contents' is populated.
+    (progn (package-read-all-archive-contents)
+           (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
+             (package-refresh-contents))
+           (dolist (package uninstalled)
+             (oo-log 'info "Installing %S..." package)
+             (condition-case _
+                 (package-install package)
+               (error
+                (oo-log 'error "Failed to install package `%s'" package)
+                t))
+             (garbage-collect)
+             ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
+             ;; disabling garbage collection), accumulating too much garbage via
+             ;; installing packages will cause slowdowns, lags and freezes.  Here I need
+             ;; to ensure I periodically garbage collect.
 
-    ;; (unless (package-installed-p package)
-    ;;   (oo-log 'error "Failed to install package `%s'" package))
-    ))
+             ;; (unless (package-installed-p package)
+             ;;   (oo-log 'error "Failed to install package `%s'" package))
+             ))
+  (oo-log 'trace "All packages installed..."))
 
 (package-vc-install-selected-packages)
 ;;; provide
