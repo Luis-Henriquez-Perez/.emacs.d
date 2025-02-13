@@ -368,6 +368,18 @@
 (bind! "" #'lorem-ipsum-insert-sentences)
 (bind! "" #'lorem-ipsum-insert-sentences)
 ;;;; macrostep
+(defun! oo-localleader-bind (keymap key def)
+  "Convenience function for defining localleader bindings."
+  (flet! leader (leader)
+    (kbd (concat leader "\s" key)))
+  (define-key keymap (leader oo-emacs-localleader-key) def)
+  (with-eval-after-load 'evil
+    (evil-define-key* 'emacs keymap (leader oo-emacs-localleader-key) def)
+    (evil-define-key* 'normal keymap (leader oo-normal-localleader-key) def)
+    (evil-define-key* 'normal keymap (leader oo-normal-localleader-short-key) def)
+    (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
+    (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
+
 (declare-function macrostep-expand "macrostep")
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")

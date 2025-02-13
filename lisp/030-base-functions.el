@@ -1,4 +1,4 @@
-;;; 030-base-utils.el -*- lexical-binding: t; -*-
+;;; 030-base-functions.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -48,6 +48,10 @@ Specifically, return the symbol `string' if point is in a string, the symbol
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
           (t nil))))
+
+(defun oo-into-keyword (&rest args)
+  "Coerce args into a keyword."
+  (intern (concat ":" (with-output-to-string (mapc #'princ args)))))
 ;;;; destructuring
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
@@ -188,19 +192,29 @@ If name is given, bind resulting function to NAME and return NAME.
 If expire is non-nil, make the hook do nothing after it is called once.
 LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
   (setq name (if (and (not name) (symbolp fn)) (intern (format "oo--%s--%s-h" hook fn)) name))
-  (alet! `(lambda (&rest args)
-            (ignore args)
-            (when ',level (oo-log ',level "HOOK: %s -> %s" ',hook ',fn))
-            (condition-case err
-                (prog1 ,(if ignore-args `(funcall ',fn) `(apply ',fn args))
-                  (when ,expire (remove-hook ',hook ',name ,local)))
-              (error
-               (if oo-debug-p
-                   (signal (car err) (cdr err))
-                 (oo-log 'error "%s : %s : %s -> %s" #',fn ',hook (car err) (cdr err))))))
-    (setq it (if name (progn (fset name it) name) it))
-    (add-hook hook it depth local)
-    it))
+  (let ((fn `(lambda (&rest args)
+               (ignore args)
+               (when ',level (oo-log ',level "HOOK: %s -> %s" ',hook ',fn))
+               (condition-case err
+                   (prog1 ,(if ignore-args `(funcall ',fn) `(apply ',fn args))
+                     (when ,expire (remove-hook ',hook ',name ,local)))
+                 (error
+                  (if oo-debug-p
+                      (signal (car err) (cdr err))
+                    (oo-log 'error "%s : %s : %s -> %s" #',fn ',hook (car err) (cdr err))))))))
+    (setq fn (if name (progn (fset name fn) name) fn))
+    (add-hook hook fn depth local)
+    fn))
+
+(defun oo-destructure-defun (args)
+  "Destructure the arguments of a \"defun-like\" thing.
+Return a list of."
+  (let ((name (pop args))
+        (arglist (pop args))
+        (doc (and (stringp (car args)) (pop args)))
+        (decl (and (equal 'declare (car-safe (car args))) (pop args)))
+        (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
+    (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
 ;;; provide
-(provide '030-base-utils)
-;;; 030-base-utils.el ends here
+(provide '030-base-functions)
+;;; 030-base-functions.el ends here

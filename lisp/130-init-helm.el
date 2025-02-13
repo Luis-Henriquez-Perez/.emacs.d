@@ -28,7 +28,7 @@
 (require '050-base)
 
 (oo-popup-at-bottom "\\*Helm")
-(set! helm-candidate-number-limit 50)
+(opt! helm-candidate-number-limit 50)
 
 ;; (autoload '+helm-select-nth-action "990-config-helm" nil t 'function)
 ;; (defun +helm-select-current ()

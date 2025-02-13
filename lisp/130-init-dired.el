@@ -33,7 +33,7 @@
 ;; 1. Backup files
 ;; 2. Previous and current directory.
 ;; 3. Dotfiles
-(setq dired-omit-files "\\`\\.?#\\|\\`\\.\\.?\\'\\|^\\..*$")
+(opt! dired-omit-files "\\`\\.?#\\|\\`\\.\\.?\\'\\|^\\..*$")
 (hook! dired-mode-hook dired-omit-mode)
 ;; By default hide details.
 (hook! dired-mode-hook dired-hide-details-mode)

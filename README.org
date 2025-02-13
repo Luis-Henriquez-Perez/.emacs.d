@@ -57,8 +57,11 @@ This is my personal emacs configuration.
 - Dynamic and byte-compilation friendly lisp file loading
 - Simple and transparent top-level file organization (no modules)
 - Number-prefixed features that make load order predictable and transparent
+- Asynchronous package management and installation via [[https://github.com/progfolio][elpaca]]
+# - Custom command switch specifically for initial package install
 - Automated startup file loading with [[file:lisp/002-init-loader.el][require! macro]]
-- Startup time is under 1 second (it fluctuates from =0.74= to =0.97=)
+- Startup time is about =1.46= seconds with byte-compilation
+- Complete reproducibility using =elpaca= lockfile features
 - Eliminated compiler warnings
 - Optimized for speed by evaluating macros during compilation
 - Extensive abbrev configuration with well over [[file:lisp/999-plain-text-abbrevs.el][1300 abbrevs]]

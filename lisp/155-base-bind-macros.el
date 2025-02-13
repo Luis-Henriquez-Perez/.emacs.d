@@ -47,7 +47,7 @@
 ;;; Code:
 ;;;; requirements
 (eval-and-compile (require 'map))
-(require '040-base-lib)
+(require '040-base-functions)
 ;;;; oo--let-bindings
 ;; I wanted a way to prevent select keys from being let-bound, the concrete case
 ;; was the character that I want to pass into
@@ -119,6 +119,7 @@ Evaluating resulting forms will."
                ;; TODO: Give a better error message.
                (oo-log 'error "Error %S with binding because of %S." (car err) (cdr err)))))))
 
+(declare-function which-key-add-keymap-based-replacements "which-key")
 (defun! oo--bind-which-key (metadata forms)
   "Wrap FORMS with an environment."
   (with-map-keywords! metadata

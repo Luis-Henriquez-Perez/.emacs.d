@@ -27,10 +27,11 @@
 ;;; Code:
 (require '050-base)
 
-(autoload #'evil-inner-line                    "evil-textobj-line"                 nil t 'function)
-(autoload #'evil-a-line                        "evil-textobj-line"                 nil t 'function)
+(declare-function evil-inner-line "evil-textobj-line")
+(declare-function evil-a-line "evil-textobj-line")
 
-
+(autoload #'evil-inner-line "evil-textobj-line" nil t 'function)
+(autoload #'evil-a-line "evil-textobj-line" nil t 'function)
 ;;; provide
 (provide '130-init-evil-textobj-line)
 ;;; 130-init-evil-textobj-line.el ends here

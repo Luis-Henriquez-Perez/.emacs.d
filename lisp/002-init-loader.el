@@ -56,7 +56,7 @@ inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
                       ,form
                     (error
                      (oo-log 'error "%s requiring %s because of %s." (car ,err) ',feature (cdr ,err)))))))
-    (let (form forms feature number base)
+    (let (dir form forms feature number base)
       (setq dir (expand-file-name "lisp/" user-emacs-directory))
       (dolist (path (directory-files dir t "^[0-8][1-9][0-9]-.+\\.el$"))
         (setq base (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))

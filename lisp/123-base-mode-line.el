@@ -32,13 +32,18 @@
 ;;;; Silence byte-compilation
 (defvar evil-state)
 (defvar org-clock-start-time)
-(defvar org-clock-hd-marker)
-(declare-function org-get-heading "org")
-(declare-function all-the-icons-wicon "all-the-icons")
-(declare-function all-the-icons-octicon "all-the-icons")
-(declare-function all-the-icons-material "all-the-icons")
-(declare-function all-the-icons-icon-for-buffer "all-the-icons")
-(declare-function all-the-icons-faicon "all-the-icons")
+(declare-function! all-the-icons-wicon "all-the-icons")
+(declare-function! all-the-icons-octicon "all-the-icons")
+(declare-function! all-the-icons-material "all-the-icons")
+(declare-function! all-the-icons-icon-for-buffer "all-the-icons")
+(declare-function! all-the-icons-faicon "all-the-icons")
+(declare-function! nerd-icons-wicon "nerd-icons")
+(declare-function! nerd-icons-pomicon "nerd-icons")
+(declare-function! nerd-icons-codicon "nerd-icons")
+(declare-function! nerd-icons-faicon "nerd-icons")
+(declare-function! nerd-icons-devicon "nerd-icons")
+(declare-function! nerd-icons-mdicon "nerd-icons")
+(declare-function! nerd-icons-powerline "nerd-icons")
 ;;;; powerline settings
 ;; Resetting the modeline after a theme change ensures separator colors are
 ;; updated to match the current theme.
@@ -370,6 +375,8 @@ Words are determined by splitting STRING on whitespace."
   (let ((words (split-string string)))
     (string-join (seq-take words n) " ")))
 
+(defvar org-clock-hd-marker)
+(declare-function org-get-heading "org")
 (defun! oo-mode-line-component--clocked-in ()
   "Display the current clocked-in task and the time elapsed since clocking in."
   (when (and (bound-and-true-p org-clock-hd-marker)

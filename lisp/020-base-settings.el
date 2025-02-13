@@ -136,11 +136,12 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq idle-update-delay 1.0)
 ;;;;;; unknown
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
-(setq sgml-basic-offset 4)
+;; (setq sgml-basic-offset 4)
 ;;;;;; dabbrev
 ;; (setq dabbrev-check-all-buffers nil)
 ;;;;; re-builder
-;; By default, use `rx' syntax.  It is my preferred syntax.
+;; By default, use `rx' syntax.  It is my preferred syntax.  This is from re-builder.
+(defvar reb-re-syntax)
 (setq reb-re-syntax 'rx)
 ;;;;; do not auto-enable =show-paren-mode= in editing modes
 ;; By default =show-paren-mode= is enabled in all editing mode (non-special
@@ -291,7 +292,6 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; references.  It will ask you whether you want to follow the symlink.  For me
 ;; the answer is predominately yes.
 (setq vc-follow-symlinks t)
-(setq vc-follow-link t)
 
 ;; https://tychoish.com/post/towards-faster-emacs-start-times/
 (setq jit-lock-stealth-time nil)

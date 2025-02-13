@@ -65,11 +65,11 @@
   ;; (setq-default elpa-bootstrap t)
   (setq-default load-prefer-newer t)
   (eldev--inject-loading-roots 'bootstrap)
+  (add-to-list 'load-path (expand-file-name "lisp/" eldev-real-user-emacs-directory))
   ;; (let ((init-file (expand-file-name "init.el" eldev-real-user-emacs-directory)))
   ;;   (message "BOOTSTRAPPING!")
   ;;   (message "eldev-real-user-emacs-directory: %S" eldev-real-user-emacs-directory)
   ;;   (load init-file))
-  ;; (add-to-list 'load-path (expand-file-name "lisp/" eldev-real-user-emacs-directory))
   ;; (add-to-list 'load-path (expand-file-name "straight/" eldev-real-user-emacs-directory))
   ;; Any time I try to add to the `load-path' something from my
   ;; `user-emacs-directory', remember to use `eldev-real-user-emacs-directory'

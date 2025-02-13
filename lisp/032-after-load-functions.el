@@ -1,4 +1,4 @@
-;;; 040-base-lib.el --- external package library -*- lexical-binding: t; -*-
+;;; 032-after-load-functions.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,53 +22,19 @@
 ;;
 ;;; Commentary:
 ;;
-;; Compared to `030-base-utils' this library has functions that on external
-;; packages loaded in `base-requirements'.
-
-;; This file contains functions and macros directly used for customizing Emacs
-;; by which I mean for doing things like adding hooks, adding advices, and
-;; setting variables for a particular feature.  Basically tools for configuring
-;; packages and features.
+;; TODO: add commentary
 ;;
 ;;; Code:
-;;;; requirements
-(eval-when-compile (require '035-base-macros))
+(require '001-init-log)
+(require '030-base-functions)
+(eval-when-compile (require '031-anaphoric-macros))
+(eval-when-compile (require '031-autolet-macros))
+(eval-when-compile (require '031-looping-macros))
 
-(defvar evil-state-properties)
-(declare-function evil-define-key* "evil")
-;;;; oo-funcall-quietly
-(defun oo-funcall-quietly (fn &rest args)
-  "Call FN with ARGS without producing any output."
-  (quiet! (apply fn args)))
-;;;; popup
-;; I don't yet know where to put this function.  So for now, here it goes.
-(defun oo-popup-at-bottom (regexp)
-  "Open buffers at bottom that match regexp."
-  (alet! `(,regexp
-           (display-buffer-at-bottom)
-           (side bottom)
-           (slot 1)
-           (window-height 0.5)
-           (window-parameters ((no-other-window t))))
-    (push it display-buffer-alist)))
-;;;; keybinding stuff
-(defun! oo-localleader-bind (keymap key def)
-  "Convenience function for defining localleader bindings."
-  (flet! leader (leader)
-    (kbd (concat leader "\s" key)))
-  (define-key keymap (leader oo-emacs-localleader-key) def)
-  (with-eval-after-load 'evil
-    (evil-define-key* 'emacs keymap (leader oo-emacs-localleader-key) def)
-    (evil-define-key* 'normal keymap (leader oo-normal-localleader-key) def)
-    (evil-define-key* 'normal keymap (leader oo-normal-localleader-short-key) def)
-    (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
-    (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
-;;;; oo-after-load-hash-table
 ;; This alist is meant to call certain functions whenever a file is loaded.  It
 ;; is meant for things could happen at any time.  Right now I use it for evil
 ;; state characters and knowing when a symbol is defined--specifically keymaps
 ;; which I use for keybindings and variable symbols used in `opt!'.
-
 (defvar oo-after-load-hash-table (make-hash-table :size 100)
   "A hash table whose elements are (ITEM . FUNCTIONS).
 ITEM is either a symbol or a character (an integer).  FUNCTIONS is a list of
@@ -88,17 +54,17 @@ functions.")
 (defun! oo-call-after-load-functions (&rest _)
   "Call functions in `oo-after-load-hash-table' that need to be called.
 Also, update `oo-after-load-hash-table' to reflect functions called."
-  (for! (reverse it (hash-table-keys oo-after-load-hash-table))
-    (cond ((and (symbolp it) (boundp it))
-           (for! (reverse fn (gethash it oo-after-load-hash-table))
+  (for! (reverse key (hash-table-keys oo-after-load-hash-table))
+    (cond ((and (symbolp key) (boundp key))
+           (for! (reverse fn (gethash key oo-after-load-hash-table))
              (funcall fn))
-           (remhash it oo-after-load-hash-table))
-          ((and (integerp it)
+           (remhash key oo-after-load-hash-table))
+          ((and (integerp key)
                 (featurep 'evil)
-                (set! state (oo--evil-char-to-state it)))
-           (for! (reverse fn (gethash it oo-after-load-hash-table))
+                (set! state (oo--evil-char-to-state key)))
+           (for! (reverse fn (gethash key oo-after-load-hash-table))
              (funcall fn state))
-           (remhash it oo-after-load-hash-table)))))
+           (remhash key oo-after-load-hash-table)))))
 
 (defun oo-call-after-bound (symbol fn)
   "Call FN after SYMBOL is bound.
@@ -108,6 +74,7 @@ SYMBOL and FN in `oo-after-load-hash-table'."
       (funcall fn)
     (push fn (gethash symbol oo-after-load-hash-table))))
 
+(defvar evil-state-properties)
 (defun oo--evil-char-to-state (char)
   "Return state whose first letter is CHAR."
   (cl-find-if (lambda (state) (= char (string-to-char (symbol-name state))))
@@ -124,39 +91,7 @@ SYMBOL and FN in `oo-after-load-hash-table'."
   (aif! (and (bound-and-true-p evil-mode) (oo--evil-char-to-state char))
       (funcall fn it)
     (push fn (gethash char oo-after-load-hash-table))))
-;;;; alternate bindings
-;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
-(defvar oo-alternate-commands (make-hash-table)
-  "A hash-table mapping command symbols to a list of command symbols.")
 
-(defun! oo-alternate-command-choose-fn (command)
-  "Return an alternate command that should be called instead of COMMAND."
-  (or (dolist (it (gethash command oo-alternate-commands))
-        (aand! (funcall it) (break! it)))
-      command))
-
-;; (defun! oo-alt-bind (map orig alt &optional condition)
-;;   "Remap keys bound to ORIG so ALT is called if CONDITION returns non-nil.
-;; ORIG and ALT are command symbols.  CONDITION is a function that returns non-nil
-;; when ALT should be invoked instead of ORIG."
-;;   (flet! oo-when-fn (condition fn)
-;;     `(lambda (&rest _) (when (funcall #',condition) #',alt)))
-;;   (push (oo-when-fn (or condition #'always) alt) (gethash orig oo-alternate-commands))
-;;   (define-key map `[remap ,orig] `(menu-item "" ,orig :filter oo-alternate-command-choose-fn)))
-
-;; (defun oo-alt-bind (orig def)
-;;   (let ((,orig ,key)
-;;         (,alt ,def))
-;;     (setq ,key (vconcat (list 'remap ,key)))
-;;     (setq ,def (list 'menu-item "" ,alt :filter #'oo-alternate-command-choose-fn))
-;;     (push ,(oo--lambda-form alt '(&rest ) `(when ,condition ,alt)) (gethash ,orig oo-alternate-commands))
-;;     ,@(oo--bind-generate-body metadata steps)))
-;;;; alt!
-(defmacro alt! (old new feature)
-  `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
-                (gethash ',old oo-alternate-commands))
-          (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
-;;;; oo-call-after-load
 (defun oo--call-after-load (expr fn)
   "Call FN after EXPR is met."
   (pcase expr
@@ -211,5 +146,5 @@ EXPRS in (CDR CONDITION) is met."
                t)
     (oo--call-after-load expr it)))
 ;;; provide
-(provide '040-base-lib)
-;;; 040-base-lib.el ends here
+(provide '032-after-load-functions)
+;;; 032-after-load-functions.el ends here

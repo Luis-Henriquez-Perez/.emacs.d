@@ -55,11 +55,30 @@ are non-nil, then error is nil.")
 (defvar oo-startup-end-time nil
   "Time after `emacs-startup-hook' is done.")
 
-(defun oo--record-init-end-time-h ()
-  "Record the end of `emacs-startup-hook'."
-  (setq oo-startup-end-time (current-time)))
-
-(add-hook 'emacs-startup-hook 'oo--record-init-end-time-h 100)
+;; This is very basic font setting based on available faces.  I have seen much
+;; more complex font setups like in minemacs (which probably got its from doom)
+;; but for now this will do.
+(defvar oo-default-fonts (list (font-spec :family "JetBrainsMono Nerd Font"
+                                          :weight 'regular
+                                          :slant 'normal
+                                          :width 'normal
+                                          :size 18)
+                               (font-spec :family "CaskaydiaCove Nerd Font Mono"
+                                          :weight 'regular
+                                          :slant 'normal
+                                          :width 'normal
+                                          :size 18)
+                               (font-spec :family "Mononoki Nerd Font"
+                                          :weight 'regular
+                                          :slant 'normal
+                                          :width 'normal
+                                          :size 18)
+                               (font-spec :family "RecMonoDuotone Nerd Font"
+                                          :weight 'regular
+                                          :slant 'normal
+                                          :width 'normal
+                                          :size 18))
+  "List of fonts to check.")
 ;;; provide
 (provide '000-base-vars)
 ;;; 000-base-vars.el ends here

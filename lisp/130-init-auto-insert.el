@@ -30,6 +30,12 @@
 (opt! auto-insert-query nil)
 (hook! on-first-file-hook auto-insert-mode)
 
+(declare-function oo-auto-insert-elisp-template "990-config-auto-insert")
+(declare-function oo-auto-insert-python-file-header "990-config-auto-insert")
+(declare-function oo-auto-insert-html-template "990-config-auto-insert")
+(declare-function oo-auto-insert-hy-file-header "990-config-auto-insert")
+(declare-function oo-auto-insert-bash-file-header "990-config-auto-insert")
+
 (autoload #'oo-auto-insert-elisp-template "990-config-auto-insert" nil t 'function)
 (autoload #'oo-auto-insert-python-file-header "990-config-auto-insert" nil t 'function)
 (autoload #'oo-auto-insert-html-template "990-config-auto-insert" nil t 'function)

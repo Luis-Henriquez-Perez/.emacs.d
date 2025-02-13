@@ -29,6 +29,10 @@
 
 (opt! escr-screenshot-directory (expand-file-name "~/Pictures"))
 
+(declare-function escr-region-screenshot "escr")
+(declare-function escr-window-screenshot "escr")
+(declare-function escr-frame-screenshot "escr")
+
 (autoload #'escr-region-screenshot "escr" nil t 'function)
 (autoload #'escr-window-screenshot "escr" nil t 'function)
 (autoload #'escr-frame-screenshot "escr" nil t 'function)
