@@ -27,11 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(defvar no-littering-etc-directory)
-(defvar no-littering-var-directory)
-
-(setq no-littering-etc-directory oo-etc-dir)
-(setq no-littering-var-directory oo-var-dir)
+(eval-and-compile (defvar no-littering-etc-directory oo-etc-dir)
+                  (defvar no-littering-var-directory oo-var-dir))
 
 (require 'no-littering)
 ;;; provide
