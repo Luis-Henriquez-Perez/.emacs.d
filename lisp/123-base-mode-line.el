@@ -44,6 +44,7 @@
 (declare-function! nerd-icons-devicon "nerd-icons")
 (declare-function! nerd-icons-mdicon "nerd-icons")
 (declare-function! nerd-icons-powerline "nerd-icons")
+(declare-function +evil-state-face "130-init-evil")
 ;;;; powerline settings
 ;; Resetting the modeline after a theme change ensures separator colors are
 ;; updated to match the current theme.
