@@ -1,4 +1,4 @@
-;;; 031-looping-macros.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 031-looping-macros.el --- Looping macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; This is.
 ;;
 ;;; Code:
 (require 'pcase)
