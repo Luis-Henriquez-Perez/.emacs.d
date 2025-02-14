@@ -1,4 +1,4 @@
-;;; 031-anaphoric-macros.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 031-anaphoric-macros.el --- Anaphoric macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; These are basic anaphoric macros loosely based on the `anaphora' package.
 ;;
 ;;; Code:
 (defmacro alet! (form &rest body)
