@@ -11,18 +11,17 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T163238.363404
 :END:
-- *fast startup* Startup should be as fast as possible by which I mean less than a
-  second.  I currently have a startup time of =0.74= seconds (this is with
+- *fast startup*
+  Startup should be as fast as possible by which I mean less than a
+  second.  I currently have a startup time of =1.31= seconds (this is with
   byte-compilation).
 - *performant*
-  Furthermore, the experience while using emacs should be responsive fast and
-  snappy.  As of this version my Emacs startup time is consistently less than a
-  second, fluctuating between =0.74= and =0.97= seconds.
+  The experience while using emacs should be responsive fast and
+  snappy.
 - *introspectable*
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
-  "change" could be adding a hook or adding an advice or even binding a key.  To
-  this end I fashion [[lisp/001-init-log.el][my own logger]].
+  "change" could be adding a hook or adding an advice or even binding a key.
 - *expressive*
   I want expressive and powerful functions and macros at my disposal that help
   me do what I want sanely, concisely and with precision.
@@ -35,8 +34,7 @@ This is my personal emacs configuration.
   should result in no warnings.
 - *reproducable* (WIP)
   I should be able to recreate my exact configuration--with all my
-  external packages and their exact committs.  Right now I use package.el but I
-  will eventually migrate to either [[https://github.com/progfolio/elpaca][elpaca]] or [[https://github.com/emacscollective/borg?tab=readme-ov-file][borg]].
+  external packages and their exact commits.
 - *well-documented* (WIP)
   Every function and macro should have a thorough docstring explaining what it
   does.  Moreover, each file should have its own commentary explaining its
@@ -54,6 +52,7 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T163225.997099
 :END:
+- Streamlined byte-compiling and testing with [[https://github.com/emacs-eldev/eldev][Eldev]]
 - Dynamic and byte-compilation friendly lisp file loading
 - Simple and transparent top-level file organization (no modules)
 - Number-prefixed features that make load order predictable and transparent
@@ -62,10 +61,10 @@ This is my personal emacs configuration.
 - Automated startup file loading with [[file:lisp/002-init-loader.el][require! macro]]
 - Startup time is about =1.46= seconds with byte-compilation
 - Complete reproducibility using =elpaca= lockfile features
-- Eliminated compiler warnings
+- No compilation warnings or errors
 - Optimized for speed by evaluating macros during compilation
 - Extensive abbrev configuration with well over [[file:lisp/999-plain-text-abbrevs.el][1300 abbrevs]]
-- Spacemacs-like [[file:lisp/160-keybindings.el][keybinding scheme]]
+- Mnemonic Spacemacs-like [[file:lisp/160-keybindings.el][keybinding scheme]]
 - Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
 - Suppress errors raised in hooks with [[file:lisp/030-base-utils.el][custom hook functions]]
 - Extensively log events using [[file:lisp/001-init-log.el][my own custom logging function]]
@@ -119,12 +118,16 @@ This is my personal emacs configuration.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
   files starting with the number =9= are not loadded immediately via [[][Fload!]].
 
-  - *lisp/xxx-keybindings.el* - /Store all of my keybindings./
+  - *lisp/xxx-keybindings.el* - /Set all of my keybindings./
 
     This is an exception to the rule of keeping everything involving FEATURE to
     =config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
     easier profiling of keybindings.
 
+  - *lisp/xxx-hooks.el* - /Run custom hooks./
+
+    Run the hooks that do not correspond to a particular package.
+  
   - *lisp/xxx-init* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
@@ -134,7 +137,7 @@ This is my personal emacs configuration.
   - *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
 
     Use [[https://www.gnu.org/software/emacs/manual/html_node/ert/][ert]] to thoroughly test functions and macros in BASEFILE.  These test are
-    designed to be run with [[https://emacs-eldev.github.io/eldev/][eldev]] but of course can also be run.
+    designed to be run with [[https://emacs-eldev.github.io/eldev/][eldev]].
 
   - *.local/var/* - /Store Persistent data/.
 
