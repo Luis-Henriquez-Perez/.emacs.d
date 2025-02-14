@@ -197,7 +197,9 @@ LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
                (when ',level (oo-log ',level "HOOK: %s -> %s" ',hook ',fn))
                (condition-case err
                    (prog1 ,(if ignore-args `(funcall ',fn) `(apply ',fn args))
-                     (when ,expire (remove-hook ',hook ',name ,local)))
+                     (when ,expire
+                       (oo-log 'info "Removing %s from %s" ',name ',hook)
+                       (remove-hook ',hook ',name ,local)))
                  (error
                   (if oo-debug-p
                       (signal (car err) (cdr err))
