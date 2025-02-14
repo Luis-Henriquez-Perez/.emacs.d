@@ -60,6 +60,7 @@ string or comment."
 (define-abbrev global-abbrev-table "idwt"             "I do not want to"              nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "ngtdt"            "not going to do this"          nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "verson"           "version"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "ftft"             "for the first time"            nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "maye"             "maybe"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "concats"          "concatenates"                  nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "becausee"         "because"                       nil :enable-function #'oo--use-plain-text-abbrev-p)
