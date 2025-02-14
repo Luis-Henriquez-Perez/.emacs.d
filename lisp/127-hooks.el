@@ -32,16 +32,18 @@
   "Hook run after the first file is loaded.")
 
 (defhook! oo-run-first-file-hook-h (find-file-hook)
+  :ignore-args t
   :expire t
-  (info 'log "Running `oo-first-file-hook'...")
+  :level 'info
   (run-hooks 'oo-first-file-hook))
 
 (defvar oo-first-input-hook nil
   "Hook run after the first file is loaded.")
 
 (defhook! oo-run-first-input-hook-h (pre-command-hook)
+  :ignore-args t
   :expire t
-  (info 'log "Running `oo-first-input-hook'...")
+  :level 'info
   (run-hooks 'oo-first-input-hook))
 
 ;; I had been organizing the init file by packages and that is not entirely
