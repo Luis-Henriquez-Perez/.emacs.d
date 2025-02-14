@@ -29,12 +29,12 @@
 
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
-(declare-function! +mu4e--main-enter-message "990-config-mu4e")
-(declare-function! +mu4e--main-leave-message "990-config-mu4e")
-(declare-function! +mu4e--legacy-enter-message "990-config-mu4e")
-(declare-function! +mu4e--legacy-leave-message "990-config-mu4e")
-(declare-function! +mu4e-jump-to-maildir "990-config-mu4e")
-(declare-function! oo--mail-signature "990-config-mu4e")
+(autoload! +mu4e--main-enter-message "990-config-mu4e")
+(autoload! +mu4e--main-leave-message "990-config-mu4e")
+(autoload! +mu4e--legacy-enter-message "990-config-mu4e")
+(autoload! +mu4e--legacy-leave-message "990-config-mu4e")
+(autoload! +mu4e-jump-to-maildir "990-config-mu4e")
+(autoload! oo--mail-signature "990-config-mu4e")
 
 (defun! oo--message-signature (&rest _)
   "Produce a signature for a message."

@@ -52,14 +52,14 @@
 (opt! org-ellipsis " ▼")
 (opt! org-log-done 'time)
 ;;;; org-agenda
-(declare-function! +org-agenda-day-view "990-config-org-agenda")
+(autoload! +org-agenda-day-view "990-config-org-agenda")
 ;;;; org-capture
-(declare-function! +org-capture-plain "990-config-org-capture")
-(declare-function! +org-capture-todo "990-config-org-capture")
-(declare-function! +org-capture-open "990-config-org-capture")
-(declare-function! +org-capture-question "990-config-org-capture")
-(declare-function! +org-capture-bug "990-config-org-capture")
-(declare-function! +org-capture-choose-template "990-config-org-capture")
+(autoload! +org-capture-plain "990-config-org-capture")
+(autoload! +org-capture-todo "990-config-org-capture")
+(autoload! +org-capture-open "990-config-org-capture")
+(autoload! +org-capture-question "990-config-org-capture")
+(autoload! +org-capture-bug "990-config-org-capture")
+(autoload! +org-capture-choose-template "990-config-org-capture")
 
 (alt! org-capture +org-capture-choose-template org-capture)
 ;;;; org-refile

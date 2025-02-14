@@ -30,7 +30,7 @@
 (eval-when-compile (require '031-autolet-macros))
 (eval-when-compile (require '031-modification-macros))
 
-(defmacro declare-function! (function file)
+(defmacro autoload! (function file)
   `(progn (declare-function ,function ,file)
           (autoload #',function ,file nil t 'function)))
 

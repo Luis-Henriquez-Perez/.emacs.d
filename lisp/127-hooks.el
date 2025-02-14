@@ -173,7 +173,7 @@ file is loaded."
   (oo-log 'info "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
 
-(declare-function! oo-dwim-vc-action "vc")
+(autoload! oo-dwim-vc-action "vc")
 (defhook! oo-auto-commit-and-push-dotfile-h (after-save-hook)
   "Commit and push changes to dotfile on save.
 When a buffer is saved, check whether the saved file is part of the dotfiles
