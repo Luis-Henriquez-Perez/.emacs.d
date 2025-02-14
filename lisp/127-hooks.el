@@ -26,8 +26,23 @@
 ;;
 ;;; Code:
 (require '050-base)
-(require 'on)
 (require 'server)
+
+(defvar oo-first-file-hook nil
+  "Hook run after the first file is loaded.")
+
+(defhook! oo-run-first-file-hook-h (find-file-hook)
+  :expire t
+  (info 'log "Running `oo-first-file-hook'...")
+  (run-hooks 'oo-first-file-hook))
+
+(defvar oo-first-input-hook nil
+  "Hook run after the first file is loaded.")
+
+(defhook! oo-run-first-input-hook-h (pre-command-hook)
+  :expire t
+  (info 'log "Running `oo-first-input-hook'...")
+  (run-hooks 'oo-first-input-hook))
 
 ;; I had been organizing the init file by packages and that is not entirely
 ;; useless but I think maybe an abstraction in which I look at what is happening
@@ -39,7 +54,7 @@
 (hook! prog-mode-hook hs-minor-mode)
 (hook! text-mode-hook auto-fill-mode)
 (hook! text-mode-hook visual-line-mode)
-(hook! on-first-input-hook minibuffer-depth-indicate-mode)
+(hook! oo-first-input-hook minibuffer-depth-indicate-mode)
 (hook! after-init-hook window-divider-mode :depth 12)
 ;; (hook! text-mode flyspell-mode)
 ;; (hook! prog-mode-hook flyspell-prog-mode)
@@ -68,7 +83,7 @@
 
 (oo-call-after-load 'evil #'oo-call-after-load-functions)
 
-(defhook! init-after-load-functions-h (on-first-input-hook :depth 99)
+(defhook! init-after-load-functions-h (oo-first-input-hook :depth 99)
   "Call `oo-call-after-load-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."

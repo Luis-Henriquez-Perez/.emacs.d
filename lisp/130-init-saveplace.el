@@ -25,7 +25,7 @@
 ;; Initialize saveplace.
 ;;
 ;;; Code:
-(hook! on-first-file-hook save-place-mode)
+(hook! oo-first-file-hook save-place-mode)
 ;;; provide
 (provide '130-init-saveplace)
 ;;; 130-init-saveplace.el ends here

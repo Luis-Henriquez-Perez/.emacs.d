@@ -29,7 +29,7 @@
 
 (opt! buffer-terminator-verbose nil)
 (opt! buffer-terminator-inactivity-timeout (* 15 60))
-(hook! on-first-input-hook buffer-terminator-mode)
+(hook! oo-first-input-hook buffer-terminator-mode)
 ;;; provide
 (provide '130-init-buffer-terminator)
 ;;; 130-init-buffer-terminator.el ends here

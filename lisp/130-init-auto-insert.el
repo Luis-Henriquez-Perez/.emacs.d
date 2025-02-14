@@ -28,7 +28,7 @@
 (require '050-base)
 
 (opt! auto-insert-query nil)
-(hook! on-first-file-hook auto-insert-mode)
+(hook! oo-first-file-hook auto-insert-mode)
 
 (declare-function oo-auto-insert-elisp-template "990-config-auto-insert")
 (declare-function oo-auto-insert-python-file-header "990-config-auto-insert")

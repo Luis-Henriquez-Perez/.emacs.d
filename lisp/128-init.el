@@ -26,7 +26,6 @@
 ;;
 ;;; Code:
 (require '050-base)
-(require 'on)
 (require 'server)
 
 ;; https://christiantietze.de/posts/2023/09/kill-unsaved-buffer-ux-action-labels/

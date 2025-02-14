@@ -28,7 +28,7 @@
 (require '050-base)
 (require 'savehist)
 
-(hook! on-first-input-hook savehist-mode)
+(hook! oo-first-input-hook savehist-mode)
 
 (opt! savehist-save-minibuffer-history t)
 (opt! savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
