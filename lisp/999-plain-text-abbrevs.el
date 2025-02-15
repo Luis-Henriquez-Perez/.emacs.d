@@ -50,7 +50,10 @@ string or comment."
          ;; The first word of a comment actually starts at `comment-beg' but
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
+(defun! oo--in-org-p ()
+  (derived-mode-p 'org-mode))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "esrc"              "#+begin_src emacs-lisp\n#+end_src\n" nil :enable-function #'oo--in-org-p)
 (define-abbrev global-abbrev-table "evt"              "everything"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "everythig"        "everything"                    nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "tna"              "to no avail"                   nil :enable-function #'oo--use-plain-text-abbrev-p)
