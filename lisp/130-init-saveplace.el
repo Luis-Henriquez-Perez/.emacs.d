@@ -26,6 +26,8 @@
 ;;
 ;;; Code:
 (hook! oo-first-file-hook save-place-mode)
+
+(opt! save-place-file (expand-file-name "save-place.el" oo-var-dir))
 ;;; provide
 (provide '130-init-saveplace)
 ;;; 130-init-saveplace.el ends here

@@ -30,6 +30,8 @@
 
 (hook! emacs-startup-hook recentf-mode :level 'info)
 
+(opt! recentf-save-file (expand-file-name "recentf-save.el" oo-var-dir))
+
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'oo-funcall-quietly)
 (advice-add #'recentf-cleanup   :around #'oo-funcall-quietly)

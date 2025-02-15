@@ -30,6 +30,7 @@
 
 (hook! oo-first-input-hook savehist-mode)
 
+(opt! savehist-file (expand-file-name "savehist.el" oo-var-dir))
 (opt! savehist-save-minibuffer-history t)
 (opt! savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 (opt! savehist-autosave-interval (* 60 5))
