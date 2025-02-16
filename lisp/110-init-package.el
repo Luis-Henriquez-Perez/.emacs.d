@@ -31,7 +31,7 @@
 (defvar package-user-dir)
 (defvar package-archive-contents)
 
-(setq package-user-dir (locate-user-emacs-file "packages/"))
+(setq package-user-dir (locate-user-emacs-file "packages/elpa"))
 
 (require 'cl-lib)
 (require 'package)
