@@ -45,10 +45,12 @@
                (display-buffer-no-window)
                (allow-no-window . t)))
 
-(setq package-archives '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
-                         ("gnu-elpa" . "https://elpa.gnu.org/packages/")
-                         ("melpa"    . "https://melpa.org/packages/")
-                         ("nongnu"   . "https://elpa.nongnu.org/nongnu/")))
+(setq package-archives '(("gnu-elpa"     . "https://elpa.gnu.org/packages/")
+                         ("gnu-elpa"     . "https://elpa.gnu.org/packages/")
+                         ("melpa"        . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("nongnu"       . "https://elpa.nongnu.org/nongnu/")))
+
 
 ;; The package quickstart feature puts concatenates autoloads into one file so
 ;; they can be read all at once later.  This does speed up `package-initialize'
