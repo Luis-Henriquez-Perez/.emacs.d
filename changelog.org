@@ -21,8 +21,9 @@ it fails to fill the entire window.
 CLOSED: [2025-01-29 Wed 11:09]
 ** DONE Fix org appear error
 CLOSED: [2025-01-29 Wed 11:09]
-** DONE Eliminate all compilation warnings
-CLOSED: [2025-02-05 Wed 19:42]
+** TODO Eliminate all compilation warnings
+I had been byte-compiling improperly.  So I need to eliminate a few warnings
+still.
 ** DONE Add option to toggle the use of separators to modeline
 CLOSED: [2025-01-29 Wed 11:53]
 ** TODO Add lisp-indent hack to my config
