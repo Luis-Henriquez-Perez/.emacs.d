@@ -51,6 +51,9 @@
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("nongnu"       . "https://elpa.nongnu.org/nongnu/")))
 
+;; I experienced bugs from installing bleeding-edge org-mode.  Do not do this,
+;; use the stable version.
+(setq package-pinned-packages '((org . "melpa-stable")))
 
 ;; The package quickstart feature puts concatenates autoloads into one file so
 ;; they can be read all at once later.  This does speed up `package-initialize'
