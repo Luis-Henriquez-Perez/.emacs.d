@@ -25,6 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require 'subr-x)
 (require '001-init-log)
 (require '030-base-functions)
 (eval-when-compile (require '031-anaphoric-macros))
