@@ -76,7 +76,7 @@
 (eshell/alias "eeval" "{cd $user-emacs-directory; eldev -d eval $1}")
 (eshell/alias "apply-emacs" "chezmoi apply ~/.config/emacs --force")
 (eshell/alias "update-emacs" "apply-emacs && eclean && ecompile")
-(eshell/alias "ecompile" "emacs --batch --eval \"(push \\\"~/.config/emacs/lisp\\\" load-path)\" -f batch-byte-compile ~/.config/emacs/init.el ~/.config/emacs/early-init.el ~/.config/emacs/lisp/*.el")
+(eshell/alias "ecompile" "emacs --batch -l compile-setup.el -f batch-byte-compile ~/.config/emacs/init.el ~/.config/emacs/early-init.el ~/.config/emacs/lisp/*.el")
 (eshell/alias "eclean" "rm -f ~/.config/emacs/init.elc ~/.config/emacs/early-init.elc ~/.config/emacs/lisp/*.elc")
 ;;;; archlinux
 (eshell/alias "orphan" "pacman -Qtd $*")
