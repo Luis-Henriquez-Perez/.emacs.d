@@ -31,12 +31,12 @@
 
 (hook! oo-first-file-hook auto-insert-mode)
 
-(autoload! #'oo-auto-insert-elisp-template     "990-config-auto-insert")
-(autoload! #'oo-auto-insert-python-file-header "990-config-auto-insert")
-(autoload! #'oo-auto-insert-html-template      "990-config-auto-insert")
-(autoload! #'oo-auto-insert-hy-file-header     "990-config-auto-insert")
-(autoload! #'oo-auto-insert-bash-file-header   "990-config-auto-insert")
-(autoload! #'oo-auto-insert-org-file-header    "990-config-auto-insert")
+(autoload! oo-auto-insert-elisp-template     "990-config-auto-insert")
+(autoload! oo-auto-insert-python-file-header "990-config-auto-insert")
+(autoload! oo-auto-insert-html-template      "990-config-auto-insert")
+(autoload! oo-auto-insert-hy-file-header     "990-config-auto-insert")
+(autoload! oo-auto-insert-bash-file-header   "990-config-auto-insert")
+(autoload! oo-auto-insert-org-file-header    "990-config-auto-insert")
 
 (define-auto-insert "\\.el$"   #'oo-auto-insert-elisp-template)
 (define-auto-insert "\\.html$" #'oo-auto-insert-html-template)
