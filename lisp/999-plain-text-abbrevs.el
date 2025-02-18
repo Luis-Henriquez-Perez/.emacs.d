@@ -53,6 +53,13 @@ string or comment."
 (defun! oo--use-plain-text-abbrev-p ()
   (derived-mode-p 'org-mode))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "restartd"         "restarted"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "meacs"            "Emacs"                               nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "solutin"          "solution"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "instict"          "instinct"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "whenev"           "whenever"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "wene"             "whenever"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "cerain"           "certain"                             nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "archivse"         "archives"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "pakgs"            "packages"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "solu"             "solution"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
