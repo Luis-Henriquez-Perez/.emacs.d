@@ -28,25 +28,22 @@
 (require '050-base)
 
 (opt! auto-insert-query nil)
+
 (hook! oo-first-file-hook auto-insert-mode)
 
-(declare-function oo-auto-insert-elisp-template "990-config-auto-insert")
-(declare-function oo-auto-insert-python-file-header "990-config-auto-insert")
-(declare-function oo-auto-insert-html-template "990-config-auto-insert")
-(declare-function oo-auto-insert-hy-file-header "990-config-auto-insert")
-(declare-function oo-auto-insert-bash-file-header "990-config-auto-insert")
+(autoload! #'oo-auto-insert-elisp-template     "990-config-auto-insert")
+(autoload! #'oo-auto-insert-python-file-header "990-config-auto-insert")
+(autoload! #'oo-auto-insert-html-template      "990-config-auto-insert")
+(autoload! #'oo-auto-insert-hy-file-header     "990-config-auto-insert")
+(autoload! #'oo-auto-insert-bash-file-header   "990-config-auto-insert")
+(autoload! #'oo-auto-insert-org-file-header    "990-config-auto-insert")
 
-(autoload #'oo-auto-insert-elisp-template "990-config-auto-insert" nil t 'function)
-(autoload #'oo-auto-insert-python-file-header "990-config-auto-insert" nil t 'function)
-(autoload #'oo-auto-insert-html-template "990-config-auto-insert" nil t 'function)
-(autoload #'oo-auto-insert-hy-file-header "990-config-auto-insert" nil t 'function)
-(autoload #'oo-auto-insert-bash-file-header "990-config-auto-insert" nil t 'function)
-
-(define-auto-insert "\\.el$" #'oo-auto-insert-elisp-template)
+(define-auto-insert "\\.el$"   #'oo-auto-insert-elisp-template)
 (define-auto-insert "\\.html$" #'oo-auto-insert-html-template)
-(define-auto-insert "\\.py$" #'oo-auto-insert-python-file-header)
-(define-auto-insert "\\.sh$" #'oo-auto-insert-bash-file-header)
-(define-auto-insert "\\.hy$" #'oo-auto-insert-hy-file-header)
+(define-auto-insert "\\.py$"   #'oo-auto-insert-python-file-header)
+(define-auto-insert "\\.sh$"   #'oo-auto-insert-bash-file-header)
+(define-auto-insert "\\.hy$"   #'oo-auto-insert-hy-file-header)
+(define-auto-insert "\\.org$"  #'oo-auto-insert-org-file-header)
 ;;; provide
 (provide '130-init-auto-insert)
 ;;; 130-init-auto-insert.el ends here
