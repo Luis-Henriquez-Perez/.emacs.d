@@ -53,6 +53,7 @@ string or comment."
 (defun! oo--use-plain-text-abbrev-p ()
   (derived-mode-p 'org-mode))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "requirem"         "requirement"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "restartd"         "restarted"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "meacs"            "Emacs"                               nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "solutin"          "solution"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
