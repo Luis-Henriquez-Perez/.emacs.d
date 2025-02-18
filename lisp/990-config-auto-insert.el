@@ -27,6 +27,7 @@
 ;;; Code:
 (require '050-base)
 (require 'f)
+(require 'tempel)
 
 (defun oo-copyright-license ()
   "Return the copyright license."
@@ -161,7 +162,6 @@ in the commentary part."
 (defun! oo-auto-insert-html-template ()
   "Insert html template in file."
   (interactive)
-  (require 'tempel)
   (tempel-insert '("<!doctype html>" n
                    "<html lang=\"en\">" > n
                    "<head>" > n
