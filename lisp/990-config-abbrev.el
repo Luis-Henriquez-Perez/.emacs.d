@@ -75,7 +75,7 @@
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
 
-(defun! oo--use-plain-text-abbrev-p ()
+(defun! oo-use-text-abbrev-p ()
   "Return non-nil when text abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
