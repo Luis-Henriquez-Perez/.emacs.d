@@ -50,9 +50,17 @@ string or comment."
          ;; The first word of a comment actually starts at `comment-beg' but
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
+
 (defun oo--in-org-p ()
   (derived-mode-p 'org-mode))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "accordi"          "according"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "acordi"           "according"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "acord"            "accord"                              nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "accor"            "according"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "timesamp"         "timestamp"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "ultimatel"        "ultimately"                          nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "ulti"             "ultimate"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "faltitt"          "for a long time I thought that"      nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "falt"             "for a long time"                     nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "ustand"           "understand"                          nil :enable-function #'oo--use-plain-text-abbrev-p)
