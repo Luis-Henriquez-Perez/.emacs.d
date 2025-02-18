@@ -254,8 +254,9 @@
 
 (advice-add 'package--archives-initialize :around #'oo--read-archive-contents)
 
+;; Manage garbage collection myself.  You should not just disable garbage
+;; collection altogether for this because your Emacs could crash if it has too
 ;; much uncollected garbage.
-;; Refresh the contents and build `package-archive-contents' only once.
 (if-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
     ;; Ensure `package-archive-contents' is populated.
     (progn (package-read-all-archive-contents)
