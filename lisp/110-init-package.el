@@ -245,8 +245,15 @@
   ;; front of the load-path so files from here can load faster.
   (push (expand-file-name "lisp/" user-emacs-directory) load-path))
 
-;; Manage garbage collection myself.  U shouldn't just disable garbage
-;; collection altogether for this becausee ur emacs could crash if it has too
+;; Make sure I do not have to initialize package contents from scratch when
+;; installing package.
+(defun oo--read-archive-contents (orig-fn &rest args)
+  (prog2 (package-read-all-archive-contents)
+      (apply orig-fn args)
+    (advice-remove 'package-install #'oo--read-archive-contents)))
+
+(advice-add 'package--archives-initialize :around #'oo--read-archive-contents)
+
 ;; much uncollected garbage.
 ;; Refresh the contents and build `package-archive-contents' only once.
 (if-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
