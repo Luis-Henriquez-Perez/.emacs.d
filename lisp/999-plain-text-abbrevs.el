@@ -31,28 +31,6 @@
 (require '050-base)
 (require 'abbrev)
 (require '999-wikipedia-typo-abbrevs)
-;;;; plain text abbrevs
-(defun! oo--use-plain-text-abbrev-p ()
-  "Return non-nil when text abbrevs should be enabled.
-This is when the current major-mode is derived from text-mode or point is in a
-string or comment."
-  (or (derived-mode-p 'text-mode)
-	  ;; These cases prevent abbreviation from expanding words outside of a
-	  ;; string or comment when in some programming mode.
-	  (cl-case (oo-in-string-or-comment-p)
-		(string
-		 (set! string-beg (car (bounds-of-thing-at-point 'string)))
-		 (set! word-beg (save-excursion (backward-word) (point)))
-		 (> word-beg string-beg))
-		(comment
-		 (set! comment-beg (save-excursion (comment-beginning) (point)))
-		 (set! word-beg (save-excursion (backward-word) (point)))
-         ;; The first word of a comment actually starts at `comment-beg' but
-         ;; this never happens for a string.
-         (>= word-beg comment-beg)))))
-
-(defun oo--in-org-p ()
-  (derived-mode-p 'org-mode))
 ;;;; define abbrevs
 (define-abbrev global-abbrev-table "accordi"          "according"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "acordi"           "according"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
