@@ -196,6 +196,12 @@ in the commentary part."
                    ";; Author: " user-full-name " <" user-mail-address ">" > n
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
+
+(defun oo-auto-insert-org-file-header ()
+  "Insert org file header."
+  (interactive)
+  (tempel-insert '("#+title:" (string-replace "_" "\s" (f-base (buffer-file-name))) > n
+                   "#+author:" user-full-name > n)))
 ;;; provide
 (provide '990-config-auto-insert)
 ;;; 990-config-auto-insert.el ends here
