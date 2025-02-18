@@ -27,6 +27,7 @@
 ;;; Code:
 (require '032-after-load-functions)
 (require '030-base-functions)
+(eval-when-compile (require '031-anaphoric-macros))
 (eval-when-compile (require '031-autolet-macros))
 (eval-when-compile (require '031-modification-macros))
 
