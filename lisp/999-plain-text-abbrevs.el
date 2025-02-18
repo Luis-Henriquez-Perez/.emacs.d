@@ -32,6 +32,11 @@
 (require 'abbrev)
 (require '999-wikipedia-typo-abbrevs)
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "bir"              "but I realized"                      nil :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev global-abbrev-table "feeeling"         "feling"                              nil :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev global-abbrev-table "feeeling"         "feeling"                             nil :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev global-abbrev-table "weree"            "we're"                               nil :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev global-abbrev-table "lets"             "let's"                               nil :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "tw"               "this would"                          nil :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "imag"             "imagine"                             nil :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "creatoin"         "creation"                            nil :enable-function #'oo-use-text-abbrev-p)
