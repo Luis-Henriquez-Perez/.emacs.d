@@ -53,6 +53,10 @@ string or comment."
 (defun! oo--use-plain-text-abbrev-p ()
   (derived-mode-p 'org-mode))
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "fortunatel"       "fortunately"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "fortu"            "fortunate"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "wll"              "well"                                nil :enable-function #'oo--use-plain-text-abbrev-p)
+(define-abbrev global-abbrev-table "wort"             "wrote"                               nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "whoppig"          "whopping"                            nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "requirem"         "requirement"                         nil :enable-function #'oo--use-plain-text-abbrev-p)
 (define-abbrev global-abbrev-table "restartd"         "restarted"                           nil :enable-function #'oo--use-plain-text-abbrev-p)
