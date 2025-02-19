@@ -37,6 +37,7 @@
 (autoload! oo-in-elisp-comment-p "990-config-abbrev")
 (autoload! oo-use-text-abbrev-p "990-config-abbrev")
 ;;;; define abbrevs
+(define-abbrev global-abbrev-table "writng"             "writing"                         nil                      :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "elip"             "elisp"                         nil                      :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "pmin"             "(point-min)"                         nil                      :enable-function #'oo-elisp-mode-p)
 (define-abbrev global-abbrev-table "ddir"             "default-directory"                      nil :enable-function #'oo-elisp-mode-p)
