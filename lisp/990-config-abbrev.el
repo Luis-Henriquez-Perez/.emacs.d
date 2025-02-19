@@ -43,7 +43,7 @@
   (prog1 (funcall expand-fn)
     (when (or (derived-mode-p 'text-mode) (oo-in-string-or-comment-p))
       (set! eol (line-beginning-position -1))
-      (set! rx "\\([^!.?[:blank:]]\\)\\([[:blank:]][[:blank:]]\\)\\([^[:blank:]]+\\)")
+      (set! rx "\\([^\n!.?[:blank:]]\\)\\([[:blank:]][[:blank:]]\\)\\([^[:blank:]]+\\)")
       (cond ((looking-back rx eol)
              (replace-match "\\1.\\2\\3" nil nil nil 0))
             ((looking-back "\\([^!.?[:blank:]]\\)[[:blank:]]\\{2,\\}" eol)
