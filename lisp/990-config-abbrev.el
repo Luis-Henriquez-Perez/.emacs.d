@@ -94,6 +94,12 @@ string or comment."
 
 (defun oo--in-org-p ()
   (derived-mode-p 'org-mode))
+
+(defun oo-use-elisp-abbrevs-p ()
+  (derived-mode-p 'emacs-lisp-mode))
+
+(defun oo-in-elisp-comment-p ()
+  (and (derived-mode-p 'emacs-lisp-mode) (oo-in-string-or-comment-p)))
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
