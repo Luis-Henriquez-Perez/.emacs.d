@@ -35,16 +35,6 @@
 (opt! corfu-auto-delay 0.1)
 (opt! corfu-auto-prefix 1)
 (opt! corfu-bar-width 0)
-
-
-
-
-
-
-
-
-
-
 ;;; provide
 (provide '130-init-corfu)
 ;;; 130-init-corfu.el ends here
