@@ -52,9 +52,7 @@
 ;; focus is now on what is happening in my configuration as opposed to the many
 ;; individual configurations.
 (hook! prog-mode-hook rainbow-mode)
-(hook! prog-mode-hook auto-fill-mode)
 (hook! prog-mode-hook hs-minor-mode)
-(hook! text-mode-hook auto-fill-mode)
 (hook! text-mode-hook visual-line-mode)
 (hook! oo-first-input-hook minibuffer-depth-indicate-mode)
 (hook! after-init-hook window-divider-mode :depth 12)
