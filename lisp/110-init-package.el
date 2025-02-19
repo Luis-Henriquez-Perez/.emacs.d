@@ -204,6 +204,7 @@
                                   textsize
                                   transpose-frame
                                   transwin
+                                  try
                                   ts
                                   vc-auto-commit
                                   vertico
