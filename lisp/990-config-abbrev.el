@@ -92,14 +92,23 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 
-(defun oo--in-org-p ()
+(defun oo-org-mode-p ()
+  "Return non-nil when"
   (derived-mode-p 'org-mode))
 
-(defun oo-use-elisp-abbrevs-p ()
+(defun oo-elisp-mode-p ()
+  "Return non-nil if current buffer is in emacs-lisp mode"
   (derived-mode-p 'emacs-lisp-mode))
 
 (defun oo-in-elisp-comment-p ()
+  "Return non-nil if currently in an emacs-lisp comment."
   (and (derived-mode-p 'emacs-lisp-mode) (oo-in-string-or-comment-p)))
+
+(defun oo-blog-post-p ()
+  "Return non-nil if the current buffer is for one of my blog posts."
+  (and (derived-mode-p 'org-mode)
+       (string= (expand-file-name default-directory)
+                (expand-file-name "~/Documents/MyBlog/posts/"))))
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
