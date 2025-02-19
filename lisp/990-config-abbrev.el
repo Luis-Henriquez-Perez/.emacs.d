@@ -94,19 +94,24 @@ string or comment."
 
 (defun oo-org-mode-p ()
   "Return non-nil when"
+  (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'org-mode))
 
 (defun oo-elisp-mode-p ()
   "Return non-nil if current buffer is in emacs-lisp mode"
+  (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'emacs-lisp-mode))
 
 (defun oo-in-elisp-comment-p ()
   "Return non-nil if currently in an emacs-lisp comment."
+  (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'emacs-lisp-mode) (oo-in-string-or-comment-p)))
 
 (defun oo-blog-post-p ()
   "Return non-nil if the current buffer is for one of my blog posts."
+  (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'org-mode)
+       default-directory
        (string= (expand-file-name default-directory)
                 (expand-file-name "~/Documents/MyBlog/posts/"))))
 ;;; provide
