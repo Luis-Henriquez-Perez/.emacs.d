@@ -48,6 +48,7 @@
 ;;;; requirements
 (eval-and-compile (require 'map))
 (require '040-base-functions)
+(eval-when-compile (require '031-looping-macros))
 ;;;; oo--let-bindings
 ;; I wanted a way to prevent select keys from being let-bound, the concrete case
 ;; was the character that I want to pass into
