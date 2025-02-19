@@ -48,8 +48,6 @@
              (replace-match "\\1.\\2\\3" nil nil nil 0))
             ((looking-back "\\([^!.?[:blank:]]\\)[[:blank:]]\\{2,\\}" eol)
              (replace-match "\\1."))))))
-;; The behavior I want is if I type two spaces then replace with period
-;; followed by two spaces.
 ;;;; pulse expansion
 ;; You would be surprised at how much of an aesthetic improvement little things
 ;; like this can make a difference.
