@@ -73,6 +73,7 @@
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
 
+;;;; predicates
 (defun! oo-use-text-abbrev-p ()
   "Return non-nil when text abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
@@ -92,22 +93,29 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 
-(defun oo-org-mode-p ()
+(defun oo-in-org-mode-p ()
   "Return non-nil if the current buffer is in org-mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'org-mode))
 
-(defun oo-elisp-mode-p ()
+(defun oo-in-elisp-mode-p ()
   "Return non-nil if current buffer is in emacs-lisp mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'emacs-lisp-mode))
 
+(defun oo-in-elisp-code-p ()
+  "Return non-nil if current buffer is elisp code."
+  (declare (pure t) (side-effect-free error-free))
+  (and (derived-mode-p 'emacs-lisp-mode)
+       (not (oo-in-string-or-comment-p))))
+
 (defun oo-in-elisp-comment-p ()
   "Return non-nil if currently in an emacs-lisp comment."
   (declare (pure t) (side-effect-free error-free))
-  (and (derived-mode-p 'emacs-lisp-mode) (oo-in-string-or-comment-p)))
+  (and (derived-mode-p 'emacs-lisp-mode)
+       (oo-in-string-or-comment-p)))
 
-(defun oo-blog-post-p ()
+(defun oo-in-blog-post-p ()
   "Return non-nil if the current buffer is for one of my blog posts."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'org-mode)
@@ -115,11 +123,28 @@ string or comment."
        (string= (expand-file-name default-directory)
                 (expand-file-name "~/Documents/MyBlog/org/posts/"))))
 
-(defun! oo-expand-package-link ()
+;;;; expansion functions
+(defun! oo-expand-org-package-link ()
   "Prompt for package and insert the corresponding org package link."
   (set! desc (package--query-desc))
   (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
   (insert (format "[[%s][%s]]" link (package-desc-name desc))))
+
+(defun! oo-expand-package-link ()
+  "Prompt for package and insert the corresponding package link."
+  (set! desc (package--query-desc))
+  (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
+  (insert link))
+
+(defun oo-expand-elisp-defun ()
+  "Insert elisp defun template."
+  (tempel-insert 'fn))
+
+(put 'oo-expand-elisp-defun 'no-self-insert t)
+
+(defun oo-expand-elisp-var ()
+  "Insert elisp defun template."
+  (tempel-insert 'vr))
 
 (defun! oo-expand-callable-doc-link ()
   "Insert an org link to a helpful callable snapshot.
