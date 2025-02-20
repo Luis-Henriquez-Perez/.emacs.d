@@ -93,12 +93,12 @@ string or comment."
          (>= word-beg comment-beg)))))
 
 (defun oo-org-mode-p ()
-  "Return non-nil when"
+  "Return non-nil if the current buffer is in org-mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'org-mode))
 
 (defun oo-elisp-mode-p ()
-  "Return non-nil if current buffer is in emacs-lisp mode"
+  "Return non-nil if current buffer is in emacs-lisp mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'emacs-lisp-mode))
 
@@ -111,9 +111,68 @@ string or comment."
   "Return non-nil if the current buffer is for one of my blog posts."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'org-mode)
-       default-directory
+       (stringp default-directory)
        (string= (expand-file-name default-directory)
-                (expand-file-name "~/Documents/MyBlog/posts/"))))
+                (expand-file-name "~/Documents/MyBlog/org/posts/"))))
+
+(defun! oo-expand-package-link ()
+  "Prompt for package and insert the corresponding org package link."
+  (set! desc (package--query-desc))
+  (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
+  (insert (format "[[%s][%s]]" link (package-desc-name desc))))
+
+(defun! oo-expand-callable-doc-link ()
+  "Insert an org link to a helpful callable snapshot.
+Find the appropriate documentation for the callable in the documentation
+directory.  If it does not exist create it and add it."
+  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
+  (set! helpful-switch-buffer-function #'ignore)
+  (set! symbol (helpful--read-symbol "Callable: " (helpful--callable-at-point) #'fboundp))
+  (set! html-file (expand-file-name (format "%s-helpful-callable--%s.html" emacs-version symbol) doc-dir))
+  (unless (file-exists-p html-file)
+    (and (set! help-buffer (helpful-callable symbol))
+         (set! html-buffer (htmlize-buffer help-buffer))
+         (progn (with-current-buffer html-buffer
+                  (write-region (point-min) (point-max) html-file nil 'quiet))
+                (kill-buffer help-buffer)
+                (kill-buffer html-buffer))))
+  (insert (format "[[file:%s][%s]]"  html-file symbol)))
+
+(defun! oo-expand-variable-doc-link ()
+  "Insert an org link to a helpful callable snapshot.
+Find the appropriate documentation for the callable in the documentation
+directory.  If it does not exist create it and add it."
+  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
+  (set! helpful-switch-buffer-function #'ignore)
+  (set! symbol (helpful--read-symbol "Variable: " (helpful--variable-at-point) #'helpful--variable-p))
+  (set! html-file (expand-file-name (format "%s-helpful--%s.html" emacs-version symbol) doc-dir))
+  (unless (file-exists-p html-file)
+    (and (set! help-buffer (helpful-variable symbol))
+         (set! html-buffer (htmlize-buffer help-buffer))
+         (progn (with-current-buffer html-buffer
+                  (write-region (point-min) (point-max) html-file nil 'quiet))
+                (kill-buffer help-buffer)
+                (kill-buffer html-buffer))))
+  (insert (format "[[file:%s][%s]]"  html-file symbol)))
+
+(defun! oo-expand-config-link ()
+  "Expand an org link for a configuration file."
+  (setq doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
+  (set! lisp-dir (expand-file-name "lisp" user-emacs-directory))
+  (appending! files (directory-files lisp-dir t (rx ".el" eol)))
+  (pushing! files (expand-file-name user-init-file))
+  (pushing! files (expand-file-name "early-init.el" user-emacs-directory))
+  ;; Save a snapshot of my configuration file.
+  (set! config-file (completing-read "" files))
+  (set! html-file (expand-file-name (file-name-nondirectory file) doc-dir))
+  (set! config-buffer (create-file-buffer config-file))
+  (set! html-buffer (htmlize-buffer config-buffer))
+  (unless (file-exists-p html-file)
+    (with-current-buffer html-buffer
+      (write-region (point-min) (point-max) html-file nil 'quiet)))
+  (kill-buffer html-buffer)
+  ;; TODO: make the file path relative.
+  (insert (format "[[file:%s][%s]]" html-file (file-name-nondirectory path))))
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
