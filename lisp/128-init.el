@@ -147,6 +147,17 @@ faces immediately."
 ;; Select from xref candidates in minibuffer
 (opt! xref-show-definitions-function #'xref-show-definitions-completing-read)
 (opt! xref-show-xrefs-function #'xref-show-definitions-completing-read)
+;;;; Give info buffers better names
+(add-hook 'Info-selection-hook #'info-rename-buffer)
+
+(defun info-rename-buffer ()
+  "Rename current Info buffer to match its visiting manual."
+  (interactive)
+  (unless (eq major-mode 'Info-mode) (user-error "This is not an Info buffer"))
+  (unless (not (string-match-p "^\\*info" (buffer-name)))
+    (rename-buffer (if (equal Info-current-file "dir") "*info*"
+                     (format "*info %s*" (file-name-base Info-current-file)))
+                   'unique)))
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
