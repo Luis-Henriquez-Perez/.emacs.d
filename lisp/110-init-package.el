@@ -233,7 +233,8 @@
 ;; package-desc objects that contains data about all available packages.  It is
 ;; needed when installing packages but not when all of our packages are already
 ;; installed, which is the situation most of the time.
-(unless (bound-and-true-p package--initialized)
+(if (bound-and-true-p package--initialized)
+    (oo-info 'warn "The variable `package--initialized' unexpectedly non-nil")
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
   (setq package-alist nil)
