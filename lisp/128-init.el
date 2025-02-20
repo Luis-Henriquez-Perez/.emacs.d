@@ -148,11 +148,9 @@ faces immediately."
 (opt! xref-show-definitions-function #'xref-show-definitions-completing-read)
 (opt! xref-show-xrefs-function #'xref-show-definitions-completing-read)
 ;;;; Give info buffers better names
-(add-hook 'Info-selection-hook #'info-rename-buffer)
-
-(defun info-rename-buffer ()
+;; This is taken from the package plk.
+(defhook! info-rename-buffer-h (Info-selection-hook)
   "Rename current Info buffer to match its visiting manual."
-  (interactive)
   (unless (eq major-mode 'Info-mode) (user-error "This is not an Info buffer"))
   (unless (not (string-match-p "^\\*info" (buffer-name)))
     (rename-buffer (if (equal Info-current-file "dir") "*info*"
