@@ -1,4 +1,4 @@
-;;; 032-after-load-functions.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 032-after-load-functions.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Define functions for deferred loading
 ;;
 ;;; Code:
 (require 'subr-x)

@@ -1,4 +1,4 @@
-;;; 130-init-elfeed.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 130-init-elfeed.el --- Initialize `elfeed' -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize `elfeed'
 ;;
 ;;; Code:
 (require '050-base)

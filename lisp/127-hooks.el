@@ -1,4 +1,4 @@
-;;; 127-hooks.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 127-hooks.el --- Define and set several hooks -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Define and set several hooks.
 ;;
 ;;; Code:
 (require '050-base)
@@ -31,7 +31,7 @@
 (defvar oo-first-file-hook nil
   "Hook run after the first file is loaded.")
 
-(defhook! oo-run-first-file-hook-h (find-file-hook)
+(defhook! run-first-file-hook (find-file-hook)
   :ignore-args t
   :expire t
   :level 'info
@@ -40,7 +40,7 @@
 (defvar oo-first-input-hook nil
   "Hook run after the first file is loaded.")
 
-(defhook! oo-run-first-input-hook-h (pre-command-hook)
+(defhook! run-first-input-hook (pre-command-hook)
   :ignore-args t
   :expire t
   :level 'info
@@ -59,7 +59,7 @@
 ;; (hook! text-mode flyspell-mode)
 ;; (hook! prog-mode-hook flyspell-prog-mode)
 
-(defhook! oo-enable-elisp-font-lock-h (emacs-lisp-mode-hook)
+(defhook! extend-elisp-font-lock (emacs-lisp-mode-hook)
   "Add custom font-lock keywords."
   (font-lock-add-keywords
    'emacs-lisp-mode
@@ -83,43 +83,44 @@
 
 (oo-call-after-load 'evil #'oo-call-after-load-functions)
 
-(defhook! init-after-load-functions-h (oo-first-input-hook :depth 99)
+(defhook! initialize-after-load-functions (oo-first-input-hook :depth 99)
   "Call `oo-call-after-load-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
   (oo-call-after-load-functions)
   (hook! after-load-functions oo-call-after-load-functions))
 
-;; The macros in my configuration are expanded during compilation thereby saving
-;; time because they do not need to be expanded during startup.  The one caviat
-;; is that since they are already expanded at runtime my emacs configuration
-;; will have no knowledge of them.  The `oo-macros' file will not be loaded at
-;; all.  And again this is great for reducing startup time but I still want the
-;; macros to be defined when I am actually editing emacs-lisp.  Therefore, I
-;; load the `oo-macros' file.
-;; This only needs to happen when emacs is compiled.
-(defhook! oo-require-macros-h (emacs-lisp-mode-hook)
-  (require '035-base-macros))
+(defhook! require-base-macros (emacs-lisp-mode-hook)
+  "Load base macros."
+  :expire t
+  :level 'info
+  (require '031-anaphoric-macros)
+  (require '031-autolet-macros)
+  (require '031-modification-macros)
+  (require '031-looping-macros)
+  (require '031-looping-macros)
+  (require '035-base-macros)
+  (require '155-base-bind-macros))
 
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
-(defhook! oo-increase-garbage-collection-h (minibuffer-setup-hook :depth 10)
+(defhook! increase-garbage-collection (minibuffer-setup-hook :depth 10)
   "Boost garbage collection settings to `gcmh-high-cons-threshold'."
   (set-register :gc-cons-threshold gc-cons-threshold)
   (set-register :gc-cons-percentage gc-cons-percentage)
   (setq gc-cons-threshold (* 32 1024 1024))
   (setq gc-cons-percentage 0.8))
 
-(defhook! oo-decrease-garbage-collection-h (minibuffer-exit-hook :depth 90)
+(defhook! decrease-garbage-collection (minibuffer-exit-hook :depth 90)
   "Reset garbage collection settings to `gcmh-low-cons-threshold'."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
 
-(defhook! oo-manage-trailing-whitespace-h (prog-mode-hook conf-mode-hook)
+(defhook! manage-trailing-whitespace (prog-mode-hook conf-mode-hook)
   "Show trailing whitespace and delete it before saving."
   (setq show-trailing-whitespace t)
   (oo-add-hook 'before-save-hook #'delete-trailing-whitespace :local t))
 
-(defhook! initialize-modeline-h (after-init-hook :depth 90)
+(defhook! initialize-modeline (after-init-hook :depth 90 :level 'info)
   "Initialize modeline."
   ;; I need to put the modeline in a variable so that the modeline does not
   ;; treat any strings as modeline constructs.  Why?  I want to do it myself so
@@ -128,16 +129,11 @@ file is loaded."
   (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
   (oo-mode-line-update))
 
-(defhook! oo-load-initial-theme-h (after-init-hook)
-  "Load `modus-operandi' theme."
-  (require 'modus-themes)
-  (load-theme 'modus-operandi :no-confirm nil))
-
-(defhook! initialize-server-h ()
+(defhook! initialize-server (emacs-startup-hook :level 'info)
   "Enable server if it is not running."
   (unless (server-running-p) (server-start)))
 
-(defhook! initialize-config-files-h (emacs-startup-hook :depth 91)
+(defhook! initialize-config-files (emacs-startup-hook :depth 91 :level 'info)
   "Setup config files to be loaded after their feature."
   (set! lisp-dir (expand-file-name "lisp/" user-emacs-directory))
   (set! rx "\\`990-config-\\([^[:space:]]+\\)\\.el\\'")
@@ -147,12 +143,12 @@ file is loaded."
     (set! parent-feature (intern (match-string 1 filename)))
     (set! feature (intern (file-name-sans-extension filename)))
     (cond ((featurep parent-feature)
-           (oo-log 'info "Parent feature `%S' is loaded, requiring `%s'" parent-feature feature)
+           (oo-log 'info "Requiring `%S' because `%s' is loaded" feature parent-feature)
            (require feature nil nil))
           (t
-           (oo-log 'info "Deferring `%s' until parent feature, `%s', is loaded." feature parent-feature)
+           (oo-log 'trace "Deferring `%s' until parent feature, `%s', is loaded." feature parent-feature)
            (set! fn `(lambda () (require ',feature nil nil)))
-           (oo-log 'info "Function to load-after -> %S" fn)
+           ;; (oo-log 'info "Function to load-after -> %S" fn)
            (oo-call-after-load parent-feature fn)))))
 
 (defun! oo--timer--lower-garbage-collection ()
@@ -160,7 +156,7 @@ file is loaded."
   (flet! mb (x) (/ (float x) 1024 1024))
   (if (minibuffer-window-active-p (minibuffer-window))
       (run-with-timer 5 nil #'oo--timer--lower-garbage-collection)
-    (oo-log 'info "Running timer for lowering garbage collection...")
+    (oo-log 'trace "Running timer for lowering garbage collection...")
     (set! reduction (/ (get-register :gc-cons-threshold) 10))
     (set! gc-floor (* 8 1024 1024))
     (set! gcp-default 0.2)
@@ -168,28 +164,28 @@ file is loaded."
       (set! old gc-cons-threshold)
       (set! new (max (- old reduction) gc-floor))
       (setq gc-cons-threshold new)
-      (oo-log 'info "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
+      (oo-log 'trace "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
     (when (/= gc-cons-percentage gcp-default)
       (set! old (max gc-cons-percentage gcp-default))
       (set! new (max (- gc-cons-percentage 0.1) gcp-default))
-      (oo-log 'info "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
+      (oo-log 'trace "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
       (setq gc-cons-percentage new))
     (if (and (= gc-cons-threshold gc-floor)
              (= gc-cons-percentage gcp-default))
-        (oo-log 'info "Done with timer.")
+        (oo-log 'trace "Done with timer.")
       (run-with-timer 7 nil #'oo--timer--lower-garbage-collection))))
 
-(defhook! oo-restore-startup-values-h (emacs-startup-hook :depth 90)
+(defhook! restore-startup-values (emacs-startup-hook :depth 90 :level 'info)
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
-  (oo-log 'info "Restore the value of `file-name-handler-alist'.")
+  (oo-log 'trace "Restore the value of `file-name-handler-alist'.")
   (setq file-name-handler-alist (get-register :file-name-handler-alist))
   (setq gc-cons-threshold (* 40 1024 1024))
   (set-register :gc-cons-threshold gc-cons-threshold)
-  (oo-log 'info "Set the value of `gc-cons-threshold' to 40 MB.")
+  (oo-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
 
 (autoload! oo-dwim-vc-action "vc")
-(defhook! oo-auto-commit-and-push-dotfile-h (after-save-hook)
+(defhook! auto-commit-and-push-dotfile (after-save-hook)
   "Commit and push changes to dotfile on save.
 When a buffer is saved, check whether the saved file is part of the dotfiles
 repository and if it is, commit and push all changes.  Otherwise, do nothing."
@@ -202,7 +198,7 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
          (not (equal (vc-state (buffer-file-name)) 'unregistered))
          (save-restriction (oo-dwim-vc-action (buffer-file-name)))))
 
-(defhook! oo-set-default-font-h (after-init-hook :depth 90)
+(defhook! set-default-font (after-init-hook :depth 90 :level 'info)
   "Set the default font based on available fonts."
   (dolist (font oo-default-fonts)
     (oo-log 'trace "Checking whether %s font is available..." font)
@@ -218,9 +214,34 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
   ;;                (set-face-attribute 'default nil :font ,default-font))))
   (oo-log 'info "Unable to set font to any in `oo-default-font-list', defaulting to `%s'." default-font))
 
-;; (defun oo--record-init-end-time-h ()
-;;   "Record the end of `emacs-startup-hook'."
-;;   (setq oo-startup-end-time (current-time)))
+(defhook! record-after-init-hook-start-time (after-init-hook)
+  "Record the start of `after-init-hook'."
+  :depth -100
+  (oo-log 'info "Running `after-init-hook'...")
+  (set-register :after-init-start (float-time)))
+
+(defsubst oo-hundredths (n)
+  "Return N rounded to the nearest hundredth."
+  (/ (fround (* n 100)) 100.0))
+
+(defhook! record-after-init-hook-end-time (after-init-hook :depth 100)
+  "Record the end of `after-init-hook'."
+  (set! start (get-register :after-init-start))
+  (set! time (oo-hundredths (- (float-time) start)))
+  (set-register :after-init-hook-time time)
+  (oo-log 'info "Finished running `after-init-hook' in %.2f seconds" time))
+
+(defhook! record-emacs-startup-hook-start-time (emacs-startup-hook :depth -100)
+  "Record the start of `emacs-startup-hook'."
+  (oo-log 'info "Running `emacs-startup-hook'...")
+  (set-register :emacs-startup-start (float-time)))
+
+(defhook! record-emacs-startup-hook-end-time (emacs-startup-hook :depth 100)
+  "Record the end of `emacs-startup-hook'."
+  (set! start (get-register :emacs-startup-start))
+  (set! time (oo-hundredths (- (float-time) start)))
+  (set-register :emacs-startup-hook-time time)
+  (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here

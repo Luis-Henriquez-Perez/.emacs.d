@@ -1,4 +1,4 @@
-;;; 031-autolet-macros.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 031-autolet-macros.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Define macros that automate let binding and more.
 ;;
 ;;; Code:
 (require 'pcase)
@@ -62,11 +62,11 @@ evaluation of the `autolet!' form and return VALUE."
   "This is a shorthand for `(return! nil)'."
   `(return! nil))
 
-(defmacro quitif! (condition message &rest args)
+(defmacro quitif! (condition &rest args)
   "Exit `autolet!' and print MESSAGE if CONDITION is true."
   `(when ,condition
      (return!)
-     (message ,message ,@args)))
+     ,@(when args `((message ,(car args) ,@(cdr args))))))
 
 (defmacro break! (&optional value)
   "Exit the current loop and return VALUE.

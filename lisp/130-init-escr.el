@@ -1,4 +1,4 @@
-;;; 130-init-escr.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 130-init-escr.el --- Initialize `escr` -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize `escr`.
 ;;
 ;;; Code:
 (require '050-base)

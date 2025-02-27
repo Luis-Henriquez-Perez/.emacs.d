@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize `org-fancy-priorities`.
 ;;
 ;;; Code:
 (require '050-base)
