@@ -134,7 +134,7 @@ EXPRS in (CDR CONDITION) is met."
                   (lambda (&optional feature)
                     (when first-call-p
                       (setq first-call-p nil)
-                      (oo-log 'info "AFTER-LOAD: %s -> %s" feature #',fn)
+                      (oo-log 'trace "AFTER-LOAD: %s -> %s" feature #',fn)
                       (condition-case err
                           (funcall #',fn)
                         (error
