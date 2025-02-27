@@ -25,6 +25,8 @@
 ;; Initialize `evil-collection'.
 ;;
 ;;; Code:
+(require '050-base)
+
 ;; Enable `evil-collection' bindings after evil-mode.  I want to have precise
 ;; control of when evil is loaded.
 (defhook! initialize-evil-collection (evil-mode-hook)
