@@ -234,7 +234,7 @@
 ;; needed when installing packages but not when all of our packages are already
 ;; installed, which is the situation most of the time.
 (if (bound-and-true-p package--initialized)
-    (oo-info 'warn "The variable `package--initialized' unexpectedly non-nil")
+    (oo-log 'info 'warn "The variable `package--initialized' unexpectedly non-nil")
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
   (setq package-alist nil)
@@ -271,15 +271,12 @@
                (error
                 (oo-log 'error "Failed to install package `%s'" package)
                 t))
-             (garbage-collect)
              ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
              ;; disabling garbage collection), accumulating too much garbage via
              ;; installing packages will cause slowdowns, lags and freezes.  Here I need
              ;; to ensure I periodically garbage collect.
-
-             ;; (unless (package-installed-p package)
-             ;;   (oo-log 'error "Failed to install package `%s'" package))
-             ))
+             (garbage-collect))
+           (oo-log 'trace "Not all packages installed"))
   (oo-log 'trace "All packages installed..."))
 
 (package-vc-install-selected-packages)
