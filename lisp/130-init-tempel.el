@@ -41,14 +41,6 @@
 (defhook! oo-setup-tempel-completion-h (prog-mode-hook text-mode-hook)
   "Add the Tempel Capf to `completion-at-point-functions'."
   (pushing! completion-at-point-functions #'tempel-expand :setter setq-local))
-;;;; keybindings
-
-
-
-
-
-
-
 ;;; provide
 (provide '130-init-tempel)
 ;;; 130-init-tempel.el ends here
