@@ -30,6 +30,7 @@
 (eval-when-compile (require '031-anaphoric-macros))
 (eval-when-compile (require '031-autolet-macros))
 (eval-when-compile (require '031-modification-macros))
+(eval-when-compile (require '031-looping-macros))
 
 (defmacro autoload! (function file)
   `(progn (declare-function ,function ,file)
