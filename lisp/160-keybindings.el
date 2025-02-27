@@ -28,7 +28,7 @@
 (require '050-base)
 (eval-when-compile (require '155-base-bind-macros))
 (require 'bind-key)
-(hook! after-init-hook override-global-mode :depth -100)
+(hook! after-init-hook override-global-mode :depth -80 :level 'info)
 ;;;; keybinding leaders
 ;; This file provides leaders keys for evil and non-evil states and it binds
 ;; these leader keys.
