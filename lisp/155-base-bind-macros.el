@@ -80,7 +80,7 @@
   (with-map-keywords! metadata
     `((declare-function evil-define-key* "evil")
       (evil-define-key* ,!state ,!keymap ,!key ,!def)
-      (oo-log 'info "KEYBINDING: %s %s %s -> %s" ,!state ,!keymap-symbol ,!key ,!def)
+      (oo-log 'trace "KEYBINDING: %s %s %s -> %s" ,!state ,!keymap-symbol ,!key ,!def)
       ,@forms)))
 
 (defun oo--bind-evil-define-minor-mode-key (metadata forms)
