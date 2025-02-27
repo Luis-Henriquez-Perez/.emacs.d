@@ -28,7 +28,6 @@
 (require '050-base)
 (require 'dashboard)
 
-;; If I put dashboard configuration in its own.
 (defun oo-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
 
@@ -39,12 +38,12 @@
     (with-current-buffer it
       (dashboard-insert-startupify-lists))))
 
-(setq initial-buffer-choice #'oo-dashboard-buffer)
-
 (setq dashboard-banner-logo-title "Welcome!")
 (setq dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
 (setq dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
 (setq dashboard-center-content t)
+
+(dashboard-setup-startup-hook)
 ;;; provide
 (provide '130-init-dashboard)
 ;;; 130-init-dashboard.el ends here
