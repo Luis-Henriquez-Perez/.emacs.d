@@ -131,11 +131,6 @@
   (evil-make-overriding-map tempel-map))
 
 (advice-add 'tempel-insert :after #'oo--enter-evil-insert-state-maybe)
-
-(defun oo--enter-evil-insert-state-maybe (&rest _)
-  (when (bound-and-true-p evil-mode)
-    (evil-insert-state 1)))
-;;;;; auto-insert
 ;;;;; magit
 ;; Note that I cannot use `evil-set-initial-state' for this because
 ;; `git-commit-mode' is a minor-mode.
