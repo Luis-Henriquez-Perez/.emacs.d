@@ -134,7 +134,7 @@
 ;;;;; magit
 ;; Note that I cannot use `evil-set-initial-state' for this because
 ;; `git-commit-mode' is a minor-mode.
-(hook! git-commit-mode-hook +evil-enter-insert-state-hook)
+(hook! git-commit-mode-hook oo--enter-evil-insert-state-maybe)
 ;;;; miscellaneous
 (defun oo-dwim-escape ()
   "Exits out of whatever is happening after escape."
