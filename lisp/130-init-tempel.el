@@ -28,9 +28,9 @@
 ;;;; requirements
 (require '050-base)
 ;;;; autoloads
-(autoload #'tempel-complete "tempel" nil t 'function)
-(autoload #'tempel-insert "tempel" nil t 'function)
-(autoload #'tempel-expand "tempel" nil t 'function)
+(autoload! tempel-complete "tempel")
+(autoload! tempel-insert "tempel")
+(autoload! tempel-expand "tempel")
 ;;;; capf
 ;; `tempel-expand' only triggers on exact matches. Alternatively use
 ;; `tempel-complete' if you want to see all matches, but then you
