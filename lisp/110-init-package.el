@@ -46,7 +46,6 @@
                (allow-no-window . t)))
 
 (setq package-archives '(("gnu-elpa"     . "https://elpa.gnu.org/packages/")
-                         ("gnu-elpa"     . "https://elpa.gnu.org/packages/")
                          ("melpa"        . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("nongnu"       . "https://elpa.nongnu.org/nongnu/")))
