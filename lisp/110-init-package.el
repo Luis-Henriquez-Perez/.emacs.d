@@ -81,6 +81,7 @@
                                   corfu
                                   cyberpunk-theme
                                   dashboard
+                                  date2name
                                   denote
                                   dimmer
                                   dirvish
