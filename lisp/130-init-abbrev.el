@@ -29,21 +29,21 @@
 ;;;; hooks
 (hook! prog-mode-hook abbrev-mode)
 (hook! text-mode-hook abbrev-mode)
-;;;; mode hook
-;; There is an idea of loading the abbrevs just before they are needed--as in
-;; right as your typing--but doing that would actually cause a noticable delay
-;; when typing a character.
-(defhook! oo-load-plain-text-abbrevs-h (abbrev-mode-hook)
-  (require '999-plain-text-abbrevs))
+;;;; load abbrevs
+(defhook! load-abbrevs (abbrev-mode-hook)
+  :expire t
+  :level 'info
+  (require '990-abbrev-configuration)
+  (require '999-abbrevs))
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)
 (advice-add 'abbrev--possibly-save :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; setup advices
-(autoload 'oo--pulse-expansion "990-config-abbrev" nil nil 'function)
-(autoload 'oo--add-period-maybe "990-config-abbrev" nil nil 'function)
-(autoload 'oo--ensure-self-insert "990-config-abbrev" nil nil 'function)
+(autoload! oo--pulse-expansion "990-config-abbrev")
+(autoload! oo--add-period-maybe "990-config-abbrev")
+(autoload! oo--ensure-self-insert "990-config-abbrev")
 
 (advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
 (advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)
