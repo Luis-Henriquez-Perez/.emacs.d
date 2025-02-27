@@ -149,7 +149,8 @@ faces immediately."
 (opt! xref-show-xrefs-function #'xref-show-definitions-completing-read)
 ;;;; Give info buffers better names
 ;; This is taken from the package plk.
-(defhook! info-rename-buffer-h (Info-selection-hook)
+;; This is not enough, the name should also be updated whenever your at a new node.
+(defhook! info-rename-buffer (Info-selection-hook)
   "Rename current Info buffer to match its visiting manual."
   (unless (eq major-mode 'Info-mode) (user-error "This is not an Info buffer"))
   (unless (not (string-match-p "^\\*info" (buffer-name)))
