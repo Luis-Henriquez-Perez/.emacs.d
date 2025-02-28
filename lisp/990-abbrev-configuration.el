@@ -1,4 +1,4 @@
-;;; 990-config-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
+;;; 990-abbrev-configuration.el --- abbrev configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,6 +28,8 @@
 ;;;; requirements
 (require '050-base)
 (require 'abbrev)
+(require 'helpful)
+(require 'htmlize)
 ;;;; prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 ;;;; automatically add period
@@ -107,7 +109,10 @@ string or comment."
   "Return non-nil if current buffer is elisp code."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'emacs-lisp-mode)
-       (not (oo-in-string-or-comment-p))))
+       (not (oo-in-string-or-comment-p))
+       ;; This is to avoid cases where we have an abbrev in a preceding string.
+       ;; I do not want that to be expanded.
+       (word-at-point)))
 
 (defun oo-in-elisp-comment-p ()
   "Return non-nil if currently in an emacs-lisp comment."
@@ -122,8 +127,20 @@ string or comment."
        (stringp default-directory)
        (string= (expand-file-name default-directory)
                 (expand-file-name "~/Documents/MyBlog/org/posts/"))))
-
 ;;;; expansion functions
+;; (defvar oo-blog-dir "~/Documents/MyBlog/org/documentation/")
+
+(defun! oo-expand-blog-buffer ()
+  "Insert link of buffer.
+Meant to be used in a blog buffer."
+  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
+  (set! buffer (completing-read "Buffer: " (buffer-list)))
+  (quitif! (not buffer))
+  (set! html-file (expand-file-name (format "%s--%s.html" emacs-version (buffer-name)) doc-dir))
+  (with-current-buffer (htmlize-buffer buffer)
+    (quiet! (write-region (point-min) (point-max) html-file))
+    (kill-buffer)))
+
 (defun! oo-expand-org-package-link ()
   "Prompt for package and insert the corresponding org package link."
   (set! desc (package--query-desc))
@@ -132,12 +149,30 @@ string or comment."
 
 (defun! oo-expand-package-link ()
   "Prompt for package and insert the corresponding package link."
-  (set! desc (package--query-desc))
-  (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
-  (insert link))
+  (set! link (intern (completing-read
+                      "Install package: "
+                      (mapcan
+                       (lambda (elt)
+                         (and (or (and (or current-prefix-arg
+                                           package-install-upgrade-built-in)
+                                       (package--active-built-in-p (car elt)))
+                                  (not (package-installed-p (car elt))))
+                              (list (symbol-name (car elt)))))
+                       package-archive-contents)
+                      nil t)))
+  ;; (set! desc (package--query-desc))
+  ;; (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
+  link)
+
+;; (defun! oo-expand-blog-buffer ()
+;;   "Prompt for a buffer, convert it into html and save it as a link."
+;;   (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
+;;   (htmlize-buffer (get-buffer)))
 
 (defun oo-expand-elisp-defun ()
   "Insert elisp defun template."
+  (tempel-insert '("(defun " p " ()" n>
+                   "\"" p "\""))
   (tempel-insert 'fn))
 
 (put 'oo-expand-elisp-defun 'no-self-insert t)
@@ -146,58 +181,94 @@ string or comment."
   "Insert elisp defun template."
   (tempel-insert 'vr))
 
+(defun oo-expand-elisp-with-current-buffer ()
+  "Insert elisp defun template."
+  (tempel-insert '("(with-current-buffer " p n> p ")")))
+
+(defun oo-expand-elisp-wrapper (name)
+  "Insert elisp defun template."
+  (tempel-insert `("(" ,name n> p ")")))
+
+(defalias 'oo-expand-save-excursion (apply-partially #'oo-expand-elisp-wrapper "save-excursion"))
+
+(defalias 'oo-expand-save-match-data (apply-partially #'oo-expand-elisp-wrapper "save-match-data"))
+
+(defvar helpful-switch-buffer-function)
+
+(declare-function helpful--callable-at-point "helpful")
+(declare-function helpful-callable "helpful")
 (defun! oo-expand-callable-doc-link ()
   "Insert an org link to a helpful callable snapshot.
 Find the appropriate documentation for the callable in the documentation
 directory.  If it does not exist create it and add it."
   (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-  (set! helpful-switch-buffer-function #'ignore)
+  (set! helpful-switch-buffer-function #'identity)
   (set! symbol (helpful--read-symbol "Callable: " (helpful--callable-at-point) #'fboundp))
   (set! html-file (expand-file-name (format "%s-helpful-callable--%s.html" emacs-version symbol) doc-dir))
   (unless (file-exists-p html-file)
-    (and (set! help-buffer (helpful-callable symbol))
-         (set! html-buffer (htmlize-buffer help-buffer))
-         (progn (with-current-buffer html-buffer
-                  (write-region (point-min) (point-max) html-file nil 'quiet))
-                (kill-buffer help-buffer)
-                (kill-buffer html-buffer))))
+    (set! help-buffer (quiet! (helpful-callable symbol)))
+    (quitif! (not help-buffer) "No help buffer.")
+    (set! html-buffer (quiet! (htmlize-buffer help-buffer)))
+    (quitif! (not html-buffer) "No html buffer.")
+    (with-current-buffer html-buffer
+      (quiet! (write-region (point-min) (point-max) html-file))
+      (kill-buffer help-buffer)
+      (kill-buffer)))
   (insert (format "[[file:%s][%s]]"  html-file symbol)))
 
+(declare-function htmlize-buffer "htmlize")
+
+(declare-function helpful--read-symbol "helpful")
+(declare-function helpful--variable-at-point "helpful")
+(declare-function helpful-variable "helpful")
 (defun! oo-expand-variable-doc-link ()
   "Insert an org link to a helpful callable snapshot.
 Find the appropriate documentation for the callable in the documentation
 directory.  If it does not exist create it and add it."
   (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-  (set! helpful-switch-buffer-function #'ignore)
+  (set! helpful-switch-buffer-function #'identity)
   (set! symbol (helpful--read-symbol "Variable: " (helpful--variable-at-point) #'helpful--variable-p))
-  (set! html-file (expand-file-name (format "%s-helpful--%s.html" emacs-version symbol) doc-dir))
+  (set! html-file (expand-file-name (format "%s-helpful-variable--%s.html" emacs-version symbol) doc-dir))
   (unless (file-exists-p html-file)
-    (and (set! help-buffer (helpful-variable symbol))
-         (set! html-buffer (htmlize-buffer help-buffer))
-         (progn (with-current-buffer html-buffer
-                  (write-region (point-min) (point-max) html-file nil 'quiet))
-                (kill-buffer help-buffer)
-                (kill-buffer html-buffer))))
+    (set! help-buffer (helpful-variable symbol))
+    (quitif! (not help-buffer) "No help buffer.")
+    (set! html-buffer (htmlize-buffer help-buffer))
+    (quitif! (not html-buffer) "No html buffer.")
+    (with-current-buffer html-buffer
+      (write-region (point-min) (point-max) html-file)
+      (kill-buffer help-buffer)
+      (kill-buffer)))
   (insert (format "[[file:%s][%s]]"  html-file symbol)))
 
 (defun! oo-expand-config-link ()
   "Expand an org link for a configuration file."
-  (setq doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
+  (set! blog-dir (expand-file-name "~/Documents/MyBlog/"))
+  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
   (set! lisp-dir (expand-file-name "lisp" user-emacs-directory))
   (appending! files (directory-files lisp-dir t (rx ".el" eol)))
   (pushing! files (expand-file-name user-init-file))
   (pushing! files (expand-file-name "early-init.el" user-emacs-directory))
-  ;; Save a snapshot of my configuration file.
-  (set! config-file (completing-read "" files))
-  (set! html-file (expand-file-name (file-name-nondirectory file) doc-dir))
-  (set! config-buffer (create-file-buffer config-file))
-  (set! html-buffer (htmlize-buffer config-buffer))
+  (set! config-file (completing-read "Config file: " files))
+  (set! name-ext (file-name-nondirectory config-file))
+  (set! name (file-name-sans-extension name-ext))
+  (set! html-file (expand-file-name (format "%s-%s.html" emacs-version name) doc-dir))
   (unless (file-exists-p html-file)
-    (with-current-buffer html-buffer
-      (write-region (point-min) (point-max) html-file nil 'quiet)))
-  (kill-buffer html-buffer)
-  ;; TODO: make the file path relative.
-  (insert (format "[[file:%s][%s]]" html-file (file-name-nondirectory path))))
+    (with-temp-buffer
+      (insert-file-contents config-file)
+      (set! html-buffer (htmlize-region (point-min) (point-max)))
+      (with-current-buffer html-buffer
+        (write-region (point-min) (point-max) html-file nil 'quiet)
+        (kill-buffer))))
+  (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
+  (insert (format "[[%s][%s]]" relative-path name-ext)))
+
+;; (defun! oo-create-new-blog-post ()
+;;   "Create a new blog post."
+;;   (interactive)
+;;   (set! blog-dir (expand-file-name "~/Documents/MyBlog/org/posts/"))
+;;   (expand-file-name file blog-dir)
+;;   ()
+;;   )
 ;;; provide
-(provide '990-config-abbrev)
-;;; 990-config-abbrev.el ends here
+(provide '990-abbrev-configuration)
+;;; 990-abbrev-configuration.el ends here
