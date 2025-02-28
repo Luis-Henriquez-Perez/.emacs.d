@@ -46,14 +46,11 @@ error).  Feature is an init feature, start and end time, and error is any
 error.  If an error occurs start and end are nil.  Conversely, if start and end
 are non-nil, then error is nil.")
 
-(defvar oo-load-start-time nil
-  "Time just before files in the lisp directory are loaded.")
+(defvar oo-after-init-hook-time nil
+  "Time elapsed by `after-init-hook'.")
 
-(defvar oo-load-end-time nil
-  "Time just after files in the lisp directory are loaded.")
-
-(defvar oo-startup-end-time nil
-  "Time after `emacs-startup-hook' is done.")
+(defvar oo-emacs-startup-hook-time nil
+  "Time elasped by `emacs-startup-hook'.")
 
 ;; This is very basic font setting based on available faces.  I have seen much
 ;; more complex font setups like in minemacs (which probably got its from doom)
