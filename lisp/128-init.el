@@ -156,8 +156,11 @@ faces immediately."
   "Rename current Info buffer to match its visiting manual."
   (unless (eq major-mode 'Info-mode) (user-error "This is not an Info buffer"))
   (unless (not (string-match-p "^\\*info" (buffer-name)))
-    (rename-buffer (if (equal Info-current-file "dir") "*info*"
-                     (format "*info %s*" (file-name-base Info-current-file)))
+    (rename-buffer (if (equal Info-current-file "dir")
+                       "*info*"
+                     (format "*%S*" (Info-copy-current-node-name))
+                     ;; (format "*info %s*" (file-name-base Info-current-file))
+                     )
                    'unique)))
 ;;; provide
 (provide '128-init)
