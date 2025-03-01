@@ -175,7 +175,6 @@
                                   org-pretty-tags
                                   org-superstar
                                   org-tidy
-                                  orglink
                                   password-store
                                   pcre2el
                                   php-mode
