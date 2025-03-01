@@ -52,7 +52,7 @@
 
 ;; I experienced bugs from installing bleeding-edge org-mode.  Do not do this,
 ;; use the stable version.
-(setq package-pinned-packages '((org . "melpa-stable")))
+(setq package-pinned-packages '((magit . "melpa-stable") (org . "melpa-stable")))
 
 ;; The package quickstart feature puts concatenates autoloads into one file so
 ;; they can be read all at once later.  This does speed up `package-initialize'
