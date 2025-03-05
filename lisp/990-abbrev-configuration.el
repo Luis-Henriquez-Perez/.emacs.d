@@ -164,35 +164,6 @@ Meant to be used in a blog buffer."
   ;; (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
   link)
 
-;; (defun! oo-expand-blog-buffer ()
-;;   "Prompt for a buffer, convert it into html and save it as a link."
-;;   (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-;;   (htmlize-buffer (get-buffer)))
-
-(defun oo-expand-elisp-defun ()
-  "Insert elisp defun template."
-  (tempel-insert '("(defun " p " ()" n>
-                   "\"" p "\""))
-  (tempel-insert 'fn))
-
-(put 'oo-expand-elisp-defun 'no-self-insert t)
-
-(defun oo-expand-elisp-var ()
-  "Insert elisp defun template."
-  (tempel-insert 'vr))
-
-(defun oo-expand-elisp-with-current-buffer ()
-  "Insert elisp defun template."
-  (tempel-insert '("(with-current-buffer " p n> p ")")))
-
-(defun oo-expand-elisp-wrapper (name)
-  "Insert elisp defun template."
-  (tempel-insert `("(" ,name n> p ")")))
-
-(defalias 'oo-expand-save-excursion (apply-partially #'oo-expand-elisp-wrapper "save-excursion"))
-
-(defalias 'oo-expand-save-match-data (apply-partially #'oo-expand-elisp-wrapper "save-match-data"))
-
 (defvar helpful-switch-buffer-function)
 
 (declare-function helpful--callable-at-point "helpful")
