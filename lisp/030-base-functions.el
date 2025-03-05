@@ -29,16 +29,6 @@
 (require 'cl-lib)
 (require 'pcase)
 ;;;; predicates
-(defsubst oo-negative-p (number)
-  "Return non-nil if NUMBER is less than zero."
-  (declare (pure t) (side-effect-free error-free))
-  (< number 0))
-
-(defsubst oo-positive-p (number)
-  "Return non-nil if NUMBER is greater than zero."
-  (declare (pure t) (side-effect-free error-free))
-  (> number 0))
-
 (defun oo-in-string-or-comment-p ()
   "Return non-nil if point is in a string or comment.
 Specifically, return the symbol `string' if point is in a string, the symbol
