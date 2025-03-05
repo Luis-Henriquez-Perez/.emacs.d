@@ -51,6 +51,19 @@
                                              "\s"))))
 (opt! org-ellipsis " ▼")
 (opt! org-log-done 'time)
+;;;; set `completion-at-point-functions'
+;; By default `completion-at-point-functions' has
+;; `pcomplete-completions-at-point' which has completions I do not want.
+(defhook! initialize-capfs (org-mode-hook)
+  "Initialize `completion-at-point-functions' for org-mode."
+  ;; Only check other buffers whose.
+  (flet! org-buffer-p (buffer)
+    (with-current-buffer buffer
+      (derived-mode-p 'text-mode)))
+  (flet! org-buffers ()
+    (cl-remove-if-not #'org-buffer-p (buffer-list)))
+  (setq-local cape-dabbrev-check-other-buffers #'org-buffers)
+  (setq-local completion-at-point-functions '(cape-dabbrev cape-file t)))
 ;;;; org-agenda
 (autoload! +org-agenda-day-view "990-config-org-agenda")
 ;;;; org-capture
