@@ -41,9 +41,7 @@
 
 (deftempel! oo-expand-elisp-defhook
   "Expand to a `defun' form."
-  "(defhook! " p " (" p ")" n>
-  "\"" p "\"" n>
-  p ")" n>)
+  "(defhook! " p " (" p ")" n> "\"" p "\"" n> r ")")
 
 (deftempel! oo-expand-elisp-oo-add-hook
   "Expand to a `oo-add-hook' form."
@@ -55,17 +53,13 @@
 
 (deftempel! oo-expand-elisp-hook-bang
   "Expand to a `oo-add-hook' form."
-  "(hook! " p " " p ")")
+  "(hook! " p " " r ")")
 
 (deftempel! oo-expand-elisp-cond
   "Expand to a `cond' form."
   "(cond " ")")
 
-(deftempel! oo-expand-elisp-defvar
-  "Expand to `defmacro'."
-  "(defun " p " (" p ")" n> "\"" p "\"" n> r ")")
-
-(deftempel! oo-expand-to-defun
+(deftempel! oo-expand-elisp-defun
   "Expand to `defun'."
   "(defun " p " (" p ")" n> "\"" p "\"" n> r ")")
 
@@ -75,11 +69,19 @@
 
 (deftempel! oo-expand-elisp-defvar
   "Expand to `defvar'."
-  "(defvar " p "\s" p "\n  \"" p "\"" ")")
+  "(defvar " p "\s" p "\n  \"" q "\"" ")")
 
 (deftempel! oo-expand-elisp-message
   "Expand to `message'."
-  "(message " \" p "\"" p ")")
+  "(message \"" r  "\")")
+
+(deftempel! oo-expand-elisp-message-var
+  "Expand to printing a variable value with `message'."
+  "(message \"" (s var)  " -> %S\" " var ")" q)
+
+(deftempel! oo-expand-elisp-with-current-buffer
+  "Expand to printing a variable value with `message'."
+  "(with-current-buffer " p n> r ")")
 ;;; provide
 (provide '990-config-tempel)
 ;;; 990-config-tempel.el ends here
