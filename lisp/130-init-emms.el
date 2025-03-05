@@ -37,15 +37,6 @@
 (opt! emms-player-list '(emms-player-mpv))
 
 (oo-call-after-load 'emms (lambda () (require 'emms-player-mpv)))
-
-
-
-
-
-
-
-
-
 ;;; provide
 (provide '130-init-emms)
 ;;; 130-init-emms.el ends here
