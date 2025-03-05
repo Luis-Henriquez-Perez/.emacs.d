@@ -1,4 +1,4 @@
-;;; +abbrev-python-mode-abbrevs.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 130-init-enlight.el --- Initialize enlight -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,21 +22,9 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize enlight.
 ;;
 ;;; Code:
-(put '+abbrev-insert-ifmain 'no-self-insert t)
-
-(defun +abbrev-insert-ifmain ()
-  (require 'tempel)
-  (tempel-insert 'ifmain)
-  (when (bound-and-true-p evil-mode)
-    (evil-normalize-keymaps))
-  t)
-
-(defun +abbrev-enable-python-abbrev-p ()
-  (derived-mode-p 'python-mode))
-
-(define-abbrev global-abbrev-table "mmain" "" '+abbrev-insert-ifmain :enable-function '+abbrev-enable-python-abbrev-p)
-
-(define-abbrev global-abbrev-table "isoup" "from bs4 import BeautifulSoup" nil :enable-function '+abbrev-enable-python-abbrev-p)
+;;; provide
+(provide '130-init-enlight)
+;;; 130-init-enlight.el ends here

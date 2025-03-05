@@ -1,4 +1,4 @@
-;;; oo-emacs-lisp-mode-abbrevs.el --- abbrevs for emacs-lisp-mode -*- lexical-binding: t; -*-
+;;; 130-init-company.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,18 +22,21 @@
 ;;
 ;;; Commentary:
 ;;
-;; These are abbrevs for emacs-lisp-mode.
+;; TODO: add commentary
 ;;
 ;;; Code:
-;;;; requirements
-(require 'abbrev)
-;;;; emacs-lisp
-(defun oo--use-emacs-lisp-mode-abbrevs-p ()
-  "Return non-nil when emacs-lisp-mode abbrevs should expand.
-This is when `emacs-lisp-mode' is enabled and point is not in a string or
-comment."
-  (and (derived-mode-p 'emacs-lisp-mode)
-       (not (oo-in-string-or-comment-p))))
+(opt! company-minimum-prefix-length 1)
+(opt! company-dabbrev-minimum-length 1)
+
+(defhook! initialize-company (text-mode-hook)
+  "Initialize company for text-mode."
+  (setq-local company-frontends '(company-preview-if-just-one-frontend))
+  (setq-local company-backends '(company-dabbrev))
+  (setq-local company-dabbrev-downcase t)
+  (setq-local company-dabbrev-ignore-case t)
+  ;; Search other buffers with the same major-mode.
+  (setq-local company-dabbrev-other-buffers t)
+  (company-mode 1))
 ;;; provide
-(provide 'oo-emacs-lisp-mode-abbrevs)
-;;; oo-emacs-lisp-mode-abbrevs.el ends here
+(provide '130-init-company)
+;;; 130-init-company.el ends here
