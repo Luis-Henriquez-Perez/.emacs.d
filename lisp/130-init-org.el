@@ -27,7 +27,10 @@
 ;;; Code:
 ;;;; requirements
 (require '050-base)
-;;;; general
+;;;; hooks
+(hook! org-mode-hook auto-fill-mode)
+(hook! org-mode-hook flyspell-mode)
+;;;; settings
 (opt! org-directory (expand-file-name "~/Documents/org/"))
 (opt! org-default-notes-file (expand-file-name "notes.org" org-directory))
 (opt! org-agenda-files (directory-files org-directory t "\\.org\\'"))

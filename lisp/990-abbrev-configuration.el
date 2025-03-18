@@ -43,7 +43,7 @@
 (defun! oo--add-period-maybe (expand-fn)
   "Add a period when necessary."
   (prog1 (funcall expand-fn)
-    (when (or (derived-mode-p 'text-mode) (oo-in-string-or-comment-p))
+    (when (or (member major-mode '(org-mode text-mode)) (oo-in-string-or-comment-p))
       (set! eol (line-beginning-position -1))
       (set! rx "\\([^\n!.?[:blank:]]\\)\\([[:blank:]][[:blank:]]\\)\\([^[:blank:]]+\\)")
       (cond ((looking-back rx eol)
@@ -80,7 +80,7 @@
   "Return non-nil when text abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
-  (or (derived-mode-p 'text-mode)
+  (or (member major-mode '(org-mode text-mode))
 	  ;; These cases prevent abbreviation from expanding words outside of a
 	  ;; string or comment when in some programming mode.
 	  (cl-case (oo-in-string-or-comment-p)
