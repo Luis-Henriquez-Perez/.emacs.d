@@ -242,6 +242,9 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
   (set! time (oo-hundredths (- (float-time) start)))
   (set-register :emacs-startup-hook-time time)
   (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
+
+(hook! mhtml-mode-hook highlight-indent-guides-mode)
+(opt! highlight-indent-guides-method 'character)
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here
