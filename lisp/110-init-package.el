@@ -157,6 +157,7 @@
                                   markdown-mode
                                   material-theme
                                   minimal-theme
+                                  mmm-mode
                                   modus-themes
                                   monkeytype
                                   monokai-theme
@@ -179,7 +180,6 @@
                                   pcre2el
                                   php-mode
                                   polymode
-                                  pomodoro
                                   powerline
                                   rainbow-delimiters
                                   rainbow-mode
