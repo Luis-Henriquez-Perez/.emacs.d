@@ -30,13 +30,26 @@
 (opt! emms-source-file-default-directory (expand-file-name "Music/" "~/"))
 (opt! emms-directory (expand-file-name "emms/" oo-var-dir))
 
-;; TODO: Make this dependent on whether mpv is installed.  And also figure out
-;; how to do this lazily.  Ideally when I would intercept a "player-list is
-;; empty" error and if I have mpv installed, add it and play the file.  I can do
-;; this for `emms-play-file' but I need to check if to.
-(opt! emms-player-list '(emms-player-mpv))
+;; As of right now using VLC or MPV will have the effect of repeating the current track
+;; in the playlist indefinitely.  These parameters at least prevent this form
+;; happening with MPV.  Actually, I think the only pertinent one for this is
+;; "--no-config".
+(opt! emms-player-mpv-parameters (list "--quiet"
+                                       "--really-quiet"
+                                       "--no-config"
+                                       "--no-audio-display"
+                                       "--force-window=no"
+                                       "--vo=null"))
 
-(oo-call-after-load 'emms (lambda () (require 'emms-player-mpv)))
+(opt! emms-player-list (cl-remove-if #'null (list (when (executable-find "mpv")
+                                                    (require 'emms-player-mpv)
+                                                    'emms-player-mpv)
+                                                  (when (executable-find "vlc")
+                                                    (require 'emms-player-vlc)
+                                                    'emms-player-vlc))))
+
+;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
+(opt! emms-playlist-buffer "*EMMS Playlist*")
 ;;; provide
 (provide '130-init-emms)
 ;;; 130-init-emms.el ends here
