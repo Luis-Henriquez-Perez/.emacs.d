@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(opt! emms-source-file-default-directory (expand-file-name "Music/" "~/"))
+(opt! emms-source-file-default-directory (expand-file-name "~/Music"))
 (opt! emms-directory (expand-file-name "emms/" oo-var-dir))
 
 ;; As of right now using VLC or MPV will have the effect of repeating the current track
@@ -48,6 +48,7 @@
                                                     (require 'emms-player-vlc)
                                                     'emms-player-vlc))))
 
+(opt! emms-info-functions '(emms-info-native))
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
 (opt! emms-playlist-buffer "*EMMS Playlist*")
 ;;; provide
