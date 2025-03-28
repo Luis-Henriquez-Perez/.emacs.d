@@ -32,6 +32,7 @@
 (opt! denote-prompts nil)
 (opt! denote-org-front-matter "#+title: %1$s\n#+filetags: %3$s\n#+identifier: %4$s\n")
 (opt! denote-save-buffers t)
+(declare-function denote-rename-buffer-mode "denote")
 (oo-call-after-load 'denote #'denote-rename-buffer-mode)
 ;; Set denote to insert state after entering.
 (declare-function evil-insert-state "evil")
