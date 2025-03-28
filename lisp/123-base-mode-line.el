@@ -272,6 +272,9 @@ If 0, do not display anything."
       (_
        (propertize (format "%s@" count) 'face 'success)))))
 
+(declare-function fancy-narrow-active-p "fancy-narrow")
+(declare-function nerd-icons-icon-for-buffer "nerd-icons")
+
 (defun! oo-mode-line-component--narrow ()
   "Return an indicator for a narrowed buffer in the modeline."
   (when (or (buffer-narrowed-p)

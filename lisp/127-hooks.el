@@ -27,6 +27,7 @@
 ;;; Code:
 (require '050-base)
 (require 'server)
+(require '123-base-mode-line)
 
 (defvar oo-first-file-hook nil
   "Hook run after the first file is loaded.")
