@@ -213,7 +213,6 @@ directory.  If it does not exist create it and add it."
 
 (defun! oo-expand-config-link ()
   "Expand an org link for a configuration file."
-  (set! blog-dir (expand-file-name "~/Documents/MyBlog/"))
   (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
   (set! lisp-dir (expand-file-name "lisp" user-emacs-directory))
   (appending! files (directory-files lisp-dir t (rx ".el" eol)))
