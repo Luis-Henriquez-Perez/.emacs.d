@@ -32,7 +32,13 @@
 ;;; Code:
 (require '050-base)
 
+;; TODO exclude if it is a which-key buffer.
+;; TODO also exclude if it is the only buffer except for the minibuffer.
 (opt! dimmer-fraction 0.5)
+
+;; TODO make this happen only after I open another window.  So I will need
+;; something like an open window hook.
+(hook! oo-first-input-hook dimmer-mode)
 ;;; provide
 (provide '130-init-dimmer)
 ;;; 130-init-dimmer.el ends here
