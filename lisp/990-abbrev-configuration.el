@@ -198,7 +198,9 @@ Find the appropriate documentation for the callable in the documentation
 directory.  If it does not exist create it and add it."
   (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
   (set! helpful-switch-buffer-function #'identity)
-  (set! symbol (helpful--read-symbol "Variable: " (helpful--variable-at-point) #'helpful--variable-p))
+  (unwind-protect (set! symbol (helpful--read-symbol "Variable: " (helpful--variable-at-point) #'helpful--variable-p))
+    (or symbol (unexpand-abbrev))
+    (goto-char last-abbrev-location))
   (set! html-file (expand-file-name (format "%s-helpful-variable--%s.html" emacs-version symbol) doc-dir))
   (unless (file-exists-p html-file)
     (set! help-buffer (helpful-variable symbol))
