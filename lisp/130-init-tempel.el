@@ -31,16 +31,6 @@
 (autoload! tempel-complete "tempel")
 (autoload! tempel-insert "tempel")
 (autoload! tempel-expand "tempel")
-;;;; capf
-;; `tempel-expand' only triggers on exact matches. Alternatively use
-;; `tempel-complete' if you want to see all matches, but then you
-;; should also configure `tempel-trigger-prefix', such that Tempel
-;; does not trigger too often when you don't expect it. NOTE: We add
-;; `tempel-expand' *before* the main programming mode Capf, such
-;; that it will be tried first.
-(defhook! oo-setup-tempel-completion-h (prog-mode-hook text-mode-hook)
-  "Add the Tempel Capf to `completion-at-point-functions'."
-  (pushing! completion-at-point-functions #'tempel-expand :setter setq-local))
 ;;; provide
 (provide '130-init-tempel)
 ;;; 130-init-tempel.el ends here
