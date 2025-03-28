@@ -28,6 +28,8 @@
 ;; Without this the compiler will not know how to expand `modus-themes-with-colors'.
 (eval-and-compile (require 'modus-themes))
 
+(defvar oo-custom-faces-alist)
+
 (defun oo-apply-custom-faces-for-modus-themes-h (theme)
   "Add custom faces for `modus-themes'.
 This hook is meant to be added to `enabled-theme-functions'."
