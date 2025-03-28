@@ -36,6 +36,7 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev global-abbrev-table "trakc"            "track"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "trakcs"            "tracks"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "spanish"            "Spanish"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev global-abbrev-table "masss"            "Massachusetts"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
