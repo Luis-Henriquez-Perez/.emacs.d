@@ -204,8 +204,11 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
   (dolist (font oo-default-fonts)
     (oo-log 'trace "Checking whether %s font is available..." font)
     (awhen! (find-font font)
-      (oo-log 'info "Setting font to...%s" it)
       (set-face-attribute 'default nil :font font)
+      (set! family (face-attribute 'default :family))
+      (set! size (face-attribute 'default :height))
+      (set! style (face-attribute 'default :weight))
+      (oo-log 'info "Set font to %s with size %s and style %s" family size style)
       (done!)))
   (set! default-font (face-attribute 'default :family))
   ;; So font will take effect with emacs daemon.
