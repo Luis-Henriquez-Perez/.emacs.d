@@ -159,6 +159,20 @@ This is like `setq' but it is meant for configuring variables."
       ;; (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
       (push `(oo-add-hook ',hook #',lambda :name ',name) forms))
     `(progn ,@(nreverse forms))))
+
+(declare-function tempel-insert "tempel")
+(defmacro! deftempel! (name &rest body)
+  "Define a tempel template."
+  (declare (doc-string 2) (indent defun))
+  (set! documentation (when (stringp (car body)) (list (pop body))))
+  `(progn (defun ,name ()
+            ,@documentation
+            (interactive)
+            (require 'tempel)
+            (tempel-insert ',body)
+            t)
+          (put ',name 'no-self-insert t)
+          ',name))
 ;;; provide
 (provide '035-base-macros)
 ;;; 035-base-macros.el ends here
