@@ -147,6 +147,7 @@ is already narrowed."
         (t
          (insert "\s"))))
 
+(declare-function consult-buffer "consult")
 (defvar consult--buffer-display)
 (defun! oo-pop-to-buffer ()
   (interactive)
