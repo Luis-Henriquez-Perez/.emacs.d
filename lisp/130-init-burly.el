@@ -33,6 +33,7 @@
 
 ;; The mode `burly-tabs-mode' causes opening a burly bookmark to enable
 ;; `tab-bar-mode' automatically and create a new tab.
+(declare-function burly-tabs-mode "burly")
 (oo-call-after-load 'burly #'burly-tabs-mode)
 ;;; provide
 (provide '130-init-burly)
