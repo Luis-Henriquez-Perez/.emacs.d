@@ -27,6 +27,8 @@
 ;;; Code:
 (require '050-base)
 
+(declare-function global-evil-fringe-mark-mode "evil-fringe-mark")
+
 (defun oo-enable-evil-fringe-mark-a (orig-fn &rest args)
   "Enable `evil-fringe-mark'."
   (prog1 (apply orig-fn args)

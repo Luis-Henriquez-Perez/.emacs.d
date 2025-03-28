@@ -29,6 +29,8 @@
 
 (opt! evil-goggles-duration 0.1)
 ;;;; register evil commands
+(declare-function evil-goggles-mode "evil-goggles")
+
 (defun! oo-require-evil-goggles-a (fn &rest args)
   (unless (or (minibufferp)
 			  (bound-and-true-p evil-goggles-mode))
