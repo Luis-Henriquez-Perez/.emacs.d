@@ -51,6 +51,15 @@
 (opt! emms-info-functions '(emms-info-native))
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
 (opt! emms-playlist-buffer "*EMMS Playlist*")
+
+(defafter! oo--add-tracks-to-emms (emms)
+  "Add music directory to emms."
+  (set! music-dir emms-source-file-default-directory)
+  (cond ((file-directory-p music-dir)
+         (oo-log 'info "Registered tracks from %s" music-dir)
+         (emms-add-directory music-dir))
+        (t
+         (oo-log 'info "Cannot add tracks because music directory %s does not exist" music-dir))))
 ;;; provide
 (provide '130-init-emms)
 ;;; 130-init-emms.el ends here
