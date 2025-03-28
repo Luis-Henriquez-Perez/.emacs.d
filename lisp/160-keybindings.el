@@ -338,6 +338,7 @@
 (bind! i vertico-map [backtab] #'vertico-previous)
 (bind! i vertico-map "C-o" #'embark-act)
 ;;;; uncategorized
+(declare-function which-key-add-keymap-based-replacements "which-key")
 (with-eval-after-load 'which-key
   (which-key-add-keymap-based-replacements oo-leader-map "l" "localleader"))
 
