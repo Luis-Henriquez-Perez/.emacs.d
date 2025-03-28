@@ -38,7 +38,7 @@
 
 ;; TODO make this happen only after I open another window.  So I will need
 ;; something like an open window hook.
-(hook! oo-first-input-hook dimmer-mode)
+;; (hook! oo-first-input-hook dimmer-mode)
 ;;; provide
 (provide '130-init-dimmer)
 ;;; 130-init-dimmer.el ends here
