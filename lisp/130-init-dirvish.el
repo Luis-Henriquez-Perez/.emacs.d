@@ -27,6 +27,7 @@
 ;;; Code:
 (require '050-base)
 
+(declare-function dirvish-override-dired-mode "dirvish")
 (oo-call-after-load 'dired #'dirvish-override-dired-mode)
 (oo-call-after-load 'dired (apply-partially #'require 'nerd-icons))
 ;; Do not touch the mode-line.

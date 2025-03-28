@@ -47,6 +47,7 @@ Replace `kill-buffer--possibly-save' as advice."
 
 (advice-add 'save-buffer :around #'oo-funcall-quietly)
 
+(declare-function consult-completion-in-region "consult")
 (defun oo-completion-in-region-function (&rest args)
   (apply (if (and (bound-and-true-p vertico-mode) (featurep 'consult))
              #'consult-completion-in-region
@@ -150,6 +151,8 @@ faces immediately."
 ;;;; Give info buffers better names
 ;; This is taken from the package plk.
 (defvar Info-current-file)
+
+(declare-function Info-copy-current-node-name "info")
 
 ;; This is not enough, the name should also be updated whenever your at a new node.
 (defhook! info-rename-buffer (Info-selection-hook)
