@@ -19,13 +19,15 @@
 ;;;; tell eldev where to load
 (setq eldev-project-main-file "init.el")
 ;; Eldev seems to be looking recursively in directories for any file named
-;; =init.el= or =early-init.el= unless you specifically put the "./" before the
-;; file name.  It was catching a file in
-;; "elpaca/repos/elpaca/doc/early-init.el".  So for precision I recommend adding
-;; "./".
+;; init.el or early-init.el unless you specifically put the "./" before the file
+;; name.  It was catching a file in "elpaca/repos/elpaca/doc/early-init.el".  So
+;; for precision I recommend adding "./".
 (setq eldev-main-fileset '("./init.el"
                            "./early-init.el"
-                           "./lisp/*.el"))
+                           "./lisp/*"
+                           ;; Building this file results in an error.
+                           "!./lisp/110-init-package.el"
+                           "!./lisp/disabled*"))
 
 (setq eldev-test-fileset '("test/*-test.el"))
 ;; Emacs doesn't allow to add directory containing init.el to load
