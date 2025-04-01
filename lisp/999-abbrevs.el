@@ -36,11 +36,12 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
-(define-abbrev    global-abbrev-table "kio"              "kind of"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table "ynt"              "you need to"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table "ihstdw"              "it has something to do with"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table "btti"              "but the thing is"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table "jtnaf"              "just to name a few"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "fro"              "from"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "kio"              "kind of"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "ynt"              "you need to"                         nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "ihstdw"           "it has something to do with"         nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "btti"             "but the thing is"                    nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "jtnaf"            "just to name a few"                  nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "fie"              "file"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "eldev"            "Eldev"                               nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "warnis"           "warnings"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
