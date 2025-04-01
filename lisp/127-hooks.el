@@ -116,10 +116,28 @@ file is loaded."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
 
-(defhook! manage-trailing-whitespace (prog-mode-hook conf-mode-hook)
+(defun oo--dwim-delete-trailing-whitespace ()
+  "Delete the trailing whitespace in the buffer except for the current line.
+Also if there is more than one trailing space in the current line, replace them
+with a single space."
+  (interactive)
+  (delete-trailing-whitespace (point-min) (line-beginning-position))
+  (save-match-data
+    (when (looking-back "^.*?\\(?1:[[:space:]]\\{2,\\}\\)$" (line-beginning-position))
+      (replace-match "\s" nil nil nil 1)))
+  (delete-trailing-whitespace (line-end-position) (point-max)))
+
+(defhook! dwim-delete-trailing-whitespace (text-mode-hook prog-mode-hook conf-mode-hook)
   "Show trailing whitespace and delete it before saving."
-  (setq show-trailing-whitespace t)
-  (oo-add-hook 'before-save-hook #'delete-trailing-whitespace :local t))
+  (setq-local show-trailing-whitespace t)
+  (oo-add-hook 'before-save-hook #'oo--dwim-delete-trailing-whitespace :local t))
+
+(defhook! delete-trailing-whitespace (kill-buffer-hook)
+  "Ensure that trailing whitespace is deleted.
+If the current buffer is in `text-mode', `prog-mode' or `conf-mode' or any mode
+derived from these, delete trailing whitespace from it."
+  (when (derived-mode-p 'text-mode 'prog-mode 'conf-mode)
+    (delete-trailing-whitespace (point-min) (point-max))))
 
 (defhook! initialize-modeline (after-init-hook :depth 90 :level 'info)
   "Initialize modeline."
