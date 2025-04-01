@@ -35,7 +35,7 @@
 (declare-function smartparens-strict-mode "smartparens")
 
 ;; This allows me to have parens completion when I invoke the command `eval-expression'.
-(defhook! oo-enable-smartparens-if-in-minibuffer-h (minibuffer-setup-hook)
+(defhook! enable-smartparens-if-in-minibuffer (minibuffer-setup-hook)
   "Enable `smartparens-mode' in the minibuffer."
   (when (memq this-command '(eval-expression evil-ex))
     (require 'smartparens)

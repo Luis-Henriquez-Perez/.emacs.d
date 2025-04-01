@@ -45,13 +45,13 @@
 (defvar oo-evil-state-before-minibuffer nil
   "Store the evil state before entering the minibuffer.")
 
-(defhook! oo-preserve-prior-evil-state-h (minibuffer-setup-hook)
+(defhook! preserve-prior-evil-state (minibuffer-setup-hook)
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
     (setq oo-evil-state-before-minibuffer evil-state)
     (evil-insert-state)))
 
-(defhook! oo-restore-prior-evil-state-h (minibuffer-exit-hook)
+(defhook! restore-prior-evil-state (minibuffer-exit-hook)
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
     (when oo-evil-state-before-minibuffer

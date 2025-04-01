@@ -90,7 +90,7 @@
 (after! cus-theme evil-collection-cus-theme-setup evil-collection)
 
 (autoload #'evil-collection-dashboard-setup "evil-collection" nil nil 'function)
-(defhook! oo-setup-evil-collection-h (dashboard-mode-hook)
+(defhook! setup-evil-collection (dashboard-mode-hook)
   (if after-init-time
       (evil-collection-dashboard-setup)
     (hook! emacs-startup-hook evil-collection-dashboard-setup)))

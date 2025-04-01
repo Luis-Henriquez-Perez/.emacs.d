@@ -77,7 +77,7 @@
 ;; override an evil keymap).
 (defvar override-global-map)
 (declare-function evil-make-intercept-map "evil")
-(defhook! oo-make-intercept-map-h (evil-mode-hook)
+(defhook! make-intercept-map (evil-mode-hook)
   "Register `oo-override-map' as an intercept map."
   (require 'bind-key)
   (evil-make-intercept-map override-global-map 'all t))

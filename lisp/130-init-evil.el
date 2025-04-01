@@ -55,7 +55,7 @@
 (opt! evil-emacs-state-modes nil)
 (opt! evil-motion-state-modes nil)
 ;;;; main
-(defhook! oo-load-evil-h (after-init-hook :depth 10)
+(defhook! load-evil (after-init-hook :depth 10)
   (require 'evil nil t))
 
 (hook! emacs-startup-hook evil-mode :level 'info)

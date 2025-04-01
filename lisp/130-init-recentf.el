@@ -45,7 +45,7 @@
 (adjoin! recentf-exclude (regexp-quote (recentf-expand-file-name oo-var-dir)))
 (adjoin! recentf-exclude (lambda (file) (not (file-exists-p file))))
 
-(defhook! oo--update-recentf-list (kill-buffer-hook)
+(defhook! update-recentf-list (kill-buffer-hook)
   "Update the recentf list just before killing a buffer."
   (awhen! (buffer-file-name)
     (recentf-add-file it)
