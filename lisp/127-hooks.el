@@ -145,11 +145,18 @@ file is loaded."
     (set! feature (intern (file-name-sans-extension filename)))
     (cond ((featurep parent-feature)
            (oo-log 'info "Requiring `%S' because `%s' is loaded" feature parent-feature)
-           (require feature nil nil))
+           (condition-case err
+               (require feature)
+             (error
+              (oo-log 'error "feature %s raised an error" feature)
+              (signal (car err) (cdr err)))))
           (t
            (oo-log 'trace "Deferring `%s' until parent feature, `%s', is loaded." feature parent-feature)
-           (set! fn `(lambda () (require ',feature nil nil)))
-           ;; (oo-log 'info "Function to load-after -> %S" fn)
+           (set! fn `(lambda () (condition-case err
+                                    (require ',feature)
+                                  (error
+                                   (oo-log 'error "feature %s raised an error" ',feature)
+                                   (signal (car err) (cdr err))))))
            (oo-call-after-load parent-feature fn)))))
 
 (defun! oo--timer--lower-garbage-collection ()
