@@ -1,10 +1,11 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t -*-
 
-;; This code and commentary was taken from [[https://d12frosted.io/posts/2021-04-09-emacs-d.html][this post]].  This file defines a
-;; "project" for =eldev=.  I want things like project management.
+;; This code and commentary was taken from this post(1).  This file defines a
+;; "project" for Eldev.  I want things like project management.
+;; (1) https://d12frosted.io/posts/2021-04-09-emacs-d.html
 
 ;; One thing I wish was mentioned in the post is that to run any of the shell
-;; commands for =eldev=, the =eldev= executable needs to be in your path.
+;; commands for Eldev, the Eldev executable needs to be in your path.
 ;;; eldev
 ;; A very important note, d12frosted did not use package.el for eldev, he only
 ;; used straight.el or elpaca.  The issue with using it with your emacs config
@@ -34,23 +35,17 @@
 ;; path, so we have to put other Emacs Lisp files in directory. Help
 ;; Eldev commands to locate them.
 ;; (setq eldev-project-source-dirs "lisp")
-(eldev-add-loading-roots 'build "lisp")
-(eldev-add-loading-roots 'bootstrap "lisp")
-(eldev-add-loading-roots 'bootstrap "elpaca-test")
-(eldev-add-loading-roots 'test "lisp")
+(eldev-add-loading-roots 'build "./lisp")
+;; (eldev-add-loading-roots 'bootstrap "./lisp")
+;; (eldev-add-loading-roots 'bootstrap "elpaca-test")
+(eldev-add-loading-roots 'test "./lisp")
 ;; Tell eldev that I need the tests directory in the load-path for running tests.
 (eldev-add-loading-roots 'test "test")
-;; Provides the ability to intelligently inference from commands.
-;; (setq eldev-dwim t)
-;; Eldev changes this to something else.  I need it so my init file will load
-;; the proper things.
-;; (cl-pushnew (expand-file-name "packages/" eldev-real-user-emacs-directory) package-directory-list)
-;; (setf eldev-project-source-dirs "lisp")
 ;;;; specify test directory
 ;; There are dependencies for testing and linting phases, they should
 ;; be installed by Eldev from MELPA and GNU ELPA (latter is enabled by
 ;; default).
-(eldev-use-package-archive 'melpa)
+(eldev-use-package-archive '("melpa"        . "https://melpa.org/packages/"))
 ;;;; define bootstrap command
 ;; We set the value of elpa-bootstrap-p to t, so that autoloads file is not
 ;; required from init.el (we are going to generate it during bootstrap flow). We
@@ -59,7 +54,6 @@
 
 ;; We hook this function into any build command in order to install packages and
 ;; get proper load-path in all phases.
-
 (defun elpa-bootstrap ()
   "Bootstrap personal configurations."
   (setq-default load-prefer-newer t)
@@ -68,23 +62,20 @@
   ;; be genenerated from the lisp directory.  I do not know whether I will use
   ;; this yet and if I use it whether it will be for the same thing.
   ;; (setq-default elpa-bootstrap t)
-  (eldev--inject-loading-roots 'build)
-  )
+  (eldev--inject-loading-roots 'build))
 
-;; We want to run this before any build command. This is also needed
-;; for `flyspell-eldev` to be aware of packages installed via
-;; straight.el.
 (add-hook 'eldev-build-system-hook #'elpa-bootstrap)
 ;;;; define update command
-;; In [[][d12frosted's configuration]] he defined "upgrading" the configuration
+;; In d12frosted's configuration(1) he defined "upgrading" the configuration
 ;; as all the packages which are not pinned.  However, I pin all of my packages
 ;; because I want complete control over.  I do not ever want to upgrade
 ;; everything at once like this; bad idea.
-(defun elpa-upgrade ()
-  "Bootstrap personal configurations."
-  (message "No upgrading steps yet."))
+;; (defun elpa-upgrade ()
+;;   "Bootstrap personal configurations."
+;;   (message "No upgrading steps yet."))
 
-(add-hook 'eldev-upgrade-hook #'elpa-upgrade)
+;; (add-hook 'eldev-upgrade-hook #'elpa-upgrade)
+;; (1) https://github.com/d12frosted/environment
 ;;;; linting
 ;; (defun eldev-lint-find-files-absolute (f &rest args)
 ;;   "Call F with ARGS and ensure that result is absolute paths."
