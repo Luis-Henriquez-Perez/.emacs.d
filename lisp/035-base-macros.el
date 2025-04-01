@@ -145,9 +145,9 @@ This is like `setq' but it is meant for configuring variables."
   (while (keywordp (car body))
     (appending! args (list (pop body) (pop body))))
   (dolist (hook hooks)
-    (collecting! hook-forms `(oo-add-hook ',hook ',name ,@args)))
-  `(progn
-     (defun! ,name nil ,@metadata ,@body)
+    (set! out-name (intern (format "oo--%s--%s-h" hook name)))
+    (collecting! hook-forms `(oo-add-hook ',hook it :name ',out-name ,@args)))
+  `(alet! (lambda nil ,@metadata (autolet! ,@body))
      ,@hook-forms))
 
 (defmacro! setq-hook! (hooks symbol value)
