@@ -59,23 +59,16 @@
 
 ;; We hook this function into any build command in order to install packages and
 ;; get proper load-path in all phases.
+
 (defun elpa-bootstrap ()
   "Bootstrap personal configurations."
+  (setq-default load-prefer-newer t)
+  (setq load-path (cl-union (cddr (directory-files "elpa/" t)) load-path :test #'equal))
   ;; This is used by d12frosted's environment to signal whether autoloads should
   ;; be genenerated from the lisp directory.  I do not know whether I will use
   ;; this yet and if I use it whether it will be for the same thing.
   ;; (setq-default elpa-bootstrap t)
-  (setq-default load-prefer-newer t)
-  (eldev--inject-loading-roots 'bootstrap)
-  (add-to-list 'load-path (expand-file-name "lisp/" eldev-real-user-emacs-directory))
-  ;; (let ((init-file (expand-file-name "init.el" eldev-real-user-emacs-directory)))
-  ;;   (message "BOOTSTRAPPING!")
-  ;;   (message "eldev-real-user-emacs-directory: %S" eldev-real-user-emacs-directory)
-  ;;   (load init-file))
-  ;; (add-to-list 'load-path (expand-file-name "straight/" eldev-real-user-emacs-directory))
-  ;; Any time I try to add to the `load-path' something from my
-  ;; `user-emacs-directory', remember to use `eldev-real-user-emacs-directory'
-  ;; instead.
+  (eldev--inject-loading-roots 'build)
   )
 
 ;; We want to run this before any build command. This is also needed
