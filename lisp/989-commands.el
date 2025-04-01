@@ -252,10 +252,9 @@ Additionally, make any duplicate spaces in line become a single space."
 
   (require 'ctable)
 
-  (for! ((feature beg end _) oo-init-data)
-    (set! time (float-time (time-subtract end beg)))
+  (for! ((feature time) oo-init-data)
     (collecting! new (list feature time))
-    (summing! total (if beg time 0)))
+    (summing! total time))
 
   (set! init-time (string-to-number (emacs-init-time "%.2f")))
 
@@ -265,15 +264,15 @@ Additionally, make any duplicate spaces in line become a single space."
     (set! dtime (format "%.2f" (/ (fround (* time 100)) 100.0)))
     (pushing! data (list feature dtime (percent time total) (percent time init-time))))
 
-  (setq data (sort data (-on #'> (-compose #'string-to-number #'cl-second))))
+  (set! data (sort data (-on #'> (-compose #'string-to-number #'cl-second))))
 
-  (let* ((column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
-                             (make-ctbl:cmodel :title "Time (s)" :align 'center)
-                             (make-ctbl:cmodel :title "% of Total" :align 'center)
-                             (make-ctbl:cmodel :title "% of Init" :align 'center)))
-         (model (make-ctbl:model :column-model column-model :data data))
-         (component (ctbl:create-table-component-buffer :model model)))
-    (pop-to-buffer (ctbl:cp-get-buffer component))))
+  (set! column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
+                           (make-ctbl:cmodel :title "Time (s)" :align 'center)
+                           (make-ctbl:cmodel :title "% of Total" :align 'center)
+                           (make-ctbl:cmodel :title "% of Init" :align 'center)))
+  (set! model (make-ctbl:model :column-model column-model :data data))
+  (set! component (ctbl:create-table-component-buffer :model model))
+  (pop-to-buffer (ctbl:cp-get-buffer component)))
 ;;; provide
 (provide '989-commands)
 ;;; 989-commands.el ends here
