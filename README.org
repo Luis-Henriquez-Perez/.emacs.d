@@ -57,7 +57,7 @@ This is my personal emacs configuration.
 - Number-prefixed features that make load order predictable and transparent
 - Automated startup file loading with [[file:lisp/002-init-loader.el][require! macro]]
 - Startup time is about =0.83= seconds with byte-compilation
-- No compilation warnings or errors (WIP)
+- No compilation warnings or errors
 - Optimized for speed by evaluating macros during compilation
 - Extensive abbrev configuration with over [[file:lisp/999-plain-text-abbrevs.el][1800 abbrevs]]
 - Mnemonic Spacemacs-like [[file:lisp/160-keybindings.el][keybinding scheme]]
