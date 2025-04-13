@@ -77,6 +77,7 @@
                                   cape
                                   caps-lock
                                   captain
+                                  chess
                                   consult
                                   corfu
                                   cyberpunk-theme
