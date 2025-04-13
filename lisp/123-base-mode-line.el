@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 (require 'battery)
-(require 'dash)
+(require 'seq)
 (require 'powerline)
 ;;;; Silence byte-compilation
 (defvar evil-state)
@@ -97,14 +97,33 @@ If an error is raised from component function."
       (concat "\s" (string-join (nreverse strings) "\s") "\s")
     ""))
 
+(defun oo-cycle ()
+  "Return an infinite circular copy of LIST.
+The returned list cycles through the elements of LIST and repeats
+from the beginning."
+  (declare (pure t) (side-effect-free t))
+  ;; Also works with sequences that aren't lists.
+  (let ((newlist (append list ())))
+    (nconc newlist newlist)))
+
+(defun! oo-zip-pair (list1 list2)
+  "Zip LIST1 and LIST2 together.
+
+Make a pair with the head of each list, followed by a pair with
+the second element of each list, and so on.  The number of pairs
+returned is equal to the length of the shorter input list."
+  (while (and list1 list2)
+    (pushing! zipped (cons (pop list1) (pop list2))))
+  (nreverse zipped))
+
 (defun! oo--modeline-render-lhs (segment-names faces)
   "Render the left-hand side of the modeline."
   (set! sep (or sep (oo-mode-line-left-separator)))
   (set! prev-face (pop faces))
   (alet2! (length segment-names) (length faces)
     (when (> it other)
-      (set! faces (cons (car faces) (-take (1- it) (-cycle (cdr faces)))))))
-  (for! (reverse (name . face) (-zip-pair segment-names faces))
+      (set! faces (cons (car faces) (seq-take (oo-cycle (cdr faces)) (1- it))))))
+  (for! (reverse (name . face) (oo-zip-pair segment-names faces))
     (set! segment (funcall (intern (format "oo-mode-line-segment--%s" name))))
     (when (and (stringp segment) (not (string-empty-p segment)))
       (pushing! lhs (funcall sep face prev-face))
@@ -119,8 +138,8 @@ If an error is raised from component function."
   (set! prev-face (pop faces))
   (alet2! (length segment-names) (length faces)
     (when (> it other)
-      (set! faces (cons (car faces) (-take (1- it) (-cycle (cdr faces)))))))
-  (for! (reverse (name . face) (-zip-pair (reverse segment-names) faces))
+      (set! faces (cons (car faces) (seq-take (oo-cycle (cdr faces)) (1- it))))))
+  (for! (reverse (name . face) (oo-zip-pair (reverse segment-names) faces))
     (set! segment (funcall (intern (format "oo-mode-line-segment--%s" name))))
     (when (and (stringp segment) (not (string-empty-p segment)))
       (collecting! rhs (funcall sep prev-face face))
