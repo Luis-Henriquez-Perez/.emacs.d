@@ -87,7 +87,7 @@ file is loaded."
   (hook! after-load-functions oo-call-after-load-functions))
 ;;;; auto-filling
 (setq-hook! text-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
-(setq-hook! prog-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
+;; (setq-hook! prog-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
 
 (defun! oo-dwim-autofill-fn (&rest _)
   "Fill the current paragraph."
