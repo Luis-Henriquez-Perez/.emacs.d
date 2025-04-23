@@ -176,6 +176,16 @@ Return a flat list of unique components in MATCH-FORM."
                 symbols)))
     (cl-set-difference (flatten-pattern match-form) '(\, \`))))
 
+(defun oo-destructure-defun (args)
+  "Destructure the arguments of a \"defun-like\" thing.
+Return a list of."
+  (let ((name (pop args))
+        (arglist (pop args))
+        (doc (and (stringp (car args)) (pop args)))
+        (decl (and (equal 'declare (car-safe (car args))) (pop args)))
+        (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
+    (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
+;;;; miscellaneous
 (cl-defun oo-add-hook (hook fn &key depth local name expire ignore-args (level 'trace))
   "Generate a hook function for HOOK calls FN.
 If name is given, bind resulting function to NAME and return NAME.
@@ -197,16 +207,6 @@ LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
     (setq fn (if name (progn (fset name fn) name) fn))
     (add-hook hook fn depth local)
     fn))
-
-(defun oo-destructure-defun (args)
-  "Destructure the arguments of a \"defun-like\" thing.
-Return a list of."
-  (let ((name (pop args))
-        (arglist (pop args))
-        (doc (and (stringp (car args)) (pop args)))
-        (decl (and (equal 'declare (car-safe (car args))) (pop args)))
-        (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
-    (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
 ;;; provide
 (provide '030-base-functions)
 ;;; 030-base-functions.el ends here
