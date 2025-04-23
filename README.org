@@ -67,7 +67,7 @@ This is my personal emacs configuration.
 - Lightweight, dependency-free, [[file:lisp/002-init-loader.el][profiling]] of each file loaded
 - Graceful [[file:lisp/002-init-loader.el][error handling]] when loading initialization files
 - Plain and transparent file loading order
-- Beautiful, [[file:lisp/123-base-mode-line.el][hand-crafted modeline]] with [[https://github.com/milkypostman/powerline][powerline]] separators
+- Beautiful, [[file:lisp/123-base-mode-line.el][hand-crafted modeline]]
 - Ensures no garbage files are created with [[https://github.com/emacscollective/no-littering][no-littering]]
 - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 - More precise measure of initialization time
@@ -123,7 +123,7 @@ This is my personal emacs configuration.
   - *lisp/xxx-hooks.el* - /Run custom hooks./
 
     Run the hooks that do not correspond to a particular package.
-  
+
   - *lisp/xxx-init* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
