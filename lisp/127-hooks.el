@@ -28,6 +28,7 @@
 (require '050-base)
 (require 'server)
 (require '123-base-mode-line)
+(require '998-mode-line-icons)
 ;;;; custom hooks
 (defvar oo-first-file-hook nil
   "Hook run after the first file is loaded.")
@@ -234,14 +235,8 @@ derived from these, delete trailing whitespace from it."
 (hook! text-mode-hook delete-selection-mode)
 (hook! prog-mode-hook delete-selection-mode)
 ;;;; miscellaneous
-(defhook! initialize-modeline (after-init-hook :depth 90 :level 'info)
-  "Initialize modeline."
-  ;; I need to put the modeline in a variable so that the modeline does not
-  ;; treat any strings as modeline constructs.  Why?  I want to do it myself so
-  ;; that I can precompute the length of the segment.
-  (require '123-base-mode-line)
-  (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
-  (oo-mode-line-update))
+(hook! after-init-hook oo-mode-line-icons-mode :depth 89 :level 'info)
+(hook! after-init-hook oo-mode-line-mode :depth 90 :level 'info)
 
 (defhook! initialize-server (emacs-startup-hook :level 'info)
   "Enable server if it is not running."
