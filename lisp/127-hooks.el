@@ -54,7 +54,6 @@
 ;; focus is now on what is happening in my configuration as opposed to the many
 ;; individual configurations.
 (hook! text-mode-hook auto-fill-mode)
-(setq-hook! prog-mode-hook comment-auto-fill-only-comments t)
 (hook! prog-mode-hook auto-fill-mode)
 (hook! prog-mode-hook rainbow-mode)
 (hook! prog-mode-hook hs-minor-mode)
@@ -88,7 +87,6 @@ file is loaded."
   (hook! after-load-functions oo-call-after-load-functions))
 ;;;; auto-filling
 (setq-hook! text-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
-;; (setq-hook! prog-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
 
 (defun! oo-dwim-autofill-fn (&rest _)
   "Fill the current paragraph."
@@ -107,6 +105,12 @@ file is loaded."
          (when (looking-at "\n\n")
            (set! end (save-excursion (skip-chars-backward " ") (point))))
          (save-excursion (fill-region beg end nil 'nosqueeze)))))
+
+(setq-hook! prog-mode-hook normal-auto-fill-function #'oo-progn-autofill-fn)
+
+(defun! oo-progn-autofill-fn ()
+  "Fill only if in a string or comment."
+  (when (oo-in-string-or-comment-p) (do-auto-fill)))
 ;;;; emacs-lisp-mode specific
 (defhook! extend-elisp-font-lock (emacs-lisp-mode-hook)
   "Add custom font-lock keywords."
