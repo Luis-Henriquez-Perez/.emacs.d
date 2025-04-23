@@ -13,7 +13,7 @@ This is my personal emacs configuration.
 :END:
 - *fast startup*
   Startup should be as fast as possible by which I mean less than a
-  second.  I currently have a startup time of =1.31= seconds (this is with
+  second.  I currently have a startup time of =0.83= seconds (this is with
   byte-compilation).
 - *performant*
   The experience while using emacs should be responsive fast and
