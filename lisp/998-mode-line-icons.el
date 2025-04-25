@@ -102,7 +102,7 @@
       ("PAUSED" (set! icon (nerd-icons-faicon "nf-fa-pause")))
       ("REPEAT" (set! icon (nerd-icons-faicon "nf-fa-repeat")))
       ("PLAYING" (set! icon (nerd-icons-mdicon "nf-md-music_note"))))
-    (format "%s %s %s" icon segment)))
+    (format "%s %s" icon segment)))
 
 (define-minor-mode oo-mode-line-icons-mode
   "Display icons in the mode line."
