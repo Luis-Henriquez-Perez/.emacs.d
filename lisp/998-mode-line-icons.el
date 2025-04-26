@@ -37,14 +37,14 @@
     (string-match "\\([[:digit:]]+\\)@" it)
     (set! count (match-string 1 it))
     (set! icon (nerd-icons-faicon "nf-fa-arrow_up_long" :v-adjust 0.01))
-    (propertize (format "%s%s" count icon) 'face 'success)))
+    (format "%s%s" count icon)))
 
 (defun oo-mode-line-nerd-icons--buffer-name (orig-fn &rest args)
   (format "%s %s" (nerd-icons-icon-for-buffer) (apply orig-fn args)))
 
 (defun! oo-mode-line-nerd-icons--read-only (orig-fn &rest args)
   (awhen! (apply orig-fn args)
-    (nerd-icons-faicon "nf-fa-lock" :face 'error)))
+    (nerd-icons-faicon "nf-fa-lock")))
 
 (defun oo-mode-line-nerd-icons--kbd-macro (orig-fn &rest args)
   (when (apply orig-fn args)
@@ -65,7 +65,7 @@
     (set! type (match-string 1 it))
     (set! time (match-string 2 it))
     (pcase type
-      ("w" (set! icon (nerd-icons-pomicon "nf-pom-pomodoro_ticking" :face 'error :v-adjust 0)))
+      ("w" (set! icon (nerd-icons-pomicon "nf-pom-pomodoro_ticking" :v-adjust 0)))
       ("b" (set! icon (nerd-icons-codicon "nf-cod-coffee" :v-adjust 0))))
     (format "%s %s" icon time)))
 
