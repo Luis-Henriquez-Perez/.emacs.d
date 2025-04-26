@@ -72,29 +72,43 @@
   '((t (:inherit +evil-state-face)))
   "Face for the Emacs state tag in evil indicator.")
 
+(setf (alist-get '+evil-emacs-state-face oo-custom-faces-alist) 'font-lock-builtin-face)
+
 (defface +evil-insert-state-face
   '((t (:inherit +evil-state-face)))
   "Face for the insert state tag in evil indicator.")
+
+(setf (alist-get '+evil-insert-state-face oo-custom-faces-alist) 'font-lock-type-face)
 
 (defface +evil-motion-state-face
   '((t (:inherit +evil-state-face)))
   "Face for the motion state tag in evil indicator.")
 
+(setf (alist-get '+evil-motion-state-face oo-custom-faces-alist) 'font-lock-variable-name-face)
+
 (defface +evil-normal-state-face
   '((t (:inherit +evil-state-face)))
   "Face for the normal state tag in evil indicator.")
+
+(setf (alist-get '+evil-normal-state-face oo-custom-faces-alist) 'font-lock-keyword-face)
 
 (defface +evil-operator-state-face
   '((t (:inherit +evil-state-face)))
   "Face for the operator state tag in evil indicator.")
 
+(setf (alist-get '+evil-operator-state-face oo-custom-faces-alist) 'font-lock-function-name-face)
+
 (defface +evil-visual-state-face
   '((t (:inherit +evil-state-face)))
   "Face for the visual state tag in evil indicator.")
 
+(setf (alist-get '+evil-visual-state-face oo-custom-faces-alist) 'font-lock-string-face)
+
 (defface +evil-replace-state-face
   '((t (:inherit +evil-state-face)))
   "Face for the replace state tag in evil indicator.")
+
+(setf (alist-get '+evil-replace-state-face oo-custom-faces-alist) 'font-lock-constant-face)
 ;;;; change cursor color and shape according to current evil state
 ;; Did not realize for the longest time that evil cursor can be a function that
 ;; changes the cursor.  With this in mind, the best way to set the cursor size

@@ -39,25 +39,35 @@
   "Face for the background of the first modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-1 oo-custom-faces-alist) 'font-lock-function-name-face)
+
 (defface oo-mode-line-segment-2
   '((t (:inherit mode-line)))
   "Face for the background of the second modeline segment."
   :group 'oo-modeline)
+
+(setf (alist-get 'oo-mode-line-segment-2 oo-custom-faces-alist) 'font-lock-constant-face)
 
 (defface oo-mode-line-segment-3
   '((t (:inherit mode-line)))
   "Face for the background of the third modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-3 oo-custom-faces-alist) 'font-lock-variable-name-face)
+
 (defface oo-mode-line-segment-4
   '((t (:inherit mode-line)))
   "Face for the background of the fourth modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-4 oo-custom-faces-alist) 'font-lock-comment-face)
+
 (defface oo-mode-line-segment-5
   '((t (:inherit mode-line)))
   "Face for the background of the fifth modeline segment."
   :group 'oo-modeline)
+
+(setf (alist-get 'oo-mode-line-segment-5 oo-custom-faces-alist) 'font-lock-type-face)
 ;;;; utility functions
 ;; When you modify the modeline variable the modeline is not automatically
 ;; updated.  You only see the updated version when you open a new buffer.  To
