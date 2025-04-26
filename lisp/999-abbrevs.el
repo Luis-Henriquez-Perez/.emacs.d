@@ -36,7 +36,13 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
-(define-abbrev    global-abbrev-table "lized"            "realized"                nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "fgc"              "foreground color"                    nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "bgc"              "background color"                    nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "fireground"       "foreground"                          nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "fgs"              "foregrounds"                         nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "fg"               "foreground"                          nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "bgs"              "backgrounds"                         nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "lized"            "realized"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "isnbt"            "it should not be the"                nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "isnb"             "it should not be"                    nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "fg"               "foreground"                          nil                                   :enable-function #'oo-use-text-abbrev-p)
