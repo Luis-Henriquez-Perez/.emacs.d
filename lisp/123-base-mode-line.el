@@ -160,7 +160,7 @@ from the beginning."
 If 0, do not display anything."
   (set! count (string-to-number (shell-command-to-string "git rev-list --count @{upstream}..HEAD")))
   (when (> count 0)
-    (propertize (format "%s@" count) 'face 'success)))
+    (format "%s@" count)))
 
 (declare-function fancy-narrow-active-p "fancy-narrow")
 (defun! oo-mode-line-segment--narrow ()
@@ -209,7 +209,7 @@ If the current buffer is modified."
   (and (boundp 'text-scale-mode-amount)
        (/= text-scale-mode-amount 0)
        (alet! (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
-         (propertize (format it text-scale-mode-amount) 'face 'success))))
+         (format it text-scale-mode-amount))))
 
 (defun oo-mode-line-segment--buffer-info ()
   "Return an indicator for various buffer information."
