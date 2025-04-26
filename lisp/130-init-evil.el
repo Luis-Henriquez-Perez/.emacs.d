@@ -65,35 +65,35 @@
 (declare-function evil-normal-state "evil")
 ;;;; faces
 (defface +evil-state-face
-  '((t (:foreground "white" :weight bold :inherit mode-line)))
+  '((t (:weight bold)))
   "Meta-face used for property inheritance on all evil state faces.")
 
 (defface +evil-emacs-state-face
-  '((t (:inherit +evil-state-face :background "deep sky blue")))
+  '((t (:inherit +evil-state-face)))
   "Face for the Emacs state tag in evil indicator.")
 
 (defface +evil-insert-state-face
-  '((t (:inherit +evil-state-face :background "lime green")))
+  '((t (:inherit +evil-state-face)))
   "Face for the insert state tag in evil indicator.")
 
 (defface +evil-motion-state-face
-  '((t (:inherit +evil-state-face  :background "violet")))
+  '((t (:inherit +evil-state-face)))
   "Face for the motion state tag in evil indicator.")
 
 (defface +evil-normal-state-face
-  '((t (:inherit +evil-state-face :background "dark orange")))
+  '((t (:inherit +evil-state-face)))
   "Face for the normal state tag in evil indicator.")
 
 (defface +evil-operator-state-face
-  '((t (:inherit +evil-state-face :background "hot pink")))
+  '((t (:inherit +evil-state-face)))
   "Face for the operator state tag in evil indicator.")
 
 (defface +evil-visual-state-face
-  '((t (:inherit +evil-state-face :background "gray83")))
+  '((t (:inherit +evil-state-face)))
   "Face for the visual state tag in evil indicator.")
 
 (defface +evil-replace-state-face
-  '((t (:inherit +evil-state-face :background "sienna")))
+  '((t (:inherit +evil-state-face)))
   "Face for the replace state tag in evil indicator.")
 ;;;; change cursor color and shape according to current evil state
 ;; Did not realize for the longest time that evil cursor can be a function that
