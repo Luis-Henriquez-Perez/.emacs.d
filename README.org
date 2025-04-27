@@ -1,7 +1,7 @@
 #+begin_html
 <h1 align="center">OO Emacs</h1>
 <p align="center">
-  <img width="1024px" src=".local/share/screenshots/emacs-screenshot-d585a4a.png" alt="Banner">
+  <img width="1024px" src=".local/share/screenshots/2025-04-27-130810__emacs_ef-light-theme.png" alt="Banner">
 </p>
 #+end_html
 
@@ -67,10 +67,12 @@ This is my personal emacs configuration.
 - Lightweight, dependency-free, [[file:lisp/002-init-loader.el][profiling]] of each file loaded
 - Graceful [[file:lisp/002-init-loader.el][error handling]] when loading initialization files
 - Plain and transparent file loading order
-- Beautiful, [[file:lisp/123-base-mode-line.el][hand-crafted modeline]]
+- Beautiful, modular, [[file:lisp/123-base-mode-line.el][hand-crafted modeline]] with [[file:lisp/998-mode-line-icons.el][optional icon support]]
 - Ensures no garbage files are created with [[https://github.com/emacscollective/no-littering][no-littering]]
-- Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
+# - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 - More precise measure of initialization time
+- Mode-line and evil cursor faces [[file:][dynamically adapt]] to theme
+- Intelligent whitespace handling with a [[][custom]]
 * File Structure
 :PROPERTIES:
 :ID:       20240408T164104.628646
