@@ -69,10 +69,10 @@ This is my personal emacs configuration.
 - Plain and transparent file loading order
 - Beautiful, modular, [[file:lisp/123-base-mode-line.el][hand-crafted modeline]] with [[file:lisp/998-mode-line-icons.el][optional icon support]]
 - Ensures no garbage files are created with [[https://github.com/emacscollective/no-littering][no-littering]]
-# - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 - More precise measure of initialization time
 - Mode-line and evil cursor faces [[file:][dynamically adapt]] to theme
 - Intelligent whitespace handling with a [[][custom]]
+# - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 * File Structure
 :PROPERTIES:
 :ID:       20240408T164104.628646
