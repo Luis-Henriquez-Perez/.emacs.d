@@ -142,6 +142,19 @@ from the beginning."
   (or (and defining-kbd-macro "•REC")
       (and executing-kbd-macro "KBD-PLAY")))
 
+(defun oo-mode-line-segment--tab ()
+  "Return an indicator for a `tab-bar-mode' tab."
+  ;; This really convoluted way for just getting the current tab.  But I cannot
+  ;; immediately see a simpler way based on the source code.
+  (and (bound-and-true-p tab-bar-mode)
+       (let* ((tabs (funcall tab-bar-tabs-function))
+              (tab-number (1+ (tab-bar--current-tab-index tabs)))
+              (tab-index (if (integerp tab-number)
+                             (1- (max 0 (min tab-number (length tabs))))
+                           (tab-bar--current-tab-index tabs)))
+              (current-tab (nth tab-index tabs)))
+         (alist-get 'name current-tab))))
+
 (defun! oo-mode-line-segment--branch ()
   "Return the branch name of the current repository."
   (and vc-mode (cadr (split-string (string-trim vc-mode) "^[A-Z]+[-:]+"))))
@@ -252,7 +265,7 @@ or playing with repeat."
   (flet! empty-p (segment) (not (and segment (not (string-empty-p segment)))))
   (flet! pad (segment) (format "\s%s\s" segment))
   (flet! render (side) (mapcar #'pad (cl-remove-if #'empty-p (mapcar #'oo-mode-line-render-segment side))))
-  (set! lhs (render '(evil-state buffer-info version-control emms)))
+  (set! lhs (render '(evil-state tab buffer-info version-control emms)))
   (set! rhs (render '(time-info buffer-location pomodoro text-scale)))
   ;; Now apply the faces.  This is kind of messy.
   (set! evil-state-face (+evil-state-face))
