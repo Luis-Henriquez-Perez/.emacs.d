@@ -160,6 +160,7 @@
                                   minimal-theme
                                   mmm-mode
                                   modus-themes
+                                  moe-theme
                                   monkeytype
                                   monokai-theme
                                   nerd-icons
