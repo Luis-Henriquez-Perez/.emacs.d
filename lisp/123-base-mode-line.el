@@ -231,6 +231,7 @@ If the current buffer is modified."
   "Display the time and date in mode line."
   (oo-mode-line-render-segments '(time date)))
 
+(defvar emms-playing-time-string)
 (declare-function emms-track-description "emms")
 (declare-function emms-playlist-current-selected-track "emms")
 (defun! oo-mode-line-segment--emms ()
