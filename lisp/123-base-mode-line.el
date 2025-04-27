@@ -121,11 +121,6 @@ from the beginning."
 
 (defun! oo-mode-line-render-segment (name)
   (funcall (intern (format "oo-mode-line-segment--%s" name))))
-
-(defun! oo-mode-line-render-side (side)
-  "Render the segment."
-  (flet! full-p (segment) (and segment (not (string-empty-p segment))))
-  (format "\s%s\s" (string-join (cl-remove-if-not #'full-p (mapcar #'oo-mode-line-render-segment side)) "\s\s")))
 ;;;; segments
 (defun oo-mode-line-segment--line-number ()
   "Return the line-number indicator for the mode line."
