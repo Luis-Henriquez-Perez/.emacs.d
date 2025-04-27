@@ -76,6 +76,13 @@ are non-nil, then error is nil.")
                                           :width 'normal
                                           :size 18))
   "List of fonts to check.")
+
+(defvar oo-custom-faces-alist nil
+  "An alist that update the background of faces based on existing faces.
+
+Each element is of the form (custom-face . built-in-face).  Whenever the theme
+is changed CUSTOM-FACE updates its background and foreground similar to
+built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'.")
 ;;; provide
 (provide '000-base-vars)
 ;;; 000-base-vars.el ends here
