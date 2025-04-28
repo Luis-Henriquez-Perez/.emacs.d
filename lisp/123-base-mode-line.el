@@ -214,10 +214,10 @@ If the current buffer is modified."
 
 (defun oo-mode-line-segment--text-scale ()
   "Return an indicator for text scaling."
-  (and (boundp 'text-scale-mode-amount)
-       (/= text-scale-mode-amount 0)
-       (alet! (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
-         (format it text-scale-mode-amount))))
+  (and! (boundp 'text-scale-mode-amount)
+        (/= text-scale-mode-amount 0)
+        (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
+        (format it text-scale-mode-amount)))
 
 (defun oo-mode-line-segment--buffer-info ()
   "Return an indicator for various buffer information."
