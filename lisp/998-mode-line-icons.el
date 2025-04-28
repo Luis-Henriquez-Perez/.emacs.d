@@ -106,7 +106,8 @@
 
 (defun! oo-mode-line-nerd-icons--tab (orig-fn &rest args)
   "Return indicator for the current track."
-  (format "%s %s" (nerd-icons-mdicon "nf-md-tab") (apply orig-fn args)))
+  (aand! (apply orig-fn args)
+         (format "%s %s" (nerd-icons-mdicon "nf-md-tab") it)))
 
 (define-minor-mode oo-mode-line-icons-mode
   "Display icons in the mode line."
