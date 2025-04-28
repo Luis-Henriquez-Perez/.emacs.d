@@ -59,7 +59,7 @@ This is my personal emacs configuration.
 - Startup time is about =0.83= seconds with byte-compilation
 - No compilation warnings or errors
 - Optimized for speed by evaluating macros during compilation
-- Extensive abbrev configuration with over [[file:lisp/999-plain-text-abbrevs.el][1800 abbrevs]]
+- Extensive abbrev configuration with over [[file:lisp/999-plain-text-abbrevs.el][1900 abbrevs]]
 - Mnemonic Spacemacs-like [[file:lisp/160-keybindings.el][keybinding scheme]]
 - Avoids the use of macros such as [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/conao3/leaf.el][leaf]] and [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
 - Suppress errors raised in hooks with [[file:lisp/030-base-utils.el][custom hook functions]]
