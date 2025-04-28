@@ -1,8 +1,13 @@
 #+begin_html
 <h1 align="center">OO Emacs</h1>
 <p align="center">
-  <img width="1024px" src=".local/share/screenshots/2025-04-27-130810__emacs_ef-light-theme.png" alt="Banner">
+  <a href="#principles-and-goals">Principles and Goals</a> •
+  <a href="#features">Features</a> •
+  <a href="#file-structure">File Structure</a> •
+  <a href="#naming-convention">Naming Convention</a> •
+  <a href="#screenshots">Screenshots</a>
 </p>
+<img width="1024px" src=".local/share/screenshots/2025-04-27-130810__emacs_ef-light-theme.png" alt="Banner">
 #+end_html
 
 This is my personal emacs configuration.
@@ -70,8 +75,8 @@ This is my personal emacs configuration.
 - Beautiful, modular, [[file:lisp/123-base-mode-line.el][hand-crafted modeline]] with [[file:lisp/998-mode-line-icons.el][optional icon support]]
 - Ensures no garbage files are created with [[https://github.com/emacscollective/no-littering][no-littering]]
 - More precise measure of initialization time
-- Mode-line and evil cursor faces [[file:][dynamically adapt]] to theme
-- Intelligent whitespace handling with a [[][custom]]
+- Mode-line and evil cursor faces [[file:.local/share/screenshots/2025-04-27-160359__emacs_dynamic_faces.png][dynamically adapt]] to theme
+# - Intelligent whitespace handling with a [[][custom]]
 # - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 * File Structure
 :PROPERTIES:
@@ -165,6 +170,9 @@ did not write it with the specific intention of it being used by others.
 #+begin_src
 git clone https://github.com/Luis-Henriquez-Perez/.emacs.d ~/.config/emacs/
 #+end_src
+* Screenshots
+These screenshots.
+# [[][]]
 * Acknowledgements
 :PROPERTIES:
 :ID:       20240408T163913.888904
@@ -195,3 +203,6 @@ will only name a few of these that I remember well.
 
   Xah Lee has created a great repository of information for emacs
   usage in [[http://xahlee.info/emacs/][his website]].  It is an excellent supplement to the manual.
+
+- Phundrak
+https://config.phundrak.com/
