@@ -36,6 +36,10 @@
   `(alet! ,(car conditions)
      (and it ,@(cdr conditions))))
 
+(defmacro and! (&rest conditions)
+  "Like `aand!' but bind the result of each condition to `it'."
+  `(let (it) (and ,@(mapcar (lambda (c) `(setq it ,c)) conditions))))
+
 (defmacro aif! (cond then &rest else)
   "Like `if' but bind the result of COND to `it' for duration of THEN and ELSE."
   (declare (debug t) (indent 2))
