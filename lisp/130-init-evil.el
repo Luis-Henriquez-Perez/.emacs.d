@@ -69,43 +69,43 @@
   "Meta-face used for property inheritance on all evil state faces.")
 
 (defface +evil-emacs-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "#483d8b")))
   "Face for the Emacs state tag in evil indicator.")
 
 (setf (alist-get '+evil-emacs-state-face oo-custom-faces-alist) 'font-lock-builtin-face)
 
 (defface +evil-insert-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "#228b22")))
   "Face for the insert state tag in evil indicator.")
 
 (setf (alist-get '+evil-insert-state-face oo-custom-faces-alist) 'font-lock-type-face)
 
 (defface +evil-motion-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "#a0522d")))
   "Face for the motion state tag in evil indicator.")
 
 (setf (alist-get '+evil-motion-state-face oo-custom-faces-alist) 'font-lock-variable-name-face)
 
 (defface +evil-normal-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "purple")))
   "Face for the normal state tag in evil indicator.")
 
 (setf (alist-get '+evil-normal-state-face oo-custom-faces-alist) 'font-lock-keyword-face)
 
 (defface +evil-operator-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "#0000ff")))
   "Face for the operator state tag in evil indicator.")
 
 (setf (alist-get '+evil-operator-state-face oo-custom-faces-alist) 'font-lock-function-name-face)
 
 (defface +evil-visual-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "#8b2252")))
   "Face for the visual state tag in evil indicator.")
 
 (setf (alist-get '+evil-visual-state-face oo-custom-faces-alist) 'font-lock-string-face)
 
 (defface +evil-replace-state-face
-  '((t (:inherit +evil-state-face)))
+  '((t (:inherit +evil-state-face :background "#008b8b")))
   "Face for the replace state tag in evil indicator.")
 
 (setf (alist-get '+evil-replace-state-face oo-custom-faces-alist) 'font-lock-constant-face)
