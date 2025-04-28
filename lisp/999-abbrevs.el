@@ -36,7 +36,9 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
-(define-abbrev    global-abbrev-table "gener"             "general"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "renable"          "re-enable"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "reenable"         "re-enable"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "gener"            "general"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "visi"             "visible"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "asso"             "associate"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "condi"            "condition"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
