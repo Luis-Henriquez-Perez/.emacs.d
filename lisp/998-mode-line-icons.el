@@ -113,8 +113,8 @@
   "Display icons in the mode line."
   :global t
   (cond (oo-mode-line-icons-mode
-         (advice-add 'oo-mode-line-segment--tab     :around 'oo-mode-line-nerd-icons--tab)
-         (advice-add 'oo-mode-line-segment--kbd-macro     :around 'oo-mode-line-nerd-icons--kbd-macro)
+         (advice-add 'oo-mode-line-segment--tab             :around 'oo-mode-line-nerd-icons--tab)
+         (advice-add 'oo-mode-line-segment--kbd-macro       :around 'oo-mode-line-nerd-icons--kbd-macro)
          (advice-add 'oo-mode-line-segment--buffer-name     :around 'oo-mode-line-nerd-icons--buffer-name)
          (advice-add 'oo-mode-line-segment--line-number     :around 'oo-mode-line-nerd-icons--line-number)
          (advice-add 'oo-mode-line-segment--buffer-modified :around 'oo-mode-line-nerd-icons--buffer-modified)
