@@ -26,20 +26,23 @@
 ;;
 ;;; Code:
 (require '050-base)
+;; I do toggle showing the tab display sometimes, at least as I get used to
+;; using `tab-bar-mode'.  I imagine that later I will not be using it.
+;; Do not show the new tab buffer  I will never use it to be honest.  Ideally I
+;; should not ever use this bar and will be able to navigate my tabs via
+;; indicator in the mode line.
+(opt! tab-bar-new-button-show nil)
+;; Do not show the close button either--same reason.
+(opt! tab-bar-close-button-show nil)
 
-(defun oo-new-untitled-buffer ()
-  "Return the new buffer."
-  (generate-new-buffer "untitled"))
-
-;; Control the initial buffer of a new tab.  In my case, make a new tab start
-;; with an untitled buffer.
-(opt! tab-bar-new-tab-choice #'oo-new-untitled-buffer)
+;; For now just use the current buffer.  At first I wanted to create "untitled"
+;; buffers but I was not using them and it just created more clutter if anything.
+(opt! tab-bar-new-tab-choice t)
 ;; Do not show the tabs.  I prefer to save as much screen real-estate as
 ;; possible.
 
 ;; I need to create some link between tab-bar and burly.  As in when I open a
 ;; bookmark in burly it should be in a new tab.
-;; TODO:
 (opt! tab-bar-show nil)
 
 (defun +tab-bar-toggle-show ()
@@ -53,11 +56,6 @@
 ;; TODO: save information from tab with `burly-bookmark-windows' so when I
 ;; restore a bookmark it creates a tab with the same name as it was.  I do not
 ;; know if `burly-tabs-mode' does the exact same thing.
-
-;;
-;;
-;;
-;;
 ;;; provide
 (provide '130-init-tab-bar)
 ;;; 130-init-tab-bar.el ends here
