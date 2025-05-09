@@ -174,8 +174,12 @@ git clone https://github.com/Luis-Henriquez-Perez/.emacs.d ~/.config/emacs/
 These screenshots.
 #+CAPTION: A black cat stalking a spider
 [[.local/share/screenshots/2025-04-27-130548__emacs_moe-light.png]]
+theme: [[https://github.com/kuanyui/moe-theme.el][moe-light theme]]
+font: [[][recursive mono]]
 #+CAPTION: A black cat stalking a spider
 [[.local/share/screenshots/2025-04-27-130749__emacs_moe-dark.png]]
+theme: [[https://github.com/kuanyui/moe-theme.el][moe-dark theme]]
+font: [[][recursive mono]]
 * Acknowledgements
 :PROPERTIES:
 :ID:       20240408T163913.888904
