@@ -36,6 +36,7 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "reame"              "README"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "nuo"              "number of"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "noo"              "number of"                           nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "iftt"             "I feel that there"                   nil                                   :enable-function #'oo-use-text-abbrev-p)
