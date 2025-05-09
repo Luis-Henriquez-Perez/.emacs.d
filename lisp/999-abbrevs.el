@@ -1835,7 +1835,7 @@
 (define-abbrev    global-abbrev-table "pkgs"             "packages"                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "pkg"              "package"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "ftmp"             "for the most part"                   nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table "readmee"          "README"                              nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "readme"          "README"                              nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "sdnt"             "should not"                          nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "cme"              "come"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "imed"             "immediately"                         nil                                   :enable-function #'oo-use-text-abbrev-p)
