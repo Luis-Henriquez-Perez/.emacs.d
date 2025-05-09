@@ -82,18 +82,18 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T164104.628646
 :END:
-  I designed the file structure of my configuration to lend be simple,
-  transparent and to lend itself to deferred loading.  I prefix all file names
-  (except the =init.el=) with a three digit number that corresponds to the order
-  in which they are loaded.  This virtually guarantees that file names will not
-  conflict with the name of a built-in or external feature, greatly simplifies
-  the task of programmatically loading my files and provides a level of
-  transparency to any reader, ensuring that they know the precise order my files
-  at a glance.  Additionally, I separate most code into "init", forms that are
-  evaluated immediately, and "config" , forms that will be evaluated after some
-  feature is loaded.  This division lends itself to the the deferred loading of
-  features while also allowing me to write declarative code in each file as
-  opposed to code encased with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].
+  I designed the file structure of my configuration to be simple, transparent,
+  and to lend itself to deferred loading.  I prefix all file names (except the
+  =init.el=) with a three digit number that corresponds to the order in which they
+  are loaded.  This virtually guarantees that file names will not conflict with
+  the name of a built-in or external feature, greatly simplifies the task of
+  programmatically loading my files and provides a level of transparency to any
+  reader, ensuring that they know the precise order my files at a glance.
+  Additionally, I divide these files into "init" files that are evaluated
+  immediately, and "config" files which are evaluated after some feature is
+  loaded.  This division lends itself to the the deferred loading of features
+  while also allowing me to write declarative code in each file as opposed to
+  code encased with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].
 
   Below is a quick synopsis of each kind of file and a description.
 
