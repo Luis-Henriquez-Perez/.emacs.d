@@ -23,7 +23,7 @@ This is my personal emacs configuration.
 - *performant*
   The experience while using emacs should be responsive fast and
   snappy.
-- *introspectable*
+- *introspectable* (not a real word)
   I want to know what is happening and when it is happening.  I want my
   configuration to be such that I keep track of any changes I make where a
   "change" could be adding a hook or adding an advice or even binding a key.
