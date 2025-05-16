@@ -99,16 +99,24 @@ This is my personal emacs configuration.
 
   - [[file:./init.el][init.el]] /Initialize my emacs configuration/.
 
-  This means adding the lisp directory to the load-path,  loading all of the
+  This means adding the lisp directory to the load-path, loading all of the
   =init-FEATURE.el= files, and setting up necessary initial variables.  It is the
   "big bang" that sets everything else into motion.
 
-  - *lisp/xxx-base-SOMETHING.el* - /Provide configuration functions and macros./
+  - 000-002
 
-  Set some initial variables or provide me with macros and functions for helping
-  me configure emacs.
+  Files in this range.
 
-  - *lisp/xxx-init-FEATURE.el* - /Initialize FEATURE./
+  - 020-050 - /Provide configuration functions and macros./
+
+  Set some initial variables or provide me with configuration macros and
+  functions.
+
+  - 110
+
+  The init
+
+  - 110 - /Initialize FEATURE./
 
   Add hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
