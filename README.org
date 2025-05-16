@@ -171,14 +171,13 @@ did not write it with the specific intention of it being used by others.
 git clone https://github.com/Luis-Henriquez-Perez/.emacs.d ~/.config/emacs/
 #+end_src
 * Screenshots
-These screenshots.
 [[.local/share/screenshots/2025-04-27-130548__emacs_moe-light.png]]
 theme: [[https://github.com/kuanyui/moe-theme.el][moe-light theme]]
 font: [[https://www.recursive.design/][recursive mono]]
 [[.local/share/screenshots/2025-04-27-130749__emacs_moe-dark.png]]
 theme: [[https://github.com/kuanyui/moe-theme.el][moe-dark theme]]
 font: [[https://www.recursive.design/][recursive mono]]
-[[.local/share/screenshots/emacs-screenshot-d585a4a.png]]
+[[]]
 * Acknowledgements
 :PROPERTIES:
 :ID:       20240408T163913.888904
