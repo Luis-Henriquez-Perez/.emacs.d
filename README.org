@@ -128,11 +128,11 @@ This is my personal emacs configuration.
   config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
   easier profiling of keybindings.
 
-  *lisp/xxx-hooks.el* - Run custom hooks.
+  127 - Run custom hooks.
 
   Run the hooks that do not correspond to a particular package.
 
-  *lisp/xxx-init* - /Some file I use but do not know what to do with yet./
+  128 - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
