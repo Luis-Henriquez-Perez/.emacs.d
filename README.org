@@ -107,9 +107,9 @@ This is my personal emacs configuration.
 
   020-050 - /Provide configuration functions and macros./
 
-  110 - install needed packages with =package.el=.
+  110 - Install needed packages with =package.el=.
 
-  130 - /Initialize FEATURE./
+  130 - Initialize FEATURE
 
   Add hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
