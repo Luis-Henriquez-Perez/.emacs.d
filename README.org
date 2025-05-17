@@ -109,9 +109,9 @@ This is my personal emacs configuration.
 
   110 - Install needed packages with =package.el=.
 
-  130 - Initialize FEATURE
+  130 - Initialize a feature.
 
-  Add hooks or advices, setting variables, binding keys and autoloading
+  This means adding hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
