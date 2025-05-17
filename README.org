@@ -97,54 +97,51 @@ This is my personal emacs configuration.
 
   Below is a quick synopsis of each kind of file and a description.
 
-  - [[file:./init.el][init.el]] /Initialize my emacs configuration/.
+  [[file:./init.el][init.el]] /Initialize my emacs configuration/.
 
   This means adding the lisp directory to the load-path, loading all of the
   =init-FEATURE.el= files, and setting up necessary initial variables.  It is the
   "big bang" that sets everything else into motion.
 
-  - 000-002 - Define needed variables and fundamental functions and macros.
+  000-002 - Define needed variables and fundamental functions and macros.
 
-  - 020-050 - /Provide configuration functions and macros./
+  020-050 - /Provide configuration functions and macros./
 
-  Set some initial variables or provide me with configuration macros and
-  functions.
+  110 - install needed packages with =package.el=.
 
-  - 110 - install needed packages with =package.el=.
-
-  - 130 - /Initialize FEATURE./
+  130 - /Initialize FEATURE./
 
   Add hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
-  - *lisp/990-config-FEATURE.el* - /Configure FEATURE./
+  *lisp/990-config-FEATURE.el* - /Configure FEATURE./
 
   This *should not* be Loaded immediately because it will require FEATURE. it
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
   files starting with the number =9= are not loadded immediately via [[][Fload!]].
 
-  - *lisp/xxx-keybindings.el* - /Set all of my keybindings./
+  *lisp/xxx-keybindings.el* - /Set all of my keybindings./
 
-    This is an exception to the rule of keeping everything involving FEATURE to
-    =config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
-    easier profiling of keybindings.
+  This is an exception to the rule of keeping everything involving FEATURE to
+  config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
+  easier profiling of keybindings.
 
-  - *lisp/xxx-hooks.el* - /Run custom hooks./
+  *lisp/xxx-hooks.el* - /Run custom hooks./
 
-    Run the hooks that do not correspond to a particular package.
+  Run the hooks that do not correspond to a particular package.
 
-  - *lisp/xxx-init* - /Some file I use but do not know what to do with yet./
+  *lisp/xxx-init* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
   further consideration and improvement.
 
-  - *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
+  *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
 
-    Use [[https://www.gnu.org/software/emacs/manual/html_node/ert/][ert]] to thoroughly test functions and macros in BASEFILE.  These test are
-    designed to be run with [[https://emacs-eldev.github.io/eldev/][eldev]].
+  Use [[https://www.gnu.org/software/emacs/manual/html_node/ert/][ert]] to thoroughly test functions and macros in BASEFILE.  These test are
+  designed to be run with [[https://emacs-eldev.github.io/eldev/][eldev]].
 
   - *.local/var/* - /Store Persistent data/.
 
