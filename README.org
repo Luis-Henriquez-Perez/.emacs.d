@@ -105,7 +105,7 @@ This is my personal emacs configuration.
 
   000-002 - Define needed variables and fundamental functions and macros.
 
-  020-050 - /Provide configuration functions and macros./
+  020-050 - Provide configuration functions and macros.
 
   110 - Install needed packages with =package.el=.
 
@@ -115,20 +115,20 @@ This is my personal emacs configuration.
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
-  *lisp/990-config-FEATURE.el* - /Configure FEATURE./
+  *lisp/990-config-FEATURE.el* - Configure FEATURE.
 
   This *should not* be Loaded immediately because it will require FEATURE. it
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
   files starting with the number =9= are not loadded immediately via [[][Fload!]].
 
-  *lisp/xxx-keybindings.el* - /Set all of my keybindings./
+  *lisp/xxx-keybindings.el* - Set all of my keybindings.
 
   This is an exception to the rule of keeping everything involving FEATURE to
   config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
   easier profiling of keybindings.
 
-  *lisp/xxx-hooks.el* - /Run custom hooks./
+  *lisp/xxx-hooks.el* - Run custom hooks.
 
   Run the hooks that do not correspond to a particular package.
 
