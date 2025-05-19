@@ -76,7 +76,6 @@ This is my personal emacs configuration.
 - Ensures no garbage files are created with [[https://github.com/emacscollective/no-littering][no-littering]]
 - More precise measure of initialization time
 - Mode-line and evil cursor faces [[file:.local/share/screenshots/2025-04-27-160359__emacs_dynamic_faces.png][dynamically adapt]] to theme
-# - Intelligent whitespace handling with a [[][custom]]
 - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 * File Structure
 :PROPERTIES:
@@ -101,7 +100,7 @@ This is my personal emacs configuration.
   means "through" in the sense of specifying an interval.  So =000...002= means
   any of =000=, =001=, and =002=.
 
-  [[file:./init.el][init.el]] Initialize my emacs configuration.
+  [[file:./init.el][init.el]] - Initialize my emacs configuration.
 
   This means adding the lisp directory to the load-path, directly or indirectly
   load all needed files and set up necessary initial variables.  This is the "big
@@ -113,13 +112,13 @@ This is my personal emacs configuration.
 
   lisp/110 - Install external packages with =package.el=.
 
-  lisp/130 - Initialize a feature.
+  lisp/130 - Initialize FEATURE as specified by =lisp/130-init-FEATURE.el=.
 
   This means adding hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
-  lisp/990 - Configure FEATURE.
+  lisp/990 - Configure FEATURE as specified by =lisp/990-config-FEATURE.el=.
 
   This *should not* be Loaded immediately because it will require FEATURE. it
   contains funtionality that is only needed after FEATURE is already loaded.
