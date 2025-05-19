@@ -77,7 +77,7 @@ This is my personal emacs configuration.
 - More precise measure of initialization time
 - Mode-line and evil cursor faces [[file:.local/share/screenshots/2025-04-27-160359__emacs_dynamic_faces.png][dynamically adapt]] to theme
 # - Intelligent whitespace handling with a [[][custom]]
-# - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
+- Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
 * File Structure
 :PROPERTIES:
 :ID:       20240408T164104.628646
@@ -88,13 +88,12 @@ This is my personal emacs configuration.
   are loaded.  This virtually guarantees that file names will not conflict with
   the name of built-in or external feature, greatly simplifies the task of
   programmatically loading my files and provides a level of transparency by
-  ensuring that at a glance any reader knows the precise order in which files
-  are evaluated.  Moreover, I divide these files into "init" files that are
-  evaluated immediately, and "config" files which are evaluated after some
-  feature is loaded.  This division lends itself to the the deferred loading of
-  features while also allowing me to write declarative code in each file as
-  opposed to code encased with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].
-
+  ensuring that at a glance any reader knows the precise load order.  Moreover,
+  I divide these files into "init" files that are evaluated immediately, and
+  "config" files which are evaluated after some feature is loaded.  This
+  division lends itself to the the deferred loading of features while also
+  allowing me to write declarative, straightforward code in each file as opposed
+  to code encased with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].
 
   Below is a quick synopsis of each kind of file and a description.  I list the
   numerical prefix of the file relative to the Emacs configuration directory and
