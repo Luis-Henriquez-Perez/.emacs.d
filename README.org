@@ -115,30 +115,30 @@ This is my personal emacs configuration.
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
-  990 - Configure FEATURE.
+  lisp/990 - Configure FEATURE.
 
   This *should not* be Loaded immediately because it will require FEATURE. it
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
   files starting with the number =9= are not loadded immediately via [[][Fload!]].
 
-  160 - Set all of my keybindings.
+  lisp/160 - Set all of my keybindings.
 
   This is an exception to the rule of keeping everything involving FEATURE to
   config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
   easier profiling of keybindings.
 
-  127 - Run custom hooks.
+  lisp/127 - Run custom hooks.
 
   Run the hooks that do not correspond to a particular package.
 
-  128 - Some file I use but do not know what to do with yet.
+  lisp/128 - Some file I use but do not know what to do with yet.
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
   further consideration and improvement.
 
-  999 - Store my [[][abbrevs]]
+  lisp/999 - Store my [[][abbrevs]]
 
   *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
 
