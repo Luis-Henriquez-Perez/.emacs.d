@@ -58,7 +58,10 @@
 (hook! prog-mode-hook rainbow-mode)
 (hook! prog-mode-hook hs-minor-mode)
 (unless noninteractive
-  (hook! prog-mode-hook flyspell-prog-mode))
+  ;; Do not use this hook until I fix the flyspell dict message that is
+  ;; displayed.  Also flyspell is slow to start.
+  ;; (hook! prog-mode-hook flyspell-prog-mode)
+  )
 (hook! text-mode-hook visual-line-mode)
 (unless noninteractive
   (hook! text-mode-hook flyspell-mode))
