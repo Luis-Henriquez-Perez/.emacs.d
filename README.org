@@ -10,7 +10,7 @@
 <img width="1024px" src=".local/share/screenshots/2025-04-27-130810__emacs_ef-light-theme.png" alt="Banner">
 #+end_html
 
-Theme: [[][ef-light]] Font: [[https://www.recursive.design/][recursive mono]]
+Theme: [[https://github.com/protesilaos/ef-themes][ef-light]] Font: [[https://www.recursive.design/][recursive mono]]
 
 This is my personal emacs configuration.
 
@@ -22,7 +22,7 @@ This is my personal emacs configuration.
   Startup should be as fast as possible by which I mean less than a
   second.  I currently have a startup time of =0.83= seconds (this is with
   byte-compilation).
-- *performant*
+- *performant* (WIP)
   The experience while using emacs should be responsive fast and
   snappy.
 - *introspectable* (not a real word)
@@ -83,6 +83,7 @@ This is my personal emacs configuration.
 :PROPERTIES:
 :ID:       20240408T164104.628646
 :END:
+
   I designed the file structure of my configuration to be simple, transparent,
   and to lend itself to deferred loading.  I prefix all file names (except the
   =init.el=) with a three digit number that corresponds to the order in which they
@@ -94,7 +95,8 @@ This is my personal emacs configuration.
   "config" files which are evaluated after some feature is loaded.  This
   division lends itself to the the deferred loading of features while also
   allowing me to write declarative, straightforward code (as opposed to the
-  popular alternative: encasing code with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].)
+  popular alternative: encasing code with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]]).
+
 
   Below is a quick synopsis of each kind of file and a description.  I list the
   numerical prefix of the file relative to the Emacs configuration directory and
@@ -102,62 +104,66 @@ This is my personal emacs configuration.
   means "through" in the sense of specifying an interval.  So =000...002= means
   any of =000=, =001=, and =002=.
 
-  [[file:./init.el][init.el]] - Initialize my emacs configuration.
+- *init.el* ([[file:./init.el][see it here]]) - /Initialize my Emacs configuration/.
 
   Add the lisp directory to the load-path, directly or indirectly load all
   needed files and set up necessary initial variables.  This is the "big bang"
   that sets everything else into motion.
 
-  *lisp/000...002* - Define needed variables and fundamental functions and macros.
+- *lisp/000...002* - /Define needed variables and fundamental functions and macros./
 
-  *lisp/020...050* - Provide configuration functions and macros.
 
-  *lisp/110* - Install external packages with =package.el=.
+- *lisp/020...050* - /Provide configuration functions and macros./
 
-  *lisp/130* - Initialize FEATURE as specified by =lisp/130-init-FEATURE.el=.
+
+- *lisp/110* - /Install external packages with package.el./
+
+
+- *lisp/130* - /Initialize FEATURE as specified by lisp/130-init-FEATURE.el./
 
   This means adding hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
-  *lisp/990* - Configure FEATURE as specified by =lisp/990-config-FEATURE.el=.
+- *lisp/990* - /Configure FEATURE as specified by lisp/990-config-FEATURE.el./
 
   This *should not* be Loaded immediately because it will require FEATURE. it
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
-  files starting with the number =9= are not loadded immediately via [[][Fload!]].
+  files starting with the number =9= are not loaded immediately via.
 
-  *lisp/160* - Set all of my keybindings.
+- *lisp/160* - /Set all of my keybindings./
 
   This is an exception to the rule of keeping everything involving FEATURE to
   config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
   easier profiling of keybindings.
 
-  *lisp/127* - Run custom hooks.
+- *lisp/127* - /Run custom hooks./
 
   Run the hooks that do not correspond to a particular package.
 
-  *lisp/128* - Some file I use but do not know what to do with yet.
+- *lisp/128* - /Some file I use but do not know what to do with yet./
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
   further consideration and improvement.
 
-  *lisp/999* - Store my [[][abbrevs]]
+- *lisp/999* - /Store my [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Abbrevs.html][abbrevs]]./
 
-  *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
+- *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
 
   Use [[https://www.gnu.org/software/emacs/manual/html_node/ert/][ert]] to thoroughly test functions and macros in BASEFILE.  These test are
   designed to be run with [[https://emacs-eldev.github.io/eldev/][eldev]].
 
-  *.local/var/* - /Store Persistent data/.
+- *.local/var/* - /Store Persistent data/.
 
   This directory is for storing cache data which is inappropriate to version
   control.  The =recentf-save-file= is an example.
 
-  *.local/etc/* - /Store autogenerated configuration./
+- *.local/etc/* - /Store autogenerated configuration./
 
-  *.local/share* - /Store things I want stored but do not want seen./
+
+- *.local/share* - /Store things I want stored but do not want seen./
 
   For now this means screenshots.
 * Naming Convention (WIP)
@@ -184,7 +190,6 @@ font: [[https://www.recursive.design/][recursive mono]]
 [[.local/share/screenshots/2025-04-27-130749__emacs_moe-dark.png]]
 theme: [[https://github.com/kuanyui/moe-theme.el][moe-dark theme]]
 font: [[https://www.recursive.design/][recursive mono]]
-[[]]
 * Acknowledgements
 :PROPERTIES:
 :ID:       20240408T163913.888904
@@ -194,6 +199,7 @@ contributed to emacs as well as all the authors and contributors to the packages
 I use.  Additionally, I should thank the writers of countless blog posts, reddit
 posts and youtube videos I have learned from.  Because of my limited memory I
 will only name a few of these that I remember well.
+
 - [[https://github.com/d12frosted/environment/tree/master/emacs][d12frosted's environment]]
 
   This configuration inspired me to organize my
@@ -216,5 +222,5 @@ will only name a few of these that I remember well.
   Xah Lee has created a great repository of information for emacs
   usage in [[http://xahlee.info/emacs/][his website]].  It is an excellent supplement to the manual.
 
-- Phundrak
-https://config.phundrak.com/
+- [[https://config.phundrak.com/][Phundrak]]
+
