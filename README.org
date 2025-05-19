@@ -97,7 +97,7 @@ This is my personal emacs configuration.
 
   Below is a quick synopsis of each kind of file and a description.
 
-  [[file:./init.el][init.el]] /Initialize my emacs configuration/.
+  [[file:./init.el][init.el]] Initialize my emacs configuration.
 
   This means adding the lisp directory to the load-path, directly or indirectly
   load all needed files and set up necessary initial variables.  This is the "big
@@ -107,9 +107,9 @@ This is my personal emacs configuration.
 
   lisp/020...050 - Provide configuration functions and macros.
 
-  lisp/110 - Install needed packages with =package.el=.
+  lisp/110 - Install external packages with =package.el=.
 
-  130 - Initialize a feature.
+  lisp/130 - Initialize a feature.
 
   This means adding hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
