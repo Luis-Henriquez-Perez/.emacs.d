@@ -8,6 +8,7 @@
   <a href="#screenshots">Screenshots</a>
 </p>
 <img width="1024px" src=".local/share/screenshots/2025-04-27-130810__emacs_ef-light-theme.png" alt="Banner">
+<p>Theme:</p>
 #+end_html
 
 This is my personal emacs configuration.
