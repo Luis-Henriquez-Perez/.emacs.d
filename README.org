@@ -10,7 +10,7 @@
 <img width="1024px" src=".local/share/screenshots/2025-04-27-130810__emacs_ef-light-theme.png" alt="Banner">
 #+end_html
 
-Theme:ef-light Font: recursive mono
+Theme: ef-light Font: recursive mono
 
 This is my personal emacs configuration.
 
@@ -104,9 +104,9 @@ This is my personal emacs configuration.
 
   [[file:./init.el][init.el]] - Initialize my emacs configuration.
 
-  This means adding the lisp directory to the load-path, directly or indirectly
-  load all needed files and set up necessary initial variables.  This is the "big
-  bang" that sets everything else into motion.
+  Add the lisp directory to the load-path, directly or indirectly load all
+  needed files and set up necessary initial variables.  This is the "big bang"
+  that sets everything else into motion.
 
   *lisp/000...002* - Define needed variables and fundamental functions and macros.
 
