@@ -103,11 +103,11 @@ This is my personal emacs configuration.
   load all needed files and set up necessary initial variables.  This is the "big
   bang" that sets everything else into motion.
 
-  000-002 - Define needed variables and fundamental functions and macros.
+  lisp/000...002 - Define needed variables and fundamental functions and macros.
 
-  020-050 - Provide configuration functions and macros.
+  lisp/020...050 - Provide configuration functions and macros.
 
-  110 - Install needed packages with =package.el=.
+  lisp/110 - Install needed packages with =package.el=.
 
   130 - Initialize a feature.
 
@@ -132,11 +132,13 @@ This is my personal emacs configuration.
 
   Run the hooks that do not correspond to a particular package.
 
-  128 - /Some file I use but do not know what to do with yet./
+  128 - Some file I use but do not know what to do with yet.
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
   further consideration and improvement.
+
+  999 - Store my [[][abbrevs]]
 
   *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
 
