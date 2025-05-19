@@ -108,42 +108,42 @@ This is my personal emacs configuration.
   load all needed files and set up necessary initial variables.  This is the "big
   bang" that sets everything else into motion.
 
-  lisp/000...002 - Define needed variables and fundamental functions and macros.
+  *lisp/000...002* - Define needed variables and fundamental functions and macros.
 
-  lisp/020...050 - Provide configuration functions and macros.
+  *lisp/020...050* - Provide configuration functions and macros.
 
-  lisp/110 - Install external packages with =package.el=.
+  *lisp/110* - Install external packages with =package.el=.
 
-  lisp/130 - Initialize FEATURE as specified by =lisp/130-init-FEATURE.el=.
+  *lisp/130* - Initialize FEATURE as specified by =lisp/130-init-FEATURE.el=.
 
   This means adding hooks or advices, setting variables, binding keys and autoloading
   functions.  Crucially, refrain from loading FEATURE or any other features
   unless absolutely necessary.
 
-  lisp/990 - Configure FEATURE as specified by =lisp/990-config-FEATURE.el=.
+  *lisp/990* - Configure FEATURE as specified by =lisp/990-config-FEATURE.el=.
 
   This *should not* be Loaded immediately because it will require FEATURE. it
   contains funtionality that is only needed after FEATURE is already loaded.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
   files starting with the number =9= are not loadded immediately via [[][Fload!]].
 
-  lisp/160 - Set all of my keybindings.
+  *lisp/160* - Set all of my keybindings.
 
   This is an exception to the rule of keeping everything involving FEATURE to
   config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
   easier profiling of keybindings.
 
-  lisp/127 - Run custom hooks.
+  *lisp/127* - Run custom hooks.
 
   Run the hooks that do not correspond to a particular package.
 
-  lisp/128 - Some file I use but do not know what to do with yet.
+  *lisp/128* - Some file I use but do not know what to do with yet.
 
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
   further consideration and improvement.
 
-  lisp/999 - Store my [[][abbrevs]]
+  *lisp/999* - Store my [[][abbrevs]]
 
   *test/BASEFILE-test.el* - /Test functions and macos provided in BASEFILE./
 
