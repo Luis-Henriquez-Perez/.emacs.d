@@ -92,8 +92,8 @@ This is my personal emacs configuration.
   I divide these files into "init" files that are evaluated immediately, and
   "config" files which are evaluated after some feature is loaded.  This
   division lends itself to the the deferred loading of features while also
-  allowing me to write declarative, straightforward code in each file as opposed
-  to code encased with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].
+  allowing me to write declarative, straightforward code (as opposed to the
+  popular alternative: encasing code with [[/home/luis/.config/documentation/29.4-helpful--eval-after-load.html][eval-after-load]].)
 
   Below is a quick synopsis of each kind of file and a description.  I list the
   numerical prefix of the file relative to the Emacs configuration directory and
