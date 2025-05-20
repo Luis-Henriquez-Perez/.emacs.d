@@ -297,6 +297,7 @@ of FACE to the background color of the `default' face."
 (define-minor-mode oo-auto-commit-mode
   "Auto commit my dotfiles."
   :global t
+  :group 'none
   (if oo-auto-commit-mode
       (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h)
     (remove-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h)))
