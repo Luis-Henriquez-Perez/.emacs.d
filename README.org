@@ -132,11 +132,7 @@ This is my personal emacs configuration.
   This is meant to be used with =eval-after-load=: ~(eval-after-load FEATURE)~.  All
   files starting with the number =9= are not loaded immediately via.
 
-- *lisp/160* - /Set all of my keybindings./
-
-  This is an exception to the rule of keeping everything involving FEATURE to
-  config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
-  easier profiling of keybindings.
+- *lisp/123* - /Setup and configure my mode line./
 
 - *lisp/127* - /Run custom hooks./
 
@@ -147,6 +143,12 @@ This is my personal emacs configuration.
   These are files that do not fit into the category of the other lisp files I
   have mentioned.  This is an unfleshed out part of my design which needs
   further consideration and improvement.
+
+- *lisp/160* - /Set all of my keybindings./
+
+  This is an exception to the rule of keeping everything involving FEATURE to
+  config-FEATURE.el= and =init-FEATURE.el= in exchange for better modularity and
+  easier profiling of keybindings.
 
 - *lisp/999* - /Store my [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Abbrevs.html][abbrevs]]./
 
