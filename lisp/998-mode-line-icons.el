@@ -37,14 +37,14 @@
     (string-match "\\([[:digit:]]+\\)@" it)
     (set! count (match-string 1 it))
     (set! icon (nerd-icons-faicon "nf-fa-arrow_up_long" :v-adjust 0.01))
-    (propertize (format "%s%s" count icon) 'face 'success)))
+    (format "%s%s" count icon)))
 
 (defun oo-mode-line-nerd-icons--buffer-name (orig-fn &rest args)
   (format "%s %s" (nerd-icons-icon-for-buffer) (apply orig-fn args)))
 
 (defun! oo-mode-line-nerd-icons--read-only (orig-fn &rest args)
   (awhen! (apply orig-fn args)
-    (nerd-icons-faicon "nf-fa-lock" :face 'error)))
+    (nerd-icons-faicon "nf-fa-lock")))
 
 (defun oo-mode-line-nerd-icons--kbd-macro (orig-fn &rest args)
   (when (apply orig-fn args)
@@ -65,7 +65,7 @@
     (set! type (match-string 1 it))
     (set! time (match-string 2 it))
     (pcase type
-      ("w" (set! icon (nerd-icons-pomicon "nf-pom-pomodoro_ticking" :face 'error :v-adjust 0)))
+      ("w" (set! icon (nerd-icons-pomicon "nf-pom-pomodoro_ticking" :v-adjust 0)))
       ("b" (set! icon (nerd-icons-codicon "nf-cod-coffee" :v-adjust 0))))
     (format "%s %s" icon time)))
 
@@ -102,12 +102,19 @@
       ("PAUSED" (set! icon (nerd-icons-faicon "nf-fa-pause")))
       ("REPEAT" (set! icon (nerd-icons-faicon "nf-fa-repeat")))
       ("PLAYING" (set! icon (nerd-icons-mdicon "nf-md-music_note"))))
-    (format "%s %s %s" icon segment)))
+    (format "%s %s" icon segment)))
+
+(defun! oo-mode-line-nerd-icons--tab (orig-fn &rest args)
+  "Return indicator for the current track."
+  (aand! (apply orig-fn args)
+         (format "%s %s" (nerd-icons-mdicon "nf-md-tab") it)))
 
 (define-minor-mode oo-mode-line-icons-mode
   "Display icons in the mode line."
   :global t
   (cond (oo-mode-line-icons-mode
+         (advice-add 'oo-mode-line-segment--tab             :around 'oo-mode-line-nerd-icons--tab)
+         (advice-add 'oo-mode-line-segment--kbd-macro       :around 'oo-mode-line-nerd-icons--kbd-macro)
          (advice-add 'oo-mode-line-segment--buffer-name     :around 'oo-mode-line-nerd-icons--buffer-name)
          (advice-add 'oo-mode-line-segment--line-number     :around 'oo-mode-line-nerd-icons--line-number)
          (advice-add 'oo-mode-line-segment--buffer-modified :around 'oo-mode-line-nerd-icons--buffer-modified)
@@ -121,6 +128,8 @@
          (advice-add 'oo-mode-line-segment--emms            :around 'oo-mode-line-nerd-icons--emms)
          (advice-add 'oo-mode-line-segment--branch          :around 'oo-mode-line-nerd-icons--branch))
         (t
+         (advice-remove 'oo-mode-line-segment--tab     'oo-mode-line-nerd-icons--tab)
+         (advice-remove 'oo-mode-line-segment--kbd-macro     'oo-mode-line-nerd-icons--kbd-macro)
          (advice-remove 'oo-mode-line-segment--buffer-name     'oo-mode-line-nerd-icons--buffer-name)
          (advice-remove 'oo-mode-line-segment--line-number     'oo-mode-line-nerd-icons--line-number)
          (advice-remove 'oo-mode-line-segment--buffer-modified 'oo-mode-line-nerd-icons--buffer-modified)
