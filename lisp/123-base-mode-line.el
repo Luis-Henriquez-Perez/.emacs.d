@@ -33,29 +33,39 @@
 (declare-function +evil-state-face "130-init-evil")
 ;;;; faces
 (defface oo-mode-line-segment-1
-  '((t (:background "#6272a4" :foreground "#ffffff"))) ; bright indigo
+  '((t (:inherit mode-line :background "blue1" :foreground "white")))
   "Face for the background of the first modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-1 oo-custom-faces-alist) 'font-lock-function-name-face)
+
 (defface oo-mode-line-segment-2
-  '((t (:background "#ff6e6e" :foreground "#ffffff"))) ; bright red
+  '((t (:inherit mode-line :background "#008b8b" :foreground "white")))
   "Face for the background of the second modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-2 oo-custom-faces-alist) 'font-lock-constant-face)
+
 (defface oo-mode-line-segment-3
-  '((t (:background "#50fa7b" :foreground "#000000"))) ; bright green
+  '((t (:inherit mode-line :background "#a0522d")))
   "Face for the background of the third modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-3 oo-custom-faces-alist) 'font-lock-variable-name-face)
+
 (defface oo-mode-line-segment-4
-  '((t (:background "#f1fa8c" :foreground "#000000"))) ; bright yellow
+  '((t (:inherit mode-line :background "#b22222")))
   "Face for the background of the fourth modeline segment."
   :group 'oo-modeline)
 
+(setf (alist-get 'oo-mode-line-segment-4 oo-custom-faces-alist) 'font-lock-comment-face)
+
 (defface oo-mode-line-segment-5
-  '((t (:background "#bd93f9" :foreground "#000000"))) ; bright purple
+  '((t (:inherit mode-line :background "#228b22")))
   "Face for the background of the fifth modeline segment."
   :group 'oo-modeline)
+
+(setf (alist-get 'oo-mode-line-segment-5 oo-custom-faces-alist) 'font-lock-type-face)
 ;;;; utility functions
 ;; When you modify the modeline variable the modeline is not automatically
 ;; updated.  You only see the updated version when you open a new buffer.  To
@@ -109,11 +119,6 @@ from the beginning."
 
 (defun! oo-mode-line-render-segment (name)
   (funcall (intern (format "oo-mode-line-segment--%s" name))))
-
-(defun! oo-mode-line-render-side (side)
-  "Render the segment."
-  (flet! full-p (segment) (and segment (not (string-empty-p segment))))
-  (format "\s%s\s" (string-join (cl-remove-if-not #'full-p (mapcar #'oo-mode-line-render-segment side)) "\s\s")))
 ;;;; segments
 (defun oo-mode-line-segment--line-number ()
   "Return the line-number indicator for the mode line."
@@ -135,6 +140,30 @@ from the beginning."
   (or (and defining-kbd-macro "•REC")
       (and executing-kbd-macro "KBD-PLAY")))
 
+(defun oo-mode-line-segment--abbrevs ()
+  "Indicate how many abbrevs I have in `999-abbrevs.el'."
+  (when (equal (buffer-file-name)
+               (expand-file-name "999-abbrevs.el" oo-lisp-dir))
+    (format "%d abbrevs" (how-many "^(define-abbrev" (point-min) (point-max)))))
+
+(defun oo-mode-line-segment--word-count ()
+  "Indicate how many words I have in a text buffer."
+  (when (derived-mode-p 'text-mode)
+    (format "%d words" (count-words (point-min) (point-max)))))
+
+(defun oo-mode-line-segment--tab ()
+  "Return an indicator for a `tab-bar-mode' tab."
+  ;; This really convoluted way for just getting the current tab.  But I cannot
+  ;; immediately see a simpler way based on the source code.
+  (and (bound-and-true-p tab-bar-mode)
+       (let* ((tabs (funcall tab-bar-tabs-function))
+              (tab-number (1+ (tab-bar--current-tab-index tabs)))
+              (tab-index (if (integerp tab-number)
+                             (1- (max 0 (min tab-number (length tabs))))
+                           (tab-bar--current-tab-index tabs)))
+              (current-tab (nth tab-index tabs)))
+         (alist-get 'name current-tab))))
+
 (defun! oo-mode-line-segment--branch ()
   "Return the branch name of the current repository."
   (and vc-mode (cadr (split-string (string-trim vc-mode) "^[A-Z]+[-:]+"))))
@@ -148,7 +177,7 @@ from the beginning."
 If 0, do not display anything."
   (set! count (string-to-number (shell-command-to-string "git rev-list --count @{upstream}..HEAD")))
   (when (> count 0)
-    (propertize (format "%s@" count) 'face 'success)))
+    (format "%s@" count)))
 
 (declare-function fancy-narrow-active-p "fancy-narrow")
 (defun! oo-mode-line-segment--narrow ()
@@ -194,10 +223,10 @@ If the current buffer is modified."
 
 (defun oo-mode-line-segment--text-scale ()
   "Return an indicator for text scaling."
-  (and (boundp 'text-scale-mode-amount)
-       (/= text-scale-mode-amount 0)
-       (alet! (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
-         (propertize (format it text-scale-mode-amount) 'face 'success))))
+  (and! (boundp 'text-scale-mode-amount)
+        (/= text-scale-mode-amount 0)
+        (if (> text-scale-mode-amount 0) "(%+d)" "(%-d)")
+        (format it text-scale-mode-amount)))
 
 (defun oo-mode-line-segment--buffer-info ()
   "Return an indicator for various buffer information."
@@ -211,6 +240,7 @@ If the current buffer is modified."
   "Display the time and date in mode line."
   (oo-mode-line-render-segments '(time date)))
 
+(defvar emms-playing-time-string)
 (declare-function emms-track-description "emms")
 (declare-function emms-playlist-current-selected-track "emms")
 (defun! oo-mode-line-segment--emms ()
@@ -245,8 +275,8 @@ or playing with repeat."
   (flet! empty-p (segment) (not (and segment (not (string-empty-p segment)))))
   (flet! pad (segment) (format "\s%s\s" segment))
   (flet! render (side) (mapcar #'pad (cl-remove-if #'empty-p (mapcar #'oo-mode-line-render-segment side))))
-  (set! lhs (render '(evil-state buffer-info version-control emms)))
-  (set! rhs (render '(time-info buffer-location pomodoro text-scale)))
+  (set! lhs (render '(evil-state tab buffer-info version-control emms)))
+  (set! rhs (render '(time-info buffer-location pomodoro word-count abbrevs text-scale)))
   ;; Now apply the faces.  This is kind of messy.
   (set! evil-state-face (+evil-state-face))
   (set! lhs-head (add-face evil-state-face (car lhs)))
