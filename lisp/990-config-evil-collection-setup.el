@@ -149,8 +149,10 @@
 
 (after! elfeed evil-collection-elfeed-setup evil-collection)
 
-(autoload #'evil-collection-elisp-mode-setup "evil-collection" nil nil 'function)
-(hook! emacs-lisp-mode-hook evil-collection-elisp-mode-setup)
+;; Disable bindings from for elisp mode because they conflict with the bindings
+;; I myself am adding.
+;; (autoload #'evil-collection-elisp-mode-setup "evil-collection" nil nil 'function)
+;; (hook! emacs-lisp-mode-hook evil-collection-elisp-mode-setup)
 
 (after! elisp-refs evil-collection-elisp-refs-setup evil-collection)
 
