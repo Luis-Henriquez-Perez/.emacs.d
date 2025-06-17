@@ -274,8 +274,19 @@ derived from these, delete trailing whitespace from it."
                                    (signal (car err) (cdr err))))))
            (oo-call-after-load parent-feature fn)))))
 
+;; Define a minor mode where I can toggle auto committing and pushing in cases where it is
+;; not convenient.  I am thinking ither this or adding a way to make hooks
+;; toggleable easily.  Either one function that let us me select active hooks to
+;; disable or maybe letting hooks be disableable interactive functions.  Not sure.
+(define-minor-mode oo-auto-commit-mode
+  "Auto commit my dotfiles."
+  :global t
+  (if oo-auto-commit-mode
+      (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h)
+    (remove-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h)))
+
 (autoload! oo-dwim-vc-action "vc")
-(defhook! auto-commit-and-push-dotfile (after-save-hook)
+(defun oo-auto-commit-and-push-dotfile-h ()
   "Commit and push changes to dotfile on save.
 When a buffer is saved, check whether the saved file is part of the dotfiles
 repository and if it is, commit and push all changes.  Otherwise, do nothing."
