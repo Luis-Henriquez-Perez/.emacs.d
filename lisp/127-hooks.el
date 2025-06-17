@@ -241,6 +241,22 @@ derived from these, delete trailing whitespace from it."
 
 (hook! text-mode-hook delete-selection-mode)
 (hook! prog-mode-hook delete-selection-mode)
+;;;; make setting faces actually work
+;; Surprisingly, the function `custom-theme-set-faces' and `custom-set-faces' do
+;; not by default actually change any faces.  For that to happen the variable
+;; `custom--inhibit-theme-enable' needs to be nil.  Furthermore, because I
+;; disable existing themes before enabling new ones even after customizing a
+;; theme the customization does not persist.  The following hook is to add
+;; basic.  Honestly I do not know if I.
+(defhook! set-state-faces-from-theme (enable-theme-functions (_))
+  "Set face backgrounds dynamically based on theme faces.
+Specifically for each element (face . built-in-face) in `oo-custom-faces-alist'
+set the background of FACE to the foreground of BUILT-IN-FACE and the foreground
+of FACE to the background color of the `default' face."
+  (for! ((face . theme-face) oo-custom-faces-alist)
+    (set! color (face-attribute theme-face :foreground nil 'default))
+    (set! bg (face-attribute 'default :background))
+    (set-face-attribute face nil :background color :foreground bg)))
 ;;;; miscellaneous
 (hook! after-init-hook oo-mode-line-icons-mode :depth 89 :level 'info)
 (hook! after-init-hook oo-mode-line-mode :depth 90 :level 'info)
