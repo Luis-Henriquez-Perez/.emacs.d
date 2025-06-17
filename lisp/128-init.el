@@ -73,41 +73,6 @@ Replace `kill-buffer--possibly-save' as advice."
   (apply orig-fn args))
 
 (advice-add 'load-theme :around #'oo--disable-old-themes)
-;;;; make setting faces actually work
-;; Surprisingly, the function `custom-theme-set-faces' and `custom-set-faces' do
-;; not by default actually change any faces.  For that to happen the variable
-;; `custom--inhibit-theme-enable' needs to be nil.  Furthermore, because I
-;; disable existing themes before enabling new ones even after customizing a
-;; theme the customization does not persist.  This function addresses both of
-;; these issues ensuring that as expected the faces are set immediately if the
-;; theme is loaded and that these changes persist even after theme change.
-(defvar oo-custom-faces-alist nil
-  "An alist of faces to be applied.
-Each element is of the form (theme . faces).  THEME is the customized theme and
-FACES is the list of customized faces for THEME.")
-
-(defun oo-custom-set-faces (theme &rest faces)
-  "Customize THEME with FACES.
-If THEME is already enabled, also applies
-faces immediately."
-  (declare (indent defun))
-  (when (and after-init-time
-             (or (equal theme 'user) (member theme custom-enabled-themes)))
-    (let ((custom--inhibit-theme-enable nil))
-      (apply #'custom-theme-set-faces theme faces)))
-  (setf (alist-get theme oo-custom-faces-alist)
-        (cl-union faces (alist-get theme oo-custom-faces-alist) :key #'car)))
-
-(defun oo-apply-custom-faces-h (current)
-  "Apply any faces that need to be applied from `oo-custom-faces-alist'."
-  (oo-log 'info "Current theme -> %s" current)
-  (for! ((theme . faces) oo-custom-faces-alist)
-    (when (or (equal theme 'user) (member theme custom-enabled-themes))
-      (oo-log 'info "Applying faces for %s..." theme)
-      (let ((custom--inhibit-theme-enable nil))
-        (apply #'custom-theme-set-faces theme faces)))))
-
-(add-hook 'enable-theme-functions #'oo-apply-custom-faces-h)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
