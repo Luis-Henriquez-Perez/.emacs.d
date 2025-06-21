@@ -36,6 +36,14 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "adament"          "adamant"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "foh"              "figure out how"                                   nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "taw"              "that would"                                       nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "m"                "my"                                               nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "f"                "for"                                              nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "doc"              "documentation"                                    nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "fmc"              "for my case"                                      nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "profle"           "profile"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "iia"              "if I am"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "vodi"             "void"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "r"                "are"                                              nil                                   :enable-function #'oo-use-text-abbrev-p)
@@ -1363,7 +1371,7 @@
 (define-abbrev    global-abbrev-table "ais"              "as it stands"                                     nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "frmae"            "frame"                                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "somehwo"          "somehow"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table "wa"               "way"                                              nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "wa"               "what"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "advisig"          "advising"                                         nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "inadvertedly"     "inadvertently"                                    nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "aamof"            "as a matter of fact"                              nil                                   :enable-function #'oo-use-text-abbrev-p)
