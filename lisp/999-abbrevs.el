@@ -36,6 +36,8 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "oses"             "OSes"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "wroth"            "worth"                                            nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "adament"          "adamant"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "foh"              "figure out how"                                   nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "taw"              "that would"                                       nil                                   :enable-function #'oo-use-text-abbrev-p)
