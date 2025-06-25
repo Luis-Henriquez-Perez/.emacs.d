@@ -105,15 +105,15 @@
 (opt! org-clock-persist t)
 (opt! org-clock-sound (expand-file-name "~/Downloads/ding-101492.wav"))
 ;;;; org-id
-;; (opt! org-id-track-globally t)
-;; (opt! org-id-locations-file (expand-file-name "org-id-locations" oo-var-dir))
+(opt! org-id-track-globally t)
+(opt! org-id-locations-file (expand-file-name "org-id-locations" oo-var-dir))
 
 ;; The way I see it, if I can have a universally unique identifier that also tells
 ;; me the date my headline was created; we hit two birds with one stone.  That way I
 ;; never need a =date-created= property.
-;; (opt! org-id-method 'ts)
+(opt! org-id-method 'ts)
 
-;; (opt! org-id-link-to-org-use-id t)
+(opt! org-id-link-to-org-use-id t)
 ;;;; org-timer
 (opt! org-timer-default-timer "0:05:00")
 ;;; provide
