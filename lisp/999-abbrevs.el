@@ -36,6 +36,10 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "wms"            "window managers"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "wm"            "window manager"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "dki"            "I do not know if"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "websti"            "website"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "thest"            "test"                                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "idkwi"            "I do not know I"                                  nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "dkwi"             "I do not know I"                                  nil                                   :enable-function #'oo-use-text-abbrev-p)
