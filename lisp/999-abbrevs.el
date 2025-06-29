@@ -36,6 +36,8 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "wpps"             "wallpapers"                                       nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "wpp"              "wallpaper"                                        nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "walpaper"         "wallpaper"                                        nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "walpapers"        "wallpapers"                                       nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "sfw"              "SFW"                                              nil                                   :enable-function #'oo-use-text-abbrev-p)
