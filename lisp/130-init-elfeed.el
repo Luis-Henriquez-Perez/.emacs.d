@@ -29,7 +29,8 @@
 
 (opt! elfeed-feeds
       '("http://nullprogram.com/feed/"
-        "https://planet.emacslife.com/atom.xml"))
+        "https://planet.emacslife.com/atom.xml"
+        "https://archlinux.org/feeds/news/"))
 ;;; provide
 (provide '130-init-elfeed)
 ;;; 130-init-elfeed.el ends here
