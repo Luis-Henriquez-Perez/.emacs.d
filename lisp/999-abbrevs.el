@@ -36,6 +36,12 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "comiled"          "compiled"                                         nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "trwi"             "the reason why I"                                 nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "harddrive"        "hardrive"                                         nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "mself"            "my self"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "doit"             "do it"                                            nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "eare"             "are"                                              nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "awes"             "awesome"                                          nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "fav"              "favorite"                                         nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "metod"            "method"                                           nil                                   :enable-function #'oo-use-text-abbrev-p)
