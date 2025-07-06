@@ -29,6 +29,7 @@
 
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
+(autoload! mu4e "/usr/share/emacs/site-lisp/mu4e/mu4e")
 (autoload! +mu4e--main-enter-message "990-config-mu4e")
 (autoload! +mu4e--main-leave-message "990-config-mu4e")
 (autoload! +mu4e--legacy-enter-message "990-config-mu4e")
