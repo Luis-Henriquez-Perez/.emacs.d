@@ -80,7 +80,7 @@
 (opt! smtpmail-default-smtp-server "smtp.fastmail.com")
 (opt! smtpmail-smtp-server         "smtp.fastmail.com")
 
-;; start with the first (default) context;
+;; Start with the first (default) context;
 ;; default is to ask-if-none (ask when there's no context yet, and none match)
 (opt! mu4e-context-policy 'pick-first)
 
