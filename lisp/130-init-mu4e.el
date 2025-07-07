@@ -66,6 +66,7 @@
                      (mu4e-trash-folder      . ,(expand-file-name "/luishp/trash"))))
             (make-mu4e-context
              :name "gmail"
+             ;; :name "luishenriquezperez@gmail.com"
              :enter-func #'+mu4e--legacy-enter-message
              :leave-func #'+mu4e--legacy-leave-message
              :vars `((user-mail-address      . "luishenriquezperez@gmail.com")
