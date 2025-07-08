@@ -142,6 +142,9 @@ Replace `kill-buffer--possibly-save' as advice."
                      ;; (format "*info %s*" (file-name-base Info-current-file))
                      )
                    'unique)))
+;;;; sh-mode
+(hook! sh-mode-hook aggressive-indent-mode)
+;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
