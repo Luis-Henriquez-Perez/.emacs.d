@@ -26,11 +26,6 @@
 ;;
 ;;; Code:
 (require '050-base)
-
-
-
-
-
 ;;; provide
 (provide '130-init-evil-exchange)
 ;;; 130-init-evil-exchange.el ends here
