@@ -25,6 +25,7 @@
 ;; These are keybinding sugars to help me define bindings.
 ;;
 ;;; Code:
+(require '032-after-load-functions)
 (require '035-base-macros)
 
 (defvar evil-inner-text-objects-map)
@@ -35,72 +36,86 @@
   "Define evil keybinding in normal state."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(with-eval-after-load 'evil
-     (if (boundp ',keymap)
-         (evil-define-key* 'normal ,keymap ,key ,def)
-       (push '(evil-define-key* 'normal ,keymap ,key ,def)
-             (gethash symbol oo-after-load-hash-table)))))
+  `(afterfeature! evil
+     (afterbound! ,keymap
+       ,(cl-once-only (key)
+          `(progn
+             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+             (evil-define-key* 'normal ,keymap ,key ,def))))))
 
 (defmacro! imap (&rest args)
   "Define evil keybinding in insert state."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(with-eval-after-load 'evil
-     (if (boundp ',keymap)
-         (evil-define-key* 'insert ,keymap ,key ,def)
-       (push '(evil-define-key* 'insert ,keymap ,key ,def)
-             (gethash symbol oo-after-load-hash-table)))))
+  `(afterfeature! evil
+     (afterbound! ,keymap
+       ,(cl-once-only (key)
+          `(progn
+             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+             (evil-define-key* 'insert ,keymap ,key ,def))))))
+
+(defmacro! vmap (&rest args)
+  "Define evil keybinding in visual state."
+  (set! (key def) (last args 2))
+  (set! keymap (if (nth 2 args) (car args) 'global-map))
+  `(afterfeature! evil
+     (afterbound! ,keymap
+       ,(cl-once-only (key)
+          `(progn
+             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+             (evil-define-key* 'visual ,keymap ,key ,def))))))
 
 (defmacro! nvmap (&rest args)
   "Define evil keybinding in normal and visual state."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(with-eval-after-load 'evil
-     (if (boundp ',keymap)
-         (evil-define-key* '(normal visual) ,keymap ,key ,def)
-       (push '(evil-define-key* '(normal visual) ,keymap ,key ,def)
-              (gethash symbol oo-after-load-hash-table)))))
+  `(afterfeature! evil
+     (afterbound! ,keymap
+       ,(cl-once-only (key)
+          `(progn
+             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+             (evil-define-key* '(normal visual) ,keymap ,key ,def))))))
 
 (defmacro! emap (&rest args)
   "Define evil keybinding in Emacs state."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
-  (cl-with-gensyms (key def)
-    `(with-eval-after-load 'evil
-       (cond ((boundp ',keymap)
-              (let ((key ,key)
-                    (def ,def))
-                (keymap-set ,keymap ,key ,def)
-                (evil-define-key* 'emacs ,keymap ,key ,def)))
-             (t
-              (push '(progn (keymap-set ,keymap ,key ,def)
-                            (evil-define-key* 'emacs ,keymap ,key ,def))
-                     (gethash symbol oo-after-load-hash-table)))))))
+  `(afterfeature! evil
+     (afterbound! ,keymap
+       ,(cl-once-only (key)
+          `(progn
+             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+             (evil-define-key* 'emacs ,keymap ,key ,def))))))
 
 (defmacro! iotmap (key inner outer)
-  "Define evil keybinding in Emacs state."
-  `(with-eval-after-load 'evil
-     (evil-define-key* ' ,keymap ,key ,inner)
-     (evil-define-key* ' ,keymap ,key ,outer)))
+  "Define evil keybinding in Emacs state.
+Inner is the definition of the key in `evil-inner'.  Outer is the definition
+in."
+  `(afterfeature! evil
+     ,(cl-once-only (key)
+        `(progn
+           (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+           (evil-define-key* evil-inner-text-objects-map ,key ,inner)
+           (evil-define-key* evil-outer-text-objects-map ,key ,outer)))))
 
-(defmacro! leadermap (key def)
-  "Define evil keybinding in Emacs state."
-  `(with-eval-after-load 'evil
-     (evil-define-key* 'insert oo-leader-map ,key ,inner)
-     (evil-define-key* 'insert ,keymap ,key ,outer)))
+;; (defmacro! leadermap (key def)
+;;   "Define evil keybinding in Emacs state."
+;;   `(afterfeature! evil
+;;      (evil-define-key* 'insert oo-leader-map ,key ,inner)
+;;      (evil-define-key* 'insert ,keymap ,key ,outer)))
 
-(defmacro! localleadermap (key def)
-  "Define evil keybinding in Emacs state."
-  (flet! leader (leader)
-    (kbd (concat leader "\s" key)))
-  (define-key keymap (leader oo-emacs-localleader-key) def)
-  `(with-eval-after-load 'evil
-     (let ()
-       (evil-define-key* 'emacs ,keymap ,key ,def)
-       (evil-define-key* 'normal ,keymap ,key ,def)
-       (evil-define-key* 'normal ,keymap ,key ,def)
-       (evil-define-key* 'insert ,keymap ,key ,def)
-       (evil-define-key* 'insert ,keymap ,key ,def))))
+;; (defmacro! localleadermap (key def)
+;;   "Define evil keybinding in Emacs state."
+;;   (flet! leader (leader)
+;;     (kbd (concat leader "\s" key)))
+;;   (define-key keymap (leader oo-emacs-localleader-key) def)
+;;   `(afterfeature! evil
+;;      (let ()
+;;        (evil-define-key* 'emacs ,keymap ,key ,def)
+;;        (evil-define-key* 'normal ,keymap ,key ,def)
+;;        (evil-define-key* 'normal ,keymap ,key ,def)
+;;        (evil-define-key* 'insert ,keymap ,key ,def)
+;;        (evil-define-key* 'insert ,keymap ,key ,def))))
 ;;; provide
 (provide '036-keybinding-macros)
 ;;; 036-keybinding-macros.el ends here
