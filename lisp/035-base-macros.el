@@ -107,12 +107,12 @@ writes to `standard-output'."
 (defmacro opt! (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
-  (let* ((value-var (gensym "value")))
+  (let ((value-var (gensym "value")))
     `(afterbound! ,symbol
        ,(macroexpand-all `(let ((,value-var (with-demoted-errors "Error: %S" (with-no-warnings ,value))))
                             (aif! (get ',symbol 'custom-set)
                                 (funcall it ',symbol ,value-var)
-                              (with-no-warnings (setq ,symbol ,value-var))))))))
+                              (setq ,symbol ,value-var)))))))
 
 ;; I made the decision to add a hook function to a hook regardless of whether
 ;; the hook has already has been run.  But if the hook has been run the hook
