@@ -221,6 +221,7 @@ If the current buffer is modified."
   (when (bound-and-true-p evil-mode)
     (capitalize (char-to-string (seq-first (symbol-name evil-state))))))
 
+(defvar text-scale-mode-amount)
 (defun oo-mode-line-segment--text-scale ()
   "Return an indicator for text scaling."
   (and! (boundp 'text-scale-mode-amount)
