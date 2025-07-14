@@ -59,7 +59,7 @@ after FEATURE is loaded.")
   "Call FN after FEATURE is loaded."
   (if (featurep feature)
       (funcall fn)
-    (push `(ignore-errors (funcall ',fn)) (gethash symbol oo-after-load-forms))
+    (push `(ignore-errors (funcall ',fn)) (gethash feature oo-after-load-forms))
     (eval-after-load feature
       `(awhen! (gethash ',feature oo-after-load-forms)
          (eval (cons 'progn (nreverse it)))
