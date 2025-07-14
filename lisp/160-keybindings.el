@@ -28,6 +28,7 @@
 (require '050-base)
 (require 'bind-key)
 (eval-when-compile (require '036-keybinding-macros))
+(eval-when-compile (require '035-base-macros))
 ;;;; keybinding leaders
 ;; This file provides leaders keys for evil and non-evil states and it binds
 ;; these leader keys.
