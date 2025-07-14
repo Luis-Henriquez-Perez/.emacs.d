@@ -48,7 +48,15 @@ ITEM is a variable symbol.  FORMS are alist of lisp forms.")
 If SYMBOL is already bound FN is called immediately."
   (if (boundp symbol)
       (funcall fn)
-    (push `(funcall ',fn) (gethash symbol oo-after-bound-forms))))
+    (push `(ignore-errors (funcall ',fn)) (gethash symbol oo-after-bound-forms))))
+
+;; Do not want to just.
+(defmacro afterbound! (symbol &rest body)
+  "Eval BODY after SYMBOL is loaded."
+  (declare (indent 1))
+  `(if (boundp ',symbol)
+       (progn ,@body)
+     (push `(ignore-errors ,@body) (gethash symbol oo-after-bound-forms))))
 
 (defvar oo-after-load-forms (make-hash-table :size 100)
   "A hash table whose elements are (FEATURE . FORMS).
