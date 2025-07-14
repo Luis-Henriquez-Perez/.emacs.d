@@ -177,6 +177,12 @@ This is like `setq' but it is meant for configuring variables."
             t)
           (put ',name 'no-self-insert t)
           ',name))
+
+(defmacro after! (expr fn &optional feature)
+  "Call function after EXPR is met."
+  `(progn (declare-function ,fn ,(if feature (symbol-name feature) nil))
+          ,@(when feature `((autoload #',fn ,(symbol-name feature) nil nil 'function)))
+          (oo-call-after-load ',expr #',fn)))
 ;;; provide
 (provide '035-base-macros)
 ;;; 035-base-macros.el ends here
