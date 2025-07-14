@@ -360,7 +360,7 @@
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
 
-(llmap emacs-lisp-mode-map "m" ("macrostep" . #'oo-macrostep-prefix-command))
+(llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-prefix-command))
 
 (defvar-keymap oo-macrostep-map
   :prefix 'oo-macrostep-prefix-command

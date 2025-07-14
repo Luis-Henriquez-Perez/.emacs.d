@@ -139,27 +139,20 @@ in."
            (evil-define-key* evil-inner-text-objects-map ,key ,inner)
            (evil-define-key* evil-outer-text-objects-map ,key ,outer)))))
 
-;; (defmacro! leadermap (key def)
-;;   "Define evil keybinding in Emacs state."
-;;   `(afterfeature! evil
-;;      (evil-define-key* 'insert oo-leader-map ,key ,inner)
-;;      (evil-define-key* 'insert ,keymap ,key ,outer)))
-
-(defmacro! llmap (key def)
+(defmacro! llmap (&rest args)
   "Define local leader keybinding."
-  (flet! form (keymap lleader state)
-    (set! leader (concat ,lleader))
-    (set! key (concat ,leader))
-    `(evil-define-key* ',state ,keymap ,key ,def))
+  (set! (key def) (last args 2))
+  (set! keymap (if (nth 2 args) (car args) 'global-map))
+  (flet! ebind (leader state)
+    `(evil-define-key* ',state ,keymap (concat ,leader "\s" ,key) ,def))
   `(afterbound! ,keymap
-     (keymap-set keymap oo-emacs-localleader-key def)
+     (keymap-set ,keymap oo-emacs-localleader-key ,def)
      (afterfeature! evil
-       (set! def ,def)
-       ,(ebind oo-normal-localleader-key normal)
-       ,(ebind oo-normal-localleader-short-key normal)
-       ,(ebind oo-emacs-localleader-short-key emacs)
-       ,(ebind oo-emacs-localleader-short-key emacs)
-       ,(ebind oo-emacs-localleader-short-key emacs))))
+       ,(ebind 'oo-normal-localleader-key 'normal)
+       ,(ebind 'oo-normal-localleader-short-key 'normal)
+       ,(ebind 'oo-insert-localleader-key 'insert)
+       ,(ebind 'oo-insert-localleader-short-key 'insert)
+       ,(ebind 'oo-emacs-localleader-key 'emacs))))
 ;;; provide
 (provide '036-keybinding-macros)
 ;;; 036-keybinding-macros.el ends here
