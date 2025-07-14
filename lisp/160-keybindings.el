@@ -156,8 +156,7 @@
   "w" #'ace-window
   "j" #'ace-window
   "o" #'ace-window
-  "S" #'burly-bookmark-windows
-  "b" #'burly-bookmark-windows)
+  "S" #'burly-bookmark-windows)
 ;;;;; git
 (defvar-keymap oo-git-map
   :prefix 'oo-git-prefix-command
@@ -198,7 +197,7 @@
   "s w" #'escr-window-screenshot)
 ;;;;; toggle
 (defvar-keymap oo-toggle-map
-  "Keymap that contains bindings for things that should be toggled."
+  :prefix 'oo-toggle-prefix-command
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
@@ -212,7 +211,6 @@
   "n" #'oo-dwim-narrow
   "e" #'eval-expression
   "f" #'oo-set-font-face
-  "r" #'read-only-mode
   "d" #'toggle-debug-on-error
   "P" #'profiler-stop)
 ;;;;; buffer
@@ -248,21 +246,16 @@
   "G" #'rgrep
   "p" #'consult-yank-pop
   "k" #'consult-bookmark
-  "b" #'consult-bookmark
   "l" #'consult-line
   "h" #'consult-outline
   "g" #'consult-grep
   "z" #'ace-link
   "b" #'burly-open-bookmark
-  ";" #'save-buffer
   "i" #'imenu
   "j" #'oo-dwim-narrow
   "n" #'oo-new-buffer
-  "o" #'find-file
   "f" #'switch-to-buffer
-  "d" #'display-buffer
   "a" #'find-library
-  "f" #'switch-to-buffer
   "d" #'pop-to-buffer)
 ;;;;; quit
 (defvar-keymap oo-quit-map
@@ -273,7 +266,7 @@
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
 (defvar-keymap oo-music-map
-  :prefix 'oo-package-prefix-command
+  :prefix 'oo-music-prefix-command
   "f" #'emms-play-file
   "p" #'emms-pause
   "P" #'emms-stop
