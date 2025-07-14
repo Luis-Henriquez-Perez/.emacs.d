@@ -333,7 +333,7 @@
 ;;;; uncategorized
 (declare-function which-key-add-keymap-based-replacements "which-key")
 (with-eval-after-load 'which-key
-  (which-key-add-keymap-based-replacements oo-leader-map "l" "localleader"))
+  (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
 
 (nmap eww-mode-map "R" #'eww-reload)
 
@@ -361,6 +361,10 @@
 (declare-function macrostep-collapse "macrostep")
 
 (llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-prefix-command))
+(llmap emacs-lisp-mode-map "e" #'macrostep-expand)
+(llmap emacs-lisp-mode-map "c" #'macrostep-collapse)
+(llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
+(llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
 (defvar-keymap oo-macrostep-map
   :prefix 'oo-macrostep-prefix-command

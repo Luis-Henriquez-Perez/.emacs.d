@@ -140,13 +140,14 @@ in."
            (evil-define-key* evil-outer-text-objects-map ,key ,outer)))))
 
 (defmacro! llmap (&rest args)
-  "Define local leader keybinding."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
+  (flet! lkey (leader key)
+    `(alet! ,key (if (vectorp it) it (kbd (concat ,leader "\s" it)))))
   (flet! ebind (leader state)
-    `(evil-define-key* ',state ,keymap (concat ,leader "\s" ,key) ,def))
+    `(evil-define-key* ',state ,keymap ,(lkey leader key) ,def))
   `(afterbound! ,keymap
-     (keymap-set ,keymap oo-emacs-localleader-key ,def)
+     (keymap-set ,keymap (concat oo-emacs-localleader-key "\s" ,key) ,def)
      (afterfeature! evil
        ,(ebind 'oo-normal-localleader-key 'normal)
        ,(ebind 'oo-normal-localleader-short-key 'normal)
