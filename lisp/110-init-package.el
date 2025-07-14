@@ -252,34 +252,34 @@
 ;; Make sure I do not have to initialize package contents from scratch when
 ;; installing package.
 (defun oo--read-archive-contents (orig-fn &rest args)
+  ;; Reading archive contents is really expensive and you do not want to do it
+  ;; on startup.
   (prog2 (package-read-all-archive-contents)
       (apply orig-fn args)
     (advice-remove 'package-install #'oo--read-archive-contents)))
 
 (advice-add 'package--archives-initialize :around #'oo--read-archive-contents)
 
-;; Manage garbage collection myself.  You should not just disable garbage
-;; collection altogether for this because your Emacs could crash if it has too
-;; much uncollected garbage.
-(if-let (uninstalled (cl-remove-if #'package-installed-p package-selected-packages))
-    ;; Ensure `package-archive-contents' is populated.
-    (progn (package-read-all-archive-contents)
-           (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
-             (package-refresh-contents))
-           (dolist (package uninstalled)
-             (oo-log 'info "Installing %S..." package)
-             (condition-case _
-                 (package-install package)
-               (error
-                (oo-log 'error "Failed to install package `%s'" package)
-                t))
-             ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
-             ;; disabling garbage collection), accumulating too much garbage via
-             ;; installing packages will cause slowdowns, lags and freezes.  Here I need
-             ;; to ensure I periodically garbage collect.
-             (garbage-collect))
-           (oo-log 'trace "Not all packages installed"))
-  (oo-log 'trace "All packages installed..."))
+(let ((read-archive-contents-p nil))
+  (dolist (package package-selected-packages)
+    (unless (package-installed-p package)
+      (unless read-archive-contents-p
+        (package-read-all-archive-contents)
+        (setq read-archive-contents-p t)
+        ;; (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
+        ;;   (package-refresh-contents))
+        )
+      (oo-log 'info "Installing %S..." package)
+      (condition-case _
+          (package-install package)
+        (error
+         (oo-log 'error "Failed to install package `%s'" package)
+         t))
+      ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
+      ;; disabling garbage collection), accumulating too much garbage via
+      ;; installing packages will cause slowdowns, lags and freezes.  Here I need
+      ;; to ensure I periodically garbage collect.
+      (garbage-collect))))
 
 (package-vc-install-selected-packages)
 ;;; provide
