@@ -43,7 +43,7 @@
 (defconst oo-normal-leader-key "SPC"
   "The evil leader prefix key.")
 
-(defconst oo-normal-localleader-key "SPC l"
+(defconst oo-normal-localleader-key "SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
 (defconst oo-normal-localleader-short-key ","
@@ -57,7 +57,7 @@
 (defconst oo-insert-leader-key "M-SPC"
   "The leader prefix key used for Insert state.")
 
-(defconst oo-insert-localleader-key "M-SPC l"
+(defconst oo-insert-localleader-key "M-SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
 (defconst oo-insert-localleader-short-key "M-,"
@@ -68,7 +68,7 @@
 
 (defconst oo-emacs-alt-leader-key "C-c SPC")
 
-(defconst oo-emacs-localleader-key "C-c l l"
+(defconst oo-emacs-localleader-key "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
 ;;;; mass
 (defun oo-dwim-escape ()
@@ -340,9 +340,9 @@
 (nmap org-mode-map "T" #'org-todo)
 (nmap org-mode-map "t" #'+org-choose-tags)
 
-(general-def oo-quick-map "j" #'grugru)
-(general-def oo-quick-map "i" #'tempel-insert)
-(general-def oo-quick-map "l" #'tempel-insert)
+;; (general-def oo-quick-map "j" #'grugru)
+;; (general-def oo-quick-map "i" #'tempel-insert)
+;; (general-def oo-quick-map "l" #'tempel-insert)
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
 
