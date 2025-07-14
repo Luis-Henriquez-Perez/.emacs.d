@@ -122,12 +122,12 @@
 (defun oo--corfu-normalize-evil-keymaps (&rest _)
   (evil-normalize-keymaps))
 
-(defafter! oo-make-corfu-map-an-overriding-map (corfu)
+(afterfeature! corfu
   (evil-make-overriding-map corfu-map)
   (advice-add 'corfu--setup :after #'oo--corfu-normalize-evil-keymaps)
   (advice-add 'corfu--teardown :after #'oo--corfu-normalize-evil-keymaps))
 ;;;;; tempel
-(defafter! oo-make-tempel-map-an-overriding-map (tempel)
+(afterfeature! tempel
   (evil-make-overriding-map tempel-map))
 
 (advice-add 'tempel-insert :after #'oo--enter-evil-insert-state-maybe)

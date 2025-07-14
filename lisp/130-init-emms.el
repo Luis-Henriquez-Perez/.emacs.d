@@ -52,7 +52,7 @@
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
 (opt! emms-playlist-buffer "*EMMS Playlist*")
 
-(defafter! oo--add-tracks-to-emms (emms)
+(afterfeature! emms
   "Add music directory to emms."
   (set! music-dir emms-source-file-default-directory)
   (cond ((file-directory-p music-dir)
