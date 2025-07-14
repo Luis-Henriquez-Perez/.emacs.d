@@ -78,12 +78,6 @@ If SYMBOL is already bound FN is called immediately."
   "Eval BODY after FEATURE is loaded."
   (declare (indent 1))
   `(oo-call-after-load ',feature (lambda () ,@body)))
-
-;; (defun oo-eval-after-load-forms ()
-;;   (dolist (key (hash-table-keys oo-after-load-forms))
-;;     (when (featurep key)
-;;       (funcall `(lambda () ,@(nreverse (gethash key oo-after-load-forms))))
-;;       (remhash key oo-after-load-forms))))
 ;;; provide
 (provide '032-after-load-functions)
 ;;; 032-after-load-functions.el ends here
