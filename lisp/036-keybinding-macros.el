@@ -32,6 +32,47 @@
 (defvar evil-outer-text-objects-map)
 (declare-function evil-define-key* "evil")
 
+;; (defun oo-wrap-forms ()
+;;   ""
+;;   )
+
+;; (defmacro wrap! (wrappers &rest body)
+;;   )
+
+;; (defmacro evil-binding-generate (&rest bindings)
+;;   "Generate evil keybinding macros.
+;; Each element in BINDINGS should be a list of the form:
+;;   (NAME STATES DOCSTRING)
+;; where
+;;   NAME is a symbol like n, i, nv, e,
+;;   STATES is a symbol or list of symbols for evil states,
+;;   DOCSTRING is a string describing the macro."
+;;   `(progn
+;;      ,@(cl-loop for (name states docstring) in bindings
+;;                 for macro-name = (intern (format "%smap" name))
+;;                 collect
+;;                 `(defmacro! ,macro-name (&rest args)
+;;                    ,docstring
+;;                    (set! (key def) (last args 2))
+;;                    (set! keymap (if (nth 2 args) (car args) 'global-map))
+;;                    (set! states ',(if (listp states) states (list states)))
+;;                    `(afterfeature! evil
+;;                       (afterbound! ,keymap
+;;                         ,(cl-once-only (key)
+;;                            `(progn
+;;                               (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+;;                               (evil-define-key* ',states
+;;                                 ,keymap ,key ,def)))))))))
+
+;; (evil-binding-generate n i v nv e)
+
+;; (evil-binding-generate
+;;  (n  normal  "Define evil keybinding in normal state.")
+;;  (i  insert  "Define evil keybinding in insert state.")
+;;  (v  visual  "Define evil keybinding in visual state.")
+;;  (nv (normal visual) "Define evil keybinding in normal and visual state.")
+;;  (e  emacs   "Define evil keybinding in Emacs state."))
+
 (defmacro! nmap (&rest args)
   "Define evil keybinding in normal state."
   (set! (key def) (last args 2))
@@ -104,18 +145,20 @@ in."
 ;;      (evil-define-key* 'insert oo-leader-map ,key ,inner)
 ;;      (evil-define-key* 'insert ,keymap ,key ,outer)))
 
-;; (defmacro! localleadermap (key def)
-;;   "Define evil keybinding in Emacs state."
-;;   (flet! leader (leader)
-;;     (kbd (concat leader "\s" key)))
-;;   (define-key keymap (leader oo-emacs-localleader-key) def)
-;;   `(afterfeature! evil
-;;      (let ()
-;;        (evil-define-key* 'emacs ,keymap ,key ,def)
-;;        (evil-define-key* 'normal ,keymap ,key ,def)
-;;        (evil-define-key* 'normal ,keymap ,key ,def)
-;;        (evil-define-key* 'insert ,keymap ,key ,def)
-;;        (evil-define-key* 'insert ,keymap ,key ,def))))
+(defmacro! llmap (key def)
+  "Define evil keybinding in Emacs state."
+  (flet! form (keymap lleader state)
+    (set! leader (concat ,leader))
+    (set! key (concat ,leader))
+    `(evil-define-key* ',state ,keymap ,key ,def))
+  `(afterbound! ,keymap
+     (keymap-set keymap oo-emacs-localleader-key def)
+     (afterfeature! evil
+       ,(ebind oo-normal-localleader-key normal)
+       ,(ebind oo-normal-localleader-short-key normal)
+       ,(ebind oo-emacs-localleader-short-key emacs)
+       ,(ebind oo-emacs-localleader-short-key emacs)
+       ,(ebind oo-emacs-localleader-short-key emacs))))
 ;;; provide
 (provide '036-keybinding-macros)
 ;;; 036-keybinding-macros.el ends here
