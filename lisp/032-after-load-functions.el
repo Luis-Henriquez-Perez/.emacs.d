@@ -52,11 +52,18 @@ If SYMBOL is already bound FN is called immediately."
 
 ;; Do not want to just.
 (defmacro afterbound! (symbol &rest body)
-  "Eval BODY after SYMBOL is loaded."
+  "Eval BODY after SYMBOL is bound."
   (declare (indent 1))
   `(if (boundp ',symbol)
        (progn ,@body)
-     (push `(ignore-errors ,@body) (gethash symbol oo-after-bound-forms))))
+     (push '(ignore-errors ,@body) (gethash symbol oo-after-bound-forms))))
+
+(defmacro afterfeature! (feature &rest body)
+  "Eval BODY after FEATURE is loaded."
+  (declare (indent 1))
+  `(if (featurep ',feature)
+       (progn ,@body)
+     (push '(ignore-errors ,@body) (gethash symbol oo-after-load-forms))))
 
 (defvar oo-after-load-forms (make-hash-table :size 100)
   "A hash table whose elements are (FEATURE . FORMS).
