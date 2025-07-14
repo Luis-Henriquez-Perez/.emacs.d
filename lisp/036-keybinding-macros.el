@@ -146,14 +146,15 @@ in."
 ;;      (evil-define-key* 'insert ,keymap ,key ,outer)))
 
 (defmacro! llmap (key def)
-  "Define evil keybinding in Emacs state."
+  "Define local leader keybinding."
   (flet! form (keymap lleader state)
-    (set! leader (concat ,leader))
+    (set! leader (concat ,lleader))
     (set! key (concat ,leader))
     `(evil-define-key* ',state ,keymap ,key ,def))
   `(afterbound! ,keymap
      (keymap-set keymap oo-emacs-localleader-key def)
      (afterfeature! evil
+       (set! def ,def)
        ,(ebind oo-normal-localleader-key normal)
        ,(ebind oo-normal-localleader-short-key normal)
        ,(ebind oo-emacs-localleader-short-key emacs)
