@@ -182,6 +182,16 @@ This is like `setq' but it is meant for configuring variables."
   `(progn (declare-function ,fn ,(if feature (symbol-name feature) nil))
           ,@(when feature `((autoload #',fn ,(symbol-name feature) nil nil 'function)))
           (oo-call-after-load ',expr #',fn)))
+
+(defmacro afterfeature! (feature &rest body)
+  "Eval BODY after FEATURE is loaded."
+  (declare (indent 1))
+  `(oo-call-after-load ',feature (lambda () ,@body)))
+
+(defmacro afterbound! (symbol &rest body)
+  "Eval BODY after SYMBOL is bound."
+  (declare (indent 1))
+  `(oo-call-after-bound ',symbol (with-no-warnings (lambda () ,@body))))
 ;;; provide
 (provide '035-base-macros)
 ;;; 035-base-macros.el ends here

@@ -66,16 +66,6 @@ If SYMBOL is already bound FN is called immediately."
       `(let ((it (gethash ',feature oo-after-load-forms)))
          (when it (eval (macroexp-progn (nreverse it)) 'lexical)
                (remhash ',feature oo-after-load-forms))))))
-
-(defmacro afterfeature! (feature &rest body)
-  "Eval BODY after FEATURE is loaded."
-  (declare (indent 1))
-  `(oo-call-after-load ',feature (lambda () ,@body)))
-
-(defmacro afterbound! (symbol &rest body)
-  "Eval BODY after SYMBOL is bound."
-  (declare (indent 1))
-  `(oo-call-after-bound ',symbol (lambda () (ignore-errors (with-no-warnings ,@body)))))
 ;;; provide
 (provide '032-after-load-functions)
 ;;; 032-after-load-functions.el ends here
