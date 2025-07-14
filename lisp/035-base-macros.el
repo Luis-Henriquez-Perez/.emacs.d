@@ -180,6 +180,7 @@ This is like `setq' but it is meant for configuring variables."
 
 (defmacro after! (expr fn &optional feature)
   "Call function after EXPR is met."
+  (declare (indent 1))
   `(progn (declare-function ,fn ,(if feature (symbol-name feature) nil))
           ,@(when feature `((autoload #',fn ,(symbol-name feature) nil nil 'function)))
           (oo-call-after-load ',expr #',fn)))
