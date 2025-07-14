@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require '050-base)
+(require 'bind-key)
 (eval-when-compile (require '036-keybinding-macros))
 ;;;; keybinding leaders
 ;; This file provides leaders keys for evil and non-evil states and it binds
@@ -69,6 +70,23 @@
 
 (defconst oo-emacs-localleader-key "C-c l l"
   "The localleader prefix key for major-mode specific commands.")
+;;;; mass
+(defun oo-dwim-escape ()
+  "Exits out of whatever is happening after escape."
+  (interactive)
+  (when (bound-and-true-p evil-mode)
+    (evil-normal-state 1))
+  (cond ((minibuffer-window-active-p (minibuffer-window))
+		 (if (or defining-kbd-macro executing-kbd-macro)
+			 (minibuffer-keyboard-quit)
+           (abort-recursive-edit)))
+		((or defining-kbd-macro executing-kbd-macro) nil)
+        (t
+         (when (and (not buffer-read-only)
+                    (buffer-file-name)
+                    (buffer-modified-p))
+           (save-buffer))
+		 (keyboard-quit))))
 ;;;; base bindings
 (nmap ";" #'execute-extended-command)
 (nmap "+" #'text-scale-increase)
@@ -136,7 +154,8 @@
   "t" '("toggle" . oo-toggle-prefix-command)
   "q" '("quit" . oo-quit-prefix-command))
 
-(nmap "SPC" #'oo-leader-prefix-command)
+(override-global-mode 1)
+(nmap override-global-map "SPC" #'oo-leader-prefix-command)
 (imap "M-SPC" #'oo-leader-prefix-command)
 (emap "C-c l" #'oo-leader-prefix-command)
 (emap "C-c SPC" #'oo-leader-prefix-command)
