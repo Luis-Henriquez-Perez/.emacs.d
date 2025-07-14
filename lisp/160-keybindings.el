@@ -126,8 +126,6 @@
 (nvmap "g S" #'evil-exchange-cancel)
 (nvmap "g x" #'evil-exchange)
 (nvmap "g X" #'evil-exchange-cancel)
-;; (nvmap emacs-lisp-mode-map "g r" #'+evil-eval-replace-operator)
-;; I do not know why but I have to specifically define this for emacs-lisp-mode.
 ;;;; text objects
 ;; (iotmap "c" #'evilnc-inner-comment #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
