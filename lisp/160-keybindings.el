@@ -155,10 +155,11 @@
   "q" '("quit" . oo-quit-prefix-command))
 
 (override-global-mode 1)
+;; (nmap override-global-map "SPC" #'oo-leader-prefix-command)
 (nmap override-global-map "SPC" #'oo-leader-prefix-command)
-(imap "M-SPC" #'oo-leader-prefix-command)
-(emap "C-c l" #'oo-leader-prefix-command)
-(emap "C-c SPC" #'oo-leader-prefix-command)
+(imap override-global-map "M-SPC" #'oo-leader-prefix-command)
+(emap override-global-map "C-c l" #'oo-leader-prefix-command)
+(emap override-global-map "C-c SPC" #'oo-leader-prefix-command)
 ;;;;; window
 (defvar-keymap oo-window-map
   :prefix 'oo-window-prefix-command

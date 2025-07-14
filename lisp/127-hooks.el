@@ -80,14 +80,12 @@
   (require 'bind-key)
   (evil-make-intercept-map override-global-map 'all t))
 
-(oo-call-after-load 'evil #'oo-call-after-load-functions)
-
-(defhook! initialize-after-load-functions (oo-first-input-hook :depth 99)
+(defhook! setup-eval-after-bound-forms (oo-first-input-hook :depth 99)
   "Call `oo-call-after-load-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
-  (oo-call-after-load-functions)
-  (hook! after-load-functions oo-call-after-load-functions))
+  (oo-eval-after-bound-forms)
+  (hook! after-load-functions oo-eval-after-bound-forms))
 ;;;; auto-filling
 (setq-hook! text-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
 
@@ -135,7 +133,7 @@ file is loaded."
   (require '031-looping-macros)
   (require '031-looping-macros)
   (require '035-base-macros)
-  (require '155-base-bind-macros))
+  (require '036-keybinding-macros))
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
 (defhook! increase-garbage-collection (minibuffer-setup-hook :depth 10)

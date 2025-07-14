@@ -33,14 +33,14 @@
 (eval-when-compile (require '031-looping-macros))
 
 (defvar oo-after-bound-forms (make-hash-table :size 100)
-  "A hash table whose elements are (ITEM . FORMS).
-ITEM is a variable symbol.  FORMS are alist of lisp forms.")
+  "A hash table whose elements are (SYMBOL . FORMS).
+SYMBOL is a variable symbol.  FORMS are alist of lisp forms.")
 
 (defun oo-eval-after-bound-forms (&rest _)
   "Evaluate list of forms that need to be."
   (dolist (key (hash-table-keys oo-after-bound-forms))
     (when (and (symbolp key) (boundp key))
-      (funcall `(lambda () ,@(nreverse (gethash key oo-after-bound-forms))))
+      (eval `(progn ,@(nreverse (gethash key oo-after-bound-forms))) 'lexical)
       (remhash key oo-after-bound-forms))))
 
 (defun oo-call-after-bound (symbol fn)
@@ -57,18 +57,6 @@ If SYMBOL is already bound FN is called immediately."
        (progn ,@body)
      (push '(ignore-errors ,@body) (gethash ',symbol oo-after-bound-forms))))
 
-(defmacro afterfeature! (feature &rest body)
-  "Eval BODY after FEATURE is loaded."
-  (declare (indent 1))
-  `(if (featurep ',feature)
-       (progn ,@body)
-     (push '(ignore-errors ,@body) (gethash ',feature oo-after-load-forms))))
-
-(defvar oo-after-load-forms (make-hash-table :size 100)
-  "A hash table whose elements are (FEATURE . FORMS).
-FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
-after FEATURE is loaded.")
-
 (defun oo-call-after-load (feature fn)
   "Call FN after FEATURE is loaded."
   (if (featurep feature)
@@ -76,8 +64,24 @@ after FEATURE is loaded.")
     (push `(ignore-errors (funcall ',fn)) (gethash feature oo-after-load-forms))
     (eval-after-load feature
       `(awhen! (gethash ',feature oo-after-load-forms)
-         (eval (cons 'progn (nreverse it)))
+         (eval (macroexp-progn (nreverse it)) 'lexical)
          (remhash ',feature oo-after-load-forms)))))
+
+(defmacro afterfeature! (feature &rest body)
+  "Eval BODY after FEATURE is loaded."
+  (declare (indent 1))
+  `(oo-call-after-load ',feature (lambda () ,@body)))
+
+(defvar oo-after-load-forms (make-hash-table :size 100)
+  "A hash table whose elements are (FEATURE . FORMS).
+FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
+after FEATURE is loaded.")
+
+;; (defun oo-eval-after-load-forms ()
+;;   (dolist (key (hash-table-keys oo-after-load-forms))
+;;     (when (featurep key)
+;;       (funcall `(lambda () ,@(nreverse (gethash key oo-after-load-forms))))
+;;       (remhash key oo-after-load-forms))))
 ;;; provide
 (provide '032-after-load-functions)
 ;;; 032-after-load-functions.el ends here

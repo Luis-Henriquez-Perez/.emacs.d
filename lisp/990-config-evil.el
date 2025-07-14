@@ -136,22 +136,6 @@
 ;; `git-commit-mode' is a minor-mode.
 (hook! git-commit-mode-hook oo--enter-evil-insert-state-maybe)
 ;;;; miscellaneous
-(defun oo-dwim-escape ()
-  "Exits out of whatever is happening after escape."
-  (interactive)
-  (when (bound-and-true-p evil-mode)
-    (evil-normal-state 1))
-  (cond ((minibuffer-window-active-p (minibuffer-window))
-		 (if (or defining-kbd-macro executing-kbd-macro)
-			 (minibuffer-keyboard-quit)
-           (abort-recursive-edit)))
-		((or defining-kbd-macro executing-kbd-macro) nil)
-        (t
-         (when (and (not buffer-read-only)
-                    (buffer-file-name)
-                    (buffer-modified-p))
-           (save-buffer))
-		 (keyboard-quit))))
 ;;; provide
 (provide '990-config-evil)
 ;;; 990-config-evil.el ends here
