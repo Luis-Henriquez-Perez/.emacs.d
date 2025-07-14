@@ -36,6 +36,11 @@
   "A hash table whose elements are (SYMBOL . FORMS).
 SYMBOL is a variable symbol.  FORMS are alist of lisp forms.")
 
+(defvar oo-after-load-forms (make-hash-table :size 100)
+  "A hash table whose elements are (FEATURE . FORMS).
+FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
+after FEATURE is loaded.")
+
 (defun oo-eval-after-bound-forms (&rest _)
   "Evaluate list of forms that need to be."
   (dolist (key (hash-table-keys oo-after-bound-forms))
@@ -63,19 +68,16 @@ If SYMBOL is already bound FN is called immediately."
       (funcall fn)
     (push `(ignore-errors (funcall ',fn)) (gethash feature oo-after-load-forms))
     (eval-after-load feature
-      `(awhen! (gethash ',feature oo-after-load-forms)
-         (eval (macroexp-progn (nreverse it)) 'lexical)
-         (remhash ',feature oo-after-load-forms)))))
+      ;; Cannot use my macros here because when cimpiled Emacs will not know how
+      ;; to macroexpand them.
+      `(let ((it (gethash ',feature oo-after-load-forms)))
+         (when it (eval (macroexp-progn (nreverse it)) 'lexical)
+               (remhash ',feature oo-after-load-forms))))))
 
 (defmacro afterfeature! (feature &rest body)
   "Eval BODY after FEATURE is loaded."
   (declare (indent 1))
   `(oo-call-after-load ',feature (lambda () ,@body)))
-
-(defvar oo-after-load-forms (make-hash-table :size 100)
-  "A hash table whose elements are (FEATURE . FORMS).
-FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
-after FEATURE is loaded.")
 
 ;; (defun oo-eval-after-load-forms ()
 ;;   (dolist (key (hash-table-keys oo-after-load-forms))
