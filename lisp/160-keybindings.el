@@ -330,7 +330,7 @@
 (imap vertico-map "C-o" #'embark-act)
 ;;;; uncategorized
 (declare-function which-key-add-keymap-based-replacements "which-key")
-(with-eval-after-load 'which-key
+(afterfeature! which-key
   (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
 
 (nmap eww-mode-map "R" #'eww-reload)
