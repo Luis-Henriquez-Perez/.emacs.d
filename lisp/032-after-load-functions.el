@@ -55,13 +55,6 @@ If SYMBOL is already bound FN is called immediately."
       (funcall fn)
     (push `(ignore-errors (funcall ',fn)) (gethash symbol oo-after-bound-forms))))
 
-(defmacro afterbound! (symbol &rest body)
-  "Eval BODY after SYMBOL is bound."
-  (declare (indent 1))
-  `(if (boundp ',symbol)
-       (progn ,@body)
-     (push '(ignore-errors ,@body) (gethash ',symbol oo-after-bound-forms))))
-
 (defun oo-call-after-load (feature fn)
   "Call FN after FEATURE is loaded."
   (if (featurep feature)
@@ -78,6 +71,11 @@ If SYMBOL is already bound FN is called immediately."
   "Eval BODY after FEATURE is loaded."
   (declare (indent 1))
   `(oo-call-after-load ',feature (lambda () ,@body)))
+
+(defmacro afterbound! (symbol &rest body)
+  "Eval BODY after SYMBOL is bound."
+  (declare (indent 1))
+  `(oo-call-after-bound ',symbol (lambda () (ignore-errors (with-no-warnings ,@body)))))
 ;;; provide
 (provide '032-after-load-functions)
 ;;; 032-after-load-functions.el ends here
