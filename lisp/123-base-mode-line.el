@@ -308,6 +308,7 @@ or playing with repeat."
 (define-minor-mode oo-mode-line-mode
   "Display icons in the mode line."
   :global t
+  :group 'oo-mode-line
   (cond (oo-mode-line-mode
          (setq oo-old-mode-line-format mode-line-format)
          (setq-default mode-line-format '("%e" (:eval (progn (setq-local oo-mode-line-main (oo-mode-line-main)) "")) oo-mode-line-main))
