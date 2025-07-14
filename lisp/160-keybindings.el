@@ -26,9 +26,7 @@
 ;;
 ;;; Code:
 (require '050-base)
-(eval-when-compile (require '155-base-bind-macros))
-(require 'bind-key)
-(hook! after-init-hook override-global-mode :depth -80 :level 'info)
+(eval-when-compile (require '036-keybinding-macros))
 ;;;; keybinding leaders
 ;; This file provides leaders keys for evil and non-evil states and it binds
 ;; these leader keys.
@@ -72,324 +70,290 @@
 (defconst oo-emacs-localleader-key "C-c l l"
   "The localleader prefix key for major-mode specific commands.")
 ;;;; base bindings
-(bind! i "A-x" #'execute-extended-command)
-(bind! i "M-x" #'execute-extended-command)
-(bind! i "C-c h" #'grugru)
-(bind! (n i) "C-c k" #'unexpand-abbrev)
-(bind! i [escape] #'oo-dwim-escape)
-(bind! i "TAB" #'completion-at-point)
+(nmap ";" #'execute-extended-command)
+(nmap "+" #'text-scale-increase)
+(nmap "-" #'text-scale-decrease)
+(nmap "H" #'evil-first-non-blank)
+(nmap "L" #'evil-last-non-blank)
+(nmap "J" #'evil-scroll-page-down)
+(nmap "K" #'evil-scroll-page-up)
 
-(bind! (n v) "w" #'+evilem-motion-beginning-of-word)
-(bind! (n v) "e" #'+evilem-motion-end-of-word)
-(bind! (n v) "W" #'+evilem-motion-beginning-of-WORD)
-(bind! (n v) "E" #'+evilem-motion-end-of-WORD)
-(bind! (n v o) "f" #'+evilem-motion-char)
-(bind! (n v o) "H" #'+evilem-motion-beginning-of-line)
-(bind! (n v o) "H" #'+evilem-motion-beginning-of-line)
-(bind! v "V" #'expreg-contract)
-(bind! v "v" #'expreg-expand)
+(imap "A-x" #'execute-extended-command)
+(imap "M-x" #'execute-extended-command)
+(imap "C-c h" #'grugru)
+(imap "C-c k" #'unexpand-abbrev)
+(imap [escape] #'oo-dwim-escape)
+(imap "TAB" #'completion-at-point)
+(imap lispyville-mode-map "SPC" #'lispy-space)
+(imap lispyville-mode-map ";" #'lispy-comment)
 
-(bind! n "+" #'text-scale-increase)
-(bind! n "-" #'text-scale-decrease)
-(bind! n "H" #'evil-first-non-blank)
-(bind! n "L" #'evil-last-non-blank)
-(bind! n "J" #'evil-scroll-page-down)
-(bind! n "K" #'evil-scroll-page-up)
+(vmap "V" #'expreg-contract)
+(vmap "v" #'expreg-expand)
 
-(bind! i lispyville-mode-map "SPC" #'lispy-space)
-(bind! i lispyville-mode-map ";" #'lispy-comment)
-
-(bind! (n v) "g b" #'+evil-eval-print-operator)
-(bind! (n v) "g p" #'+evil-eval-print-operator)
-(bind! (n v) "g c" #'evilnc-comment-operator)
-(bind! (n v) "g h" #'+evil-eval-operator)
-(bind! (n v) "g l" #'+evil-eval-replace-operator)
-(bind! (n v) "g r" #'+evil-eval-replace-operator)
+(nvmap "w" #'+evilem-motion-beginning-of-word)
+(nvmap "e" #'+evilem-motion-end-of-word)
+(nvmap "W" #'+evilem-motion-beginning-of-WORD)
+(nvmap "E" #'+evilem-motion-end-of-WORD)
+(nvmap "f" #'+evilem-motion-char)
+(nvmap "H" #'+evilem-motion-beginning-of-line)
+(nvmap "H" #'+evilem-motion-beginning-of-line)
+(nvmap "g b" #'+evil-eval-print-operator)
+(nvmap "g p" #'+evil-eval-print-operator)
+(nvmap "g c" #'evilnc-comment-operator)
+(nvmap "g h" #'+evil-eval-operator)
+(nvmap "g l" #'+evil-eval-replace-operator)
+(nvmap "g r" #'+evil-eval-replace-operator)
+(nvmap "g s" #'evil-exchange)
+(nvmap "g S" #'evil-exchange-cancel)
+(nvmap "g x" #'evil-exchange)
+(nvmap "g X" #'evil-exchange-cancel)
+;; (nvmap emacs-lisp-mode-map "g r" #'+evil-eval-replace-operator)
 ;; I do not know why but I have to specifically define this for emacs-lisp-mode.
-(bind! emacs-lisp-mode-map (n v) "g r" #'+evil-eval-replace-operator)
-(bind! (n v) "g s" #'evil-exchange)
-(bind! (n v) "g S" #'evil-exchange-cancel)
-(bind! (n v) "g x" #'evil-exchange)
-(bind! (n v) "g X" #'evil-exchange-cancel)
 ;;;; text objects
-(bind! evil-outer-text-objects-map "c" #'evilnc-outer-comment)
-(bind! evil-inner-text-objects-map "c" #'evilnc-inner-comment)
-;; (bind! evil-outer-text-objects-map "c" #'lispyville-outer-comment)
-;; (bind! evil-inner-text-objects-map "c" #'lispyville-inner-comment)
-(bind! evil-outer-text-objects-map "h" #'evil-a-syntax)
-(bind! evil-inner-text-objects-map "h" #'evil-i-syntax)
-(bind! evil-inner-text-objects-map "l" #'evil-inner-line)
-(bind! evil-outer-text-objects-map "l" #'evil-a-line)
-(bind! evil-inner-text-objects-map "f" #'evil-cp-inner-form)
-(bind! evil-outer-text-objects-map "f" #'evil-cp-a-form)
-(bind! evil-inner-text-objects-map "b" #'evil-textobj-anyblock-inner-block)
-(bind! evil-outer-text-objects-map "b" #'evil-textobj-anyblock-a-block)
+(iotmap "c" #'evilnc-inner-comment #'evilnc-outer-comment)
+;; TODO: In "lispy" modes use lispyville-outer-comment instead.
+;; (otomap "c" #'lispyville-outer-comment)
+;; (itomap "c" #'lispyville-inner-comment)
+(iotmap "h" #'evil-i-syntax #'evil-a-syntax)
+(iotmap "l" #'evil-inner-line #'evil-a-line)
+(iotmap "f" #'evil-cp-inner-form #'evil-cp-a-form)
+(iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
 ;;;; main bindings
 ;;;;; leader prefix
-(bind! i override-global-map oo-insert-leader-key #'oo-leader-prefix-command)
-(bind! override-global-map oo-emacs-leader-key  #'oo-leader-prefix-command)
-(bind! override-global-map oo-emacs-alt-leader-key  #'oo-leader-prefix-command)
-(bind! (n m v) override-global-map oo-normal-leader-key #'oo-leader-prefix-command)
-(bind! (n m v) override-global-map ";" #'execute-extended-command)
+(defvar-keymap oo-leader-map
+  :prefix 'oo-leader-prefix-command
+  "SPC" #'execute-extended-command
+  ";" #'+org-agenda-day-view
+  "w" '("window" . oo-window-prefix-command)
+  "b" '("buffer" . oo-buffer-prefix-command)
+  "g" '("git" . oo-git-prefix-command)
+  "l" '("git" . oo-git-prefix-command)
+  "a" '("app" . oo-app-prefix-command)
+  "p" '("package" . oo-package-prefix-command)
+  "f" '("find" . oo-find-prefix-command)
+  "h" '("help" . oo-help-prefix-command)
+  "e" '("music" . oo-music-prefix-command)
+  "t" '("toggle" . oo-toggle-prefix-command)
+  "q" '("quit" . oo-quit-prefix-command))
 
-(defvar oo-leader-map (make-sparse-keymap))
-(define-prefix-command 'oo-leader-prefix-command 'oo-leader-map)
-
-(bind! oo-leader-map ";" #'+org-agenda-day-view)
-(bind! oo-leader-map oo-normal-leader-key #'execute-extended-command)
-(bind! oo-leader-map "b" #'oo-buffer-prefix-command :wk "buffer")
-(bind! oo-leader-map "g" #'oo-git-prefix-command :wk "git")
-(bind! oo-leader-map "l" #'oo-git-prefix-command :wk "git")
-(bind! oo-leader-map "w" #'oo-window-prefix-command :wk "window")
-(bind! oo-leader-map "a" #'oo-app-prefix-command :wk "app")
-(bind! oo-leader-map "p" #'oo-package-prefix-command :wk "package")
-(bind! oo-leader-map "f" #'oo-find-prefix-command :wk "find")
-(bind! oo-leader-map "h" #'oo-help-prefix-command :wk "help")
-(bind! oo-leader-map "e" #'oo-emms-prefix-command :wk "emms")
-(bind! oo-leader-map "t" #'oo-toggle-prefix-command :wk "toggle")
-(bind! oo-leader-map "q" #'oo-quit-prefix-command :wk "quit")
+(nmap "SPC" #'oo-leader-prefix-command)
+(imap "M-SPC" #'oo-leader-prefix-command)
+(emap "C-c l" #'oo-leader-prefix-command)
+(emap "C-c SPC" #'oo-leader-prefix-command)
 ;;;;; window
-(defvar oo-window-map (make-sparse-keymap))
-(define-prefix-command 'oo-window-prefix-command 'oo-window-map)
-
-(bind! oo-window-map "v" #'split-window-horizontally)
-(bind! oo-window-map "h" #'split-window-vertically)
-(bind! oo-window-map "b" #'balance-windows)
-(bind! oo-window-map "M" #'maximize-window)
-(bind! oo-window-map "d" #'delete-window)
-(bind! oo-window-map "D" #'delete-other-windows)
-(bind! oo-window-map "k" #'display-buffer)
-(bind! oo-window-map "u" #'winner-undo)
-(bind! oo-window-map "t" #'transpose-frame)
-(bind! oo-window-map "s" #'ace-swap-window)
-(bind! oo-window-map "w" #'ace-window)
-(bind! oo-window-map "j" #'ace-window)
-(bind! oo-window-map "o" #'ace-window)
-(bind! oo-window-map "S" #'burly-bookmark-windows)
-(bind! oo-window-map "b" #'burly-bookmark-windows)
+(defvar-keymap oo-window-map
+  :prefix 'oo-window-prefix-command
+  "v" #'split-window-horizontally
+  "h" #'split-window-vertically
+  "b" #'balance-windows
+  "M" #'maximize-window
+  "d" #'delete-window
+  "D" #'delete-other-windows
+  "k" #'display-buffer
+  "u" #'winner-undo
+  "t" #'transpose-frame
+  "s" #'ace-swap-window
+  "w" #'ace-window
+  "j" #'ace-window
+  "o" #'ace-window
+  "S" #'burly-bookmark-windows
+  "b" #'burly-bookmark-windows)
 ;;;;; git
-(defvar oo-git-map (make-sparse-keymap))
-(define-prefix-command 'oo-git-prefix-command 'oo-git-map)
-
-(bind! oo-git-map "b" #'vc-switch-branch)
-(bind! oo-git-map "l" #'vc-switch-branch)
-(bind! oo-git-map "s" #'magit-status)
-(bind! oo-git-map "g" #'magit-status)
-(bind! oo-git-map "p" #'magit-push)
-(bind! oo-git-map "c" #'magit-commit)
-(bind! oo-git-map "B" #'magit-branch)
-(bind! oo-git-map "n" #'oo-dwim-vc-action)
+(defvar-keymap oo-git-map
+  :prefix 'oo-git-prefix-command
+  "p" #'magit-push
+  "c" #'magit-commit
+  "B" #'magit-branch
+  "n" #'oo-dwim-vc-action
+  "b" #'vc-switch-branch
+  "l" #'vc-switch-branch
+  "s" #'magit-status
+  "g" #'magit-status)
 ;;;;; org
-(defvar oo-org-map (make-sparse-keymap))
-(define-prefix-command 'oo-org-prefix-command 'oo-org-map)
-
-(bind! oo-leader-map "o" #'oo-org-prefix-command :wk "org")
-(bind! oo-leader-map "j" #'oo-org-prefix-command :wk "org")
-
-(bind! oo-org-map "t" #'+org-capture-todo)
-(bind! oo-org-map "j" #'+org-capture-todo)
-(bind! oo-org-map "a" #'org-archive-subtree)
-(bind! oo-org-map "l" #'org-clock-in-last)
-(bind! oo-org-map "i" #'org-clock-in)
-(bind! oo-org-map "k" #'org-clock-in)
-(bind! oo-org-map "o" #'org-clock-out)
-(bind! oo-org-map "s" #'org-add-note)
-(bind! oo-org-map "n" #'org-add-note)
-(bind! oo-org-map "p" #'+org-capture-plain)
+(defvar-keymap oo-org-map
+  :prefix 'oo-org-prefix-command
+  "t" #'+org-capture-todo
+  "j" #'+org-capture-todo
+  "a" #'org-archive-subtree
+  "l" #'org-clock-in-last
+  "i" #'org-clock-in
+  "k" #'org-clock-in
+  "o" #'org-clock-out
+  "s" #'org-add-note
+  "n" #'org-add-note
+  "p" #'+org-capture-plain)
+;; (leadermap "o" #'oo-org-prefix-command "org")
+;; (leadermap "j" #'oo-org-prefix-command "org")
 ;;;;; app
-(defvar oo-app-map (make-sparse-keymap))
-(define-prefix-command 'oo-app-prefix-command 'oo-app-map)
-
-(bind! oo-app-map "j" #'+org-capture-todo)
-(bind! oo-app-map "n" #'notmuch)
-(bind! oo-app-map "e" #'eshell)
-(bind! oo-app-map "f" #'elfeed)
-;; (bind! oo-app-map "s" nil :wk "screenshot")
-(bind! oo-app-map "s r" #'escr-region-screenshot)
-(bind! oo-app-map "s f" #'escr-frame-screenshot)
-(bind! oo-app-map "s w" #'escr-window-screenshot)
+(defvar-keymap oo-app-map
+  :prefix 'oo-app-prefix-command
+  "E" #'restart-emacs-start-new-emacs
+  "d" #'dired-jump
+  "j" #'+org-capture-todo
+  "n" #'notmuch
+  "e" #'eshell
+  "f" #'elfeed
+  "s r" #'escr-region-screenshot
+  "s f" #'escr-frame-screenshot
+  "s w" #'escr-window-screenshot)
 ;;;;; toggle
-(defvar oo-toggle-map (make-sparse-keymap)
-  "Keymap that contains bindings for things that should be toggled.")
-(define-prefix-command 'oo-toggle-prefix-command 'oo-toggle-map)
-
-(bind! oo-toggle-map "c" #'blink-cursor-mode)
-(bind! oo-toggle-map "g" #'grugru)
-(bind! oo-toggle-map "s" #'smartparens-mode)
-(bind! oo-toggle-map "r" #'oo-load-random-theme)
-(bind! oo-toggle-map "t" #'load-theme)
-(bind! oo-toggle-map "h" #'whitespace-mode)
-(bind! oo-toggle-map "W" #'whitespace-mode)
-(bind! oo-toggle-map "w" #'widen)
-(bind! oo-toggle-map "l" #'display-line-numbers-mode)
-(bind! oo-toggle-map "u" #'toggle-truncate-lines)
-(bind! oo-toggle-map "n" #'oo-dwim-narrow)
-;; (bind! oo-toggle-map "i" #'iedit-mode)
-(bind! oo-toggle-map "e" #'eval-expression)
-(bind! oo-toggle-map "f" #'oo-set-font-face)
-(bind! oo-toggle-map "r" #'read-only-mode)
-(bind! oo-toggle-map "d" #'toggle-debug-on-error)
-(bind! oo-toggle-map "P" #'profiler-stop)
+(defvar-keymap oo-toggle-map
+  "Keymap that contains bindings for things that should be toggled."
+  "c" #'blink-cursor-mode
+  "g" #'grugru
+  "s" #'smartparens-mode
+  "r" #'oo-load-random-theme
+  "t" #'load-theme
+  "h" #'whitespace-mode
+  "W" #'whitespace-mode
+  "w" #'widen
+  "l" #'display-line-numbers-mode
+  "u" #'toggle-truncate-lines
+  "n" #'oo-dwim-narrow
+  "e" #'eval-expression
+  "f" #'oo-set-font-face
+  "r" #'read-only-mode
+  "d" #'toggle-debug-on-error
+  "P" #'profiler-stop)
 ;;;;; buffer
-(defvar oo-buffer-map (make-sparse-keymap))
-(define-prefix-command 'oo-buffer-prefix-command 'oo-buffer-map)
-
-(bind! oo-buffer-map "x" #'kill-current-buffer)
-(bind! oo-buffer-map "b" #'switch-to-buffer)
-(bind! oo-buffer-map "j" #'next-buffer)
-(bind! oo-buffer-map "k" #'previous-buffer)
-(bind! oo-buffer-map "b" #'switch-to-buffer)
+(defvar-keymap oo-buffer-map
+  :prefix 'oo-buffer-prefix-command
+  "x" #'kill-current-buffer
+  "b" #'switch-to-buffer
+  "j" #'next-buffer
+  "k" #'previous-buffer)
 ;;;;; help
-(defvar oo-help-map (make-sparse-keymap))
-(define-prefix-command 'oo-help-prefix-command 'oo-help-map)
-
-(bind! oo-help-map "m" #'describe-mode)
-(bind! oo-help-map "l" #'describe-function)
-(bind! oo-help-map "f" #'describe-function)
-(bind! oo-help-map "j" #'describe-variable)
-(bind! oo-help-map "v" #'describe-variable)
-(bind! oo-help-map "h" #'describe-variable)
-(bind! oo-help-map "c" #'describe-char)
-(bind! oo-help-map "C" #'describe-char)
-(bind! oo-help-map "k" #'describe-key)
-(bind! oo-help-map "a" #'describe-face)
-(bind! oo-help-map "F" #'describe-face)
+(defvar-keymap oo-help-map
+  :prefix 'oo-help-prefix-command
+  "m" #'describe-mode
+  "l" #'describe-function
+  "f" #'describe-function
+  "j" #'describe-variable
+  "v" #'describe-variable
+  "h" #'describe-variable
+  "c" #'describe-char
+  "C" #'describe-char
+  "k" #'describe-key
+  "a" #'describe-face
+  "F" #'describe-face)
 ;;;;; find
-(defvar oo-find-map (make-sparse-keymap))
-(define-prefix-command 'oo-find-prefix-command 'oo-find-map)
-
-(bind! oo-find-map ";" #'save-buffer)
-(bind! oo-find-map "o" #'find-file)
-(bind! oo-find-map "E" #'oo-open-emacs-config)
-(bind! oo-find-map "I" #'oo-open-emacs-init-file)
-(bind! oo-find-map "L" #'oo-open-emacs-lisp-dir)
-(bind! oo-find-map "G" #'rgrep)
-(bind! oo-find-map "p" #'consult-yank-pop)
-(bind! oo-find-map "k" #'consult-bookmark)
-(bind! oo-find-map "b" #'consult-bookmark)
-(bind! oo-find-map "l" #'consult-line)
-(bind! oo-find-map "h" #'consult-outline)
-(bind! oo-find-map "g" #'consult-grep)
-(bind! oo-find-map "z" #'ace-link)
-(bind! oo-find-map "b" #'burly-open-bookmark)
-(bind! oo-find-map ";" #'save-buffer)
-(bind! oo-find-map "i" #'imenu)
-(bind! oo-find-map "j" #'oo-dwim-narrow)
-(bind! oo-find-map "n" #'oo-new-buffer)
-(bind! oo-find-map "o" #'find-file)
-(bind! oo-find-map "f" #'switch-to-buffer)
-(bind! oo-find-map "d" #'display-buffer)
-(bind! oo-find-map "a" #'find-library)
-(bind! oo-find-map "f" #'switch-to-buffer)
-(bind! oo-find-map "d" #'pop-to-buffer)
+(defvar-keymap oo-find-map
+  :prefix 'oo-find-prefix-command
+  "t" #'tab-switch
+  ";" #'save-buffer
+  "o" #'find-file
+  "E" #'oo-open-emacs-config
+  "I" #'oo-open-emacs-init-file
+  "L" #'oo-open-emacs-lisp-dir
+  "G" #'rgrep
+  "p" #'consult-yank-pop
+  "k" #'consult-bookmark
+  "b" #'consult-bookmark
+  "l" #'consult-line
+  "h" #'consult-outline
+  "g" #'consult-grep
+  "z" #'ace-link
+  "b" #'burly-open-bookmark
+  ";" #'save-buffer
+  "i" #'imenu
+  "j" #'oo-dwim-narrow
+  "n" #'oo-new-buffer
+  "o" #'find-file
+  "f" #'switch-to-buffer
+  "d" #'display-buffer
+  "a" #'find-library
+  "f" #'switch-to-buffer
+  "d" #'pop-to-buffer)
 ;;;;; quit
-(defvar oo-quit-map (make-sparse-keymap))
-(define-prefix-command 'oo-quit-prefix-command 'oo-quit-map)
-
-(bind! oo-quit-map "R" #'restart-emacs)
-(bind! oo-quit-map "E" #'restart-emacs-start-new-emacs)
-(bind! oo-quit-map "r" #'restart-emacs)
-(bind! oo-quit-map "q" #'save-buffers-kill-emacs)
-;;;;; workspace
-;; (bind! oo-workspace-map "t" #'tab-select)
-;; (bind! oo-workspace-map "n" #'tab-new)
-;; (bind! oo-workspace-map "j" #'tab-next)
-;; (bind! oo-workspace-map "k" #'tab-previous)
-;;;;; emms
-(defvar oo-emms-map (make-sparse-keymap))
-(define-prefix-command 'oo-emms-prefix-command 'oo-emms-map)
-(bind! oo-emms-map "p" #'emms-pause)
-(bind! oo-emms-map "P" #'emms-stop)
-(bind! oo-emms-map "r" #'emms-toggle-repeat-track)
-(bind! oo-emms-map "R" #'emms-toggle-repeat-playlist)
-(bind! oo-emms-map "v" #'emms-volume-lower)
-(bind! oo-emms-map "V" #'emms-volume-raise)
-(bind! oo-emms-map "s" #'emms-seek-to)
+(defvar-keymap oo-quit-map
+  :prefix 'oo-quit-prefix-command
+  "R" #'restart-emacs
+  "E" #'restart-emacs-start-new-emacs
+  "r" #'restart-emacs
+  "q" #'save-buffers-kill-emacs)
+;;;;; music
+(defvar-keymap oo-music-map
+  :prefix 'oo-package-prefix-command
+  "f" #'emms-play-file
+  "p" #'emms-pause
+  "P" #'emms-stop
+  "r" #'emms-toggle-repeat-track
+  "R" #'emms-toggle-repeat-playlist
+  "v" #'emms-volume-lower
+  "V" #'emms-volume-raise
+  "s" #'emms-seek-to)
 ;;;;; package
-(defvar oo-package-map (make-sparse-keymap))
-(define-prefix-command 'oo-package-prefix-command 'oo-package-map)
-
-(bind! oo-package-map "i" #'package-install)
-(bind! oo-package-map "d" #'package-install)
+(defvar-keymap oo-package-map
+  :prefix 'oo-package-prefix-command
+  "i" #'package-install
+  "d" #'package-install)
 ;;;; helm
-(bind! i helm-map "TAB" #'helm-next-line)
-(bind! i helm-map [backtab] #'helm-previous-line)
-(bind! i helm-map "C-j" #'helm-next-line)
-(bind! i helm-map "C-k" #'helm-previous-line)
-(bind! i helm-map "C-a" #'helm-select-action)
-(bind! i helm-map "C-m" #'helm-toggle-visible-mark-forward)
-(bind! i helm-map "RET" #'+helm-select-nth-action)
-(bind! i helm-map "S-TAB" #'helm-mark-current-line)
-(bind! i helm-map "C-;" #'ace-jump-helm-line)
+(imap helm-map "TAB" #'helm-next-line)
+(imap helm-map [backtab] #'helm-previous-line)
+(imap helm-map "C-j" #'helm-next-line)
+(imap helm-map "C-k" #'helm-previous-line)
+(imap helm-map "C-a" #'helm-select-action)
+(imap helm-map "C-m" #'helm-toggle-visible-mark-forward)
+(imap helm-map "RET" #'+helm-select-nth-action)
+(imap helm-map "S-TAB" #'helm-mark-current-line)
+(imap helm-map "C-;" #'ace-jump-helm-line)
 ;;;; corfu
-(bind! i corfu-map "<tab>"   #'corfu-next)
-(bind! i corfu-map [backtab] #'corfu-previous)
-(bind! i corfu-map "S-TAB"   #'corfu-previous)
-(bind! i corfu-map "C-;"     #'corfu-quick-complete)
-(bind! i corfu-map "C-j"     #'corfu-next)
-(bind! i corfu-map "C-k"     #'corfu-previous)
-(bind! i corfu-map "C-p"     #'corfu-previous)
-(bind! i corfu-map ";"       #'corfu-quick-complete)
-(bind! i corfu-map "SPC"     #'corfu-insert)
+(imap corfu-map "<tab>"   #'corfu-next)
+(imap corfu-map [backtab] #'corfu-previous)
+(imap corfu-map "S-TAB"   #'corfu-previous)
+(imap corfu-map "C-;"     #'corfu-quick-complete)
+(imap corfu-map "C-j"     #'corfu-next)
+(imap corfu-map "C-k"     #'corfu-previous)
+(imap corfu-map "C-p"     #'corfu-previous)
+(imap corfu-map ";"       #'corfu-quick-complete)
+(imap corfu-map "SPC"     #'corfu-insert)
 ;;;; vertico
-(bind! i vertico-map "C-n" #'vertico-scroll-up)
-(bind! i vertico-map "C-p" #'vertico-scroll-down)
-(bind! i vertico-map "TAB" #'vertico-next)
-(bind! i vertico-map "C-k" #'vertico-previous)
-(bind! i vertico-map "C-j" #'vertico-next)
-(bind! i vertico-map ";" #'vertico-quick-exit)
-(bind! i vertico-map "C-;" #'vertico-quick-exit)
-(bind! i vertico-map [backtab] #'vertico-previous)
-(bind! i vertico-map "C-o" #'embark-act)
+(imap vertico-map "C-n" #'vertico-scroll-up)
+(imap vertico-map "C-p" #'vertico-scroll-down)
+(imap vertico-map "TAB" #'vertico-next)
+(imap vertico-map "C-k" #'vertico-previous)
+(imap vertico-map "C-j" #'vertico-next)
+(imap vertico-map ";" #'vertico-quick-exit)
+(imap vertico-map "C-;" #'vertico-quick-exit)
+(imap vertico-map [backtab] #'vertico-previous)
+(imap vertico-map "C-o" #'embark-act)
 ;;;; uncategorized
 (declare-function which-key-add-keymap-based-replacements "which-key")
 (with-eval-after-load 'which-key
   (which-key-add-keymap-based-replacements oo-leader-map "l" "localleader"))
 
-(bind! eww-mode-map n "R" #'eww-reload)
-(bind! oo-find-map "t" #'tab-switch)
-(bind! oo-app-map "E" #'restart-emacs-start-new-emacs)
-(bind! oo-quick-map "j" #'grugru)
-(bind! oo-buffer-map "x" #'kill-current-buffer)
-(bind! n org-mode-map "T" #'org-todo)
-(bind! n org-mode-map "t" #'+org-choose-tags)
-(bind! oo-emms-map "f" #'emms-play-file)
-(bind! oo-quick-map "i" #'tempel-insert)
-(bind! oo-quick-map "l" #'tempel-insert)
-(bind! evil-motion-state-map "o" #'evil-forward-WORD-begin)
+(nmap eww-mode-map "R" #'eww-reload)
 
-(bind! oo-app-map "d" #'dired-jump)
-(bind! (n m) dired-mode-map "h" #'dired-up-directory)
-(bind! (n m) dired-mode-map "l" #'dired-find-file)
-(bind! (n m) dired-mode-map "RET" #'dired-find-file)
-(bind! i tempel-map "C-l" #'tempel-abort)
-(bind! i tempel-map "C-j" #'tempel-next)
-(bind! i tempel-map "C-k" #'tempel-previous)
-(bind! i tempel-map "TAB" #'tempel-next)
-(bind! i tempel-map [backtab] #'tempel-previous)
+(nmap org-mode-map "T" #'org-todo)
+(nmap org-mode-map "t" #'+org-choose-tags)
+
+(general-def oo-quick-map "j" #'grugru)
+(general-def oo-quick-map "i" #'tempel-insert)
+(general-def oo-quick-map "l" #'tempel-insert)
+
+;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
+
+(nmap dired-mode-map "h" #'dired-up-directory)
+(nmap dired-mode-map "l" #'dired-find-file)
+(nmap dired-mode-map "RET" #'dired-find-file)
+
+(imap tempel-map "C-l" #'tempel-abort)
+(imap tempel-map "C-j" #'tempel-next)
+(imap tempel-map "C-k" #'tempel-previous)
+(imap tempel-map "TAB" #'tempel-next)
+(imap tempel-map [backtab] #'tempel-previous)
 ;;;; macrostep
-(defun! oo-localleader-bind (keymap key def)
-  "Convenience function for defining localleader bindings."
-  (flet! leader (leader)
-    (kbd (concat leader "\s" key)))
-  (define-key keymap (leader oo-emacs-localleader-key) def)
-  (with-eval-after-load 'evil
-    (evil-define-key* 'emacs keymap (leader oo-emacs-localleader-key) def)
-    (evil-define-key* 'normal keymap (leader oo-normal-localleader-key) def)
-    (evil-define-key* 'normal keymap (leader oo-normal-localleader-short-key) def)
-    (evil-define-key* 'insert keymap (leader oo-insert-localleader-key) def)
-    (evil-define-key* 'insert keymap (leader oo-insert-localleader-short-key) def)))
 
-(declare-function macrostep-expand "macrostep")
-(declare-function macrostep-collapse-all "macrostep")
-(declare-function macrostep-collapse "macrostep")
+;; (declare-function macrostep-expand "macrostep")
+;; (declare-function macrostep-collapse-all "macrostep")
+;; (declare-function macrostep-collapse "macrostep")
 
-(oo-localleader-bind emacs-lisp-mode-map "me" #'macrostep-expand)
-(oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
-(oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
+;; (oo-localleader-bind emacs-lisp-mode-map "me" #'macrostep-expand)
+;; (oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
+;; (oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
 ;;;; info
-(bind! n Info-mode-map "H" #'Info-last)
-(bind! n Info-mode-map "L" #'Info-next)
+(nmap Info-mode-map "H" #'Info-last)
+(nmap Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide '160-keybindings)
 ;;; 160-keybindings.el ends here
