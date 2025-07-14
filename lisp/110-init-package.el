@@ -240,7 +240,17 @@
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
   (setq package-alist nil)
-  (package-load-all-descriptors)
+  ;; The descriptors are objects that are created by loading and reading many
+  ;; files.  This is a relatively expensive process.
+  ;; Attempt to cache the descriptors.
+  (let ((cache (expand-file-name "package-alist" oo-var-dir)))
+    (if (file-exists-p cache)
+        (setq package-alist (with-temp-buffer
+                              (insert-file-contents cache)
+                              (read (current-buffer))))
+      (package-load-all-descriptors)
+      (with-temp-file cache
+        (prin1 package-alist (current-buffer)))))
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
