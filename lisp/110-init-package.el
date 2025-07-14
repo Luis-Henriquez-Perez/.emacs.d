@@ -59,7 +59,7 @@
 ;; but not by much--maybe 0.2 seconds.  As I mention later
 ;; `package-read-archive-contents' accounts for the bulk of package-initialize's
 ;; slowness.
-(setq package-quickstart-file (expand-file-name ".local/var/package-quickstart.el" user-emacs-directory))
+(setq package-quickstart-file (expand-file-name "package-quickstart.el" oo-var-dir))
 (setq package-quickstart t)
 
 (setq package-archive-priorities '(("melpa" . 10) ("gnu-elpa" . 9) ("nongnu" . 8)))
