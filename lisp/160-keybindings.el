@@ -361,9 +361,14 @@
 ;; (declare-function macrostep-collapse-all "macrostep")
 ;; (declare-function macrostep-collapse "macrostep")
 
-;; (oo-localleader-bind emacs-lisp-mode-map "me" #'macrostep-expand)
-;; (oo-localleader-bind emacs-lisp-mode-map "mc" #'macrostep-collapse)
-;; (oo-localleader-bind emacs-lisp-mode-map "mC" #'macrostep-collapse-all)
+(llmap emacs-lisp-mode-map "m" ("macrostep" . #'oo-macrostep-prefix-command))
+
+(defvar-keymap oo-macrostep-map
+  :prefix 'oo-macrostep-prefix-command
+  "e" #'macrostep-expand
+  "c" #'macrostep-collapse
+  "C" #'macrostep-collapse-all
+  "a" #'macrostep-collapse-all)
 ;;;; info
 (nmap Info-mode-map "H" #'Info-last)
 (nmap Info-mode-map "L" #'Info-next)
