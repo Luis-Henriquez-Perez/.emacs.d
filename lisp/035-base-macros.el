@@ -113,7 +113,7 @@ This is like `setq' but it is meant for configuring variables."
                                           (with-no-warnings (setq ,symbol ,value-var)))))))
     `(if (not (boundp ',symbol))
          ;; This quote on he lambda is needed to avoid infinite recursion.
-         (push '(lambda () ,main-form) (gethash ',symbol oo-after-load-hash-table))
+         (push ',main-form (gethash ',symbol oo-after-bound-forms))
        ,main-form)))
 
 ;; I made the decision to add a hook function to a hook regardless of whether
