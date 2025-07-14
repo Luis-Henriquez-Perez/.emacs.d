@@ -356,10 +356,9 @@
 (imap tempel-map "TAB" #'tempel-next)
 (imap tempel-map [backtab] #'tempel-previous)
 ;;;; macrostep
-
-;; (declare-function macrostep-expand "macrostep")
-;; (declare-function macrostep-collapse-all "macrostep")
-;; (declare-function macrostep-collapse "macrostep")
+(declare-function macrostep-expand "macrostep")
+(declare-function macrostep-collapse-all "macrostep")
+(declare-function macrostep-collapse "macrostep")
 
 (llmap emacs-lisp-mode-map "m" ("macrostep" . #'oo-macrostep-prefix-command))
 
