@@ -136,8 +136,8 @@ in."
      ,(cl-once-only (key)
         `(progn
            (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-           (evil-define-key* evil-inner-text-objects-map ,key ,inner)
-           (evil-define-key* evil-outer-text-objects-map ,key ,outer)))))
+           (keymap-set evil-inner-text-objects-map ,key ,inner)
+           (keymap-set evil-outer-text-objects-map ,key ,outer)))))
 
 (defmacro! llmap (&rest args)
   (set! (key def) (last args 2))
