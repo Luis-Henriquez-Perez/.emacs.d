@@ -277,7 +277,7 @@
   "d" #'package-install)
 ;;;;; quick map
 (defvar-keymap oo-quick-map
-  :prefix oo-quick-map
+  :prefix 'oo-quick-map
   "j" #'grugru
   "i" #'tempel-insert
   "l" #'tempel-insert)
