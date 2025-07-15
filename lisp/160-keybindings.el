@@ -140,6 +140,7 @@
   :prefix 'oo-leader-prefix-command
   "SPC" #'execute-extended-command
   ";" #'+org-agenda-day-view
+  "j" '("quick" . oo-quick-prefix-command)
   "w" '("window" . oo-window-prefix-command)
   "b" '("buffer" . oo-buffer-prefix-command)
   "g" '("git" . oo-git-prefix-command)
