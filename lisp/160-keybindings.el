@@ -89,7 +89,6 @@
            (save-buffer))
 		 (keyboard-quit))))
 ;;;; base bindings
-(nmap ";" #'execute-extended-command)
 (nmap "+" #'text-scale-increase)
 (nmap "-" #'text-scale-decrease)
 (nmap "H" #'evil-first-non-blank)
@@ -109,6 +108,7 @@
 (vmap "V" #'expreg-contract)
 (vmap "v" #'expreg-expand)
 
+(nvmap ";" #'execute-extended-command)
 ;; (nvmap "w" #'+evilem-motion-beginning-of-word)
 ;; (nvmap "e" #'+evilem-motion-end-of-word)
 ;; (nvmap "W" #'+evilem-motion-beginning-of-WORD)
