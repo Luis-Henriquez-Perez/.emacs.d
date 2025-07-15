@@ -28,8 +28,6 @@
 (require '032-after-load-functions)
 (require '035-base-macros)
 
-(defvar evil-inner-text-objects-map)
-(defvar evil-outer-text-objects-map)
 (declare-function evil-define-key* "evil")
 
 ;; (defun oo-wrap-forms ()
@@ -135,6 +133,8 @@ in."
   `(afterfeature! evil
      ,(cl-once-only (key)
         `(progn
+           (defvar evil-inner-text-objects-map)
+           (defvar evil-outer-text-objects-map)
            (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
            (keymap-set evil-inner-text-objects-map ,key ,inner)
            (keymap-set evil-outer-text-objects-map ,key ,outer)))))
