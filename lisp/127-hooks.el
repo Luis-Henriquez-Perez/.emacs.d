@@ -63,8 +63,8 @@
   ;; (hook! prog-mode-hook flyspell-prog-mode)
   )
 (hook! text-mode-hook visual-line-mode)
-(unless noninteractive
-  (hook! text-mode-hook flyspell-mode))
+;; (unless noninteractive
+;;   (hook! text-mode-hook flyspell-mode))
 (hook! after-init-hook window-divider-mode :depth 12)
 (hook! oo-first-input-hook minibuffer-depth-indicate-mode)
 
