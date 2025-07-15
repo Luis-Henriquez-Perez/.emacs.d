@@ -71,7 +71,7 @@
 
 (defconst oo-emacs-localleader-key "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
-;;;; mass
+;;;; miscellaneous
 (defun oo-dwim-escape ()
   "Exits out of whatever is happening after escape."
   (interactive)
@@ -134,34 +134,10 @@
 (iotmap "l" #'evil-inner-line #'evil-a-line)
 (iotmap "f" #'evil-cp-inner-form #'evil-cp-a-form)
 (iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
-;;;; main bindings
-;;;;; leader prefix
-(defvar-keymap oo-leader-map
-  :prefix 'oo-leader-prefix-command
-  "SPC" #'execute-extended-command
-  ";" #'+org-agenda-day-view
-  "j" '("quick" . oo-quick-prefix-command)
-  "w" '("window" . oo-window-prefix-command)
-  "b" '("buffer" . oo-buffer-prefix-command)
-  "g" '("git" . oo-git-prefix-command)
-  "l" '("git" . oo-git-prefix-command)
-  "a" '("app" . oo-app-prefix-command)
-  "p" '("package" . oo-package-prefix-command)
-  "f" '("find" . oo-find-prefix-command)
-  "h" '("help" . oo-help-prefix-command)
-  "e" '("music" . oo-music-prefix-command)
-  "t" '("toggle" . oo-toggle-prefix-command)
-  "q" '("quit" . oo-quit-prefix-command))
-
-(override-global-mode 1)
-;; (nmap override-global-map "SPC" #'oo-leader-prefix-command)
-(nmap override-global-map "SPC" #'oo-leader-prefix-command)
-(imap override-global-map "M-SPC" #'oo-leader-prefix-command)
-(emap override-global-map "C-c l" #'oo-leader-prefix-command)
-(emap override-global-map "C-c SPC" #'oo-leader-prefix-command)
+;;;; leader bindings
 ;;;;; window
 (defvar-keymap oo-window-map
-  :prefix 'oo-window-prefix-command
+  :prefix 'oo-window-map
   "v" #'split-window-horizontally
   "h" #'split-window-vertically
   "b" #'balance-windows
@@ -178,7 +154,7 @@
   "S" #'burly-bookmark-windows)
 ;;;;; git
 (defvar-keymap oo-git-map
-  :prefix 'oo-git-prefix-command
+  :prefix 'oo-git-map
   "p" #'magit-push
   "c" #'magit-commit
   "B" #'magit-branch
@@ -189,7 +165,7 @@
   "g" #'magit-status)
 ;;;;; org
 (defvar-keymap oo-org-map
-  :prefix 'oo-org-prefix-command
+  :prefix 'oo-org-map
   "t" #'+org-capture-todo
   "j" #'+org-capture-todo
   "a" #'org-archive-subtree
@@ -200,11 +176,11 @@
   "s" #'org-add-note
   "n" #'org-add-note
   "p" #'+org-capture-plain)
-;; (leadermap "o" #'oo-org-prefix-command "org")
-;; (leadermap "j" #'oo-org-prefix-command "org")
+;; (leadermap "o" #'oo-org-map "org")
+;; (leadermap "j" #'oo-org-map "org")
 ;;;;; app
 (defvar-keymap oo-app-map
-  :prefix 'oo-app-prefix-command
+  :prefix 'oo-app-map
   "E" #'restart-emacs-start-new-emacs
   "d" #'dired-jump
   "j" #'+org-capture-todo
@@ -216,7 +192,7 @@
   "s w" #'escr-window-screenshot)
 ;;;;; toggle
 (defvar-keymap oo-toggle-map
-  :prefix 'oo-toggle-prefix-command
+  :prefix 'oo-toggle-map
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
@@ -234,14 +210,14 @@
   "P" #'profiler-stop)
 ;;;;; buffer
 (defvar-keymap oo-buffer-map
-  :prefix 'oo-buffer-prefix-command
+  :prefix 'oo-buffer-map
   "x" #'kill-current-buffer
   "b" #'switch-to-buffer
   "j" #'next-buffer
   "k" #'previous-buffer)
 ;;;;; help
 (defvar-keymap oo-help-map
-  :prefix 'oo-help-prefix-command
+  :prefix 'oo-help-map
   "m" #'describe-mode
   "l" #'describe-function
   "f" #'describe-function
@@ -255,7 +231,7 @@
   "F" #'describe-face)
 ;;;;; find
 (defvar-keymap oo-find-map
-  :prefix 'oo-find-prefix-command
+  :prefix 'oo-find-map
   "t" #'tab-switch
   ";" #'save-buffer
   "o" #'find-file
@@ -278,14 +254,14 @@
   "d" #'pop-to-buffer)
 ;;;;; quit
 (defvar-keymap oo-quit-map
-  :prefix 'oo-quit-prefix-command
+  :prefix 'oo-quit-map
   "R" #'restart-emacs
   "E" #'restart-emacs-start-new-emacs
   "r" #'restart-emacs
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
 (defvar-keymap oo-music-map
-  :prefix 'oo-music-prefix-command
+  :prefix 'oo-music-map
   "f" #'emms-play-file
   "p" #'emms-pause
   "P" #'emms-stop
@@ -296,9 +272,32 @@
   "s" #'emms-seek-to)
 ;;;;; package
 (defvar-keymap oo-package-map
-  :prefix 'oo-package-prefix-command
+  :prefix 'oo-package-map
   "i" #'package-install
   "d" #'package-install)
+;;;;; Leader map
+(defvar-keymap oo-leader-map
+  :prefix 'oo-leader-map
+  "SPC" #'execute-extended-command
+  ";" #'+org-agenda-day-view
+  "j" '("quick" . oo-quick-map)
+  "w" '("window" . oo-window-map)
+  "b" '("buffer" . oo-buffer-map)
+  "g" '("git" . oo-git-map)
+  "l" '("git" . oo-git-map)
+  "a" '("app" . oo-app-map)
+  "p" '("package" . oo-package-map)
+  "f" '("find" . oo-find-map)
+  "h" '("help" . oo-help-map)
+  "e" '("music" . oo-music-map)
+  "t" '("toggle" . oo-toggle-map)
+  "q" '("quit" . oo-quit-map))
+
+(override-global-mode 1)
+(nmap override-global-map oo-normal-leader-key #'oo-leader-map)
+(imap override-global-map oo-insert-leader-key #'oo-leader-map)
+(emap override-global-map oo-emacs-leader-key #'oo-leader-map)
+(emap override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
 ;;;; helm
 (imap helm-map "TAB" #'helm-next-line)
 (imap helm-map [backtab] #'helm-previous-line)
@@ -359,14 +358,14 @@
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
 
-(llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-prefix-command))
+(llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-map))
 (llmap emacs-lisp-mode-map "e" #'macrostep-expand)
 (llmap emacs-lisp-mode-map "c" #'macrostep-collapse)
 (llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
 (llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
 (defvar-keymap oo-macrostep-map
-  :prefix 'oo-macrostep-prefix-command
+  :prefix 'oo-macrostep-map
   "e" #'macrostep-expand
   "c" #'macrostep-collapse
   "C" #'macrostep-collapse-all
