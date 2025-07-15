@@ -275,7 +275,13 @@
   :prefix 'oo-package-map
   "i" #'package-install
   "d" #'package-install)
-;;;;; Leader map
+;;;;; quick map
+(defvar-keymap oo-quick-map
+  :prefix oo-quick-map
+  "j" #'grugru
+  "i" #'tempel-insert
+  "l" #'tempel-insert)
+;;;;; leader map
 (defvar-keymap oo-leader-map
   :prefix 'oo-leader-map
   "SPC" #'execute-extended-command
@@ -338,12 +344,7 @@
 (nmap org-mode-map "T" #'org-todo)
 (nmap org-mode-map "t" #'+org-choose-tags)
 
-;; (general-def oo-quick-map "j" #'grugru)
-;; (general-def oo-quick-map "i" #'tempel-insert)
-;; (general-def oo-quick-map "l" #'tempel-insert)
-
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
-
 (nmap dired-mode-map "h" #'dired-up-directory)
 (nmap dired-mode-map "l" #'dired-find-file)
 (nmap dired-mode-map "RET" #'dired-find-file)
