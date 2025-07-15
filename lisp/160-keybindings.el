@@ -279,7 +279,7 @@
 (defvar-keymap oo-quick-map
   :prefix 'oo-quick-map
   "j" #'+org-capture-todo
-  "j" #'grugru
+  "g" #'grugru
   "i" #'tempel-insert
   "l" #'tempel-insert)
 ;;;;; leader map
