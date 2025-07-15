@@ -300,8 +300,8 @@
   "t" '("toggle" . oo-toggle-map)
   "q" '("quit" . oo-quit-map))
 
-;; Generally we do not want to enable modes immediately on startup.
 (oo-add-hook 'emacs-startup-hook #'override-global-mode)
+
 (nmap override-global-map oo-normal-leader-key #'oo-leader-map)
 (imap override-global-map oo-insert-leader-key #'oo-leader-map)
 (emap override-global-map oo-emacs-leader-key #'oo-leader-map)
