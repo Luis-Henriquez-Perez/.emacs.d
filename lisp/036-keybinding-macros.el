@@ -37,39 +37,32 @@
 ;; (defmacro wrap! (wrappers &rest body)
 ;;   )
 
-;; (defmacro evil-binding-generate (&rest bindings)
-;;   "Generate evil keybinding macros.
-;; Each element in BINDINGS should be a list of the form:
-;;   (NAME STATES DOCSTRING)
-;; where
-;;   NAME is a symbol like n, i, nv, e,
-;;   STATES is a symbol or list of symbols for evil states,
-;;   DOCSTRING is a string describing the macro."
-;;   `(progn
-;;      ,@(cl-loop for (name states docstring) in bindings
-;;                 for macro-name = (intern (format "%smap" name))
-;;                 collect
-;;                 `(defmacro! ,macro-name (&rest args)
-;;                    ,docstring
-;;                    (set! (key def) (last args 2))
-;;                    (set! keymap (if (nth 2 args) (car args) 'global-map))
-;;                    (set! states ',(if (listp states) states (list states)))
-;;                    `(afterfeature! evil
-;;                       (afterbound! ,keymap
-;;                         ,(cl-once-only (key)
-;;                            `(progn
-;;                               (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-;;                               (evil-define-key* ',states
-;;                                 ,keymap ,key ,def)))))))))
+(defmacro! evil-binding-generate (&rest specs)
+  "Generate evil keybinding macros based on SPECS."
+  (set! states '((?n . normal)
+                 (?v . visual)
+                 (?i . insert)
+                 (?e . emacs)
+                 (?m . motion)
+                 (?o . operator)))
+  `(progn
+     ,@(for! ((letter . state) states)
+         (set! state (alist-get letter oo-evil-state-alist))
+         (set! docstring "Define evil keybinding in %S state.")
+         (set! macroname (intern (concat (symbol-name spec) "map")))
+         `(defmacro! ,macro-name (&rest args)
+            ,docstring
+            (set! (key def) (last args 2))
+            (set! keymap (if (nth 2 args) (car args) 'global-map))
+            (set! states ',(if (listp states) states (list states)))
+            `(afterfeature! evil
+               (afterbound! ,keymap
+                 ,(cl-once-only (key)
+                    `(progn
+                       (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+                       (evil-define-key* ',states ,keymap ,key ,def)))))))))
 
 ;; (evil-binding-generate n i v nv e)
-
-;; (evil-binding-generate
-;;  (n  normal  "Define evil keybinding in normal state.")
-;;  (i  insert  "Define evil keybinding in insert state.")
-;;  (v  visual  "Define evil keybinding in visual state.")
-;;  (nv (normal visual) "Define evil keybinding in normal and visual state.")
-;;  (e  emacs   "Define evil keybinding in Emacs state."))
 
 (defmacro! nmap (&rest args)
   "Define evil keybinding in normal state."
