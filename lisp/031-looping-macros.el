@@ -70,6 +70,14 @@ take the following forms:
                (dotimes (,elt ,list) ,@body))
               (t
                (error "Unknown list predicate: %S" ',loop-struct)))))))
+
+(defmacro accumulate! (loop-struct &rest body)
+  (declare (indent 1))
+  (cl-with-gensyms (collection)
+    `(let (,collection)
+       (for! ,loop-struct
+         (push (progn ,@body) ,collection))
+       (nreverse ,collection))))
 ;;; provide
 (provide '031-looping-macros)
 ;;; 031-looping-macros.el ends here
