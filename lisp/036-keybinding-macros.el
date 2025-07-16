@@ -32,6 +32,7 @@
 
 (defmacro! generate-evil-keybinders! (&rest specs)
   "Generate evil keybinding macros based on SPECS."
+  (ignore key def keymap)
   (set! alist '((?n . normal)
                 (?v . visual)
                 (?i . insert)
