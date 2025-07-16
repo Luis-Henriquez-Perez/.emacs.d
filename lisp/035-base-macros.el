@@ -191,7 +191,7 @@ This is like `setq' but it is meant for configuring variables."
 (defmacro afterbound! (symbol &rest body)
   "Eval BODY after SYMBOL is bound."
   (declare (indent 1))
-  `(oo-call-after-bound ',symbol (with-no-warnings (lambda () ,@body))))
+  `(oo-call-after-bound ',symbol (lambda () (with-no-warnings ,@body))))
 ;;; provide
 (provide '035-base-macros)
 ;;; 035-base-macros.el ends here
