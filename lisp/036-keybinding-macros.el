@@ -59,7 +59,19 @@
                        (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
                        (evil-define-key* ',states ,keymap ,key ,def)))))))))
 
-(evil-binding-generate n i v nv e)
+(evil-binding-generate n i v nv)
+
+(defmacro! emap (&rest args)
+  "Define evil keybinding in Emacs state."
+  (set! (key def) (last args 2))
+  (set! keymap (if (nth 2 args) (car args) 'global-map))
+  `(afterfeature! evil
+     (afterbound! ,keymap
+       ,(cl-once-only (key def)
+          `(progn
+             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+             (keymap-set ,keymap ,key ,def)
+             (evil-define-key* 'emacs ,keymap ,key ,def))))))
 
 (defmacro! iotmap (key inner outer)
   "Define evil keybinding in Emacs state.
