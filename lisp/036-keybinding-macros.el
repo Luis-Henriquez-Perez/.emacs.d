@@ -30,13 +30,6 @@
 
 (declare-function evil-define-key* "evil")
 
-;; (defun oo-wrap-forms ()
-;;   ""
-;;   )
-
-;; (defmacro wrap! (wrappers &rest body)
-;;   )
-
 (defmacro! evil-binding-generate (&rest specs)
   "Generate evil keybinding macros based on SPECS."
   (set! alist '((?n . normal)
