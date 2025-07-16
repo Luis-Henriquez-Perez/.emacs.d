@@ -68,49 +68,6 @@
 
 (evil-binding-generate n i v nv e)
 
-(defmacro! nmap (&rest args)
-  "Define evil keybinding in normal state."
-  (set! (key def) (last args 2))
-  (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(afterfeature! evil
-     (afterbound! ,keymap
-       ,(cl-once-only (key)
-          `(progn
-             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-             (evil-define-key* 'normal ,keymap ,key ,def))))))
-
-(defmacro! imap (&rest args)
-  "Define evil keybinding in insert state."
-  (set! (key def) (last args 2))
-  (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(afterfeature! evil
-     (afterbound! ,keymap
-       ,(cl-once-only (key)
-          `(progn
-             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-             (evil-define-key* 'insert ,keymap ,key ,def))))))
-
-(defmacro! vmap (&rest args)
-  "Define evil keybinding in visual state."
-  (set! (key def) (last args 2))
-  (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(afterfeature! evil
-     (afterbound! ,keymap
-       ,(cl-once-only (key)
-          `(progn
-             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-             (evil-define-key* 'visual ,keymap ,key ,def))))))
-
-(defmacro! nvmap (&rest args)
-  "Define evil keybinding in normal and visual state."
-  (set! (key def) (last args 2))
-  (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(afterfeature! evil
-     (afterbound! ,keymap
-       ,(cl-once-only (key)
-          `(progn
-             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-             (evil-define-key* '(normal visual) ,keymap ,key ,def))))))
 
 (defmacro! emap (&rest args)
   "Define evil keybinding in Emacs state."
