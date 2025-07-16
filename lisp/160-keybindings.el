@@ -138,7 +138,7 @@
 (iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
 ;;;; leader bindings
 ;;;;; window
-(defkeymap! oo-window-map
+(defvar-keymap! oo-window-map
   "v" #'split-window-horizontally
   "h" #'split-window-vertically
   "b" #'balance-windows
@@ -154,7 +154,7 @@
   "o" #'ace-window
   "S" #'burly-bookmark-windows)
 ;;;;; git
-(defkeymap! oo-git-map
+(defvar-keymap! oo-git-map
   "p" #'magit-push
   "c" #'magit-commit
   "B" #'magit-branch
@@ -164,7 +164,7 @@
   "s" #'magit-status
   "g" #'magit-status)
 ;;;;; org
-(defkeymap! oo-org-map
+(defvar-keymap! oo-org-map
   :prefix 'oo-org-map
   "t" #'+org-capture-todo
   "j" #'+org-capture-todo
@@ -177,7 +177,7 @@
   "n" #'org-add-note
   "p" #'+org-capture-plain)
 ;;;;; app
-(defkeymap! oo-app-map
+(defvar-keymap! oo-app-map
   "E" #'restart-emacs-start-new-emacs
   "d" #'dired-jump
   "j" #'+org-capture-todo
@@ -188,7 +188,7 @@
   "s f" #'escr-frame-screenshot
   "s w" #'escr-window-screenshot)
 ;;;;; toggle
-(defkeymap! oo-toggle-map
+(defvar-keymap! oo-toggle-map
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
@@ -205,13 +205,13 @@
   "d" #'toggle-debug-on-error
   "P" #'profiler-stop)
 ;;;;; buffer
-(defkeymap! oo-buffer-map
+(defvar-keymap! oo-buffer-map
   "x" #'kill-current-buffer
   "b" #'switch-to-buffer
   "j" #'next-buffer
   "k" #'previous-buffer)
 ;;;;; help
-(defkeymap! oo-help-map
+(defvar-keymap! oo-help-map
   "m" #'describe-mode
   "l" #'describe-function
   "f" #'describe-function
@@ -224,7 +224,7 @@
   "a" #'describe-face
   "F" #'describe-face)
 ;;;;; find
-(defkeymap! oo-find-map
+(defvar-keymap! oo-find-map
   "t" #'tab-switch
   ";" #'save-buffer
   "o" #'find-file
@@ -246,13 +246,13 @@
   "a" #'find-library
   "d" #'pop-to-buffer)
 ;;;;; quit
-(defkeymap! oo-quit-map
+(defvar-keymap! oo-quit-map
   "R" #'restart-emacs
   "E" #'restart-emacs-start-new-emacs
   "r" #'restart-emacs
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
-(defkeymap! oo-music-map
+(defvar-keymap! oo-music-map
   "f" #'emms-play-file
   "p" #'emms-pause
   "P" #'emms-stop
@@ -262,17 +262,17 @@
   "V" #'emms-volume-raise
   "s" #'emms-seek-to)
 ;;;;; package
-(defkeymap! oo-package-map
+(defvar-keymap! oo-package-map
   "i" #'package-install
   "d" #'package-install)
 ;;;;; quick map
-(defkeymap! oo-quick-map
+(defvar-keymap! oo-quick-map
   "j" #'+org-capture-todo
   "g" #'grugru
   "i" #'tempel-insert
   "l" #'tempel-insert)
 ;;;;; leader map
-(defkeymap! oo-leader-map
+(defvar-keymap! oo-leader-map
   "SPC" #'execute-extended-command
   ";" #'+org-agenda-day-view
   "a" '("app" . oo-app-map)
@@ -355,7 +355,7 @@
 (llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
 (llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
-(defkeymap! oo-macrostep-map
+(defvar-keymap! oo-macrostep-map
   "e" #'macrostep-expand
   "c" #'macrostep-collapse
   "C" #'macrostep-collapse-all

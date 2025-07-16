@@ -87,8 +87,8 @@
          (prepending! ,plist (list (pop ,var) (pop ,var))))
        ,plist)))
 
-(defmacro! defkeymap! (keymap &rest pairs)
-  "Wrapper around `define-keymap' that declares functions."
+(defmacro! defvar-keymap! (keymap &rest pairs)
+  "Wrapper around `defvar-keymap' that declares functions."
   (declare (indent 1))
   (set! plist (stripplist! pairs))
   (for! ((_ def) pairs :by #'cddr)
