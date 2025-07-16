@@ -273,17 +273,17 @@
 (defkeymap! oo-leader-map
   "SPC" #'execute-extended-command
   ";" #'+org-agenda-day-view
-  "j" '("quick" . oo-quick-map)
-  "w" '("window" . oo-window-map)
-  "b" '("buffer" . oo-buffer-map)
-  "g" '("git" . oo-git-map)
-  "l" '("git" . oo-git-map)
   "a" '("app" . oo-app-map)
-  "p" '("package" . oo-package-map)
-  "f" '("find" . oo-find-map)
-  "h" '("help" . oo-help-map)
+  "b" '("buffer" . oo-buffer-map)
   "e" '("music" . oo-music-map)
+  "f" '("find" . oo-find-map)
+  "g" '("git" . oo-git-map)
+  "h" '("help" . oo-help-map)
+  "j" '("quick" . oo-quick-map)
+  "y" #'oo-load-random-theme
+  "p" '("package" . oo-package-map)
   "t" '("toggle" . oo-toggle-map)
+  "w" '("window" . oo-window-map)
   "q" '("quit" . oo-quit-map))
 
 (oo-add-hook 'emacs-startup-hook #'override-global-mode)
