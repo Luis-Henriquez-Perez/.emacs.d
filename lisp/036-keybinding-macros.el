@@ -80,6 +80,20 @@
              (keymap-set ,keymap ,key ,def)
              (evil-define-key* 'emacs ,keymap ,key ,def))))))
 
+(defmacro stripplist! (var)
+  (cl-with-gensyms (plist)
+    `(let (,plist)
+       (while (keywordp (car ,var))
+         (prepending! ,plist (list (pop ,var) (pop ,var))))
+       ,plist)))
+
+(defmacro! defkeymap! (keymap &rest pairs)
+  (declare (indent 1))
+  `(define-keymap ,keymap
+     :prefix ',keymap
+     ,@(stripplist! pairs)
+     (cl-loop for (key def) on pairs by #'cddr)))
+
 (defmacro! iotmap (key inner outer)
   "Define evil keybinding in Emacs state.
 Inner is the definition of the key in `evil-inner'.  Outer is the definition
