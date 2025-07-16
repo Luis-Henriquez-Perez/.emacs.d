@@ -33,7 +33,9 @@
 (defmacro! generate-evil-keybinders! (&rest specs)
   "Generate evil keybinding macros based on SPECS."
   ;; The top-level `defmacro!' registers the key, def, and keymap variables from
-  ;; within the backquoted form.  I do not think completely understand.
+  ;; within the backquoted form.  I do not think completely understand why these
+  ;; variables are considered not used (and unusually not `states'?) but this
+  ;; fixes it.
   (ignore key def keymap)
   (set! alist '((?n . normal)
                 (?v . visual)
