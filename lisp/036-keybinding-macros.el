@@ -30,7 +30,7 @@
 
 (declare-function evil-define-key* "evil")
 
-(defmacro! evil-binding-generate (&rest specs)
+(defmacro! generate-evil-keybinders! (&rest specs)
   "Generate evil keybinding macros based on SPECS."
   (set! alist '((?n . normal)
                 (?v . visual)
@@ -59,8 +59,10 @@
                        (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
                        (evil-define-key* ',states ,keymap ,key ,def)))))))))
 
-(evil-binding-generate n i v nv)
+(generate-evil-keybinders! n i v nv)
 
+;; Here I use Emacs state plus vannilla Emacs keybindings which is why I do not
+;; define it with `evil-binding-generate'.
 (defmacro! emap (&rest args)
   "Define evil keybinding in Emacs state."
   (set! (key def) (last args 2))
