@@ -68,7 +68,6 @@
 
 (evil-binding-generate n i v nv e)
 
-
 (defmacro! emap (&rest args)
   "Define evil keybinding in Emacs state."
   (set! (key def) (last args 2))
