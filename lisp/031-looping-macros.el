@@ -44,9 +44,9 @@ take the following forms:
 (repeat n) Evaluate BODY N times where (> n 0)."
   (declare (indent 1))
   (pcase loop-struct
-    ((or (and (pred integerp) n) `(repeat ,n))
+    ((or (and (pred integerp) n) `(:repeat ,n))
      `(dotimes (_ ,n) ,@body))
-    (`(reverse ,match-form ,list)
+    (`(:reverse ,match-form ,list)
      (let ((v (make-symbol "vector"))
            (i (make-symbol "i")))
        `(let* ((,v (vconcat ,list))
@@ -55,11 +55,14 @@ take the following forms:
             (setq ,i (1- ,i))
             (pcase-let* ,(oo-pcase-bindings match-form `(aref ,v ,i))
               ,@body)))))
-    (`(,(and match-form (or (pred listp) (pred vectorp))) ,list)
+    (`(,(and match-form (or (pred listp) (pred vectorp))) ,list . ,(and rest (guard t)))
      (cl-with-gensyms (elt)
-       `(for! (,elt ,list)
+       `(for! (,elt ,list ,@rest)
           (pcase-let* ,(oo-pcase-bindings match-form elt)
             ,@body))))
+    (`(,elt ,list :by ,fn)
+     `(cl-loop for ,elt on ,list by ,fn
+               do ,(macroexp-progn body)))
     (`(,(and elt (pred symbolp)) ,list)
      (cl-once-only (list)
        `(cond ((listp ,list)
