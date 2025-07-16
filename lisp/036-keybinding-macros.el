@@ -32,6 +32,8 @@
 
 (defmacro! generate-evil-keybinders! (&rest specs)
   "Generate evil keybinding macros based on SPECS."
+  ;; The top-level `defmacro!' registers the key, def, and keymap variables from
+  ;; within the backquoted form.  I do not think completely understand.
   (ignore key def keymap)
   (set! alist '((?n . normal)
                 (?v . visual)
