@@ -72,6 +72,8 @@
 (defconst oo-emacs-localleader-key "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
 ;;;; miscellaneous
+(declare-function minibuffer-keyboard-quit "delsel")
+(declare-function evil-normal-state "evil")
 (defun oo-dwim-escape ()
   "Exits out of whatever is happening after escape."
   (interactive)
