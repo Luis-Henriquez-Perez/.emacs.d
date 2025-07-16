@@ -64,7 +64,7 @@
 ;; Here I use Emacs state plus vannilla Emacs keybindings which is why I do not
 ;; define it with `evil-binding-generate'.
 (defmacro! emap (&rest args)
-  "Define evil keybinding in Emacs state."
+  "Define evil keybinding in Emacs state as well as vanilla Emacs."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
   `(afterfeature! evil
