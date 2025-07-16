@@ -88,11 +88,18 @@
        ,plist)))
 
 (defmacro! defkeymap! (keymap &rest pairs)
+  "Wrapper around `define-keymap' that declares functions."
   (declare (indent 1))
-  `(define-keymap ,keymap
-     :prefix ',keymap
-     ,@(stripplist! pairs)
-     (cl-loop for (key def) on pairs by #'cddr)))
+  (set! plist (stripplist! pairs))
+  (for! ((_ def) pairs :by #'cddr)
+    (pcase def
+      (`(function ,fn)
+       (collecting! declareforms `(declare-function ,fn nil)))))
+  `(progn ,@declareforms
+          (defvar-keymap ,keymap
+            :prefix ',keymap
+            ,@plist
+            ,@pairs)))
 
 (defmacro! iotmap (key inner outer)
   "Define evil keybinding in Emacs state.
