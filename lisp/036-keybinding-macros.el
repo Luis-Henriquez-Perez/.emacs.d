@@ -68,17 +68,6 @@
 
 (evil-binding-generate n i v nv e)
 
-(defmacro! emap (&rest args)
-  "Define evil keybinding in Emacs state."
-  (set! (key def) (last args 2))
-  (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(afterfeature! evil
-     (afterbound! ,keymap
-       ,(cl-once-only (key)
-          `(progn
-             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-             (evil-define-key* 'emacs ,keymap ,key ,def))))))
-
 (defmacro! iotmap (key inner outer)
   "Define evil keybinding in Emacs state.
 Inner is the definition of the key in `evil-inner'.  Outer is the definition
