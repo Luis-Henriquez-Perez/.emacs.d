@@ -186,7 +186,7 @@ This is like `setq' but it is meant for configuring variables."
 (defmacro afterfeature! (feature &rest body)
   "Eval BODY after FEATURE is loaded."
   (declare (indent 1))
-  `(oo-call-after-load ',feature (lambda () ,@body)))
+  `(oo-call-after-load ',feature (lambda () (with-no-warnings ,@body))))
 
 (defmacro afterbound! (symbol &rest body)
   "Eval BODY after SYMBOL is bound."
