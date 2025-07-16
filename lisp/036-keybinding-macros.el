@@ -48,18 +48,17 @@
   (flet! state-name (char)
     (alist-get char states))
   (flet! split-spec (spec)
-    ((symbol-name spec))
-    (mapcar #'state-name chars))
+    (mapcar #'state-name (string-to-list (symbol-name spec))))
   `(progn
      ,@(for! (spec specs)
-         (set! state (state-name char))
-         (set! docstring "Define evil keybinding in %S state.")
+         (set! states (split-spec spec))
+         (set! docstring "Define evil keybinding in %S state." states)
          (set! macroname (intern (concat (symbol-name spec) "map")))
-         `(defmacro! ,macro-name (&rest args)
+         `(defmacro! ,macroname (&rest args)
             ,docstring
             (set! (key def) (last args 2))
             (set! keymap (if (nth 2 args) (car args) 'global-map))
-            (set! states ',(if (listp states) states (list states)))
+            (set! states ',states)
             `(afterfeature! evil
                (afterbound! ,keymap
                  ,(cl-once-only (key)
@@ -67,7 +66,7 @@
                        (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
                        (evil-define-key* ',states ,keymap ,key ,def)))))))))
 
-;; (evil-binding-generate n i v nv e)
+(evil-binding-generate n i v nv e)
 
 (defmacro! nmap (&rest args)
   "Define evil keybinding in normal state."
