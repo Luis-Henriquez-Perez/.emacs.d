@@ -189,7 +189,7 @@
   "n" #'notmuch
   "e" #'eshell
   "f" #'elfeed
-  "s" '("screenshot" . #'oo-screenshot-map))
+  "s" '("screenshot" . oo-screenshot-map))
 ;;;;; toggle
 (defvar-keymap! oo-toggle-map
   "c" #'blink-cursor-mode
