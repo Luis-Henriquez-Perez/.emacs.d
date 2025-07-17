@@ -294,6 +294,7 @@ of FACE to the background color of the `default' face."
 ;; disable or maybe letting hooks be disableable interactive functions.  Not sure.
 (define-minor-mode oo-auto-commit-mode
   "Auto commit my dotfiles."
+  :group 'oo
   :global t
   (if oo-auto-commit-mode
       (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h)

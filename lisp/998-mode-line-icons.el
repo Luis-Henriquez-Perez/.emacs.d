@@ -111,6 +111,7 @@
 
 (define-minor-mode oo-mode-line-icons-mode
   "Display icons in the mode line."
+  :group 'oo-mode-line
   :global t
   (cond (oo-mode-line-icons-mode
          (advice-add 'oo-mode-line-segment--tab             :around 'oo-mode-line-nerd-icons--tab)
