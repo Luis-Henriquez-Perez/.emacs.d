@@ -177,6 +177,11 @@
   "n" #'org-add-note
   "p" #'+org-capture-plain)
 ;;;;; app
+(defvar-keymap! oo-screenshot-map
+  "r" #'escr-region-screenshot
+  "f" #'escr-frame-screenshot
+  "w" #'escr-window-screenshot)
+
 (defvar-keymap! oo-app-map
   "E" #'restart-emacs-start-new-emacs
   "d" #'dired-jump
@@ -184,9 +189,7 @@
   "n" #'notmuch
   "e" #'eshell
   "f" #'elfeed
-  "s r" #'escr-region-screenshot
-  "s f" #'escr-frame-screenshot
-  "s w" #'escr-window-screenshot)
+  "s" '("screenshot" . #'oo-screenshot-map))
 ;;;;; toggle
 (defvar-keymap! oo-toggle-map
   "c" #'blink-cursor-mode
