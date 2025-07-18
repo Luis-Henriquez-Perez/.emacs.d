@@ -111,7 +111,9 @@
 (vmap "V" #'expreg-contract)
 (vmap "v" #'expreg-expand)
 
-(nvmap ";" #'execute-extended-command)
+;; Ensure that ";" is always available as `execute-extended-command'.  Modes
+;; like dired bind it themselves and would otherwise override it.
+(nvmap override-global-map ";" #'execute-extended-command)
 ;; (nvmap "w" #'+evilem-motion-beginning-of-word)
 ;; (nvmap "e" #'+evilem-motion-end-of-word)
 ;; (nvmap "W" #'+evilem-motion-beginning-of-WORD)
