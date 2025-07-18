@@ -289,6 +289,8 @@
   "h" '("help" . oo-help-map)
   "j" '("quick" . oo-quick-map)
   "y" #'oo-load-random-theme
+  "s" #'oo-load-random-theme
+  "d" #'transwin-toggle
   "p" '("package" . oo-package-map)
   "t" '("toggle" . oo-toggle-map)
   "w" '("window" . oo-window-map)
