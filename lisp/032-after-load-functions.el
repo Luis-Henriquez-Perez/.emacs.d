@@ -32,7 +32,7 @@
 (eval-when-compile (require '031-autolet-macros))
 (eval-when-compile (require '031-looping-macros))
 
-(defvar oo-after-bound-forms (make-hash-table :size 100)
+(defvar oo-after-bound-forms nil
   "A hash table whose elements are (SYMBOL . FORMS).
 SYMBOL is a variable symbol.  FORMS are alist of lisp forms.")
 
@@ -41,19 +41,20 @@ SYMBOL is a variable symbol.  FORMS are alist of lisp forms.")
 FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
 after FEATURE is loaded.")
 
-(defun oo-eval-after-bound-forms (&rest _)
+(defun! oo-eval-after-bound-forms (&rest _)
   "Evaluate list of forms that need to be."
-  (dolist (key (hash-table-keys oo-after-bound-forms))
-    (when (and (symbolp key) (boundp key))
-      (eval `(progn ,@(nreverse (gethash key oo-after-bound-forms))) 'lexical)
-      (remhash key oo-after-bound-forms))))
+  (for! ((&as elt (symbol . forms)) oo-after-bound-forms)
+    (if (boundp symbol)
+        (eval `(progn ,@(nreverse forms)) 'lexical)
+      (pushing! elt updated)))
+  (setq oo-after-bound-forms updated))
 
 (defun oo-call-after-bound (symbol fn)
   "Call FN after SYMBOL is bound.
 If SYMBOL is already bound FN is called immediately."
   (if (boundp symbol)
       (funcall fn)
-    (push `(ignore-errors (funcall ',fn)) (gethash symbol oo-after-bound-forms))))
+    (push `(ignore-errors (funcall ',fn)) (alist-get symbol oo-after-bound-forms))))
 
 (defun oo-call-after-load (feature fn)
   "Call FN after FEATURE is loaded."
