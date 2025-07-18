@@ -109,7 +109,8 @@ warnings.  Also it auto defines a prefix with the same name as KEYMAP."
 
 (defmacro! iotmap (key inner outer)
   "Define evil keybindings for text object map.
-INNER and OUTER are the definitions."
+INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
+`evil-outer-text-objects-map' respectively."
   `(afterfeature! evil
      ,(cl-once-only (key)
         `(progn
