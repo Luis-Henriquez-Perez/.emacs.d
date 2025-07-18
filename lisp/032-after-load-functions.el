@@ -44,8 +44,7 @@ after FEATURE is loaded.")
 
 (defun! oo-eval-after-bound-forms (&rest _)
   "Evaluate forms of any bound symbols in `oo-after-bound-forms'."
-  (for! (elt oo-after-bound-forms)
-    (set! (symbol . forms) elt)
+  (for! ((&as elt (symbol . forms)) oo-after-bound-forms)
     (if (boundp symbol)
         (eval `(progn ,@(nreverse forms)) 'lexical)
       (pushing! updated elt)))
