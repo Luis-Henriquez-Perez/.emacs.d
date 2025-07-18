@@ -31,6 +31,22 @@
 
 (declare-function evil-define-key* "evil")
 
+(defun! oo-symbols-to-text (symbols)
+  "Convert a symbol or list of symbols SYMBOLS to a natural language string.
+Examples:
+  'foo       => \"foo\"
+  '(foo)     => \"foo\"
+  '(foo bar) => \"foo and bar\"
+  '(a b c)   => \"a, b and c\""
+  (set! items (mapcar #'symbol-name (ensure-list symbols)))
+  (pcase items
+    (`() "")
+    (`(,only) only)
+    (`(,first ,second) (format "%s and %s" first second))
+    (_ (set! all-but-last (butlast items))
+       (set! last (car (last items)))
+       (format "%s, and %s" (string-join all-but-last ", ") last))))
+
 (defmacro! generate-evil-keybinders! (&rest specs)
   "Generate evil keybinding macros based on SPECS."
   ;; The top-level `defmacro!' registers the key, def, and keymap variables from
@@ -51,7 +67,7 @@
   `(progn
      ,@(accumulate! (spec specs)
          (set! states (split-spec spec))
-         (set! docstring (format "Define evil keybinding in %S state." states))
+         (set! docstring (format "Define an evil keybinding in %s state." (oo-symbols-to-text states)))
          (set! macroname (intern (concat (symbol-name spec) "map")))
          `(defmacro! ,macroname (&rest args)
             ,docstring
