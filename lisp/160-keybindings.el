@@ -361,6 +361,10 @@
 (llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
 (llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
+(llmap org-mode-map "a" #'org-archive-subtree)
+(llmap org-mode-map "n" #'org-add-note)
+(llmap org-mode-map "t" #'org-todo)
+
 (defvar-keymap! oo-macrostep-map
   "e" #'macrostep-expand
   "c" #'macrostep-collapse
