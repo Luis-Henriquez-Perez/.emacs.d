@@ -121,6 +121,7 @@ INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
            (keymap-set evil-outer-text-objects-map ,key ,outer)))))
 
 (defmacro! llmap (&rest args)
+  "Define localleader key."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
   (flet! lkey (leader key)
