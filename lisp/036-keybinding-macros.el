@@ -80,11 +80,13 @@
              (keymap-set ,keymap ,key ,def)
              (evil-define-key* 'emacs ,keymap ,key ,def))))))
 
-(defmacro stripplist! (var)
+(defmacro stripplist! (list)
+  "Strip and return plist from the front of LIST.
+LIST is a list symbol."
   (cl-with-gensyms (plist)
     `(let (,plist)
-       (while (keywordp (car ,var))
-         (prepending! ,plist (list (pop ,var) (pop ,var))))
+       (while (keywordp (car ,list))
+         (prepending! ,plist (list (pop ,list) (pop ,list))))
        ,plist)))
 
 (defmacro! defvar-keymap! (keymap &rest pairs)
