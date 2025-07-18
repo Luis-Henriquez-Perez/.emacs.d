@@ -43,7 +43,7 @@ FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
 after FEATURE is loaded.")
 
 (defun! oo-eval-after-bound-forms (&rest _)
-  "Evaluate list of forms that need to be."
+  "Evaluate forms of any bound symbols in `oo-after-bound-forms'."
   (for! ((&as elt (symbol . forms)) oo-after-bound-forms)
     (if (boundp symbol)
         (eval `(progn ,@(nreverse forms)) 'lexical)
