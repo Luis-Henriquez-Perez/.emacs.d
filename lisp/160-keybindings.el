@@ -124,6 +124,8 @@
 (nvmap "g b" #'+evil-eval-print-operator)
 (nvmap "g p" #'+evil-eval-print-operator)
 (nvmap "g c" #'evilnc-comment-operator)
+;; (nvmap emacs-lisp-mode-map "g c" #'lispyville-comment-or-uncomment)
+(nvmap emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
 (nvmap "g h" #'+evil-eval-operator)
 (nvmap "g l" #'+evil-eval-replace-operator)
 (nvmap "g r" #'+evil-eval-replace-operator)
