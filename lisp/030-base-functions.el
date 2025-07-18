@@ -93,19 +93,19 @@ VALUE is the value being destructured.
 If MATCH-FORM is not a special form, return nil."
   (pcase match-form
     (`(,(or '&as '&whole) ,(and whole (pred symbolp)) ,parts)
-     (let ((it (cl-gensym "special-&as-match-form")))
+     (let ((it (cl-gensym "&asmf-")))
        `((,it ,value)
          (,whole ,it)
          (,parts ,it))))
     (`(&key ,(and symbol (pred symbolp)) . ,(and symbols (guard t)))
-     (let ((it (cl-gensym "special-&key-match-form"))
+     (let ((it (cl-gensym "&keymf-"))
            (bindings nil))
        (dolist (s (cons symbol symbols))
          (push `(,s (plist-get ,it ,(intern (concat ":" (symbol-name s))))) bindings))
        (push `(,it ,value) bindings)
        (nreverse bindings)))
     (`(&map ,(and symbol (pred symbolp)) . ,(and symbols (guard t)))
-     (let ((it (cl-gensym "special-&map-match-form"))
+     (let ((it (cl-gensym "&mapmf-"))
            (bindings nil))
        (dolist (s (cons symbol symbols))
          (push `(,s (map-elt ,it ,(intern (concat ":" (symbol-name s))))) bindings))
@@ -126,7 +126,7 @@ MATCH-FORM is a destructuring pattern that may include special forms (see
 `oo-destructure-special-match-form').  VALUE is the value to be matched and
 destructured."
   (let (bindings match-form-value)
-    (setq match-form-value (gensym "match-form-value"))
+    (setq match-form-value (gensym "mfvalue-"))
     (cl-flet ((special-mf-p (mf)
                 (let ((it (oo-destructure-special-match-form mf match-form-value)))
                   (when it
