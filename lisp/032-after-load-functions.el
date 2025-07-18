@@ -33,8 +33,9 @@
 (eval-when-compile (require '031-looping-macros))
 
 (defvar oo-after-bound-forms nil
-  "A hash table whose elements are (SYMBOL . FORMS).
-SYMBOL is a variable symbol.  FORMS are alist of lisp forms.")
+  "An alist whose elements are (SYMBOL . FORMS).
+SYMBOL is a variable symbol.  FORMS are a list of lisp forms that should be
+evaluated when symbol is bound.")
 
 (defvar oo-after-load-forms (make-hash-table :size 100)
   "A hash table whose elements are (FEATURE . FORMS).
