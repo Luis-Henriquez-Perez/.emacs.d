@@ -47,7 +47,7 @@ after FEATURE is loaded.")
   (for! ((&as elt (symbol . forms)) oo-after-bound-forms)
     (if (boundp symbol)
         (eval `(progn ,@(nreverse forms)) 'lexical)
-      (pushing! elt updated)))
+      (pushing! updated elt)))
   (setq oo-after-bound-forms updated))
 
 (defun oo-call-after-bound (symbol fn)
