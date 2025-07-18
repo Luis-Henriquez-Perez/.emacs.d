@@ -91,7 +91,9 @@ LIST is a list symbol."
        ,plist)))
 
 (defmacro! defvar-keymap! (keymap &rest pairs)
-  "Wrapper around `defvar-keymap' that declares functions."
+  "Wrapper around `defvar-keymap'.
+In contrast to `defvar-keymap' this macro declares to avoid byte-compilation
+warnings.  Also it auto defines a prefix with the same name as KEYMAP."
   (declare (indent 1))
   (set! plist (stripplist! pairs))
   (for! ((_ def) pairs :by #'cddr)
