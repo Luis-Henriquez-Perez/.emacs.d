@@ -22,7 +22,8 @@
 ;;
 ;;; Commentary:
 ;;
-;; These are keybinding sugars to help me define bindings.
+;; These are keybinding macros that help me define bindings cleanly and
+;; concisely.
 ;;
 ;;; Code:
 (require '032-after-load-functions)
