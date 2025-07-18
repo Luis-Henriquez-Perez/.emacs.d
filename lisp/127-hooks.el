@@ -80,7 +80,7 @@
   (require 'bind-key)
   (evil-make-intercept-map override-global-map 'all t))
 
-(defhook! setup-eval-after-bound-forms (oo-first-input-hook :depth 99)
+(defhook! setup-eval-after-bound-forms (after-init-hook :depth 99)
   "Call `oo-call-after-load-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
