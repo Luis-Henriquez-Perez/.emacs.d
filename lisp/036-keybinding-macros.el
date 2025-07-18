@@ -32,7 +32,8 @@
 (declare-function evil-define-key* "evil")
 
 (defmacro! generate-evil-keybinders! (&rest specs)
-  "Generate evil keybinding macros based on SPECS."
+  "Generate evil keybinding macros based on SPECS.
+"
   ;; The top-level `defmacro!' registers the key, def, and keymap variables from
   ;; within the backquoted form.  I do not think completely understand why these
   ;; variables are considered not used (and unusually not `states'?) but this
@@ -107,9 +108,8 @@ warnings.  Also it auto defines a prefix with the same name as KEYMAP."
             ,@pairs)))
 
 (defmacro! iotmap (key inner outer)
-  "Define evil keybinding in Emacs state.
-Inner is the definition of the key in `evil-inner'.  Outer is the definition
-in."
+  "Define evil keybindings for text object map.
+INNER and OUTER are the definitions."
   `(afterfeature! evil
      ,(cl-once-only (key)
         `(progn
