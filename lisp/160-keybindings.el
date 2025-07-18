@@ -97,6 +97,7 @@
 (nmap "L" #'evil-last-non-blank)
 (nmap "J" #'evil-scroll-page-down)
 (nmap "K" #'evil-scroll-page-up)
+(nmap [escape] #'oo-dwim-escape)
 
 (imap "A-x" #'execute-extended-command)
 (imap "M-x" #'execute-extended-command)
