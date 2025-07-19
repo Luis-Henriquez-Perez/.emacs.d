@@ -26,9 +26,10 @@
 ;;
 ;;; Code:
 (nmap yeetube-mode-map "a" oo-yeetube-download-audio)
-(nmap yeetube-mode-map "d" yeetube-download-video)
+(nmap yeetube-mode-map "v" yeetube-download-video)
 
 ;; It is much easier to see which item I am on when the lines are highlighted.
+;; Also, confirmed that this hook does not work from the yeetube config file.
 (hook! yeetube-mode-hook hl-line-mode)
 ;;; provide
 (provide '130-init-yeetube)
