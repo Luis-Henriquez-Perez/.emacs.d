@@ -41,20 +41,26 @@
                                        "--force-window=no"
                                        "--vo=null"))
 
-(opt! emms-player-list (cl-remove-if #'null (list (when (executable-find "mpv")
-                                                    (require 'emms-player-mpv)
-                                                    'emms-player-mpv)
-                                                  (when (executable-find "vlc")
-                                                    (require 'emms-player-vlc)
-                                                    'emms-player-vlc))))
+(opt! emms-player-list '(emms-player-mpv emms-player-vlc))
+(autoload! emms-player-mpv "emms-player-mpv")
 
 (opt! emms-info-functions '(emms-info-native))
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
 (opt! emms-playlist-buffer "*EMMS Playlist*")
 
 (declare-function emms-add-directory "emms")
+
+(defun oo-emms-playlist-mode-go ()
+  (interactive)
+  (require 'emms)
+  ;; Ah I need to figure out a better way to do this.
+  ;; (require 'emms-player-mpv)
+  (emms-add-directory emms-source-file-default-directory)
+  (call-interactively #'emms-playlist-mode-go))
+
 (afterfeature! emms
-  (emms-add-directory emms-source-file-default-directory))
+  (require 'emms-player-mpv)
+  (require 'emms-player-vlc))
 ;;; provide
 (provide '130-init-emms)
 ;;; 130-init-emms.el ends here
