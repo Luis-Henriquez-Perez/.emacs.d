@@ -25,7 +25,13 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(opt! yeetube-download-audio-format "wav")
+(require '050-base)
+(require 'yeetube)
+
+(nmap yeetube-mode-map "d" oo-yeetube-download-audio)
+;; (nmap yeetube-mode-map "d" oo-yeetube-download-audio)
+
+(hook! yeetube-mode-hook hl-line-mode)
 
 ;; Make simple commands to download audio the way I want it.
 
