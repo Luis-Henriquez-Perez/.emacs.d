@@ -102,7 +102,7 @@
 (imap "A-x" #'execute-extended-command)
 (imap "M-x" #'execute-extended-command)
 (imap "C-c h" #'grugru)
-(imap "C-c k" #'unexpand-abbrev)
+(nimap "C-c k" #'unexpand-abbrev)
 (imap [escape] #'oo-dwim-escape)
 (imap "TAB" #'completion-at-point)
 (imap lispyville-mode-map "SPC" #'lispy-space)
