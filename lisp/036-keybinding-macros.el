@@ -65,7 +65,7 @@
                        (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
                        (evil-define-key* ',states ,keymap ,key ,def)))))))))
 
-(generate-evil-keybinders! n i v nv)
+(generate-evil-keybinders! n i v nv ni)
 
 ;; Here I use Emacs state plus vannilla Emacs keybindings which is why I do not
 ;; define it with `evil-binding-generate'.
