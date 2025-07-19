@@ -114,12 +114,15 @@
 ;; Ensure that ";" is always available as `execute-extended-command'.  Modes
 ;; like dired bind it themselves and would otherwise override it.
 (nvmap override-global-map ";" #'execute-extended-command)
-;; (nvmap "w" #'+evilem-motion-beginning-of-word)
-;; (nvmap "e" #'+evilem-motion-end-of-word)
-;; (nvmap "W" #'+evilem-motion-beginning-of-WORD)
-;; (nvmap "E" #'+evilem-motion-end-of-WORD)
-;; (nvmap "f" #'+evilem-motion-char)
-;; (nvmap "H" #'+evilem-motion-beginning-of-line)
+;; The problem is I feel like the default evil motions are not that useful
+;; beyond moving to one forward unit.  So I have made the controversial decision
+;; to rebind.  TODO: ke
+(nvmap "w" #'+evilem-motion-beginning-of-word)
+(nvmap "e" #'+evilem-motion-end-of-word)
+(nvmap "W" #'+evilem-motion-beginning-of-WORD)
+(nvmap "E" #'+evilem-motion-end-of-WORD)
+(nvmap "f" #'+evilem-motion-char)
+(nvmap "H" #'+evilem-motion-beginning-of-line)
 ;; (nvmap "H" #'+evilem-motion-beginning-of-line)
 (nvmap "g b" #'+evil-eval-print-operator)
 (nvmap "g p" #'+evil-eval-print-operator)
