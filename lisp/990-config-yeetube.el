@@ -31,6 +31,7 @@
 (nmap yeetube-mode-map "a" oo-yeetube-download-audio)
 (nmap yeetube-mode-map "d" yeetube-download-video)
 
+;; It is much easier to see which item I am on when the lines are highlighted.
 (hook! yeetube-mode-hook hl-line-mode)
 
 ;; Make simple commands to download audio the way I want it.
