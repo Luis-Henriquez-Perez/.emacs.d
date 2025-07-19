@@ -261,6 +261,7 @@
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
 (defvar-keymap! oo-music-map
+  "g" #'emms-playlist-mode-go
   "f" #'emms-play-file
   "p" #'emms-pause
   "P" #'emms-stop
