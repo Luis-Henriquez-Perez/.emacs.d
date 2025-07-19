@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(opt! emms-source-file-default-directory (expand-file-name "~/Music"))
+(opt! emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
 (opt! emms-directory (expand-file-name "emms/" oo-var-dir))
 
 ;; As of right now using VLC or MPV will have the effect of repeating the current track
@@ -52,14 +52,9 @@
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
 (opt! emms-playlist-buffer "*EMMS Playlist*")
 
-;; (declare-function emms-add-directory "emms")
-;; (afterfeature! emms
-;;   (let ((music-dir emms-source-file-default-directory))
-;;     (cond ((file-directory-p music-dir)
-;;            (oo-log 'info "Registered tracks from %s" music-dir)
-;;            (emms-add-directory music-dir))
-;;           (t
-;;            (oo-log 'info "Cannot add tracks because music directory %s does not exist" music-dir)))))
+(declare-function emms-add-directory "emms")
+(afterfeature! emms
+  (emms-add-directory emms-source-file-default-directory))
 ;;; provide
 (provide '130-init-emms)
 ;;; 130-init-emms.el ends here
