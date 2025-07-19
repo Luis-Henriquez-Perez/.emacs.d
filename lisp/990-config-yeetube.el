@@ -28,8 +28,8 @@
 (require '050-base)
 (require 'yeetube)
 
-(nmap yeetube-mode-map "d" oo-yeetube-download-audio)
-;; (nmap yeetube-mode-map "d" oo-yeetube-download-audio)
+(nmap yeetube-mode-map "a" oo-yeetube-download-audio)
+(nmap yeetube-mode-map "d" yeetube-download-video)
 
 (hook! yeetube-mode-hook hl-line-mode)
 
