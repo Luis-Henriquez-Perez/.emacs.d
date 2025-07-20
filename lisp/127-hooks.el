@@ -259,9 +259,9 @@ of FACE to the background color of the `default' face."
 (hook! after-init-hook oo-mode-line-icons-mode :depth 89 :level 'info)
 (hook! after-init-hook oo-mode-line-mode :depth 90 :level 'info)
 
-(defhook! initialize-server (emacs-startup-hook :level 'info)
-  "Enable server if it is not running."
-  (unless (server-running-p) (server-start)))
+;; (defhook! initialize-server (emacs-startup-hook :level 'info)
+;;   "Enable server if it is not running."
+;;   (unless (server-running-p) (server-start)))
 
 (defhook! initialize-config-files (emacs-startup-hook :depth 91 :level 'info)
   "Setup config files to be loaded after their feature."
