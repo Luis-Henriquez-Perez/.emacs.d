@@ -68,8 +68,7 @@
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
 
 (defun! oo-bind-key (keymap key def &optional states)
-  "Bind KEY to DEF in KEYMAP.
-KEYMAP is a keymap symbol."
+  "Bind KEY to DEF in KEYMAP."
   (nif! states
       (oo-call-after-bound keymap (apply-partially #'keymap-set keymap key def))
     (set! fn `(lambda ()
