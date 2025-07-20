@@ -67,14 +67,46 @@
                 (gethash ',old oo-alternate-commands))
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
 
+;; The benefit of using a function as a wrapper to bind all my keys is I just
+;; have to change this to change how I bind any keys.  I have full control
+;; tdwiw.  Basically I was the option of binding keys programmatically if need
+;; be.
+;; Consider "global" a special state.
+(defmacro pop-elt! (elt list-var)
+  "Remove the first occurrence of ELT from LIST-VAR (a symbol) and return ELT.
+Modifies LIST-VAR in place. Returns nil if ELT not found."
+  (cl-with-gensyms (lst prev cur)
+    `(let ((,lst ,list-var))
+       (cond
+        ((null ,lst) nil)
+        ((equal (car ,lst) ,elt)
+         (setq ,list-var (cdr ,lst))
+         ,elt)
+        (t
+         (let ((,prev ,lst)
+               (,cur (cdr ,lst)))
+           (while (and ,cur (not (equal (car ,cur) ,elt)))
+             (setq ,prev ,cur
+                   ,cur (cdr ,cur)))
+           (when ,cur
+             (setcdr ,prev (cdr ,cur))
+             ,elt)))))))
+
+;; The point of this function is to give me a uniform interface for binding keys
+;; where I do not have to worry about whether the keymap is defined or whether
+;; evil is loaded.  Furthermore by having a function I can apply a change from
+;; one to all bindings.
 (defun! oo-bind-key (keymap key def &optional states)
-  "Bind KEY to DEF in KEYMAP."
-  (nif! states
-      (oo-call-after-bound keymap (apply-partially #'keymap-set keymap key def))
-    (set! fn `(lambda ()
-                (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-                (evil-define-key* ',states ,keymap ,key ,def)))
-    (oo-call-after-load 'evil (apply-partially #'oo-call-after-bound keymap fn))))
+  "Bind KEY to DEF in KEYMAP.
+KEYMAP is a keymap symbol."
+  (set! states (ensure-list states))
+  (when (or (not states) (pop-elt! 'global states))
+    (oo-call-after-bound keymap `(lambda () (keymap-set ,keymap ,key ',def))))
+  (when states
+    (setq key (if (vectorp key) key (kbd key)))
+    (set! fn `(lambda () (evil-define-key* ',states ,keymap ,key ',def)))
+    (oo-call-after-load 'evil (apply-partially #'oo-call-after-bound keymap fn)))
+  nil)
 ;;; provide
 (provide '036-base-functions)
 ;;; 036-base-functions.el ends here

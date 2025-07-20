@@ -39,7 +39,8 @@
   ;; variables are considered not used (and unusually not `states'?) but this
   ;; fixes it.
   (ignore key def keymap)
-  (set! alist '((?n . normal)
+  (set! alist '((?g . global)
+                (?n . normal)
                 (?v . visual)
                 (?i . insert)
                 (?e . emacs)
@@ -59,28 +60,10 @@
             (set! (key def) (last args 2))
             (set! keymap (if (nth 2 args) (car args) 'global-map))
             (set! states ',states)
-            `(afterfeature! evil
-               (afterbound! ,keymap
-                 ,(cl-once-only (key)
-                    `(progn
-                       (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-                       (evil-define-key* ',states ,keymap ,key ,def)))))))))
+            `(progn (defvar ,keymap)
+                    (oo-bind-key ',keymap ,key ,def ',states))))))
 
-(generate-evil-keybinders! n i v nv ni)
-
-;; Here I use Emacs state plus vannilla Emacs keybindings which is why I do not
-;; define it with `evil-binding-generate'.
-(defmacro! emap (&rest args)
-  "Define evil keybinding in Emacs state as well as vanilla Emacs."
-  (set! (key def) (last args 2))
-  (set! keymap (if (nth 2 args) (car args) 'global-map))
-  `(afterfeature! evil
-     (afterbound! ,keymap
-       ,(cl-once-only (key def)
-          `(progn
-             (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-             (keymap-set ,keymap ,key ,def)
-             (evil-define-key* 'emacs ,keymap ,key ,def))))))
+(generate-evil-keybinders! n i v nv ni eg g)
 
 (defmacro stripplist! (list)
   "Strip and return plist from the front of LIST.
@@ -90,6 +73,7 @@ LIST is a list symbol."
        (while (keywordp (car ,list))
          (prepending! ,plist (list (pop ,list) (pop ,list))))
        ,plist)))
+(defalias 'emap 'egmap)
 
 (defmacro! defvar-keymap! (keymap &rest pairs)
   "Wrapper around `defvar-keymap'.
@@ -111,31 +95,28 @@ warnings.  Also it auto defines a prefix with the same name as KEYMAP."
   "Define evil keybindings for text object map.
 INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
 `evil-outer-text-objects-map' respectively."
-  `(afterfeature! evil
-     ,(cl-once-only (key)
-        `(progn
-           (defvar evil-inner-text-objects-map)
-           (defvar evil-outer-text-objects-map)
-           (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
-           (keymap-set evil-inner-text-objects-map ,key ,inner)
-           (keymap-set evil-outer-text-objects-map ,key ,outer)))))
+  (cl-once-only (key inner outer)
+    `(progn
+       (defvar evil-inner-text-objects-map)
+       (defvar evil-outer-text-objects-map)
+       (oo-bind-key 'evil-inner-text-objects-map ,key ,inner)
+       (oo-bind-key 'evil-outer-text-objects-map ,key ,outer))))
 
 (defmacro! llmap (&rest args)
   "Define localleader key."
   (set! (key def) (last args 2))
   (set! keymap (if (nth 2 args) (car args) 'global-map))
   (flet! lkey (leader key)
-    `(alet! ,key (if (vectorp it) it (kbd (concat ,leader "\s" it)))))
-  (flet! ebind (leader state)
-    `(evil-define-key* ',state ,keymap ,(lkey leader key) ,def))
-  `(afterbound! ,keymap
-     (keymap-set ,keymap (concat oo-emacs-localleader-key "\s" ,key) ,def)
-     (afterfeature! evil
-       ,(ebind 'oo-normal-localleader-key 'normal)
-       ,(ebind 'oo-normal-localleader-short-key 'normal)
-       ,(ebind 'oo-insert-localleader-key 'insert)
-       ,(ebind 'oo-insert-localleader-short-key 'insert)
-       ,(ebind 'oo-emacs-localleader-key 'emacs))))
+    `(alet! ,key (if (vectorp it) it (concat ,leader "\s" it))))
+  (flet! bind (leader state)
+    `(oo-bind-key ',keymap ,(lkey leader key) ,def ',state))
+  `(progn (defvar ,keymap)
+          ,(bind 'oo-emacs-localleader-key 'global)
+          ,(bind 'oo-normal-localleader-key 'normal)
+          ,(bind 'oo-normal-localleader-short-key 'normal)
+          ,(bind 'oo-insert-localleader-key 'insert)
+          ,(bind 'oo-insert-localleader-short-key 'insert)
+          ,(bind 'oo-emacs-localleader-key 'emacs)))
 ;;; provide
 (provide '037-keybinding-macros)
 ;;; 037-keybinding-macros.el ends here
