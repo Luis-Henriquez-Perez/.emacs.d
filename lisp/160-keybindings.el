@@ -264,12 +264,13 @@
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
 (defvar-keymap! oo-music-map
-  "l" #'emms-random
+  "e" #'oo-emms-playlist-mode-go
+  "l" #'emms-toggle-repeat-track
   "g" #'emms-playlist-mode-go
   "f" #'emms-play-file
   "p" #'emms-pause
   "P" #'emms-stop
-  "r" #'emms-toggle-repeat-track
+  "r" #'emms-random
   "R" #'emms-toggle-repeat-playlist
   "v" #'emms-volume-lower
   "V" #'emms-volume-raise
