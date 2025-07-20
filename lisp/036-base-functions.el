@@ -1,4 +1,4 @@
-;;; 040-base-functions.el --- external package library -*- lexical-binding: t; -*-
+;;; 036-base-functions.el --- external package library -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,6 +31,7 @@
 ;; packages and features.
 ;;
 ;;; Code:
+(require '032-after-load-functions)
 (eval-when-compile (require '035-base-macros))
 
 (defvar evil-state-properties)
@@ -65,6 +66,22 @@
   `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
                 (gethash ',old oo-alternate-commands))
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
+
+(defmacro nif! (cond then &rest else)
+  (declare (indent 2))
+  `(if (not ,cond)
+       ,then
+     ,@else))
+
+(defun! oo-bind-key (keymap key def &optional states)
+  "Bind KEY to DEF in KEYMAP.
+KEYMAP is a keymap symbol."
+  (nif! states
+      (oo-call-after-bound keymap (apply-partially #'keymap-set keymap key def))
+    (set! fn `(lambda ()
+                (setq ,key (if (vectorp ,key) ,key (kbd ,key)))
+                (evil-define-key* ',states ,keymap ,key ,def)))
+    (oo-call-after-load 'evil (apply-partially #'oo-call-after-bound keymap fn))))
 ;;; provide
-(provide '040-base-functions)
-;;; 040-base-functions.el ends here
+(provide '036-base-functions)
+;;; 036-base-functions.el ends here

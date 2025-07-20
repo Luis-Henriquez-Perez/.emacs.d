@@ -36,7 +36,7 @@
 (require 'cl-lib)
 (require 'package)
 (require 'package-vc)
-(require '040-base-functions)
+(require '036-base-functions)
 (eval-when-compile (require '035-base-macros))
 
 ;; This was taken from prot's recommendation.

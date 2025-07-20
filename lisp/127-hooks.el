@@ -133,7 +133,7 @@ file is loaded."
   (require '031-looping-macros)
   (require '031-looping-macros)
   (require '035-base-macros)
-  (require '036-keybinding-macros))
+  (require '037-keybinding-macros))
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
 (defhook! increase-garbage-collection (minibuffer-setup-hook :depth 10)

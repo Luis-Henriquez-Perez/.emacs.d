@@ -1,4 +1,4 @@
-;;; 036-keybinding-macros.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 037-keybinding-macros.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,6 +28,7 @@
 ;;; Code:
 (require '032-after-load-functions)
 (require '035-base-macros)
+(require '036-base-functions)
 
 (declare-function evil-define-key* "evil")
 
@@ -136,5 +137,5 @@ INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
        ,(ebind 'oo-insert-localleader-short-key 'insert)
        ,(ebind 'oo-emacs-localleader-key 'emacs))))
 ;;; provide
-(provide '036-keybinding-macros)
-;;; 036-keybinding-macros.el ends here
+(provide '037-keybinding-macros)
+;;; 037-keybinding-macros.el ends here
