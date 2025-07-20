@@ -33,6 +33,12 @@
 (eval-when-compile (require '031-looping-macros))
 (eval-when-compile (require '032-after-load-functions))
 
+(defmacro nif! (cond then &rest else)
+  (declare (indent 2))
+  `(if (not ,cond)
+       ,then
+     ,@else))
+
 (defmacro autoload! (function file)
   `(progn (declare-function ,function ,file)
           (autoload #',function ,file nil t 'function)))

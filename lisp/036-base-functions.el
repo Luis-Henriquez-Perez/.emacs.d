@@ -67,12 +67,6 @@
                 (gethash ',old oo-alternate-commands))
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter oo-alternate-command-choose-fn))))
 
-(defmacro nif! (cond then &rest else)
-  (declare (indent 2))
-  `(if (not ,cond)
-       ,then
-     ,@else))
-
 (defun! oo-bind-key (keymap key def &optional states)
   "Bind KEY to DEF in KEYMAP.
 KEYMAP is a keymap symbol."
