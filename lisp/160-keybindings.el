@@ -139,38 +139,41 @@
 ;;;; text objects
 ;; (iotmap "c" #'evilnc-inner-comment #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
-;; (iotmap "c" #'lispyville-inner-comment #'lispyville-outer-comment)
+(iotmap "a" #'lispyville-inner-comment #'lispyville-outer-comment)
 (iotmap "h" #'evil-i-syntax #'evil-a-syntax)
 (iotmap "l" #'evil-inner-line #'evil-a-line)
 (iotmap "f" #'evil-cp-inner-form #'evil-cp-a-form)
 (iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
+
+;; (iotmap "a" #'evilnc-inner-commenter #'evilnc-outer-commenter)
 ;;;; leader bindings
 ;;;;; window
 (defvar-keymap! oo-window-map
-  "v" #'split-window-horizontally
-  "h" #'split-window-vertically
-  "b" #'balance-windows
-  "M" #'maximize-window
-  "d" #'delete-window
   "D" #'delete-other-windows
-  "k" #'display-buffer
-  "u" #'winner-undo
-  "t" #'transpose-frame
-  "s" #'ace-swap-window
-  "w" #'ace-window
+  "M" #'maximize-window
+  "S" #'burly-bookmark-windows
+  "b" #'balance-windows
+  "d" #'delete-window
+  "h" #'split-window-vertically
   "j" #'ace-window
+  "k" #'display-buffer
   "o" #'ace-window
-  "S" #'burly-bookmark-windows)
+  "s" #'ace-swap-window
+  "t" #'transpose-frame
+  "u" #'winner-undo
+  "v" #'split-window-horizontally
+  "w" #'ace-window)
 ;;;;; git
 (defvar-keymap! oo-git-map
-  "p" #'magit-push
-  "c" #'magit-commit
   "B" #'magit-branch
-  "n" #'oo-dwim-vc-action
   "b" #'vc-switch-branch
+  "c" #'magit-commit
+  "g" #'magit-status
   "l" #'vc-switch-branch
-  "s" #'magit-status
-  "g" #'magit-status)
+  "n" #'oo-dwim-vc-action
+  "p" #'magit-push
+  "r" #'vc-register
+  "s" #'magit-status)
 ;;;;; org
 (defvar-keymap! oo-org-map
   :prefix 'oo-org-map
