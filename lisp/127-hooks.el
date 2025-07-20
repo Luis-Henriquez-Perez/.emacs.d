@@ -314,24 +314,24 @@ repository and if it is, commit and push all changes.  Otherwise, do nothing."
          (not (equal (vc-state (buffer-file-name)) 'unregistered))
          (save-restriction (oo-dwim-vc-action (buffer-file-name)))))
 
-(defhook! set-default-font (after-init-hook :depth 90 :level 'info)
-  "Set the default font based on available fonts."
-  (dolist (font oo-default-fonts)
-    (oo-log 'trace "Checking whether %s font is available..." font)
-    (awhen! (find-font font)
-      (set-face-attribute 'default nil :font font)
-      (set! family (face-attribute 'default :family))
-      (set! size (face-attribute 'default :height))
-      (set! style (face-attribute 'default :weight))
-      (oo-log 'info "Set font to %s with size %s and style %s" family size style)
-      (done!)))
-  (set! default-font (face-attribute 'default :family))
-  ;; So font will take effect with emacs daemon.
-  ;; (add-hook 'after-make-frame-functions
-  ;;           `(lambda (frame)
-  ;;              (with-selected-frame frame
-  ;;                (set-face-attribute 'default nil :font ,default-font))))
-  (oo-log 'info "Unable to set font to any in `oo-default-font-list', defaulting to `%s'." default-font))
+;; (defhook! set-default-font (after-init-hook :depth 90 :level 'info)
+;;   "Set the default font based on available fonts."
+;;   (dolist (font oo-default-fonts)
+;;     (oo-log 'trace "Checking whether %s font is available..." font)
+;;     (awhen! (find-font font)
+;;       (set-face-attribute 'default nil :font font)
+;;       (set! family (face-attribute 'default :family))
+;;       (set! size (face-attribute 'default :height))
+;;       (set! style (face-attribute 'default :weight))
+;;       (oo-log 'info "Set font to %s with size %s and style %s" family size style)
+;;       (done!)))
+;;   (set! default-font (face-attribute 'default :family))
+;;   ;; So font will take effect with emacs daemon.
+;;   ;; (add-hook 'after-make-frame-functions
+;;   ;;           `(lambda (frame)
+;;   ;;              (with-selected-frame frame
+;;   ;;                (set-face-attribute 'default nil :font ,default-font))))
+;;   (oo-log 'info "Unable to set font to any in `oo-default-font-list', defaulting to `%s'." default-font))
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here
