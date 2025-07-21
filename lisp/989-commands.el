@@ -224,6 +224,7 @@ the battery percentage is greater than 90%."
                                 (display-buffer-no-window)
                                 (allow-no-window . t))
                                ,@display-buffer-alist))
+  (save-buffer)
   (pcase (vc-state file)
     ('edited
      (vc-checkin (list file) backend commit-msg)
