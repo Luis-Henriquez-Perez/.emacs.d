@@ -146,8 +146,10 @@ Replace `kill-buffer--possibly-save' as advice."
 (hook! sh-mode-hook aggressive-indent-mode)
 ;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))
 ;;;; vc
-(add-hook 'vc-git-log-edit-mode #'abbrev-mode)
-(add-hook 'vc-git-log-edit-mode #'captain-mode)
+;; Use text-mode tools when editing.
+(add-hook 'vc-git-log-edit-mode-hook #'abbrev-mode)
+(add-hook 'vc-git-log-edit-mode-hook #'captain-mode)
+(add-hook 'vc-git-log-edit-mode-hook #'oo--enter-evil-insert-state-maybe 0)
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
