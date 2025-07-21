@@ -158,7 +158,7 @@ file that is in a git repo, enale git-gutter-mode."
   (when buffer-file-name
     (when (or (file-in-directory-p buffer-file-name (expand-file-name "~/.config/emacs/elpa/"))
               (file-in-directory-p buffer-file-name (expand-file-name "~/Downloads/")))
-      (view-mode 1))
+      (read-only-mode 1))
     ;; When in a git repo enable git-gutter-mode.
     (when (vc-root-dir)
       (git-gutter-mode 1)
