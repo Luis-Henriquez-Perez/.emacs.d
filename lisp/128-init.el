@@ -155,16 +155,17 @@ Replace `kill-buffer--possibly-save' as advice."
   "Do special things depending on what file is opened.
 If I open a file in my package directory, do it in `view-mode'.  If I open a
 file that is in a git repo, enale git-gutter-mode."
+  (flet! in-dir-p (apply-partially #'file-in-directory-p buffer-file-name))
+  (flet! in-any-dir-p (&rest dirs) (seq-some #'in-dir-p (mapcar #'expand-file-name dirs)))
   (when buffer-file-name
-    (when (or (file-in-directory-p buffer-file-name (expand-file-name "~/.config/emacs/elpa/"))
-              (file-in-directory-p buffer-file-name (expand-file-name "~/Downloads/")))
+    (when (in-any-dir-p "~/.config/emacs/elpa/" "~/Downloads/")
       (read-only-mode 1))
     ;; When in a git repo enable git-gutter-mode.
     (when (vc-root-dir)
       (git-gutter-mode 1)
       ;; If it is in anyone of my dotfile directories, enable auto-committing.
-      ;; (when (file-in-directory-p))
-      )))
+      (when (in-any-dir-p "~/.config/awesome/" "~/.config/emacs/" "~/")
+        (oo-auto-commit-mode 1)))))
 
 ;; Try to put this at the end.
 (add-hook 'find-file-hook #'oo-dwim-file-rules 90)
