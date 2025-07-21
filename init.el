@@ -47,7 +47,6 @@
 (require '001-init-log)
 (eval-when-compile (require '002-init-loader))
 
-
 ;; Be more precise about startup.  What I will look at when I measure startup
 ;; is the time taken for my lisp files to load, the time taken to run
 ;; `after-init-hook', and the time taken to run `emacs-startup-hook'.  That is
