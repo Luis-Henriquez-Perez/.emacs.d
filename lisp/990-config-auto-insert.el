@@ -203,9 +203,8 @@ in the commentary part."
   (tempel-insert '("#+title:" (string-replace "_" "\s" (f-base (buffer-file-name))) > n
                    "#+author:" user-full-name > n)))
 
-
 (defun! oo-auto-insert-script-file-header ()
-  "Insert script file header."
+  "Insert script header and make it executable."
   (set! file-dir (file-truename (file-name-directory buffer-file-name)))
   (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
   (when (and buffer-file-name (equal file-dir script-dir))
