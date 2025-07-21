@@ -145,7 +145,8 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; sh-mode
 (hook! sh-mode-hook aggressive-indent-mode)
 ;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))
-;;;; vco
+;;;; vc
+
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
