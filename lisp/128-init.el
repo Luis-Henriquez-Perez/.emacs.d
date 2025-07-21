@@ -164,8 +164,9 @@ file that is in a git repo, enale git-gutter-mode."
     (when (vc-root-dir)
       (git-gutter-mode 1)
       ;; If it is in anyone of my dotfile directories, enable auto-committing.
-      (when (in-any-dir-p "~/.config/awesome/" "~/.config/emacs/" "~/")
-        (oo-auto-commit-mode 1)))))
+      ;; (when (in-any-dir-p "~/.config/awesome/" "~/.config/emacs/" "~/")
+      ;;   (oo-auto-commit-mode 1))
+      )))
 
 ;; Do not add this hook to `find-file-hook' immediately because anytime a file
 ;; is visited it will run this function.
