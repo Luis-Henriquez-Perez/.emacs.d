@@ -166,6 +166,7 @@
   "w" #'ace-window)
 ;;;;; git
 (defvar-keymap! oo-git-map
+  "n" #'vc-next-action
   "B" #'magit-branch
   "b" #'vc-switch-branch
   "c" #'magit-commit
