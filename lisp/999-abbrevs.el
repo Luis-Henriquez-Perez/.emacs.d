@@ -36,6 +36,8 @@
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
+(define-abbrev    global-abbrev-table "comiled"            "compiled"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
+(define-abbrev    global-abbrev-table "imngtha"            "I am going to have a"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "progrmatically"            "programatically"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "frtm"            "furthermore"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "tdwiw"            "to do what I want"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
