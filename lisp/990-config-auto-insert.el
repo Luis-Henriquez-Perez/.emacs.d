@@ -204,16 +204,18 @@ in the commentary part."
                    "#+author:" user-full-name > n)))
 
 
-(defun oo-auto-insert-script-file-header ()
+(defun! oo-auto-insert-script-file-header ()
   "Insert script file header."
-  (and buffer-file-name
-       (string-equal (file-truename (file-name-directory buffer-file-name))
-                     (file-truename (expand-file-name "~/.local/bin/")))
-       (tempel-insert '("#!/bin/bash" > n
-                        "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
-                        "# Author: " user-full-name " <" user-mail-address ">" > n
-                        "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
-                        "# Description: " p > n))))
+  (set! file-dir (file-truename (file-name-directory buffer-file-name)))
+  (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
+  (when (and buffer-file-name (equal file-dir script-dir))
+    ;; Make the file executable.
+    (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
+    (tempel-insert '("#!/bin/bash" > n
+                     "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
+                     "# Author: " user-full-name " <" user-mail-address ">" > n
+                     "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
+                     "# Description: " p > n))))
 ;;; provide
 (provide '990-config-auto-insert)
 ;;; 990-config-auto-insert.el ends here
