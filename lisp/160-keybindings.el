@@ -287,6 +287,7 @@
 ;;;;; quick map
 (defvar-keymap! oo-quick-map
   "j" #'+org-capture-todo
+  "a" #'org-archive-subtree
   "g" #'grugru
   "i" #'tempel-insert
   "l" #'tempel-insert)
