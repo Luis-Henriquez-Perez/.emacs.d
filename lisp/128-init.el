@@ -151,7 +151,7 @@ Replace `kill-buffer--possibly-save' as advice."
 (add-hook 'vc-git-log-edit-mode-hook #'captain-mode)
 (add-hook 'vc-git-log-edit-mode-hook #'oo--enter-evil-insert-state-maybe 0)
 ;;;; make certain files read-only
-(defun oo-dwim-file-rules ()
+(defun! oo-dwim-file-rules ()
   "Do special things depending on what file is opened.
 If I open a file in my package directory, do it in `view-mode'.  If I open a
 file that is in a git repo, enale git-gutter-mode."
@@ -167,8 +167,10 @@ file that is in a git repo, enale git-gutter-mode."
       (when (in-any-dir-p "~/.config/awesome/" "~/.config/emacs/" "~/")
         (oo-auto-commit-mode 1)))))
 
+;; Do not add this hook to `find-file-hook' immediately because anytime a file
+;; is visited it will run this function.
 ;; Try to put this at the end.
-(add-hook 'find-file-hook #'oo-dwim-file-rules 90)
+(add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'oo-dwim-file-rules 90)))
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
