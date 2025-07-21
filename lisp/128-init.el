@@ -150,6 +150,24 @@ Replace `kill-buffer--possibly-save' as advice."
 (add-hook 'vc-git-log-edit-mode-hook #'abbrev-mode)
 (add-hook 'vc-git-log-edit-mode-hook #'captain-mode)
 (add-hook 'vc-git-log-edit-mode-hook #'oo--enter-evil-insert-state-maybe 0)
+;;;; make certain files read-only
+(defun oo-dwim-file-rules ()
+  "Do special things depending on what file is opened.
+If I open a file in my package directory, do it in `view-mode'.  If I open a
+file that is in a git repo, enale git-gutter-mode."
+  (when buffer-file-name
+    (when (or (file-in-directory-p buffer-file-name (expand-file-name "~/.config/emacs/elpa/"))
+              (file-in-directory-p buffer-file-name (expand-file-name "~/Downloads/")))
+      (view-mode 1))
+    ;; When in a git repo enable git-gutter-mode.
+    (when (vc-root-dir)
+      (git-gutter-mode 1)
+      ;; If it is in anyone of my dotfile directories, enable auto-committing.
+      ;; (when (file-in-directory-p))
+      )))
+
+;; Try to put this at the end.
+(add-hook 'find-file-hook #'oo-dwim-file-rules 90)
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
