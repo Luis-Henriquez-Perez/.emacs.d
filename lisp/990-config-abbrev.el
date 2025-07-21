@@ -1,4 +1,4 @@
-;;; 990-abbrev-configuration.el --- abbrev configuration -*- lexical-binding: t; -*-
+;;; 990-config-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -242,5 +242,5 @@ directory.  If it does not exist create it and add it."
 ;;   ()
 ;;   )
 ;;; provide
-(provide '990-abbrev-configuration)
-;;; 990-abbrev-configuration.el ends here
+(provide '990-config-abbrev)
+;;; 990-config-abbrev.el ends here
