@@ -88,7 +88,8 @@
                      (mu4e-trash-folder      . ,(expand-file-name "/luishenriquezperez/trash"))
                      (smtpmail-default-smtp-server . "smtp.gmail.com")
                      (smtpmail-smtp-server . "smtp.gmail.com")
-                     (smtpmail-smtp-service . 465)
+                     (smtpmail-smtp-service . 587)
+                     ;; (smtpmail-smtp-service . 465)
                      (smtpmail-stream-type . ssl)
                      (smtpmail-smtp-user . "luishenriquezperez@gmail.com")))))
 
