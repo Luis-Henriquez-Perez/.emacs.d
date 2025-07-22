@@ -53,6 +53,12 @@
 (opt! mu4e-attachments-dir (expand-file-name "~/Downloads"))
 (opt! mu4e-compose-signature '(funcall #'oo--message-signature))
 
+(opt! mu4e-get-mail-command "mbsync -a")
+(opt! sendmail-program (executable-find "msmtp"))
+(opt! mail-specify-envelope-from t)
+(opt! message-sendmail-envelope-from 'header)
+(opt! message-send-mail-function   'sendmail-send-it)
+
 (opt! mu4e-contexts
       (list (make-mu4e-context
              :name "luis@luishp.xyz"
@@ -63,7 +69,12 @@
                      (mu4e-refile-folder     . ,(expand-file-name "/luishp/archive"))
                      (mu4e-drafts-folder     . ,(expand-file-name "/luishp/drafts"))
                      (mu4e-sent-folder       . ,(expand-file-name "/luishp/sent"))
-                     (mu4e-trash-folder      . ,(expand-file-name "/luishp/trash"))))
+                     (mu4e-trash-folder      . ,(expand-file-name "/luishp/trash"))
+                     (smtpmail-default-smtp-server . "mail.privateemail.com")
+                     (smtpmail-smtp-server . "mail.privateemail.com")
+                     (smtpmail-smtp-service . 465)
+                     (smtpmail-stream-type . ssl)
+                     (smtpmail-smtp-user . "luis@luishp.xyz")))
             (make-mu4e-context
              :name "gmail"
              ;; :name "luishenriquezperez@gmail.com"
@@ -74,11 +85,15 @@
                      (mu4e-refile-folder     . "/luishenriquezperez/archive")
                      (mu4e-drafts-folder     . ,(expand-file-name "/luishenriquezperez/drafts"))
                      (mu4e-sent-folder       . ,(expand-file-name "/luishenriquezperez/sent"))
-                     (mu4e-trash-folder      . ,(expand-file-name "/luishenriquezperez/trash"))))))
+                     (mu4e-trash-folder      . ,(expand-file-name "/luishenriquezperez/trash"))
+                     (smtpmail-default-smtp-server . "smtp.gmail.com")
+                     (smtpmail-smtp-server . "smtp.gmail.com")
+                     (smtpmail-smtp-service . 465)
+                     (smtpmail-stream-type . ssl)
+                     (smtpmail-smtp-user . "luishenriquezperez@gmail.com")))))
 
-(opt! message-send-mail-function   'smtpmail-send-it)
-(opt! smtpmail-default-smtp-server "smtp.fastmail.com")
-(opt! smtpmail-smtp-server         "smtp.fastmail.com")
+;; (opt! smtpmail-default-smtp-server "smtp.fastmail.com")
+;; (opt! smtpmail-smtp-server         "smtp.fastmail.com")
 
 ;; Start with the first (default) context;
 ;; default is to ask-if-none (ask when there's no context yet, and none match)
