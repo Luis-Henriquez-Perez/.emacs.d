@@ -116,6 +116,9 @@
 (opt! org-id-link-to-org-use-id t)
 ;;;; org-timer
 (opt! org-timer-default-timer "0:05:00")
+;;;; bindings
+(nmap org-mode-map "T" #'org-todo)
+(nmap org-mode-map "t" #'+org-choose-tags)
 ;;; provide
 (provide '130-init-org)
 ;;; 130-init-org.el ends here
