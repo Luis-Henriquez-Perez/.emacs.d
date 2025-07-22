@@ -315,16 +315,6 @@
 (imap override-global-map oo-insert-leader-key #'oo-leader-map)
 (emap override-global-map oo-emacs-leader-key #'oo-leader-map)
 (emap override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
-;;;; helm
-(imap helm-map "TAB" #'helm-next-line)
-(imap helm-map [backtab] #'helm-previous-line)
-(imap helm-map "C-j" #'helm-next-line)
-(imap helm-map "C-k" #'helm-previous-line)
-(imap helm-map "C-a" #'helm-select-action)
-(imap helm-map "C-m" #'helm-toggle-visible-mark-forward)
-(imap helm-map "RET" #'+helm-select-nth-action)
-(imap helm-map "S-TAB" #'helm-mark-current-line)
-(imap helm-map "C-;" #'ace-jump-helm-line)
 ;;;; corfu
 (imap corfu-map "<tab>"   #'corfu-next)
 (imap corfu-map [backtab] #'corfu-previous)
@@ -335,16 +325,6 @@
 (imap corfu-map "C-p"     #'corfu-previous)
 (imap corfu-map ";"       #'corfu-quick-complete)
 (imap corfu-map "SPC"     #'corfu-insert)
-;;;; vertico
-(imap vertico-map "C-n" #'vertico-scroll-up)
-(imap vertico-map "C-p" #'vertico-scroll-down)
-(imap vertico-map "TAB" #'vertico-next)
-(imap vertico-map "C-k" #'vertico-previous)
-(imap vertico-map "C-j" #'vertico-next)
-(imap vertico-map ";" #'vertico-quick-exit)
-(imap vertico-map "C-;" #'vertico-quick-exit)
-(imap vertico-map [backtab] #'vertico-previous)
-(imap vertico-map "C-o" #'embark-act)
 ;;;; uncategorized
 (declare-function which-key-add-keymap-based-replacements "which-key")
 (afterfeature! which-key
@@ -359,12 +339,6 @@
 (nmap dired-mode-map "h" #'dired-up-directory)
 (nmap dired-mode-map "l" #'dired-find-file)
 (nmap dired-mode-map "RET" #'dired-find-file)
-
-(imap tempel-map "C-l" #'tempel-abort)
-(imap tempel-map "C-j" #'tempel-next)
-(imap tempel-map "C-k" #'tempel-previous)
-(imap tempel-map "TAB" #'tempel-next)
-(imap tempel-map [backtab] #'tempel-previous)
 ;;;; macrostep
 (declare-function macrostep-expand "macrostep")
 (declare-function macrostep-collapse-all "macrostep")
