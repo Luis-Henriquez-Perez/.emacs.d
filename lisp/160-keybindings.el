@@ -322,9 +322,6 @@
 
 (nmap eww-mode-map "R" #'eww-reload)
 
-(nmap org-mode-map "T" #'org-todo)
-(nmap org-mode-map "t" #'+org-choose-tags)
-
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
 ;;;; macrostep
 (declare-function macrostep-expand "macrostep")
