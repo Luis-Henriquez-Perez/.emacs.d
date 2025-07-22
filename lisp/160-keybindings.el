@@ -315,16 +315,6 @@
 (imap override-global-map oo-insert-leader-key #'oo-leader-map)
 (emap override-global-map oo-emacs-leader-key #'oo-leader-map)
 (emap override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
-;;;; corfu
-(imap corfu-map "<tab>"   #'corfu-next)
-(imap corfu-map [backtab] #'corfu-previous)
-(imap corfu-map "S-TAB"   #'corfu-previous)
-(imap corfu-map "C-;"     #'corfu-quick-complete)
-(imap corfu-map "C-j"     #'corfu-next)
-(imap corfu-map "C-k"     #'corfu-previous)
-(imap corfu-map "C-p"     #'corfu-previous)
-(imap corfu-map ";"       #'corfu-quick-complete)
-(imap corfu-map "SPC"     #'corfu-insert)
 ;;;; uncategorized
 (declare-function which-key-add-keymap-based-replacements "which-key")
 (afterfeature! which-key
@@ -336,9 +326,6 @@
 (nmap org-mode-map "t" #'+org-choose-tags)
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
-(nmap dired-mode-map "h" #'dired-up-directory)
-(nmap dired-mode-map "l" #'dired-find-file)
-(nmap dired-mode-map "RET" #'dired-find-file)
 ;;;; macrostep
 (declare-function macrostep-expand "macrostep")
 (declare-function macrostep-collapse-all "macrostep")
