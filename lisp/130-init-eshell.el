@@ -55,6 +55,9 @@
 (advice-add #'eshell-unload-all-modules :around #'oo-funcall-quietly)
 
 (advice-add #'eshell-mode :around #'oo-funcall-quietly)
+
+(nmap eshell-mode-map "J" #'eshell-previous-prompt)
+(nmap eshell-mode-map "K" #'eshell-next-prompt)
 ;;; provide
 (provide '130-init-eshell)
 ;;; 130-init-eshell.el ends here
