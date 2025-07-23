@@ -28,8 +28,6 @@
 (require '050-base)
 
 (opt! notmuch-search-oldest-first nil)
-
-
 ;;; provide
 (provide '130-init-notmuch)
 ;;; 130-init-notmuch.el ends here
