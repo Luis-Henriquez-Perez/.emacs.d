@@ -170,6 +170,7 @@
   "b" #'vc-switch-branch
   "c" #'magit-commit
   "g" #'magit-status
+  "j" #'oo-dwim-vc-action
   "l" #'vc-switch-branch
   "n" #'oo-dwim-vc-action
   "p" #'magit-push
