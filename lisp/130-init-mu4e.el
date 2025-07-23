@@ -59,13 +59,22 @@
 (opt! message-sendmail-envelope-from 'header)
 (opt! message-send-mail-function   'sendmail-send-it)
 
+(require 'smtpmail)
+(message-send-mail-function . 'smtpmail-send-it)
+(starttls-use-gnutls . t)
+(smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil . nil)))
+(smtpmail-auth-credentials '(("smtp.gmail.com" 587 "USERNAME@gmail.com" . nil)))
+(smtpmail-default-smtp-server . "smtp.gmail.com")
+(smtpmail-smtp-server . "smtp.gmail.com")
+(smtpmail-smtp-service . 587)
+
 (opt! mu4e-contexts
       (list (make-mu4e-context
              :name "luis@luishp.xyz"
              :enter-func #'+mu4e--main-enter-message
              :leave-func #'+mu4e--main-leave-message
              :vars `((user-mail-address      . "luis@luishp.xyz")
-                     (user-full-name         . "Luis M Henriquez-Perez")
+                     (user-full-name         . "Luis M Henriquez")
                      (mu4e-refile-folder     . ,(expand-file-name "/luishp/archive"))
                      (mu4e-drafts-folder     . ,(expand-file-name "/luishp/drafts"))
                      (mu4e-sent-folder       . ,(expand-file-name "/luishp/sent"))
@@ -81,16 +90,23 @@
              :enter-func #'+mu4e--legacy-enter-message
              :leave-func #'+mu4e--legacy-leave-message
              :vars `((user-mail-address      . "luishenriquezperez@gmail.com")
-                     (user-full-name         . "Luis M Henriquez-Perez")
+                     (user-full-name         . "Luis M Henriquez")
                      (mu4e-refile-folder     . "/luishenriquezperez/archive")
                      (mu4e-drafts-folder     . ,(expand-file-name "/luishenriquezperez/drafts"))
                      (mu4e-sent-folder       . ,(expand-file-name "/luishenriquezperez/sent"))
                      (mu4e-trash-folder      . ,(expand-file-name "/luishenriquezperez/trash"))
+                     (message-send-mail-function . 'smtpmail-send-it)
+                     (starttls-use-gnutls . t)
+                     (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil . nil)))
+                     (smtpmail-auth-credentials '(("smtp.gmail.com" 587 "USERNAME@gmail.com" . nil)))
                      (smtpmail-default-smtp-server . "smtp.gmail.com")
                      (smtpmail-smtp-server . "smtp.gmail.com")
                      (smtpmail-smtp-service . 587)
-                     ;; (smtpmail-smtp-service . 465)
-                     (smtpmail-stream-type . ssl)
+                     ;; (smtpmail-default-smtp-server . "smtp.gmail.com")
+                     ;; (smtpmail-smtp-server . "smtp.gmail.com")
+                     ;; (smtpmail-smtp-service . 587)
+                     ;; ;; (smtpmail-smtp-service . 465)
+                     ;; (smtpmail-stream-type . ssl)
                      (smtpmail-smtp-user . "luishenriquezperez@gmail.com")))))
 
 ;; (opt! smtpmail-default-smtp-server "smtp.fastmail.com")
