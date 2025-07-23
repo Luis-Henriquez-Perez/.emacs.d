@@ -30,6 +30,8 @@
 ;; If you do not use `setq-default' this setting will not persist across
 ;; different searches.
 (setq-default notmuch-search-oldest-first nil)
+;; (notmuch-search "tag:inbox and path:luis@luishp.xyz/**")
+;; (notmuch-search "tag:inbox and path:luishenriquezperez@gmail.com/**")
 ;;; provide
 (provide '130-init-notmuch)
 ;;; 130-init-notmuch.el ends here
