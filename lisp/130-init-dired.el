@@ -44,6 +44,7 @@
 (nmap dired-mode-map "h" #'dired-up-directory)
 (nmap dired-mode-map "l" #'dired-find-file)
 (nmap dired-mode-map "RET" #'dired-find-file)
+(nmap dired-mode-map "o" #'dired-omit-mode)
 ;;; provide
 (provide '130-init-dired)
 ;;; 130-init-dired.el ends here
