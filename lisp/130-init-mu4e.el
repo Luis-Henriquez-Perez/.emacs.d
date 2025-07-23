@@ -59,14 +59,14 @@
 (opt! message-sendmail-envelope-from 'header)
 (opt! message-send-mail-function   'sendmail-send-it)
 
-(require 'smtpmail)
-(message-send-mail-function . 'smtpmail-send-it)
-(starttls-use-gnutls . t)
-(smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil . nil)))
-(smtpmail-auth-credentials '(("smtp.gmail.com" 587 "USERNAME@gmail.com" . nil)))
-(smtpmail-default-smtp-server . "smtp.gmail.com")
-(smtpmail-smtp-server . "smtp.gmail.com")
-(smtpmail-smtp-service . 587)
+;; (require 'smtpmail)
+;; (message-send-mail-function . 'smtpmail-send-it)
+;; (starttls-use-gnutls . t)
+;; (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil . nil)))
+;; (smtpmail-auth-credentials '(("smtp.gmail.com" 587 "USERNAME@gmail.com" . nil)))
+;; (smtpmail-default-smtp-server . "smtp.gmail.com")
+;; (smtpmail-smtp-server . "smtp.gmail.com")
+;; (smtpmail-smtp-service . 587)
 
 (opt! mu4e-contexts
       (list (make-mu4e-context
