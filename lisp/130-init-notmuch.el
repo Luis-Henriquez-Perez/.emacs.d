@@ -30,7 +30,9 @@
 ;; If you do not use `setq-default' this setting will not persist across
 ;; different searches.
 (setq-default notmuch-search-oldest-first nil)
+;; (notmuch-search "from:shein@news.edmmarket.shein.com")
 ;; (notmuch-search "tag:inbox and path:yadiraperez2029@gmail.com/**")
+;; (notmuch-search "tag:spam and path:yadiraperez2029@gmail.com/**")
 ;; (notmuch-search "tag:inbox and path:luis@luishp.xyz/**")
 ;; (notmuch-search "tag:inbox and path:luishenriquezperez@gmail.com/**")
 ;;; provide
