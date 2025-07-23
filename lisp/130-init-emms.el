@@ -60,8 +60,8 @@
 
 ;; Without this I get an error that `emms-player-mpv' is not loaded.
 (afterfeature! emms
-  (or (when (executable-find "mpv") (require 'emms-player-mpv))
-      (when (executable-find "vlc") (require 'emms-player-vlc))))
+  (or (and (executable-find "mpv") (require 'emms-player-mpv))
+      (and (executable-find "vlc") (require 'emms-player-vlc))))
 ;;; provide
 (provide '130-init-emms)
 ;;; 130-init-emms.el ends here
