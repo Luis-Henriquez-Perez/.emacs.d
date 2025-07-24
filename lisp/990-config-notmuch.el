@@ -44,7 +44,7 @@
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; (message "from:%S" (notmuch-show-get-from))
-  (message "result -> %S" (notmuch-search-get-result))
+  ;; (message "result -> %S" (notmuch-search-get-result))
   ;; (message "from:%S" (plist-get (notmuch-search-get-result) :from))
   ;; (notmuch-tag "from:%S" "+spam-inbox+deleted")
   )
