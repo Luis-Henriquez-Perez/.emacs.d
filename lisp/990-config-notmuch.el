@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Several functions to help me .
 ;;
 ;;; Code:
 (require 'notmuch)
@@ -58,6 +58,33 @@
   ;; (message "from:%S" (plist-get (notmuch-search-get-result) :from))
   ;; (notmuch-tag "from:%S" "+spam-inbox+deleted")
   )
+
+(defun! oo-notmuch-search-email-at-point ()
+  "Open a notmuch search of the current message."
+  (interactive)
+  ;; (message "email -> %s" (substring (thing-at-point 'email) 1 -1))
+  (set! email (substring (thing-at-point 'email) 1 -1))
+  (message "email -> %s" email)
+  (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
+  (notmuch-search query))
+
+(defun! oo-notmuch-tag-spam ()
+  "Mark message with the send of the current message as spam."
+  (interactive)
+  ;; Get the email at point.
+  (set! email (substring (thing-at-point 'email) 1 -1))
+  (message "email -> %s" email)
+  (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
+  (notmuch-tag query '("+deleted" "+spam" "-inbox")))
+
+(defun! oo-notmuch-tag-delete ()
+  "Mark message with the send of the current message as spam."
+  (interactive)
+  ;; Get the email at point.
+  (set! email (substring (thing-at-point 'email) 1 -1))
+  (message "email -> %s" email)
+  (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
+  (notmuch-tag query '("+deleted" "-inbox")))
 
 ;; (notmuch-search "tag:inbox and path:yadiraperez2029@gmail.com/**")
 ;; (notmuch-search "tag:spam and path:yadiraperez2029@gmail.com/**")
