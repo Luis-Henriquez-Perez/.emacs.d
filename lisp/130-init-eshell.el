@@ -50,6 +50,8 @@
 ;; boost eshell history-size
 ;; Increase the history size from 128 to 1000.
 (opt! eshell-history-size 1000)
+;; Prefer system functions over built-ins.
+(opt! eshell-prefer-lisp-functions nil)
 ;; Stop eshell from printing messages.
 (declare-function eshell-unload-all-modules "eshell")
 (advice-add #'eshell-unload-all-modules :around #'oo-funcall-quietly)
