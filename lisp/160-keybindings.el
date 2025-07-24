@@ -256,7 +256,7 @@
   "z" #'ace-link
   "b" #'burly-open-bookmark
   "i" #'imenu
-  "j" #'oo-dwim-narrow
+  "j" #'oo-dwim-vc-action
   "n" #'oo-new-buffer
   "f" #'switch-to-buffer
   "a" #'find-library
