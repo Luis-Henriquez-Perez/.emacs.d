@@ -239,7 +239,7 @@ directory.  If it does not exist create it and add it."
 (defun oo-update-abbrev-table ()
   "Update the abbrev table."
   ;; Find the table.
-  ()
+  (re-search-forward "^(define-abbrev-table")
   ;; Replace it with the new table.
   ;; Commit the update so I do not have to.
   (save-buffer)
