@@ -244,6 +244,12 @@ directory.  If it does not exist create it and add it."
   ;; Commit the update so I do not have to.
   (save-buffer)
   )
+(defun oo-insert-at-column (column string)
+  "Insert STRING at COLUMN, padding with spaces if necessary."
+  (let ((pad (- column (current-column))))
+    (when (> pad 0)
+      (insert (make-string pad ?\s)))
+    (insert string)))
 
 (defun! oo-print-abbrev-table (table)
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
@@ -269,10 +275,11 @@ directory.  If it does not exist create it and add it."
   ;; (set! fmt (format "    (%%-%dS %%-%dS %%S%%s)" (+ 2 max1) max2))
   (with-current-buffer (get-buffer-create "*Abbrev Table*")
     (erase-buffer)
-    (insert (format "(define-abbrev-table '%s\n  '(\n" name))
+    (insert (format "(define-abbrev-table '%s\n  '(" name))
+    (set! column (current-column))
     (dolist (abbrev abbrevs)
       (set! (name expansion hook . plist) abbrev)
-      (insert (format "    %S\n" abbrev))
+      (oo-insert-at-column column (format "%S\n" abbrev))
       ;; (let* ((plist-str (if plist
       ;;                       (concat " " (mapconcat (lambda (p) (prin1-to-string p)) plist " "))
       ;;                     "")))
