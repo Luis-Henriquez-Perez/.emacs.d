@@ -239,7 +239,8 @@ directory.  If it does not exist create it and add it."
 (defun oo-update-abbrev-table ()
   "Update the abbrev table."
   ;; Find the table.
-  (re-search-forward (rx bol "(define-abbrev-table" (1+ ) ")))" eol))
+  (goto-char (point-min))
+  (re-search-forward "^(define-abbrev-table" nil)
   (replace-match (oo-abbrev-table-string))
   ;; Replace it with the new table.
   ;; Commit the update so I do not have to.
@@ -252,7 +253,7 @@ directory.  If it does not exist create it and add it."
       (insert (make-string pad ?\s)))
     (insert string)))
 
-(defun! oo-print-abbrev-table (table)
+(defun! oo-abbrev-table-string (table)
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
   (interactive (list (intern (completing-read "Abbrev table: " (mapcar #'symbol-name abbrev-table-name-list)))))
   (set! abbrevs '())
@@ -272,7 +273,7 @@ directory.  If it does not exist create it and add it."
        (push entry abbrevs)))
    (symbol-value table))
   (setq abbrevs (sort abbrevs (-on #'string< #'car)))
-  (with-current-buffer (get-buffer-create "*Abbrev Table*")
+  (with-temp-buffer
     (erase-buffer)
     (insert (format "(define-abbrev-table '%s\n  '(" name))
     (set! column (current-column))
@@ -282,8 +283,7 @@ directory.  If it does not exist create it and add it."
     ;; This is the last newline.
     (delete-char -1)
     (oo-insert-at-column (current-column) "))\n")
-    (emacs-lisp-mode)
-    (pop-to-buffer (current-buffer))))
+    (buffer-string)))
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
