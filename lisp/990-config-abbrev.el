@@ -262,7 +262,7 @@ directory.  If it does not exist create it and add it."
        (and case-fixed (setq entry (append entry (list :case-fixed case-fixed))))
        (push entry abbrevs)))
    (symbol-value table))
-  (setq abbrevs (sort abbrevs (-on #'string> #'car)))
+  (setq abbrevs (sort abbrevs (-on #'string< #'car)))
   ;; Compute padding
   (set! max1 (apply #'max (mapcar (lambda (e) (length (nth 0 e))) abbrevs)))
   (set! max2 (apply #'max (mapcar (lambda (e) (length (nth 1 e))) abbrevs)))
@@ -270,7 +270,7 @@ directory.  If it does not exist create it and add it."
   (with-current-buffer (get-buffer-create "*Abbrev Table*")
     (erase-buffer)
     (insert (format "(define-abbrev-table '%s\n  '(\n" name))
-    (dolist (abbrev (nreverse abbrevs))
+    (dolist (abbrev abbrevs)
       (let* ((name (format "\"%s\"" (nth 0 abbrev)))
              (expansion (nth 1 abbrev))
              (hook (format "%s" (nth 2 abbrev)))
