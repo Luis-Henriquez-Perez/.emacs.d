@@ -205,8 +205,8 @@ in the commentary part."
 
 (defun oo-make-this-file-executable ()
   "Hook that makes this file executable."
-  ;; (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
-  )
+  (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
+  (remove-hook 'after-save-hook #'oo-make-this-file-executable))
 
 (defun! oo-auto-insert-script-file-header ()
   "Insert script header and make it executable."
