@@ -76,7 +76,7 @@ Optionally, provide custom own URL."
   (unless (executable-find "yt-dlp")
     (error "Executable for yt-dlp not found.  Please install yt-dlp"))
   (set! ytdlp (executable-find "yt-dlp"))
-  (set! command (format "%s %s --write-thumbnail"ytdlp url))
+  (set! command (format "%s %s --write-thumbnail" ytdlp url))
   (call-process-shell-command command nil 0))
 ;;; provide
 (provide '990-config-yeetube)
