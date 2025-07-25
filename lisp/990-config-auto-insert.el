@@ -208,6 +208,8 @@ in the commentary part."
   (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
   (remove-hook 'after-save-hook #'oo-make-this-file-executable))
 
+;; I need to make this file executable in a hook because the file is not
+;; actually created until the buffer is saved.
 (defun! oo-auto-insert-script-file-header ()
   "Insert script header and make it executable."
   (set! file-dir (file-truename (file-name-directory buffer-file-name)))
