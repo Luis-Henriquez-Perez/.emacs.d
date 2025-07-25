@@ -140,11 +140,11 @@ from the beginning."
   (or (and defining-kbd-macro "•REC")
       (and executing-kbd-macro "KBD-PLAY")))
 
-(defun oo-mode-line-segment--abbrevs ()
-  "Indicate how many abbrevs I have in `999-abbrevs.el'."
-  (when (equal (buffer-file-name)
-               (expand-file-name "999-abbrevs.el" oo-lisp-dir))
-    (format "%d abbrevs" (how-many "^(define-abbrev" (point-min) (point-max)))))
+;; (defun oo-mode-line-segment--abbrevs ()
+;;   "Indicate how many abbrevs I have in `999-abbrevs.el'."
+;;   (when (equal (buffer-file-name)
+;;                (expand-file-name "999-abbrevs.el" oo-lisp-dir))
+;;     (format "%d abbrevs" (how-many "^(define-abbrev" (point-min) (point-max)))))
 
 (defun oo-mode-line-segment--word-count ()
   "Indicate how many words I have in a text buffer."
@@ -277,7 +277,7 @@ or playing with repeat."
   (flet! pad (segment) (format "\s%s\s" segment))
   (flet! render (side) (mapcar #'pad (cl-remove-if #'empty-p (mapcar #'oo-mode-line-render-segment side))))
   (set! lhs (render '(evil-state tab buffer-info version-control emms)))
-  (set! rhs (render '(time-info buffer-location pomodoro word-count abbrevs text-scale)))
+  (set! rhs (render '(time-info buffer-location pomodoro word-count text-scale)))
   ;; Now apply the faces.  This is kind of messy.
   (set! evil-state-face (+evil-state-face))
   (set! lhs-head (add-face evil-state-face (car lhs)))
