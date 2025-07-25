@@ -266,7 +266,7 @@ directory.  If it does not exist create it and add it."
   ;; Compute padding
   (set! max1 (apply #'max (mapcar (lambda (e) (length (nth 0 e))) abbrevs)))
   (set! max2 (apply #'max (mapcar (lambda (e) (length (nth 1 e))) abbrevs)))
-  (set! fmt (format "    (%%-%ds \"%%-%ds\" %%s%%s)" (+ 2 max1) max2))
+  (set! fmt (format "    (%%-%ds %%-%dS %%s%%s)" (+ 2 max1) max2))
   (with-current-buffer (get-buffer-create "*Abbrev Table*")
     (erase-buffer)
     (insert (format "(define-abbrev-table '%s\n  '(\n" name))
