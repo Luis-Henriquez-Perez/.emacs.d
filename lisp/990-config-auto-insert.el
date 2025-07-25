@@ -203,18 +203,22 @@ in the commentary part."
   (tempel-insert '("#+title:" (string-replace "_" "\s" (f-base (buffer-file-name))) > n
                    "#+author:" user-full-name > n)))
 
+(defun oo-make-this-file-executable ()
+  "Hook that makes this file executable."
+  ;; (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
+  )
+
 (defun! oo-auto-insert-script-file-header ()
   "Insert script header and make it executable."
   (set! file-dir (file-truename (file-name-directory buffer-file-name)))
   (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
   (when (and buffer-file-name (equal file-dir script-dir))
-    ;; Make the file executable.
-    ;; (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
     (tempel-insert '("#!/bin/sh" > n
                      "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                      "# Author: " user-full-name " <" user-mail-address ">" > n
                      "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
-                     "# Description: " p > n))))
+                     "# Description: " p > n))
+    (add-hook 'after-save-hook #'oo-make-this-file-executable nil 'local)))
 ;;; provide
 (provide '990-config-auto-insert)
 ;;; 990-config-auto-insert.el ends here
