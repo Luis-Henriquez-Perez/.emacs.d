@@ -239,8 +239,8 @@ directory.  If it does not exist create it and add it."
 (defun oo-update-abbrev-table ()
   "Update the abbrev table."
   ;; Find the table.
-  (re-search-forward "^(define-abbrev-table")
-  (replace-match)
+  (re-search-forward (rx bol "(define-abbrev-table" (1+ ) ")))" eol))
+  (replace-match (oo-abbrev-table-string))
   ;; Replace it with the new table.
   ;; Commit the update so I do not have to.
   (save-buffer)
@@ -271,22 +271,13 @@ directory.  If it does not exist create it and add it."
        (push entry abbrevs)))
    (symbol-value table))
   (setq abbrevs (sort abbrevs (-on #'string< #'car)))
-  ;; Compute padding
-  ;; (set! max1 (apply #'max (mapcar (lambda (e) (length (nth 0 e))) abbrevs)))
-  ;; (set! max2 (apply #'max (mapcar (lambda (e) (length (nth 1 e))) abbrevs)))
-  ;; (set! fmt (format "    (%%-%dS %%-%dS %%S%%s)" (+ 2 max1) max2))
   (with-current-buffer (get-buffer-create "*Abbrev Table*")
     (erase-buffer)
     (insert (format "(define-abbrev-table '%s\n  '(" name))
     (set! column (current-column))
     (dolist (abbrev abbrevs)
       (set! (name expansion hook . plist) abbrev)
-      (oo-insert-at-column column (format "%S\n" abbrev))
-      ;; (let* ((plist-str (if plist
-      ;;                       (concat " " (mapconcat (lambda (p) (prin1-to-string p)) plist " "))
-      ;;                     "")))
-      ;;   (insert (format fmt name expansion hook plist-str) "\n"))
-      )
+      (oo-insert-at-column column (format "%S\n" abbrev)))
     ;; This is the last newline.
     (delete-char -1)
     (oo-insert-at-column (current-column) "))\n")
