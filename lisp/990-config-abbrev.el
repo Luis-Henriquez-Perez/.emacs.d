@@ -239,12 +239,16 @@ directory.  If it does not exist create it and add it."
 (defun oo-update-abbrev-table ()
   "Update the abbrev table."
   ;; Find the table.
-  (goto-char (point-min))
-  (re-search-forward "^(define-abbrev-table" nil)
-  (replace-match (oo-abbrev-table-string))
-  ;; Replace it with the new table.
-  ;; Commit the update so I do not have to.
-  (save-buffer))
+  (with-current-buffer ()
+    (goto-char (point-min))
+    (re-search-forward "^(define-abbrev-table" nil)
+    (goto-char (match-beginning 0))
+    (set! beg (point))
+    (forward-sexp)
+    (delete-region beg (point))
+    (goto-char beg)
+    (insert (oo-abbrev-table-string))
+    (save-buffer)))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
