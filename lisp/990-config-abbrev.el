@@ -285,7 +285,7 @@ directory.  If it does not exist create it and add it."
       ;;                     "")))
       ;;   (insert (format fmt name expansion hook plist-str) "\n"))
       )
-    ;; This is the newline.
+    ;; This is the last newline.
     (delete-char -1)
     (oo-insert-at-column (current-column) "))\n")
     (emacs-lisp-mode)
