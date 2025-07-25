@@ -272,10 +272,12 @@ directory.  If it does not exist create it and add it."
     (insert (format "(define-abbrev-table '%s\n  '(\n" name))
     (dolist (abbrev abbrevs)
       (set! (name expansion hook . plist) abbrev)
-      (let* ((plist-str (if plist
-                            (concat " " (mapconcat (lambda (p) (prin1-to-string p)) plist " "))
-                          "")))
-        (insert (format fmt name expansion hook plist-str) "\n")))
+      (insert (format "    %S\n" abbrev))
+      ;; (let* ((plist-str (if plist
+      ;;                       (concat " " (mapconcat (lambda (p) (prin1-to-string p)) plist " "))
+      ;;                     "")))
+      ;;   (insert (format fmt name expansion hook plist-str) "\n"))
+      )
     (insert "    ))\n")
     (emacs-lisp-mode)
     (pop-to-buffer (current-buffer))))
