@@ -266,16 +266,13 @@ directory.  If it does not exist create it and add it."
   ;; Compute padding
   (set! max1 (apply #'max (mapcar (lambda (e) (length (nth 0 e))) abbrevs)))
   (set! max2 (apply #'max (mapcar (lambda (e) (length (nth 1 e))) abbrevs)))
-  (set! fmt (format "    (%%-%ds %%-%dS %%s%%s)" (+ 2 max1) max2))
+  (set! fmt (format "    (%%-%dS %%-%dS %%S%%s)" (+ 2 max1) max2))
   (with-current-buffer (get-buffer-create "*Abbrev Table*")
     (erase-buffer)
     (insert (format "(define-abbrev-table '%s\n  '(\n" name))
     (dolist (abbrev abbrevs)
-      (let* ((name (format "\"%s\"" (nth 0 abbrev)))
-             (expansion (nth 1 abbrev))
-             (hook (format "%s" (nth 2 abbrev)))
-             (plist (nthcdr 3 abbrev))
-             (plist-str (if plist
+      (set! (name expansion hook . plist) abbrev)
+      (let* ((plist-str (if plist
                             (concat " " (mapconcat (lambda (p) (prin1-to-string p)) plist " "))
                           "")))
         (insert (format fmt name expansion hook plist-str) "\n")))
