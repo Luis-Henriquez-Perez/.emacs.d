@@ -127,6 +127,17 @@ string or comment."
        (stringp default-directory)
        (string= (expand-file-name default-directory)
                 (expand-file-name "~/Documents/MyBlog/org/posts/"))))
+
+(defun oo-fast-delete-lines (n)
+  "Delete N lines from point quickly, minimizing overhead."
+  (let ((inhibit-modification-hooks t)
+        (buffer-undo-list t) ;; Disable undo recording
+        (inhibit-read-only t)
+        (inhibit-point-motion-hooks t)
+        (start (point)))
+    (save-excursion
+      (forward-line n)
+      (delete-region start (point)))))
 ;;;; expansion functions
 ;; (defvar oo-blog-dir "~/Documents/MyBlog/org/documentation/")
 
@@ -239,18 +250,20 @@ directory.  If it does not exist create it and add it."
 (defun! oo-update-abbrev-table ()
   "Update the abbrev table."
   (interactive)
-  ;; Find the table.
-  (with-current-buffer (find-file-noselect (expand-file-name "999-abbrevs.el" oo-lisp-dir))
-    (save-excursion
-      (goto-char (point-min))
-      (when (re-search-forward "^(define-abbrev-table" nil)
-        (goto-char (match-beginning 0))
-        (set! beg (point))
-        (forward-sexp)
-        (delete-region beg (point))
-        (goto-char beg)
-        (insert (oo-abbrev-table-string 'global-abbrev-table))
-        (save-buffer)))))
+  (with-temp-file (expand-file-name "999-abbrevs.el" oo-lisp-dir)
+    (goto-char (point-min))
+    (insert-file-contents (expand-file-name "999-abbrevs.el" oo-lisp-dir))
+    (goto-char (point-min))
+    (cond ((re-search-forward "^(define-abbrev-table" nil)
+           (goto-char (match-beginning 0))
+           (set! beg (point))
+           (forward-sexp)
+           (delete-region beg (point))
+           (goto-char beg)
+           (insert (oo-abbrev-table-string 'global-abbrev-table)))
+          (t)
+          ;; (save-buffer)
+          )))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
@@ -266,17 +279,22 @@ directory.  If it does not exist create it and add it."
   (set! name (symbol-name table))
   (mapatoms
    (lambda (sym)
-     (let* ((expansion (symbol-value sym))
+     (let* ((name (symbol-name sym))
+            (expansion (symbol-value sym))
             (hook (symbol-function sym))
             (plist (symbol-plist sym))
             ;; I checked the properties and the only ones that I will
             ;; realistically use are these two.
             (case-fixed (plist-get plist :case-fixed))
             (enable-function (plist-get plist :enable-function))
-            (entry (list (symbol-name sym) expansion hook)))
-       (and enable-function (setq entry (append entry (list :enable-function enable-function))))
-       (and case-fixed (setq entry (append entry (list :case-fixed case-fixed))))
-       (push entry abbrevs)))
+            (entry (list name expansion hook)))
+       ;; There's one entry whose name is the entry string.  Looks like ("" nil
+       ;; nil).  No point in having that in the table (it is probrably always
+       ;; implicitly there though).
+       (unless (string-empty-p name)
+         (and enable-function (setq entry (append entry (list :enable-function enable-function))))
+         (and case-fixed (setq entry (append entry (list :case-fixed case-fixed))))
+         (push entry abbrevs))))
    (symbol-value table))
   (setq abbrevs (sort abbrevs (-on #'string< #'car)))
   (with-temp-buffer
@@ -288,7 +306,7 @@ directory.  If it does not exist create it and add it."
       (oo-insert-at-column column (format "%S\n" abbrev)))
     ;; This is the last newline.
     (delete-char -1)
-    (oo-insert-at-column (current-column) "))\n")
+    (oo-insert-at-column (current-column) "))")
     (buffer-string)))
 ;;; provide
 (provide '990-config-abbrev)
