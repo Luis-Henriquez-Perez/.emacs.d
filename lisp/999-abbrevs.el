@@ -2013,7 +2013,6 @@
 (define-abbrev    global-abbrev-table "kbdm"             "keyboard macro"                                   nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "kbdms"            "keyboard macros"                                  nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "msw"              "Microsoft Windows"                                nil                                   :enable-function #'oo-use-text-abbrev-p)
-(define-abbrev    global-abbrev-table ".mail"            "luis@luishp.xyz"                                  nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "imho"             "in my humble opinion"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "imo"              "in my opinion"                                    nil                                   :enable-function #'oo-use-text-abbrev-p)
 (define-abbrev    global-abbrev-table "fyi"              "for your information"                             nil                                   :enable-function #'oo-use-text-abbrev-p)
