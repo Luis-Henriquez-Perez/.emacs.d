@@ -33,7 +33,6 @@
 (defhook! load-abbrevs (abbrev-mode-hook)
   :expire t
   :level 'info
-  (require '990-abbrev-configuration)
   (require '999-abbrevs))
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)

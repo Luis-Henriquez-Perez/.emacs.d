@@ -31,8 +31,6 @@
 (require '050-base)
 (require 'abbrev)
 (require '999-wikipedia-typo-abbrevs)
-(require '990-abbrev-configuration)
-(require '990-snippets)
 
 (declare-function lorem-ipsum-insert-paragraphs "lorem-ipsum")
 
