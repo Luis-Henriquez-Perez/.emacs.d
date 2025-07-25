@@ -244,6 +244,7 @@ directory.  If it does not exist create it and add it."
   ;; Commit the update so I do not have to.
   (save-buffer)
   )
+
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
   (let ((pad (- column (current-column))))
