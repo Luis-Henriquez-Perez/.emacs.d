@@ -240,6 +240,7 @@ directory.  If it does not exist create it and add it."
   "Update the abbrev table."
   ;; Find the table.
   (re-search-forward "^(define-abbrev-table")
+  (replace-match)
   ;; Replace it with the new table.
   ;; Commit the update so I do not have to.
   (save-buffer)
