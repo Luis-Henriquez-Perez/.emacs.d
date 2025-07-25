@@ -234,13 +234,54 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 
-;; (defun! oo-create-new-blog-post ()
-;;   "Create a new blog post."
-;;   (interactive)
-;;   (set! blog-dir (expand-file-name "~/Documents/MyBlog/org/posts/"))
-;;   (expand-file-name file blog-dir)
-;;   ()
-;;   )
+;; The following code is to ensure that I have a neat abbrev-table and to
+;; automate updating it so I only have to worry about adding new entries.
+(defun oo-update-abbrev-table ()
+  "Update the abbrev table."
+  ;; Find the table.
+  ()
+  ;; Replace it with the new table.
+  ;; Commit the update so I do not have to.
+  (save-buffer)
+  )
+
+(defun! oo-print-abbrev-table (table)
+  "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
+  (interactive (list (intern (completing-read "Abbrev table: " (mapcar #'symbol-name abbrev-table-name-list)))))
+  (set! abbrevs '())
+  (set! name (symbol-name table))
+  (mapatoms
+   (lambda (sym)
+     (let* ((expansion (symbol-value sym))
+            (hook (symbol-function sym))
+            (plist (symbol-plist sym))
+            (case-fixed (plist-get plist :case-fixed))
+            (enable-function (plist-get plist :enable-function))
+            (entry (list (symbol-name sym) expansion hook)))
+       (and enable-function (setq entry (append entry (list :enable-function enable-function))))
+       (and case-fixed (setq entry (append entry (list :case-fixed case-fixed))))
+       (push entry abbrevs)))
+   (symbol-value table))
+  (setq abbrevs (sort abbrevs (-on #'string> #'car)))
+  ;; Compute padding
+  (set! max1 (apply #'max (mapcar (lambda (e) (length (nth 0 e))) abbrevs)))
+  (set! max2 (apply #'max (mapcar (lambda (e) (length (nth 1 e))) abbrevs)))
+  (set! fmt (format "    (%%-%ds \"%%-%ds\" %%s%%s)" (+ 2 max1) max2))
+  (with-current-buffer (get-buffer-create "*Abbrev Table*")
+    (erase-buffer)
+    (insert (format "(define-abbrev-table '%s\n  '(\n" name))
+    (dolist (abbrev (nreverse abbrevs))
+      (let* ((name (format "\"%s\"" (nth 0 abbrev)))
+             (expansion (nth 1 abbrev))
+             (hook (format "%s" (nth 2 abbrev)))
+             (plist (nthcdr 3 abbrev))
+             (plist-str (if plist
+                            (concat " " (mapconcat (lambda (p) (prin1-to-string p)) plist " "))
+                          "")))
+        (insert (format fmt name expansion hook plist-str) "\n")))
+    (insert "    ))\n")
+    (emacs-lisp-mode)
+    (pop-to-buffer (current-buffer))))
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
