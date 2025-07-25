@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (nmap yeetube-mode-map "a" #'oo-yeetube-download-audio)
-(nmap yeetube-mode-map "v" #'yeetube-download-video)
+(nmap yeetube-mode-map "v" #'oo-yeetube-download-video)
 (nmap yeetube-mode-map "s" #'yeetube-search)
 
 ;; It is much easier to see which item I am on when the lines are highlighted.
