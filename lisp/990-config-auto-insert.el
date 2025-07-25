@@ -209,8 +209,8 @@ in the commentary part."
   (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
   (when (and buffer-file-name (equal file-dir script-dir))
     ;; Make the file executable.
-    (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
-    (tempel-insert '("#!/bin/bash" > n
+    ;; (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
+    (tempel-insert '("#!/bin/sh" > n
                      "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                      "# Author: " user-full-name " <" user-mail-address ">" > n
                      "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
