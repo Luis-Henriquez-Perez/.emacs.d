@@ -262,6 +262,8 @@ directory.  If it does not exist create it and add it."
      (let* ((expansion (symbol-value sym))
             (hook (symbol-function sym))
             (plist (symbol-plist sym))
+            ;; I checked the properties and the only ones that I will
+            ;; realistically use are these two.
             (case-fixed (plist-get plist :case-fixed))
             (enable-function (plist-get plist :enable-function))
             (entry (list (symbol-name sym) expansion hook)))
