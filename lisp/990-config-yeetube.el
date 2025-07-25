@@ -54,6 +54,30 @@ Optionally, provide custom own URL."
   (set! ytdlp (executable-find "yt-dlp"))
   (set! command (format "%s %s --write-thumbnail --extract-audio --no-keep-video" ytdlp url))
   (call-process-shell-command command nil 0))
+
+(defun oo-yeetube-download-video (&optional url)
+  "Download entry at point in *yeetube* buffer with yt-dlp.
+
+Content will be downloaded at `yeetube-download-directory'.
+Optionally, provide custom own URL."
+  (interactive)
+  (let* ((id (tabulated-list-get-id))
+	     (entry-content (cadr (assoc id yeetube-content)))
+	     (type (aref entry-content (- (length entry-content) 1)))
+	     (url (or (yeetube-get-url id type) url))
+	     (title (or (aref entry-content 0) "Unknown")))
+    (when (string-prefix-p "http" url)
+      (let ((default-directory yeetube-download-directory))
+        (oo-yeetube-download-video--ytdlp url)
+        (message "Downloading: '%s' at '%s'" title yeetube-download-directory)))))
+
+(defun! oo-yeetube-download-video--ytdlp (url)
+  "Download URL using yt-dlp."
+  (unless (executable-find "yt-dlp")
+    (error "Executable for yt-dlp not found.  Please install yt-dlp"))
+  (set! ytdlp (executable-find "yt-dlp"))
+  (set! command (format "%s %s --write-thumbnail"ytdlp url))
+  (call-process-shell-command command nil 0))
 ;;; provide
 (provide '990-config-yeetube)
 ;;; 990-config-yeetube.el ends here
