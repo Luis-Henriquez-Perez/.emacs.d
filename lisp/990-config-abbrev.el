@@ -236,19 +236,21 @@ directory.  If it does not exist create it and add it."
 
 ;; The following code is to ensure that I have a neat abbrev-table and to
 ;; automate updating it so I only have to worry about adding new entries.
-(defun oo-update-abbrev-table ()
+(defun! oo-update-abbrev-table ()
   "Update the abbrev table."
+  (interactive)
   ;; Find the table.
-  (with-current-buffer ()
-    (goto-char (point-min))
-    (re-search-forward "^(define-abbrev-table" nil)
-    (goto-char (match-beginning 0))
-    (set! beg (point))
-    (forward-sexp)
-    (delete-region beg (point))
-    (goto-char beg)
-    (insert (oo-abbrev-table-string))
-    (save-buffer)))
+  (with-current-buffer (find-file-noselect (expand-file-name "999-abbrevs.el" oo-lisp-dir))
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^(define-abbrev-table" nil)
+        (goto-char (match-beginning 0))
+        (set! beg (point))
+        (forward-sexp)
+        (delete-region beg (point))
+        (goto-char beg)
+        (insert (oo-abbrev-table-string 'global-abbrev-table))
+        (save-buffer)))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
