@@ -789,7 +789,6 @@
     ("idid" "I did")
     ("tres" "interesting")
     ("ml" "mode line")
-                                        ;"definitely")
     ("docc" "documentation")
     ("nfo" "information")
     ("correclty" "correctly")
