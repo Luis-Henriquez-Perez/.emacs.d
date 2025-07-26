@@ -251,9 +251,9 @@ directory.  If it does not exist create it and add it."
   "Update the abbrev tables."
   (interactive)
   (dolist (table abbrev-table-name-list)
-    (when (and (abbrev--table-symbols 'text-mode-abbrev-table)
-               (file-exists-p))
-      (expand-file-name "999-abbrevs.el" oo-lisp-dir)
+    (set! file (expand-file-name "999-abbrevs.el" oo-lisp-dir))
+    (when (and (abbrev--table-symbols table)
+               (file-exists-p file))
       (with-temp-file file
         (goto-char (point-min))
         (insert-file-contents file)
