@@ -849,9 +849,9 @@
     ("iat" "in addition to")
     ("elispp" "emacs-lisp")
     ("idl" "I would like")
-                                        ;is actually a word, but I use it so infrequently and I use the phrase. Nil :enable-function oo-enable-text-abbrev-pI
-                                        ;so frequently that it is worth having it be an abbrev for I nil :enable-function oo-enable-text-abbrev-p.
-    ("prec" "precedence")
+    ;; is actually a word, but I use it so infrequently and I use the phrase. Nil :enable-function oo-enable-text-abbrev-pI
+    ;; so frequently that it is worth having it be an abbrev for I nil :enable-function oo-enable-text-abbrev-p.
+    ;; ("prec" "precedence")
     ("wdimbt" "what do I mean by this")
     ("wdim" "what do I mean")
     ("awn" "also worth noting")
@@ -893,11 +893,11 @@
     ("econf" "emacs configuration")
     ("alth" "although")
     ("esp" "especially")
-                                        ;clashes with the word "ill" but I barely use that word. In the rar nil :enable-function oo-enable-text-abbrev-pe
-                                        ;where I do need to use it I will unexpand it nil :enable-function oo-enable-text-abbrev-p.
-    ("ill" "I will")
-                                        ;is a common abbrev for "by the way" but I feel like I do not really us nil :enable-function oo-enable-text-abbrev-pe
-                                        ;phrase unless I am texting nil :enable-function oo-enable-text-abbrev-p.
+    ;; clashes with the word "ill" but I barely use that word. In the rar nil :enable-function oo-enable-text-abbrev-pe
+    ;; where I do need to use it I will unexpand it nil :enable-function oo-enable-text-abbrev-p.
+    ;; ("ill" "I will")
+    ;; is a common abbrev for "by the way" but I feel like I do not really us nil :enable-function oo-enable-text-abbrev-pe
+    ;; phrase unless I am texting nil :enable-function oo-enable-text-abbrev-p.
     ("imd" "immediately")
     ("exand" "expand")
     ("ppet" "snippet")
