@@ -307,10 +307,10 @@
     ("ivht" "I have had the")
     ("ivh" "I have had")
     ("libs" "libraries")
-                                        ;that wether is actually a word meaning "a castrated male sheep or goat"
-                                        ;I do not expect to be using this word at all. I expect 99% of the tim nil :enable-function oo-enable-text-abbrev-pe
-                                        ;when I use it I will actually mean whether nil :enable-function oo-enable-text-abbrev-p.
-    ("wether" "whether")
+    ;; that wether is actually a word meaning "a castrated male sheep or goat"
+    ;; I do not expect to be using this word at all. I expect 99% of the tim nil :enable-function oo-enable-text-abbrev-pe
+    ;; when I use it I will actually mean whether nil :enable-function oo-enable-text-abbrev-p.
+    ;; ("wether" "whether")
     ("effici" "efficient")
     ("situ" "situation")
     ("ihh" "I have had")
