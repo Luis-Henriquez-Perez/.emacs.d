@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'abbrev)
 
-(define-abbrev-table 'oo-text-abbrev-table
+(define-abbrev-table 'text-mode-abbrev-table
   '(("abandonned"          "abandoned")
     ("aberation"           "aberration")
     ("abilityes"           "abilities")
