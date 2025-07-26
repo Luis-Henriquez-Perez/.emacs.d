@@ -28,7 +28,7 @@
 (require '050-base)
 (require 'abbrev)
 
-(define-abbrev-table 'oo-text-abbrev-table
+(define-abbrev-table 'text-mode-abbrev-table
   '(("emal" "email")
     ("stil" "still")
     ("customizaton" "customization")
