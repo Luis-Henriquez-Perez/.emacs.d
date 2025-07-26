@@ -76,7 +76,7 @@
                         (run-hooks 'post-self-insert-hook))))))
 
 ;;;; predicates
-(defun! oo-use-text-abbrev-p ()
+(defun! oo-in-text-p ()
   "Return non-nil when text abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
@@ -100,7 +100,7 @@ string or comment."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'org-mode))
 
-(defun oo-in-elisp-mode-p ()
+(defun oo-enable-elisp-abbrev-p ()
   "Return non-nil if current buffer is in emacs-lisp mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'emacs-lisp-mode))
@@ -261,8 +261,8 @@ directory.  If it does not exist create it and add it."
            (delete-region beg (point))
            (goto-char beg)
            (insert (oo-abbrev-table-string 'global-abbrev-table)))
-          (t)
-          ;; (save-buffer)
+          (t
+           1)
           )))
 
 (defun oo-insert-at-column (column string)
