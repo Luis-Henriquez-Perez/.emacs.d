@@ -257,8 +257,6 @@ directory.  If it does not exist create it and add it."
   (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1)))
 
 ;; (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables-h)
-;; (define-abbrev text-mode-abbrev-table "losing" nil)
-;; Lossing lossing losing
 ;; Also do this during idle time if possible to avoid lossing abbrevs if Emacs
 ;; crashes.
 
