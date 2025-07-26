@@ -30,6 +30,7 @@
 (hook! prog-mode-hook abbrev-mode)
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
+(autoload! oo-expand-elisp-defun "999-snippets")
 (defhook! load-abbrevs (abbrev-mode-hook)
   :expire t
   :level 'info
