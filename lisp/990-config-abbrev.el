@@ -245,8 +245,6 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; updating the abbrevs
-;; The following code is to ensure that I have a neat abbrev-table and to
-;; automate updating it so I only have to worry about adding new entries.
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables."
   (interactive)
