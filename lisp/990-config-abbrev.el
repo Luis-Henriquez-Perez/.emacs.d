@@ -245,18 +245,20 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; updating the abbrevs
-(defun oo-dwim-add-abbrev ()
+;; I only want this function to add complex abbrevs.
+(defun oo-add-abbrev (arg)
   "Add the abbrev I mean."
-  (interactive)
-  ;; If I am in comment add a text-mode abbrev.
-  (if (oo-in-string-or-comment-p)
-      (define-abbrev text-mode-abbrev-table abbrev expansion)
-    ;; Do the major mdoe abbrev.
-    )
-  ;; Check whether there is an idle hook.  If there is add the abbrev.
-  )
+  (interactive "P")
+  (add-abbrev text-mode-abbrev-table "text-mode" arg))
+
+(defun oo-inverse-add-abbrev (arg)
+  "Add the abbrev I mean."
+  (interactive "P")
+  (add-abbrev text-mode-abbrev-table "text-mode" arg))
 
 (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables-h)
+()
+;; Lossing
 ;; Also do this during idle time if possible to avoid lossing abbrevs if Emacs
 ;; crashes.
 
