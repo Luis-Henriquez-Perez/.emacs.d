@@ -284,11 +284,12 @@ directory.  If it does not exist create it and add it."
             ;; realistically use are these two.
             (case-fixed (plist-get plist :case-fixed))
             (enable-function (plist-get plist :enable-function))
-            (entry (list name expansion hook)))
+            (entry (list name expansion)))
        ;; There's one entry whose name is the entry string.  Looks like ("" nil
        ;; nil).  No point in having that in the table (it is probrably always
        ;; implicitly there though).
        (unless (string-empty-p name)
+         (and hook (setq entry (append entry (list hook))))
          (and enable-function (setq entry (append entry (list :enable-function enable-function))))
          (and case-fixed (setq entry (append entry (list :case-fixed case-fixed))))
          (push entry abbrevs))))
