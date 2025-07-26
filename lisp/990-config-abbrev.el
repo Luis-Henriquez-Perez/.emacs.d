@@ -258,15 +258,13 @@ directory.  If it does not exist create it and add it."
         (goto-char (point-min))
         (insert-file-contents file)
         (goto-char (point-min))
-        (cond ((re-search-forward "^(define-abbrev-table" nil)
-               (goto-char (match-beginning 0))
-               (set! beg (point))
-               (forward-sexp)
-               (delete-region beg (point))
-               (goto-char beg)
-               (insert (oo-abbrev-table-string 'global-abbrev-table)))
-              (t
-               1))))))
+        (when (re-search-forward "^(define-abbrev-table" nil)
+          (goto-char (match-beginning 0))
+          (set! beg (point))
+          (forward-sexp)
+          (delete-region beg (point))
+          (goto-char beg)
+          (insert (oo-abbrev-table-string table)))))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
