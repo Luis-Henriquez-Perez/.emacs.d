@@ -251,7 +251,6 @@ directory.  If it does not exist create it and add it."
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table)
                (file-exists-p file))
-      (message "%s <-> %s" table file)
       (with-temp-file file
         (goto-char (point-min))
         (insert-file-contents file)
