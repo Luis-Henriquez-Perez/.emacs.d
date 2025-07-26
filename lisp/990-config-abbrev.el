@@ -253,6 +253,7 @@ directory.  If it does not exist create it and add it."
       (define-abbrev text-mode-abbrev-table abbrev expansion)
     ;; Do the major mdoe abbrev.
     )
+  ;; Check whether there is an idle hook.  If there is add the abbrev.
   )
 
 (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables-h)
