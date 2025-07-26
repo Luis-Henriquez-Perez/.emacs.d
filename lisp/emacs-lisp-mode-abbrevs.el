@@ -30,10 +30,12 @@
 (autoload! oo-expand-elisp-defun "990-snippets")
 (autoload! oo-expand-elisp-defhook "990-snippets")
 (autoload! oo-expand-elisp-defvar "990-snippets")
+(autoload! oo-expand-elisp-message "990-snippets")
+(autoload! oo-expand-elisp-message-var "990-snippets")
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
-  '(("msgv" "" 'oo-expand-elisp-message-var :enable-function oo-in-elisp-code-p)
-    ("msg" "" 'oo-expand-elisp-message :enable-function oo-in-elisp-code-p)
+  '(("msgv" "" oo-expand-elisp-message-var :enable-function oo-in-elisp-code-p)
+    ("msg" "" oo-expand-elisp-message :enable-function oo-in-elisp-code-p)
     ("dhk" "" oo-expand-elisp-defhook :enable-function oo-in-elisp-code-p)
     ("elasped" "elapsed" nil)
     ("aih" "after-init-hook" nil)
