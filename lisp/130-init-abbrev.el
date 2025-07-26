@@ -51,6 +51,8 @@
 ;; (defvar text-mode-abbrev-table (make-abbrev-table (list :enable-function)))
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table))
+;; There are so many text abbrevs that I was running into issues with the amount
+;; of lines.
 (require '910-text-abbrevs)
 (require '911-text-abbrevs)
 (require '912-text-abbrevs)
