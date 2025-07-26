@@ -36,7 +36,7 @@
   ;; of lines I had a file with over 6000 lines.
   (require 'text-mode-abbrevs)
   (require 'emacs-lisp-mode-abbrevs)
-  (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs))
+  (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 ;;;; do not save abbrevs to a file
