@@ -262,7 +262,7 @@ directory.  If it does not exist create it and add it."
 ;; Also do this during idle time if possible to avoid losing abbrevs if Emacs
 ;; crashes.
 (defun! oo-update-abbrev-tables ()
-  "Update the abbrev tables."
+  "Update the abbrev tables and commit changes."
   (let ((default-directory oo-lisp-dir))
     (dolist (table abbrev-table-name-list)
       (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
