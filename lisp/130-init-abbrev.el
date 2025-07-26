@@ -30,7 +30,7 @@
 (hook! prog-mode-hook abbrev-mode)
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
-;; This is a bit crude.  Iwbm precise to not load the elisp abbrev table when
+;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;; Emacs loads abbrevs so fast.
 (defun oo-load-abbrevs-h ()
@@ -41,11 +41,13 @@ abbrevs and removes itself from the hook."
   (require '910-emacs-lisp-mode-abbrev-table)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
+(opt! save-abbrevs 'silently)
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)
-(advice-add 'abbrev--possibly-save :around #'ignore)
+(defun oo-write-abbrev-file-a ())
+;; (advice-add 'abbrev--possibly-save :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; setup advices
 (autoload! oo--pulse-expansion "990-config-abbrev")
