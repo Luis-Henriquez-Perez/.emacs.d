@@ -39,19 +39,23 @@ This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
   (require '910-text-mode-abbrev-table)
   (require '910-emacs-lisp-mode-abbrev-table)
+  (message "abbrevs-changed -> %S" abbrevs-changed)
+  (setq abbrevs-changed nil)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
-(opt! save-abbrevs 'silently)
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 ;;;; do not save abbrevs to a file
+;; Do not read the abbrev files at startup because I already load them myself.
 (advice-add 'read-abbrev-file :around #'ignore)
+(advice-add 'quietly-read-abbrev-file :around #'ignore)
+
+(opt! save-abbrevs 'silently)
 
 (defun oo-write-abbrev-file-a (&rest _)
   (oo-update-abbrev-tables))
 
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;; (advice-add 'abbrev--possibly-save :around #'ignore)
-(advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; setup advices
 (autoload! oo--pulse-expansion "990-config-abbrev")
 (autoload! oo--add-period-maybe "990-config-abbrev")
