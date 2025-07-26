@@ -25,7 +25,6 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require '050-base)
 (require 'abbrev)
 
 (define-abbrev-table 'text-mode-abbrev-table
