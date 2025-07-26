@@ -247,7 +247,6 @@ directory.  If it does not exist create it and add it."
 ;;;; updating the abbrevs
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables."
-  (interactive)
   (dolist (table abbrev-table-name-list)
     (set! file (expand-file-name "999-abbrevs.el" oo-lisp-dir))
     (when (and (abbrev--table-symbols table)
@@ -273,7 +272,6 @@ directory.  If it does not exist create it and add it."
 
 (defun! oo-abbrev-table-string (table)
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
-  (interactive (list (intern (completing-read "Abbrev table: " (mapcar #'symbol-name abbrev-table-name-list)))))
   (set! abbrevs '())
   (set! name (symbol-name table))
   (mapatoms
