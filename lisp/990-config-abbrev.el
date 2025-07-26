@@ -263,26 +263,24 @@ directory.  If it does not exist create it and add it."
 ;; crashes.
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables."
-  (dolist (table abbrev-table-name-list)
-    (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
-    (when (and (abbrev--table-symbols table)
-               (file-exists-p file))
-      (with-temp-file file
-        (goto-char (point-min))
-        (insert-file-contents file)
-        (goto-char (point-min))
-        (when (re-search-forward "^(define-abbrev-table" nil)
-          (goto-char (match-beginning 0))
-          (set! beg (point))
-          (forward-sexp)
-          (delete-region beg (point))
-          (goto-char beg)
-          (insert (oo-abbrev-table-string table))))
-      ;; Try to commit the file too.
-      ;; Get the for
-      (let ((default-directory user-emacs-directory))
+  (let ((default-directory oo-lisp-dir))
+    (dolist (table abbrev-table-name-list)
+      (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
+      (when (and (abbrev--table-symbols table)
+                 (file-exists-p file))
+        (with-temp-file file
+          (goto-char (point-min))
+          (insert-file-contents file)
+          (goto-char (point-min))
+          (when (re-search-forward "^(define-abbrev-table" nil)
+            (goto-char (match-beginning 0))
+            (set! beg (point))
+            (forward-sexp)
+            (delete-region beg (point))
+            (goto-char beg)
+            (insert (oo-abbrev-table-string table))))
         (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-        (set! commit-msg (format "Add abbrevs to the %s" file))
+        (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
         (vc-checkin (list file) backend commit-msg)))))
 
 (defun oo-insert-at-column (column string)
