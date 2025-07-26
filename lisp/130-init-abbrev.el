@@ -50,6 +50,7 @@
 ;;;; update
 (defvar oo-text-abbrev-table (make-abbrev-table :enable-function #'oo-in-text-p))
 (abbrev-table-put global-abbrev-table :parents (list oo-text-abbrev-table))
+(require '910-text-abbrevs)
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
