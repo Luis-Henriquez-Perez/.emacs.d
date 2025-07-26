@@ -77,7 +77,7 @@
 
 ;;;; predicates
 (defun! oo-in-text-p ()
-  "Return non-nil when text abbrevs should be enabled.
+  "Return non-nil when text-mode abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
   (or (member major-mode '(org-mode text-mode vc-git-log-edit-mode))
