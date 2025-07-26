@@ -55,7 +55,6 @@ abbrevs and removes itself from the hook."
   (oo-update-abbrev-tables))
 
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
-;; (advice-add 'abbrev--possibly-save :around #'ignore)
 ;;;; setup advices
 (autoload! oo--pulse-expansion "990-config-abbrev")
 (autoload! oo--add-period-maybe "990-config-abbrev")
