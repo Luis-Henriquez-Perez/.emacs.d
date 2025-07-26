@@ -321,7 +321,13 @@ directory.  If it does not exist create it and add it."
     ;; This is the last newline.
     (delete-char -1)
     (oo-insert-at-column (current-column) "))")
-    (buffer-string)))
+    (buffer-string))
+  ;; Try to commit the file too.
+  ;; Get the for
+  ;; (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+  ;; (set! commit-msg (format "Update " (f-relative file root)))
+  ;; (vc-checkin (list file) backend commit-msg)
+  )
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
