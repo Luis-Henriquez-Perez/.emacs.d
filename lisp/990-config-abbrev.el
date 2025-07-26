@@ -248,7 +248,7 @@ directory.  If it does not exist create it and add it."
 ;; The following code is to ensure that I have a neat abbrev-table and to
 ;; automate updating it so I only have to worry about adding new entries.
 (defun! oo-update-abbrev-tables ()
-  "Update the abbrev table."
+  "Update the abbrev tables."
   (interactive)
   (dolist (table abbrev-table-name-list)
     (when (and (abbrev--table-symbols 'text-mode-abbrev-table)
