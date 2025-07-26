@@ -277,7 +277,13 @@ directory.  If it does not exist create it and add it."
           (forward-sexp)
           (delete-region beg (point))
           (goto-char beg)
-          (insert (oo-abbrev-table-string table)))))))
+          (insert (oo-abbrev-table-string table))))
+      ;; Try to commit the file too.
+      ;; Get the for
+      (let ((default-directory user-emacs-directory))
+        (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+        (set! commit-msg (format "Add abbrevs to the %s" file))
+        (vc-checkin (list file) backend commit-msg)))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
@@ -321,13 +327,7 @@ directory.  If it does not exist create it and add it."
     ;; This is the last newline.
     (delete-char -1)
     (oo-insert-at-column (current-column) "))")
-    (buffer-string))
-  ;; Try to commit the file too.
-  ;; Get the for
-  ;; (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-  ;; (set! commit-msg (format "Update " (f-relative file root)))
-  ;; (vc-checkin (list file) backend commit-msg)
-  )
+    (buffer-string)))
 ;;; provide
 (provide '990-config-abbrev)
 ;;; 990-config-abbrev.el ends here
