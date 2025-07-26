@@ -47,6 +47,9 @@
 (advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
 (advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)
 (advice-add 'abbrev--default-expand :around #'oo--ensure-self-insert)
+;;;; update
+(defvar oo-text-abbrev-table (make-abbrev-table :enable-function #'oo-in-text-p))
+(abbrev-table-put global-abbrev-table :parents (list oo-text-abbrev-table))
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
