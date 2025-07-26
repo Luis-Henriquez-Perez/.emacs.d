@@ -28,15 +28,15 @@
 (require 'abbrev)
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
-  '(("msgv" "" 'oo-expand-elisp-message-var :enable-function #'oo-in-elisp-code-p)
-    ("msg" "" 'oo-expand-elisp-message :enable-function #'oo-in-elisp-code-p)
-    ("dhk" "" #'oo-expand-elisp-defhook :enable-function #'oo-in-elisp-code-p)
-    ("elasped" "elapsed" nil :enable-function #'oo-in-elisp-mode-p)
-    ("aih" "after-init-hook" nil :enable-function #'oo-in-elisp-mode-p)
-    ("esh" "emacs-startup-hook" nil :enable-function #'oo-in-elisp-mode-p)
-    ("dvar" "" #'oo-expand-elisp-defvar :enable-function #'oo-in-elisp-code-p)
-    ("funn" "" #'oo-expand-elisp-defun :enable-function #'oo-in-elisp-code-p)
-    ("dfn" "" #'oo-expand-elisp-defun :enable-function #'oo-in-elisp-code-p)))
+  '(("msgv" "" 'oo-expand-elisp-message-var :enable-function oo-in-elisp-code-p)
+    ("msg" "" 'oo-expand-elisp-message :enable-function oo-in-elisp-code-p)
+    ("dhk" "" oo-expand-elisp-defhook :enable-function oo-in-elisp-code-p)
+    ("elasped" "elapsed" nil)
+    ("aih" "after-init-hook" nil)
+    ("esh" "emacs-startup-hook" nil)
+    ("dvar" "" oo-expand-elisp-defvar :enable-function oo-in-elisp-code-p)
+    ("funn" "" oo-expand-elisp-defun :enable-function oo-in-elisp-code-p)
+    ("dfn" "" oo-expand-elisp-defun :enable-function oo-in-elisp-code-p)))
 ;;; provide
 (provide 'emacs-lisp-mode-abbrevs)
 ;;; emacs-lisp-mode-abbrevs.el ends here
