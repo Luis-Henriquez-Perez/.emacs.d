@@ -52,6 +52,7 @@ abbrevs and removes itself from the hook."
 (opt! save-abbrevs 'silently)
 
 (defun oo-write-abbrev-file-a (&rest _)
+  "Override `write-abbrev-file' with my own function."
   (oo-update-abbrev-tables))
 
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
