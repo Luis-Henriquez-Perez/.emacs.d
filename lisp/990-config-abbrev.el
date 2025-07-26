@@ -244,26 +244,29 @@ directory.  If it does not exist create it and add it."
         (kill-buffer))))
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
-
+;;;; updating the abbrevs
 ;; The following code is to ensure that I have a neat abbrev-table and to
 ;; automate updating it so I only have to worry about adding new entries.
-(defun! oo-update-abbrev-table ()
+(defun! oo-update-abbrev-tables ()
   "Update the abbrev table."
   (interactive)
-  (with-temp-file (expand-file-name "999-abbrevs.el" oo-lisp-dir)
-    (goto-char (point-min))
-    (insert-file-contents (expand-file-name "999-abbrevs.el" oo-lisp-dir))
-    (goto-char (point-min))
-    (cond ((re-search-forward "^(define-abbrev-table" nil)
-           (goto-char (match-beginning 0))
-           (set! beg (point))
-           (forward-sexp)
-           (delete-region beg (point))
-           (goto-char beg)
-           (insert (oo-abbrev-table-string 'global-abbrev-table)))
-          (t
-           1)
-          )))
+  (dolist (table abbrev-table-name-list)
+    (when (and (abbrev--table-symbols 'text-mode-abbrev-table)
+               (file-exists-p))
+      (expand-file-name "999-abbrevs.el" oo-lisp-dir)
+      (with-temp-file file
+        (goto-char (point-min))
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (cond ((re-search-forward "^(define-abbrev-table" nil)
+               (goto-char (match-beginning 0))
+               (set! beg (point))
+               (forward-sexp)
+               (delete-region beg (point))
+               (goto-char beg)
+               (insert (oo-abbrev-table-string 'global-abbrev-table)))
+              (t
+               1))))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
