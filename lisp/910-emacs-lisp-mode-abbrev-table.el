@@ -1,4 +1,4 @@
-;;; emacs-lisp-mode-abbrevs.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; 910-emacs-lisp-mode-abbrev-table.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -44,5 +44,5 @@
     ("funn" "" oo-expand-elisp-defun :enable-function oo-in-elisp-code-p)
     ("dfn" "" oo-expand-elisp-defun :enable-function oo-in-elisp-code-p)))
 ;;; provide
-(provide 'emacs-lisp-mode-abbrevs)
-;;; emacs-lisp-mode-abbrevs.el ends here
+(provide '910-emacs-lisp-mode-abbrev-table)
+;;; 910-emacs-lisp-mode-abbrev-table.el ends here
