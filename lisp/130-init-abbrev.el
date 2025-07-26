@@ -31,7 +31,7 @@
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
 (defun oo-load-abbrevs-h ()
-  "Load abbrev files and.
+  "Load abbrev files.
 This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
   (require 'text-mode-abbrevs)
