@@ -259,8 +259,6 @@ directory.  If it does not exist create it and add it."
   (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1))
   (run-with-timer 2 nil #'oo-update-abbrev-tables))
 
-;; Also do this during idle time if possible to avoid losing abbrevs if Emacs
-;; crashes.
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables and commit changes."
   (let ((default-directory oo-lisp-dir))
