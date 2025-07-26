@@ -254,11 +254,11 @@ directory.  If it does not exist create it and add it."
 (defun oo-inverse-add-abbrev (arg)
   "Add the abbrev I mean."
   (interactive "P")
-  (add-abbrev text-mode-abbrev-table "text-mode" arg))
+  (inverse-add-abbrev text-mode-abbrev-table "text-mode" arg))
 
 (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables-h)
-()
-;; Lossing
+;; (define-abbrev text-mode-abbrev-table "losing" nil)
+;; Lossing lossing lossing
 ;; Also do this during idle time if possible to avoid lossing abbrevs if Emacs
 ;; crashes.
 
