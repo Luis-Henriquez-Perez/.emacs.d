@@ -35,6 +35,8 @@
   :level 'info
   ;; There are so many text abbrevs that I was running into issues with the amount
   ;; of lines I had a file with over 6000 lines.
+  (require 'abbrev)
+  (require '990-config-abbrev)
   (require 'text-mode-abbrevs)
   (require 'emacs-lisp-mode-abbrevs))
 ;;;; do not save abbrevs to a file
