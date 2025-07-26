@@ -30,6 +30,9 @@
 (hook! prog-mode-hook abbrev-mode)
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
+;; This is a bit crude.  Iwbm precise to not load the elisp abbrev table when
+;; enabling abbrev mode in a text-mode but it is not significant because it
+;; Emacs loads abbrevs so fast.
 (defun oo-load-abbrevs-h ()
   "Load abbrev files.
 This function is designed to be added to `abbrev-mode-hook'.  It loads all my
