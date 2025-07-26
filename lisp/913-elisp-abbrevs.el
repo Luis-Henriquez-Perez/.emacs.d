@@ -25,15 +25,15 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(define-abbrev emacs-lisp-mode-abbrev-table "msgv" "" 'oo-expand-elisp-message-var :enable-function #'oo-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "msg" "" 'oo-expand-elisp-message :enable-function #'oo-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "dhk" "" #'oo-expand-elisp-defhook :enable-function #'oo-in-elisp-code-p)
-;; ("elasped" "elapsed" nil :enable-function #'oo-in-elisp-mode-p)
-;; ("aih" "after-init-hook" nil :enable-function #'oo-in-elisp-mode-p)
-;; ("esh" "emacs-startup-hook" nil :enable-function #'oo-in-elisp-mode-p)
-;; ("dvar" "" #'oo-expand-elisp-defvar :enable-function #'oo-in-elisp-code-p)
-;; ("funn" "" #'oo-expand-elisp-defun :enable-function #'oo-in-elisp-code-p)
-;; ("dfn" "" #'oo-expand-elisp-defun :enable-function #'oo-in-elisp-code-p)
+("msgv" "" 'oo-expand-elisp-message-var :enable-function #'oo-in-elisp-code-p)
+("msg" "" 'oo-expand-elisp-message :enable-function #'oo-in-elisp-code-p)
+("dhk" "" #'oo-expand-elisp-defhook :enable-function #'oo-in-elisp-code-p)
+("elasped" "elapsed" nil :enable-function #'oo-in-elisp-mode-p)
+("aih" "after-init-hook" nil :enable-function #'oo-in-elisp-mode-p)
+("esh" "emacs-startup-hook" nil :enable-function #'oo-in-elisp-mode-p)
+("dvar" "" #'oo-expand-elisp-defvar :enable-function #'oo-in-elisp-code-p)
+("funn" "" #'oo-expand-elisp-defun :enable-function #'oo-in-elisp-code-p)
+("dfn" "" #'oo-expand-elisp-defun :enable-function #'oo-in-elisp-code-p)
 ;;; provide
 (provide '913-elisp-abbrevs)
 ;;; 913-elisp-abbrevs.el ends here
