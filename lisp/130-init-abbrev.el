@@ -33,7 +33,11 @@
 (defhook! load-abbrevs (abbrev-mode-hook)
   :expire t
   :level 'info
-  (require '999-abbrevs))
+  ;; There are so many text abbrevs that I was running into issues with the amount
+  ;; of lines I had a file with over 6000 lines.
+  (require '910-text-abbrevs)
+  (require '911-text-abbrevs)
+  (require '912-text-abbrevs))
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)
@@ -51,11 +55,6 @@
 ;; (defvar text-mode-abbrev-table (make-abbrev-table (list :enable-function)))
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table))
-;; There are so many text abbrevs that I was running into issues with the amount
-;; of lines.
-(require '910-text-abbrevs)
-(require '911-text-abbrevs)
-(require '912-text-abbrevs)
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
