@@ -45,8 +45,11 @@ abbrevs and removes itself from the hook."
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
-(advice-add 'write-abbrev-file :around #'ignore)
-(defun oo-write-abbrev-file-a ())
+
+(defun oo-write-abbrev-file-a (&rest _)
+  (oo-update-abbrev-tables))
+
+(advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;; (advice-add 'abbrev--possibly-save :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; setup advices
