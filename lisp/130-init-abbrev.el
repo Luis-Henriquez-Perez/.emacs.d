@@ -52,8 +52,7 @@
 (advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
 (advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)
 (advice-add 'abbrev--default-expand :around #'oo--ensure-self-insert)
-;;;; update
-;; (defvar text-mode-abbrev-table (make-abbrev-table (list :enable-function)))
+;;;; Setup abbrev tables
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 ;;; provide
