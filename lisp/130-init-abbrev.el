@@ -30,13 +30,15 @@
 (hook! prog-mode-hook abbrev-mode)
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
-(defhook! load-abbrevs (abbrev-mode-hook)
-  :expire t
-  :level 'info
+(defun oo-load-abbrevs-h ()
+  "Load abbrev files and.."
   ;; There are so many text abbrevs that I was running into issues with the amount
   ;; of lines I had a file with over 6000 lines.
   (require 'text-mode-abbrevs)
-  (require 'emacs-lisp-mode-abbrevs))
+  (require 'emacs-lisp-mode-abbrevs)
+  (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs))
+
+(add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 ;;;; do not save abbrevs to a file
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'write-abbrev-file :around #'ignore)
