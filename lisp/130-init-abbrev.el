@@ -31,9 +31,9 @@
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
 (defun oo-load-abbrevs-h ()
-  "Load abbrev files and."
-  ;; There are so many text abbrevs that I was running into issues with the amount
-  ;; of lines I had a file with over 6000 lines.
+  "Load abbrev files and.
+This function is designed to be added to `abbrev-mode-hook'.  It loads all my
+abbrevs and removes itself from the hook."
   (require 'text-mode-abbrevs)
   (require 'emacs-lisp-mode-abbrevs)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
