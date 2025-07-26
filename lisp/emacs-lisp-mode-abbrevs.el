@@ -28,6 +28,7 @@
 (require 'abbrev)
 
 (autoload! oo-expand-elisp-defun "990-snippets")
+(autoload! oo-expand-elisp-defhook "990-snippets")
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(("msgv" "" 'oo-expand-elisp-message-var :enable-function oo-in-elisp-code-p)
