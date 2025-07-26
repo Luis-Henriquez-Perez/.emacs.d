@@ -1,4 +1,4 @@
-;;; 910-text-abbrevs.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; text-mode-abbrevs.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -6139,6 +6139,6 @@
     ("todays"              "today's")
     ("wasnt"               "wasn't")))
 ;;; provide
-(provide '910-text-abbrevs)
-;;; 910-text-abbrevs.el ends here
+(provide 'text-mode-abbrevs)
+;;; text-mode-abbrevs.el ends here
 
