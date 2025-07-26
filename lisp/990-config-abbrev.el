@@ -248,7 +248,7 @@ directory.  If it does not exist create it and add it."
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables."
   (dolist (table abbrev-table-name-list)
-    (set! file (expand-file-name "999-abbrevs.el" oo-lisp-dir))
+    (set! file (expand-file-name (format "%s-abbrevs.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table)
                (file-exists-p file))
       (with-temp-file file
