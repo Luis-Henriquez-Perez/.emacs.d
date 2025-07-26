@@ -25,10 +25,9 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require '050-base)
 (require 'abbrev)
 
-(define-abbrev-table 'oo-text-abbrev-table
+(define-abbrev-table 'text-mode-abbrev-table
   '(("theone" "the one")
     ("iwc" "in which case")
     ("ben" "been")
