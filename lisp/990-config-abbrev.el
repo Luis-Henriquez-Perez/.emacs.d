@@ -245,6 +245,20 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; updating the abbrevs
+(defun oo-dwim-add-abbrev ()
+  "Add the abbrev I mean."
+  (interactive)
+  ;; If I am in comment add a text-mode abbrev.
+  (if (oo-in-string-or-comment-p)
+      (define-abbrev text-mode-abbrev-table abbrev expansion)
+    ;; Do the major mdoe abbrev.
+    )
+  )
+
+(add-hook 'kill-emacs-hook 'oo-update-abbrev-tables-h)
+;; Also do this during idle time if possible to avoid lossing abbrevs if Emacs
+;; crashes.
+
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables."
   (dolist (table abbrev-table-name-list)
