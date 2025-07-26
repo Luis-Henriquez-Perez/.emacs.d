@@ -31,7 +31,7 @@
 (hook! text-mode-hook abbrev-mode)
 ;;;; load abbrevs
 (defun oo-load-abbrevs-h ()
-  "Load abbrev files and.."
+  "Load abbrev files and."
   ;; There are so many text abbrevs that I was running into issues with the amount
   ;; of lines I had a file with over 6000 lines.
   (require 'text-mode-abbrevs)
