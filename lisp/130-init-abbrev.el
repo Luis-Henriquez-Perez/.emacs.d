@@ -34,8 +34,8 @@
   "Load abbrev files.
 This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
-  (require 'text-mode-abbrevs)
-  (require 'emacs-lisp-mode-abbrevs)
+  (require '910-text-mode-abbrev-table)
+  (require '910-emacs-lisp-mode-abbrev-table)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
