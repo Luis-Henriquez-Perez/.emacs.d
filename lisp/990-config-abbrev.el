@@ -253,16 +253,19 @@ directory.  If it does not exist create it and add it."
   "Add the abbrev I mean."
   (interactive "P")
   (add-abbrev text-mode-abbrev-table "text-mode" arg)
-  (run-with-timer 2 nil #'oo-update-abbrev-tables))
+  (run-with-timer 2 nil #'oo-update-abbrev-tables)
+  ;; (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables)
+  )
 
 (defun oo-inverse-add-abbrev (arg)
   "Add the abbrev I mean."
   (interactive "P")
-  (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1)))
+  (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1))
+  (run-with-timer 2 nil #'oo-update-abbrev-tables)
+  ;; (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables)
+  )
 
-(define-abbrev text-mode-abbrev-table "one by one" nil)
-;; (add-hook 'kill-emacs-hook 'oo-update-abbrev-tables-h)
-;; Also do this during idle time if possible to avoid lossing abbrevs if Emacs
+;; Also do this during idle time if possible to avoid losing abbrevs if Emacs
 ;; crashes.
 
 (defun! oo-update-abbrev-tables ()
