@@ -53,7 +53,7 @@
 ;;;; update
 ;; (defvar text-mode-abbrev-table (make-abbrev-table (list :enable-function)))
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
-(abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table))
+(abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
