@@ -29,7 +29,6 @@
 (require 'eshell-up)
 (require '050-base)
 ;;;; Make eshell prompt read-only
-;; Using evil and pressing backspace deletes.
 (defun oo-eshell-prompt ()
   "Make eshell prompt read-only."
   (propertize (epe-theme-lambda)
