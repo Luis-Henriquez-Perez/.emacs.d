@@ -42,7 +42,8 @@
 
 (opt! eshell-banner-message "")
 (opt! eshell-highlight-prompt nil)
-(opt! eshell-prompt-function 'epe-theme-lambda)
+(autoload! oo-eshell-prompt "990-config-eshell")
+(opt! eshell-prompt-function 'oo-eshell-prompt)
 (opt! eshell-hist-ignoredups t)
 (opt! eshell-prefer-lisp-functions t)
 ;; Represent buffers as #<buffer-name>
