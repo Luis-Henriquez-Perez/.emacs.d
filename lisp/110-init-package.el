@@ -218,8 +218,7 @@
                                   yeetube
                                   zoutline))
 
-(setq package-vc-selected-packages '((completion-preview :url "https://git.sr.ht/~eshel/completion-preview")
-                                     (emacs-wallpaper :url "https://github.com/Luis-Henriquez-Perez/emacs-wallpaper" :branch "mine")
+(setq package-vc-selected-packages '((emacs-wallpaper :url "https://github.com/Luis-Henriquez-Perez/emacs-wallpaper" :branch "mine")
                                      (escr :url "https://github.com/Luis-Henriquez-Perez/escr")
                                      (evil-easymotion :url "https://github.com/Luis-Henriquez-Perez/evil-easymotion" :branch "master")
                                      (on :url "https://github.com/ajgrf/on.el")
