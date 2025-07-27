@@ -244,7 +244,7 @@ directory.  If it does not exist create it and add it."
         (kill-buffer))))
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
-;;;; updating the abbrevs
+;;;; Updating the abbrevs
 ;; I only want this function to add complex abbrevs. abbrev
 (defun oo-add-abbrev (arg)
   "Add the abbrev I mean."
@@ -262,6 +262,7 @@ directory.  If it does not exist create it and add it."
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
       (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
+      ;; TODO: handle better the buffers closing
       (unwind-protect
           (with-current-buffer buffer
             (goto-char (point-min))
@@ -277,6 +278,7 @@ directory.  If it does not exist create it and add it."
               (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
               (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
               (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
+              ;; TODO: inhibit opening buffers.
               (vc-checkin (list file) backend commit-msg)))
         (kill-buffer buffer)))))
 
