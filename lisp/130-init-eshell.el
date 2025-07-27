@@ -44,6 +44,7 @@
 (opt! eshell-highlight-prompt nil)
 (autoload! oo-eshell-prompt "990-config-eshell")
 (opt! eshell-prompt-function 'oo-eshell-prompt)
+(opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)
 (opt! eshell-prefer-lisp-functions t)
 ;; Represent buffers as #<buffer-name>
