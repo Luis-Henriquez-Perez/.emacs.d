@@ -2650,6 +2650,7 @@
     ("higer" "higher")
     ("higest" "highest")
     ("highl" "highlight")
+    ("higl" "highlight")
     ("higs" "highest")
     ("higway" "highway")
     ("hile" "while")
