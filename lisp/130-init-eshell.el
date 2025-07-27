@@ -43,7 +43,7 @@
 (opt! eshell-highlight-prompt nil)
 (autoload! oo-eshell-prompt "990-config-eshell")
 (opt! eshell-prompt-function 'oo-eshell-prompt)
-;; This is obsolete as of Emacs 30.1
+;; This is obsolete as of Emacs 30.1.
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)
 ;; Prefer external commands over lisp functions.
