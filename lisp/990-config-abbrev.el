@@ -245,7 +245,6 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; updating the abbrevs
-(add-hook 'kill-emacs-hook 'oo-update-abbrev-tables)
 ;; I only want this function to add complex abbrevs.
 (defun oo-add-abbrev (arg)
   "Add the abbrev I mean."
