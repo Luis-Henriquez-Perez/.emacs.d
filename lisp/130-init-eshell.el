@@ -60,6 +60,10 @@
 ;; the text properties `eshell-emit-prompt' adds to the prompt without advising
 ;; the it.
 (opt! eshell-highlight-prompt t)
+(opt! eshell-hist-ignoredups t)
+;; boost eshell history-size
+;; Increase the history size from 128 to 1000.
+(opt! eshell-history-size 1000)
 ;; Stop eshell from printing messages.
 (declare-function eshell-unload-all-modules "eshell")
 (advice-add #'eshell-unload-all-modules :around #'oo-funcall-quietly)
