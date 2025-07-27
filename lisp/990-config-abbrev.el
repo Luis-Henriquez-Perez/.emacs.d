@@ -258,9 +258,7 @@ directory.  If it does not exist create it and add it."
   (interactive "P")
   (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1))
   (run-with-timer 2 nil #'oo-update-abbrev-tables))
-;; If you know what I mean
-;; if you know what I mean
-;; if you know what I mean
+
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables and commit changes."
   (dolist (table abbrev-table-name-list)
