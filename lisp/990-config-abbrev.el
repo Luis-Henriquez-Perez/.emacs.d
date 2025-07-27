@@ -261,7 +261,7 @@ directory.  If it does not exist create it and add it."
   (dolist (table abbrev-table-name-list)
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
-      (set! buffer (find-file-noselect file nil t))
+      (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
       (unwind-protect
           (with-current-buffer buffer
             (goto-char (point-min))
