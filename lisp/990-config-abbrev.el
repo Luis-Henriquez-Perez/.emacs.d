@@ -245,7 +245,7 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; updating the abbrevs
-;; I only want this function to add complex abbrevs.
+;; I only want this function to add complex abbrevs. abbrev
 (defun oo-add-abbrev (arg)
   "Add the abbrev I mean."
   (interactive "P")
@@ -264,8 +264,6 @@ directory.  If it does not exist create it and add it."
       (set! buffer (find-file-noselect file nil t))
       (unwind-protect
           (with-current-buffer buffer
-            (goto-char (point-min))
-            (insert-file-contents file)
             (goto-char (point-min))
             (when (re-search-forward "^(define-abbrev-table" nil)
               (goto-char (match-beginning 0))
