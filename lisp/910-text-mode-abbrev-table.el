@@ -1883,7 +1883,7 @@
     ("doen" "done")
     ("doens" "does")
     ("doenst" "does not")
-    ("doesnt" "doesn't")
+    ("doesnt" "does not")
     ("doesnth" "does not have")
     ("doign" "doing")
     ("doin" "doing")
