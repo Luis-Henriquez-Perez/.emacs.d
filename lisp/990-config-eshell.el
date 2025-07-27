@@ -29,18 +29,9 @@
 (require 'eshell-up)
 (require '050-base)
 ;;;; Make eshell prompt read-only
-;; If you highlight the prmpt
-(opt! eshell-highlight-prompt t)
 (defun oo-eshell-prompt ()
-  "Make eshell prompt read-only."
   (set! path (abbreviate-file-name default-directory))
-  (epe-theme-lambda)
-  ;; (format "%s λ " path branch)
-  ;; (set! branch (and vc-mode (cadr (split-string (string-trim vc-mode) "^[A-Z]+[-:]+"))))
-  ;; (propertize (format "%s λ " path branch)
-  ;;             ;; 'read-only t
-  ;;             'rear-nonsticky '(read-only))
-  )
+  (format "%s λ " path branch))
 ;;;; eshell history
 (opt! eshell-hist-ignoredups t)
 ;; boost eshell history-size
