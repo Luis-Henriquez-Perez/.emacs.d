@@ -279,11 +279,12 @@ directory.  If it does not exist create it and add it."
             (delete-region beg (point))
             (goto-char beg)
             (insert (oo-abbrev-table-string table)))
-          (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-          (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
-          (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
           (when (equal 'edited (vc-state file))
-            (vc-checkin (list file) backend commit-msg)))))))
+            (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+            (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
+            (vc-checkin (list file) backend commit-msg))
+          (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
+          )))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
