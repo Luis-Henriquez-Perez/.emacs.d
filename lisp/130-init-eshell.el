@@ -46,7 +46,8 @@
 ;; This is obsolete as of Emacs 30.1
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)
-(opt! eshell-prefer-lisp-functions t)
+;; Prefer external commands over lisp functions.
+(opt! eshell-prefer-lisp-functions nil)
 ;; Represent buffers as #<buffer-name>
 (opt! eshell-buffer-shorthand t)
 ;; boost eshell history-size
