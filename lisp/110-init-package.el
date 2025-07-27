@@ -109,6 +109,7 @@
                                   evil-fringe-mark
                                   evil-goggles
                                   evil-iedit-state
+                                  evil-keypad
                                   evil-lisp-state
                                   evil-nerd-commenter
                                   evil-surround
