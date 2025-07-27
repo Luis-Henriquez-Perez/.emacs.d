@@ -3875,6 +3875,7 @@
     ("ootq" "out of the question")
     ("ootw" "out of the way")
     ("openess" "openness")
+    ("oping" "opening")
     ("oponent" "opponent")
     ("oportunity" "opportunity")
     ("opose" "oppose")
