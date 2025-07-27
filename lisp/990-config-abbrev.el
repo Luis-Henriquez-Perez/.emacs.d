@@ -262,7 +262,7 @@ directory.  If it does not exist create it and add it."
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
       (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
-      ;; TODO: handle better the buffers closing
+      ;; TODO: handle better opening an existing buffer.
       (unwind-protect
           (with-current-buffer buffer
             (goto-char (point-min))
