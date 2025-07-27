@@ -150,6 +150,7 @@
     ("ab" "about")
     ("abandonned" "abandoned")
     ("abb" "abbreviation")
+    ("abbev" "abbrev")
     ("abbort" "abort")
     ("abbout" "about")
     ("abbreviaion" "abbreviation")
@@ -1254,6 +1255,7 @@
     ("comissioner" "commissioner")
     ("comissioning" "commissioning")
     ("comissions" "commissions")
+    ("comit" "commit")
     ("comited" "committed")
     ("comiting" "committing")
     ("comitted" "committed")
@@ -1939,6 +1941,7 @@
     ("econf" "Emacs configuration")
     ("econfig" "Emacs configuration")
     ("econfigg" "Emacs configuration")
+    ("econo1mic" "economic")
     ("econoimic" "economic")
     ("econoımic" "economic")
     ("ect" "etc")
@@ -6114,4 +6117,3 @@
 ;;; provide
 (provide '910-text-mode-abbrev-table)
 ;;; 910-text-mode-abbrev-table.el ends here
-
