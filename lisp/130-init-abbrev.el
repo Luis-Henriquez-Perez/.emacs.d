@@ -39,7 +39,6 @@ This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
   (require '910-text-mode-abbrev-table)
   (require '910-emacs-lisp-mode-abbrev-table)
-  (message "abbrevs-changed -> %S" abbrevs-changed)
   (setq abbrevs-changed nil)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
