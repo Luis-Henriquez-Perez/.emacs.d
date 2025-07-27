@@ -140,12 +140,6 @@ from the beginning."
   (or (and defining-kbd-macro "•REC")
       (and executing-kbd-macro "KBD-PLAY")))
 
-;; (defun oo-mode-line-segment--abbrevs ()
-;;   "Indicate how many abbrevs I have in `999-abbrevs.el'."
-;;   (when (equal (buffer-file-name)
-;;                (expand-file-name "999-abbrevs.el" oo-lisp-dir))
-;;     (format "%d abbrevs" (how-many "^(define-abbrev" (point-min) (point-max)))))
-
 (defun oo-mode-line-segment--word-count ()
   "Indicate how many words I have in a text buffer."
   (when (derived-mode-p 'text-mode)
