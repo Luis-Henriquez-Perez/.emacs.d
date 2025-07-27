@@ -272,6 +272,7 @@ directory.  If it does not exist create it and add it."
               (delete-region beg (point))
               (goto-char beg)
               (insert (oo-abbrev-table-string table)))
+            (save-buffer)
             (when (equal 'edited (vc-state file))
               (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
               (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
