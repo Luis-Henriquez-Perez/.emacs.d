@@ -30,16 +30,12 @@
 (require '050-base)
 ;;;; Make eshell prompt read-only
 ;; Using evil and pressing backspace deletes.
-(defun! oo--make-read-only (fn &rest args)
+(defun oo-eshell-prompt ()
   "Make eshell prompt read-only."
-  (set! prompt (apply fn args))
-  (set! properties '(read-only t
-                               front-sticky (font-lock-face read-only)
-                               rear-nonsticky (font-lock-face read-only)))
-  (add-text-properties 0 (length prompt) properties prompt)
-  prompt)
-
-(advice-add 'epe-theme-lambda :around #'oo--make-read-only)
+  (propertize (epe-theme-lambda)
+              'read-only t
+              'front-sticky '(read-only)
+              'rear-nonsticky '(read-only)))
 ;;;; eshell history
 (opt! eshell-hist-ignoredups t)
 ;; boost eshell history-size
