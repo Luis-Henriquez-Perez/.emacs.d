@@ -5780,6 +5780,7 @@
     ("upd" "update")
     ("updadte" "update")
     ("updae" "update")
+    ("upding" "updating")
     ("upgradded" "upgraded")
     ("upto" "up to")
     ("ur" "your")
