@@ -44,7 +44,7 @@ abbrevs and removes itself from the hook."
 
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 
-;; (imap "C-c a" #'oo-)
+(imap "C-c a" #'oo-add-abbrev)
 (gmap [remap add-abbrev] #'oo-add-abbrev)
 ;;;; do not save abbrevs to a file
 ;; Do not read the abbrev files at startup because I already load them myself.
