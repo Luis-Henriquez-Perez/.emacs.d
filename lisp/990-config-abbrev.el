@@ -249,14 +249,12 @@ directory.  If it does not exist create it and add it."
 (defun oo-add-abbrev (arg)
   "Add the abbrev I mean."
   (interactive "P")
-  (add-abbrev text-mode-abbrev-table "text-mode" arg)
-  (run-with-timer 2 nil #'oo-update-abbrev-tables))
+  (add-abbrev text-mode-abbrev-table "text-mode" arg))
 
 (defun oo-inverse-add-abbrev (arg)
   "Add the abbrev I mean."
   (interactive "P")
-  (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1))
-  (run-with-timer 2 nil #'oo-update-abbrev-tables))
+  (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1)))
 
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables and commit changes."
