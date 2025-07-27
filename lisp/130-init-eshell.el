@@ -29,7 +29,6 @@
 
 (autoload! eshell-z "eshell-z")
 (autoload! eshell-up "eshell-up")
-(autoload! epe-theme-lambda "eshell-prompt-extras")
 
 (hook! eshell-mode-hook abbrev-mode)
 (hook! eshell-mode-hook smartparens-mode)
@@ -44,6 +43,7 @@
 (opt! eshell-highlight-prompt nil)
 (autoload! oo-eshell-prompt "990-config-eshell")
 (opt! eshell-prompt-function 'oo-eshell-prompt)
+;; This is obsolete as of Emacs 30.1
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)
 (opt! eshell-prefer-lisp-functions t)
@@ -54,6 +54,12 @@
 (opt! eshell-history-size 1000)
 ;; Prefer system functions over built-ins.
 (opt! eshell-prefer-lisp-functions nil)
+;; By "highlight" eshell does not just mean coloring the font with the
+;; `eshell-prompt' face.  It also makes the prompt read-only.  Strangely, the
+;; prompt is not read-only by default.  Furthermore, there is no way to override
+;; the text properties `eshell-emit-prompt' adds to the prompt without advising
+;; the it.
+(opt! eshell-highlight-prompt t)
 ;; Stop eshell from printing messages.
 (declare-function eshell-unload-all-modules "eshell")
 (advice-add #'eshell-unload-all-modules :around #'oo-funcall-quietly)
