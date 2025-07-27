@@ -33,7 +33,6 @@
   "Make eshell prompt read-only."
   (propertize (epe-theme-lambda)
               'read-only t
-              'front-sticky '(read-only)
               'rear-nonsticky '(read-only)))
 ;;;; eshell history
 (opt! eshell-hist-ignoredups t)
