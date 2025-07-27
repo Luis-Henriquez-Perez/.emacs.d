@@ -260,8 +260,8 @@ directory.  If it does not exist create it and add it."
   "Update the abbrev tables and commit changes."
   (dolist (table abbrev-table-name-list)
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
-    (set! buffer (find-file-literally file))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
+      (set! buffer (find-file-literally file))
       (unwind-protect
           (with-current-buffer buffer
             (goto-char (point-min))
