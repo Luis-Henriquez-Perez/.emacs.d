@@ -258,7 +258,9 @@ directory.  If it does not exist create it and add it."
   (interactive "P")
   (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1))
   (run-with-timer 2 nil #'oo-update-abbrev-tables))
-
+;; If you know what I mean
+;; if you know what I mean
+;; if you know what I mean
 (defun! oo-update-abbrev-tables ()
   "Update the abbrev tables and commit changes."
   (let ((default-directory oo-lisp-dir))
@@ -276,10 +278,12 @@ directory.  If it does not exist create it and add it."
             (forward-sexp)
             (delete-region beg (point))
             (goto-char beg)
-            (insert (oo-abbrev-table-string table))))
-        (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-        (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
-        (vc-checkin (list file) backend commit-msg)))))
+            (insert (oo-abbrev-table-string table)))
+          (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+          (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
+          (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-(message ""))
+          (when (equal 'edited (vc-state file))
+            (vc-checkin (list file) backend commit-msg)))))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
