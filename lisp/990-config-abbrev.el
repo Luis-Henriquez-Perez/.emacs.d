@@ -284,8 +284,7 @@ directory.  If it does not exist create it and add it."
           (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
           (let ((default-directory (file-name-parent-directory file)))
             (vc-checkin (list file) backend commit-msg)))
-        (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
-        ))))
+        (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)))))
 
 (defun oo-insert-at-column (column string)
   "Insert STRING at COLUMN, padding with spaces if necessary."
