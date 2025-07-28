@@ -80,6 +80,16 @@
     (setq command-line-args-left (cdr command-line-args-left))
     t))
 
+;; (defun oo-command-line-switch--random-theme ()
+;;   "Load a theme passed as --theme THEME on the command line."
+;;   ;; 'switch' is something like "--theme=modus-operandi"
+;;   ;; (message "Processing command-line switch for theme...")
+;;   (when (equal "^--random-theme" argi)
+;;     (setq oo-initial-theme (intern (match-string 1 argi)))
+;;     ;; (message "set oo-initial-theme -> %S" oo-initial-theme)
+;;     (setq command-line-args-left (cdr command-line-args-left))
+;;     t))
+
 (push #'oo-command-line-switch--theme command-line-functions)
 
 (provide 'early-init)
