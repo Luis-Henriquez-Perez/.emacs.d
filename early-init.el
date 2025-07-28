@@ -74,7 +74,7 @@
 (defun oo-command-line-switch--theme ()
   "Load a theme passed as --theme THEME on the command line."
   ;; 'switch' is something like "--theme=modus-operandi"
-  (message "Processing command-line switch...")
+  (message "Processing command-line switch for theme...")
   (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
     (setq oo-startup-theme (intern (match-string 1 argi)))
     (message "set oo-startup-theme -> %S" oo-startup-theme)
