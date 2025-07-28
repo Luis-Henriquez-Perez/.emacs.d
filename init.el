@@ -41,7 +41,6 @@
 (set-register :file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-(message "oo-startup-theme -> %S" oo-startup-theme)
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
 (require '000-base-vars)
@@ -62,8 +61,6 @@
         (b (float-time (time-subtract oo-after-load-time oo-before-load-time)))
         (c (float-time (time-subtract after-init-time oo-after-load-time))))
     (message "before -> %0.2f | loading elapsed %0.2f | done %0.2f" a b c)))
-
-(message "oo-startup-theme -> %S" oo-startup-theme)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
