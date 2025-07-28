@@ -58,7 +58,7 @@ abbrevs and removes itself from the hook."
 ;; it is converted into period space space.  Additionally, if I end a sentence
 ;; line with two spaces and I press ESC, the trailing two spaces are replaced
 ;; with a period.
-(defun! oo--add-period-maybe (expand-fn)
+(defun! oo-add-period-maybe-a (expand-fn)
   "Add a period when necessary."
   (prog1 (funcall expand-fn)
     (when (or (member major-mode '(org-mode text-mode)) (oo-in-string-or-comment-p))
