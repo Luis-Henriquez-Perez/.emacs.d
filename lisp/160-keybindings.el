@@ -312,7 +312,7 @@
   "w" '("window" . oo-window-map)
   "q" '("quit" . oo-quit-map))
 
-(oo-add-hook 'emacs-startup-hook #'override-global-mode)
+(add-hook 'emacs-startup-hook #'override-global-mode)
 
 (nmap override-global-map oo-normal-leader-key #'oo-leader-map)
 (imap override-global-map oo-insert-leader-key #'oo-leader-map)
