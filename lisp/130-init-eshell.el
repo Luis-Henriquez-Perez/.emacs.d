@@ -43,6 +43,7 @@
 (opt! eshell-banner-message "")
 (opt! eshell-highlight-prompt nil)
 (autoload! oo-eshell-prompt "990-config-eshell")
+;; For now outsource to epe, but later ill
 (opt! eshell-prompt-function 'epe-theme-pipeline)
 ;; This is obsolete as of Emacs 30.1.
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
