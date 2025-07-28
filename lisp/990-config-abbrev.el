@@ -1,4 +1,4 @@
-;;; 990-config-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
+;;; 990-post-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -331,5 +331,5 @@ directory.  If it does not exist create it and add it."
     (insert-at-column (current-column) "))")
     (buffer-string)))
 ;;; provide
-(provide '990-config-abbrev)
-;;; 990-config-abbrev.el ends here
+(provide '990-post-abbrev)
+;;; 990-post-abbrev.el ends here
