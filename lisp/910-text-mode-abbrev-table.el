@@ -1778,7 +1778,7 @@
     ("diplomancy" "diplomacy")
     ("dipthong" "diphthong")
     ("dipthongs" "diphthongs")
-    ("dir" "directory")
+    ("dirr" "directory")
     ("dird" "dired")
     ("directoty" "directory")
     ("directries" "directories")
