@@ -287,17 +287,16 @@ directory.  If it does not exist create it and add it."
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))
 
-(defun oo-insert-at-column (column string)
-  "Insert STRING at COLUMN, padding with spaces if necessary."
-  (let ((pad (- column (current-column))))
-    (when (> pad 0)
-      (insert (make-string pad ?\s)))
-    (insert string)))
-
 (defun! oo-abbrev-table-string (table)
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
   (set! abbrevs '())
   (set! name (symbol-name table))
+  (flet! oo-insert-at-column (column string)
+    "Insert STRING at COLUMN, padding with spaces if necessary."
+    (let ((pad (- column (current-column))))
+      (when (> pad 0)
+        (insert (make-string pad ?\s)))
+      (insert string)))
   (mapatoms
    (lambda (sym)
      (let* ((name (symbol-name sym))
