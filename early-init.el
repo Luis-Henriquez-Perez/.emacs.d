@@ -75,8 +75,7 @@
   "Load a theme passed as --theme THEME on the command line."
   ;; 'switch' is something like "--theme=modus-operandi"
   (when (string-prefix-p "--theme=\\([^[:space:]]+\\)" argi)
-    (let* ((theme-symbol (intern (match-string 1))))
-      (setq oo-startup-theme theme-symbol))
+    (setq oo-startup-theme (intern (match-string 1)))
     (setq command-line-args-left (delete argi command-line-args-left))
     t))
 
