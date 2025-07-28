@@ -29,11 +29,12 @@
 (require 'eshell-up)
 (require '050-base)
 ;;;; Make eshell prompt read-only
-(defun! oo-eshell-prompt ()
-  (set! path (abbreviate-file-name default-directory))
-  (collecting! prompt path)
-  (set! branch (car-safe (vc-git-branches)))
-  (format "%s [ %s ] λ " path branch))
+;; (defun! oo-eshell-prompt ()
+;;   ;; (set! path (abbreviate-file-name default-directory))
+;;   ;; (set! branch (car-safe (vc-git-branches)))
+;;   ;; (format "%s [ %s ] λ " path branch)
+;;   (epe-theme-pipeline)
+;;   )
 ;;;; clear
 ;; Unexpectedly for me the eshell clear scrolled to the bottom.  As seen in a
 ;; stackoverflow answer as well as multiple blog posts, the solution is to use
