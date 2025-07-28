@@ -38,13 +38,16 @@
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;; Emacs loads abbrevs so fast.
-(defun oo-load-abbrevs-h ()
-  "Load abbrev files.
-This function is designed to be added to `abbrev-mode-hook'.  It loads all my
-abbrevs and removes itself from the hook."
-  (require '910-text-mode-abbrev-table)
-  (require '910-emacs-lisp-mode-abbrev-table)
-  (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
+(autoload! oo-write-abbrev-file-a "990-post-abbrev")
+(advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
+;;;; setup advices
+(autoload! oo-do-pulse-expansion-a "990-post-abbrev")
+(autoload! oo-add-period-maybe-a "990-post-abbrev")
+(autoload! oo-ensure-self-insert-a "990-post-abbrev")
+
+(advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
+(advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
+(advice-add 'abbrev--default-expand :around #'oo-ensure-self-insert-a)
 ;;;; automatically add period
 ;; I do not like manually adding periods to the end of sentences.  Having moved
 ;; from using one space after a sentence to two, I find it particularl daunting
