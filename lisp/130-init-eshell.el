@@ -29,6 +29,7 @@
 
 (autoload! eshell-z "eshell-z")
 (autoload! eshell-up "eshell-up")
+(autoload! epe-theme-pipeline "eshell-prompt-extras")
 
 (hook! eshell-mode-hook abbrev-mode)
 (hook! eshell-mode-hook smartparens-mode)
@@ -42,7 +43,7 @@
 (opt! eshell-banner-message "")
 (opt! eshell-highlight-prompt nil)
 (autoload! oo-eshell-prompt "990-config-eshell")
-(opt! eshell-prompt-function 'oo-eshell-prompt)
+(opt! eshell-prompt-function 'epe-theme-pipeline)
 ;; This is obsolete as of Emacs 30.1.
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)
