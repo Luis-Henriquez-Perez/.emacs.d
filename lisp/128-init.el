@@ -179,8 +179,8 @@ file that is in a git repo, enale git-gutter-mode."
   "Load theme."
   (set! theme oo-initial-theme)
   (message "Loading initial theme `%S'..." theme)
-  (message "Theme in (custom-available-themes)" (member theme (custom-available-themes)))
   (when (and theme (member theme (custom-available-themes)))
+    (message "Theme in (custom-available-themes)" (member theme (custom-available-themes)))
     (load-theme theme :no-confirm)))
 
 (add-hook 'emacs-startup-hook #'oo-load-theme-maybe-h 90)
