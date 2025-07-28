@@ -33,7 +33,7 @@ This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
   (require '910-text-mode-abbrev-table)
   (require '910-emacs-lisp-mode-abbrev-table)
-  (require '990-post-abbrevs)
+  (require '990-post-abbrev)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
