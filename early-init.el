@@ -70,7 +70,6 @@
 (defvar oo-startup-theme nil
   "Theme to enable during startup.")
 
-;; Function to load the theme
 (defun oo-command-line-switch--theme ()
   "Load a theme passed as --theme THEME on the command line."
   ;; 'switch' is something like "--theme=modus-operandi"
