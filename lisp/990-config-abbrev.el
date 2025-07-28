@@ -32,6 +32,11 @@
 (require 'htmlize)
 ;;;; prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
+;;;; functions
+(defun oo-write-abbrev-file-a (&rest _)
+  "Override `write-abbrev-file' with my own function."
+  (quiet! (oo-update-abbrev-tables))
+  (oo-log 'trace "Updating abbrevs."))
 ;;;; load abbrevs
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
