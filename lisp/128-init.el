@@ -172,6 +172,14 @@ file that is in a git repo, enale git-gutter-mode."
 ;; is visited it will run this function.
 ;; Try to put this at the end.
 (add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'oo-dwim-file-rules 90)))
+
+(defun oo-load-theme-maybe-h ()
+  "Load theme."
+  (set! theme oo-startup-theme)
+  (when (and theme (custom-theme-p theme))
+    (load-theme theme :no-confirm)))
+
+(add-hook 'emacs-startup-hook #'oo-load-theme-maybe-h)
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
