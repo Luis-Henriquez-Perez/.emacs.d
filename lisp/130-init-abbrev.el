@@ -47,7 +47,7 @@ abbrevs and removes itself from the hook."
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; Write abbrevs to files my way
-(opt! save-abbrevs 'silently)
+(setq save-abbrevs 'silently)
 (autoload! oo-write-abbrev-file-a "990-post-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
