@@ -30,7 +30,7 @@
 (require 'abbrev)
 ;;;; prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
-;;;; Make the parents
+;;;; make the parents
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 ;;;; load abbrevs
