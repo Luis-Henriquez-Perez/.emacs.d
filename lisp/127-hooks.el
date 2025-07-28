@@ -297,8 +297,8 @@ of FACE to the background color of the `default' face."
   :group 'oo
   :global t
   (if oo-auto-commit-mode
-      (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h nil t)
-    (remove-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h nil t)))
+      (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h 'local)
+    (remove-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h 'local)))
 
 (autoload! oo-dwim-vc-action "vc")
 (defun oo-auto-commit-and-push-dotfile-h ()
