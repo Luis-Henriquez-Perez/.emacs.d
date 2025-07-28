@@ -3675,6 +3675,7 @@
     ("necesarily" "necessarily")
     ("necesary" "necessary")
     ("necessiate" "necessitate")
+    ("necily" "necessarily")
     ("ned" "need")
     ("neds" "ends")
     ("neg" "negative")
