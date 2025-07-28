@@ -48,16 +48,8 @@
 (defun! eshell/scroll-to-top ()
   ;; The function `recenter' does not seem to work in the eshell buffer.  I do
   ;; not know why.
-  ;; (let ((window (get-buffer-window (current-buffer))))
-  ;;   (when window
-  ;;     (set-window-start window (point-min))))
-  (call-interactively #'evil-scroll-line-to-top)
-  ;; (call-interactively #'recenter-top-bottom)
-  ;; Need a function of the number of lines in the window for the following to
-  ;; work.
-  ;; (set! line-number (line-number-at-pos))
-  ;; (goto-char (point-min))
-  ;; (forward-line (1- line-number))
+  ;; (let ((inhibit-read-only t))
+  ;;   (recenter 0))
   )
 ;; (eshell/alias "clear" )
 ;;;; eshell
