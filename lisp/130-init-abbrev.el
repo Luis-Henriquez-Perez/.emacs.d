@@ -40,9 +40,9 @@
 (autoload! oo-write-abbrev-file-a "990-config-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
-(autoload! oo--pulse-expansion "990-config-abbrev")
-(autoload! oo--add-period-maybe "990-config-abbrev")
-(autoload! oo--ensure-self-insert "990-config-abbrev")
+(autoload! oo-do-pulse-expansion-a "990-config-abbrev")
+(autoload! oo-add-period-maybe-a "990-config-abbrev")
+(autoload! oo-ensure-self-insert-a "990-config-abbrev")
 
 (advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
 (advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)
