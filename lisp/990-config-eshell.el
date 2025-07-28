@@ -28,13 +28,6 @@
 (require 'eshell-z)
 (require 'eshell-up)
 (require '050-base)
-;;;; Make eshell prompt read-only
-;; (defun! oo-eshell-prompt ()
-;;   ;; (set! path (abbreviate-file-name default-directory))
-;;   ;; (set! branch (car-safe (vc-git-branches)))
-;;   ;; (format "%s [ %s ] λ " path branch)
-;;   (epe-theme-pipeline)
-;;   )
 ;;;; clear
 ;; TODO: make into a snippet and/or abbrev
 ;; (message "current buffer %S" (buffer-name))
