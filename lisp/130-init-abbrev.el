@@ -27,10 +27,20 @@
 ;;; Code:
 (require '050-base)
 ;;;; hooks
+(defun oo-load-abbrevs-h ()
+  "Load abbrev files.
+This function is designed to be added to `abbrev-mode-hook'.  It loads all my
+abbrevs and removes itself from the hook."
+  (require '910-text-mode-abbrev-table)
+  (require '910-emacs-lisp-mode-abbrev-table)
+  (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
+
+(add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
+(add-hook 'abbrev-mode-hook #')
+
 (add-hook 'prog-mode-hook #'abbrev-mode)
 (add-hook 'text-mode-hook #'abbrev-mode)
 (autoload! oo-load-abbrevs-h "990-config-abbrev")
-(add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 ;;;; Do not read abbrev at startup
 ;; Do not read the abbrev files at startup because I already load them myself.
 (advice-add 'read-abbrev-file :around #'ignore)
