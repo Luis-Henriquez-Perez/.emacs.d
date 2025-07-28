@@ -48,16 +48,6 @@ abbrevs and removes itself from the hook."
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; Write abbrevs to files my way
 (setq save-abbrevs 'silently)
-(autoload! oo-write-abbrev-file-a "990-post-abbrev")
-(advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
-;;;; setup advices
-(autoload! oo-do-pulse-expansion-a "990-post-abbrev")
-(autoload! oo-add-period-maybe-a "990-post-abbrev")
-(autoload! oo-ensure-self-insert-a "990-post-abbrev")
-
-(advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
-(advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
-(advice-add 'abbrev--default-expand :around #'oo-ensure-self-insert-a)
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
