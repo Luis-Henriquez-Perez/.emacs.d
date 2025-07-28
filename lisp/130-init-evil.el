@@ -117,8 +117,8 @@
 (defvar evil-state)
 (defun +evil-state-face ()
   "Return the cursor color for state as a string."
-  (when (null evil-state)
-    (error "Evil state is null"))
+  ;; (when (null evil-state)
+  ;;   (message "evil-state is nil"))
   (intern (format "+evil-%s-state-face" evil-state)))
 
 (defun +evil-state-background ()
