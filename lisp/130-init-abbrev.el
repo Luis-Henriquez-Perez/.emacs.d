@@ -38,7 +38,7 @@
 ;;;; Write abbrevs to files my way
 (opt! save-abbrevs 'silently)
 
-(autoload! oo--pulse-expansion "990-config-abbrev")
+(autoload! oo-write-abbrev-file-a "990-config-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
 (autoload! oo--pulse-expansion "990-config-abbrev")
