@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (opt! yeetube-download-directory (expand-file-name "~/Videos/"))
+(nmap yeetube-mode-map "p" #'yeetube-play)
 (nmap yeetube-mode-map "a" #'oo-yeetube-download-audio)
 (nmap yeetube-mode-map "v" #'oo-yeetube-download-video)
 (nmap yeetube-mode-map "s" #'yeetube-search)
