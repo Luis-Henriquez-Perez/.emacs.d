@@ -38,6 +38,7 @@
 ;;;; Write abbrevs to files my way
 (opt! save-abbrevs 'silently)
 
+(autoload! oo--pulse-expansion "990-config-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
 (autoload! oo--pulse-expansion "990-config-abbrev")
@@ -47,9 +48,6 @@
 (advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
 (advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)
 (advice-add 'abbrev--default-expand :around #'oo--ensure-self-insert)
-;;;; Setup abbrev tables
-(abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
-(abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
