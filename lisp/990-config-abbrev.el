@@ -244,7 +244,7 @@ directory.  If it does not exist create it and add it."
         (kill-buffer))))
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
-;;;; Updating abbrevs
+;;;; updating abbrevs
 (defun oo-write-abbrev-file-a (&rest _)
   "Override `write-abbrev-file' with my own function."
   (quiet! (oo-update-abbrev-tables))
