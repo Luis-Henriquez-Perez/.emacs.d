@@ -45,13 +45,6 @@
 ;; (message "current buffer %S" (buffer-name))
 ;; TODO: edit surrounding form so that it works in comments
 ;; (message "var %S" var)
-(defun! eshell/scroll-to-top ()
-  ;; The function `recenter' does not seem to work in the eshell buffer.  I do
-  ;; not know why.
-  ;; (let ((inhibit-read-only t))
-  ;;   (recenter 0))
-  )
-;; (eshell/alias "clear" )
 (defun oo-scroll-to-top-h (&rest _)
   "Hook that scrolls eshell to top of window."
   (recenter 0)
