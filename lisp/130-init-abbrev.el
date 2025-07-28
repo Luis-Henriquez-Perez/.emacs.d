@@ -38,11 +38,6 @@
 ;;;; Write abbrevs to files my way
 (opt! save-abbrevs 'silently)
 
-(defun oo-write-abbrev-file-a (&rest _)
-  "Override `write-abbrev-file' with my own function."
-  (quiet! (oo-update-abbrev-tables))
-  (oo-log 'trace "Updating abbrevs."))
-
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
 (autoload! oo--pulse-expansion "990-config-abbrev")
