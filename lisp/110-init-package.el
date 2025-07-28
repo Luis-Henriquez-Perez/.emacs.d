@@ -243,14 +243,16 @@
   ;; The descriptors are objects that are created by loading and reading many
   ;; files.  This is a relatively expensive process.
   ;; Attempt to cache the descriptors.
-  (let ((cache (expand-file-name "package-alist" oo-var-dir)))
-    (if (file-exists-p cache)
-        (setq package-alist (with-temp-buffer
-                              (insert-file-contents cache)
-                              (read (current-buffer))))
-      (package-load-all-descriptors)
-      (with-temp-file cache
-        (prin1 package-alist (current-buffer)))))
+  (package-initialize)
+  ;; I need to update.
+  ;; (let ((cache (expand-file-name "package-alist" oo-var-dir)))
+  ;;   (if (file-exists-p cache)
+  ;;       (setq package-alist (with-temp-buffer
+  ;;                             (insert-file-contents cache)
+  ;;                             (read (current-buffer))))
+  ;;     (package-load-all-descriptors)
+  ;;     (with-temp-file cache
+  ;;       (prin1 package-alist (current-buffer)))))
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
@@ -270,26 +272,27 @@
 
 (advice-add 'package--archives-initialize :around #'oo--read-archive-contents)
 
-(let ((read-archive-contents-p nil))
-  (dolist (package package-selected-packages)
-    (unless (package-installed-p package)
-      (unless read-archive-contents-p
-        (package-read-all-archive-contents)
-        (setq read-archive-contents-p t)
-        ;; (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
-        ;;   (package-refresh-contents))
-        )
-      (oo-log 'info "Installing %S..." package)
-      (condition-case _
-          (package-install package)
-        (error
-         (oo-log 'error "Failed to install package `%s'" package)
-         t))
-      ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
-      ;; disabling garbage collection), accumulating too much garbage via
-      ;; installing packages will cause slowdowns, lags and freezes.  Here I need
-      ;; to ensure I periodically garbage collect.
-      (garbage-collect))))
+(message "evil-keypad installed->%S" (package-installed-p 'evil-keypad))
+;; (let ((read-archive-contents-p nil))
+;;   (dolist (package package-selected-packages)
+;;     (unless (package-installed-p package)
+;;       (unless read-archive-contents-p
+;;         (package-read-all-archive-contents)
+;;         (setq read-archive-contents-p t)
+;;         ;; (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
+;;         ;;   (package-refresh-contents))
+;;         )
+;;       (oo-log 'info "Installing %S..." package)
+;;       (condition-case _
+;;           (package-install package)
+;;         (error
+;;          (oo-log 'error "Failed to install package `%s'" package)
+;;          t))
+;;       ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
+;;       ;; disabling garbage collection), accumulating too much garbage via
+;;       ;; installing packages will cause slowdowns, lags and freezes.  Here I need
+;;       ;; to ensure I periodically garbage collect.
+;;       (garbage-collect))))
 
 (package-vc-install-selected-packages)
 ;;; provide
