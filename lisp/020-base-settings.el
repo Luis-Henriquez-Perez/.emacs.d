@@ -132,8 +132,6 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq fast-but-imprecise-scrolling t)
 (setq redisplay-skip-fontification-on-input t)
 (setq inhibit-compacting-font-caches t)
-
-(setq which-func-update-delay 1.0)
 ;;;;;; unknown
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
 ;; (setq sgml-basic-offset 4)
