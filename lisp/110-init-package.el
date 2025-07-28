@@ -243,7 +243,7 @@
   ;; The descriptors are objects that are created by loading and reading many
   ;; files.  This is a relatively expensive process.
   ;; Attempt to cache the descriptors.
-  (package-initialize)
+  (package-load-all-descriptors)
   ;; I need to update the cache when I install a package and only then can I use
   ;; this cache code to save a bit more startup time.
   ;; (let ((cache (expand-file-name "package-alist" oo-var-dir)))
