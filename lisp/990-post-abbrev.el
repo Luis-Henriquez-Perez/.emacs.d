@@ -38,13 +38,8 @@
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;; Emacs loads abbrevs so fast.
-(autoload! oo-write-abbrev-file-a "990-post-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
-(autoload! oo-do-pulse-expansion-a "990-post-abbrev")
-(autoload! oo-add-period-maybe-a "990-post-abbrev")
-(autoload! oo-ensure-self-insert-a "990-post-abbrev")
-
 (advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
 (advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
 (advice-add 'abbrev--default-expand :around #'oo-ensure-self-insert-a)
