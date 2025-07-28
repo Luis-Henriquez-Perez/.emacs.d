@@ -76,7 +76,7 @@
   ;; 'switch' is something like "--theme=modus-operandi"
   (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
     (setq oo-startup-theme (intern (match-string 1 argi)))
-    (message "Set oo-startup-theme->%S" oo-startup-theme)
+    (message "oo-startup-theme -> %S" oo-startup-theme)
     (setq command-line-args-left (cdr command-line-args-left))
     t))
 
