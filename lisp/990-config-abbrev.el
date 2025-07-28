@@ -34,7 +34,6 @@
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
-
 ;;;; load abbrevs
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
