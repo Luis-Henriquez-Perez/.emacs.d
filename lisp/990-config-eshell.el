@@ -52,14 +52,17 @@
   ;;   (recenter 0))
   )
 ;; (eshell/alias "clear" )
-(defun oo-scroll-to-top-h ()
+(defun oo-scroll-to-top-h (&rest _)
   "Hook that scrolls eshell to top of window."
   (recenter 0)
   (remove-hook 'eshell-post-command-hook #'oo-scroll-to-top-h 'local))
 
 (defun eshell/scroll-to-top ()
-  "Scroll the Eshell window to the top without clearing the buffer."
+  "Scroll the Eshell to the top without clearing the buffer."
   (add-hook 'eshell-post-command-hook #'oo-scroll-to-top-h nil 'local))
+
+;; Replace `eshell/clear' with this function.
+;; (defalias 'eshell/clear 'eshell/scroll-to-top)
 ;;;; eshell
 (defun! eshell/less (&rest files)
   "Essentially an alias to the `view-file' function."
