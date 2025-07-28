@@ -77,9 +77,8 @@
   (message "option -> %S" argi)
   (message "match -> %S" (string-match "^--theme=\\([^[:space:]]+\\)" argi))
   (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
-    (message "In when condition...%S" (match-string 1))
-    ;; (setq oo-startup-theme (intern (match-string 1)))
-    ;; (message "Set oo-startup-theme->%S" oo-startup-theme)
+    (setq oo-startup-theme (intern (string-match 1)))
+    (message "Set oo-startup-theme->%S" oo-startup-theme)
     (setq command-line-args-left (cdr command-line-args-left))
     t))
 
