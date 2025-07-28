@@ -40,19 +40,19 @@ abbrevs and removes itself from the hook."
 
 (add-hook 'prog-mode-hook #'abbrev-mode)
 (add-hook 'text-mode-hook #'abbrev-mode)
-(autoload! oo-load-abbrevs-h "990-config-abbrev")
+(autoload! oo-load-abbrevs-h "990-post-abbrev")
 ;;;; Do not read abbrev at startup
 ;; Do not read the abbrev files at startup because I already load them myself.
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; Write abbrevs to files my way
 (opt! save-abbrevs 'silently)
-(autoload! oo-write-abbrev-file-a "990-config-abbrev")
+(autoload! oo-write-abbrev-file-a "990-post-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
-(autoload! oo-do-pulse-expansion-a "990-config-abbrev")
-(autoload! oo-add-period-maybe-a "990-config-abbrev")
-(autoload! oo-ensure-self-insert-a "990-config-abbrev")
+(autoload! oo-do-pulse-expansion-a "990-post-abbrev")
+(autoload! oo-add-period-maybe-a "990-post-abbrev")
+(autoload! oo-ensure-self-insert-a "990-post-abbrev")
 
 (advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
 (advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
