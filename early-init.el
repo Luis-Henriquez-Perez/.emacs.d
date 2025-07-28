@@ -77,7 +77,7 @@
   (message "Processing command-line switch...")
   (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
     (setq oo-startup-theme (intern (match-string 1 argi)))
-    (message "oo-startup-theme -> %S" oo-startup-theme)
+    (message "set oo-startup-theme -> %S" oo-startup-theme)
     (setq command-line-args-left (cdr command-line-args-left))
     t))
 
