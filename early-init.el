@@ -67,5 +67,23 @@
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
+(defvar oo-startup-theme nil
+  "Theme to enable during startup.")
+
+;; Function to load the theme
+(defun oo-command-line-switch--theme ()
+  "Load a theme passed as --theme THEME on the command line."
+  ;; 'switch' is something like "--theme=modus-operandi"
+  (message "argi-> %S" argi)
+  (when (string-prefix-p "--theme=\\([^[:space:]]+\\)" argi)
+    (let* ((theme-name (match-string 1))
+           (theme-symbol (intern theme-name)))
+      (setq oo-startup-theme theme-symbol))
+    (setq command-line-args-left (delete argi command-line-args-left))
+    t))
+
+(push #'oo-command-line-switch--theme command-line-functions)
+
+
 (provide 'early-init)
 ;;; early-init.el ends here
