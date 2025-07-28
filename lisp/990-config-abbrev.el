@@ -32,6 +32,8 @@
 (require 'htmlize)
 ;;;; prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
+(abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
+(abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 ;;;; functions
 (defun oo-write-abbrev-file-a (&rest _)
   "Override `write-abbrev-file' with my own function."
