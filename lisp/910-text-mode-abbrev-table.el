@@ -5495,6 +5495,7 @@
     ("thikns" "thinks")
     ("thiunk" "think")
     ("thme" "them")
+    ("thmes" "themes")
     ("thn" "then")
     ("thna" "than")
     ("thne" "then")
