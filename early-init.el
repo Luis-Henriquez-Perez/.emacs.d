@@ -76,8 +76,7 @@
   ;; 'switch' is something like "--theme=modus-operandi"
   (message "argi-> %S" argi)
   (when (string-prefix-p "--theme=\\([^[:space:]]+\\)" argi)
-    (let* ((theme-name (match-string 1))
-           (theme-symbol (intern theme-name)))
+    (let* ((theme-symbol (intern (match-string 1))))
       (setq oo-startup-theme theme-symbol))
     (setq command-line-args-left (delete argi command-line-args-left))
     t))
