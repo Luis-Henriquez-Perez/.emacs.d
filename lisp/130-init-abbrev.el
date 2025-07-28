@@ -35,7 +35,7 @@
 ;; Do not read the abbrev files at startup because I already load them myself.
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
-;;;; do not save abbrevs to a file
+;;;; Write abbrevs to files my way
 (opt! save-abbrevs 'silently)
 
 (defun oo-write-abbrev-file-a (&rest _)
