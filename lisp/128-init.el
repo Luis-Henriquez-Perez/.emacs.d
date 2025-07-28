@@ -173,14 +173,10 @@ file that is in a git repo, enale git-gutter-mode."
 ;; Try to put this at the end.
 (add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'oo-dwim-file-rules 90)))
 
-(message "Checking value of initial theme `%S'..." oo-initial-theme)
-
 (defun! oo-load-theme-maybe-h ()
   "Load theme."
   (set! theme oo-initial-theme)
-  ;; (message "Loading initial theme `%S'..." theme)
   (when (and theme (member theme (custom-available-themes)))
-    ;; (message "Theme in (custom-available-themes)" (member theme (custom-available-themes)))
     (load-theme theme :no-confirm)))
 
 (add-hook 'emacs-startup-hook #'oo-load-theme-maybe-h 90)
