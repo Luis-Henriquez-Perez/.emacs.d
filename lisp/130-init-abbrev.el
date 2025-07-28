@@ -26,6 +26,8 @@
 ;;
 ;;; Code:
 (require '050-base)
+;;;; settings
+(opt! save-abbrevs 'silently)
 ;;;; hooks
 (add-hook 'prog-mode-hook #'abbrev-mode)
 (add-hook 'text-mode-hook #'abbrev-mode)
@@ -36,8 +38,6 @@
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;;; Write abbrevs to files my way
-(opt! save-abbrevs 'silently)
-
 (autoload! oo-write-abbrev-file-a "990-config-abbrev")
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
 ;;;; setup advices
