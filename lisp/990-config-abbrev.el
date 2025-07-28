@@ -291,7 +291,7 @@ directory.  If it does not exist create it and add it."
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
   (set! abbrevs '())
   (set! name (symbol-name table))
-  (flet! oo-insert-at-column (column string)
+  (flet! insert-at-column (column string)
     "Insert STRING at COLUMN, padding with spaces if necessary."
     (let ((pad (- column (current-column))))
       (when (> pad 0)
@@ -324,10 +324,10 @@ directory.  If it does not exist create it and add it."
     (set! column (current-column))
     (dolist (abbrev abbrevs)
       (set! (name expansion hook . plist) abbrev)
-      (oo-insert-at-column column (format "%S\n" abbrev)))
+      (insert-at-column column (format "%S\n" abbrev)))
     ;; This is the last newline.
     (delete-char -1)
-    (oo-insert-at-column (current-column) "))")
+    (insert-at-column (current-column) "))")
     (buffer-string)))
 ;;; provide
 (provide '990-config-abbrev)
