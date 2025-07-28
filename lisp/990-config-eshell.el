@@ -36,15 +36,16 @@
 ;;   (epe-theme-pipeline)
 ;;   )
 ;;;; clear
-;; Unexpectedly for me the eshell clear scrolled to the bottom.  As seen in a
-;; stackoverflow answer as well as multiple blog posts, the solution is to use
-;; "clear 1" instead, essentually telling emacs to use "clear-scrollback".  I
-;; still do not like this though because it actually erases the contents of the
-;; buffer and I do not want to do this unnecessarily.  I just want it to scroll up.
 ;; TODO: make into a snippet and/or abbrev
 ;; (message "current buffer %S" (buffer-name))
 ;; TODO: edit surrounding form so that it works in comments
 ;; (message "var %S" var)
+;; Unexpectedly for me the eshell clear scrolled to the bottom.  As seen in a
+;; stackoverflow answer as well as multiple blog posts, the solution is to use
+;; "clear 1" instead, essentually telling emacs to use "clear-scrollback".  I
+;; still do not like this though because it actually erases the contents of the
+;; buffer and I do not want to do this unnecessarily.  I just want it to scroll
+;; up.  I figured out why.
 (defun oo-scroll-to-top-h (&rest _)
   "Hook that scrolls eshell to top of window."
   (recenter 0)
