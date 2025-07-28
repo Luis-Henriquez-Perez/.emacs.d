@@ -174,6 +174,7 @@ file that is in a git repo, enale git-gutter-mode."
 (add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'oo-dwim-file-rules 90)))
 
 (message "Loading initial theme `%S'..." theme)
+
 (defun! oo-load-theme-maybe-h ()
   "Load theme."
   (set! theme oo-initial-theme)
