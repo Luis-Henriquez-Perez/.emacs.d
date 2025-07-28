@@ -274,12 +274,13 @@ directory.  If it does not exist create it and add it."
               (goto-char beg)
               (insert (oo-abbrev-table-string table)))
             (save-buffer)
-            (when (equal 'edited (vc-state file))
-              (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-              (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
-              (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
-              ;; TODO: inhibit opening buffers.
-              (vc-checkin (list file) backend commit-msg)))
+            ;; (when (equal 'edited (vc-state file))
+            ;;   (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+            ;;   (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
+            ;;   (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
+            ;;   ;; TODO: inhibit opening buffers.
+            ;;   (vc-checkin (list file) backend commit-msg))
+            )
         (kill-buffer buffer)))))
 
 (defun oo-insert-at-column (column string)
