@@ -74,7 +74,6 @@
 (defun oo-command-line-switch--theme ()
   "Load a theme passed as --theme THEME on the command line."
   ;; 'switch' is something like "--theme=modus-operandi"
-  (message "argi-> %S" argi)
   (when (string-prefix-p "--theme=\\([^[:space:]]+\\)" argi)
     (let* ((theme-symbol (intern (match-string 1))))
       (setq oo-startup-theme theme-symbol))
