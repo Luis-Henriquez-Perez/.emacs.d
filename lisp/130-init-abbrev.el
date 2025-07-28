@@ -44,9 +44,9 @@
 (autoload! oo-add-period-maybe-a "990-config-abbrev")
 (autoload! oo-ensure-self-insert-a "990-config-abbrev")
 
-(advice-add 'abbrev--default-expand :around #'oo--pulse-expansion)
-(advice-add 'abbrev--default-expand :around #'oo--add-period-maybe)
-(advice-add 'abbrev--default-expand :around #'oo--ensure-self-insert)
+(advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
+(advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
+(advice-add 'abbrev--default-expand :around #'oo-ensure-self-insert-a)
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
