@@ -63,6 +63,9 @@
 
 ;; Replace `eshell/clear' with this function.
 ;; (defalias 'eshell/clear 'eshell/scroll-to-top)
+
+;; I do not necessarily want to always scroll to the top but I want eshell to
+;; preserve it is previous position in the window.
 ;;;; eshell
 (defun! eshell/less (&rest files)
   "Essentially an alias to the `view-file' function."
