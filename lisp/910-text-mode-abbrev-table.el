@@ -560,6 +560,7 @@
     ("anon" "anonymous")
     ("anonimity" "anonymity")
     ("anonl" "anonymous lambda")
+    ("anotter" "another")
     ("anounced" "announced")
     ("anouncement" "announcement")
     ("ansalisation" "nasalisation")
