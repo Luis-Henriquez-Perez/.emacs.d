@@ -181,7 +181,7 @@ file that is in a git repo, enale git-gutter-mode."
   (when (and theme (member theme (custom-available-themes)))
     (load-theme theme :no-confirm)))
 
-(add-hook 'emacs-startup-hook #'oo-load-theme-maybe-h)
+(add-hook 'after-init-time #'oo-load-theme-maybe-h)
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
