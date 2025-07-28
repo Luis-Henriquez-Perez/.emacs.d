@@ -84,7 +84,7 @@ abbrevs and removes itself from the hook."
 ;; captializes a word during `post-insert-hook' and a multi-word expansion will
 ;; skip calling that hook after each word except the last one.  So here I call
 ;; the hook myself at the proper places.
-(defun! oo--ensure-self-insert (expand-fn)
+(defun! oo-ensure-self-insert-a (expand-fn)
   "Run `post-insert-hook' after each word in a multi-word expansion."
   (aprog1! (funcall expand-fn)
     (when (and it last-abbrev-location)
@@ -92,7 +92,6 @@ abbrevs and removes itself from the hook."
       (save-excursion (goto-char last-abbrev-location)
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
-
 ;;;; predicates
 (defun! oo-in-text-p ()
   "Return non-nil when text-mode abbrevs should be enabled.
