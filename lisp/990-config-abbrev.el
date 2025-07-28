@@ -34,11 +34,7 @@
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
-;;;; functions
-(defun oo-write-abbrev-file-a (&rest _)
-  "Override `write-abbrev-file' with my own function."
-  (quiet! (oo-update-abbrev-tables))
-  (oo-log 'trace "Updating abbrevs."))
+
 ;;;; load abbrevs
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
@@ -144,17 +140,6 @@ string or comment."
        (stringp default-directory)
        (string= (expand-file-name default-directory)
                 (expand-file-name "~/Documents/MyBlog/org/posts/"))))
-
-(defun oo-fast-delete-lines (n)
-  "Delete N lines from point quickly, minimizing overhead."
-  (let ((inhibit-modification-hooks t)
-        (buffer-undo-list t) ;; Disable undo recording
-        (inhibit-read-only t)
-        (inhibit-point-motion-hooks t)
-        (start (point)))
-    (save-excursion
-      (forward-line n)
-      (delete-region start (point)))))
 ;;;; expansion functions
 ;; (defvar oo-blog-dir "~/Documents/MyBlog/org/documentation/")
 
@@ -262,6 +247,12 @@ directory.  If it does not exist create it and add it."
   (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
   (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; Updating the abbrevs
+;;;; functions
+(defun oo-write-abbrev-file-a (&rest _)
+  "Override `write-abbrev-file' with my own function."
+  (quiet! (oo-update-abbrev-tables))
+  (oo-log 'trace "Updating abbrevs."))
+
 ;; I only want this function to add complex abbrevs. abbrev
 (defun oo-add-abbrev (arg)
   "Add the abbrev I mean."
