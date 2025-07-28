@@ -71,7 +71,7 @@ abbrevs and removes itself from the hook."
 ;;;; pulse expansion
 ;; You would be surprised at how much of an aesthetic improvement little things
 ;; like this can make a difference.
-(defun! oo--pulse-expansion (expand-fn)
+(defun! oo-do-pulse-expansion-a (expand-fn)
   "Pulse around the expansion of an abbrev."
   (aprog1! (funcall expand-fn)
     (and it
