@@ -123,6 +123,7 @@
 ;;;; bindings
 (nmap org-mode-map "T" #'org-todo)
 (nmap org-mode-map "t" #'+org-choose-tags)
+(nmap org-mode-map "R" #'org-refile)
 ;;; provide
 (provide '130-init-org)
 ;;; 130-init-org.el ends here
