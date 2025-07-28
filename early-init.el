@@ -82,6 +82,5 @@
 
 (push #'oo-command-line-switch--theme command-line-functions)
 
-
 (provide 'early-init)
 ;;; early-init.el ends here
