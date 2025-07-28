@@ -67,7 +67,7 @@
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
-(defvar oo-startup-theme nil
+(defvar oo-initial-theme nil
   "Theme to enable during startup.")
 
 (defun oo-command-line-switch--theme ()
@@ -75,8 +75,8 @@
   ;; 'switch' is something like "--theme=modus-operandi"
   (message "Processing command-line switch for theme...")
   (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
-    (setq oo-startup-theme (intern (match-string 1 argi)))
-    (message "set oo-startup-theme -> %S" oo-startup-theme)
+    (setq oo-initial-theme (intern (match-string 1 argi)))
+    (message "set oo-initial-theme -> %S" oo-initial-theme)
     (setq command-line-args-left (cdr command-line-args-left))
     t))
 
