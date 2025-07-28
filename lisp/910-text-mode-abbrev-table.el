@@ -5695,6 +5695,7 @@
     ("udate" "update")
     ("ude" "you would")
     ("udpate" "update")
+    ("udpating" "updating")
     ("udring" "during")
     ("ued" "used")
     ("uf" "of")
