@@ -176,6 +176,7 @@ file that is in a git repo, enale git-gutter-mode."
 (defun! oo-load-theme-maybe-h ()
   "Load theme."
   (set! theme oo-startup-theme)
+  (message "theme? %S" oo-startup-theme (custom-available-themes))
   (message "%S in %S" theme (custom-available-themes))
   (when (and theme (member theme (custom-available-themes)))
     (load-theme theme :no-confirm)))
