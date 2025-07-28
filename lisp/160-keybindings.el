@@ -282,6 +282,7 @@
   "s" #'emms-seek-to)
 ;;;;; package
 (defvar-keymap! oo-package-map
+  "l" #'list-packages
   "i" #'package-install
   "d" #'package-install)
 ;;;;; quick map
