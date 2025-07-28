@@ -302,6 +302,7 @@
   "g" '("git" . oo-git-map)
   "h" '("help" . oo-help-map)
   "j" '("quick" . oo-quick-map)
+  "l" #'consult-buffer
   "y" #'oo-load-random-theme
   "s" #'oo-load-random-theme
   "d" #'transwin-toggle
