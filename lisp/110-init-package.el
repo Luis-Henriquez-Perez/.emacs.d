@@ -244,7 +244,8 @@
   ;; files.  This is a relatively expensive process.
   ;; Attempt to cache the descriptors.
   (package-initialize)
-  ;; I need to update the cache when I install a package.
+  ;; I need to update the cache when I install a package and only then can I use
+  ;; this cache code to save a bit more startup time.
   ;; (let ((cache (expand-file-name "package-alist" oo-var-dir)))
   ;;   (if (file-exists-p cache)
   ;;       (setq package-alist (with-temp-buffer
