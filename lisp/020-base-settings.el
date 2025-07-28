@@ -133,7 +133,7 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq redisplay-skip-fontification-on-input t)
 (setq inhibit-compacting-font-caches t)
 
-(setq idle-update-delay 1.0)
+(setq which-func-update-delay 1.0)
 ;;;;;; unknown
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
 ;; (setq sgml-basic-offset 4)
@@ -265,8 +265,6 @@ end-of-buffer signals; pass the rest to the default handler."
 ;;;;; diable auto-save-mode
 (setq auto-save-default nil)
 (auto-save-mode -1)
-
-(setq idle-update-delay 1.0)
 ;;;;; automatically kill any processes when exiting emacs
 ;; If I start a process, like the =eat= shell for example, stop me from exiting
 ;; to ask me whether I want to kill it, just do it.
