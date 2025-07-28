@@ -36,7 +36,6 @@ abbrevs and removes itself from the hook."
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
-(add-hook 'abbrev-mode-hook #')
 
 (add-hook 'prog-mode-hook #'abbrev-mode)
 (add-hook 'text-mode-hook #'abbrev-mode)
