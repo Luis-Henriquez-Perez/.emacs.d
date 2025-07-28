@@ -102,6 +102,7 @@
 (imap "A-x" #'execute-extended-command)
 (imap "M-x" #'execute-extended-command)
 (imap "C-c h" #'grugru)
+(nimap "C-c j" #'oo-inverse-add-abbrev)
 (nimap "C-c k" #'unexpand-abbrev)
 (imap [escape] #'oo-dwim-escape)
 (imap "TAB" #'completion-at-point)
