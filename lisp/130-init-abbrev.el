@@ -27,8 +27,8 @@
 ;;; Code:
 (require '050-base)
 ;;;; hooks
-(hook! prog-mode-hook abbrev-mode)
-(hook! text-mode-hook abbrev-mode)
+(add-hook 'prog-mode-hook abbrev-mode)
+(add-hook 'text-mode-hook abbrev-mode)
 ;;;; load abbrevs
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
