@@ -53,6 +53,7 @@
   )
 ;; (eshell/alias "clear" )
 (defun oo-scroll-to-top-h ()
+  "Hook that scrolls eshell to top of window."
   (recenter 0)
   (remove-hook 'eshell-post-command-hook #'oo-scroll-to-top-h 'local))
 
