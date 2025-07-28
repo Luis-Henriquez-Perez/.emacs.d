@@ -1211,6 +1211,7 @@
     ("cna" "can")
     ("cnfig" "configuration")
     ("coctail" "cocktail")
+    ("coe" "code")
     ("cofnigure" "configure")
     ("coform" "conform")
     ("cognizent" "cognizant")
