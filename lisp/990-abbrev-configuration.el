@@ -28,7 +28,6 @@
 ;;;; requirements
 (require '050-base)
 (require 'abbrev)
-(message "Loaded post abbrev...")
 ;;;; prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 ;;;; make the parents
