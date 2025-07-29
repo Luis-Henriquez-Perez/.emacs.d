@@ -29,7 +29,6 @@
 
 (autoload! eshell-z "eshell-z")
 (autoload! eshell-up "eshell-up")
-(autoload! epe-theme-pipeline "eshell-prompt-extras")
 
 (hook! eshell-mode-hook abbrev-mode)
 (hook! eshell-mode-hook smartparens-mode)
@@ -47,19 +46,18 @@
 ;; faces by which I mean constant faces, not existing ones that change with
 ;; themes.  So the prompt is difficult to read with certain themes, particularly
 ;; light themes.
-(opt! eshell-prompt-function 'epe-theme-pipeline)
+(autoload! oo-eshell-prompt "990-config-eshell")
+(opt! eshell-prompt-function 'oo-eshell-prompt)
 ;; This is obsolete as of Emacs 30.1.
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)
 ;; Prefer external commands over lisp functions.
-(opt! eshell-prefer-lisp-functions nil)
+(opt! eshell-prefer-lisp-functions t)
 ;; Represent buffers as #<buffer-name>
 (opt! eshell-buffer-shorthand t)
 ;; boost eshell history-size
 ;; Increase the history size from 128 to 1000.
 (opt! eshell-history-size 1000)
-;; Prefer system functions over built-ins.
-(opt! eshell-prefer-lisp-functions nil)
 ;; By "highlight" eshell does not just mean coloring the font with the
 ;; `eshell-prompt' face.  It also makes the prompt read-only.  Strangely, the
 ;; prompt is not read-only by default.  Furthermore, there is no way to override
