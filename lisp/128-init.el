@@ -45,7 +45,7 @@ Replace `kill-buffer--possibly-save' as advice."
 
 (advice-add 'kill-buffer--possibly-save :around #'oo--prompt-clearly)
 
-(advice-add 'save-buffer :around #'oo-funcall-quietly)
+(advice-add 'save-buffer :around #'oo-call-quietly-a)
 
 (declare-function consult-completion-in-region "consult")
 (defun oo-completion-in-region-function (&rest args)

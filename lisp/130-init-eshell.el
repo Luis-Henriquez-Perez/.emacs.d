@@ -70,9 +70,9 @@
 (opt! eshell-history-size 1000)
 ;; Stop eshell from printing messages.
 (declare-function eshell-unload-all-modules "eshell")
-(advice-add #'eshell-unload-all-modules :around #'oo-funcall-quietly)
+(advice-add #'eshell-unload-all-modules :around #'oo-call-quietly-a)
 
-(advice-add #'eshell-mode :around #'oo-funcall-quietly)
+(advice-add #'eshell-mode :around #'oo-call-quietly-a)
 
 (nmap eshell-mode-map "J" #'eshell-previous-prompt)
 (nmap eshell-mode-map "K" #'eshell-next-prompt)

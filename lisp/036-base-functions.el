@@ -37,7 +37,7 @@
 (defvar evil-state-properties)
 (declare-function evil-define-key* "evil")
 
-(defun oo-funcall-quietly (fn &rest args)
+(defun oo-call-quietly-a (fn &rest args)
   "Call FN with ARGS without producing any output."
   (quiet! (apply fn args)))
 
