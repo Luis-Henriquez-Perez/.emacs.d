@@ -97,7 +97,6 @@
                                   emmet-mode
                                   emms
                                   eros
-                                  eshell-prompt-extras
                                   eshell-syntax-highlighting
                                   eshell-up
                                   eshell-z
