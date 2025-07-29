@@ -29,7 +29,7 @@
 (require 'eshell-up)
 (require '050-base)
 (require 'vc-git)
-;;;; Prompt function
+;;;; prompt function
 (defun! oo-eshell-prompt ()
   (set! path (abbreviate-file-name default-directory))
   (set! branch (aand! (car-safe (vc-git-branches)) (format "[ %s ]" it)))
@@ -151,7 +151,6 @@
 (eshell/alias "emacs-eval" "{cd $user-emacs-directory; eldev -d eval $1}")
 (eshell/alias "eclean" "{cd $user-emacs-directory; eldev clean}")
 (eshell/alias "eeval" "{cd $user-emacs-directory; eldev -d eval $1}")
-(eshell/alias "apply-emacs" "chezmoi apply ~/.config/emacs --force")
 (eshell/alias "update-emacs" "apply-emacs && eclean && ecompile")
 (eshell/alias "ecompile" "emacs --batch -l ~/.config/emacs/compile-setup.el -f batch-byte-compile ~/.config/emacs/init.el ~/.config/emacs/early-init.el ~/.config/emacs/lisp/*.el")
 (eshell/alias "eclean" "rm -f ~/.config/emacs/init.elc ~/.config/emacs/early-init.elc ~/.config/emacs/lisp/*.elc")
