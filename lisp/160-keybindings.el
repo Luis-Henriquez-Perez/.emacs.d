@@ -171,9 +171,9 @@
   "b" #'vc-switch-branch
   "c" #'magit-commit
   "g" #'magit-status
-  "j" #'oo-dwim-vc-action
+  ;; "j" #'oo-dwim-vc-action
   "l" #'vc-switch-branch
-  "n" #'oo-dwim-vc-action
+  ;; "n" #'oo-dwim-vc-action
   "p" #'magit-push
   "r" #'vc-register
   "s" #'magit-status)
@@ -257,7 +257,7 @@
   "z" #'ace-link
   "b" #'burly-open-bookmark
   "i" #'imenu
-  "j" #'oo-dwim-vc-action
+  ;; "j" #'oo-dwim-vc-action
   "n" #'oo-new-buffer
   "f" #'switch-to-buffer
   "a" #'find-library
