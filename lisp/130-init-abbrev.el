@@ -35,7 +35,7 @@ abbrevs and removes itself from the hook."
   (require '910-emacs-lisp-mode-abbrev-table)
   ;; Abbrevs are loaded at startup so to properly defer this I need to load my
   ;; configuration when abbrev-mode is enabled.
-  (require '990-post-abbrev)
+  (require '990-abbrev-configuration)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
 
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
