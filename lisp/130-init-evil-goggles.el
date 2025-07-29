@@ -26,11 +26,14 @@
 ;;
 ;;; Code:
 (require '050-base)
-
-(opt! evil-goggles-duration 0.1)
 ;;;; register evil commands
 (declare-function evil-goggles-mode "evil-goggles")
 
+;; Note that when `evil-goggles' is loaded in an advice and itself adds an
+;; advice to the advised function.  Advising within an advice does not work at
+;; least not until the next invocation of the advised function.  TLDR:
+;; `evil-goggles' will not work first time one of the advised functions is
+;; invoked--but it will every time afterwards.
 (defun oo-require-evil-goggles-a (fn &rest args)
   (unless (or (minibufferp)
 			  (bound-and-true-p evil-goggles-mode))
