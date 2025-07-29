@@ -68,6 +68,40 @@
 	(view-file first)
 	(when rest
 	  (mapc #'view-file-other-window rest))))
+;;;; settings
+(setopt eshell-banner-message "")
+(setopt eshell-highlight-prompt nil)
+(autoload! oo-eshell-prompt "990-config-eshell")
+;; For now outsource to epe, but later I will make my own.  Also epe uses static
+;; faces by which I mean constant faces, not existing ones that change with
+;; themes.  So the prompt is difficult to read with certain themes, particularly
+;; light themes.
+(autoload! oo-eshell-prompt "990-config-eshell")
+(setopt eshell-prompt-function 'oo-eshell-prompt)
+;; This is obsolete as of Emacs 30.1.
+(setopt eshell-prompt-regexp "^[^λ]+λ ")
+(setopt eshell-hist-ignoredups t)
+;; Prefer external commands over lisp functions.
+(setopt eshell-prefer-lisp-functions t)
+;; Represent buffers as #<buffer-name>
+(setopt eshell-buffer-shorthand t)
+;; boost eshell history-size
+;; Increase the history size from 128 to 1000.
+(setopt eshell-history-size 1000)
+;; By "highlight" eshell does not just mean coloring the font with the
+;; `eshell-prompt' face.  It also makes the prompt read-only.  Strangely, the
+;; prompt is not read-only by default.  Furthermore, there is no way to override
+;; the text properties `eshell-emit-prompt' adds to the prompt without advising
+;; the it.
+(setopt eshell-highlight-prompt t)
+(setopt eshell-hist-ignoredups t)
+;; boost eshell history-size
+;; Increase the history size from 128 to 1000.
+(setopt eshell-history-size 1000)
+;; Stop eshell from printing messages.
+
+(nmap eshell-mode-map "J" #'eshell-previous-prompt)
+(nmap eshell-mode-map "K" #'eshell-next-prompt)
 ;;; provide
 (provide '990-config-eshell)
 ;;; 990-config-eshell.el ends here
