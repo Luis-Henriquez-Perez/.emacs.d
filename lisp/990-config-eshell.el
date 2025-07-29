@@ -28,6 +28,13 @@
 (require 'eshell-z)
 (require 'eshell-up)
 (require '050-base)
+;;;; Prompt function
+(defun! oo-eshell-prompt ()
+  (set! path (abbreviate-file-name default-directory))
+  (set! branch (car-safe (vc-git-branches)))
+  ;; Get the current time.
+  (set! time (format-time-string "%H:%M"))
+  (format "%s %s [ %s ] λ " time path branch))
 ;;;; clear
 ;; TODO: make into a snippet and/or abbrev
 ;; (message "current buffer %S" (buffer-name))
