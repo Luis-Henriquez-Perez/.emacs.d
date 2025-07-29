@@ -72,12 +72,10 @@
 ;;;; settings
 (setopt eshell-banner-message "")
 (setopt eshell-highlight-prompt nil)
-(autoload! oo-eshell-prompt "990-config-eshell")
 ;; For now outsource to epe, but later I will make my own.  Also epe uses static
 ;; faces by which I mean constant faces, not existing ones that change with
 ;; themes.  So the prompt is difficult to read with certain themes, particularly
 ;; light themes.
-(autoload! oo-eshell-prompt "990-config-eshell")
 (setopt eshell-prompt-function 'oo-eshell-prompt)
 ;; This is obsolete as of Emacs 30.1.
 (setopt eshell-prompt-regexp "^[^λ]+λ ")
@@ -100,7 +98,7 @@
 ;; Increase the history size from 128 to 1000.
 (setopt eshell-history-size 1000)
 ;; Stop eshell from printing messages.
-
+;;;; keybindings
 (nmap eshell-mode-map "J" #'eshell-previous-prompt)
 (nmap eshell-mode-map "K" #'eshell-next-prompt)
 ;;;; aliases
