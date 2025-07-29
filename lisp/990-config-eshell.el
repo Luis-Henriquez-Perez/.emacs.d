@@ -80,7 +80,8 @@
 ;; This is obsolete as of Emacs 30.1.
 (setopt eshell-prompt-regexp "^[^λ]+λ ")
 (setopt eshell-hist-ignoredups t)
-;; Prefer external commands over lisp functions.
+;; Prefer elisp equivalents over system commands.  Mainly I like `eshell/rm'
+;; which moves a file to trash instead of deleting it.
 (setopt eshell-prefer-lisp-functions t)
 ;; Represent buffers as #<buffer-name>
 (setopt eshell-buffer-shorthand t)
