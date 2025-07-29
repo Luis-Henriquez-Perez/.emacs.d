@@ -28,6 +28,8 @@
 (require '050-base)
 (require 'evil-goggles)
 ;;;; Remove advices
+(setopt evil-goggles-duration 0.1)
+
 ;; Now that `evil-goggles' is loaded we do not need the advice.
 (advice-remove 'evil-delete                                #'oo-require-evil-goggles-a)
 (advice-remove 'evil-delete-line                           #'oo-require-evil-goggles-a)
