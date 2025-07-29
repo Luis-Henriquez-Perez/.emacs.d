@@ -28,6 +28,7 @@
 (require 'eshell-z)
 (require 'eshell-up)
 (require '050-base)
+(require 'vc-git)
 ;;;; Prompt function
 (defun! oo-eshell-prompt ()
   (set! path (abbreviate-file-name default-directory))
