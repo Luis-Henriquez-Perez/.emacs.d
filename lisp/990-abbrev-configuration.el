@@ -76,15 +76,15 @@
       (save-excursion (goto-char last-abbrev-location)
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
+;;;;; setup advices
+(advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
+(advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
+(advice-add 'abbrev--default-expand :around #'oo-ensure-self-insert-a)
 ;;;; load abbrevs
 ;; This is a bit crude.  Iwdb precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;; Emacs loads abbrevs so fast.
 (advice-add 'write-abbrev-file :around #'oo-write-abbrev-file-a)
-;;;; setup advices
-(advice-add 'abbrev--default-expand :around #'oo-do-pulse-expansion-a)
-(advice-add 'abbrev--default-expand :around #'oo-add-period-maybe-a)
-(advice-add 'abbrev--default-expand :around #'oo-ensure-self-insert-a)
 ;;;; predicates
 (defun! oo-in-text-p ()
   "Return non-nil when text-mode abbrevs should be enabled.
