@@ -1,4 +1,4 @@
-;;; 990-post-abbrev.el --- abbrev configuration -*- lexical-binding: t; -*-
+;;; 990-abbrev-configuration.el --- abbrev configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -139,112 +139,6 @@ string or comment."
        (stringp default-directory)
        (string= (expand-file-name default-directory)
                 (expand-file-name "~/Documents/MyBlog/org/posts/"))))
-;;;; expansion functions
-;; (defvar oo-blog-dir "~/Documents/MyBlog/org/documentation/")
-
-(defun! oo-expand-blog-buffer ()
-  "Insert link of buffer.
-Meant to be used in a blog buffer."
-  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-  (set! buffer (completing-read "Buffer: " (buffer-list)))
-  (quitif! (not buffer))
-  (set! html-file (expand-file-name (format "%s--%s.html" emacs-version (buffer-name)) doc-dir))
-  (with-current-buffer (htmlize-buffer buffer)
-    (quiet! (write-region (point-min) (point-max) html-file))
-    (kill-buffer)))
-
-(defun! oo-expand-org-package-link ()
-  "Prompt for package and insert the corresponding org package link."
-  (set! desc (package--query-desc))
-  (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
-  (insert (format "[[%s][%s]]" link (package-desc-name desc))))
-
-(defun! oo-expand-package-link ()
-  "Prompt for package and insert the corresponding package link."
-  (set! link (intern (completing-read
-                      "Install package: "
-                      (mapcan
-                       (lambda (elt)
-                         (and (or (and (or current-prefix-arg
-                                           package-install-upgrade-built-in)
-                                       (package--active-built-in-p (car elt)))
-                                  (not (package-installed-p (car elt))))
-                              (list (symbol-name (car elt)))))
-                       package-archive-contents)
-                      nil t)))
-  ;; (set! desc (package--query-desc))
-  ;; (set! link (cdr (assoc :url (and desc (package-desc-extras desc)))))
-  link)
-
-(defvar helpful-switch-buffer-function)
-
-(declare-function helpful--callable-at-point "helpful")
-(declare-function helpful-callable "helpful")
-(defun! oo-expand-callable-doc-link ()
-  "Insert an org link to a helpful callable snapshot.
-Find the appropriate documentation for the callable in the documentation
-directory.  If it does not exist create it and add it."
-  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-  (set! helpful-switch-buffer-function #'identity)
-  (set! symbol (helpful--read-symbol "Callable: " (helpful--callable-at-point) #'fboundp))
-  (set! html-file (expand-file-name (format "%s-helpful-callable--%s.html" emacs-version symbol) doc-dir))
-  (unless (file-exists-p html-file)
-    (set! help-buffer (quiet! (helpful-callable symbol)))
-    (quitif! (not help-buffer) "No help buffer.")
-    (set! html-buffer (quiet! (htmlize-buffer help-buffer)))
-    (quitif! (not html-buffer) "No html buffer.")
-    (with-current-buffer html-buffer
-      (quiet! (write-region (point-min) (point-max) html-file))
-      (kill-buffer help-buffer)
-      (kill-buffer)))
-  (insert (format "[[file:%s][%s]]"  html-file symbol)))
-
-(declare-function htmlize-buffer "htmlize")
-
-(declare-function helpful--read-symbol "helpful")
-(declare-function helpful--variable-at-point "helpful")
-(declare-function helpful-variable "helpful")
-(defun! oo-expand-variable-doc-link ()
-  "Insert an org link to a helpful callable snapshot.
-Find the appropriate documentation for the callable in the documentation
-directory.  If it does not exist create it and add it."
-  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-  (set! helpful-switch-buffer-function #'identity)
-  (unwind-protect (set! symbol (helpful--read-symbol "Variable: " (helpful--variable-at-point) #'helpful--variable-p))
-    (or symbol (unexpand-abbrev))
-    (goto-char last-abbrev-location))
-  (set! html-file (expand-file-name (format "%s-helpful-variable--%s.html" emacs-version symbol) doc-dir))
-  (unless (file-exists-p html-file)
-    (set! help-buffer (helpful-variable symbol))
-    (quitif! (not help-buffer) "No help buffer.")
-    (set! html-buffer (htmlize-buffer help-buffer))
-    (quitif! (not html-buffer) "No html buffer.")
-    (with-current-buffer html-buffer
-      (write-region (point-min) (point-max) html-file)
-      (kill-buffer help-buffer)
-      (kill-buffer)))
-  (insert (format "[[file:%s][%s]]"  html-file symbol)))
-
-(defun! oo-expand-config-link ()
-  "Expand an org link for a configuration file."
-  (set! doc-dir (expand-file-name "~/Documents/MyBlog/org/documentation/"))
-  (set! lisp-dir (expand-file-name "lisp" user-emacs-directory))
-  (appending! files (directory-files lisp-dir t (rx ".el" eol)))
-  (pushing! files (expand-file-name user-init-file))
-  (pushing! files (expand-file-name "early-init.el" user-emacs-directory))
-  (set! config-file (completing-read "Config file: " files))
-  (set! name-ext (file-name-nondirectory config-file))
-  (set! name (file-name-sans-extension name-ext))
-  (set! html-file (expand-file-name (format "%s-%s.html" emacs-version name) doc-dir))
-  (unless (file-exists-p html-file)
-    (with-temp-buffer
-      (insert-file-contents config-file)
-      (set! html-buffer (htmlize-region (point-min) (point-max)))
-      (with-current-buffer html-buffer
-        (write-region (point-min) (point-max) html-file nil 'quiet)
-        (kill-buffer))))
-  (set! relative-path (file-relative-name html-file (file-name-directory (buffer-file-name))))
-  (insert (format "[[%s][%s]]" relative-path name-ext)))
 ;;;; updating abbrevs
 (defun oo-write-abbrev-file-a (&rest _)
   "Override `write-abbrev-file' with my own function."
@@ -331,5 +225,5 @@ directory.  If it does not exist create it and add it."
     (insert-at-column (current-column) "))")
     (buffer-string)))
 ;;; provide
-(provide '990-post-abbrev)
-;;; 990-post-abbrev.el ends here
+(provide '990-abbrev-configuration)
+;;; 990-abbrev-configuration.el ends here
