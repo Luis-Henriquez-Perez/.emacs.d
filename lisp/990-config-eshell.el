@@ -31,10 +31,10 @@
 ;;;; Prompt function
 (defun! oo-eshell-prompt ()
   (set! path (abbreviate-file-name default-directory))
-  (set! branch (car-safe (vc-git-branches)))
+  (set! branch (aand! (car-safe (vc-git-branches)) (format "[ %s ]" it)))
   ;; Get the current time.
   (set! time (format-time-string "%H:%M"))
-  (format "%s %s [ %s ] λ " time path branch))
+  (string-join (delq nil (list time path branch "λ\s")) "\s"))
 ;;;; clear
 ;; TODO: make into a snippet and/or abbrev
 ;; (message "current buffer %S" (buffer-name))
