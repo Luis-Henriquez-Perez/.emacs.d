@@ -58,10 +58,10 @@
 (setq org-agenda-skip-deadline-if-done t)
 
 (defvar +org-agenda-comparators '(+org-agenda-priority-comparator
-                                  +org-agenda-closest-deadline-comparator
-                                  +org-agenda-tag-comparator
-                                  +org-agenda-effort-comparator
-                                  +org-agenda-tsid-comparator)
+                                  ;; +org-agenda-closest-deadline-comparator
+                                  ;; +org-agenda-tag-comparator
+                                  ;; +org-agenda-effort-comparator
+                                  (lambda (a b) (+org-agenda-tsid-comparator b a)))
   "Comparators used for sorting org agenda.
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 ;;;;; helpers
@@ -326,7 +326,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
                    ((org-agenda-overriding-header "\nTODO")
                     (org-agenda-sorting-strategy '(user-defined-down))
                     ;; (org-agenda-before-sorting-filter-function #'+org-agenda--filter-parents-with-undone-children)
-                    (org-agenda-max-entries 5)))
+                    (org-agenda-max-entries 10)))
              (todo "ON-HOLD" ((org-agenda-overriding-header "\nON-HOLD")))
              (agenda "" ((org-agenda-overriding-header "\nSchedule")
                          (org-agenda-start-on-weekday nil)
