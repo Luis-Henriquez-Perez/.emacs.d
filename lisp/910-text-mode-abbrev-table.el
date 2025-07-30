@@ -4387,6 +4387,7 @@
     ("prominantly" "prominently")
     ("promiscous" "promiscuous")
     ("promotted" "promoted")
+    ("promp" "prompt")
     ("pronomial" "pronominal")
     ("pronouced" "pronounced")
     ("pronounched" "pronounced")
