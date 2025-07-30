@@ -105,6 +105,7 @@
 (nmap eshell-mode-map "J" #'eshell-previous-prompt)
 (nmap eshell-mode-map "K" #'eshell-next-prompt)
 ;;;; aliases
+(eshell/alias "home" "cd ~")
 ;;;;; git
 (eshell/alias "gad" "dot add $1 && dot commit -m \"Add $1.\" $1 && dot push")
 (eshell/alias "gadd" "dot add $1 && dot commit -m \"Add $1.\" $1 && dot push")
