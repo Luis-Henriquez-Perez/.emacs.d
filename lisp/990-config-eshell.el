@@ -27,6 +27,7 @@
 ;;; Code:
 (require 'eshell-z)
 (require 'eshell-up)
+(require 'em-alias)
 (require '050-base)
 (require 'vc-git)
 ;;;; prompt function
