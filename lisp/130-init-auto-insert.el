@@ -40,7 +40,8 @@
 (autoload! oo-auto-insert-script-file-header "990-config-auto-insert")
 
 
-(define-auto-insert "^[^.]+$" #'oo-auto-insert-script-file-header)
+(alet! (concat (regexp-quote (expand-file-name "~/.local/bin/")) "[^./]+$")
+  (define-auto-insert it #'oo-auto-insert-script-file-header))
 (define-auto-insert "\\.el$"   #'oo-auto-insert-elisp-template)
 (define-auto-insert "\\.html$" #'oo-auto-insert-html-template)
 (define-auto-insert "\\.py$"   #'oo-auto-insert-python-file-header)
