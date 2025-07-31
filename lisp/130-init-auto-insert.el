@@ -31,6 +31,7 @@
 
 (hook! oo-first-file-hook auto-insert-mode)
 
+(autoload! oo-auto-insert--pound-comment-header "990-config-auto-insert")
 (autoload! oo-auto-insert-elisp-template     "990-config-auto-insert")
 (autoload! oo-auto-insert-python-file-header "990-config-auto-insert")
 (autoload! oo-auto-insert-html-template      "990-config-auto-insert")
@@ -40,6 +41,7 @@
 (autoload! oo-auto-insert-script-file-header "990-config-auto-insert")
 
 
+(define-auto-insert "\\.\\(?:service\\|timer\\)$" #'oo-auto-insert--pound-comment-header)
 (alet! (concat (regexp-quote (expand-file-name "~/.local/bin/")) "[^./]+$")
   (define-auto-insert it #'oo-auto-insert-script-file-header))
 (define-auto-insert "\\.el$"   #'oo-auto-insert-elisp-template)
