@@ -4913,6 +4913,7 @@
     ("sd" "should")
     ("sdb" "should not be")
     ("sdnt" "should not")
+    ("se" "set")
     ("seach" "search")
     ("seached" "searched")
     ("seaches" "searches")
