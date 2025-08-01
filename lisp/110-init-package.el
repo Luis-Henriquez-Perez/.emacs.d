@@ -242,17 +242,17 @@
   ;; The descriptors are objects that are created by loading and reading many
   ;; files.  This is a relatively expensive process.
   ;; Attempt to cache the descriptors.
-  (package-load-all-descriptors)
+  ;; (package-load-all-descriptors)
   ;; I need to update the cache when I install a package and only then can I use
   ;; this cache code to save a bit more startup time.
-  ;; (let ((cache (expand-file-name "package-alist" oo-var-dir)))
-  ;;   (if (file-exists-p cache)
-  ;;       (setq package-alist (with-temp-buffer
-  ;;                             (insert-file-contents cache)
-  ;;                             (read (current-buffer))))
-  ;;     (package-load-all-descriptors)
-  ;;     (with-temp-file cache
-  ;;       (prin1 package-alist (current-buffer)))))
+  (let ((cache (expand-file-name "package-alist" oo-var-dir)))
+    (if (file-exists-p cache)
+        (setq package-alist (with-temp-buffer
+                              (insert-file-contents cache)
+                              (read (current-buffer))))
+      (package-load-all-descriptors)
+      (with-temp-file cache
+        (prin1 package-alist (current-buffer)))))
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
