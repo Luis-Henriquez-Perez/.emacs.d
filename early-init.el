@@ -70,25 +70,19 @@
 (defvar oo-initial-theme nil
   "Theme to enable during startup.")
 
-(defun oo-command-line-switch--theme ()
-  "Load a theme passed as --theme THEME on the command line."
-  ;; 'switch' is something like "--theme=modus-operandi"
-  ;; (message "Processing command-line switch for theme...")
+;; Just process it here.  Do not wait for command-line switches.
+(dolist (argi command-line-args)
   (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
-    (setq oo-initial-theme (intern (match-string 1 argi)))
-    ;; (message "set oo-initial-theme -> %S" oo-initial-theme)
-    (setq command-line-args-left (cdr command-line-args-left))
-    t))
+    (setq oo-initial-theme (intern (match-string 1 argi)))))
 
-;; (defun oo-command-line-switch--random-theme ()
-;;   "Load a theme passed as --theme THEME on the command line."
-;;   ;; 'switch' is something like "--theme=modus-operandi"
-;;   ;; (message "Processing command-line switch for theme...")
-;;   (when (equal "^--random-theme" argi)
-;;     (setq oo-initial-theme (intern (match-string 1 argi)))
-;;     ;; (message "set oo-initial-theme -> %S" oo-initial-theme)
-;;     (setq command-line-args-left (cdr command-line-args-left))
-;;     t))
+;; I need to process the `command-line-args' for font here so that I can set the
+;; font before the frame is loaded.
+(defvar oo-initial-font nil
+  "Theme to enable during startup.")
+
+(dolist (argi command-line-args)
+  (when (string-match "^--font=\\([^[:space:]]+\\)" argi)
+    (setq oo-initial-font (intern (match-string 1 argi)))))
 
 (push #'oo-command-line-switch--theme command-line-functions)
 
