@@ -4980,7 +4980,7 @@
     ("sexaul" "sexual")
     ("sexaully" "sexually")
     ("sfw" "SFW")
-    ("sh" "should have")
+    ("shv" "should have")
     ("shadasloo" "shadaloo")
     ("shaddow" "shadow")
     ("shadoloo" "shadaloo")
