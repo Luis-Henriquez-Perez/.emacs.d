@@ -84,7 +84,5 @@
   (when (string-match "^--font=\\([^[:space:]]+\\)" argi)
     (setq oo-initial-font (intern (match-string 1 argi)))))
 
-(push #'oo-command-line-switch--theme command-line-functions)
-
 (provide 'early-init)
 ;;; early-init.el ends here
