@@ -84,5 +84,8 @@
   (when (string-match "^--font=\\([^[:space:]]+\\)" argi)
     (setq oo-initial-font (intern (match-string 1 argi)))))
 
+(when oo-initial-font
+  ())
+
 (provide 'early-init)
 ;;; early-init.el ends here
