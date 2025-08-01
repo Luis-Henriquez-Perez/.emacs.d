@@ -180,6 +180,22 @@ file that is in a git repo, enale git-gutter-mode."
     (load-theme theme :no-confirm)))
 
 (add-hook 'emacs-startup-hook #'oo-load-theme-maybe-h 90)
+
+
+;; (setq debug-on-message "Setting up indent for shell type sh")
+;; This makes opening sh files way too slow.  These are simple files, it should
+;; not be slow.
+(advice-add 'sh-set-shell :override  #'ignore)
+
+(defvar oo-idle-features nil
+  "List of features to load during idle time.")
+
+(defun oo-load-idle-features ()
+  "Load one feature from `oo-idle-features' during idle time."
+  (awhen! (pop oo-idle-features)
+    (message "Idle loading: %s" feature)
+    (require feature)
+    (run-with-idle-timer 1 nil #'oo-load-idle-features)))
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
