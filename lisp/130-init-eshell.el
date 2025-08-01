@@ -27,6 +27,9 @@
 ;;; Code:
 (require '050-base)
 
+(each! '(em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
+  (push it oo-idle-features))
+
 (autoload! eshell-z "eshell-z")
 (autoload! eshell-up "eshell-up")
 
