@@ -171,6 +171,7 @@
 (eshell/alias "update-email" "mbsync -a")
 (eshell/alias "list-wifi" "nmcli dev wifi list")
 (eshell/alias "listwifi" "nmcli dev wifi list")
+(eshell/alias "sd" "systemctl $*")
 ;;;;; blogging
 (eshell/alias "publish" "{cd $(expand-file-name \"html\" \"~/Documents/blog\") ; (shut-up (org-publish \"blog\" t))}")
 (eshell/alias "epublish" "{cd $(expand-file-name \"html\" \"~/Documents/blog\") ; (shut-up (org-publish \"blog\" t))}")
