@@ -187,6 +187,10 @@ file that is in a git repo, enale git-gutter-mode."
 ;; not be slow.
 (advice-add 'sh-set-shell :override  #'ignore)
 
+;; Several packages such as org, eshell, and magit take a while to load in
+;; session.  This attempts to mitigate that by loading features gradually during
+;; idle time.  The idea is that by the time one of these big features is loaded,
+;; many of its subfeatures will have been loaded thereby reducing the load time.
 (defvar oo-idle-features nil
   "List of features to load during idle time.")
 
@@ -194,7 +198,7 @@ file that is in a git repo, enale git-gutter-mode."
   "Load one feature from `oo-idle-features' during idle time."
   (awhen! (pop oo-idle-features)
     (oo-log 'info "Idle loading: %s" it)
-    (require feature)
+    (require it)
     (run-with-idle-timer 1 nil #'oo-load-idle-features)))
 
 (defun oo-setup-idle-loading-h ()
