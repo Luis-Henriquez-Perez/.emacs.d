@@ -176,10 +176,15 @@ file that is in a git repo, enale git-gutter-mode."
 (defun! oo-load-theme-maybe-h ()
   "Load theme."
   (set! theme oo-initial-theme)
-  (when (and theme (member theme (custom-available-themes)))
-    (load-theme theme :no-confirm)))
+  (cond ((member "--random-theme" command-line-args)
+         (load-theme (seq-random-elt (custom-available-themes)) :no-confirm))
+        ((not theme))
+        ((member theme (custom-available-themes))
+         (load-theme theme :no-confirm))
+        (t
+         (oo-log 'info "Theme %s not found." theme))))
 
-(add-hook 'emacs-startup-hook #'oo-load-theme-maybe-h 90)
+(add-hook 'after-init-hook #'oo-load-theme-maybe-h 90)
 
 
 ;; (setq debug-on-message "Setting up indent for shell type sh")
