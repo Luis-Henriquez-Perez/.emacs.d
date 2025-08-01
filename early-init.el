@@ -78,7 +78,7 @@
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
 (defvar oo-initial-font nil
-  "Theme to enable during startup.")
+  "Initial font.")
 
 (dolist (argi command-line-args)
   (when (string-match "^--font=\\([^[:space:]]+\\)" argi)
