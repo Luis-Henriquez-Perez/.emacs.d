@@ -27,14 +27,8 @@
 ;;; Code:
 ;;;; requirements
 (require '050-base)
-;;;; popup
+
 (oo-popup-at-bottom "\\`magit")
-;;;; bindings
-
-
-
-
-
 ;;; provide
 (provide '130-init-magit)
 ;;; 130-init-magit.el ends here
