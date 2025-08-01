@@ -196,6 +196,12 @@ file that is in a git repo, enale git-gutter-mode."
     (message "Idle loading: %s" feature)
     (require feature)
     (run-with-idle-timer 1 nil #'oo-load-idle-features)))
+
+(defun oo-setup-idle-loading-h ()
+  "Setup the loading of idle features."
+  (run-with-idle-timer 3 nil #'oo-load-idle-features))
+
+(add-hook 'emacs-startup-hook #'oo-setup-idle-loading-h 90)
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
