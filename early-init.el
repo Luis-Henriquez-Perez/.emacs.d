@@ -85,7 +85,7 @@
     (setq oo-initial-font (intern (match-string 1 argi)))))
 
 (when oo-initial-font
-  ())
+  (push `(font . ,oo-initial-font) default-frame-alist))
 
 (provide 'early-init)
 ;;; early-init.el ends here
