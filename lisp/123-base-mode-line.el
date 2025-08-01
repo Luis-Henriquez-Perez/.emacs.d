@@ -140,11 +140,6 @@ from the beginning."
   (or (and defining-kbd-macro "•REC")
       (and executing-kbd-macro "KBD-PLAY")))
 
-(defun oo-mode-line-segment--word-count ()
-  "Indicate how many words I have in a text buffer."
-  (when (derived-mode-p 'text-mode)
-    (format "%d words" (count-words (point-min) (point-max)))))
-
 (defun oo-mode-line-segment--tab ()
   "Return an indicator for a `tab-bar-mode' tab."
   ;; This really convoluted way for just getting the current tab.  But I cannot
@@ -271,7 +266,7 @@ or playing with repeat."
   (flet! pad (segment) (format "\s%s\s" segment))
   (flet! render (side) (mapcar #'pad (cl-remove-if #'empty-p (mapcar #'oo-mode-line-render-segment side))))
   (set! lhs (render '(evil-state tab buffer-info version-control emms)))
-  (set! rhs (render '(time-info buffer-location pomodoro word-count text-scale)))
+  (set! rhs (render '(time-info buffer-location pomodoro text-scale)))
   ;; Now apply the faces.  This is kind of messy.
   (set! evil-state-face (+evil-state-face))
   (set! lhs-head (add-face evil-state-face (car lhs)))
