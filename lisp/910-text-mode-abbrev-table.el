@@ -4907,6 +4907,7 @@
     ("scinece" "science")
     ("scirpt" "script")
     ("scoll" "scroll")
+    ("scols" "schools")
     ("scrapt" "scraped")
     ("screenwrighter" "screenwriter")
     ("scrreen" "screen")
