@@ -67,22 +67,48 @@
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
+;; Syntactic sugar macros to help me with.
+;; The standard way to write this macro is to have it return the element
+;; removed.  A more controversial but potentialy useful way is to write one that
+;; returns the predicate expression.  That way I could additionally perform some
+;; operation on the element.  And worst case I could just return the original
+;; element via (and SUBPRED it).
+(defmacro aremf! (pred list)
+  "Remove and return the first element from LIST that satisfies PRED.
+PRED should be a form that evaluates with `it` bound to each element."
+  (let ((glist (gensym "list"))
+        (gpred (gensym "pred"))
+        (grest (gensym "rest")))
+    `(let* ((,glist ,list)
+            (,grest nil)
+            (,gpred nil)
+            (it nil))
+       (while ,glist
+         (setq it (car ,glist))
+         (setq ,gpred ,pred)
+         (if ,gpred
+             (progn
+               (setq ,list (nconc (nreverse ,grest) (cdr ,glist)))
+               (setq ,glist nil)) ; exit loop
+           (push it ,grest)
+           (setq ,glist (cdr ,glist))))
+       ,gpred)))
+
 (defvar oo-initial-theme nil
   "Theme to enable during startup.")
 
-;; Just process it here.  Do not wait for command-line switches.
-(dolist (argi command-line-args)
-  (when (string-match "^--theme=\\([^[:space:]]+\\)" argi)
-    (setq oo-initial-theme (intern (match-string 1 argi)))))
+(setq oo-initial-theme (aremf! (and (string-match "^--theme=\\([^[:space:]]+\\)" it)
+                                    (match-string 1 it))
+                               command-line-args))
 
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
 (defvar oo-initial-font nil
   "Initial font.")
 
-(dolist (argi command-line-args)
-  (when (string-match "^--font=\\([^[:space:]]+\\)" argi)
-    (setq oo-initial-font (intern (match-string 1 argi)))))
+(setq oo-initial-font (aremf! (and (string-match "^--font=\\(.+\\)" it)
+                                   (match-string 1 it))
+                              command-line-args))
 
 (when oo-initial-font
   (push `(font . ,oo-initial-font) default-frame-alist))
