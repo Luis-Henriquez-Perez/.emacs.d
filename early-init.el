@@ -94,21 +94,15 @@ PRED should be a form that evaluates with `it` bound to each element."
            (setq ,glist (cdr ,glist))))
        ,gpred)))
 
-(defvar oo-initial-theme nil
-  "Theme to enable during startup.")
-
-(setq oo-initial-theme (aremf! (and (string-match "^--theme=\\([^[:space:]]+\\)" it)
-                                    (match-string 1 it))
-                               command-line-args))
-
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
-(defvar oo-initial-font nil
-  "Initial font.")
+(defvar oo-initial-theme (aremf! (and (string-match "^--theme=\\(.+\\)" it) (match-string 1 it))
+                                 command-line-args)
+  "Theme to enable during startup.")
 
-(setq oo-initial-font (aremf! (and (string-match "^--font=\\(.+\\)" it)
-                                   (match-string 1 it))
-                              command-line-args))
+(defvar oo-initial-font (aremf! (and (string-match "^--font=\\(.+\\)" it) (match-string 1 it))
+                                command-line-args)
+  "Initial font.")
 
 (when oo-initial-font
   (push `(font . ,oo-initial-font) default-frame-alist))
