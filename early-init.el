@@ -73,9 +73,10 @@
 ;; returns the predicate expression.  That way I could additionally perform some
 ;; operation on the element.  And worst case I could just return the original
 ;; element via (and SUBPRED it).
-(defmacro aremf! (pred list)
+(defmacro aremf! (list pred)
   "Remove the first element that satisfies PRED and return PRED.
 PRED should be a form that evaluates with `it` bound to each element."
+  (declare (indent 1))
   (let ((glist (gensym "list"))
         (gpred (gensym "pred"))
         (grest (gensym "rest")))
@@ -96,12 +97,12 @@ PRED should be a form that evaluates with `it` bound to each element."
 
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
-(defvar oo-initial-theme (aremf! (and (string-match "^--theme=\\(.+\\)" it) (intern (match-string 1 it)))
-                                 command-line-args)
+(defvar oo-initial-theme (aremf! command-line-args
+                           (and (string-match "^--theme=\\(.+\\)" it) (intern (match-string 1 it))))
   "Initial theme.")
 
-(defvar oo-initial-font (aremf! (and (string-match "^--font=\\(.+\\)" it) (match-string 1 it))
-                                command-line-args)
+(defvar oo-initial-font (aremf! command-line-args
+                          (and (string-match "^--font=\\(.+\\)" it) (match-string 1 it)))
   "Initial font.")
 
 (when oo-initial-font
