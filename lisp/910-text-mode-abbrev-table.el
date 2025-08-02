@@ -1866,7 +1866,7 @@
     ("divishion" "division")
     ("divison" "division")
     ("divisons" "divisions")
-    ("dk" "do not know")
+    ("dk" "I do not know")
     ("dki" "I do not know if")
     ("dkwi" "I do not know I")
     ("dl" "download")
