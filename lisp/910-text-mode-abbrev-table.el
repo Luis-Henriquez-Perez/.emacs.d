@@ -5603,7 +5603,7 @@
     ("tobbaco" "tobacco")
     ("toda" "today")
     ("todays" "today's")
-    ("todo" "TODO")
+    ("todoo" "TODO")
     ("todos" "TODOs")
     ("todya" "today")
     ("tog" "toggle")
