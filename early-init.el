@@ -98,7 +98,7 @@ PRED should be a form that evaluates with `it` bound to each element."
 ;; font before the frame is loaded.
 (defvar oo-initial-theme (aremf! (and (string-match "^--theme=\\(.+\\)" it) (match-string 1 it))
                                  command-line-args)
-  "Theme to enable during startup.")
+  "Initial theme.")
 
 (defvar oo-initial-font (aremf! (and (string-match "^--font=\\(.+\\)" it) (match-string 1 it))
                                 command-line-args)
