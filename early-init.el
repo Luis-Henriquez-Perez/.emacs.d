@@ -74,7 +74,7 @@
 ;; operation on the element.  And worst case I could just return the original
 ;; element via (and SUBPRED it).
 (defmacro aremf! (pred list)
-  "Remove and return the first element from LIST that satisfies PRED.
+  "Remove the first element that satisfies PRED and return PRED.
 PRED should be a form that evaluates with `it` bound to each element."
   (let ((glist (gensym "list"))
         (gpred (gensym "pred"))
