@@ -5680,6 +5680,7 @@
     ("tse" "these")
     ("tsnba" "this should not be a")
     ("tss" "timestamps")
+    ("tst" "test")
     ("tt" "the")
     ("tte" "to this end")
     ("tti" "the thing is")
