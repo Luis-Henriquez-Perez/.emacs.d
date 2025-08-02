@@ -28,7 +28,7 @@
 ;;;; requirements
 (require '050-base)
 ;;;; Idle features
-(each! '(org-agenda org-refile org-src org-id org-clock org-timer org-capture)
+(each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture)
   (push it oo-idle-features))
 ;;;; settings
 (opt! org-directory (expand-file-name "~/Documents/org/"))
