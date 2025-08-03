@@ -3942,6 +3942,7 @@
     ("optioinal" "optional")
     ("optmizations" "optimizations")
     ("optomism" "optimism")
+    ("opts" "options")
     ("ord" "order")
     ("orded" "ordered")
     ("organim" "organism")
