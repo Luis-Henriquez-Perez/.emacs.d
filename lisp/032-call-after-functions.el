@@ -1,4 +1,4 @@
-;;; 032-after-load-functions.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
+;;; 032-call-after-functions.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -69,5 +69,5 @@ If SYMBOL is already bound FN is called immediately."
          (when it (eval (macroexp-progn (nreverse it)) 'lexical)
                (remhash ',feature oo-after-load-forms))))))
 ;;; provide
-(provide '032-after-load-functions)
-;;; 032-after-load-functions.el ends here
+(provide '032-call-after-functions)
+;;; 032-call-after-functions.el ends here

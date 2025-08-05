@@ -26,7 +26,7 @@
 ;; concisely.
 ;;
 ;;; Code:
-(require '032-after-load-functions)
+(require '032-call-after-functions)
 (require '035-base-macros)
 (require '036-base-functions)
 

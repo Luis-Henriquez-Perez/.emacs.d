@@ -25,13 +25,13 @@
 ;; Initialize 035-base-macros.
 ;;
 ;;; Code:
-(require '032-after-load-functions)
+(require '032-call-after-functions)
 (require '030-base-functions)
 (eval-when-compile (require '031-anaphoric-macros))
 (eval-when-compile (require '031-autolet-macros))
 (eval-when-compile (require '031-modification-macros))
 (eval-when-compile (require '031-looping-macros))
-(eval-when-compile (require '032-after-load-functions))
+(eval-when-compile (require '032-call-after-functions))
 
 (defmacro nif! (cond then &rest else)
   (declare (indent 2))

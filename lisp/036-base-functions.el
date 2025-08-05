@@ -31,7 +31,7 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require '032-after-load-functions)
+(require '032-call-after-functions)
 (eval-when-compile (require '035-base-macros))
 
 (defvar evil-state-properties)
