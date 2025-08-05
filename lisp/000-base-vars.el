@@ -46,37 +46,6 @@ error).  Feature is an init feature, start and end time, and error is any
 error.  If an error occurs start and end are nil.  Conversely, if start and end
 are non-nil, then error is nil.")
 
-(defvar oo-after-init-hook-time nil
-  "Time elapsed by `after-init-hook'.")
-
-(defvar oo-emacs-startup-hook-time nil
-  "Time elasped by `emacs-startup-hook'.")
-
-;; This is very basic font setting based on available faces.  I have seen much
-;; more complex font setups like in minemacs (which probably got its from doom)
-;; but for now this will do.
-(defvar oo-default-fonts (list (font-spec :family "JetBrainsMono Nerd Font"
-                                          :weight 'regular
-                                          :slant 'normal
-                                          :width 'normal
-                                          :size 18)
-                               (font-spec :family "CaskaydiaCove Nerd Font Mono"
-                                          :weight 'regular
-                                          :slant 'normal
-                                          :width 'normal
-                                          :size 18)
-                               (font-spec :family "Mononoki Nerd Font"
-                                          :weight 'regular
-                                          :slant 'normal
-                                          :width 'normal
-                                          :size 18)
-                               (font-spec :family "RecMonoDuotone Nerd Font"
-                                          :weight 'regular
-                                          :slant 'normal
-                                          :width 'normal
-                                          :size 18))
-  "List of fonts to check.")
-
 (defvar oo-custom-faces-alist nil
   "An alist that update the background of faces based on existing faces.
 
