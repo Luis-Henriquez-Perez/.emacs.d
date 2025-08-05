@@ -28,7 +28,7 @@
 (require '050-base)
 
 (opt! emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
-(opt! emms-directory (expand-file-name "emms/" oo-var-dir))
+(opt! emms-directory (expand-file-name "emms/" oo-cache-dir))
 
 ;; As of right now using VLC or MPV will have the effect of repeating the current track
 ;; in the playlist indefinitely.  These parameters at least prevent this form

@@ -26,13 +26,17 @@
   "Directory where handcrafted configuration files go.")
 
 (defconst oo-local-dir (expand-file-name ".local/" user-emacs-directory)
-  "Directory where auto-generated files go.")
+  "Directory that stores subdirectories.")
 
 (defconst oo-etc-dir (expand-file-name "etc/" oo-local-dir)
-  "Directory where auto-generated configuration files go.")
+  "Directory where package configuration files go.")
+
+(defvaralias 'oo-config-dir 'oo-etc-dir)
 
 (defconst oo-var-dir (expand-file-name "var/" oo-local-dir)
   "Directory where persistent data files go.")
+
+(defvaralias 'oo-cache-dir 'oo-var-dir)
 
 (defvar oo-debug-p (or (getenv "DEBUG") init-file-debug)
   "When non-nil print debug messages.

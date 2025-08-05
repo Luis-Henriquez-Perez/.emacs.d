@@ -28,7 +28,7 @@
 (require '050-base)
 
 (eval-and-compile (defvar no-littering-etc-directory oo-etc-dir)
-                  (defvar no-littering-var-directory oo-var-dir))
+                  (defvar no-littering-var-directory oo-cache-dir))
 
 (require 'no-littering)
 ;;; provide

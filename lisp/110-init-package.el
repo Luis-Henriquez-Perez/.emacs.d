@@ -59,7 +59,7 @@
 ;; but not by much--maybe 0.2 seconds.  As I mention later
 ;; `package-read-archive-contents' accounts for the bulk of package-initialize's
 ;; slowness.
-(setq package-quickstart-file (expand-file-name "package-quickstart.el" oo-var-dir))
+(setq package-quickstart-file (expand-file-name "package-quickstart.el" oo-cache-dir))
 (setq package-quickstart t)
 
 (setq package-archive-priorities '(("melpa" . 10) ("gnu-elpa" . 9) ("nongnu" . 8)))
@@ -245,7 +245,7 @@
   ;; (package-load-all-descriptors)
   ;; I need to update the cache when I install a package and only then can I use
   ;; this cache code to save a bit more startup time.
-  (let ((cache (expand-file-name "package-alist" oo-var-dir)))
+  (let ((cache (expand-file-name "package-alist" oo-cache-dir)))
     (if (file-exists-p cache)
         (setq package-alist (with-temp-buffer
                               (insert-file-contents cache)
