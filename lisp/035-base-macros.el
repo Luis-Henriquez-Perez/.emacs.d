@@ -90,26 +90,6 @@ writes to `standard-output'."
                         mustbenew))))
        ,@body)))
 
-(defmacro! with-map-keywords! (map &rest body)
-  "Let-bind bang symbols in BODY corresponding to keywords in MAP."
-  (declare (indent 1))
-  (set! mapsym (gensym "map"))
-  (set! let-binds `((,mapsym ,map)))
-  (dolist (obj (flatten-tree body))
-    (when (and obj
-               (symbolp obj)
-               (string-match "\\(!\\{1,2\\}\\)\\([^[:space:]]+\\)" (symbol-name obj))
-               (not (assoc obj let-binds)))
-      (set! symbol obj)
-      (set! name (symbol-name symbol))
-      (set! key (oo-into-keyword (match-string 2 name)))
-      (cond ((= 1 (length (match-string 1 name)))
-             (collecting! let-binds `(,symbol (map-elt ,mapsym ',key))))
-            (t
-             (collecting! let-binds `(,symbol (map-contains-key ,mapsym ',key)))))))
-  `(let* ,let-binds
-     ,@body))
-
 (defmacro opt! (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
