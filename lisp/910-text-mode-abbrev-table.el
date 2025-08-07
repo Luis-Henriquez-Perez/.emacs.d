@@ -156,6 +156,7 @@
     ("abbout" "about")
     ("abbreviaion" "abbreviation")
     ("abbreviatons" "abbreviations")
+    ("abbrevv" "abbreviation")
     ("abbrevx" "abbrevs")
     ("abbrrevs" "abbrevs")
     ("abbs" "abbrevs")
