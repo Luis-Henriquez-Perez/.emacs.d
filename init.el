@@ -52,15 +52,7 @@
 ;; `after-init-hook', and the time taken to run `emacs-startup-hook'.  That is
 ;; everything I am responsible for when emacs is loaded.
 
-(defvar oo-before-load-time (current-time))
 (require! :profile t)
-(defvar oo-after-load-time (current-time))
-(defun oo-startup-info ()
-  (interactive)
-  (let ((a (float-time (time-subtract oo-before-load-time before-init-time)))
-        (b (float-time (time-subtract oo-after-load-time oo-before-load-time)))
-        (c (float-time (time-subtract after-init-time oo-after-load-time))))
-    (message "before -> %0.2f | loading elapsed %0.2f | done %0.2f" a b c)))
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
