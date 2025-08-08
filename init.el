@@ -36,11 +36,6 @@
 (setq gc-cons-threshold most-positive-fixnum)
 (setq gc-cons-percentage 0.8)
 
-;; Credits to irreal for sharing that keywords can be used as registers in his
-;; blog post (https://irreal.org/blog/?p=12386).
-(set-register :file-name-handler-alist file-name-handler-alist)
-(setq file-name-handler-alist nil)
-
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
 (require '000-base-vars)
