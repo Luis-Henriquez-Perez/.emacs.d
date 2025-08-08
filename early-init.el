@@ -72,18 +72,6 @@
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
-;; I need to process the `command-line-args' for font here so that I can set the
-;; font before the frame is loaded.
-(defvar oo-initial-theme (aremf! command-line-args
-                           (and (string-match "^--theme=\\(.+\\)" it)
-                                (intern (match-string 1 it))))
-  "Initial theme.")
-
-(defvar oo-initial-font (aremf! command-line-args
-                          (and (string-match "^--font=\\(.+\\)" it)
-                               (match-string 1 it)))
-  "Initial font.")
-
 (when oo-initial-font
   (push `(font . ,oo-initial-font) default-frame-alist))
 
