@@ -49,7 +49,7 @@ inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
                  `(let ((,time-elapsed ,(time-elapsed-form form)))
                     (setq ,time-elapsed (/ (fround (* ,time-elapsed 100)) 100.0))
                     (oo-log 'info "Required %s in %.2f seconds" ',feature ,time-elapsed)
-                    (push (list ',feature ,time-elapsed) oo-init-data))))
+                    (push (list ',feature ,time-elapsed) (get-register :init-data)))))
              (check-errors-form (feature form)
                (let ((err (gensym "error")))
                  `(condition-case ,err
