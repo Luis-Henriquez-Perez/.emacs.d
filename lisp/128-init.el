@@ -67,12 +67,12 @@ Replace `kill-buffer--possibly-save' as advice."
 ;; Don't know why deleting the previous theme before enabling a new
 ;; one isn't the default behavior.  When would anyone want to layer
 ;; the colors of one theme on top of an older one.
-(defun! oo--disable-old-themes (orig-fn &rest args)
+(defun! oo-disable-old-themes-a (orig-fn &rest args)
   "Disable old themes before loading new ones."
   (mapc #'disable-theme custom-enabled-themes)
   (apply orig-fn args))
 
-(advice-add 'load-theme :around #'oo--disable-old-themes)
+(advice-add 'load-theme :around #'oo-disable-old-themes-a)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
