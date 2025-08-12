@@ -2183,6 +2183,7 @@
     ("everthing" "everything")
     ("everty" "every")
     ("everyhing" "everything")
+    ("everyt" "everything")
     ("everythig" "everything")
     ("everytime" "every time")
     ("everyting" "everything")
