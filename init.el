@@ -30,11 +30,6 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
-;; https://news.ycombinator.com/item?id=39127859
-;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
-(setq gc-cons-threshold most-positive-fixnum)
-(setq gc-cons-percentage 0.8)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
