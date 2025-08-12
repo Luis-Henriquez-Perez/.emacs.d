@@ -31,6 +31,7 @@
 (eval-when-compile (require '031-anaphoric-macros))
 (eval-when-compile (require '031-autolet-macros))
 (eval-when-compile (require '031-looping-macros))
+(eval-when-compile (require '031-modification-macros))
 
 (defvar oo-after-bound-forms nil
   "An alist whose elements are (SYMBOL . FORMS).

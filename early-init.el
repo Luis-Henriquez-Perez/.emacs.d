@@ -44,10 +44,20 @@
 (set-register :file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-(advice-add #'x-apply-session-resources :override #'ignore)
+(advice-add 'x-apply-session-resources :override #'ignore)
 
 (set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
+
+(push (expand-file-name "lisp/" user-emacs-directory) load-path)
+
+(require '001-init-log)
+(eval-when-compile (require '002-init-loader))
+
+;; Be more precise about startup.  What I will look at when I measure startup
+;; is the time taken for my lisp files to load, the time taken to run
+;; `after-init-hook', and the time taken to run `emacs-startup-hook'.  That is
+;; everything I am responsible for when emacs is loaded.
 
 (setq package-enable-at-startup nil)
 
@@ -72,20 +82,11 @@
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
+(require! :to 100 :profile t)
+
 (when oo-initial-font
   (push `(font . ,oo-initial-font) default-frame-alist))
 
-(push (expand-file-name "lisp/" user-emacs-directory) load-path)
-
-(require '001-init-log)
-(eval-when-compile (require '002-init-loader))
-
-;; Be more precise about startup.  What I will look at when I measure startup
-;; is the time taken for my lisp files to load, the time taken to run
-;; `after-init-hook', and the time taken to run `emacs-startup-hook'.  That is
-;; everything I am responsible for when emacs is loaded.
-
-(require! :profile t)
 ;;; provide early-init
 (provide 'early-init)
 ;;; early-init.el ends here

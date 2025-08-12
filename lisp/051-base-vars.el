@@ -22,33 +22,23 @@
 ;;
 ;;; Commentary:
 ;;; Code:
+(require '050-base)
+
 (defconst oo-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory where handcrafted configuration files go.")
 
 (defconst oo-local-dir (expand-file-name ".local/" user-emacs-directory)
   "Directory that stores subdirectories.")
 
-;; (defvaralias 'oo-config-dir 'oo-etc-dir)
-
-(defconst oo-config-dir (expand-file-name "etc/" oo-local-dir)
+(defconst oo-etc-dir (expand-file-name "etc/" oo-local-dir)
   "Directory where package configuration files go.")
 
-;; (defvaralias 'oo-cache-dir 'oo-var-dir)
+(defvaralias 'oo-data-dir 'oo-etc-dir)
 
-(defconst oo-cache-dir (expand-file-name "var/" oo-local-dir)
+(defconst oo-var-dir (expand-file-name "var/" oo-local-dir)
   "Directory where persistent data files go.")
 
-(defvar oo-debug-p (or (getenv "DEBUG") init-file-debug)
-  "When non-nil print debug messages.
-The --debug-init flag and setting the DEBUG envar will enable this at startup.")
-
-(defvar oo-init-data nil
-  "A record of data concerning loaded files.
-
-This is an alist where each element is of the form (feature start-time end-time
-error).  Feature is an init feature, start and end time, and error is any
-error.  If an error occurs start and end are nil.  Conversely, if start and end
-are non-nil, then error is nil.")
+(defvaralias 'oo-cache-dir 'oo-var-dir)
 
 (defvar oo-custom-faces-alist nil
   "An alist that update the background of faces based on existing faces.
@@ -68,9 +58,6 @@ built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'."
                           (and (string-match "^--font=\\(.+\\)" it)
                                (match-string 1 it)))
   "Initial font.")
-
-(when oo-initial-font
-  (push `(font . ,oo-initial-font) default-frame-alist))
 ;;; provide
 (provide '051-base-vars)
 ;;; 051-base-vars.el ends here

@@ -30,6 +30,7 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
+(require! :from 100 :profile t)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here

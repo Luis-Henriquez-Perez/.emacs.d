@@ -25,7 +25,9 @@
 ;; Provide a simple log function.
 ;;
 ;;; Code:
-(defvar oo-log-buffer "*log*"
+(defvar oo-debug-p (or (getenv "DEBUG") init-file-debug)
+  "When non-nil print debug messages.
+The --debug-init flag and setting the DEBUG envar will enable this at startup.")(defvar oo-log-buffer "*log*"
   "Name of the log buffer.")
 
 (defvar oo-log-buffer-max 500

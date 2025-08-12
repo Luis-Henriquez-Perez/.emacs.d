@@ -270,9 +270,6 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq confirm-kill-processes nil)
 ;;;;; confirm before quitting Emacs
 (setq confirm-kill-emacs #'y-or-n-p)
-;;;; frame
-(when oo-initial-font
-  (push `(font . ,oo-initial-font) default-frame-alist))
 ;;;;; disable cursor blinking
 ;; By default after a certain amount of blinks the cursor becomes solid.  By
 ;; setting this to a negative value I make the cursor blink forever.

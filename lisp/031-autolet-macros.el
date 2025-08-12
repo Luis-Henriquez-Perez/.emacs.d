@@ -137,6 +137,7 @@ Identify and collect symbols needed for let bindings and return forms modified."
               (should-remove-p (x) (or (member (car x) noinit) (assoc (car x) init))))
       (cl-labels ((process-form (form)
                     (pcase form
+                      ((pred atom) form)
                       ;; Leave quoted forms as-is.
                       (`(,(pred quote-symbol-p) . ,_)
                        form)
@@ -168,14 +169,9 @@ Identify and collect symbols needed for let bindings and return forms modified."
                       ;; Handle special let shortcuts.
                       (`((,(and macro (pred letbind-symbol-p)) . ,args) . ,(and rest (guard t)))
                        `((,(alist-get macro lets) ((,@args)) ,@(process-form rest))))
-                      ((pred null)
-                       form)
                       ;; Recurse into lists.
-                      ((pred listp)
-                       (cons (process-form (car form)) (process-form (cdr form))))
-                      ;; Leave other forms untouched.
                       (_
-                       form))))
+                       (cons (process-form (car form)) (process-form (cdr form)))))))
         (setq body (process-form body)))
       (setq bindings (append init (cl-remove-if #'should-remove-p bindings))))
     (list bindings body)))

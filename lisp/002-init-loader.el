@@ -29,7 +29,6 @@
 ;;
 ;;; Code:
 (require 'cl-lib)
-(require '000-base-vars)
 (require '001-init-log)
 
 ;; For some reason `eval-when-compile' is evaluated during macroexpansion.  So I
@@ -55,7 +54,7 @@ inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
                  `(condition-case ,err
                       ,form
                     (error
-                     (oo-log 'error "%s requiring %s because of %s." (car ,err) ',feature (cdr ,err)))))))
+                     (oo-log 'error "requiring %S: %s -> %s." ',feature (car ,err) (cdr ,err)))))))
     (let (dir form forms feature number base)
       (setq dir (expand-file-name "lisp/" user-emacs-directory))
       (dolist (path (directory-files dir t "^[0-8][1-9][0-9]-.+\\.el$"))
