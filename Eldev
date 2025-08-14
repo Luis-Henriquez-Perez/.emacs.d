@@ -18,7 +18,7 @@
 ;; theory -X option could be used for.
 (setq user-emacs-directory eldev-real-user-emacs-directory)
 ;;;; tell eldev where to load
-(setq eldev-project-main-file "early-init.el")
+(setq eldev-project-main-file "init.el")
 ;; Eldev seems to be looking recursively in directories for any file named
 ;; init.el or early-init.el unless you specifically put the "./" before the file
 ;; name.  It was catching a file in "elpaca/repos/elpaca/doc/early-init.el".  So
