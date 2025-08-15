@@ -61,6 +61,10 @@
             (set! keymap (if (nth 2 args) (car args) 'global-map))
             (set! states ',states)
             `(progn (defvar ,keymap)
+                    ;; Stop byte-compilation warnings for functions I bind.
+                    ,@(pcase def
+                        (`(function ,fn)
+                         `((declare-function ,fn nil))))
                     (oo-bind-key ',keymap ,key ,def ',states))))))
 
 (generate-evil-keybinders! n i v nv ni eg g)
