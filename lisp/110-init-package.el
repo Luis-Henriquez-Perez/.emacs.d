@@ -232,14 +232,15 @@
   ;; (package-load-all-descriptors)
   ;; I need to update the cache when I install a package and only then can I use
   ;; this cache code to save a bit more startup time.
-  (let ((cache (expand-file-name "package-alist" oo-cache-dir)))
-    (if (file-exists-p cache)
-        (setq package-alist (with-temp-buffer
-                              (insert-file-contents cache)
-                              (read (current-buffer))))
-      (package-load-all-descriptors)
-      (with-temp-file cache
-        (prin1 package-alist (current-buffer)))))
+  (package-load-all-descriptors)
+  ;; (let ((cache (expand-file-name "package-alist" oo-cache-dir)))
+  ;;   (if (file-exists-p cache)
+  ;;       (setq package-alist (with-temp-buffer
+  ;;                             (insert-file-contents cache)
+  ;;                             (read (current-buffer))))
+  ;;     (package-load-all-descriptors)
+  ;;     (with-temp-file cache
+  ;;       (prin1 package-alist (current-buffer)))))
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
