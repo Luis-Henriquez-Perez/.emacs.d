@@ -29,16 +29,16 @@
 
 (opt! auto-insert-query nil)
 
-(hook! oo-first-file-hook auto-insert-mode)
+(add-hook 'oo-first-file-hook #'auto-insert-mode)
 
-(autoload! oo-auto-insert--pound-comment-header "990-config-auto-insert")
-(autoload! oo-auto-insert-elisp-template     "990-config-auto-insert")
-(autoload! oo-auto-insert-python-file-header "990-config-auto-insert")
-(autoload! oo-auto-insert-html-template      "990-config-auto-insert")
-(autoload! oo-auto-insert-hy-file-header     "990-config-auto-insert")
-(autoload! oo-auto-insert-bash-file-header   "990-config-auto-insert")
-(autoload! oo-auto-insert-org-file-header    "990-config-auto-insert")
-(autoload! oo-auto-insert-script-file-header "990-config-auto-insert")
+(autoload 'oo-auto-insert--pound-comment-header "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-elisp-template     "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-python-file-header "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-html-template      "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-hy-file-header     "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-bash-file-header   "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-org-file-header    "990-config-auto-insert" nil nil 'function)
+(autoload 'oo-auto-insert-script-file-header "990-config-auto-insert" nil nil 'function)
 
 (define-auto-insert "\\.\\(?:service\\|timer\\)$" #'oo-auto-insert--pound-comment-header)
 (alet! (concat (regexp-quote (expand-file-name "~/.local/bin/")) "[^./]+$")
