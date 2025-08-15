@@ -30,7 +30,7 @@
 (eval-and-compile (defvar no-littering-etc-directory oo-etc-dir)
                   (defvar no-littering-var-directory oo-cache-dir))
 
-(require 'no-littering)
+(push 'no-littering oo-after-init-features)
 ;;; provide
 (provide '120-init-no-littering)
 ;;; 120-init-no-littering.el ends here

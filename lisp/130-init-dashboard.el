@@ -26,7 +26,8 @@
 ;;
 ;;; Code:
 (require '050-base)
-(require 'dashboard)
+
+(push 'dashboard oo-after-init-features)
 
 (defun oo-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
