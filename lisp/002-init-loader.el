@@ -38,8 +38,8 @@
        ,(macroexp-progn forms)
        (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
 
-(defun oo-features (&optional regexp)
-  "Return list of lisp features from my lisp directory."
+(defun oo-features (regexp)
+  "Return list of lisp features from user lisp directory."
   (cl-flet* ((base (path) (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
              (feature (path) (intern (base path))))
     (mapcar #'feature (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full regexp))))
