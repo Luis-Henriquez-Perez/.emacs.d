@@ -40,7 +40,8 @@
 
 (cl-defmacro require! (feature &key profile error-check)
   "Require feature in lisp directory.
-If FEATURE is a regexp, require all features in lisp directory that match FEATURE."
+If FEATURE is a regexp, require all features in lisp directory that match
+FEATURE."
   (pcase feature
     ((pred stringp)
      (let (forms (regexp feature))
