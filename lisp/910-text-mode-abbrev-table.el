@@ -5988,6 +5988,7 @@
     ("wardobe" "wardrobe")
     ("warni" "warning")
     ("warnis" "warnings")
+    ("warns" "warnings")
     ("warrent" "warrant")
     ("warrriors" "warriors")
     ("wasnt" "wasn't")
