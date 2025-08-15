@@ -222,7 +222,7 @@
 ;; needed when installing packages but not when all of our packages are already
 ;; installed, which is the situation most of the time.
 (if (bound-and-true-p package--initialized)
-    (oo-log 'info 'warn "The variable `package--initialized' unexpectedly non-nil")
+    (oo-log 'warn "The variable `package--initialized' unexpectedly non-nil")
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
   (setq package-alist nil)
