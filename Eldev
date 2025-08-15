@@ -10,7 +10,7 @@
 ;; In Emacs 30.1 (and above too I am assuming), stop Emacs from creating
 ;; eln-cache.
 (when (fboundp 'startup-redirect-eln-cache)
-  (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))
+  (startup-redirect-eln-cache (expand-file-name ".eldev/eln-cache/" eldev-real-user-emacs-directory)))
 ;; A very important note, d12frosted did not use package.el for eldev, he only
 ;; used straight.el or elpaca.  The issue with using it with your emacs config
 ;; if you use package.el is that eldev also uses package.el.  So you need to
