@@ -25,7 +25,8 @@
 ;; Initialize hy-mode.
 ;;
 ;;; Code:
-(hook! hy-mode-hook lispyville-mode)
+(autoload 'lispyville-mode "lispyville" nil nil 'function)
+(add-hook 'hy-mode-hook #'lispyville-mode)
 ;;; provide
 (provide '130-init-hy-mode)
 ;;; 130-init-hy-mode.el ends here

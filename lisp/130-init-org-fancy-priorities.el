@@ -27,7 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(hook! org-mode-hook org-fancy-priorities-mode)
+(autoload 'org-fancy-priorities-mode "org-fancy-priorities" nil nil 'function)
+(add-hook 'org-mode-hook #'org-fancy-priorities-mode)
 
 (opt! org-fancy-priorities-list (progn (require 'nerd-icons)
                                        `((?A . ,(nerd-icons-faicon "nf-fa-fire"))

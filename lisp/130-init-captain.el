@@ -27,8 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(hook! prog-mode-hook captain-mode)
-(hook! text-mode-hook captain-mode)
+(add-hook 'prog-mode-hook #'captain-mode)
+(add-hook 'text-mode-hook #'captain-mode)
 
 (setq-hook! text-mode-hook captain-predicate #'always)
 (declare-function captain--default-sentence-start "captain")

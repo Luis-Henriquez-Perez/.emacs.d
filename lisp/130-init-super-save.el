@@ -27,7 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(hook! oo-first-file-hook super-save-mode)
+(autoload 'super-save-mode "super-save" nil nil 'function)
+(add-hook 'oo-first-file-hook #'super-save-mode)
 ;; The default auto-saving feature in emacs saves after a certain number of
 ;; characters are typed (see [[helpvar:auto-save-interval][auto-save-interval]]).  The problem is that if you're in
 ;; the middle of typing and you've just hit the number of characters that trigger a

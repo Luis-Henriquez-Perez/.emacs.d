@@ -31,7 +31,8 @@
 (opt! org-appear-autolinks t)
 (opt! org-appear-trigger 'always)
 
-(hook! org-mode-hook org-appear-mode)
+(autoload 'org-appear-mode "org-appear" nil nil 'function)
+(add-hook 'org-mode-hook #'org-appear-mode)
 
 ;; (opt! org-appear-trigger 'manual)
 ;; (hook! evil-insert-state-entry-hook #'org-appear-manual-start)

@@ -27,16 +27,17 @@
 ;;; Code:
 (require '050-base)
 
+(add-hook 'dired-mode-hook #'hl-line-mode)
+(add-hook 'dired-mode-hook #'dired-omit-mode)
+;; By default hide details.
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
 (opt! dired-deletion-confirmer #'always)
-(hook! dired-mode-hook hl-line-mode)
 ;; This omits:
 ;; 1. Backup files
 ;; 2. Previous and current directory.
 ;; 3. Dotfiles
 (opt! dired-omit-files "\\`\\.?#\\|\\`\\.\\.?\\'\\|^\\..*$")
-(hook! dired-mode-hook dired-omit-mode)
-;; By default hide details.
-(hook! dired-mode-hook dired-hide-details-mode)
 (opt! dired-clean-confirm-killing-deleted-buffers nil)
 (opt! dired-recursive-copies 'always)
 (opt! dired-recursive-deletes 'always)

@@ -26,9 +26,9 @@
 ;;
 ;;; Code:
 ;;;; hooks
-(hook! prog-mode-hook evil-surround-mode)
-(hook! text-mode-hook evil-surround-mode)
-(hook! eshell-mode-hook evil-surround-mode)
+(add-hook 'prog-mode-hook #'evil-surround-mode)
+(add-hook 'text-mode-hook #'evil-surround-mode)
+(add-hook 'eshell-mode-hook #'evil-surround-mode)
 ;;; provide
 (provide '130-init-evil-surround)
 ;;; 130-init-evil-surround.el ends here

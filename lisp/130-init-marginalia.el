@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! vertico-mode-hook marginalia-mode)
+(add-hook 'vertico-mode-hook #'marginalia-mode)
 ;;; provide
 (provide '130-init-marginalia)
 ;;; 130-init-marginalia.el ends here

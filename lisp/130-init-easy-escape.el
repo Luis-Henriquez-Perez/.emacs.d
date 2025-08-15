@@ -27,8 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(hook! lisp-mode-hook easy-escape-minor-mode)
-(hook! emacs-lisp-mode-hook easy-escape-minor-mode)
+(add-hook 'lisp-mode-hook #'easy-escape-minor-mode)
+(add-hook 'emacs-lisp-mode-hook #'easy-escape-minor-mode)
 ;;; provide
 (provide '130-init-easy-escape)
 ;;; 130-init-easy-escape.el ends here

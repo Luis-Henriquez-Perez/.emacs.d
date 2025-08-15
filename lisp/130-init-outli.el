@@ -27,8 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(hook! prog-mode-hook outli-mode)
-(hook! conf-mode-hook outli-mode)
+(add-hook 'prog-mode-hook #'outli-mode)
+(add-hook 'conf-mode-hook #'outli-mode)
 ;;; provide
 (provide '130-init-outli)
 ;;; 130-init-outli.el ends here

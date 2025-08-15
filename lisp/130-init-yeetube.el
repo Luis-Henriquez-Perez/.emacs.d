@@ -25,15 +25,16 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+;; It is much easier to see which item I am on when the lines are highlighted.
+;; Also, confirmed that this hook does not work from the yeetube config file.
+(add-hook 'yeetube-mode-hook #'hl-line-mode)
+
 (opt! yeetube-download-directory (expand-file-name "~/Videos/"))
+
 (nmap yeetube-mode-map "p" #'yeetube-play)
 (nmap yeetube-mode-map "a" #'oo-yeetube-download-audio)
 (nmap yeetube-mode-map "v" #'oo-yeetube-download-video)
 (nmap yeetube-mode-map "s" #'yeetube-search)
-
-;; It is much easier to see which item I am on when the lines are highlighted.
-;; Also, confirmed that this hook does not work from the yeetube config file.
-(hook! yeetube-mode-hook hl-line-mode)
 ;;; provide
 (provide '130-init-yeetube)
 ;;; 130-init-yeetube.el ends here

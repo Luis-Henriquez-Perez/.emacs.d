@@ -53,20 +53,20 @@
 ;; when as opposed to the configuration for over 50 individual packages.  The
 ;; focus is now on what is happening in my configuration as opposed to the many
 ;; individual configurations.
-(hook! text-mode-hook auto-fill-mode)
-(hook! prog-mode-hook auto-fill-mode)
-(hook! prog-mode-hook rainbow-mode)
-(hook! prog-mode-hook hs-minor-mode)
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'prog-mode-hook #'auto-fill-mode)
+(add-hook 'prog-mode-hook #'rainbow-mode)
+(add-hook 'prog-mode-hook #'hs-minor-mode)
 ;; (unless noninteractive
 ;;   ;; Do not use this hook until I fix the flyspell dict message that is
 ;;   ;; displayed.  Also flyspell is slow to start.
 ;;   ;; (hook! prog-mode-hook flyspell-prog-mode)
 ;;   )
-(hook! text-mode-hook visual-line-mode)
+(add-hook 'text-mode-hook #'visual-line-mode)
 ;; (unless noninteractive
 ;;   (hook! text-mode-hook flyspell-mode))
-(hook! after-init-hook window-divider-mode :depth 12)
-(hook! oo-first-input-hook minibuffer-depth-indicate-mode)
+(add-hook 'after-init-hook #'window-divider-mode 12)
+(add-hook 'oo-first-input-hook #'minibuffer-depth-indicate-mode)
 
 ;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
 ;; to make it an intercept map for all evil states.  In evil, intercept maps are
@@ -233,12 +233,12 @@ derived from these, delete trailing whitespace from it."
   (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
 
 (unless noninteractive
-  (hook! mhtml-mode-hook highlight-indent-guides-mode))
+  (add-hook 'mhtml-mode-hook #'highlight-indent-guides-mode))
 
 (opt! highlight-indent-guides-method 'character)
 
-(hook! text-mode-hook delete-selection-mode)
-(hook! prog-mode-hook delete-selection-mode)
+(add-hook 'text-mode-hook #'delete-selection-mode)
+(add-hook 'prog-mode-hook #'delete-selection-mode)
 ;;;; make setting faces actually work
 ;; Surprisingly, the function `custom-theme-set-faces' and `custom-set-faces' do
 ;; not by default actually change any faces.  For that to happen the variable

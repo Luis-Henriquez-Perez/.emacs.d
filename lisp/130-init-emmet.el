@@ -27,8 +27,8 @@
 ;;; Code:
 (require '050-base)
 
-(hook! mhtml-mode-hook emmet-mode)
-(hook! html-mode-hook emmet-mode)
+(add-hook 'mhtml-mode-hook #'emmet-mode)
+(add-hook 'html-mode-hook #'emmet-mode)
 ;;; provide
 (provide '130-init-emmet)
 ;;; 130-init-emmet.el ends here

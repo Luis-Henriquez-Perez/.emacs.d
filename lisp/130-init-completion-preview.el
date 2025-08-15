@@ -25,8 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(hook! prog-mode-hook completion-preview-mode)
-(hook! text-mode-hook completion-preview-mode)
+(add-hook 'prog-mode-hook #'completion-preview-mode)
+(add-hook 'text-mode-hook #'completion-preview-mode)
 
 (opt! completion-preview-minimum-symbol-length 1)
 (opt! completion-preview-commands (cl-adjoin 'org-self-insert-command completion-preview-commands))
