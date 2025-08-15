@@ -30,9 +30,10 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-(require 'early-init)
+;; (require 'early-init)
+(eval-when-compile (require '002-init-loader))
 
-(require! :from 100 :profile t)
+(require! "^1[1-9][0-9]-.+\\.el$" :profile t)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here

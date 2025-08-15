@@ -71,11 +71,12 @@
 (push '(left-fringe  . 0) default-frame-alist)
 (push '(right-fringe . 0) default-frame-alist)
 
-(require! :to 100 :profile t)
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
 (require '001-init-log)
 (eval-when-compile (require '002-init-loader))
+
+(require! "^0[1-9][0-9]-.+\\.el$" :profile t)
 
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))

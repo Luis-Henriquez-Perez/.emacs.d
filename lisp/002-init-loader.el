@@ -31,49 +31,43 @@
 (require 'cl-lib)
 (require '001-init-log)
 
-;; For some reason `eval-when-compile' is evaluated during macroexpansion.  So I
-;; will just leave it to the files themselves to handle the macros.
-(cl-defmacro require! (&key (from 0) (to most-positive-fixnum) profile)
-  "Load numbered Emacs Lisp files from DIR in lexicographical order.
+(defmacro time-elapsed! (&rest forms)
+  "Eval forms and return the time elapsed."
+  (cl-with-gensyms (start)
+    `(let ((,start (float-time)))
+       ,(macroexp-progn forms)
+       (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
 
-A file is \"numbered\" if it is prefixed by three digits ranging from 010 to 899
-inclusive (e.g., '810-foo.el').  The files are loaded with `require!'."
-  (cl-flet* ((time-elapsed-form (form)
-               (let ((start (make-symbol "start")))
-                 `(let ((,start (float-time)))
-                    ,form
-                    (- (float-time) ,start))))
-             (profile-form (feature form)
-               (let ((time-elapsed (gensym "time-elapsed")))
-                 `(let ((,time-elapsed ,(time-elapsed-form form)))
-                    (setq ,time-elapsed (/ (fround (* ,time-elapsed 100)) 100.0))
-                    (oo-log 'info "Required %s in %.2f seconds" ',feature ,time-elapsed)
-                    (push (list ',feature ,time-elapsed) (get-register :init-data)))))
-             (check-errors-form (feature form)
-               (let ((err (gensym "error")))
-                 `(condition-case ,err
-                      ,form
-                    (error
-                     (oo-log 'error "requiring %S: %s -> %s." ',feature (car ,err) (cdr ,err)))))))
-    (let (dir form forms feature number base)
-      (setq dir (expand-file-name "lisp/" user-emacs-directory))
-      (dolist (path (directory-files dir t "^[0-8][1-9][0-9]-.+\\.el$"))
-        (setq base (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
-        (setq feature (intern base))
-        (string-match "\\`\\(?1:[0-8][1-9][0-9]\\)-.+$" base)
-        (setq number (string-to-number (match-string 1 base)))
-        (setq form `(require ',feature))
-        (when (and (> number from) (< number to))
-          (unless oo-debug-p (setq form (check-errors-form feature form)))
-          (if (string-match-p "macros$" base)
-              (setq form `(eval-when-compile ,form))
-            (when profile
-              (setq form (profile-form feature form))))
-          (push form forms)))
-      (if profile
-          `(let ((oo-log-format-fn (apply-partially #'oo-startup-format-fn (float-time))))
-             (oo-log 'info "Finished loading features in %.2f seconds." ,(time-elapsed-form (macroexp-progn (nreverse forms)))))
-        (macroexp-progn (nreverse forms))))))
+(defun oo-features (&optional regexp)
+  "Return list of lisp features from my lisp directory."
+  (cl-flet* ((base (path) (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
+             (feature (path) (intern (base path))))
+    (mapcar #'feature (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full regexp))))
+
+(cl-defmacro require! (feature &key profile error-check)
+  "Require feature in lisp directory.
+If FEATURE is a regexp, require all features in lisp directory that match FEATURE."
+  (let (forms)
+    (pcase feature
+      ((pred stringp)
+       (dolist (feature (oo-features feature))
+         (push `(require! ,feature :profile ,profile :error-check ,error-check) forms))
+       (setq forms (nreverse forms)))
+      ((pred symbolp)
+       (setq forms `((require ',feature)))
+       (when error-check
+         (setq forms (let ((err (gensym "error")))
+                       `((condition-case ,err
+                             ,(macroexp-progn forms)
+                           (error
+                            (oo-log 'error "requiring %S: %s -> %s." ',feature (car ,err) (cdr ,err))))))))
+       (when profile
+         (setq forms `((oo-log 'info "Required %s in %.2f seconds" ',feature (time-elapsed! ,(macroexp-progn forms))))))
+       (when (string-match-p "macros$" (symbol-name feature))
+         (setq forms `((eval-when-compile ,(macroexp-progn forms))))))
+      (_
+       (error "wrong type argument")))
+    (macroexp-progn forms)))
 ;;; provide
 (provide '002-init-loader)
 ;;; 002-init-loader.el ends here
