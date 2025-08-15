@@ -38,22 +38,18 @@
        ,(macroexp-progn forms)
        (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
 
-(defun oo-features (regexp)
-  "Return list of lisp features from user lisp directory."
-  (cl-flet* ((base (path) (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
-             (feature (path) (intern (base path))))
-    (mapcar #'feature (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full regexp))))
-
 (cl-defmacro require! (feature &key profile error-check)
   "Require feature in lisp directory.
 If FEATURE is a regexp, require all features in lisp directory that match FEATURE."
-  (let (forms)
-    (pcase feature
-      ((pred stringp)
-       (dolist (feature (oo-features feature))
+  (pcase feature
+    ((pred stringp)
+     (let (forms (regexp feature))
+       (dolist (file (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full regexp))
+         (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name file)))))
          (push `(require! ,feature :profile ,profile :error-check ,error-check) forms))
-       (setq forms (nreverse forms)))
-      ((pred symbolp)
+       (macroexp-progn (nreverse forms))))
+    ((pred symbolp)
+     (let (forms)
        (setq forms `((require ',feature)))
        (when error-check
          (setq forms (let ((err (gensym "error")))
@@ -64,10 +60,10 @@ If FEATURE is a regexp, require all features in lisp directory that match FEATUR
        (when profile
          (setq forms `((oo-log 'info "Required %s in %.2f seconds" ',feature (time-elapsed! ,(macroexp-progn forms))))))
        (when (string-match-p "macros$" (symbol-name feature))
-         (setq forms `((eval-when-compile ,(macroexp-progn forms))))))
-      (_
-       (error "wrong type argument")))
-    (macroexp-progn forms)))
+         (setq forms `((eval-when-compile ,(macroexp-progn forms)))))
+       (macroexp-progn forms)))
+    (_
+     (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
 ;;; provide
 (provide '002-init-loader)
 ;;; 002-init-loader.el ends here
