@@ -70,7 +70,6 @@
                                   aggressive-indent
                                   all-the-icons
                                   all-the-icons-nerd-fonts
-                                  annalist
                                   beacon
                                   buffer-terminator
                                   burly
@@ -101,7 +100,6 @@
                                   eshell-up
                                   eshell-z
                                   esup
-                                  evenok
                                   evil
                                   evil-cleverparens
                                   evil-collection
@@ -149,7 +147,6 @@
                                   doom-themes
                                   lispy
                                   lispyville
-                                  loopy
                                   lorem-ipsum
                                   lua-mode
                                   macrostep
@@ -157,11 +154,7 @@
                                   marginalia
                                   markdown-mode
                                   material-theme
-                                  minimal-theme
-                                  mmm-mode
                                   modus-themes
-                                  moe-theme
-                                  monkeytype
                                   monokai-theme
                                   nerd-icons
                                   nerd-icons-completion
@@ -181,21 +174,17 @@
                                   password-store
                                   pcre2el
                                   php-mode
-                                  polymode
                                   powerline
                                   rainbow-delimiters
                                   rainbow-mode
                                   redacted
                                   restart-emacs
-                                  s
                                   sdcv
                                   sly
                                   smartparens
-                                  solarized-theme
                                   spacemacs-theme
                                   ssh-agency
                                   standard-themes
-                                  stripe-buffer
                                   sudo-edit
                                   super-save
                                   tango-plus-theme
@@ -215,13 +204,11 @@
                                   which-key
                                   ws-butler
                                   xr
-                                  yeetube
-                                  zoutline))
+                                  yeetube))
 
 (setq package-vc-selected-packages '((emacs-wallpaper :url "https://github.com/Luis-Henriquez-Perez/emacs-wallpaper" :branch "mine")
                                      (escr :url "https://github.com/Luis-Henriquez-Perez/escr")
                                      (evil-easymotion :url "https://github.com/Luis-Henriquez-Perez/evil-easymotion" :branch "master")
-                                     (on :url "https://github.com/ajgrf/on.el")
                                      (outli :url "https://github.com/jdtsmith/outli")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
