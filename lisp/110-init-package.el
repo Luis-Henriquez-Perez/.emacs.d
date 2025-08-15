@@ -26,18 +26,14 @@
 ;; Install all of my packages.
 ;;
 ;;; Code:
+(require 'cl-lib)
 ;; If this variable is not set beforehand, `package-gnupghome-dir' will not be
 ;; set to the right place.
 (defvar package-user-dir)
 (defvar package-archive-contents)
-
 (setq package-user-dir (locate-user-emacs-file "elpa"))
-
-(require 'cl-lib)
 (require 'package)
 (require 'package-vc)
-(require '036-base-functions)
-(eval-when-compile (require '035-base-macros))
 
 ;; This was taken from prot's recommendation.
 (add-to-list 'display-buffer-alist
