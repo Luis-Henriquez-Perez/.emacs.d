@@ -27,16 +27,16 @@
 ;;; Code:
 (require '050-base)
 
-(each! '(em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
+(each! '(esh-arg esh-util esh-proc esh-io esh-cmd em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
   (push it oo-idle-features))
 
-(autoload! eshell-z "eshell-z")
-(autoload! eshell-up "eshell-up")
+(autoload 'eshell-z "eshell-z" nil t 'function)
+(autoload 'eshell-up "eshell-up" nil t 'function)
 
-(hook! eshell-mode-hook abbrev-mode)
-(hook! eshell-mode-hook smartparens-mode)
-(hook! eshell-mode-hook eat-eshell-mode)
-(hook! eshell-mode-hook eshell-syntax-highlighting-mode)
+(add-hook 'eshell-mode-hook #'abbrev-mode)
+(add-hook 'eshell-mode-hook #'smartparens-mode)
+(add-hook 'eshell-mode-hook #'eat-eshell-mode)
+(add-hook 'eshell-mode-hook #'eshell-syntax-highlighting-mode)
 ;; Do not let me kill the eshell buffer, at least not easily.
 ;; (hook! eshell-mode-hook emacs-lock-mode)
 
