@@ -32,7 +32,6 @@
 ;;
 ;;
 ;;; Code:
-
 ;; https://medium.com/@danielorihuelarodriguez/optimize-emacs-start-up-time-ae314201e04f
 ;; https://news.ycombinator.com/item?id=39127859
 ;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
@@ -48,16 +47,6 @@
 
 (set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
-
-(push (expand-file-name "lisp/" user-emacs-directory) load-path)
-
-(require '001-init-log)
-(eval-when-compile (require '002-init-loader))
-
-;; Be more precise about startup.  What I will look at when I measure startup
-;; is the time taken for my lisp files to load, the time taken to run
-;; `after-init-hook', and the time taken to run `emacs-startup-hook'.  That is
-;; everything I am responsible for when emacs is loaded.
 
 (setq package-enable-at-startup nil)
 
@@ -83,10 +72,46 @@
 (push '(right-fringe . 0) default-frame-alist)
 
 (require! :to 100 :profile t)
+(push (expand-file-name "lisp/" user-emacs-directory) load-path)
+
+(require '001-init-log)
+(eval-when-compile (require '002-init-loader))
+
+(when (fboundp 'startup-redirect-eln-cache)
+  (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))
 
 (when oo-initial-font
   (push `(font . ,oo-initial-font) default-frame-alist))
 
+;; Adding advice triggers the creation of the "eln-cache" directory.  To avoid
+;; creating it prematurely advices should go after `startup-redirect-eln-cache'.
+
+;; They made the process of disabling this more difficult.
+(advice-add #'display-startup-echo-area-message :around #'ignore)
+
+;; The built-in package `woman' overwrites the existing variable
+;; `woman-topic-history' by aliasing it to `Man-topic-history' and emacs tells
+;; you this by popping up a *Warnings* buffer whenever woman.el is loaded.  This
+;; whole thing is probably some bug.  So I stop this whole thing from happening.
+(defun oo--suppress-woman-warning (orig-fn &rest args)
+  (pcase args
+    (`(woman-topic-history Man-topic-history . ,_)
+     (advice-remove 'defvaralias #'oo--suppress-woman-warning))
+    (_
+     (apply orig-fn args))))
+
+(advice-add 'defvaralias :around #'oo--suppress-woman-warning)
+
+;; Essentially, I am telling all Emacs functions that prompt the user for a =yes=
+;; or =no= to instead allow me to type =y= or =p=.  [[helpfn:yes-or-no-p][yes-or-no-p]] is defined in c
+;; source code.
+(advice-add #'yes-or-no-p :override #'y-or-n-p)
+
+;; (defun ignore-custom-file-save (&rest _args)
+;;   "Completely ignore writes to `custom-file`."
+;;   (message "Prevented saving custom variables."))
+
+(advice-add 'custom-save-all :override #'ignore)
 ;;; provide early-init
 (provide 'early-init)
 ;;; early-init.el ends here
