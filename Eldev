@@ -26,8 +26,6 @@
 (setq eldev-main-fileset '("./init.el"
                            "./early-init.el"
                            "./lisp/*"
-                           ;; Building this file results in an error.
-                           "!./lisp/110-init-package.el"
                            "!./lisp/disabled*"))
 
 (setq eldev-test-fileset '("test/*-test.el"))
