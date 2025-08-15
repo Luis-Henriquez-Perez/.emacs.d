@@ -3101,6 +3101,7 @@
     ("insitutions" "institutions")
     ("inst" "instead")
     ("instade" "instead")
+    ("instal" "install")
     ("instaled" "installed")
     ("instatance" "instance")
     ("instict" "instinct")
