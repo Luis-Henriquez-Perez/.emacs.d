@@ -1,4 +1,4 @@
-;;; 031-anaphoric-macros.el --- Anaphoric macros -*- lexical-binding: t; -*-
+;;; 011-anaphoric-macros.el --- Anaphoric macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -95,5 +95,5 @@ PRED should be a form that evaluates with `it` bound to each element."
            (setq ,glist (cdr ,glist))))
        ,gpred)))
 ;;; provide
-(provide '031-anaphoric-macros)
-;;; 031-anaphoric-macros.el ends here
+(provide '011-anaphoric-macros)
+;;; 011-anaphoric-macros.el ends here

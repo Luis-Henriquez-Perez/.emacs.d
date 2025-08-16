@@ -1,4 +1,4 @@
-;;; 031-autolet-macros.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
+;;; 012-autolet-macros.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -240,5 +240,5 @@ NAME, ARGS and BODY are the same as in `defun'.
        (autolet! :noinit ,(oo-arglist-symbols arglist)
                  ,@body))))
 ;;; provide
-(provide '031-autolet-macros)
-;;; 031-autolet-macros.el ends here
+(provide '012-autolet-macros)
+;;; 012-autolet-macros.el ends here
