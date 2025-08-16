@@ -44,11 +44,13 @@ If FEATURE is a regexp, require all features in lisp directory that match
 FEATURE."
   (pcase feature
     ((pred stringp)
-     (let (forms (regexp feature))
-       (dolist (file (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full regexp))
-         (setq feature (intern (file-name-sans-extension (file-name-nondirectory (directory-file-name file)))))
-         (push `(require! ,feature :profile ,profile :error-check ,error-check) forms))
-       (macroexp-progn (nreverse forms))))
+     (let (forms filename (regexp feature))
+       (dolist (file (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full ".+\\.el$"))
+         (setq filename (file-name-sans-extension (file-name-nondirectory (directory-file-name file))))
+         (when (string-match-p regexp filename)
+           (setq feature (intern filename))
+           (push `(require! ,feature :profile ,profile :error-check ,error-check) forms)))
+       (macroexp-progn (reverse forms))))
     ((pred symbolp)
      (let (forms)
        (setq forms `((require ',feature)))
