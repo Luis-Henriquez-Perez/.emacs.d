@@ -25,14 +25,7 @@
 ;; Initialize 015-base-macros.
 ;;
 ;;; Code:
-;; (require! (rx "03"))
-(require '032-call-after-functions)
-(require '030-base-functions)
-(eval-when-compile (require '031-anaphoric-macros))
-(eval-when-compile (require '031-autolet-macros))
-(eval-when-compile (require '031-modification-macros))
-(eval-when-compile (require '031-looping-macros))
-(eval-when-compile (require '032-call-after-functions))
+(require! "^01[0-5]")
 
 (defmacro nif! (cond then &rest else)
   (declare (indent 2))

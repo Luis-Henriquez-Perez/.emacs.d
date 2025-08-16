@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'pcase)
 (require 'cl-lib)
-(require '030-base-functions)
+(require '010-base-functions)
 
 (defun oo-arglist-symbols (arglist)
   "Return a list of argument symbols."
