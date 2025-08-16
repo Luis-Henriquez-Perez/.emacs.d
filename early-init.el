@@ -73,8 +73,8 @@
 
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
-(require '001-init-log)
-(eval-when-compile (require '002-init-loader))
+(require '002-base-log)
+(eval-when-compile (require '003-base-loader))
 
 (require! "^0[15]")
 
@@ -85,8 +85,8 @@
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))
 
-(when oo-initial-font
-  (push `(font . ,oo-initial-font) default-frame-alist))
+(when oo-init-font
+  (push `(font . ,oo-init-font) default-frame-alist))
 
 ;; Adding advice triggers the creation of the "eln-cache" directory.  To avoid
 ;; creating it prematurely advices should go after `startup-redirect-eln-cache'.

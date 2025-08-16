@@ -175,7 +175,7 @@ file that is in a git repo, enale git-gutter-mode."
 
 (defun! oo-load-theme-maybe-h ()
   "Load theme."
-  (set! theme oo-initial-theme)
+  (set! theme oo-init-theme)
   (cond ((member "--random-theme" command-line-args)
          (load-theme (seq-random-elt (custom-available-themes)) :no-confirm))
         ((not theme))

@@ -25,7 +25,7 @@
 ;; Define and set several hooks.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0")
 (require 'server)
 (require '123-base-mode-line)
 (require '998-mode-line-icons)
@@ -133,7 +133,7 @@ file is loaded."
   (require '031-looping-macros)
   (require '031-looping-macros)
   (require '035-base-macros)
-  (require '037-keybinding-macros))
+  (require '018-keybinding-macros))
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
 (defhook! increase-garbage-collection (minibuffer-setup-hook :depth 10)

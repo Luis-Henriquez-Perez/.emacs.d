@@ -1,4 +1,4 @@
-;;; 002-init-loader.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
+;;; 003-base-loader.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,7 +29,8 @@
 ;;
 ;;; Code:
 (require 'cl-lib)
-(require '001-init-log)
+(require '001-base-vars)
+(require '002-base-log)
 
 (defmacro time-elapsed! (&rest forms)
   "Eval forms and return the time elapsed."
@@ -38,7 +39,7 @@
        ,(macroexp-progn forms)
        (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
 
-(cl-defmacro require! (feature &key profile error-check)
+(cl-defmacro require! (feature)
   "Require feature in lisp directory.
 If FEATURE is a regexp, require all features in lisp directory that match
 FEATURE."
@@ -49,24 +50,26 @@ FEATURE."
          (setq filename (file-name-sans-extension (file-name-nondirectory (directory-file-name file))))
          (when (string-match-p regexp filename)
            (setq feature (intern filename))
-           (push `(require! ,feature :profile ,profile :error-check ,error-check) forms)))
+           (push `(require! ,feature) forms)))
        (macroexp-progn (reverse forms))))
     ((pred symbolp)
      (let (forms)
        (setq forms `((require ',feature)))
-       (when error-check
-         (setq forms (let ((err (gensym "error")))
-                       `((condition-case ,err
-                             ,(macroexp-progn forms)
-                           (error
-                            (oo-log 'error "requiring %S: %s -> %s." ',feature (car ,err) (cdr ,err))))))))
-       (when profile
-         (setq forms `((oo-log 'info "Required %s in %.2f seconds" ',feature (time-elapsed! ,(macroexp-progn forms))))))
+       (setq forms (let ((err (gensym "error")))
+                     `((if oo-init-noerrors-p
+                           (condition-case ,err
+                               ,(macroexp-progn forms)
+                             (error
+                              (oo-log 'error "requiring %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
+                         ,(macroexp-progn forms)))))
+       (setq forms `((if oo-init-profile-p
+                         (oo-log 'info "Required %s in %.2f seconds" ',feature (time-elapsed! ,(macroexp-progn forms)))
+                       ,(macroexp-progn forms))))
        (when (string-match-p "macros$" (symbol-name feature))
          (setq forms `((eval-when-compile ,(macroexp-progn forms)))))
        (macroexp-progn forms)))
     (_
      (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
 ;;; provide
-(provide '002-init-loader)
-;;; 002-init-loader.el ends here
+(provide '003-base-loader)
+;;; 003-base-loader.el ends here

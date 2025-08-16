@@ -1,4 +1,4 @@
-;;; 051-base-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; 001-base-vars.el --- core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
-(require '050-base)
+(eval-when-compile (require '000-anaphoric-macros))
 
 (defconst oo-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory where handcrafted configuration files go.")
@@ -58,15 +58,24 @@ built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'."
 
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
-(defvar oo-initial-theme (aremf! command-line-args
-                           (and (string-match "^--theme=\\(.+\\)" it)
-                                (intern (match-string 1 it))))
+(defvar oo-init-theme (aremf! command-line-args
+                        (and (string-match "^--theme=\\(.+\\)" it)
+                             (intern (match-string 1 it))))
   "Initial theme.")
 
-(defvar oo-initial-font (aremf! command-line-args
-                          (and (string-match "^--font=\\(.+\\)" it)
-                               (match-string 1 it)))
+(defvar oo-init-font (aremf! command-line-args
+                       (and (string-match "^--font=\\(.+\\)" it)
+                            (match-string 1 it)))
   "Initial font.")
+
+(defvar oo-init-profile-p (aremf! command-line-args
+                            (and (string-match "^--profile" it)
+                                 t))
+  "Whether")
+
+(defvar oo-init-noerrors-p (aremf! command-line-args
+                             (and (string-match "^--noerrors" it)
+                                  t)))
 ;;; provide
-(provide '051-base-vars)
-;;; 051-base-vars.el ends here
+(provide '001-base-vars)
+;;; 001-base-vars.el ends here
