@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! auto-fill-mode-hook filladapt-mode)
+(add-hook 'auto-fill-mode-hook #'filladapt-mode)
 ;;; provide
 (provide '130-init-fill-adapt)
 ;;; 130-init-fill-adapt.el ends here

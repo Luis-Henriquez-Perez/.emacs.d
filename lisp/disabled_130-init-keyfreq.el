@@ -25,8 +25,8 @@
 ;; Initialize keyfreq.
 ;;
 ;;; Code:
-(hook! oo-first-input-hook keyfreq-mode)
-(hook! oo-first-input-hook keyfreq-autosave-mode)
+(add-hook 'oo-first-input-hook #'keyfreq-mode)
+(add-hook 'oo-first-input-hook #'keyfreq-autosave-mode)
 
 (opt! keyfreq-excluded-commands
       '(self-insert-command
