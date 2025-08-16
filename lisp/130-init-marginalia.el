@@ -27,6 +27,7 @@
 ;;; Code:
 (require '050-base)
 
+(autoload 'marginalia-mode "marginalia" nil nil 'function)
 (add-hook 'vertico-mode-hook #'marginalia-mode)
 ;;; provide
 (provide '130-init-marginalia)

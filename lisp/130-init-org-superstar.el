@@ -27,6 +27,7 @@
 ;;; Code:
 (require '050-base)
 
+(autoload 'org-superstar-mode "org-superstar" nil nil 'function)
 (add-hook 'org-mode-hook #'org-superstar-mode)
 
 (opt! org-superstar-leading-bullet ?\s)
