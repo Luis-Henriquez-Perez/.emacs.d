@@ -68,14 +68,14 @@
   (setq-local cape-dabbrev-check-other-buffers #'org-buffers)
   (setq-local completion-at-point-functions '(cape-dabbrev cape-file t)))
 ;;;; org-agenda
-(autoload! +org-agenda-day-view "990-config-org-agenda")
+(autoload '+org-agenda-day-view "990-config-org-agenda" nil nil 'function)
 ;;;; org-capture
-(autoload! +org-capture-plain "990-config-org-capture")
-(autoload! +org-capture-todo "990-config-org-capture")
-(autoload! +org-capture-open "990-config-org-capture")
-(autoload! +org-capture-question "990-config-org-capture")
-(autoload! +org-capture-bug "990-config-org-capture")
-(autoload! +org-capture-choose-template "990-config-org-capture")
+(autoload '+org-capture-plain "990-config-org-capture" nil nil 'function)
+(autoload '+org-capture-todo "990-config-org-capture" nil nil 'function)
+(autoload '+org-capture-open "990-config-org-capture" nil nil 'function)
+(autoload '+org-capture-question "990-config-org-capture" nil nil 'function)
+(autoload '+org-capture-bug "990-config-org-capture" nil nil 'function)
+(autoload '+org-capture-choose-template "990-config-org-capture" nil nil 'function)
 
 (alt! org-capture +org-capture-choose-template org-capture)
 ;;;; org-refile

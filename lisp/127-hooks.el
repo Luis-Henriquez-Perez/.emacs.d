@@ -300,7 +300,7 @@ of FACE to the background color of the `default' face."
       (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h 'local)
     (remove-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h 'local)))
 
-(autoload! oo-dwim-vc-action "vc")
+(autoload 'oo-dwim-vc-action "vc" nil nil 'function)
 (defun oo-auto-commit-and-push-dotfile-h ()
   "Commit and push changes to dotfile on save.
 When a buffer is saved, check whether the saved file is part of the dotfiles

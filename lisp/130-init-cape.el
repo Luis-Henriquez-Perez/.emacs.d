@@ -25,8 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(autoload! cape-dabbrev "cape")
-(autoload! cape-file "cape")
+(autoload 'cape-dabbrev "cape" nil nil 'function)
+(autoload 'cape-file "cape" nil nil 'function)
 
 (defhook! initialize-capfs (org-mode-hook)
   "Initialize `completion-at-point-functions' for `org-mode'."

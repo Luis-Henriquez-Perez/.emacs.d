@@ -30,7 +30,7 @@
 (opt! consult-preview-key nil)
 (opt! consult-fontify-preserve nil)
 
-(autoload! oo-pop-to-buffer "oo-commands")
+(autoload 'oo-pop-to-buffer "oo-commands" nil nil 'function)
 
 (alt! display-buffer oo-pop-to-buffer consult)
 

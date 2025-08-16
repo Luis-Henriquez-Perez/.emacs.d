@@ -27,11 +27,11 @@
 ;;; Code:
 (require 'abbrev)
 
-(autoload! oo-expand-elisp-defun "990-snippets")
-(autoload! oo-expand-elisp-defhook "990-snippets")
-(autoload! oo-expand-elisp-defvar "990-snippets")
-(autoload! oo-expand-elisp-message "990-snippets")
-(autoload! oo-expand-elisp-message-var "990-snippets")
+(autoload 'oo-expand-elisp-defun "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-defhook "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-defvar "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-message "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-message-var "990-snippets" nil nil 'function)
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(("aih" "after-init-hook")
@@ -75,11 +75,11 @@
 ;;; Code:
 (require 'abbrev)
 
-(autoload! oo-expand-elisp-defun "990-snippets")
-(autoload! oo-expand-elisp-defhook "990-snippets")
-(autoload! oo-expand-elisp-defvar "990-snippets")
-(autoload! oo-expand-elisp-message "990-snippets")
-(autoload! oo-expand-elisp-message-var "990-snippets")
+(autoload 'oo-expand-elisp-defun "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-defhook "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-defvar "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-message "990-snippets" nil nil 'function)
+(autoload 'oo-expand-elisp-message-var "990-snippets" nil nil 'function)
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(("aih" "after-init-hook")

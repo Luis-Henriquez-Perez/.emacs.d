@@ -25,8 +25,8 @@
 ;; Initialize evil-textobj-syntax.
 ;;
 ;;; Code:
-(autoload! evil-i-syntax "evil-textobj-syntax")
-(autoload! evil-a-syntax "evil-textobj-syntax")
+(autoload 'evil-i-syntax "evil-textobj-syntax" nil nil 'function)
+(autoload 'evil-a-syntax "evil-textobj-syntax" nil nil 'function)
 ;;; provide
 (provide '130-init-evil-textobj-syntax)
 ;;; 130-init-evil-textobj-syntax.el ends here

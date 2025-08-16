@@ -25,7 +25,7 @@
 ;; Setup evil nerd commenter for lazy loading.
 ;;
 ;;; Code:
-(autoload! evilnc-comment-operator "evil-nerd-commenter")
+(autoload 'evilnc-comment-operator "evil-nerd-commenter" nil nil 'function)
 ;;; provide
 (provide '130-init-evil-nerd-commenter)
 ;;; 130-init-evil-nerd-commenter.el ends here

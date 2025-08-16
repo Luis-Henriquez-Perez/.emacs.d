@@ -42,7 +42,7 @@
                                        "--vo=null"))
 
 (opt! emms-player-list '(emms-player-mpv emms-player-vlc))
-(autoload! emms-player-mpv "emms-player-mpv")
+(autoload 'emms-player-mpv "emms-player-mpv" nil nil 'function)
 
 (opt! emms-info-functions '(emms-info-native))
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.

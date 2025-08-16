@@ -40,10 +40,6 @@
        ,then
      ,@else))
 
-(defmacro autoload! (function file)
-  `(progn (declare-function ,function ,file)
-          (autoload #',function ,file nil t 'function)))
-
 (defmacro lef! (bindings &rest body)
   "Bind each symbol in BINDINGS to its corresponding function during BODY.
 BINDINGS is a list of either (SYMBOL FUNCTION), where symbol is the symbol to be

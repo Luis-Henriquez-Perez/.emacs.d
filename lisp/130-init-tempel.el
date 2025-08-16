@@ -28,9 +28,9 @@
 ;;;; requirements
 (require '050-base)
 ;;;; autoloads
-(autoload! tempel-complete "tempel")
-(autoload! tempel-insert "tempel")
-(autoload! tempel-expand "tempel")
+(autoload 'tempel-complete "tempel" nil nil 'function)
+(autoload 'tempel-insert "tempel" nil nil 'function)
+(autoload 'tempel-expand "tempel" nil nil 'function)
 
 (imap tempel-map "C-l" #'tempel-abort)
 (imap tempel-map "C-j" #'tempel-next)
