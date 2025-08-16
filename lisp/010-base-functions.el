@@ -38,10 +38,6 @@ Specifically, return the symbol `string' if point is in a string, the symbol
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
           (t nil))))
-
-(defun oo-into-keyword (&rest args)
-  "Coerce args into a keyword."
-  (intern (concat ":" (with-output-to-string (mapc #'princ args)))))
 ;;;; destructuring
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
