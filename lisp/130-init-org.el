@@ -108,7 +108,7 @@
 (opt! org-src-window-setup 'plain)
 ;;;; org-clock
 ;; TODO: do not load org-clock on `org-mode-hook'.
-(hook! org-mode-hook org-clock-persistence-insinuate)
+(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
 (opt! org-clock-persist t)
 (opt! org-clock-sound (expand-file-name "~/Downloads/ding-101492.wav"))
 ;;;; org-id

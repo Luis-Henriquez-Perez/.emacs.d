@@ -27,9 +27,9 @@
 ;;; Code:
 (require '050-base)
 
-(hook! oo-first-input-hook vertico-mode)
+(add-hook 'oo-first-input-hook #'vertico-mode)
 ;; TODO: make conditional based on whether icons are available.
-(hook! vertico-mode-hook nerd-icons-completion-mode)
+(add-hook 'vertico-mode-hook #'nerd-icons-completion-mode)
 
 (opt! vertico-count-format '("%-6s " . "%2$s"))
 (opt! vertico-count 15)

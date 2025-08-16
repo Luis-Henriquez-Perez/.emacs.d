@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! org-mode-hook org-superstar-mode)
+(add-hook 'org-mode-hook #'org-superstar-mode)
 
 (opt! org-superstar-leading-bullet ?\s)
 (opt! org-superstar-special-todo-items t)
