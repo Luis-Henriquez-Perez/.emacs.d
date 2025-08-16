@@ -25,7 +25,6 @@
 ;; Initialize evil.
 ;;
 ;;; Code:
-;;;; requirements
 (require '050-base)
 ;;;; settings
 ;; Must be set before evil is loaded.  This, therefore, cannot be deferred with
@@ -58,7 +57,7 @@
 (defhook! load-evil (after-init-hook :depth 10)
   (require 'evil nil t))
 
-(hook! emacs-startup-hook evil-mode :level 'info)
+(add-hook 'emacs-startup-hook #'evil-mode)
 ;; (opt! savehist-additional-variables (cl-adjoin 'evil-markers-alist savehist-additional-variables))
 ;;;; bindings
 (declare-function minibuffer-keyboard-quit "delsel")
