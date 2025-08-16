@@ -28,7 +28,7 @@
 (require '050-base)
 (require 'savehist)
 
-(hook! oo-first-input-hook savehist-mode)
+(add-hook 'oo-first-input-hook #'savehist-mode)
 
 (opt! savehist-file (expand-file-name "savehist.el" oo-cache-dir))
 (opt! savehist-save-minibuffer-history t)
@@ -37,11 +37,11 @@
 
 (opt! savehist-additional-variables (cl-adjoin 'register-alist savehist-additional-variables))
 
-(defun! oo--remove-kill-ring-properties (&rest _)
+(defun! oo-remove-kill-ring-properties-a (&rest _)
   (flet! when-fn (pred function) (lambda (x) (if (funcall pred x) (funcall function x) x)))
   (setq kill-ring (mapcar (when-fn #'stringp #'substring-no-properties) kill-ring)))
 
-(advice-add 'savehist-save :before #'oo--remove-kill-ring-properties)
+(advice-add 'savehist-save :before #'oo-remove-kill-ring-properties-a)
 ;;; provide
 (provide '130-init-savehist)
 ;;; 130-init-savehist.el ends here
