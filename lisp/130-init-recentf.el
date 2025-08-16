@@ -28,7 +28,7 @@
 (require '050-base)
 (require 'recentf)
 
-(add-hook 'emacs-startup-hook recentf-mode)
+(add-hook 'emacs-startup-hook #'recentf-mode)
 
 (opt! recentf-save-file (expand-file-name "recentf-save.el" oo-cache-dir))
 
