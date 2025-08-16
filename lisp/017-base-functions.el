@@ -31,13 +31,7 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require '032-call-after-functions)
-(eval-when-compile (require '031-anaphoric-macros))
-(eval-when-compile (require '031-autolet-macros))
-(eval-when-compile (require '031-modification-macros))
-(eval-when-compile (require '031-looping-macros))
-(eval-when-compile (require '032-call-after-functions))
-(eval-when-compile (require '035-base-macros))
+(require! "^0[01][1-6]")
 
 (defvar evil-state-properties)
 (declare-function evil-define-key* "evil")

@@ -28,7 +28,7 @@
 ;; time.
 ;;
 ;;; Code:
-(require! "^0[1-4][0-9]-.+\\.el$")
+(require! "^0[01]")
 ;;; provide
 (provide '050-base)
 ;;; 050-base.el ends here

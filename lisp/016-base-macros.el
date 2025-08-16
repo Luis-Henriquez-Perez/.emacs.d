@@ -1,4 +1,4 @@
-;;; 015-base-macros.el --- Initialize 015-base-macros -*- lexical-binding: t; -*-
+;;; 016-base-macros.el --- Initialize 016-base-macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize 015-base-macros.
+;; Initialize 016-base-macros.
 ;;
 ;;; Code:
 (require! "^01[0-5]")
@@ -164,5 +164,5 @@ This is like `setq' but it is meant for configuring variables."
   (declare (indent 1))
   `(oo-call-after-bound ',symbol (lambda () (with-no-warnings ,@body))))
 ;;; provide
-(provide '015-base-macros)
-;;; 015-base-macros.el ends here
+(provide '016-base-macros)
+;;; 016-base-macros.el ends here

@@ -76,7 +76,7 @@
 (require '001-init-log)
 (eval-when-compile (require '002-init-loader))
 
-(require! "^0[1-9][0-9]-.+\\.el$" :profile t)
+(require! "^0[15]")
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.

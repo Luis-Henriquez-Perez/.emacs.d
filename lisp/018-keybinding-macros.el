@@ -26,9 +26,7 @@
 ;; concisely.
 ;;
 ;;; Code:
-(require '032-call-after-functions)
-(require '035-base-macros)
-(require '036-base-functions)
+(require! "^0[01][1-7]")
 
 (declare-function evil-define-key* "evil")
 

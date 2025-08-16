@@ -32,7 +32,7 @@
 ;;; Code:
 (require 'early-init)
 
-(require! "^1[1-9][0-9]-.+\\.el$" :profile t)
+(require! "^1")
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
