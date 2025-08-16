@@ -112,11 +112,6 @@ This is like `setq' but it is meant for configuring variables."
      (defun! ,name nil (with-no-warnings ,@body))
      (oo-call-after-load ',expr #',name)))
 
-(defmacro hook! (hook function &rest args)
-  "Configuration wrapper around `oo-add-hook'."
-  `(progn (declare-function ,function nil)
-          (oo-add-hook ',hook #',function ,@args)))
-
 (defmacro! defhook! (name args &rest body)
   "Add function to hook as specified by NAME."
   (declare (indent defun))
