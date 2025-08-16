@@ -42,7 +42,7 @@
 (setf (alist-get 'hy-mode     outli-heading-config)
       (alist-get 'emacs-lisp-mode outli-heading-config))
 
-(hook! enable-theme-functions outli-reset-all-faces :ignore-args t)
+(add-hook 'enable-theme-functions #'outli-reset-all-faces) ;; TODO
 ;;; provide
 (provide '990-config-outli)
 ;;; 990-config-outli.el ends here

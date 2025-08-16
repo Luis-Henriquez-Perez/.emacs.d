@@ -38,7 +38,7 @@
 (add-hook 'eshell-mode-hook #'eat-eshell-mode)
 (add-hook 'eshell-mode-hook #'eshell-syntax-highlighting-mode)
 ;; Do not let me kill the eshell buffer, at least not easily.
-;; (hook! eshell-mode-hook emacs-lock-mode)
+;; (add-hook 'eshell-mode-hook #'emacs-lock-mode)
 
 (oo-popup-at-bottom "\\*eshell")
 

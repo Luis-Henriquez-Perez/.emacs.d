@@ -49,7 +49,7 @@
 (after! bm evil-collection-bm-setup evil-collection)
 
 (autoload #'evil-collection-bookmark-setup "evil-collection" nil nil 'function)
-(hook! bookmark-bmenu-mode-hook evil-collection-bookmark-setup)
+(add-hook 'bookmark-bmenu-mode-hook #'evil-collection-bookmark-setup)
 
 (after! buff-menu evil-collection-buff-menu-setup evil-collection)
 
@@ -80,7 +80,7 @@
 (after! csv evil-collection-csv-setup evil-collection)
 
 (autoload #'evil-collection-custom-setup "evil-collection" nil nil 'function)
-(hook! custom-mode-hook evil-collection-custom-setup)
+(add-hook 'custom-mode-hook #'evil-collection-custom-setup)
 
 (after! cus-theme evil-collection-cus-theme-setup evil-collection)
 
@@ -88,7 +88,7 @@
 (defhook! setup-evil-collection (dashboard-mode-hook)
   (if after-init-time
       (evil-collection-dashboard-setup)
-    (hook! emacs-startup-hook evil-collection-dashboard-setup)))
+    (add-hook 'emacs-startup-hook #'evil-collection-dashboard-setup)))
 
 (after! daemons evil-collection-daemons-setup evil-collection)
 
@@ -139,15 +139,15 @@
 (after! explain-pause-mode evil-collection-explain-pause-mode-setup evil-collection)
 
 (autoload #'evil-collection-eldoc-setup "evil-collection" nil nil 'function)
-(hook! emacs-lisp-mode-hook evil-collection-eldoc-setup)
-(hook! eldoc-mode-hook evil-collection-eldoc-setup)
+(add-hook 'emacs-lisp-mode-hook #'evil-collection-eldoc-setup)
+(add-hook 'eldoc-mode-hook #'evil-collection-eldoc-setup)
 
 (after! elfeed evil-collection-elfeed-setup evil-collection)
 
 ;; Disable bindings from for elisp mode because they conflict with the bindings
 ;; I myself am adding.
 ;; (autoload #'evil-collection-elisp-mode-setup "evil-collection" nil nil 'function)
-;; (hook! emacs-lisp-mode-hook evil-collection-elisp-mode-setup)
+;; (add-hook 'emacs-lisp-mode-hook #'evil-collection-elisp-mode-setup)
 
 (after! elisp-refs evil-collection-elisp-refs-setup evil-collection)
 
@@ -204,7 +204,7 @@
 (after! helm evil-collection-helm-setup evil-collection)
 
 (autoload #'evil-collection-help-setup "evil-collection" nil nil 'function)
-(hook! help-mode-hook evil-collection-help-setup)
+(add-hook 'help-mode-hook #'evil-collection-help-setup)
 
 (after! helpful evil-collection-helpful-setup evil-collection)
 
@@ -215,7 +215,7 @@
 (after! ibuffer evil-collection-ibuffer-setup evil-collection)
 
 (autoload #'evil-collection-image-setup "evil-collection" nil nil 'function)
-(hook! image-mode-hook evil-collection-image-setup)
+(add-hook 'image-mode-hook #'evil-collection-image-setup)
 
 (after! image-dired evil-collection-image-dired-setup evil-collection)
 
@@ -328,7 +328,7 @@
 (after! reftex evil-collection-reftex-setup evil-collection)
 
 (autoload #'evil-collection-replace-setup "evil-collection" nil nil 'function)
-(hook! occur-mode-hook evil-collection-replace-setup)
+(add-hook 'occur-mode-hook #'evil-collection-replace-setup)
 
 (after! restclient evil-collection-restclient-setup evil-collection)
 
@@ -355,7 +355,7 @@
 (after! shortdoc evil-collection-shortdoc-setup evil-collection)
 
 (autoload #'evil-collection-simple-setup "evil-collection" nil nil 'function)
-(hook! special-mode-hook evil-collection-simple-setup)
+(add-hook 'special-mode-hook #'evil-collection-simple-setup)
 
 (after! simple-mpc evil-collection-simple-mpc-setup evil-collection)
 
@@ -370,12 +370,12 @@
 (after! speedbar evil-collection-speedbar-setup evil-collection)
 
 (autoload #'evil-collection-tab-bar-setup "evil-collection" nil nil 'function)
-(hook! tab-bar-mode-hook evil-collection-tab-bar-setup)
+(add-hook 'tab-bar-mode-hook #'evil-collection-tab-bar-setup)
 
 (after! tablist evil-collection-tablist-setup evil-collection)
 
 (autoload #'evil-collection-tabulated-list-setup "evil-collection" nil nil 'function)
-(hook! tabulated-list-mode-hook evil-collection-tabulated-list-setup)
+(add-hook 'tabulated-list-mode-hook #'evil-collection-tabulated-list-setup)
 
 (after! tar-mode evil-collection-tar-mode-setup evil-collection)
 

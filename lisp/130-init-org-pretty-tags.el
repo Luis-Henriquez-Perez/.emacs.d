@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! org-mode-hook org-pretty-tags-mode)
+(add-hook 'org-mode-hook #'org-pretty-tags-mode)
 
 (opt! org-pretty-tags-surrogate-strings
       (progn (require 'nerd-icons)

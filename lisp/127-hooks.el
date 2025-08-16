@@ -60,11 +60,11 @@
 ;; (unless noninteractive
 ;;   ;; Do not use this hook until I fix the flyspell dict message that is
 ;;   ;; displayed.  Also flyspell is slow to start.
-;;   ;; (hook! prog-mode-hook flyspell-prog-mode)
+;;   ;; (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 ;;   )
 (add-hook 'text-mode-hook #'visual-line-mode)
 ;; (unless noninteractive
-;;   (hook! text-mode-hook flyspell-mode))
+;;   (add-hook 'text-mode-hook #'flyspell-mode))
 (add-hook 'after-init-hook #'window-divider-mode 12)
 (add-hook 'oo-first-input-hook #'minibuffer-depth-indicate-mode)
 
@@ -85,7 +85,7 @@
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
   (oo-eval-after-bound-forms)
-  (hook! after-load-functions oo-eval-after-bound-forms))
+  (add-hook 'after-load-functions #'oo-eval-after-bound-forms))
 ;;;; auto-filling
 ;; (setq-hook! text-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
 
@@ -256,8 +256,8 @@ of FACE to the background color of the `default' face."
     (set! bg (face-attribute 'default :background))
     (set-face-attribute face nil :background color :foreground bg)))
 ;;;; miscellaneous
-(hook! after-init-hook oo-mode-line-icons-mode :depth 89 :level 'info)
-(hook! after-init-hook oo-mode-line-mode :depth 90 :level 'info)
+(add-hook 'after-init-hook #'oo-mode-line-icons-mode 89)
+(add-hook 'after-init-hook #'oo-mode-line-mode 90)
 
 ;; (defhook! initialize-server (emacs-startup-hook :level 'info)
 ;;   "Enable server if it is not running."

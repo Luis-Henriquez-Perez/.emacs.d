@@ -28,17 +28,8 @@
 (require '050-base)
 
 ;; Do not bind any keys by default.
-(hook! emacs-lisp-mode-hook lispyville-mode)
+(add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
 (opt! lispyville-key-theme nil)
-
-
-
-
-
-
-
-
-
 ;;; provide
 (provide '130-init-lispyville)
 ;;; 130-init-lispyville.el ends here

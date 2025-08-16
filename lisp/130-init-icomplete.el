@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(hook! icomplete-mode-hook icomplete-vertical-mode)
+(add-hook 'icomplete-mode-hook #'icomplete-vertical-mode)
 
 (opt! icomplete-show-matches-on-no-input t)
 ;;; provide

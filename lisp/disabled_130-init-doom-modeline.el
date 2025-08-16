@@ -28,7 +28,7 @@
 (require '050-base)
 (require 'doom-modeline)
 
-(hook! after-init-hook doom-modeline-mode)
+(add-hook 'after-init-hook #'doom-modeline-mode)
 ;;; provide
 (provide '130-init-doom-modeline)
 ;;; 130-init-doom-modeline.el ends here

@@ -45,7 +45,7 @@
 ;; TODO: during idle time byte-compile the spaceline function.
 (setq spaceline-byte-compile nil)
 ;;;; reset powerline after theme change
-(hook! enable-theme-functions powerline-reset :ignore-args t)
+(add-hook 'enable-theme-functions #'powerline-reset)
 ;;;; segments
 (spaceline-define-segment +kbd-macro
   (oo-modeline-component--kbd-macro))

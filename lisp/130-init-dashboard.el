@@ -37,8 +37,8 @@
     (with-current-buffer it
       (dashboard-insert-startupify-lists))))
 
-(hook! window-size-change-functions dashboard-resize-on-hook)
-(hook! window-setup-hook dashboard-resize-on-hook)
+(add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
+(add-hook 'window-setup-hook #'dashboard-resize-on-hook)
 
 (defhook! enable-dashboard (after-init-hook)
   (require 'dashboard)
@@ -49,7 +49,7 @@
   (setq dashboard-center-content t)
   (dashboard-insert-startupify-lists))
 
-(hook! emacs-startup-hook dashboard-initialize)
+(add-hook 'emacs-startup-hook #'dashboard-initialize)
 ;;; provide
 (provide '130-init-dashboard)
 ;;; 130-init-dashboard.el ends here

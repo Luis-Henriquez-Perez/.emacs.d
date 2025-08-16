@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! vertico-mode-hook vertico-buffer-mode)
+(add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 
 (opt! vertico-buffer-display-action
       '(display-buffer-in-direction

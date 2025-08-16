@@ -34,7 +34,7 @@
 Additionally make it so that whenever telephone-line-mode is called after this,
 the modeline is updated."
   (telephone-line-mode 1)
-  (hook! telephone-line-mode-hook oo-update-modeline))
+  (add-hook 'telephone-line-mode-hook #'oo-update-modeline))
 
 ;; Add a timer to toggle the separators.
 ;; (opt! telephone-line-height 30)

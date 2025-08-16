@@ -27,7 +27,7 @@
 ;;; Code:
 (require '050-base)
 
-(hook! vertico-mode-hook vertico-multiform-mode)
+(add-hook 'vertico-mode-hook #'vertico-multiform-mode)
 
 ;; (pushing! vertico-multiform-commands '(Info-menu (vertico-sort-function . nil)))
 (opt! vertico-multiform-commands

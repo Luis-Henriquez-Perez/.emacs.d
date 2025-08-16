@@ -143,7 +143,7 @@ Replace `kill-buffer--possibly-save' as advice."
                      )
                    'unique)))
 ;;;; sh-mode
-(hook! sh-mode-hook aggressive-indent-mode)
+(add-hook 'sh-mode-hook #'aggressive-indent-mode)
 ;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))
 ;;;; vc
 ;; Use text-mode tools when editing.

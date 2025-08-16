@@ -35,8 +35,8 @@
 (add-hook 'org-mode-hook #'org-appear-mode)
 
 ;; (opt! org-appear-trigger 'manual)
-;; (hook! evil-insert-state-entry-hook #'org-appear-manual-start)
-;; (hook! evil-insert-state-exit-hook #'org-appear-manual-stop)
+;; (add-hook 'evil-insert-state-entry-hook #'org-appear-manual-start)
+;; (add-hook 'evil-insert-state-exit-hook #'org-appear-manual-stop)
 ;; (add-hook 'org-mode-hook (lambda ()
 ;;                            (add-hook 'evil-insert-state-entry-hook
 ;;                                      #'org-appear-manual-start
