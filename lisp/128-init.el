@@ -73,6 +73,28 @@ Replace `kill-buffer--possibly-save' as advice."
   (apply orig-fn args))
 
 (advice-add 'load-theme :around #'oo-disable-old-themes-a)
+;;;; Do not short-circuit themes with invalid box property
+;; This comes from the fact that :box (:style unspecified ...) was silently
+;; tolerated before, but in Emacs 30 the :style slot must be either nil,
+;; 'released-button, or 'pressed-button.
+(defun! oo-set-face-attribute-a (orig-fn face frame &rest args)
+  "Remove :box properties from attributes."
+  (condition-case nil
+      (apply orig-fn face frame args)
+    (error
+     ;; Remove invalid :box properties from ATTRS.
+     (flet! sanitize-attrs (attrs)
+       (let ((plist (copy-sequence attrs)))
+         (when-let* ((box (plist-get plist :box)))
+           (when (and (listp box)
+                      (eq (plist-get box :style) 'unspecified))
+             ;; Drop the :style element entirely
+             (setq box (plist-put (copy-sequence box) :style nil))
+             (setq plist (plist-put plist :box box))))
+         plist))
+     (apply orig-fn face frame (sanitize-attrs args)))))
+
+(advice-add 'set-face-attribute :around #'oo-set-face-attribute-a)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
