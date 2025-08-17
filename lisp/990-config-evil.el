@@ -102,19 +102,19 @@
     (unless (equal bg (face-attribute 'cursor :background))
       (set-cursor-color bg))))
 ;;;; insert state hook
-(defun oo--enter-evil-insert-state-maybe (&rest _)
+(defun oo-enter-evil-insert-state-maybe-h (&rest _)
   "Enter insert state if `evil-mode' is enabled."
   (when (bound-and-true-p evil-mode)
     (evil-insert-state 1)))
 ;;;; cross-configuration
 ;;;;; org-capture
-(add-hook 'org-capture-mode-hook #'oo--enter-evil-insert-state-maybe)
+(add-hook 'org-capture-mode-hook #'oo-enter-evil-insert-state-maybe-h)
 ;;;;; git-commit
 ;; Note that I cannot use `evil-set-initial-state' for this because
 ;; `git-commit-mode' is a minor-mode.
-(add-hook 'git-commit-mode-hook #'oo--enter-evil-insert-state-maybe)
+(add-hook 'git-commit-mode-hook #'oo-enter-evil-insert-state-maybe-h)
 ;;;;; denote
-(add-hook 'denote-after-new-note-hook #'oo--enter-evil-insert-state-maybe)
+(add-hook 'denote-after-new-note-hook #'oo-enter-evil-insert-state-maybe-h)
 ;;;;; corfu
 ;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
 ;; because the maps are overridden by evil.  In order for them to work, we need
@@ -130,11 +130,13 @@
 (afterfeature! tempel
   (evil-make-overriding-map tempel-map))
 
-(advice-add 'tempel-insert :after #'oo--enter-evil-insert-state-maybe)
+(advice-add 'tempel-insert :after #'oo-enter-evil-insert-state-maybe-h)
 ;;;;; magit
 ;; Note that I cannot use `evil-set-initial-state' for this because
 ;; `git-commit-mode' is a minor-mode.
-(add-hook 'git-commit-mode-hook #'oo--enter-evil-insert-state-maybe)
+(add-hook 'git-commit-mode-hook #'oo-enter-evil-insert-state-maybe-h)
+
+(add-hook 'vc-git-log-edit-mode-hook #'oo-enter-evil-insert-state-maybe-h 0)
 ;;;; miscellaneous
 ;;; provide
 (provide '990-config-evil)
