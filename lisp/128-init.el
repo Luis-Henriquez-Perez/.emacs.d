@@ -102,30 +102,15 @@ Replace `kill-buffer--possibly-save' as advice."
 ;; custom theme" error.  This advice filters `custom-available-themes' so I only
 ;; see actual themes and not these "fake" ones.
 
-(defvar oo-theme-cache (cons nil nil)
-  "A cons-cell of (REAL . FAKE).
-REAL is a list of real themes.  FAKE is a list of fake themes.")
-
-(defun! oo-only-real-themes-a (all-themes)
-  "Return only themes that actually call `provide-theme'."
-  ;; If I have categorized all themes as either real or fake then just use the
-  ;; set of real themes.
-  (set! cached-themes (append (car oo-theme-cache) (cdr oo-theme-cache)))
-  ;; Update the cache if need be.
-  (dolist (theme (cl-set-difference all-themes cached-themes))
-    ;; Doom themes are unorthodox, so do not count them.
-    (if (string-prefix-p "doom" (symbol-name theme))
-        (push theme (car oo-theme-cache))
-      (set! theme-file (locate-file (format "%s-theme.el" theme) custom-theme-load-path))
-      (set! rx (rx-to-string (format "(provide-theme '%s)" theme)))
-      (when theme-file
-        (with-temp-buffer
-          (insert-file-contents theme-file)
-          (goto-char (point-min))
-          (if (re-search-forward rx nil t)
-              (push theme (car oo-theme-cache))
-            (push theme (cdr oo-theme-cache)))))))
-  (car oo-theme-cache))
+;; At first I tried to implementation this by using a cache but after that
+;; implementation I realized that this was overkill.  There are only three
+;; themes I use with this issue so I can just as easily hard-code it.  The
+;; benefit implementation-wise is it is simple, fast, and does not have
+;; the potential performance cost of the cache solution which would need to read
+;; all the theme files the first time its called.
+(defun! oo-only-real-themes-a (themes)
+  "Do not count \"fake\" themes."
+  (cl-set-difference themes '(spacemacs solarized moe immaterial)))
 
 (advice-add 'custom-available-themes :filter-return #'oo-only-real-themes-a)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
