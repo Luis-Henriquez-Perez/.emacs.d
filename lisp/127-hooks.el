@@ -104,17 +104,12 @@ file is loaded."
      ("\\_<\\(\\(?:it\\|other\\|this-fn\\)\\)\\_>"
       (1 font-lock-constant-face nil t)))))
 
-(defhook! require-base-macros (emacs-lisp-mode-hook)
+(defun oo-require-base-h ()
   "Load base macros."
-  :expire t
-  :level 'info
-  (require '031-anaphoric-macros)
-  (require '031-autolet-macros)
-  (require '031-modification-macros)
-  (require '031-looping-macros)
-  (require '031-looping-macros)
-  (require '035-base-macros)
-  (require '018-keybinding-macros))
+  (require! "^0[01]")
+  (remove-hook 'emacs-lisp-mode-hook #'oo-require-base-h))
+
+(add-hook 'emacs-lisp-mode-hook #'oo-require-base-h)
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
 (defhook! increase-garbage-collection (minibuffer-setup-hook :depth 10)
