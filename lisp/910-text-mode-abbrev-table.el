@@ -5849,6 +5849,7 @@
     ("unweildly" "unwieldy")
     ("unwiedly" "unwieldy")
     ("unwieldly" "unwieldy")
+    ("uose" "use")
     ("upadte" "update")
     ("upate" "update")
     ("upcomming" "upcoming")
