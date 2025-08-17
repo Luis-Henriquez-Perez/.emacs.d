@@ -85,7 +85,7 @@
 			  (lispyville-change evil-change)
 			  (lispyville-delete evil-delete)
 			  (lispyville-yank evil-yank)))
- (for! ((new old) list)
+ (pcase-dolist (`(,new ,old) list)
    (set! elt (cons new (cdr (assoc old evil-goggles--commands))))
    (cl-pushnew elt evil-goggles--commands :key #'car))
  (cl-assert (cl-every (lambda (it) (assoc it list)) (mapcar #'car list))))

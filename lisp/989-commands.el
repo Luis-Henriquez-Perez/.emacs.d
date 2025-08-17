@@ -250,7 +250,7 @@ Additionally, make any duplicate spaces in line become a single space."
 
   (require 'ctable)
 
-  (for! ((feature time) oo-init-data)
+  (pcase-dolist (`(,feature ,time) oo-init-data)
     (collecting! new (list feature time))
     (summing! total time))
 
@@ -258,7 +258,7 @@ Additionally, make any duplicate spaces in line become a single space."
 
   (flet! percent (time total) (format "%3d%%" (* 100 (/ time total))))
 
-  (for! ((feature time) new)
+  (pcase-dolist (`(,feature ,time) new)
     (set! dtime (format "%.2f" (/ (fround (* time 100)) 100.0)))
     (pushing! data (list feature dtime (percent time total) (percent time init-time))))
 
