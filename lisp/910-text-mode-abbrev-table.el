@@ -1272,7 +1272,7 @@
     ("comitted" "committed")
     ("comittee" "committee")
     ("comitting" "committing")
-    ("comm" "common")
+    ("comm" "comment")
     ("commandoes" "commandos")
     ("commedic" "comedic")
     ("commemerative" "commemorative")
