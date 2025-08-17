@@ -41,8 +41,6 @@
       (alist-get 'emacs-lisp-mode outli-heading-config))
 (setf (alist-get 'hy-mode     outli-heading-config)
       (alist-get 'emacs-lisp-mode outli-heading-config))
-
-(add-hook 'enable-theme-functions #'outli-reset-all-faces) ;; TODO
 ;;; provide
 (provide '990-config-outli)
 ;;; 990-config-outli.el ends here
