@@ -3252,6 +3252,7 @@
     ("iww" "I wonder whether")
     ("iwwt" "I will want to")
     ("iwwti" "I wonder whether there is")
+    ("jae" "just as easily")
     ("jarrig" "jarring")
     ("javas" "JavaScript")
     ("javascript" "JavaScript")
