@@ -55,6 +55,7 @@
 ;; individual configurations.
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
+(autoload 'rainbow-mode "rainbow-mode" nil nil 'function)
 (add-hook 'prog-mode-hook #'rainbow-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 ;; (unless noninteractive
