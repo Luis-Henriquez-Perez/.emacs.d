@@ -169,12 +169,9 @@ is already narrowed."
   (interactive)
   (set! not-loaded (cl-set-difference (custom-available-themes) oo-loaded-themes))
   (set! theme (seq-random-elt not-loaded))
-  (condition-case err
-      (progn (load-theme theme)
-             (push theme oo-loaded-themes)
-             (message "Loaded theme `%s'..." theme))
-    (error
-     (signal (car err) (cdr err)))))
+  (message "Loading theme `%s'..." theme)
+  (load-theme theme 'noconfirm)
+  (push theme oo-loaded-themes))
 
 ;; This idea is based on the following link where xah lee talks about why the
 ;; scratch buffer is outdated.  It does not follow the trend of "untitled1",
