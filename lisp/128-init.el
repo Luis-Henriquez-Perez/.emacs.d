@@ -95,6 +95,39 @@ Replace `kill-buffer--possibly-save' as advice."
      (apply orig-fn face frame (sanitize-attrs args)))))
 
 (advice-add 'set-face-attribute :around #'oo-set-face-attribute-a)
+;;;; Only consider real themes
+;; Annoyingly some themes, such spacemacs, solarized, moe and
+;; immaterial, have helper files for defining themes that Emacs wrongly confuses
+;; as actual themes.  When you select it as a theme you get a jarring "undefined
+;; custom theme" error.  This advice filters `custom-available-themes' so I only
+;; see actual themes and not these "fake" ones.
+
+(defvar oo-theme-cache (cons nil nil)
+  "A cons-cell of (REAL . FAKE).
+REAL is a list of real themes.  FAKE is a list of fake themes.")
+
+(defun! oo-only-real-themes-a (all-themes)
+  "Return only themes that actually call `provide-theme'."
+  ;; If I have categorized all themes as either real or fake then just use the
+  ;; set of real themes.
+  (set! cached-themes (append (car oo-theme-cache) (cdr oo-theme-cache)))
+  ;; Update the cache if need be.
+  (dolist (theme (cl-set-difference all-themes cached-themes))
+    ;; Doom themes are unorthodox, so do not count them.
+    (if (string-prefix-p "doom" (symbol-name theme))
+        (push theme (car oo-theme-cache))
+      (set! theme-file (locate-file (format "%s-theme.el" theme) custom-theme-load-path))
+      (set! rx (rx-to-string (format "(provide-theme '%s)" theme)))
+      (when theme-file
+        (with-temp-buffer
+          (insert-file-contents theme-file)
+          (goto-char (point-min))
+          (if (re-search-forward rx nil t)
+              (push theme (car oo-theme-cache))
+            (push theme (cdr oo-theme-cache)))))))
+  (car oo-theme-cache))
+
+(advice-add 'custom-available-themes :filter-return #'oo-only-real-themes-a)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
