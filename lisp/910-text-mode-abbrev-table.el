@@ -4299,6 +4299,7 @@
     ("preminence" "preeminence")
     ("premission" "permission")
     ("preocupation" "preoccupation")
+    ("prep" "prepare")
     ("prepair" "prepare")
     ("prepartion" "preparation")
     ("prepatory" "preparatory")
