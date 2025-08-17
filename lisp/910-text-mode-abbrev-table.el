@@ -1416,6 +1416,7 @@
     ("consice" "concise")
     ("consiciousness" "consciousness")
     ("consicousness" "consciousness")
+    ("consid" "consider")
     ("consideer" "consider")
     ("considerd" "considered")
     ("consideres" "considered")
