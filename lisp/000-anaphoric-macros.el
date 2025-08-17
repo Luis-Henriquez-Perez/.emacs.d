@@ -56,7 +56,7 @@
   `(alet! ,form (prog1 it ,@body)))
 
 (defmacro each! (list &rest body)
-  "Like `prog1' but bind first form to `it'."
+  ""
   (declare (debug (form body)) (indent 1))
   `(dolist (it ,list) ,@body))
 
