@@ -187,8 +187,12 @@ Replace `kill-buffer--possibly-save' as advice."
 ;;;; vc
 ;; Use text-mode tools when editing.
 (add-hook 'vc-git-log-edit-mode-hook #'abbrev-mode)
+
+(autoload 'captain-mode "captain" nil nil 'function)
 (add-hook 'vc-git-log-edit-mode-hook #'captain-mode)
 ;;;; make certain files read-only
+(autoload 'git-gutter-mode "git-gutter" nil nil 'function)
+
 (defun! oo-dwim-file-rules ()
   "Do special things depending on what file is opened.
 If I open a file in my package directory, do it in `view-mode'.  If I open a
