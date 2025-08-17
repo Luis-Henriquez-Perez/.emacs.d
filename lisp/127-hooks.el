@@ -234,6 +234,7 @@ derived from these, delete trailing whitespace from it."
   (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
 
 (unless noninteractive
+  (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
   (add-hook 'mhtml-mode-hook #'highlight-indent-guides-mode))
 
 (opt! highlight-indent-guides-method 'character)
