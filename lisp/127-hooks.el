@@ -88,26 +88,6 @@ file is loaded."
   (oo-eval-after-bound-forms)
   (add-hook 'after-load-functions #'oo-eval-after-bound-forms))
 ;;;; auto-filling
-;; (setq-hook! text-mode-hook normal-auto-fill-function #'oo-dwim-autofill-fn)
-
-;; (defun! oo-dwim-autofill-fn (&rest _)
-;;   "Fill the current paragraph."
-;;   (set! beg (save-excursion (start-of-paragraph-text) (point)))
-;;   (set! end (save-excursion (end-of-paragraph-text) (point)))
-;;   (cond ((equal (char-after) ? )
-;;          ;; Fill the lines before.
-;;          (set! end1 (save-excursion (skip-chars-backward " ") (point)))
-;;          (save-excursion (fill-region beg end1 nil 'nosqueeze))
-;;          ;; Fill the current line in a way that does not consume the spaces.
-;;          (save-excursion (goto-char (line-end-position)) (do-auto-fill))
-;;          ;; Fill the lines afterwards.
-;;          (and (> end (line-end-position))
-;;               (save-excursion (fill-region (line-end-position) end nil 'nosqueeze))))
-;;         (t
-;;          (when (looking-at "\n\n")
-;;            (set! end (save-excursion (skip-chars-backward " ") (point))))
-;;          (save-excursion (fill-region beg end nil 'nosqueeze)))))
-
 (setq-hook! prog-mode-hook normal-auto-fill-function #'oo-progn-autofill-fn)
 
 (defun! oo-progn-autofill-fn ()
