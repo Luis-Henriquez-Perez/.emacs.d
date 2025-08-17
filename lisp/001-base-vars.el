@@ -75,7 +75,8 @@ built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'."
 
 (defvar oo-init-noerrors-p (aremf! command-line-args
                              (and (string-match "^--noerrors" it)
-                                  t)))
+                                  t))
+  "")
 ;;; provide
 (provide '001-base-vars)
 ;;; 001-base-vars.el ends here
