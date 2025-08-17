@@ -2930,6 +2930,7 @@
     ("imo" "in my opinion")
     ("impecabbly" "impeccably")
     ("impedence" "impedance")
+    ("impelm" "implementation")
     ("implamenting" "implementing")
     ("imple" "implement")
     ("implem" "implementation")
