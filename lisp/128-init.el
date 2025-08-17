@@ -171,7 +171,6 @@ Replace `kill-buffer--possibly-save' as advice."
 ;; Use text-mode tools when editing.
 (add-hook 'vc-git-log-edit-mode-hook #'abbrev-mode)
 (add-hook 'vc-git-log-edit-mode-hook #'captain-mode)
-(add-hook 'vc-git-log-edit-mode-hook #'oo--enter-evil-insert-state-maybe 0)
 ;;;; make certain files read-only
 (defun! oo-dwim-file-rules ()
   "Do special things depending on what file is opened.
