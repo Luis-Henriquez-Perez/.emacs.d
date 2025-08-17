@@ -56,7 +56,8 @@
   `(alet! ,form (prog1 it ,@body)))
 
 (defmacro each! (list &rest body)
-  ""
+  "Evaluate BODY for each element of LIST and return nil.
+Each element of LIST is bound to `it'."
   (declare (debug (form body)) (indent 1))
   `(dolist (it ,list) ,@body))
 
