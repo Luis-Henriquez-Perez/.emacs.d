@@ -28,7 +28,7 @@
 ;; these functions are very specific to me and my workflow.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'f)
 (require 'ctable)
 ;;;; opening specific files

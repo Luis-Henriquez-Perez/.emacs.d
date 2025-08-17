@@ -25,7 +25,7 @@
 ;; Initialize macroexpand.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 ;;;; localleaders
 ;;; provide
 (provide '130-init-macroexpand)

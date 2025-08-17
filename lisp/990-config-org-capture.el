@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; Requirements
-(require '050-base)
+(require! "^0[01]")
 (require 'doct)
 (require 'org-ml)
 (require 'ts)

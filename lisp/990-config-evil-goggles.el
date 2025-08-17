@@ -25,7 +25,7 @@
 ;; Configure evil-goggles.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'evil-goggles)
 ;;;; Remove advices
 (setopt evil-goggles-duration 0.1)

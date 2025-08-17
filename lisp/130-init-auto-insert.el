@@ -25,7 +25,7 @@
 ;; Initialize auto-insert.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (opt! auto-insert-query nil)
 

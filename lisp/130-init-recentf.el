@@ -25,7 +25,7 @@
 ;; Initialize `recentf'.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'recentf)
 
 (add-hook 'emacs-startup-hook #'recentf-mode)

@@ -25,7 +25,7 @@
 ;; Initialize denote.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (opt! denote-directory "~/Documents/notes/")
 (opt! denote-file-type 'org)

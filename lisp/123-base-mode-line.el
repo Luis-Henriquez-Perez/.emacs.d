@@ -25,7 +25,7 @@
 ;; My mode line.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'battery)
 (require 'seq)
 ;;;; silence byte-compilation

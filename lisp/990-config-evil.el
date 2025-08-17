@@ -25,7 +25,7 @@
 ;; This is my configuration for evil.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'evil)
 ;;;; settings
 ;; By default =evil= displays the current state in the echo area.  I think some

@@ -25,7 +25,7 @@
 ;; This file loads everything that needs to be evaluated immediately on startup.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 ;; https://christiantietze.de/posts/2023/09/kill-unsaved-buffer-ux-action-labels/
 (defun! oo--prompt-clearly (_ buffer &rest _)

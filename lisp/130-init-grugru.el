@@ -25,7 +25,7 @@
 ;; Initialize grugru.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 
 

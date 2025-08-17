@@ -25,7 +25,7 @@
 ;; Initialize evil-goggles.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 ;;;; register evil commands
 (declare-function evil-goggles-mode "evil-goggles")
 

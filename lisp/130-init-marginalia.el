@@ -25,7 +25,7 @@
 ;; Initialize marginalia.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (autoload 'marginalia-mode "marginalia" nil nil 'function)
 (add-hook 'vertico-mode-hook #'marginalia-mode)

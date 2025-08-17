@@ -25,7 +25,7 @@
 ;; Initialize evil.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 ;;;; settings
 ;; Must be set before evil is loaded.  This, therefore, cannot be deferred with
 ;; `opt!'.  If this is not set evil with add opinionated bindings to certain

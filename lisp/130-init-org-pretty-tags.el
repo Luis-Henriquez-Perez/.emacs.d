@@ -25,7 +25,7 @@
 ;; Configure.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'org-mode-hook #'org-pretty-tags-mode)
 

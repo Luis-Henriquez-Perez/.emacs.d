@@ -25,7 +25,7 @@
 ;; Initialize emmet.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'mhtml-mode-hook #'emmet-mode)
 (add-hook 'html-mode-hook #'emmet-mode)

@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'yeetube)
 
 ;; Make simple commands to download audio the way I want it.

@@ -25,7 +25,7 @@
 ;; Initialize gcmh.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'emacs-startup-hook #'gcmh-mode 91)
 

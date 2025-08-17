@@ -25,7 +25,7 @@
 ;; Configure nil.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 ;; https://emacs.stackexchange.com/questions/57677/how-to-set-effort-all-globally
 (add-to-list 'org-modules 'org-habit :append)

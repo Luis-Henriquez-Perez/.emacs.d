@@ -25,7 +25,7 @@
 ;; Initialize vertico-quick.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (opt! vertico-quick1 "asdfgh")
 (opt! vertico-quick2 "jkluionm")

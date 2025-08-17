@@ -25,7 +25,7 @@
 ;; Initialize `gnus`.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (opt! gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
 (opt! gnus-select-method '(nnnil))

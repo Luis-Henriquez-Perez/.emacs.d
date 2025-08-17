@@ -25,7 +25,7 @@
 ;; Configure telephone-line.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require '123-base-mode-line)
 (require 'telephone-line)
 ;;;; custom segments

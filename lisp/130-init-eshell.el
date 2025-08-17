@@ -25,7 +25,7 @@
 ;; Initialize eshell.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (each! '(esh-arg esh-util esh-proc esh-io esh-cmd em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
   (push it oo-idle-features))

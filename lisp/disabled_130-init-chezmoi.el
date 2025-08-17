@@ -25,7 +25,7 @@
 ;; Initialize chezmoi.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (autoload #'chezmoi-find "chezmoi" nil t 'function)
 (autoload #'chezmoi-write "chezmoi" nil t 'function)

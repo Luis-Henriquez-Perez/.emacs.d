@@ -25,7 +25,7 @@
 ;; Initialize `org-superstar`.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (autoload 'org-superstar-mode "org-superstar" nil nil 'function)
 (add-hook 'org-mode-hook #'org-superstar-mode)

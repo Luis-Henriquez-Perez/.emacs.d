@@ -25,7 +25,7 @@
 ;; Initialize dirvish.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (declare-function dirvish-override-dired-mode "dirvish")
 (oo-call-after-load 'dired #'dirvish-override-dired-mode)

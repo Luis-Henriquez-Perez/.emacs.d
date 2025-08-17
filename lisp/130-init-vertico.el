@@ -25,7 +25,7 @@
 ;; Initialize vertico.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'oo-first-input-hook #'vertico-mode)
 ;; TODO: make conditional based on whether icons are available.

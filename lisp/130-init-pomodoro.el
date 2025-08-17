@@ -25,7 +25,7 @@
 ;; Initialize pomodoro.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (opt! pomodoro-sound-player "mpv")
 (opt! pomodoro-work-start-sound (expand-file-name "~/bell.wav"))

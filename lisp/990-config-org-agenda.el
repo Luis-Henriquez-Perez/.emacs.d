@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '050-base)
+(require! "^0[01]")
 (require 'org-agenda)
 (require 'ts)
 ;;;; settings

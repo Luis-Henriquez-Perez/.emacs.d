@@ -25,7 +25,7 @@
 ;; Initialize telephone-line.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'seq)
 (require 'telephone-line)
 ;;;; basic setup

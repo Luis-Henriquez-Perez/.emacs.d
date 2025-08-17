@@ -25,7 +25,7 @@
 ;; Initialize easy-escape.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'lisp-mode-hook #'easy-escape-minor-mode)
 (add-hook 'emacs-lisp-mode-hook #'easy-escape-minor-mode)

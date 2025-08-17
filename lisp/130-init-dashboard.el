@@ -25,7 +25,7 @@
 ;; Initialize dashboard.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (push 'dashboard oo-after-init-features)
 

@@ -25,7 +25,7 @@
 ;; Initialize lispyville.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 ;; Do not bind any keys by default.
 (add-hook 'emacs-lisp-mode-hook #'lispyville-mode)

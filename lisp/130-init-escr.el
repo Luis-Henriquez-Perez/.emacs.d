@@ -25,7 +25,7 @@
 ;; Initialize `escr`.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (opt! escr-screenshot-directory (expand-file-name "~/Pictures"))
 

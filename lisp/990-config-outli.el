@@ -25,7 +25,7 @@
 ;; Configure `outli'.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'outli)
 
 ;; Different styling for stem and leaf characters.

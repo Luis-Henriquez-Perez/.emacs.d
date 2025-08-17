@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'tempel)
 
 (deftempel! oo-expand-elisp-defhook

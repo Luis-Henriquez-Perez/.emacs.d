@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '050-base)
+(require! "^0[01]")
 ;;;; Idle features
 (each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture)
   (push it oo-idle-features))

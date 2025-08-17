@@ -25,7 +25,7 @@
 ;; Initialize abbrev-mode.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 ;;;; hooks
 (defun oo-load-abbrevs-h ()
   "Load abbrev files.

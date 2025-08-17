@@ -25,7 +25,7 @@
 ;; Initialize mu4e.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 

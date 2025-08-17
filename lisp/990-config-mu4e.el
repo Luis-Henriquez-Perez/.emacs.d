@@ -25,7 +25,7 @@
 ;; Configure mu4e.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'mu4e)
 
 (defmacro only-once! (&rest forms)

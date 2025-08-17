@@ -25,7 +25,7 @@
 ;; Initialize evil-exchange.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 ;;; provide
 (provide '130-init-evil-exchange)
 ;;; 130-init-evil-exchange.el ends here

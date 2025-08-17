@@ -25,7 +25,7 @@
 ;; Initialize rainbow-delimiters.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'reb-mode-hook #'rainbow-delimiters-mode)

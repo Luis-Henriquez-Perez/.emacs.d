@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require '050-base)
+(require! "^0[01]")
 ;; Loading these idle features trigger the annoying auto-rever-mode.
 ;; (appending! oo-idle-features '(magit-log magit-blame magit-commit magit-pull magit-push))
 (oo-popup-at-bottom "\\`magit")

@@ -25,7 +25,7 @@
 ;; Configure auto-insert.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 (require 'f)
 (require 'tempel)
 

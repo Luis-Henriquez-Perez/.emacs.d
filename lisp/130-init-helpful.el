@@ -25,7 +25,7 @@
 ;; Initialize helpful.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (alt! describe-function helpful-callable helpful)
 (alt! describe-command helpful-command helpful)

@@ -25,7 +25,7 @@
 ;; Initialize vertico-buffer.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 

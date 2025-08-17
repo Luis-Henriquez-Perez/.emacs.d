@@ -30,7 +30,7 @@
 ;; I as in--even when I only had two open.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 ;; TODO exclude if it is a which-key buffer.
 ;; TODO also exclude if it is the only buffer except for the minibuffer.

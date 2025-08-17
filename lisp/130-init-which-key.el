@@ -25,7 +25,7 @@
 ;; Initialize which-key.
 ;;
 ;;; Code:
-(require '050-base)
+(require! "^0[01]")
 
 (autoload 'which-key-mode "which-key" nil nil 'function)
 (add-hook 'emacs-startup-hook #'which-key-mode)
