@@ -44,6 +44,16 @@
                 (?e . emacs)
                 (?m . motion)
                 (?o . operator)))
+  (flet! to-text (symbols)
+    ;; "Convert a symbol or list of symbols SYMBOLS to a natural language string."
+    (let ((items (mapcar #'symbol-name (ensure-list symbols))))
+      (pcase items
+        (`() "")
+        (`(,only) only)
+        (`(,first ,second) (format "%s and %s" first second))
+        (_ (let ((all-but-last (butlast items))
+                 (last (car (last items))))
+             (format "%s, and %s" (string-join all-but-last ", ") last))))))
   (flet! state-name (char)
     (alist-get char alist nil nil #'char-equal))
   (flet! split-spec (spec)
@@ -51,7 +61,7 @@
   `(progn
      ,@(accumulate! (spec specs)
          (set! states (split-spec spec))
-         (set! docstring (format "Define an evil keybinding in %s state." (oo-symbols-to-text states)))
+         (set! docstring (format "Define an evil keybinding in %s state." (to-text states)))
          (set! macroname (intern (concat (symbol-name spec) "map")))
          `(defmacro! ,macroname (&rest args)
             ,docstring

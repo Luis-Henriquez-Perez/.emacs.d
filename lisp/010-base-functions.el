@@ -203,16 +203,6 @@ LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
     (add-hook hook fn depth local)
     fn))
 
-(defun oo-symbols-to-text (symbols)
-  "Convert a symbol or list of symbols SYMBOLS to a natural language string."
-  (let ((items (mapcar #'symbol-name (ensure-list symbols))))
-    (pcase items
-      (`() "")
-      (`(,only) only)
-      (`(,first ,second) (format "%s and %s" first second))
-      (_ (let ((all-but-last (butlast items))
-               (last (car (last items))))
-           (format "%s, and %s" (string-join all-but-last ", ") last))))))
 ;;; provide
 (provide '010-base-functions)
 ;;; 010-base-functions.el ends here
