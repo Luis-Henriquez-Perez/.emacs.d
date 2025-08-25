@@ -228,11 +228,11 @@ file that is in a git repo, enale git-gutter-mode."
 
 (add-hook 'after-init-hook #'oo-load-theme-maybe-h 90)
 
-
-;; (setq debug-on-message "Setting up indent for shell type sh")
 ;; This makes opening sh files way too slow.  These are simple files, it should
 ;; not be slow.
-(advice-add 'sh-set-shell :override  #'ignore)
+;; On second thought, this is what is responsible for ensuring the file is
+;; indented properly so I cannot just outright ignore it.
+;; (advice-add 'sh-set-shell :override  #'ignore)
 
 ;; Several packages such as org, eshell, and magit take a while to load in
 ;; session.  This attempts to mitigate that by loading features gradually during
