@@ -3981,6 +3981,7 @@
     ("osaat" "one step at a time")
     ("oses" "OSes")
     ("oside" "outside")
+    ("ost" "on second thought")
     ("ot" "to")
     ("otc" "on the contrary")
     ("otehr" "other")
