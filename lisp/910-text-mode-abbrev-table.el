@@ -2056,6 +2056,7 @@
     ("employement" "employment")
     ("emporer" "emperor")
     ("emprisoned" "imprisoned")
+    ("enab" "enable")
     ("enabe" "enable")
     ("enalbe" "enable")
     ("enalbed" "enabled")
