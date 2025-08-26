@@ -114,7 +114,6 @@
                                   evil-visual-mark-mode
                                   expreg
                                   exwm
-                                  f
                                   fancy-narrow
                                   fennel-mode
                                   filladapt
@@ -123,22 +122,18 @@
                                   goto-chg
                                   green-screen-theme
                                   grugru
-                                  gruvbox-theme
                                   habamax-theme
                                   helm
                                   helm-system-packages
                                   helpful
-                                  hemera-theme
                                   hide-mode-line
                                   highlight-indent-guides
                                   highlight-quoted
                                   htmlize
                                   ctable
-                                  humanoid-themes
                                   hungry-delete
                                   hy-mode
                                   hydra
-                                  immaterial-theme
                                   leuven-theme
                                   doom-themes
                                   lispy
@@ -149,9 +144,7 @@
                                   magit
                                   marginalia
                                   markdown-mode
-                                  material-theme
                                   modus-themes
-                                  monokai-theme
                                   nerd-icons
                                   nerd-icons-completion
                                   no-littering
@@ -178,7 +171,6 @@
                                   sdcv
                                   sly
                                   smartparens
-                                  spacemacs-theme
                                   ssh-agency
                                   standard-themes
                                   sudo-edit
