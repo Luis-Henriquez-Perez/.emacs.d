@@ -2078,6 +2078,7 @@
     ("endolithes" "endoliths")
     ("enduce" "induce")
     ("ened" "need")
+    ("enel" "enable")
     ("enforceing" "enforcing")
     ("engagment" "engagement")
     ("engeneer" "engineer")
