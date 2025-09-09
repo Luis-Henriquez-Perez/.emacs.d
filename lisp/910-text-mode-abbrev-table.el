@@ -3123,6 +3123,7 @@
     ("instaled" "installed")
     ("instatance" "instance")
     ("instict" "instinct")
+    ("insting" "installing")
     ("institue" "institute")
     ("insto" "instead of")
     ("instuction" "instruction")
