@@ -2889,6 +2889,7 @@
     ("iiwt" "if I want to")
     ("ij" "I just")
     ("ijdnt" "I just do not")
+    ("ijt" "is just to")
     ("ijw" "I just want")
     ("ijwi" "I just want it")
     ("ik" "I know")
