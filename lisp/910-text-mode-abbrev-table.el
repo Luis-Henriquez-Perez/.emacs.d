@@ -4076,6 +4076,7 @@
     ("particulary" "particularly")
     ("partiion" "partition")
     ("partl" "partly")
+    ("partt" "partition")
     ("pary" "party")
     ("pased" "passed")
     ("pasengers" "passengers")
