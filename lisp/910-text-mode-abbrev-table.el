@@ -1389,6 +1389,7 @@
     ("conived" "connived")
     ("conjecutre" "conjecture")
     ("conjuction" "conjunction")
+    ("conn" "connection")
     ("connned" "connected")
     ("conotations" "connotations")
     ("conquerd" "conquered")
