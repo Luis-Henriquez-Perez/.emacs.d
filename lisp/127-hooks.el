@@ -27,8 +27,6 @@
 ;;; Code:
 (require! "^0")
 (require 'server)
-(require '123-base-mode-line)
-(require '998-mode-line-icons)
 ;;;; custom hooks
 (defvar oo-first-file-hook nil
   "Hook run after the first file is loaded.")
@@ -233,7 +231,6 @@ of FACE to the background color of the `default' face."
     (set! bg (face-attribute 'default :background))
     (set-face-attribute face nil :background color :foreground bg)))
 ;;;; miscellaneous
-(add-hook 'after-init-hook #'oo-mode-line-icons-mode 89)
 ;; (add-hook 'after-init-hook #'oo-mode-line-mode 90)
 
 ;; (defhook! initialize-server (emacs-startup-hook :level 'info)
