@@ -2834,6 +2834,7 @@
     ("idl" "I would like")
     ("idlk" "I do not like")
     ("idn" "I do not")
+    ("idnet" "I do not even think")
     ("idnf" "I did not find")
     ("idnfa" "I did not find anything")
     ("idnfai" "I did not find anything immediate")
