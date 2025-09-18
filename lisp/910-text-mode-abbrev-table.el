@@ -5689,6 +5689,7 @@
     ("tn" "then")
     ("tna" "to no avail")
     ("tnail" "thumbnail")
+    ("tnht" "to not have to")
     ("tntb" "that need to be")
     ("tobbaco" "tobacco")
     ("toda" "today")
