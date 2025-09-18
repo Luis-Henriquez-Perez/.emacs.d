@@ -108,9 +108,9 @@
 ;;;; aliases
 (eshell/alias "home" "cd ~")
 ;;;;; git
+(eshell/alias "gs" "git status --porcelain")
 (eshell/alias "gad" "dot add $1 && dot commit -m \"Add $1.\" $1 && dot push")
 (eshell/alias "gadd" "dot add $1 && dot commit -m \"Add $1.\" $1 && dot push")
-(eshell/alias "gs" "git status --porcelain")
 ;; https://stackoverflow.com/questions/927358/how-do-i-undo-the-most-recent-local-commits-in-git#927386
 (eshell/alias "gundo" "git reset HEAD~")
 (eshell/alias "git-undo" "git reset HEAD~")
