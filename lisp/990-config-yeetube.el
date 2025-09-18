@@ -64,11 +64,10 @@ Optionally, provide custom own URL."
   (let* ((id (tabulated-list-get-id))
 	     (entry-content (cadr (assoc id yeetube-content)))
 	     (type (aref entry-content (- (length entry-content) 1)))
-	     (url (or (yeetube-get-url id type) url))
-	     (title (or (aref entry-content 0) "Unknown")))
+	     (url (or (yeetube-get-url id type) url)))
     (when (string-prefix-p "http" url)
       (call-process-shell-command (format "download_video %s" url) nil 0)
-      (message "Downloading: '%s' at '%s'" title yeetube-download-directory))))
+      (message "Downloading: '%s'" yeetube-download-directory))))
 ;;; provide
 (provide '990-config-yeetube)
 ;;; 990-config-yeetube.el ends here
