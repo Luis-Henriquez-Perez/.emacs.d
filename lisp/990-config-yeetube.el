@@ -28,8 +28,6 @@
 (require! "^0[01]")
 (require 'yeetube)
 
-;; Make simple commands to download audio the way I want it.
-
 (defun oo-yeetube-download-audio (&optional url)
   "Download entry at point in *yeetube* buffer with yt-dlp.
 
