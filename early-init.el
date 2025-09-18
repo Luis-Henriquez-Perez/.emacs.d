@@ -113,10 +113,6 @@
 ;; source code.
 (advice-add #'yes-or-no-p :override #'y-or-n-p)
 
-;; (defun ignore-custom-file-save (&rest _args)
-;;   "Completely ignore writes to `custom-file`."
-;;   (message "Prevented saving custom variables."))
-
 (advice-add 'custom-save-all :override #'ignore)
 ;;; provide early-init
 (provide 'early-init)
