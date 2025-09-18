@@ -111,9 +111,9 @@
 (eshell/alias "gs" "git status --porcelain")
 (eshell/alias "gd" "git diff $*")
 (eshell/alias "gb" "git branch")
-(eshell/alias "gac" "git add $1 && git commit $1 -m \"$2\" && git push")
-(eshell/alias "gacp" "")
-(eshell/alias "gadd" "dot add $1 && dot commit -m \"Add $1.\" $1 && dot push")
+;; I was thinking of pushing as well but pushing takes too long.
+(eshell/alias "gac" "git add $1 && git commit $1 -m \"$2\"")
+(eshell/alias "gacc" "git add $1 && git commit $1 -m \"Update $1.\"")
 ;; https://stackoverflow.com/questions/927358/how-do-i-undo-the-most-recent-local-commits-in-git#927386
 (eshell/alias "gundo" "git reset HEAD~")
 (eshell/alias "git-undo" "git reset HEAD~")
