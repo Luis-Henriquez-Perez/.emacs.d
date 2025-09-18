@@ -5682,6 +5682,7 @@
     ("tkae" "take")
     ("tkaes" "takes")
     ("tkaing" "taking")
+    ("tkg" "thinking")
     ("tlaking" "talking")
     ("tldr" "TLDR")
     ("tme" "time")
