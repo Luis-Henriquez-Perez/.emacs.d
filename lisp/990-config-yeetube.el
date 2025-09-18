@@ -67,17 +67,8 @@ Optionally, provide custom own URL."
 	     (url (or (yeetube-get-url id type) url))
 	     (title (or (aref entry-content 0) "Unknown")))
     (when (string-prefix-p "http" url)
-      (let ((default-directory yeetube-download-directory))
-        (oo-yeetube-download-video--ytdlp url)
-        (message "Downloading: '%s' at '%s'" title yeetube-download-directory)))))
-
-(defun! oo-yeetube-download-video--ytdlp (url)
-  "Download URL using yt-dlp."
-  (unless (executable-find "yt-dlp")
-    (error "Executable for yt-dlp not found.  Please install yt-dlp"))
-  (set! ytdlp (executable-find "yt-dlp"))
-  (set! command (format "%s %s --write-thumbnail" ytdlp url))
-  (call-process-shell-command command nil 0))
+      (call-process-shell-command (format "download_video %s" url) nil 0)
+      (message "Downloading: '%s' at '%s'" title yeetube-download-directory))))
 ;;; provide
 (provide '990-config-yeetube)
 ;;; 990-config-yeetube.el ends here
