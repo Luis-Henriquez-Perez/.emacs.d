@@ -103,8 +103,8 @@
 (setopt eshell-history-size 1000)
 ;; Stop eshell from printing messages.
 ;;;; keybindings
-(nmap eshell-mode-map "J" #'eshell-previous-prompt)
-(nmap eshell-mode-map "K" #'eshell-next-prompt)
+(nmap eshell-mode-map "J" #'eshell-next-prompt)
+(nmap eshell-mode-map "K" #'eshell-previous-prompt)
 ;;;; aliases
 (eshell/alias "home" "cd ~")
 ;;;;; git
@@ -140,12 +140,6 @@
 (eshell/alias "lockfiles" "find . -name '*~'")
 (eshell/alias "delete-lockfiles" "find . -name '*~'")
 (eshell/alias "html-to-pdf" "wkhtmltopdf $1")
-;;
-;; (eshell/alias "" "find . -name '*~'")
-;;;;; rsync
-;; Communicate with my desktop.
-;; (eshell/alias "rpush" "rsync -a $1 luis@yadira:$2")
-;; (eshell/alias "rpull" "rsync -a luis@yadira:$1 $2")
 ;;;;; emacs maintenance
 (eshell/alias "emacs-test" "{cd $user-emacs-directory; eldev -d test $1}")
 (eshell/alias "etest" "(let ((default-directory user-emacs-directory)) ${eldev -d test $1})")
@@ -158,23 +152,15 @@
 (eshell/alias "ecompile" "emacs --batch -l ~/.config/emacs/compile-setup.el -f batch-byte-compile ~/.config/emacs/init.el ~/.config/emacs/early-init.el ~/.config/emacs/lisp/*.el")
 (eshell/alias "eclean" "rm -f ~/.config/emacs/init.elc ~/.config/emacs/early-init.elc ~/.config/emacs/lisp/*.elc")
 ;;;;; archlinux
-(eshell/alias "orphan" "pacman -Qtd $*")
-(eshell/alias "files" "pacman -Ql $1")
-(eshell/alias "pac" "sudo pacman --noconfirm $*")
-(eshell/alias "install" "sudo pacman -S --noconfirm $*")
-(eshell/alias "remove" "sudo pacman -Rns --noconfirm $*")
-(eshell/alias "uninstall" "sudo pacman -Rns --noconfirm $*")
-(eshell/alias "search" "pacman -Ss $*")
-(eshell/alias "search-quiet" "pacman -Ssq $*")
-(eshell/alias "update" "sudo pacman -Syu")
-(eshell/alias "update-system" "sudo pacman -Syu")
-(eshell/alias "update-email" "mbsync -a")
-(eshell/alias "list-wifi" "nmcli dev wifi list")
-(eshell/alias "listwifi" "nmcli dev wifi list")
+(eshell/alias "pmi" "sudo pacman -S --needed --noconfirm $*")
+(eshell/alias "pmr" "sudo pacman -Rns --noconfirm $*")
+(eshell/alias "pmro" "sudo pacman -Rns --noconfirm { pacman -Qdt }")
+(eshell/alias "pmu" "sudo pacman -Syu")
+(eshell/alias "pms" "sudo pacman -Ssq $*")
+(eshell/alias "pmf" "sudo pacman -Ql $*")
+;; (eshell/alias "c" "clear")
+(eshell/alias "wifi" "nmcli dev wifi list")
 (eshell/alias "sd" "systemctl $*")
-;;;;; blogging
-(eshell/alias "publish" "{cd $(expand-file-name \"html\" \"~/Documents/blog\") ; (shut-up (org-publish \"blog\" t))}")
-(eshell/alias "epublish" "{cd $(expand-file-name \"html\" \"~/Documents/blog\") ; (shut-up (org-publish \"blog\" t))}")
 ;;;;; miscellaneous
 (eshell/alias "iso" "sudo dd if=$1 of=$2 bs=4M status=progress")
 (eshell/alias "up" "eshell-up $1")
