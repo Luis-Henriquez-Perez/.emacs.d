@@ -4938,7 +4938,7 @@
     ("rwite" "write")
     ("rx" "regular expression")
     ("rxp" "regular expression")
-    ("ry" "very")
+    ("ry" "try")
     ("rythem" "rhythm")
     ("rythim" "rhythm")
     ("rythm" "rhythm")
