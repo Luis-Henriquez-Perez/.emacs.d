@@ -32,24 +32,22 @@
 (defun oo-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
 
-(defun oo-dashboard-buffer ()
-  (aprog1! (get-buffer-create dashboard-buffer-name)
-    (with-current-buffer it
-      (dashboard-insert-startupify-lists))))
+;; (defun oo-dashboard-buffer ()
+;;   (aprog1! (get-buffer-create dashboard-buffer-name)
+;;     (with-current-buffer it
+;;       (dashboard-insert-startupify-lists))))
 
-(add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
-(add-hook 'window-setup-hook #'dashboard-resize-on-hook)
-
-(defhook! enable-dashboard (after-init-hook)
+(defhook! oo-enable-dashboard-h (emacs-startup-hook)
   (require 'dashboard)
   (setq dashboard-init-info #'oo-dashboard-init-info)
   (setq dashboard-banner-logo-title "Welcome!")
   (setq dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
   (setq dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
   (setq dashboard-center-content t)
-  (dashboard-insert-startupify-lists))
-
-(add-hook 'emacs-startup-hook #'dashboard-initialize)
+  (add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
+  (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
+  (dashboard-insert-startupify-lists)
+  (dashboard-initialize))
 ;;; provide
 (provide '130-init-dashboard)
 ;;; 130-init-dashboard.el ends here

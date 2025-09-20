@@ -282,8 +282,9 @@
 ;;;;; package
 (defvar-keymap! oo-package-map
   "l" #'list-packages
-  "i" #'package-install
-  "d" #'package-install)
+  "i" #'elpaca-try
+  "d" #'elpaca-delete
+  "v" #'elpaca-visit)
 ;;;;; quick map
 (defvar-keymap! oo-quick-map
   "j" #'+org-capture-todo

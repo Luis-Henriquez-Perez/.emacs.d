@@ -61,22 +61,47 @@ built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'."
 (defvar oo-init-theme (aremf! command-line-args
                         (and (string-match "^--theme=\\(.+\\)" it)
                              (intern (match-string 1 it))))
-  "Initial theme.")
+  "Initial theme.
+This is the theme set at startup.  If nil, no theme is set.")
 
 (defvar oo-init-font (aremf! command-line-args
                        (and (string-match "^--font=\\(.+\\)" it)
                             (match-string 1 it)))
-  "Initial font.")
+  "Initial font.
+This is the font set at startup.  If nil, no font is set.")
 
 (defvar oo-init-profile-p (aremf! command-line-args
                             (and (string-match "^--profile" it)
                                  t))
-  "Whether")
+  "Non-nil if files loaded at startup should be profiled.")
 
 (defvar oo-init-noerrors-p (aremf! command-line-args
                              (and (string-match "^--noerrors" it)
                                   t))
-  "")
+  "Non-nil if errors in init files should be ignored at startup.")
+
+(defvar oo-after-init-hook-ran-p nil
+  "Non-nil if `after-init-hook' ran.")
+
+(defun oo-after-init-hook-ran-h ()
+  "Record that `after-init-hook' ran."
+  (setq oo-after-init-hook-ran-p t))
+
+(add-hook 'after-init-hook #'oo-after-init-hook-ran-h)
+
+(defvar oo-emacs-startup-hook-ran-p nil
+  "Non-nil if `emacs-startup-hook' ran.")
+
+(defun oo-emacs-startup-hook-ran-h ()
+  "Record that `emacs-startup-hook' ran."
+  (setq oo-emacs-startup-hook-ran-p t))
+
+(add-hook 'emacs-startup-hook #'oo-emacs-startup-hook-ran-h)
+
+(defvar oo-init-data nil
+  "Initialization data.
+This includes the time that files took to load.")
+;; This list could contain (feature timetoload).
 ;;; provide
 (provide '001-base-vars)
 ;;; 001-base-vars.el ends here

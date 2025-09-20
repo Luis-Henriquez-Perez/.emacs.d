@@ -31,8 +31,19 @@
 ;;
 ;;; Code:
 (require 'early-init)
+(require! 110-init-elpaca)
 
-(require! "^1")
+(defhook! oo-require-files-h (elpaca-after-init-hook)
+  "Load package sensitive configuration after packages have been installed."
+  (require! "^1")
+  ;; If we miss timing (because elpaca was installing packages) make sure to run
+  ;; the initial hooks.
+  (when oo-after-init-hook-ran-p
+    (run-hooks 'after-init-hook))
+  (when oo-emacs-startup-hook-ran-p
+    (run-hooks 'emacs-startup-hook)))
+
+(elpaca-process-queues)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
