@@ -65,6 +65,9 @@ FEATURE."
        (setq forms `((if oo-init-profile-p
                          (oo-log 'info "Required %s in %.2f seconds" ',feature (time-elapsed! ,(macroexp-progn forms)))
                        ,(macroexp-progn forms))))
+       ;; Ensure main forms are not evaluated more than once.
+       (setq forms `((unless (featurep ',feature)
+                       ,(macroexp-progn forms))))
        (when (string-match-p "macros$" (symbol-name feature))
          (setq forms `((eval-when-compile ,(macroexp-progn forms)))))
        (macroexp-progn forms)))
