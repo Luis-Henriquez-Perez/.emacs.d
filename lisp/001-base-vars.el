@@ -100,8 +100,7 @@ This is the font set at startup.  If nil, no font is set.")
 
 (defvar oo-init-data nil
   "Initialization data.
-This includes the time that files took to load.")
-;; This list could contain (feature timetoload).
+This includes the time that features took to load.")
 ;;; provide
 (provide '001-base-vars)
 ;;; 001-base-vars.el ends here
