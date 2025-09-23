@@ -81,11 +81,7 @@
 ;; This is obsolete as of Emacs 30.1.
 (setopt eshell-prompt-regexp "^[^λ]+λ ")
 (setopt eshell-hist-ignoredups t)
-;; Prefer elisp equivalents over system commands.  Mainly I like `eshell/rm'
-;; which moves a file to trash instead of deleting it.  The downside is that
-;; the notmuch Emacs package provides a command `notmuch' which clashes with the
-;; system command which I use predominately.
-(setopt eshell-prefer-lisp-functions t)
+(setopt eshell-prefer-lisp-functions nil)
 ;; Represent buffers as #<buffer-name>
 (setopt eshell-buffer-shorthand t)
 ;; boost eshell history-size
