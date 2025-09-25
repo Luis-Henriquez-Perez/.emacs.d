@@ -3508,6 +3508,7 @@
     ("mabye" "maybe")
     ("machinge" "machine")
     ("mackeral" "mackerel")
+    ("macors" "macros")
     ("macroexp" "macro expansion")
     ("magasine" "magazine")
     ("magincian" "magician")
