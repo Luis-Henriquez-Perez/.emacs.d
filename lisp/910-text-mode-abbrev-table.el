@@ -1605,6 +1605,7 @@
     ("dandylion" "dandelion")
     ("dandylions" "dandelions")
     ("das" "days")
+    ("dashbard" "dashboard")
     ("dat" "that")
     ("daugher" "daughter")
     ("david" "David")
