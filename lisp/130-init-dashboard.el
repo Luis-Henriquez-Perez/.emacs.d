@@ -27,17 +27,10 @@
 ;;; Code:
 (require! "^0[01]")
 
-(push 'dashboard oo-after-init-features)
-
 (defun oo-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
 
-;; (defun oo-dashboard-buffer ()
-;;   (aprog1! (get-buffer-create dashboard-buffer-name)
-;;     (with-current-buffer it
-;;       (dashboard-insert-startupify-lists))))
-
-(defhook! oo-enable-dashboard-h (emacs-startup-hook)
+(defun oo-enable-dashboard-h ()
   (require 'dashboard)
   (setq dashboard-init-info #'oo-dashboard-init-info)
   (setq dashboard-banner-logo-title "Welcome!")
@@ -48,6 +41,8 @@
   (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
   (dashboard-insert-startupify-lists)
   (dashboard-initialize))
+
+(add-hook 'emacs-startup-hook #'oo-enable-dashboard-h)
 ;;; provide
 (provide '130-init-dashboard)
 ;;; 130-init-dashboard.el ends here
