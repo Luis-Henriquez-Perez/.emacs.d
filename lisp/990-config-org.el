@@ -59,7 +59,7 @@ are in alphabetical order."
 
 (advice-add 'org-capture :around #'oo--suppress-window-deletion)
 ;;;; Start notaking in insert mode
-(oo-add-hook 'org-log-buffer-setup-hook #'evil-insert-state)
+(add-hook 'org-log-buffer-setup-hook #'evil-insert-state)
 ;;; provide
 (provide '990-config-org)
 ;;; 990-config-org.el ends here
