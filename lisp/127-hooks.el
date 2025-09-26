@@ -155,7 +155,7 @@ file is loaded."
   (oo-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
 ;;;; trailing whitespace
-(defun oo--dwim-delete-trailing-whitespace ()
+(defun oo-delete-trailing-whitespace-h ()
   "Delete the trailing whitespace in the buffer except for the current line.
 Also if there is more than one trailing space in the current line, replace them
 with a single space."
@@ -165,17 +165,16 @@ with a single space."
       (replace-match "\s" nil nil nil 1)))
   (delete-trailing-whitespace (line-end-position) (point-max)))
 
-(defhook! dwim-delete-trailing-whitespace (text-mode-hook prog-mode-hook conf-mode-hook)
+(defun oo-setup-delete-whitespace-h ()
   "Show trailing whitespace and delete it before saving."
   (setq-local show-trailing-whitespace t)
-  (oo-add-hook 'before-save-hook #'oo--dwim-delete-trailing-whitespace :local t))
+  (add-hook 'before-save-hook #'oo-delete-trailing-whitepspace-h nil 'local)
+  (add-hook 'kill-buffer-hook #'delete-trailing-whitespace nil 'local))
 
-(defhook! delete-trailing-whitespace (kill-buffer-hook)
-  "Ensure that trailing whitespace is deleted.
-If the current buffer is in `text-mode', `prog-mode' or `conf-mode' or any mode
-derived from these, delete trailing whitespace from it."
-  (when (derived-mode-p 'text-mode 'prog-mode 'conf-mode)
-    (delete-trailing-whitespace (point-min) (point-max))))
+(add-hook 'conf-mode-hook #'oo-setup-delete-whitespace-h)
+(add-hook 'prog-mode-hook #'oo-setup-delete-whitespace-h)
+(add-hook 'text-mode-hook #'oo-setup-delete-whitespace-h)
+(add-hook 'kill-buffer-hook #'oo-delete-trailing-whitespace-h)
 ;;;; startup time
 (defhook! record-after-init-hook-start-time (after-init-hook)
   "Record the start of `after-init-hook'."
