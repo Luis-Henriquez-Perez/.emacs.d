@@ -2480,6 +2480,7 @@
     ("fouth" "fourth")
     ("foward" "forward")
     ("fowtd" "figure out what to do")
+    ("fr" "for")
     ("freind" "friend")
     ("freindly" "friendly")
     ("freq" "frequency")
