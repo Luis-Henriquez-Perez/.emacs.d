@@ -32,10 +32,6 @@
   "Expand to a `defun' form."
   "(defhook! " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(deftempel! oo-expand-elisp-oo-add-hook
-  "Expand to a `oo-add-hook' form."
-  "(oo-add-hook " p " " p ")")
-
 (deftempel! oo-expand-elisp-let*
   "Expand to a `let' form."
   "(let* (" p ")" n> r ")")
