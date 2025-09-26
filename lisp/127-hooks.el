@@ -27,24 +27,26 @@
 ;;; Code:
 (require! "^0")
 (require 'server)
-;;;; custom hooks
+;;;; Setup custom hooks
 (defvar oo-first-file-hook nil
   "Hook run after the first file is loaded.")
 
-(defhook! run-first-file-hook (find-file-hook)
-  :ignore-args t
-  :expire t
-  :level 'info
-  (run-hooks 'oo-first-file-hook))
+(defun oo-run-first-file-hook-h (&rest _)
+  "Run `oo-first-file-hook'."
+  (run-hooks 'oo-first-file-hook)
+  (remove-hook 'find-file-hook 'oo-run-first-file-hook-h))
+
+(add-hook 'find-file-hook #'oo-run-first-file-hook-h)
 
 (defvar oo-first-input-hook nil
   "Hook run after the first file is loaded.")
 
-(defhook! run-first-input-hook (pre-command-hook)
-  :ignore-args t
-  :expire t
-  :level 'info
-  (run-hooks 'oo-first-input-hook))
+(defun oo-run-first-input-hook-h (&rest _)
+  "Run `oo-first-input-hook'."
+  (run-hooks 'oo-first-input-hook)
+  (remove-hook 'pre-command-hook 'oo-run-first-input-hook-h))
+
+(add-hook 'pre-command-hook #'oo-run-first-input-hook-h)
 ;;;; hooks
 ;; I had been organizing the init file by packages and that is not entirely
 ;; useless but I think maybe an abstraction in which I look at what is happening
