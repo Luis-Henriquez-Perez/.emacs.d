@@ -6276,7 +6276,7 @@
     ("wrot" "wrote")
     ("wroth" "worth")
     ("wrte" "wrote")
-    ("ws" "was")
+    ("ws" "whitespace")
     ("wsa" "was")
     ("wsp" "whitespace")
     ("wt" "want to")
