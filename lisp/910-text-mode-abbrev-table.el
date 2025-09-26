@@ -1591,6 +1591,7 @@
     ("curr" "current")
     ("currenly" "currently")
     ("curriculem" "curriculum")
+    ("custm" "custom")
     ("customizaton" "customization")
     ("customizeability" "customizability")
     ("cxan" "cyan")
