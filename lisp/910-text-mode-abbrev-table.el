@@ -5291,6 +5291,7 @@
     ("specfic" "specific")
     ("speci" "specifically")
     ("specifi" "specific")
+    ("specifica" "specifically")
     ("specificatoin" "specification")
     ("specifiying" "specifying")
     ("speciman" "specimen")
