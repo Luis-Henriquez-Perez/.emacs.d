@@ -5580,7 +5580,7 @@
     ("sysmatically" "systematically")
     ("sytem" "system")
     ("sytle" "style")
-    ("t" "the")
+    ("t" "the" nil :enable-function abbrev|escape-char-p)
     ("ta" "that")
     ("tabacco" "tobacco")
     ("taged" "tagged")
