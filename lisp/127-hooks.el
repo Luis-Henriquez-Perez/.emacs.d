@@ -261,32 +261,6 @@ of FACE to the background color of the `default' face."
                                    (oo-log 'error "feature %s raised an error" ',feature)
                                    (signal (car err) (cdr err))))))
            (oo-call-after-load parent-feature fn)))))
-
-;; Define a minor mode where I can toggle auto committing and pushing in cases where it is
-;; not convenient.  I am thinking ither this or adding a way to make hooks
-;; toggleable easily.  Either one function that let us me select active hooks to
-;; disable or maybe letting hooks be disableable interactive functions.  Not sure.
-(define-minor-mode oo-auto-commit-mode
-  "Auto commit my dotfiles."
-  :group 'oo
-  :global t
-  (if oo-auto-commit-mode
-      (add-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h 'local)
-    (remove-hook 'after-save-hook #'oo-auto-commit-and-push-dotfile-h 'local)))
-
-(autoload 'oo-dwim-vc-action "vc" nil nil 'function)
-(defun oo-auto-commit-and-push-dotfile-h ()
-  "Commit and push changes to dotfile on save.
-When a buffer is saved, check whether the saved file is part of the dotfiles
-repository and if it is, commit and push all changes.  Otherwise, do nothing."
-  (aand! (vc-root-dir)
-         (buffer-file-name)
-         (or (not (equal "Discharging" (battery-format "%B" (funcall battery-status-function))))
-             (> (string-to-number (battery-format "%p" (funcall battery-status-function))) 90))
-         (or (file-equal-p it (expand-file-name user-emacs-directory))
-             (file-equal-p it (expand-file-name "~")))
-         (not (equal (vc-state (buffer-file-name)) 'unregistered))
-         (save-restriction (oo-dwim-vc-action (buffer-file-name)))))
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here
