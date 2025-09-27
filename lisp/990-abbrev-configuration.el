@@ -74,13 +74,10 @@ string or comment."
 ;;;; DO NOT EXPAND ESCAPE CHARACTERS
 ;; Do not expand single letter abbrevs when they are meant to be used as escape
 ;; characters.
-;; (define-abbrev text-mode-abbrev-table "n" "and" nil :enable-function #'abbrev|escape-char-p)
-;; (define-abbrev text-mode-abbrev-table "t" "the" nil :enable-function #'abbrev|escape-char-p)
-;; Prog-mode and uses "\n" to describe newlines.
-;; (defun abbrev|escape-char-p ()
-;;   ""
-;;   (not (and (equal 'string (oo-in-string-or-comment-p))
-;;             (looking-back "\\\\n[[:space:]]?"))))
+(defun abbrev|escape-char-p ()
+  "Return non-nil if what was typed was an escape character."
+  (not (and (equal 'string (oo-in-string-or-comment-p))
+            (looking-back "\\\\[ntf][[:space:]]?"))))
 ;;;; PREVENT GREEDY EXPANSION
 ;;  with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
