@@ -3805,7 +3805,7 @@
     ("mysogynist" "misogynist")
     ("mysogyny" "misogyny")
     ("mysterous" "mysterious")
-    ("n" "and" :enable-function abbrev|escape-char-p)
+    ("n" "and" nil :enable-function abbrev|escape-char-p)
     ("na" "an")
     ("nad" "and")
     ("naieve" "naive")
