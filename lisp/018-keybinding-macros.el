@@ -62,7 +62,7 @@
      ,@(accumulate! (spec specs)
          (set! states (split-spec spec))
          (set! docstring (format "Define an evil keybinding in %s state." (to-text states)))
-         (set! macroname (intern (concat (symbol-name spec) "map")))
+         (set! macroname (intern (concat (symbol-name spec) "map!")))
          `(defmacro! ,macroname (&rest args)
             ,docstring
             (set! (key def) (last args 2))
@@ -85,7 +85,7 @@ LIST is a list symbol."
        (while (keywordp (car ,list))
          (prepending! ,plist (list (pop ,list) (pop ,list))))
        ,plist)))
-(defalias 'emap 'egmap)
+(defalias 'emap! 'egmap!)
 
 (defmacro! defvar-keymap! (keymap &rest pairs)
   "Wrapper around `defvar-keymap'.
@@ -103,7 +103,7 @@ warnings.  Also it auto defines a prefix with the same name as KEYMAP."
             ,@plist
             ,@pairs)))
 
-(defmacro! iotmap (key inner outer)
+(defmacro! iotmap! (key inner outer)
   "Define evil keybindings for text object map.
 INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
 `evil-outer-text-objects-map' respectively."

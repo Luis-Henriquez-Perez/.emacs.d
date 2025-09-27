@@ -98,20 +98,6 @@
 	  ("require" (oo-sort-require-forms beg end))
 	  ("elpaca" (oo-sort-elpaca-forms beg end))
 	  (_ (error "No sorting method detected")))))
-;;;; alignment
-(defun! oo-dwim-align ()
-  (interactive
-   ;; (cond ((region-active-p)
-   ;;        (list (region-beginning) (region-end)))
-   ;;       ((save-excursion (goto-char (point-min))
-   ;;                        (re-search-forward "^(define-abbrev" (point-max) t nil))
-   ;;        (list (match-beginning 0) (point-max)))
-   ;;       (t
-   ;;        (list nil nil)))
-   )
-  (set! regexp "(define-abbrev\\(?1:\\s-+\\)\\S-+\\(?2:\\s-+\\)\".*?\"\\(?3:\\s-+\\)\".*?\"\\(?4:\\s-+\\)\\S-+\\(?5:\\s-+\\):enable-function\\(?6:\\s-+\\).+)")
-  (set! rules `((rule1 . ((regexp . ,regexp) (group . (1 2 3 4 5 6))))))
-  (align (point-min) (point-max) nil rules))
 ;;;; miscellaneous
 (declare-function org-narrow-to-block "org")
 (declare-function org-narrow-to-subtree "org")
@@ -222,6 +208,8 @@ the battery percentage is greater than 90%."
                                 (allow-no-window . t))
                                ,@display-buffer-alist))
   (save-buffer)
+  ;; Make sure functions used by `vc-check-in' are defined.
+  (require 'log-edit)
   (pcase (vc-state file)
     ('edited
      (vc-checkin (list file) backend commit-msg)

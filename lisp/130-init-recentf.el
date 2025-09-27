@@ -30,26 +30,28 @@
 
 (add-hook 'emacs-startup-hook #'recentf-mode)
 
-(opt! recentf-save-file (expand-file-name "recentf-save.el" oo-cache-dir))
+(setopt recentf-save-file (expand-file-name "recentf-save.el" oo-cache-dir))
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'oo-call-quietly-a)
 (advice-add #'recentf-cleanup   :around #'oo-call-quietly-a)
 (advice-add #'recentf-mode      :around #'oo-call-quietly-a)
 
-(adjoin! recentf-filename-handlers #'file-truename)
-(adjoin! recentf-filename-handlers #'abbreviate-file-name)
-(adjoin! recentf-filename-handlers #'substring-no-properties)
+(add-to-list 'recentf-filename-handlers #'file-truename)
+(add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
+(add-to-list 'recentf-filename-handlers #'substring-no-properties)
 
-(adjoin! recentf-exclude (regexp-quote (recentf-expand-file-name oo-etc-dir)))
-(adjoin! recentf-exclude (regexp-quote (recentf-expand-file-name oo-cache-dir)))
-(adjoin! recentf-exclude (lambda (file) (not (file-exists-p file))))
+(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name oo-etc-dir)))
+(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name oo-cache-dir)))
+(add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file))))
 
-(defhook! update-recentf-list (kill-buffer-hook)
+(defun recentf|update-recentf-list-maybe ()
   "Update the recentf list just before killing a buffer."
   (awhen! (buffer-file-name)
     (recentf-add-file it)
     (run-with-idle-timer 5 nil #'recentf-save-list)))
+
+(add-hook 'kill-buffer-hook #'recentf|update-recentf-list-maybe)
 
 (setq recentf-max-saved-items nil)
 ;;;; always keep important files in recentf-list

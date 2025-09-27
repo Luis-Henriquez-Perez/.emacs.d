@@ -27,7 +27,10 @@
 ;;; Code:
 (require! "^0")
 (require 'bind-key)
-;;;; keybinding leaders
+;;;; miscellaneous
+(declare-function minibuffer-keyboard-quit "delsel")
+(declare-function evil-normal-state "evil")
+;;;; LEADERS
 ;; This file provides leaders keys for evil and non-evil states and it binds
 ;; these leader keys.
 
@@ -69,83 +72,77 @@
 
 (defconst oo-emacs-localleader-key "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
-;;;; miscellaneous
-(declare-function minibuffer-keyboard-quit "delsel")
-(declare-function evil-normal-state "evil")
-(defun oo-dwim-escape ()
-  "Exits out of whatever is happening after escape."
-  (interactive)
-  (when (bound-and-true-p evil-mode)
-    (evil-normal-state 1))
-  (cond ((minibuffer-window-active-p (minibuffer-window))
-		 (if (or defining-kbd-macro executing-kbd-macro)
-			 (minibuffer-keyboard-quit)
-           (abort-recursive-edit)))
-		((or defining-kbd-macro executing-kbd-macro) nil)
-        (t
-         (when (and (not buffer-read-only)
-                    (buffer-file-name)
-                    (buffer-modified-p))
-           (save-buffer))
-		 (keyboard-quit))))
-;;;; base bindings
-(nmap "+" #'text-scale-increase)
-(nmap "-" #'text-scale-decrease)
-(nmap "H" #'evil-first-non-blank)
-(nmap "L" #'evil-last-non-blank)
-(nmap "J" #'evil-scroll-page-down)
-(nmap "K" #'evil-scroll-page-up)
-(nmap [escape] #'oo-dwim-escape)
+;;;; BASE BINDINGS
+(nmap! "+" #'text-scale-increase)
+(nmap! "-" #'text-scale-decrease)
+(nmap! "H" #'evil-first-non-blank)
+(nmap! "L" #'evil-last-non-blank)
+(nmap! "J" #'evil-scroll-page-down)
+(nmap! "K" #'evil-scroll-page-up)
+(nmap! [escape] #'evil|dwim-escape)
 
-(imap "A-x" #'execute-extended-command)
-(imap "M-x" #'execute-extended-command)
-(imap "C-c h" #'grugru)
-(nimap "C-c j" #'oo-inverse-add-abbrev)
-(nimap "C-c k" #'unexpand-abbrev)
-(imap [escape] #'oo-dwim-escape)
-(imap "TAB" #'completion-at-point)
-(imap lispyville-mode-map "SPC" #'lispy-space)
-(imap lispyville-mode-map ";" #'lispy-comment)
+(imap! "A-x" #'execute-extended-command)
+(imap! "M-x" #'execute-extended-command)
+(imap! "C-c h" #'grugru)
+(imap! [escape] #'evil|dwim-escape)
+(imap! "TAB" #'completion-preview-insert)
 
-(vmap "V" #'expreg-contract)
-(vmap "v" #'expreg-expand)
+(nimap! "C-c j" #'abbrev/inverse-add)
+(nimap! "C-c k" #'unexpand-abbrev)
 
+(vmap! "V" #'expreg-contract)
+(vmap! "v" #'expreg-expand)
 ;; Ensure that ";" is always available as `execute-extended-command'.  Modes
 ;; like dired bind it themselves and would otherwise override it.
-(nvmap override-global-map ";" #'execute-extended-command)
+(nvmap! override-global-map ";" #'execute-extended-command)
 ;; The problem is I feel like the default evil motions are not that useful
 ;; beyond moving to one forward unit.  So I have made the controversial decision
-;; to rebind.  TODO: ke
-(nvmap "w" #'+evilem-motion-beginning-of-word)
-(nvmap "e" #'+evilem-motion-end-of-word)
-(nvmap "W" #'+evilem-motion-beginning-of-WORD)
-(nvmap "E" #'+evilem-motion-end-of-WORD)
-(nvmap "f" #'+evilem-motion-char)
-(nvmap "H" #'+evilem-motion-beginning-of-line)
+;; to rebind.
 
-(nvmap "g b" #'+evil-eval-print-operator)
-(nvmap "g p" #'+evil-eval-print-operator)
-(nvmap "g c" #'evilnc-comment-operator)
+(nvmap! "w" #'evilem|motion-beginning-of-word)
+(nvmap! "e" #'evilem|motion-end-of-word)
+(nvmap! "W" #'evilem|motion-beginning-of-WORD)
+(nvmap! "E" #'evilem|motion-end-of-WORD)
+(nvmap! "f" #'evilem|motion-char)
+(nvmap! "H" #'evilem|motion-beginning-of-line)
+
+(nvmap! "g b" #'evil|eval-print-operator)
+(nvmap! "g p" #'evil|eval-print-operator)
+(nvmap! "g c" #'evilnc-comment-operator)
 (each! '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
   (oo-bind-key it "g c" #'lispyville-comment-or-uncomment '(normal visual)))
-(nvmap emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
-(nvmap "g h" #'+evil-eval-operator)
-(nvmap "g l" #'+evil-eval-replace-operator)
-(nvmap "g r" #'+evil-eval-replace-operator)
-(nvmap "g s" #'evil-exchange)
-(nvmap "g S" #'evil-exchange-cancel)
-(nvmap "g x" #'evil-exchange)
-(nvmap "g X" #'evil-exchange-cancel)
-;;;; text objects
-;; (iotmap "c" #'evilnc-inner-comment #'evilnc-outer-comment)
+(nvmap! emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
+(nvmap! "g h" #'evil|eval-operator)
+(nvmap! "g l" #'evil|eval-replace-operator)
+(nvmap! "g r" #'evil|eval-replace-operator)
+(nvmap! "g s" #'evil-exchange)
+(nvmap! "g S" #'evil-exchange-cancel)
+(nvmap! "g x" #'evil-exchange)
+(nvmap! "g X" #'evil-exchange-cancel)
+;;;; TEXT-OBJECTS
+;; (iotmap! "c" #'evilnc-inner-comment #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
-(iotmap "a" #'lispyville-inner-comment #'lispyville-outer-comment)
-(iotmap "h" #'evil-i-syntax #'evil-a-syntax)
-(iotmap "l" #'evil-inner-line #'evil-a-line)
-(iotmap "f" #'evil-cp-inner-form #'evil-cp-a-form)
-(iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
+(iotmap! "a" #'lispyville-inner-comment #'lispyville-outer-comment)
+(iotmap! "h" #'evil-i-syntax #'evil-a-syntax)
+(iotmap! "l" #'evil-inner-line #'evil-a-line)
+(iotmap! "f" #'evil-cp-inner-form #'evil-cp-a-form)
+;; (iotmap! "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
+(iotmap! "b" #'evil|inner-buffer #'evil|outer-buffer)
 
-;; (iotmap "a" #'evilnc-inner-commenter #'evilnc-outer-commenter)
+;; (iotmap! "a" #'evilnc-inner-commenter #'evilnc-outer-commenter)
+;;;; COMMANDS
+(defun! oo/kill-emacs-no-errors ()
+  "Ignore `kill-emacs-hook' when killing Emacs."
+  (interactive)
+  ;; Manually run kill-Emacs-ho
+  (flet! noerrs (fn &rest args) (ignore-errors (apply fn args)) nil)
+  (run-hooks-wrapped 'kill-emacs-hook #'noerrs))
+
+(defun oo/kill-emacs-no-hook ()
+  "Ignore `kill-emacs-hook' when killing Emacs."
+  (interactive)
+  (let (kill-emacs-hook)
+    (kill-emacs)))
 ;;;; leader bindings
 ;;;;; window
 (defvar-keymap! oo-window-map
@@ -178,8 +175,8 @@
 ;;;;; org
 (defvar-keymap! oo-org-map
   :prefix 'oo-org-map
-  "t" #'+org-capture-todo
-  "j" #'+org-capture-todo
+  "t" #'org-capture|todo
+  "j" #'org-capture|todo
   "a" #'org-archive-subtree
   "l" #'org-clock-in-last
   "i" #'org-clock-in
@@ -187,7 +184,7 @@
   "o" #'org-clock-out
   "s" #'org-add-note
   "n" #'org-add-note
-  "p" #'+org-capture-plain)
+  "p" #'org-capture|plain)
 ;;;;; app
 (defvar-keymap! oo-screenshot-map
   "r" #'escr-region-screenshot
@@ -197,7 +194,7 @@
 (defvar-keymap! oo-app-map
   "E" #'restart-emacs-start-new-emacs
   "d" #'dired-jump
-  "j" #'+org-capture-todo
+  "j" #'org-capture|todo
   "n" #'notmuch
   "e" #'eshell
   "f" #'elfeed
@@ -265,6 +262,8 @@
   "R" #'restart-emacs
   "E" #'restart-emacs-start-new-emacs
   "r" #'restart-emacs
+  "k" #'oo/kill-emacs-no-errors
+  "Q" #'oo/kill-emacs-no-hook
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
 (defvar-keymap! oo-music-map
@@ -287,7 +286,7 @@
   "v" #'elpaca-visit)
 ;;;;; quick map
 (defvar-keymap! oo-quick-map
-  "j" #'+org-capture-todo
+  "j" #'org-capture|todo
   "a" #'org-archive-subtree
   "g" #'grugru
   "i" #'tempel-insert
@@ -315,19 +314,22 @@
 
 (add-hook 'emacs-startup-hook #'override-global-mode)
 
-(nmap override-global-map oo-normal-leader-key #'oo-leader-map)
-(imap override-global-map oo-insert-leader-key #'oo-leader-map)
-(emap override-global-map oo-emacs-leader-key #'oo-leader-map)
-(emap override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
-;;;; uncategorized
+(nmap! override-global-map oo-normal-leader-key #'oo-leader-map)
+(imap! override-global-map oo-insert-leader-key #'oo-leader-map)
+(emap! override-global-map oo-emacs-leader-key #'oo-leader-map)
+(emap! override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
+;;;; UNCATEGORIZED
 (declare-function which-key-add-keymap-based-replacements "which-key")
 (afterfeature! which-key
   (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
 
-(nmap eww-mode-map "R" #'eww-reload)
-
+(nmap! eww-mode-map "R" #'eww-reload)
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
-;;;; macrostep
+;;;; PACKAGE-SPECIFIC
+;;;;; LISPYVILLE
+(imap! lispyville-mode-map "SPC" #'lispy-space)
+(imap! lispyville-mode-map ";" #'lispy-comment)
+;;;;; MACROSTEP
 (declare-function macrostep-expand "macrostep")
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
@@ -347,9 +349,60 @@
   "c" #'macrostep-collapse
   "C" #'macrostep-collapse-all
   "a" #'macrostep-collapse-all)
-;;;; info
-(nmap Info-mode-map "H" #'Info-last)
-(nmap Info-mode-map "L" #'Info-next)
+;;;;; INFO
+(nmap! Info-mode-map "H" #'Info-last)
+(nmap! Info-mode-map "L" #'Info-next)
+;;;;; HELM
+(imap! helm-map "TAB" #'helm-next-line)
+(imap! helm-map [backtab] #'helm-previous-line)
+(imap! helm-map "C-j" #'helm-next-line)
+(imap! helm-map "C-k" #'helm-previous-line)
+(imap! helm-map "C-a" #'helm-select-action)
+(imap! helm-map "C-m" #'helm-toggle-visible-mark-forward)
+(imap! helm-map "RET" #'+helm-select-nth-action)
+(imap! helm-map "S-TAB" #'helm-mark-current-line)
+(imap! helm-map "C-;" #'ace-jump-helm-line)
+;;;;; CORFU
+(imap! corfu-map "<tab>"   #'corfu-next)
+(imap! corfu-map [backtab] #'corfu-previous)
+(imap! corfu-map "S-TAB"   #'corfu-previous)
+(imap! corfu-map "C-;"     #'corfu-quick-complete)
+(imap! corfu-map "C-j"     #'corfu-next)
+(imap! corfu-map "C-k"     #'corfu-previous)
+(imap! corfu-map "C-p"     #'corfu-previous)
+(imap! corfu-map ";"       #'corfu-quick-complete)
+(imap! corfu-map "SPC"     #'corfu-insert)
+;;;;; DIRED
+(nmap! dired-mode-map "h" #'dired-up-directory)
+(nmap! dired-mode-map "l" #'dired-find-file)
+(nmap! dired-mode-map "RET" #'dired-find-file)
+(nmap! dired-mode-map "o" #'dired-omit-mode)
+;;;;; BINDINGS
+(nmap! org-mode-map "T" #'org-todo)
+(nmap! org-mode-map "t" #'+org-choose-tags)
+(nmap! org-mode-map "R" #'org-refile)
+(nmap! org-mode-map "n" #'org-add-note)
+;;;;; TEMPEL
+(imap! tempel-map "C-l" #'tempel-abort)
+(imap! tempel-map "C-j" #'tempel-next)
+(imap! tempel-map "C-k" #'tempel-previous)
+(imap! tempel-map "TAB" #'tempel-next)
+(imap! tempel-map [backtab] #'tempel-previous)
+;;;;; VERTICO
+(imap! vertico-map "C-n" #'vertico-scroll-up)
+(imap! vertico-map "C-p" #'vertico-scroll-down)
+(imap! vertico-map "TAB" #'vertico-next)
+(imap! vertico-map "C-k" #'vertico-previous)
+(imap! vertico-map "C-j" #'vertico-next)
+(imap! vertico-map ";" #'vertico-quick-exit)
+(imap! vertico-map "C-;" #'vertico-quick-exit)
+(imap! vertico-map [backtab] #'vertico-previous)
+(imap! vertico-map "C-o" #'embark-act)
+;;;;; YEETUBE
+(nmap! yeetube-mode-map "p" #'yeetube-play)
+(nmap! yeetube-mode-map "a" #'oo-yeetube-download-audio)
+(nmap! yeetube-mode-map "v" #'oo-yeetube-download-video)
+(nmap! yeetube-mode-map "s" #'yeetube-search)
 ;;; provide
 (provide '160-keybindings)
 ;;; 160-keybindings.el ends here

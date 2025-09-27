@@ -26,9 +26,6 @@
 ;;
 ;;; Code:
 (require! "^0[01]")
-
-
-
 ;;; provide
 (provide '130-init-evil-textobj-anyblock)
 ;;; 130-init-evil-textobj-anyblock.el ends here

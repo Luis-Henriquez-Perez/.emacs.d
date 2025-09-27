@@ -27,45 +27,162 @@
 ;;; Code:
 (require! "^0[01]")
 (require 'evil)
-;;;; settings
+;;;; SETTINGS
+;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
+;; to make it an intercept map for all evil states.  In evil, intercept maps are
+;; maps that take priority (intercept) evil bindings when they have a different
+;; binding for the same key (this is opposed to =overriding-maps=, which completely
+;; override an evil keymap).
 ;; By default =evil= displays the current state in the echo area.  I think some
 ;; indicator for the current state is necessary but I don't want to do it via
 ;; echoing.  Instead I plan to do it primarily via cursor colors; and possibly the
 ;; modeline as well.
-(opt! evil-echo-state nil)
+(setq evil-echo-state nil)
+(setq evil-move-cursor-back nil)
+(setq evil-move-beyond-eol nil)
+(setq evil-search-wrap nil)
 
-(opt! evil-move-cursor-back nil)
+;; Disable starting any mode in motion state.
+(setq evil-normal-state-modes (append evil-emacs-state-modes
+									  ;; evil-motion-state-modes
+									  evil-normal-state-modes))
+(setq evil-emacs-state-modes nil)
+;; (setq evil-motion-state-modes nil)
+;;;; CURSOR COLOR
+;;;;; STATE FACES
+(defface evil|state-face
+  '((t (:weight bold)))
+  "Meta-face used for property inheritance on all evil state faces.")
 
-(opt! evil-move-beyond-eol nil)
+(defface evil|emacs-state-face
+  '((t (:inherit evil|state-face :background "#483d8b")))
+  "Face for the Emacs state tag in evil indicator.")
 
-(opt! evil-search-wrap nil)
+(setf (alist-get 'evil|emacs-state-face oo-custom-faces-alist) 'font-lock-builtin-face)
 
-(opt! evil-visualstar/persistent t)
-;;;; go into insert state when typing in minibuffer
-(defvar oo-evil-state-before-minibuffer nil
+(defface evil|insert-state-face
+  '((t (:inherit evil|state-face :background "#228b22")))
+  "Face for the insert state tag in evil indicator.")
+
+(setf (alist-get 'evil|insert-state-face oo-custom-faces-alist) 'font-lock-type-face)
+
+(defface evil|motion-state-face
+  '((t (:inherit evil|state-face :background "#a0522d")))
+  "Face for the motion state tag in evil indicator.")
+
+(setf (alist-get 'evil|motion-state-face oo-custom-faces-alist) 'font-lock-variable-name-face)
+
+(defface evil|normal-state-face
+  '((t (:inherit evil|state-face :background "purple")))
+  "Face for the normal state tag in evil indicator.")
+
+(setf (alist-get 'evil|normal-state-face oo-custom-faces-alist) 'font-lock-keyword-face)
+
+(defface evil|operator-state-face
+  '((t (:inherit evil|state-face :background "#0000ff")))
+  "Face for the operator state tag in evil indicator.")
+
+(setf (alist-get 'evil|operator-state-face oo-custom-faces-alist) 'font-lock-function-name-face)
+
+(defface evil|visual-state-face
+  '((t (:inherit evil|state-face :background "#8b2252")))
+  "Face for the visual state tag in evil indicator.")
+
+(setf (alist-get 'evil|visual-state-face oo-custom-faces-alist) 'font-lock-string-face)
+
+(defface evil|replace-state-face
+  '((t (:inherit evil|state-face :background "#008b8b")))
+  "Face for the replace state tag in evil indicator.")
+
+(setf (alist-get 'evil|replace-state-face oo-custom-faces-alist) 'font-lock-constant-face)
+;;;;; CHANGE CURSOR COLOR AND SHAPE ACCORDING TO CURRENT EVIL STATE
+;; Did not realize for the longest time that evil cursor can be a function that
+;; changes the cursor.  With this in mind, the best way to set the cursor size
+;; and shape dynamically is to set the corresponding cursor symbols to functions.
+(defun evil|state-face ()
+  "Return the cursor color for state as a string."
+  (intern (format "evil|%s-state-face" evil-state)))
+
+(defun evil|state-background ()
+  "Return the background of the current evil state face."
+  (aand! (evil|state-face) (face-attribute it :background)))
+
+(defun evil|set-default-cursor ()
+  "Set cursor for normal state."
+  (evil-set-cursor (list t (evil|state-background))))
+
+(defun evil|set-insert-state-cursor ()
+  "Set cursor for insert state."
+  (evil-set-cursor (list '(bar . 2) (evil|state-background))))
+
+(defun evil|set-operator-state-cursor ()
+  "Set cursor for operator state."
+  (evil-set-cursor (list '(hbar . 9) (evil|state-background))))
+
+(defalias 'evil|set-normal-state-cursor 'evil|set-default-cursor)
+(defalias 'evil|set-motion-state-cursor 'evil|set-default-cursor)
+(defalias 'evil|set-replace-state-cursor 'evil|set-default-cursor)
+(defalias 'evil|set-emacs-state-cursor 'evil|set-default-cursor)
+(defalias 'evil|set-visual-state-cursor 'evil|set-default-cursor)
+;;;;; CURSOR COLORS
+(setq evil-default-cursor        #'evil|set-default-cursor)
+(setq evil-normal-state-cursor   #'evil|set-normal-state-cursor)
+(setq evil-insert-state-cursor   #'evil|set-insert-state-cursor)
+(setq evil-visual-state-cursor   #'evil|set-visual-state-cursor)
+(setq evil-motion-state-cursor   #'evil|set-motion-state-cursor)
+(setq evil-replace-state-cursor  #'evil|set-replace-state-cursor)
+(setq evil-operator-state-cursor #'evil|set-operator-state-cursor)
+(setq evil-emacs-state-cursor    #'evil|set-emacs-state-cursor)
+;;;; MINIBUFFER
+(defvar evil|state-before-minibuffer nil
   "Store the evil state before entering the minibuffer.")
 
-(defhook! preserve-prior-evil-state (minibuffer-setup-hook)
+;; It is easier to make all the hooks and functions "safe" than to remember all
+;; the hooks and remove them when evil-mode is disabled.
+(defun evil|save-prior-evil-state-h ()
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
-    (setq oo-evil-state-before-minibuffer evil-state)
+    (setq evil|state-before-minibuffer evil-state)
     (evil-insert-state)))
 
-(defhook! restore-prior-evil-state (minibuffer-exit-hook)
+(defun evil|restore-prior-evil-state-h ()
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
-    (when oo-evil-state-before-minibuffer
-      (evil-change-state oo-evil-state-before-minibuffer))
-    (setq oo-evil-state-before-minibuffer nil)))
+    (when evil|state-before-minibuffer
+      (evil-change-state evil|state-before-minibuffer))
+    (setq evil|state-before-minibuffer nil)))
 
-(defun! oo-refresh-evil-cursor-h (_)
+(add-hook 'minibuffer-setup-hook #'evil|save-prior-evil-state-h)
+(add-hook 'minibuffer-exit-hook #'evil|restore-prior-evil-state-h)
+;;;; THEME
+(defun evil|refresh-cursor-ignore-args (&rest _)
   (when (bound-and-true-p evil-mode)
     (evil-refresh-cursor)))
 
-(add-hook 'enable-theme-functions #'oo-refresh-evil-cursor-h)
-;;;; define eval operators
+(add-hook 'enable-theme-functions #'evil|refresh-cursor-ignore-args)
+;;;; BETTER ESCAPE
+(defun evil|dwim-escape ()
+  "Exit out of whatever is happening after escape.
+Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
+non-readonly file buffer, save the buffer."
+  (interactive)
+  (when (bound-and-true-p evil-mode)
+    (evil-normal-state 1))
+  (cond ((minibuffer-window-active-p (minibuffer-window))
+		 (if (or defining-kbd-macro executing-kbd-macro)
+			 (minibuffer-keyboard-quit)
+           (abort-recursive-edit)))
+		((or defining-kbd-macro executing-kbd-macro) nil)
+        (t
+         (when (and (not buffer-read-only)
+                    (buffer-file-name)
+                    (buffer-modified-p))
+           (save-buffer))
+		 (keyboard-quit))))
+;;;; OPERATORS
+;;;;; EVALUATING
 ;; This is shamelessly copied from `evil-extra-operator'.
-(evil-define-operator +evil-eval-operator (beg end)
+(evil-define-operator evil|eval-operator (beg end)
   "Evil operator for evaluating code."
   :move-point nil
   (interactive "<r>")
@@ -73,7 +190,7 @@
 
 ;; This is also shamelessly copied with the difference that the format string is
 ;; "%S" instead of "%s".  Honestly, I think not having it that way was a bug.
-(evil-define-operator +evil-eval-replace-operator (beg end)
+(evil-define-operator evil|eval-replace-operator (beg end)
   "Evil operator for replacing contents with result from eval."
   :move-point nil
   (interactive "<r>")
@@ -82,7 +199,7 @@
     (delete-region beg end)
     (insert result)))
 
-(evil-define-operator +evil-eval-print-operator (beg end)
+(evil-define-operator evil|eval-print-operator (beg end)
   "Evil operator for printing the results of contents below."
   :move-point nil
   (interactive "<r>")
@@ -92,7 +209,65 @@
     (alet! (point)
       (insert result)
       (comment-region it (point)))))
-;;;; prevent cursor color from changing with eldoc
+;;;;; HUNGRY DELETE (EXPERIMENTAL AND IN PROGRESS)
+;; This needs some more fine-tuning.
+(defun evil|consume-ws-a (orig-fn &rest args)
+  (prog1 (apply orig-fn args)
+    ;; TODO: this should happen as well for lines behind.
+    (cond ((looking-at (rx (>= 2 "\n")))
+           (delete-blank-lines)))))
+
+(advice-add 'evil-delete :around #'evil|consume-ws-a)
+(advice-add 'lispyville-delete :around #'evil|consume-ws-a)
+;; (advice-add 'lispyville-delete-char-or-splice :around #'evil|consume-ws-a)
+;;;; TEXT-OBJECTS
+(evil-define-text-object evil|outer-buffer (_ &optional _ _ type)
+  "Select the entire buffer as a text object."
+  (list (point-min) (point-max) type))
+
+(evil-define-text-object evil|inner-buffer (_ &optional _ _ type)
+  "Select the inner buffer (same as outer in this case)."
+  (list (point-min) (point-max) type))
+;;;; INSERT STATE HOOK
+(defun evil|enter-insert-state-ignore-args (&rest _)
+  "Enter insert state if `evil-mode' is enabled."
+  (when (bound-and-true-p evil-mode)
+    (evil-insert-state 1)))
+
+(defun evil|normalize-keymaps-ignore-args (&rest _)
+  (when (bound-and-true-p evil-mode)
+    (evil-normalize-keymaps)))
+;;;; CROSS-CONFIGURATION
+;;;;; ORG-CAPTURE
+(add-hook 'org-capture-mode-hook #'evil-insert-state)
+;;;;; GIT-COMMIT
+;; Note that I cannot use `evil-set-initial-state' for this because
+;; `git-commit-mode' is a minor-mode.
+(add-hook 'git-commit-mode-hook #'evil-insert-state)
+;;;;; DENOTE
+(add-hook 'denote-after-new-note-hook #'evil-insert-state)
+;;;;; CORFU
+;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
+;; because the maps are overridden by evil.  In order for them to work, we need
+;; to boost give the maps greater precedence.
+(afterfeature! corfu
+  (evil-make-overriding-map corfu-map)
+  (advice-add 'corfu--setup :after #'evil|normalize-keymaps-ignore-args)
+  (advice-add 'corfu--teardown :after #'evil|normalize-keymaps-ignore-args))
+;;;;; TEMPEL
+(afterfeature! tempel
+  (evil-make-overriding-map tempel-map))
+
+(advice-add 'tempel-insert :after #'evil-insert-state)
+;;;;; MAGIT
+;; Note that I cannot use `evil-set-initial-state' for this because
+;; `git-commit-mode' is a minor-mode.
+(add-hook 'git-commit-mode-hook #'evil-insert-state)
+
+(add-hook 'vc-git-log-edit-mode-hook #'evil-insert-state 0)
+;;;;; ORG
+(add-hook 'org-log-buffer-setup-hook #'evil-insert-state)
+;;;; PREVENT CURSOR COLOR FROM CHANGING WITH ELDOC
 ;; For some reason the cursor color changes with eldoc.  Here I tell.  This also
 ;; fixes the cursor color change when expanding a tempel snippet.
 (advice-add 'elisp-eldoc-funcall :around #'+elisp-eldoc-funcall@preserve-cursor-color)
@@ -101,43 +276,6 @@
   (prog1 (apply orig args)
     (unless (equal bg (face-attribute 'cursor :background))
       (set-cursor-color bg))))
-;;;; insert state hook
-(defun oo-enter-evil-insert-state-maybe-h (&rest _)
-  "Enter insert state if `evil-mode' is enabled."
-  (when (bound-and-true-p evil-mode)
-    (evil-insert-state 1)))
-;;;; cross-configuration
-;;;;; org-capture
-(add-hook 'org-capture-mode-hook #'oo-enter-evil-insert-state-maybe-h)
-;;;;; git-commit
-;; Note that I cannot use `evil-set-initial-state' for this because
-;; `git-commit-mode' is a minor-mode.
-(add-hook 'git-commit-mode-hook #'oo-enter-evil-insert-state-maybe-h)
-;;;;; denote
-(add-hook 'denote-after-new-note-hook #'oo-enter-evil-insert-state-maybe-h)
-;;;;; corfu
-;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
-;; because the maps are overridden by evil.  In order for them to work, we need
-;; to boost give the maps greater precedence.
-(defun oo--corfu-normalize-evil-keymaps (&rest _)
-  (evil-normalize-keymaps))
-
-(afterfeature! corfu
-  (evil-make-overriding-map corfu-map)
-  (advice-add 'corfu--setup :after #'oo--corfu-normalize-evil-keymaps)
-  (advice-add 'corfu--teardown :after #'oo--corfu-normalize-evil-keymaps))
-;;;;; tempel
-(afterfeature! tempel
-  (evil-make-overriding-map tempel-map))
-
-(advice-add 'tempel-insert :after #'oo-enter-evil-insert-state-maybe-h)
-;;;;; magit
-;; Note that I cannot use `evil-set-initial-state' for this because
-;; `git-commit-mode' is a minor-mode.
-(add-hook 'git-commit-mode-hook #'oo-enter-evil-insert-state-maybe-h)
-
-(add-hook 'vc-git-log-edit-mode-hook #'oo-enter-evil-insert-state-maybe-h 0)
-;;;; miscellaneous
 ;;; provide
 (provide '990-config-evil)
 ;;; 990-config-evil.el ends here

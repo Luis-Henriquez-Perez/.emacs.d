@@ -35,16 +35,6 @@
 (opt! corfu-auto-delay 0.1)
 (opt! corfu-auto-prefix 1)
 (opt! corfu-bar-width 0)
-
-(imap corfu-map "<tab>"   #'corfu-next)
-(imap corfu-map [backtab] #'corfu-previous)
-(imap corfu-map "S-TAB"   #'corfu-previous)
-(imap corfu-map "C-;"     #'corfu-quick-complete)
-(imap corfu-map "C-j"     #'corfu-next)
-(imap corfu-map "C-k"     #'corfu-previous)
-(imap corfu-map "C-p"     #'corfu-previous)
-(imap corfu-map ";"       #'corfu-quick-complete)
-(imap corfu-map "SPC"     #'corfu-insert)
 ;;; provide
 (provide '130-init-corfu)
 ;;; 130-init-corfu.el ends here

@@ -34,7 +34,7 @@
 ;;;; disable header-line
 (setq-hook! org-capture-mode-hook header-line-format nil)
 ;;;; use completing-read for org-capture
-(defun! +org-capture-choose-template ()
+(defun! org-capture|choose-template ()
   "Choose capture template to open."
   (interactive)
   (set! templates (mapcar (lambda (it) (cons (cl-second it) (cl-first it))) org-capture-templates))
@@ -54,48 +54,48 @@
                      (ts-min now))))
     (org-ml-build-planning! :deadline time)))
 
-(defun! +org-capture--todo-template (&optional todo-keyword)
+(defun! org-capture|template (&optional todo-keyword)
   "Return template string."
   (require 'org-ml)
   (thread-last (org-ml-build-headline! :level 1 :todo-keyword todo-keyword :title-text "%?")
                (org-ml-headline-set-node-property "ID" (org-id-new))
                (org-ml-to-string)))
 
-(defun +org-capture-plain-template ()
+(defun org-capture|plain-template ()
   "Return capture template as a string."
   (thread-last (org-ml-build-headline! :level 1 :title-text "%?")
                (org-ml-headline-set-node-property "ID" (org-id-new))
                (org-ml-to-string)))
 
-(defun +org-capture-todo-template ()
+(defun org-capture|todo-template ()
   "Return the TODO capture template as a string."
-  (+org-capture--todo-template "TODO"))
+  (org-capture|template "TODO"))
 
-(defun +org-capture-bug-template ()
+(defun org-capture|bug-template ()
   "Return the BUG capture template as a string."
-  (+org-capture--todo-template "BUG"))
+  (org-capture|template "BUG"))
 
-(defun +org-capture-question-template ()
+(defun org-capture|question-template ()
   "Return the QUESTION capture template as a string."
-  (+org-capture--todo-template "QUESTION"))
+  (org-capture|template "QUESTION"))
 
-(defun +org-capture-plain ()
+(defun org-capture|plain ()
   (interactive)
   (org-capture nil "p"))
 
-(defun +org-capture-todo ()
+(defun org-capture|todo ()
   (interactive)
   (org-capture nil "t"))
 
-(defun +org-capture-bug ()
+(defun org-capture|bug ()
   (interactive)
   (org-capture nil "b"))
 
-(defun +org-capture-question ()
+(defun org-capture|question ()
   (interactive)
   (org-capture nil "q"))
 
-(defun +org-capture--refile ()
+(defun org-capture|refile ()
   (org-back-to-heading)
   (call-interactively #'org-refile))
 
@@ -103,19 +103,19 @@
       (append (doct (list (list "todo"
                                 :keys "t"
                                 :file +org-todo-file
-                                :template #'+org-capture-todo-template)))
+                                :template #'org-capture|todo-template)))
               (doct (list (list "bug"
                                 :keys "b"
                                 :file +org-todo-file
-                                :template #'+org-capture-bug-template)))
+                                :template #'org-capture|bug-template)))
               (doct (list (list "question"
                                 :keys "q"
                                 :file +org-todo-file
-                                :template #'+org-capture-question-template)))
+                                :template #'org-capture|question-template)))
               (doct (list (list "plain"
                                 :keys "p"
                                 :file org-default-notes-file
-                                :template #'+org-capture-plain-template)))))
+                                :template #'org-capture|plain-template)))))
 ;;; provide
 (provide '990-config-org-capture)
 ;;; 990-config-org-capture.el ends here

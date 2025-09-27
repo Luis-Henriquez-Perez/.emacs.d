@@ -32,6 +32,7 @@
 
 (defun oo-enable-dashboard-h ()
   (require 'dashboard)
+  (setq dashboard-items nil)
   (setq dashboard-init-info #'oo-dashboard-init-info)
   (setq dashboard-banner-logo-title "Welcome!")
   (setq dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
