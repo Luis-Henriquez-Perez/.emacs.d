@@ -2370,7 +2370,7 @@
     ("ez" "easy")
     ("ezer" "easier")
     ("ezr" "easier")
-    ("f" "for")
+    ("f" "for" nil :enable-function abbrev|escape-char-p)
     ("facade" "façade")
     ("faciliate" "facilitate")
     ("faciliated" "facilitated")
