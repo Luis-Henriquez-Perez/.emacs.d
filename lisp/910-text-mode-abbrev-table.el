@@ -2904,6 +2904,7 @@
     ("idnw" "I do not want")
     ("idnwt" "I do not want to")
     ("idnwtht" "I do not want to have to")
+    ("idonht" "I do not have to")
     ("idont" "I do not")
     ("idrc" "I do not care")
     ("idrmb" "I do not remember")
