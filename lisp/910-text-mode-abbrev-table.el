@@ -2060,6 +2060,7 @@
     ("elt" "element")
     ("elts" "elements")
     ("emacs" "Emacs" :enable-function abbrev|part-of-another-word-p)
+    ("emacslisp" "emacs-lisp")
     ("emacss" "Emacs's")
     ("emal" "email")
     ("emas" "Emacs")
