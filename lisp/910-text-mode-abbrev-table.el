@@ -2907,6 +2907,7 @@
     ("idwt" "I do not want to")
     ("idwtgt" "I do not want to go there")
     ("iff" "if and only if")
+    ("ifih" "if it has")
     ("ifii" "if it is")
     ("ifl" "I feel like")
     ("ifle" "file")
