@@ -36,22 +36,8 @@
 ;; In qtile this does not allow emacs to go completely fullscreen.
 (setq frame-resize-pixelwise t)
 (setq-default load-prefer-newer t)
-;; When a line is too long to be displayed in the screen do not wrap it around;
-;; just let the rest of the line go out of view (with an indicator that there is
-;; more to the line in the fringe).  Although I can see the whole line when it
-;; wraps around, I find it makes the text confusing and harder to read.  If I
-;; want this, then I will toggle it myself with [[][toggle-truncate-lines]].
-(setq-default truncate-lines t)
 ;; They are easier to deal with and do not occupy unnecessary lines.
 (setq print-escape-newlines t)
-(setq-default fill-column 80)
-;; When emacs starts up, the default modeline will show up.  Rendering this default
-;; modeline at startup does slightly slow down emacs (insignificant on it's own but
-;; these things add up).  This disable it.
-;; (setq-default mode-line-format nil)
-;; I got this from [[https://www.masteringemacs.org/article/disabling-prompts-emacs][this-post]].  Every time you try to kill a buffer with a live
-;; process, Emacs will ask you if you're sure you want to kill it.
-(setq kill-buffer-query-functions (remq 'process-kill-buffer-query-function kill-buffer-query-functions))
 ;; With this enabled, I can invoke the minibuffer while still being in the
 ;; minibuffer.  At the very least this is useful so that I can inspect which keys
 ;; are bound in the minibuffer.
@@ -62,10 +48,8 @@
 ;; the window bottom, but a higher value is nice to automatically recenter after
 ;; any bigger jump."
 (setq scroll-conservatively 20)
-(setq redisplay-skip-fontification-on-input t)
 ;; By default emacs shows your keystrokes in the echo area.
 (setq echo-keystrokes 0)
-(setq-default tab-width 4)
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
 ;; (setq sgml-basic-offset 4)
 ;; (setq dabbrev-check-all-buffers nil)
@@ -79,9 +63,6 @@
 ;; https://olddeuteronomy.github.io/post/some-excerpts-from-my-emacs-config/
 ;; Don’t use dialog boxes.
 (setq use-dialog-box nil)
-;; When you disable the scroll-bar via early-init.el powerline does not realize
-;; the scroll-bar is dabled because the value of `scroll-bar-mode' is right.
-(setq scroll-bar-mode nil)
 ;; Do not create a custom file.
 ;; I do not need it.  I'll be honest; to me it seems like the emacs's custom
 ;; interface is intended for people that do not know elisp.  For me it's completely
@@ -91,31 +72,45 @@
 ;; to "Maximum buffer size exceeded" error when `custom-save-all' is invoked
 ;; after installing packages.
 (setq custom-file (make-temp-file "custom-file"))
-;; By default =show-paren-mode= is enabled in all editing mode (non-special
-;; modes).  I want to control when to enable this mode normally--as in, add it to
-;; hooks myself if I want it enabled.  Therefore, I disable it here.
-(setq show-paren-predicate nil)
 ;; Always use spaces instead of tabs
 ;; https://home.cs.colorado.edu/~main/cs1300/doc/emacs/emacs_24.html
 ;; https://stackoverflow.com/questions/9383070/tell-emacs-never-to-insert-tabs
 (setq-default indent-tabs-mode nil)
 ;; Do not suggest keybindings for me.
 (setq suggest-key-bindings nil)
-;; Handle trailing whitespace.
-(setq-default show-trailing-whitespace nil)
 ;; Confirm before quitting Emacs.
 (setq confirm-kill-emacs #'y-or-n-p)
-;; Ensure there's always a newline at the end of files.
-;; Several linux programs require a newline at the end of a file, such as
-;; chrontab--this is more or less what noctuid said and I'll take his word for
-;; it.
-(setq require-final-newline t)
 ;; Do not pass case-insensitive to =auto-mode-alist=.
 ;; This is taken from =centaur-emacs=.  By default [[file:snapshots/*helpful variable: auto-mode-case-fold*.png][auto-mode-case-fold]] is
 ;; non-nil; when enabled the auto-mode-alist is traversed twice.  This double
 ;; traversal can be expensive and it seems unnecessary.
 (setq auto-mode-case-fold nil)
+;;;; EDITING
+;; By default =show-paren-mode= is enabled in all editing mode (non-special
+;; modes).  I want to control when to enable this mode normally--as in, add it to
+;; hooks myself if I want it enabled.  Therefore, I disable it here.
+(setq show-paren-predicate nil)
+;; Handle trailing whitespace.
+(setq-default show-trailing-whitespace nil)
+;; Ensure there's always a newline at the end of files.
+;; Several linux programs require a newline at the end of a file, such as
+;; chrontab--this is more or less what noctuid said and I'll take his word for
+;; it.
+(setq require-final-newline t)
+(setq-default tab-width 4)
+(setq-default fill-column 80)
+;; When a line is too long to be displayed in the screen do not wrap it around;
+;; just let the rest of the line go out of view (with an indicator that there is
+;; more to the line in the fringe).  Although I can see the whole line when it
+;; wraps around, I find it makes the text confusing and harder to read.  If I
+;; want this, then I will toggle it myself with [[][toggle-truncate-lines]].
+(setq-default truncate-lines t)
 ;;;; QUALITY OF LIFE
+;; I got this from
+;; [[https://www.masteringemacs.org/article/disabling-prompts-emacs][this-post]].
+;; Every time you try to kill a buffer with a live process, Emacs will ask you
+;; if you're sure you want to kill it.
+(setq kill-buffer-query-functions (remq 'process-kill-buffer-query-function kill-buffer-query-functions))
 ;; Automatically kill any processes when exiting Emacs.
 ;; If I start a process, like the =eat= shell for example, do not stop me from exiting
 ;; to ask me whether I want to kill it, just do it.
@@ -165,6 +160,7 @@ end-of-buffer signals; pass the rest to the default handler."
 
 (setq command-error-function #'oo-command-error-function)
 ;;;; PERFORMANCE
+(setq redisplay-skip-fontification-on-input t)
 ;; https://stackoverflow.com/questions/35658509/gnu-emacs-how-to-disable-prompt-to-save-modified-buffer-on-exit
 ;; https://emacs.stackexchange.com/questions/22275/save-a-particular-buffer-without-prompting-on-emacs-exit
 ;; https://stackoverflow.com/questions/6762686/prevent-emacs-from-asking-modified-buffers-exist-exit-anyway
@@ -202,7 +198,10 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq inhibit-startup-message t)
 (setq inhibit-startup-screen t)
 (setq inhibit-splash-screen t)
-;;;; STARTUP
+;;;; UI
+;; When you disable the scroll-bar via early-init.el powerline does not realize
+;; the scroll-bar is dabled because the value of `scroll-bar-mode' is right.
+(setq scroll-bar-mode nil)
 ;; Disable cursor blinking.
 ;; By default after a certain amount of blinks the cursor becomes solid.  By
 ;; setting this to a negative value I make the cursor blink forever.
