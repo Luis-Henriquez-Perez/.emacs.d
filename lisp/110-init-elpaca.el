@@ -70,6 +70,7 @@
 ;; Wait longer.
 (setq elpaca-wait-interval 0.2)
 ;;; recipes
+(elpaca jit-spell)
 (elpaca ace-jump-helm-line)
 (elpaca ace-link)
 (elpaca ace-window)
