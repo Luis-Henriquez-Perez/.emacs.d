@@ -66,24 +66,6 @@
 ;; By default emacs shows your keystrokes in the echo area.
 (setq echo-keystrokes 0)
 (setq-default tab-width 4)
-;; This variable controls whether emacs makes a sound when certain events happen
-;; such as invoking a binding that doesn't have anything bound to it or trying
-;; to exceed the end of the buffer--things like that.  Personally, I do not want
-;; such beeping.  Setting this variable to nil still result in beeping, emacs
-;; just uses its default function.  Instead, to be disabled it must
-;; be set to [[file:snapshots/helpful-command:ignore.png][ignore]].
-(setq ring-bell-function #'ignore)
-;; Stop freaking out whenever I try to move past beginning or end of the buffer.
-;; When you try to move past the beginning and end of a buffer Emacs produces
-;; error messages.
-;; [[https://emacs.stackexchange.com/questions/10932/how-do-you-disable-the-buffer-end-beginning-warnings-in-the-minibuffer][disable warnings]]
-(defun oo-command-error-function (data context caller)
-  "Ignore the buffer-read-only, beginning-of-buffer,
-end-of-buffer signals; pass the rest to the default handler."
-  (unless (memq (car data) '(buffer-read-only beginning-of-buffer end-of-buffer))
-    (command-error-default-function data context caller)))
-
-(setq command-error-function #'oo-command-error-function)
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
 ;; (setq sgml-basic-offset 4)
 ;; (setq dabbrev-check-all-buffers nil)
@@ -109,17 +91,6 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; to "Maximum buffer size exceeded" error when `custom-save-all' is invoked
 ;; after installing packages.
 (setq custom-file (make-temp-file "custom-file"))
-;; Do not ask me for permission to enable a theme
-;; By default Emacs will ask you whether you are sure you want to enable a theme
-;; as a precaution because a theme could contain malicious code.  Downloading
-;; themes with elpaca is safe.  I do not make a habit of grabbing random themes
-;; from wierd places online and evaluating them.  So I do not need.
-(setq custom-safe-themes t)
-;; If non-nil certain commands such as narrowing are disabled.  The idea is that
-;; a new user would think that emacs deleted the contents of their file if they
-;; accidentally narrowed the buffer.  I am experienced enough so that I do not
-;; need this.
-(setq disabled-command-function nil)
 ;; By default =show-paren-mode= is enabled in all editing mode (non-special
 ;; modes).  I want to control when to enable this mode normally--as in, add it to
 ;; hooks myself if I want it enabled.  Therefore, I disable it here.
@@ -132,11 +103,6 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq suggest-key-bindings nil)
 ;; Handle trailing whitespace.
 (setq-default show-trailing-whitespace nil)
-;; Do not prompt me whether to follow symlinks, just do it.
-;; By default Emacs will prompt you when you want to open a file a symlink
-;; references.  It will ask you whether you want to follow the symlink.  For me
-;; the answer is predominately yes.
-(setq vc-follow-symlinks t)
 ;; Confirm before quitting Emacs.
 (setq confirm-kill-emacs #'y-or-n-p)
 ;; Ensure there's always a newline at the end of files.
@@ -149,6 +115,17 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; non-nil; when enabled the auto-mode-alist is traversed twice.  This double
 ;; traversal can be expensive and it seems unnecessary.
 (setq auto-mode-case-fold nil)
+;;;; QUALITY OF LIFE
+;; Automatically kill any processes when exiting Emacs.
+;; If I start a process, like the =eat= shell for example, do not stop me from exiting
+;; to ask me whether I want to kill it, just do it.
+;; https://emacsredux.com/blog/2052/07/18/automatically-kill-running-processes-on-exit/
+(setq confirm-kill-processes nil)
+;; Do not prompt me whether to follow symlinks, just do it.
+;; By default Emacs will prompt you when you want to open a file a symlink
+;; references.  It will ask you whether you want to follow the symlink.  For me
+;; the answer is predominately yes.
+(setq vc-follow-symlinks t)
 ;; Stop asking me whether I want to enable file local variables.
 ;; When installing packages with =quelpa=, I was prompted whether I wanted to apply
 ;; file local variables.  I'm guessing =straight.el= and =elpaca= disable this.
@@ -158,11 +135,35 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; [[][]] in =common-lisp-mode= and I realized Emacs wasn't doing it because I
 ;; told it not to with this variable.
 (setq enable-local-variables :safe)
-;; Automatically kill any processes when exiting Emacs.
-;; If I start a process, like the =eat= shell for example, stop me from exiting
-;; to ask me whether I want to kill it, just do it.
-;; https://emacsredux.com/blog/2052/07/18/automatically-kill-running-processes-on-exit/
-(setq confirm-kill-processes nil)
+;; Do not ask me for permission to enable a theme
+;; By default Emacs will ask you whether you are sure you want to enable a theme
+;; as a precaution because a theme could contain malicious code.  Downloading
+;; themes with elpaca is safe.  I do not make a habit of grabbing random themes
+;; from wierd places online and evaluating them.  So I do not need.
+(setq custom-safe-themes t)
+;; If non-nil certain commands such as narrowing are disabled.  The idea is that
+;; a new user would think that emacs deleted the contents of their file if they
+;; accidentally narrowed the buffer.  I am experienced enough so that I do not
+;; need this.
+(setq disabled-command-function nil)
+;; This variable controls whether emacs makes a sound when certain events happen
+;; such as invoking a binding that doesn't have anything bound to it or trying
+;; to exceed the end of the buffer--things like that.  Personally, I do not want
+;; such beeping.  Setting this variable to nil still result in beeping, emacs
+;; just uses its default function.  Instead, to be disabled it must
+;; be set to [[file:snapshots/helpful-command:ignore.png][ignore]].
+(setq ring-bell-function #'ignore)
+;; Stop freaking out whenever I try to move past beginning or end of the buffer.
+;; When you try to move past the beginning and end of a buffer Emacs produces
+;; error messages.
+;; [[https://emacs.stackexchange.com/questions/10932/how-do-you-disable-the-buffer-end-beginning-warnings-in-the-minibuffer][disable warnings]]
+(defun oo-command-error-function (data context caller)
+  "Ignore the buffer-read-only, beginning-of-buffer,
+end-of-buffer signals; pass the rest to the default handler."
+  (unless (memq (car data) '(buffer-read-only beginning-of-buffer end-of-buffer))
+    (command-error-default-function data context caller)))
+
+(setq command-error-function #'oo-command-error-function)
 ;;;; PERFORMANCE
 ;; https://stackoverflow.com/questions/35658509/gnu-emacs-how-to-disable-prompt-to-save-modified-buffer-on-exit
 ;; https://emacs.stackexchange.com/questions/22275/save-a-particular-buffer-without-prompting-on-emacs-exit
