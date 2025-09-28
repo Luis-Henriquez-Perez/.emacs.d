@@ -38,17 +38,13 @@
 (setq-default load-prefer-newer t)
 ;; They are easier to deal with and do not occupy unnecessary lines.
 (setq print-escape-newlines t)
-;; With this enabled, I can invoke the minibuffer while still being in the
-;; minibuffer.  At the very least this is useful so that I can inspect which keys
-;; are bound in the minibuffer.
-(setq enable-recursive-minibuffers t)
 ;; Note that the following comment is taken from noctuid's config: "Recenter the
 ;; point if it goes greater than 20 lines past what is visible the default, 0, is
 ;; kind of annoying because it recenters even if you just go one line down from
 ;; the window bottom, but a higher value is nice to automatically recenter after
 ;; any bigger jump."
 (setq scroll-conservatively 20)
-;; By default emacs shows your keystrokes in the echo area.
+;; Do not echo keystrokes in the minibuffer.
 (setq echo-keystrokes 0)
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
 ;; (setq sgml-basic-offset 4)
@@ -106,6 +102,10 @@
 ;; want this, then I will toggle it myself with [[][toggle-truncate-lines]].
 (setq-default truncate-lines t)
 ;;;; QUALITY OF LIFE
+;; With this enabled, I can invoke the minibuffer while still being in the
+;; minibuffer.  At the very least this is useful so that I can inspect which keys
+;; are bound in the minibuffer.
+(setq enable-recursive-minibuffers t)
 ;; I got this from
 ;; [[https://www.masteringemacs.org/article/disabling-prompts-emacs][this-post]].
 ;; Every time you try to kill a buffer with a live process, Emacs will ask you
@@ -241,7 +241,6 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq delete-old-versions t)
 ;;;; AUTO-SAVING
 (setq auto-save-no-message t)
-;; Disable auto-save-mode.
 (setq auto-save-default t)
 ;; Stop creating =auto-save-list= directory.
 ;; See [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][#18677]].
