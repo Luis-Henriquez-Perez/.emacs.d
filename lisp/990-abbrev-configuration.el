@@ -28,6 +28,7 @@
 (require! "^0[01]")
 (require 'abbrev)
 ;;;; PREDICATES
+;;;;; MODAL
 (defun! abbrev|in-text-p ()
   "Return non-nil when text-mode abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
@@ -71,7 +72,7 @@ string or comment."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'emacs-lisp-mode)
        (oo-in-string-or-comment-p)))
-;;;; DO NOT EXPAND ABBREV IF IT IS PART OF ANOTHER WORD
+;;;;; DO NOT EXPAND ABBREV IF IT IS PART OF ANOTHER WORD
 ;; Some abbrevs I do not want to expand if they are immediately preceded by a
 ;; non-space character.  For example, I want "emacs" to expand into "Emacs" but
 ;; not when in a symbol like `user-emacs-directory'.
@@ -80,7 +81,7 @@ string or comment."
   (declare (pure t) (side-effect-free error-free))
   (set! rx (rx-to-string `(seq (1+ (not blank)) ,(symbol-name last-abbrev) (0+ blank))))
   (not (looking-back rx)))
-;;;; DO NOT EXPAND ESCAPE CHARACTERS
+;;;;; DO NOT EXPAND ESCAPE CHARACTERS
 ;; Do not expand single letter abbrevs when they are meant to be used as escape
 ;; characters.
 (defun abbrev|escape-char-p ()
