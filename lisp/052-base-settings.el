@@ -29,12 +29,12 @@
 ;; should occur afterwards.
 ;;
 ;;; Code:
+;;;; UNCATEGORIZED
 (setq user-full-name "Luis Henriquez-Perez")
 (setq user-mail-address "luis@luishp.xyz")
 ;; https://old.reddit.com/r/emacs/comments/xk7k6x/emacs_wont_go_fullscreen_in_qtile/
 ;; In qtile this does not allow emacs to go completely fullscreen.
 (setq frame-resize-pixelwise t)
-;; Prefer.
 (setq-default load-prefer-newer t)
 ;; When a line is too long to be displayed in the screen do not wrap it around;
 ;; just let the rest of the line go out of view (with an indicator that there is
@@ -45,9 +45,6 @@
 ;; They are easier to deal with and do not occupy unnecessary lines.
 (setq print-escape-newlines t)
 (setq-default fill-column 80)
-(setq create-lockfiles nil)
-;; Do not create backup files ever.
-(setq version-control 'never)
 ;; When emacs starts up, the default modeline will show up.  Rendering this default
 ;; modeline at startup does slightly slow down emacs (insignificant on it's own but
 ;; these things add up).  This disable it.
@@ -55,11 +52,6 @@
 ;; I got this from [[https://www.masteringemacs.org/article/disabling-prompts-emacs][this-post]].  Every time you try to kill a buffer with a live
 ;; process, Emacs will ask you if you're sure you want to kill it.
 (setq kill-buffer-query-functions (remq 'process-kill-buffer-query-function kill-buffer-query-functions))
-;; By default Emacs actually deletes files.  By setting this to t, you tell Emacs
-;; to move a file to trash instead of actually deleting it.  This is better because
-;; if you accidentally delete a file or discover you can still just go get your
-;; file from the trash.
-(setq delete-by-moving-to-trash t)
 ;; With this enabled, I can invoke the minibuffer while still being in the
 ;; minibuffer.  At the very least this is useful so that I can inspect which keys
 ;; are bound in the minibuffer.
@@ -92,20 +84,6 @@ end-of-buffer signals; pass the rest to the default handler."
     (command-error-default-function data context caller)))
 
 (setq command-error-function #'oo-command-error-function)
-;; https://stackoverflow.com/questions/35658509/gnu-emacs-how-to-disable-prompt-to-save-modified-buffer-on-exit
-;; https://emacs.stackexchange.com/questions/22275/save-a-particular-buffer-without-prompting-on-emacs-exit
-;; https://stackoverflow.com/questions/6762686/prevent-emacs-from-asking-modified-buffers-exist-exit-anyway
-;; if you do not use RTL ever, this could improve perf
-;; https://news.ycombinator.com/item?id=39127859
-(setq-default bidi-display-reordering 'left-to-right)
-(setq-default bidi-paragraph-direction 'left-to-right)
-(setq-default bidi-inhibit-bpa t)
-;; Improve terminal emulator (vterm/eat) throughput.
-(setq read-process-output-max (* 2 1024 1024))
-(setq process-adaptive-read-buffering nil)
-(setq fast-but-imprecise-scrolling t)
-(setq redisplay-skip-fontification-on-input t)
-(setq inhibit-compacting-font-caches t)
 ;; I like an indentation of 4 spaces; maybe I have gotten used to it with Python.
 ;; (setq sgml-basic-offset 4)
 ;; (setq dabbrev-check-all-buffers nil)
@@ -119,14 +97,6 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; https://olddeuteronomy.github.io/post/some-excerpts-from-my-emacs-config/
 ;; Don’t use dialog boxes.
 (setq use-dialog-box nil)
-;; https://olddeuteronomy.github.io/post/some-excerpts-from-my-emacs-config/
-;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
-(setq auto-window-vscroll nil)
-;; https://tychoish.com/post/towards-faster-emacs-start-times/
-(setq jit-lock-stealth-time nil)
-(setq jit-lock-defer-time nil)
-(setq jit-lock-defer-time 0.05)
-(setq jit-lock-stealth-load 200)
 ;; When you disable the scroll-bar via early-init.el powerline does not realize
 ;; the scroll-bar is dabled because the value of `scroll-bar-mode' is right.
 (setq scroll-bar-mode nil)
@@ -154,12 +124,6 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; modes).  I want to control when to enable this mode normally--as in, add it to
 ;; hooks myself if I want it enabled.  Therefore, I disable it here.
 (setq show-paren-predicate nil)
-;; Do not display Emacs's default startup screen.
-;; By default Emacs displays [[][this startup screen]] at startup.  No thanks!  I
-;; think these variables are all aliases for eachother.
-(setq inhibit-startup-message t)
-(setq inhibit-startup-screen t)
-(setq inhibit-splash-screen t)
 ;; Always use spaces instead of tabs
 ;; https://home.cs.colorado.edu/~main/cs1300/doc/emacs/emacs_24.html
 ;; https://stackoverflow.com/questions/9383070/tell-emacs-never-to-insert-tabs
@@ -168,29 +132,6 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq suggest-key-bindings nil)
 ;; Handle trailing whitespace.
 (setq-default show-trailing-whitespace nil)
-;; Disable initial scratch message.
-;; Don't display any documentation--or any message at all--in the =*scratch*=
-;; buffer.  Emacs by default displays a message in the scratch buffer.
-(setq initial-scratch-message nil)
-;; Set the initial major mode to =fundamental-mode=.
-;; This improve startup time because packages enabled for emacs-lisp-mode are not
-;; loaded immediately.
-(setq initial-major-mode 'fundamental-mode)
-;; Backup files to trash.
-(setq backup-directory-alist '((".*" . "~/.Trash")))
-;; Stop creating =auto-save-list= directory.
-;; See [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][#18677]].
-(setq auto-save-list-file-prefix nil)
-;; Disable cursor blinking.
-;; By default after a certain amount of blinks the cursor becomes solid.  By
-;; setting this to a negative value I make the cursor blink forever.
-(blink-cursor-mode -1)
-;; Increase the blink interval slightly if I do enable it.
-(setq blink-cursor-interval 0.4)
-;; Enable window dividers.
-(setopt window-divider-default-bottom-width 7)
-(setopt window-divider-default-right-width 7)
-(setopt window-divider-default-places t)
 ;; Do not prompt me whether to follow symlinks, just do it.
 ;; By default Emacs will prompt you when you want to open a file a symlink
 ;; references.  It will ask you whether you want to follow the symlink.  For me
@@ -203,25 +144,11 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; chrontab--this is more or less what noctuid said and I'll take his word for
 ;; it.
 (setq require-final-newline t)
-;; Do not make backups.
-(setq make-backup-files nil)
 ;; Do not pass case-insensitive to =auto-mode-alist=.
 ;; This is taken from =centaur-emacs=.  By default [[file:snapshots/*helpful variable: auto-mode-case-fold*.png][auto-mode-case-fold]] is
 ;; non-nil; when enabled the auto-mode-alist is traversed twice.  This double
 ;; traversal can be expensive and it seems unnecessary.
 (setq auto-mode-case-fold nil)
-;; Disable auto-save-mode.
-(setq auto-save-default nil)
-(auto-save-mode -1)
-;; Designate location of trash.
-;; designate the location of the trash directory
-;; I accidentally sent files to the trash and I could not find them in my trash
-;; directory.  I was confused because I knew that the variable
-;; [[file:_helpful_variable__delete-by-moving-to-trash_.png][delete-by-moving-to-trash]] was non-nil and I even verified this to be the case
-;; with [[file:_helpful_function__helpful-variable_.png][helpful-variable]].  After reading the documentation of [[][]] I realized
-;; that emacs uses the [[][]].  To be honest I had no idea what this actually was
-;; but I extracted what looked like the location, [[][]].
-(setq trash-directory (expand-file-name "~/Trash"))
 ;; Stop asking me whether I want to enable file local variables.
 ;; When installing packages with =quelpa=, I was prompted whether I wanted to apply
 ;; file local variables.  I'm guessing =straight.el= and =elpaca= disable this.
@@ -236,6 +163,90 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; to ask me whether I want to kill it, just do it.
 ;; https://emacsredux.com/blog/2052/07/18/automatically-kill-running-processes-on-exit/
 (setq confirm-kill-processes nil)
+;;;; PERFORMANCE
+;; https://stackoverflow.com/questions/35658509/gnu-emacs-how-to-disable-prompt-to-save-modified-buffer-on-exit
+;; https://emacs.stackexchange.com/questions/22275/save-a-particular-buffer-without-prompting-on-emacs-exit
+;; https://stackoverflow.com/questions/6762686/prevent-emacs-from-asking-modified-buffers-exist-exit-anyway
+;; if you do not use RTL ever, this could improve perf
+;; https://news.ycombinator.com/item?id=39127859
+(setq-default bidi-display-reordering 'left-to-right)
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-inhibit-bpa t)
+;; https://tychoish.com/post/towards-faster-emacs-start-times/
+(setq jit-lock-stealth-time nil)
+(setq jit-lock-defer-time nil)
+(setq jit-lock-defer-time 0.05)
+(setq jit-lock-stealth-load 200)
+;; https://olddeuteronomy.github.io/post/some-excerpts-from-my-emacs-config/
+;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
+(setq auto-window-vscroll nil)
+;; Improve terminal emulator (vterm/eat) throughput.
+(setq read-process-output-max (* 2 1024 1024))
+(setq process-adaptive-read-buffering nil)
+(setq fast-but-imprecise-scrolling t)
+(setq redisplay-skip-fontification-on-input t)
+(setq inhibit-compacting-font-caches t)
+;;;; TRASH
+;; By default Emacs actually deletes files.  By setting this to t, you tell Emacs
+;; to move a file to trash instead of actually deleting it.  This is better because
+;; if you accidentally delete a file or discover you can still just go get your
+;; file from the trash.
+(setq delete-by-moving-to-trash t)
+;; Designate location of trash.
+;; I accidentally sent files to the trash and I could not find them in my trash
+;; directory.  I was confused because I knew that the variable
+;; [[file:_helpful_variable__delete-by-moving-to-trash_.png][delete-by-moving-to-trash]] was non-nil and I even verified this to be the case
+;; with [[file:_helpful_function__helpful-variable_.png][helpful-variable]].  After reading the documentation of [[][]] I realized
+;; that emacs uses the [[][]].  To be honest I had no idea what this actually was
+;; but I extracted what looked like the location, [[][]].
+(setq trash-directory (expand-file-name "~/Trash"))
+;;;; INITIAL
+;; Disable initial scratch message.
+;; Don't display any documentation--or any message at all--in the =*scratch*=
+;; buffer.  Emacs by default displays a message in the scratch buffer.
+(setq initial-scratch-message nil)
+;; Set the initial major mode to =fundamental-mode=.
+;; This improve startup time because packages enabled for emacs-lisp-mode are not
+;; loaded immediately.
+(setq initial-major-mode 'fundamental-mode)
+;; Do not display Emacs's default startup screen.
+;; By default Emacs displays [[][this startup screen]] at startup.  No thanks!  I
+;; think these variables are all aliases for eachother.
+(setq inhibit-startup-message t)
+(setq inhibit-startup-screen t)
+(setq inhibit-splash-screen t)
+;;;; STARTUP
+;; Disable cursor blinking.
+;; By default after a certain amount of blinks the cursor becomes solid.  By
+;; setting this to a negative value I make the cursor blink forever.
+(blink-cursor-mode -1)
+;; Increase the blink interval slightly if I do enable it.
+(setq blink-cursor-interval 0.4)
+;; Enable window dividers.
+(setopt window-divider-default-bottom-width 7)
+(setopt window-divider-default-right-width 7)
+(setopt window-divider-default-places t)
+;;;; BACKUPS
+(setq create-lockfiles nil)
+;; At first I wanted to completely eschew backups partly because at first it can
+;; be hard to disable them and you annoyingly find lots of backup files littered
+;; everywhere.
+(setq backup-directory-alist '((".*" . "~/Trash/backups")))
+;; Do not make backups.
+(setq make-backup-files nil)
+;; Make numbered backups.
+(setq version-control t)
+(setq kept-old-versions 2)
+(setq kept-new-versions 2)
+(setq delete-old-versions t)
+;;;; AUTO-SAVING
+(setq auto-save-no-message t)
+;; Disable auto-save-mode.
+(setq auto-save-default t)
+;; Stop creating =auto-save-list= directory.
+;; See [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][#18677]].
+(setq auto-save-list-file-prefix nil)
+(auto-save-mode -1)
 ;;; provide
 (provide '052-base-settings)
 ;;; 052-base-settings.el ends here
