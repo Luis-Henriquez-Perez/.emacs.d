@@ -186,20 +186,6 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq fast-but-imprecise-scrolling t)
 (setq redisplay-skip-fontification-on-input t)
 (setq inhibit-compacting-font-caches t)
-;;;; TRASH
-;; By default Emacs actually deletes files.  By setting this to t, you tell Emacs
-;; to move a file to trash instead of actually deleting it.  This is better because
-;; if you accidentally delete a file or discover you can still just go get your
-;; file from the trash.
-(setq delete-by-moving-to-trash t)
-;; Designate location of trash.
-;; I accidentally sent files to the trash and I could not find them in my trash
-;; directory.  I was confused because I knew that the variable
-;; [[file:_helpful_variable__delete-by-moving-to-trash_.png][delete-by-moving-to-trash]] was non-nil and I even verified this to be the case
-;; with [[file:_helpful_function__helpful-variable_.png][helpful-variable]].  After reading the documentation of [[][]] I realized
-;; that emacs uses the [[][]].  To be honest I had no idea what this actually was
-;; but I extracted what looked like the location, [[][]].
-(setq trash-directory (expand-file-name "~/Trash"))
 ;;;; INITIAL
 ;; Disable initial scratch message.
 ;; Don't display any documentation--or any message at all--in the =*scratch*=
@@ -226,6 +212,20 @@ end-of-buffer signals; pass the rest to the default handler."
 (setopt window-divider-default-bottom-width 7)
 (setopt window-divider-default-right-width 7)
 (setopt window-divider-default-places t)
+;;;; TRASH
+;; By default Emacs actually deletes files.  By setting this to t, you tell Emacs
+;; to move a file to trash instead of actually deleting it.  This is better because
+;; if you accidentally delete a file or discover you can still just go get your
+;; file from the trash.
+(setq delete-by-moving-to-trash t)
+;; Designate location of trash.
+;; I accidentally sent files to the trash and I could not find them in my trash
+;; directory.  I was confused because I knew that the variable
+;; [[file:_helpful_variable__delete-by-moving-to-trash_.png][delete-by-moving-to-trash]] was non-nil and I even verified this to be the case
+;; with [[file:_helpful_function__helpful-variable_.png][helpful-variable]].  After reading the documentation of [[][]] I realized
+;; that emacs uses the [[][]].  To be honest I had no idea what this actually was
+;; but I extracted what looked like the location, [[][]].
+(setq trash-directory (expand-file-name "~/Trash"))
 ;;;; BACKUPS
 (setq create-lockfiles nil)
 ;; At first I wanted to completely eschew backups partly because at first it can
@@ -246,6 +246,9 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; Stop creating =auto-save-list= directory.
 ;; See [[https://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created][#18677]].
 (setq auto-save-list-file-prefix nil)
+(setq auto-save-interval 300)
+;; Seconds before Emacs saves visited files.
+(setq auto-save-timeout 30)
 (auto-save-mode -1)
 ;;; provide
 (provide '052-base-settings)
