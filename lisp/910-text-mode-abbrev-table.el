@@ -5655,6 +5655,7 @@
     ("templat" "template")
     ("templeate" "template")
     ("temporl" "temporarily")
+    ("temporly" "temporarily ")
     ("tempp" "temporary")
     ("temprary" "temporary")
     ("temr" "term")
