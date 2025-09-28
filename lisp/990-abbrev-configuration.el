@@ -71,13 +71,23 @@ string or comment."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'emacs-lisp-mode)
        (oo-in-string-or-comment-p)))
+;;;; DO NOT EXPAND ABBREV IF IT IS PART OF ANOTHER WORD
+;; Some abbrevs I do not want to expand if they are immediately preceded by a
+;; non-space character.  For example, I want "emacs" to expand into "Emacs" but
+;; not when in a symbol like `user-emacs-directory'.
+(defun! abbrev|part-of-another-word-p ()
+  "Return non-nil if current abbrev is part of another word."
+  (declare (pure t) (side-effect-free error-free))
+  (set! rx (rx-to-string `(seq (1+ (not blank)) ,(symbol-name last-abbrev) (0+ blank))))
+  (not (looking-back rx)))
 ;;;; DO NOT EXPAND ESCAPE CHARACTERS
 ;; Do not expand single letter abbrevs when they are meant to be used as escape
 ;; characters.
 (defun abbrev|escape-char-p ()
   "Return non-nil if what was typed was an escape character."
+  (declare (pure t) (side-effect-free error-free))
   (not (and (equal 'string (oo-in-string-or-comment-p))
-            (looking-back "\\\\[ntf][[:space:]]?"))))
+            (save-match-data (looking-back "\\\\[ntf][[:space:]]?" (- (point) 4))))))
 ;;;; PREVENT GREEDY EXPANSION
 ;;  with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
