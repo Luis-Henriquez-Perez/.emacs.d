@@ -31,23 +31,25 @@
 (defvar oo-zone-timer nil
   "Timer for when to zone out.")
 
-;; (autoload #'+zone-choose "zone" nil t 'function)
+;; (autoload #'zone|choose "zone" nil t 'function)
 ;; https://www.emacswiki.org/emacs/ZoneMode
-(defun +zone-choose (pgm)
+(defun zone|choose (pgm)
   "Choose a PGM to run for `zone'."
   (interactive (list (awhen! (completing-read "Program: " (mapcar #'symbol-name (append zone-programs nil)))
                        (intern it))))
   (zone pgm))
 
-(defun oo-enable-zone ()
+(defun zone|enable ()
   (require 'zone nil t)
   (zone))
 
-;; TODO: get rid of some zones.
-(defhook! oo-start-zone-timer-h (emacs-startup-hook)
-  (setq oo-zone-timer (run-with-idle-timer 5 t #'oo-enable-zone)))
+(defun zone|start-timer ()
+  (setq oo-zone-timer (run-with-idle-timer 5 t #'zone|enable)))
 
-(defun oo-cancel-zone ()
+(add-hook 'oo-first-input-hook #'zone|start-timer)
+
+(defun zone/stop ()
+  (interactive)
   (cancel-timer oo-zone-timer))
 ;;; provide
 (provide '130-init-zone)
