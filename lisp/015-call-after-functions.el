@@ -59,7 +59,7 @@ If SYMBOL is already bound FN is called immediately."
       (funcall fn)
     (push `(ignore-errors (funcall ',fn)) (gethash feature oo-after-load-forms))
     (eval-after-load feature
-      ;; Cannot use my macros here because when cimpiled Emacs will not know how
+      ;; Cannot use my macros here because when compiled Emacs will not know how
       ;; to macroexpand them.
       `(let ((it (gethash ',feature oo-after-load-forms)))
          (when it (eval (macroexp-progn (nreverse it)) 'lexical)
