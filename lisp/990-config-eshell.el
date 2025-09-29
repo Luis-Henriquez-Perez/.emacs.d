@@ -164,6 +164,7 @@
 (eshell/alias "wifi" "nmcli dev wifi list")
 (eshell/alias "sd" "systemctl $*")
 (eshell/alias "sdu" "systemctl --user $*")
+(eshell/alias "sdut" "systemctl --user list-timers")
 (eshell/alias "timers" "systemctl --user list-timers")
 (eshell/alias "utimers" "systemctl --user list-timers")
 ;;;;; miscellaneous
