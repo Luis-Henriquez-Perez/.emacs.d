@@ -151,7 +151,7 @@ string or comment."
 ;; This is a bit crude.  It would be precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;; Emacs loads abbrevs so fast.
-(advice-add 'write-abbrev-file :around #'abbrev|write-abbrev-file-a)
+(advice-add 'write-abbrev-file :around #'ignore)
 ;;;; UPDATING ABBREVS
 ;; I only want this function to add complex abbrevs. abbrev
 (defun abbrev/add (arg)
@@ -163,75 +163,6 @@ string or comment."
   "Add the abbrev I mean."
   (interactive "P")
   (inverse-add-abbrev text-mode-abbrev-table "text-mode" (or arg 1)))
-
-(defun! abbrev|update-abbrev-tables ()
-  "Update abbrev tables and commit changes."
-  (dolist (table abbrev-table-name-list)
-    (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
-    (when (and (abbrev--table-symbols table) (file-exists-p file))
-      (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
-      ;; TODO: handle better opening an existing buffer.
-      (unwind-protect
-          (with-current-buffer buffer
-            (goto-char (point-min))
-            (when (re-search-forward "^(define-abbrev-table" nil)
-              (goto-char (match-beginning 0))
-              (set! beg (point))
-              (forward-sexp)
-              (delete-region beg (point))
-              (goto-char beg)
-              (insert (abbrev|table-string table)))
-            (save-buffer)
-            (when (equal 'edited (vc-state file))
-              (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-              (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
-              (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
-              ;; TODO: inhibit opening buffers.
-              (vc-git-checkin (list file) commit-msg)))
-        (kill-buffer buffer)))))
-
-(defun! abbrev|table-string (table)
-  "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
-  (set! abbrevs '())
-  (set! name (symbol-name table))
-  (flet! insert-at-column (column string)
-    "Insert STRING at COLUMN, padding with spaces if necessary."
-    (let ((pad (- column (current-column))))
-      (when (> pad 0)
-        (insert (make-string pad ?\s)))
-      (insert string)))
-  (mapatoms
-   (lambda (sym)
-     (let* ((name (symbol-name sym))
-            (expansion (symbol-value sym))
-            (hook (symbol-function sym))
-            (plist (symbol-plist sym))
-            ;; I checked the properties and the only ones that I will
-            ;; realistically use are these two.
-            (case-fixed (plist-get plist :case-fixed))
-            (enable-function (plist-get plist :enable-function))
-            (entry (list name expansion)))
-       ;; There's one entry whose name is the entry string.  Looks like ("" nil
-       ;; nil).  No point in having that in the table (it is probrably always
-       ;; implicitly there though).
-       (unless (string-empty-p name)
-         (and hook (setq entry (append entry (list hook))))
-         (and enable-function (setq entry (append entry (list :enable-function enable-function))))
-         (and case-fixed (setq entry (append entry (list :case-fixed case-fixed))))
-         (push entry abbrevs))))
-   (symbol-value table))
-  (setq abbrevs (sort abbrevs (-on #'string< #'car)))
-  (with-temp-buffer
-    (erase-buffer)
-    (insert (format "(define-abbrev-table '%s\n  '(" name))
-    (set! column (current-column))
-    (dolist (abbrev abbrevs)
-      (set! (name expansion hook . plist) abbrev)
-      (insert-at-column column (format "%S\n" abbrev)))
-    ;; This is the last newline.
-    (delete-char -1)
-    (insert-at-column (current-column) "))")
-    (buffer-string)))
 ;;; provide
 (provide '990-abbrev-configuration)
 ;;; 990-abbrev-configuration.el ends here
