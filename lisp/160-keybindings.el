@@ -210,6 +210,7 @@
   "e" #'eval-expression
   "f" #'oo-set-font-face
   "d" #'toggle-debug-on-error
+  "S" #'profiler-start
   "P" #'profiler-stop)
 ;;;;; buffer
 (defvar-keymap! oo-buffer-map
