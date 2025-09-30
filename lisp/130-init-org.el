@@ -28,7 +28,8 @@
 ;;;; requirements
 (require! "^0[01]")
 ;;;; Idle features
-(each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture)
+(each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
+            org-keys oc org-table org-fold org-cycle)
   (push it oo-idle-features))
 ;;;; set `completion-at-point-functions'
 ;; By default `completion-at-point-functions' has
