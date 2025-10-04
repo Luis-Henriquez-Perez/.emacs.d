@@ -109,7 +109,7 @@ Replace `kill-buffer--possibly-save' as advice."
 ;; all the theme files the first time its called.
 (defun! oo-only-real-themes-a (themes)
   "Do not count \"fake\" themes."
-  (cl-set-difference themes '(spacemacs solarized moe immaterial)))
+  (cl-set-difference themes '(light-blue spacemacs solarized moe immaterial)))
 
 (advice-add 'custom-available-themes :filter-return #'oo-only-real-themes-a)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
