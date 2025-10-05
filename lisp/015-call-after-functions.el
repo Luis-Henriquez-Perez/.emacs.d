@@ -62,8 +62,9 @@ If SYMBOL is already bound FN is called immediately."
       ;; Cannot use my macros here because when compiled Emacs will not know how
       ;; to macroexpand them.
       `(let ((it (gethash ',feature oo-after-load-forms)))
-         (when it (eval (macroexp-progn (nreverse it)) 'lexical)
-               (remhash ',feature oo-after-load-forms))))))
+         (when it
+           (eval (macroexp-progn (nreverse it)) 'lexical)
+           (remhash ',feature oo-after-load-forms))))))
 ;;; provide
 (provide '015-call-after-functions)
 ;;; 015-call-after-functions.el ends here
