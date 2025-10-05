@@ -152,69 +152,69 @@ This is a wrapper around `evilem-make-motion'."
   `(evilem-make-motion ,name (lambda ,args ,docstring (interactive) (autolet! ,@body)) ,@map))
 ;;;; beginning of word
 (evilem|defmotion! evilem|motion-beginning-of-word ()
-                    "Jump to the beginning of a word in the current visible buffer."
-                    :initial-point #'window-start
-                    :scope 'visible
-                    :collect-postprocess #'evilem||sort-by-match
-                    (set! regexp (rx (seq (one-or-more (not word)) (group word) (zero-or-more word))))
-                    (and (save-excursion (forward-char)
-                                         (re-search-forward regexp nil t nil))
-                         (goto-char (match-beginning 1))))
+  "Jump to the beginning of a word in the current visible buffer."
+  :initial-point #'window-start
+  :scope 'visible
+  :collect-postprocess #'evilem||sort-by-match
+  (set! regexp (rx (seq (one-or-more (not word)) (group word) (zero-or-more word))))
+  (and (save-excursion (forward-char)
+                       (re-search-forward regexp nil t nil))
+       (goto-char (match-beginning 1))))
 ;;;; beginning of WORD
 (evilem|defmotion! evilem|motion-beginning-of-WORD ()
-                    "Jump to the beginning of a WORD in the current visible buffer."
-                    :initial-point #'window-start
-                    :scope 'visible
-                    :collect-postprocess #'evilem||sort-by-match
-                    (set! blank-rx (rx (or bol (1+ white)) (group (not white))))
-                    (set! rx (rx (: bow (group word) (* (not white)) eow)))
-                    (and (re-search-forward blank-rx nil t nil)
-                         (goto-char (match-beginning 0))
-                         (re-search-forward rx nil t nil)
-                         (goto-char (match-beginning 1))))
+  "Jump to the beginning of a WORD in the current visible buffer."
+  :initial-point #'window-start
+  :scope 'visible
+  :collect-postprocess #'evilem||sort-by-match
+  (set! blank-rx (rx (or bol (1+ white)) (group (not white))))
+  (set! rx (rx (: bow (group word) (* (not white)) eow)))
+  (and (re-search-forward blank-rx nil t nil)
+       (goto-char (match-beginning 0))
+       (re-search-forward rx nil t nil)
+       (goto-char (match-beginning 1))))
 ;;;; end of word
 (evilem|defmotion! evilem|motion-end-of-word ()
-                    "Jump to the beginning of a word in the current visible buffer."
-                    :initial-point #'window-start
-                    :scope 'visible
-                    :collect-postprocess #'evilem||sort-by-match
-                    (set! regexp "[[:alnum:]]+")
-                    ;; I need to ensure that the regexp does not match the word on top of the
-                    ;; current point.
-                    ;; TODO: Fix capitalization rules, current at the top of the sentence above
-                    ;; was capitalized but should not be.
-                    (and (save-excursion (forward-char)
-                                         (re-search-forward regexp nil t nil))
-                         (goto-char (1- (match-end 0)))))
+  "Jump to the beginning of a word in the current visible buffer."
+  :initial-point #'window-start
+  :scope 'visible
+  :collect-postprocess #'evilem||sort-by-match
+  (set! regexp "[[:alnum:]]+")
+  ;; I need to ensure that the regexp does not match the word on top of the
+  ;; current point.
+  ;; TODO: Fix capitalization rules, current at the top of the sentence above
+  ;; was capitalized but should not be.
+  (and (save-excursion (forward-char)
+                       (re-search-forward regexp nil t nil))
+       (goto-char (1- (match-end 0)))))
 ;;;; end of WORD
 (evilem|defmotion! evilem|motion-end-of-WORD ()
-                    "Jump to the end of a WORD in the current visible buffer."
-                    :initial-point #'window-start
-                    :scope 'visible
-                    :collect-postprocess #'evilem||sort-by-match
-                    (set! regexp "\\(?:\\`\\|[^[:blank:]]+\\)\\([[:word:]]\\)")
-                    (and (re-search-forward regexp nil t nil)
-                         (goto-char (match-beginning 1))))
+  "Jump to the end of a WORD in the current visible buffer."
+  :initial-point #'window-start
+  :scope 'visible
+  :collect-postprocess #'evilem||sort-by-match
+  (set! regexp "\\(?:\\`\\|[^[:blank:]]+\\)\\([[:word:]]\\)")
+  (and (re-search-forward regexp nil t nil)
+       (goto-char (match-beginning 1))))
 ;;;; parentheses
 ;; TODO: how to find current form?
 (evilem|defmotion! evilem|open-paren ()
-                    "Jump to opening parenthesis in current form."
-                    :scope 'visible
-                    :collect-postprocess #'evilem||sort-by-match
-                    (set! regexp "(")
-                    (and (save-excursion (forward-char) (re-search-forward regexp nil t nil))
-                         (goto-char (match-beginning 0))))
+  "Jump to opening parenthesis in current form."
+  :scope 'visible
+  :collect-postprocess #'evilem||sort-by-match
+  (set! regexp "(")
+  (and (save-excursion (forward-char) (re-search-forward regexp nil t nil))
+       (goto-char (match-beginning 0))))
 ;;;; first non-whitespace character in line
 ;; TODO: screenshot the difference between this with and without the
 ;; postprocess.
 (evilem|defmotion! evilem|motion-beginning-of-line ()
-                    "Jump to the beginning of line in the current visible buffer."
-                    :initial-point #'window-start
-                    :scope 'visible
-                    :collect-postprocess #'evilem||sort-by-match
-                    (set! regexp "^[[:space:]]*\\(.\\)")
-                    (and (save-excursion (forward-char) (re-search-forward regexp nil t nil))
-                         (goto-char (match-beginning 1))))
+  "Jump to the beginning of line in the current visible buffer."
+  :initial-point #'window-start
+  :scope 'visible
+  :collect-postprocess #'evilem||sort-by-match
+  (set! regexp "^[[:space:]]*\\(.\\)")
+  (and (save-excursion (forward-char) (re-search-forward regexp nil t nil))
+       (goto-char (match-beginning 1))))
 ;;;; a character
 (evilem|defmotion! evilem|motion-char ()
   "Jump to a character in current visible buffer."
