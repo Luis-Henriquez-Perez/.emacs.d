@@ -31,8 +31,6 @@
   "Load abbrev files.
 This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
-  (require '910-text-mode-abbrev-table)
-  (require '910-emacs-lisp-mode-abbrev-table)
   ;; Abbrevs are loaded at startup so to properly defer this I need to load my
   ;; configuration when abbrev-mode is enabled.
   (require '990-abbrev-configuration)

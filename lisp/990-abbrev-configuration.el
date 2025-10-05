@@ -27,6 +27,8 @@
 ;;; Code:
 (require! "^0[01]")
 (require 'abbrev)
+(require '910-text-mode-abbrev-table)
+(require '910-emacs-lisp-mode-abbrev-table)
 ;;;; PREDICATES
 ;;;;; MODAL
 (defun! abbrev|in-text-p ()
