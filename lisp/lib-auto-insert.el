@@ -139,7 +139,7 @@ in the commentary part."
           (goto-char (match-end 0))
         (insert ";;; Code:\n")))))
 
-(defun! oo-auto-insert-elisp-template ()
+(defun! auto-insert|elisp-template ()
   "Insert emacs-lisp template in file."
   (set! path (buffer-file-name))
   (set! base (f-base path))
@@ -159,7 +159,7 @@ in the commentary part."
     (goto-char (point-min))
     (save-excursion (oo--ensure-provide path))))
 
-(defun! oo-auto-insert-html-template ()
+(defun auto-insert|html-template ()
   "Insert html template in file."
   (interactive)
   (tempel-insert '("<!doctype html>" n
@@ -172,34 +172,30 @@ in the commentary part."
                    "</body>" > n
                    "</html>")))
 
-(defun oo-auto-insert-python-file-header ()
+(defun auto-insert|python-file-header ()
   "Insert python file header."
-  (require 'tempel)
   (tempel-insert '("# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                    "# Author: " user-full-name " <" user-mail-address ">" > n
                    "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    "# Description: " p > n)))
 
-(defun oo-auto-insert-bash-file-header ()
+(defun auto-insert|bash-file-header ()
   "Insert bash file header."
-  (require 'tempel)
   (tempel-insert '("#!/bin/bash" > n
                    "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                    "# Author: " user-full-name " <" user-mail-address ">" > n
                    "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    "# Description: " p > n)))
 
-(defun oo-auto-insert-hy-file-header ()
+(defun auto-insert|hy-file-header ()
   "Insert hy file header."
-  (require 'tempel)
   (tempel-insert '(";; Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                    ";; Author: " user-full-name " <" user-mail-address ">" > n
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
 
-(defun oo-auto-insert-org-file-header ()
+(defun auto-insert|org-file-header ()
   "Insert org file header."
-  (interactive)
   (tempel-insert '("#+title:" (string-replace "_" "\s" (f-base (buffer-file-name))) > n
                    "#+author:" user-full-name > n)))
 
@@ -208,7 +204,7 @@ in the commentary part."
   (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
   (remove-hook 'after-save-hook #'oo-make-this-file-executable))
 
-(defun oo-auto-insert--pound-comment-header ()
+(defun auto-insert||pound-comment-header ()
   (when buffer-file-name
     (tempel-insert '("# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                      "# Author: " user-full-name " <" user-mail-address ">" > n
@@ -216,7 +212,7 @@ in the commentary part."
                      "# Description: " p > n))))
 ;; I need to make this file executable in a hook because the file is not
 ;; actually created until the buffer is saved.
-(defun! oo-auto-insert-script-file-header ()
+(defun! auto-insert|script-file-header ()
   "Insert script header and make it executable."
   (set! file-dir (file-truename (file-name-directory buffer-file-name)))
   (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
