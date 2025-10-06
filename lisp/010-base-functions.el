@@ -202,7 +202,6 @@ LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
     (setq fn (if name (progn (fset name fn) name) fn))
     (add-hook hook fn depth local)
     fn))
-
 ;;; provide
 (provide '010-base-functions)
 ;;; 010-base-functions.el ends here
