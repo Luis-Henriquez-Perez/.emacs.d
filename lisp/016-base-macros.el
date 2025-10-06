@@ -90,18 +90,6 @@ This is like `setq' but it is meant for configuring variables."
                                 (funcall it ',symbol ,value-var)
                               (setq ,symbol ,value-var)))))))
 
-;; I made the decision to add a hook function to a hook regardless of whether
-;; the hook has already has been run.  But if the hook has been run the hook
-;; function is called individually.  The idea is that I do not want to just
-;; evaluate the body and have no record of it being evaluated other than it is
-;; side-effects.
-(defmacro defafter! (name expr &rest body)
-  "Evaluate BODY after EXPR is satisfied."
-  (declare (indent defun))
-  `(progn
-     (defun! ,name nil (with-no-warnings ,@body))
-     (oo-call-after-load ',expr #',name)))
-
 (defmacro! defhook! (name args &rest body)
   "Add function to hook as specified by NAME."
   (declare (indent defun))
