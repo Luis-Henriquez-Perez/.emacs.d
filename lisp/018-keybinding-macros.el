@@ -77,14 +77,6 @@
 
 (generate-evil-keybinders! n i v nv ni eg g)
 
-(defmacro stripplist! (list)
-  "Strip and return plist from the front of LIST.
-LIST is a list symbol."
-  (cl-with-gensyms (plist)
-    `(let (,plist)
-       (while (keywordp (car ,list))
-         (prepending! ,plist (list (pop ,list) (pop ,list))))
-       ,plist)))
 (defalias 'emap! 'egmap!)
 
 (defmacro! defvar-keymap! (keymap &rest pairs)

@@ -33,6 +33,15 @@
        ,then
      ,@else))
 
+(defmacro stripplist! (list)
+  "Strip and return plist from the front of LIST.
+LIST is a list symbol."
+  (let ((plist (gensym "plist")))
+    `(let (,plist)
+       (while (keywordp (car ,list))
+         (prepending! ,plist (list (pop ,list) (pop ,list))))
+       ,plist)))
+
 (defmacro lef! (bindings &rest body)
   "Bind each symbol in BINDINGS to its corresponding function during BODY.
 BINDINGS is a list of either (SYMBOL FUNCTION), where symbol is the symbol to be
