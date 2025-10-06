@@ -124,11 +124,11 @@ file is loaded."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
 
-(defun! oo--timer--lower-garbage-collection ()
+(defun! oo--timer--lower-gc ()
   "Lower garbage collection until it reaches default values."
   (flet! mb (x) (/ (float x) 1024 1024))
   (if (minibuffer-window-active-p (minibuffer-window))
-      (run-with-timer 5 nil #'oo--timer--lower-garbage-collection)
+      (run-with-timer 5 nil #'oo--timer--lower-gc)
     (oo-log 'trace "Running timer for lowering garbage collection...")
     (set! reduction (/ (get-register :gc-cons-threshold) 10))
     (set! gc-floor (* 8 1024 1024))
@@ -146,7 +146,7 @@ file is loaded."
     (if (and (= gc-cons-threshold gc-floor)
              (= gc-cons-percentage gcp-default))
         (oo-log 'trace "Done with timer.")
-      (run-with-timer 7 nil #'oo--timer--lower-garbage-collection))))
+      (run-with-timer 7 nil #'oo--timer--lower-gc))))
 
 (defhook! restore-startup-values (emacs-startup-hook :depth 90 :level 'info)
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
@@ -155,7 +155,7 @@ file is loaded."
   (setq gc-cons-threshold (* 40 1024 1024))
   (set-register :gc-cons-threshold gc-cons-threshold)
   (oo-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
-  (run-with-timer 5 nil #'oo--timer--lower-garbage-collection))
+  (run-with-timer 5 nil #'oo--timer--lower-gc))
 ;;;; trailing whitespace
 (defun oo-delete-trailing-whitespace-at-line-h ()
   "Delete the trailing whitespace in the buffer except for the current line.
