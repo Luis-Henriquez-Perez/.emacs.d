@@ -179,7 +179,7 @@ Return a list of."
         (doc (and (stringp (car args)) (pop args)))
         (decl (and (equal 'declare (car-safe (car args))) (pop args)))
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
-    (list name arglist (cl-remove-if #'null (list doc decl inte)) args)))
+    (list name arglist (remove null (list doc decl inte)) args)))
 ;;;; miscellaneous
 (cl-defun oo-add-hook (hook fn &key depth local name expire ignore-args (level 'trace))
   "Generate a hook function for HOOK calls FN.
