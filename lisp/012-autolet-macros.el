@@ -130,16 +130,12 @@ Identify and collect symbols needed for let bindings and return forms modified."
                       (stub! . cl-flet)
                       (label! . cl-labels)
                       (labels! . cl-labels))))
-    (cl-flet ((quote-symbol-p (x) (memq x '(quote function backquote cl-function)))
-              (loop-symbol-p (x) (memq x '(while dolist dotimes for!)))
-              (ing-symbol-p (x) (and (symbolp x) (string-match-p "ing!$" (symbol-name x))))
-              (letbind-symbol-p (x) (assoc x lets))
-              (should-remove-p (x) (or (member (car x) noinit) (assoc (car x) init))))
+    (cl-flet ((should-remove-p (x) (or (member (car x) noinit) (assoc (car x) init))))
       (cl-labels ((process-form (form)
                     (pcase form
                       ((pred atom) form)
                       ;; Leave quoted forms as-is.
-                      (`(,(pred quote-symbol-p) . ,_)
+                      (`(,(and it (guard (memq it '(quote function backquote cl-function)))) . ,_)
                        form)
                       ;; Match `(set! VAR VALUE)` and collect VARIABLE.
                       (`(set! ,pattern ,_ . ,(guard t))
@@ -149,13 +145,13 @@ Identify and collect symbols needed for let bindings and return forms modified."
                            (cl-pushnew (list symbol nil) bindings :key #'car)))
                        form)
                       ;; Surround loops with a catch.
-                      (`(,(and loop (pred loop-symbol-p)) ,pred . ,(and body (guard t)))
+                      (`(,(and loop (guard (memq x '(while dolist dotimes for!)))) ,pred . ,(and body (guard t)))
                        `(catch 'break! (,loop ,pred (catch 'continue! ,@(process-form body)))))
                       ;; Properly initialize variables in ingmacro declarations.
                       ;; Just for brevity I use string-match to check instead
                       ;; of listing all my ing macros but there has been a clash
                       ;; with org-ml that uses some macros that end in "ing!".
-                      (`(,(and name (pred ing-symbol-p)) ,symbol . ,(guard t))
+                      (`(,(and name (guard (and (symbolp name) (string-match-p "ing!$" (symbol-name name))))) ,symbol . ,(guard t))
                        (cl-case name
                          ((maxing! maximizing!)
                           (cl-pushnew `(,symbol most-negative-fixnum) bindings))
@@ -167,7 +163,7 @@ Identify and collect symbols needed for let bindings and return forms modified."
                           (cl-pushnew `(,symbol nil) bindings :key #'car)))
                        form)
                       ;; Handle special let shortcuts.
-                      (`((,(and macro (pred letbind-symbol-p)) . ,args) . ,(and rest (guard t)))
+                      (`((,(and macro (guard (assoc macro lets))) . ,args) . ,(and rest (guard t)))
                        `((,(alist-get macro lets) ((,@args)) ,@(process-form rest))))
                       ;; Recurse into lists.
                       (_
