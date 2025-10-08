@@ -92,54 +92,77 @@ iteration and move to the next."
 (defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `lef!'.")
 (defalias 'nflet! 'stub! "Same as `noflet!'")
 
-(defun oo-autolet-process-recursive (body)
-  "Return let-letb and processed forms used in `autolet!'.
-Identify and collect symbols needed for let letb and return forms modified."
-  (let ((letb nil)
-        (lets '((mlet! . cl-macrolet)
-                (macrolet! . cl-macrolet)
-                (nflet! . lef!)
-                (noflet! . lef!)
-                (flet! . cl-flet)
-                (stub! . cl-flet)
-                (label! . cl-labels)
-                (labels! . cl-labels))))
-    (cl-labels ((process-form (form)
-                  (pcase form
-                    ((pred atom) form)
-                    ;; Leave quoted forms as-is.
-                    (`(,(and it (guard (memq it '(quote function backquote cl-function)))) . ,_)
-                     form)
-                    ;; Match `(set! VAR VALUE)` and collect VARIABLE.
-                    (`(set! ,pattern ,_ . ,(guard t))
-                     (if (symbolp pattern)
-                         (cl-pushnew (list pattern nil) letb :key #'car)
-                       (dolist (symbol (reverse (oo-flatten-pcase-match-form pattern)))
-                         (cl-pushnew (list symbol nil) letb :key #'car)))
-                     form)
-                    ;; Surround loops with a catch.
-                    (`(,(and it (guard (memq it '(while dolist dotimes for!)))) ,pred . ,(and body (guard t)))
-                     `(catch 'break! (,it ,pred (catch 'continue! ,@(process-form body)))))
-                    ;; Ing macros
-                    (`(,(and name (guard (and (symbolp name) (string-match-p "ing!$" (symbol-name name))))) ,symbol . ,(guard t))
-                     (cl-case name
-                       ((maxing! maximizing!)
-                        (cl-pushnew `(,symbol most-negative-fixnum) letb))
-                       ((minning! minimizing!)
-                        (cl-pushnew `(,symbol most-positive-fixnum) letb))
-                       ((summing! adding! counting!)
-                        (cl-pushnew `(,symbol 0) letb))
-                       (t
-                        (cl-pushnew `(,symbol nil) letb :key #'car)))
-                     form)
-                    ;; Handle special let shortcuts.
-                    (`((,(and macro (guard (assoc macro lets))) . ,args) . ,(and rest (guard t)))
-                     `((,(alist-get macro lets) ((,@args)) ,@(process-form rest))))
-                    ;; Recurse into lists.
-                    (_
-                     (cons (process-form (car form)) (process-form (cdr form)))))))
-      (setq body (process-form body)))
-    (list (reverse letb) body)))
+(defun oo-autolet-process-iterative (body)
+  "Return a list of (letbinds form), iteratively."
+  (let ((letb '())
+        (stack (list (cons nil body)))
+        (result '())
+        frame cdr-val car-val)
+    (while stack
+      (setq frame (pop stack))
+      (pcase frame
+        (`(nil . ,(pred atom))
+         (push (cdr frame) result))
+        (`(nil . (,(or 'quote 'function 'backquote 'cl-function) . ,_))
+         (push (cdr frame) result))
+        (`(nil . (set! ,(and symbol (pred symbolp)) ,_ . ,(guard t)))
+         (cl-pushnew (list symbol nil) letb :key #'car)
+         (push (cdr frame) result))
+        (`(nil . (set! ,(and pattern (or (pred listp) (pred vectorp))) ,_ . ,(guard t)))
+         (dolist (symbol (reverse (oo-flatten-pcase-match-form pattern)))
+           (cl-pushnew (list symbol nil) letb :key #'car))
+         (push (cdr frame) result))
+        ;; Loops
+        (`(nil . (,(and type (guard (memq type '(while dolist dotimes for!)))) ,pred . ,(and body (guard t))))
+         (push `(:loop ,type ,(length body)) stack)
+         (push `(nil . (progn ,@body)) stack)
+         (push `(nil . (progn ,pred)) stack))
+        ;; This is a specific clause for rebuilding the loop.
+        (`(:loop ,loop-type ,body-count)
+         (let ((body (cdr (pop result)))
+               (pred (cadr (pop result))))
+           (push `(catch 'break! (,loop-type ,pred (catch 'continue! ,@body))) result)))
+        ;; Ing macros
+        (`(nil . (,(or 'maxing! 'maximizing!) ,symbol . ,_))
+         (cl-pushnew `(,symbol most-negative-fixnum) letb)
+         (push (cdr frame) result))
+        (`(nil . (,(or 'minning! 'minimizing!) ,symbol . ,_))
+         (cl-pushnew `(,symbol most-positive-fixnum) letb)
+         (push (cdr frame) result))
+        (`(nil . (,(or 'summing! 'adding! 'counting!) ,symbol . ,_))
+         (cl-pushnew `(,symbol 0) letb)
+         (push (cdr frame) result))
+        (`(nil . (,(and it (pred symbolp) (guard (string-match-p "ing!$" (symbol-name it)))) ,symbol . ,_))
+         (cl-pushnew `(,symbol nil) letb :key #'car)
+         (push (cdr frame) result))
+        ;; shortcuts
+        (`(nil . ((,(or 'nflet! 'noflet!) . ,args) . ,body))
+         (push `(:shortcut lef! ,args ,(length body)) stack)
+         (push `(nil . (progn ,@body)) stack))
+        (`(nil . ((,(or 'flet! 'stub!) . ,args) . ,body))
+         (push `(:shortcut cl-flet ,args ,(length body)) stack)
+         (push `(nil . (progn ,@body)) stack))
+        (`(nil . ((label! . ,args) . ,body))
+         (push `(:shortcut cl-labels ,args ,(length body)) stack)
+         (push `(nil . (progn ,@body)) stack))
+        (`(nil . ((,(or 'mlet! 'macrolet!) . ,args) . ,body))
+         (push `(:shortcut cl-macrolet ,args ,(length body)) stack)
+         (push `(nil . (progn ,@body)) stack))
+        (`(:shortcut ,type ,args ,body-length)
+         (alet! (pop result)
+           ;; Expand the `progn'.
+           (push `((,type (,args) ,@(cdr it))) result)))
+        (`(nil . ,(and form (pred consp)))
+         (push (cons t nil) stack)
+         (push (cons nil (cdr form)) stack)
+         (push (cons nil (car form)) stack))
+        (`(t . nil)
+         (setq cdr-val (pop result))
+         (setq car-val (pop result))
+         (push (cons car-val cdr-val) result))
+        (_
+         (error "Not recognized..."))))
+    (list (reverse letb) (car result))))
 
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
 ;; want to just modify the original symbol without let-binding it at all.  In
@@ -173,7 +196,7 @@ Enhanced looping control flow:
 (while|dotimes|dolist CONDITION . BODY) Replace with
 `(catch \='return! (LOOP CONDITION (catch \='break! BODY)))'."
   (declare (indent 1))
-  (pcase-let ((`(,letb ,body) (oo-autolet-process-recursive body)))
+  (pcase-let ((`(,letb ,body) (oo-autolet-process-iterative body)))
     (setq letb (cl-remove-if (lambda (it) (member (car it) noinits)) letb))
     `(let ,letb (catch 'return! ,@body))))
 
