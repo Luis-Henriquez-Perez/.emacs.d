@@ -97,7 +97,6 @@ iteration and move to the next."
   (let ((letb '())
         (stack (list (cons nil body)))
         (result '())
-        (iterations 0)
         frame cdr-val car-val)
     (while stack
       (setq frame (pop stack))
