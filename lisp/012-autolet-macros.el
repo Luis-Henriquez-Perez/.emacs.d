@@ -145,8 +145,8 @@ Identify and collect symbols needed for let bindings and return forms modified."
                            (cl-pushnew (list symbol nil) bindings :key #'car)))
                        form)
                       ;; Surround loops with a catch.
-                      (`(,(and loop (guard (memq x '(while dolist dotimes for!)))) ,pred . ,(and body (guard t)))
-                       `(catch 'break! (,loop ,pred (catch 'continue! ,@(process-form body)))))
+                      (`(,(and it (guard (memq it '(while dolist dotimes for!)))) ,pred . ,(and body (guard t)))
+                       `(catch 'break! (,it ,pred (catch 'continue! ,@(process-form body)))))
                       ;; Properly initialize variables in ingmacro declarations.
                       ;; Just for brevity I use string-match to check instead
                       ;; of listing all my ing macros but there has been a clash
