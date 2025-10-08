@@ -117,7 +117,7 @@ This is like `setq' but it is meant for configuring variables."
   (dolist (hook hooks)
     (set! out-name (intern (format "oo--%s--%s-h" hook name)))
     (collecting! hook-forms `(oo-add-hook ',hook it :name ',out-name ,@add-hook-args)))
-  `(alet! (lambda ,fargs ,@metadata (autolet! ,@body))
+  `(alet! (lambda ,fargs ,@metadata (autolet! nil ,@body))
      ,@hook-forms))
 
 (defmacro! setq-hook! (hooks symbol value)
