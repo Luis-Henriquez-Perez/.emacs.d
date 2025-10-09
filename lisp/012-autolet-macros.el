@@ -159,7 +159,7 @@ iteration and move to the next."
          (setq car-val (pop result))
          (push (cons car-val cdr-val) result))
         (_
-         (error "Not recognized..."))))
+         (error "Not recognized %S..." frame))))
     (list (reverse letb) (car result))))
 
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
