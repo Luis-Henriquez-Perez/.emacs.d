@@ -149,7 +149,7 @@ This is a wrapper around `evilem-make-motion'."
     (set! docstring (pop body)))
   (while (keywordp (car body))
     (appending! map (list (pop body) (pop body))))
-  `(evilem-make-motion ,name (lambda ,args ,docstring (interactive) (autolet! ,@body)) ,@map))
+  `(evilem-make-motion ,name (lambda ,args ,docstring (interactive) (autolet! nil ,@body)) ,@map))
 ;;;; beginning of word
 (evilem|defmotion! evilem|motion-beginning-of-word ()
   "Jump to the beginning of a word in the current visible buffer."
