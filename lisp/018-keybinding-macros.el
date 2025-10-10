@@ -59,7 +59,7 @@
   (flet! split-spec (spec)
     (mapcar #'state-name (string-to-list (symbol-name spec))))
   `(progn
-     ,@(accumulate! (spec specs)
+     ,@(collect! (spec specs)
          (set! states (split-spec spec))
          (set! docstring (format "Define an evil keybinding in %s state." (to-text states)))
          (set! macroname (intern (concat (symbol-name spec) "map!")))

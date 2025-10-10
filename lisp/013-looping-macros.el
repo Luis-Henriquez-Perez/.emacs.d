@@ -74,9 +74,9 @@ take the following forms:
               (t
                (error "Unknown list predicate: %S" ',loop-struct)))))))
 
-(defmacro accumulate! (loop-struct &rest body)
+(defmacro collect! (loop-struct &rest body)
   (declare (indent 1))
-  (cl-with-gensyms (collection)
+  (let ((collection (make-symbol "--collection--")))
     `(let (,collection)
        (for! ,loop-struct
          (push (progn ,@body) ,collection))
