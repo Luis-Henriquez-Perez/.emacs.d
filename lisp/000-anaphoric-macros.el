@@ -68,7 +68,6 @@ Each element of LIST is bound to `it'."
          (other ,form2))
      ,@body))
 
-;; Syntactic sugar macros to help me with.
 ;; The standard way to write this macro is to have it return the element
 ;; removed.  A more controversial but potentialy useful way is to write one that
 ;; returns the predicate expression.  That way I could additionally perform some
