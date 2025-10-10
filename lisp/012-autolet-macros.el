@@ -59,7 +59,8 @@ evaluation of the `autolet!' form and return VALUE."
   `(throw 'return! ,value))
 
 (defmacro done! ()
-  "This is a shorthand for `(return! nil)'."
+  "This is a shorthand for `(return! nil)'.
+See `return!'."
   `(return! nil))
 
 (defmacro break! (&optional value)
