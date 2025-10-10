@@ -162,11 +162,16 @@
   "w" #'ace-window)
 ;;;;; git
 (defvar-keymap! oo-git-map
+  "B" #'magit-branch
   "b" #'vc-switch-branch
+  "c" #'magit-commit
+  "g" #'magit-status
   ;; "j" #'oo-dwim-vc-action
   "l" #'vc-switch-branch
   ;; "n" #'oo-dwim-vc-action
-  "r" #'vc-register)
+  "p" #'magit-push
+  "r" #'vc-register
+  "s" #'magit-status)
 ;;;;; org
 (defvar-keymap! oo-org-map
   :prefix 'oo-org-map
