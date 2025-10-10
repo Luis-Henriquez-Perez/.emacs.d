@@ -62,12 +62,6 @@ evaluation of the `autolet!' form and return VALUE."
   "This is a shorthand for `(return! nil)'."
   `(return! nil))
 
-(defmacro quitif! (condition &rest args)
-  "Exit `autolet!' and print MESSAGE if CONDITION is true."
-  `(when ,condition
-     (return!)
-     ,@(when args `((message ,(car args) ,@(cdr args))))))
-
 (defmacro break! (&optional value)
   "Exit the current loop and return VALUE.
 Inside an `autolet!' form, exit the current loop and return VALUE."
