@@ -177,7 +177,7 @@ iteration and move to the next."
              (push (cons nil (cadr frame)) stack))
             (t
              (error "Unknown frame %S" frame))))
-    (list (reverse letb) (car result))))
+    (list (nreverse letb) (car result))))
 
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
 ;; want to just modify the original symbol without let-binding it at all.  In
