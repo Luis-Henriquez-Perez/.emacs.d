@@ -78,6 +78,8 @@ Return a pcase-compatible pattern."
 MATCH-FORM is a destructuring pattern to be matched.  A special match-form
 constitutes one of the following structures.
 
+(&butlast ALLBUTLAST LAST) Bind the value of current expression to WHOLE.
+
 (&as WHOLE PARTS) Bind the value of current expression to WHOLE.
 
 (&key KEY . KEYS) Bind each symbol in KEYS to (plist-get MATCH-FORM KEY)
