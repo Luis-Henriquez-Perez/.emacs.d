@@ -3083,6 +3083,7 @@
     ("incompatiblity" "incompatibility")
     ("incompetance" "incompetence")
     ("incompetant" "incompetent")
+    ("incompl" "incomplete")
     ("incomptable" "incompatible")
     ("incomptetent" "incompetent")
     ("incon" "inconsistent")
