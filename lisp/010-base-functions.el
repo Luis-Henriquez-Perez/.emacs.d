@@ -88,6 +88,11 @@ VALUE is the value being destructured.
 
 If MATCH-FORM is not a special form, return nil."
   (pcase match-form
+    (`(&butlast ,(and butlast (pred symbolp)) ,(and last (pred symbolp)))
+     (let ((it (make-symbol "--butlast--")))
+       `((,it ,value)
+         (,butlast (cl-loop while (nthcdr 1 ,it) collect (pop ,it)))
+         (,last (car ,it)))))
     (`(,(or '&as '&whole) ,(and whole (pred symbolp)) ,parts)
      (let ((it (gensym "&asmf-")))
        `((,it ,value)
