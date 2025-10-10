@@ -88,6 +88,8 @@ iteration and move to the next."
 (defalias 'nflet! 'stub! "Same as `noflet!'")
 
 (defun oo-autolet-process-iterative-cond (body)
+  "Return a list of (LETB FORM).
+LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
   (let ((letb '())
         (stack (list (cons nil body)))
         (result '())
