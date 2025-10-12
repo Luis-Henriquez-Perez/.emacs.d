@@ -32,12 +32,12 @@
 ;; programs like dired which will override my own.
 (defvar evil-want-keybinding)
 (setq evil-want-keybinding nil)
-;;;; main
-(defun evil|require ()
+
+(defun oo-load-evil-h ()
   "Require `evil'."
   (require 'evil nil t))
 
-(add-hook 'after-init-hook #'evil|require)
+(add-hook 'after-init-hook #'oo-load-evil-h)
 
 (add-hook 'emacs-startup-hook #'evil-mode)
 
