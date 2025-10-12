@@ -272,7 +272,7 @@
         (garbage-collect))))
   (package-vc-install-selected-packages))
 
-(add-hook 'after-init-hook #'oo-install-packages-h -1)
+(oo-install-packages-h)
 ;;; provide
 (provide '110-init-package)
 ;;; 110-init-package.el ends here
