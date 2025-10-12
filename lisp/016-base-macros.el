@@ -106,27 +106,6 @@ This is like `setq' but it is meant for configuring variables."
                                 (funcall it ',symbol ,value-var)
                               (setq ,symbol ,value-var)))))))
 
-(defmacro! defhook! (name args &rest body)
-  "Add function to hook as specified by NAME."
-  (declare (indent defun))
-  (while (aand! (car args) (symbolp it) (not (keywordp it)))
-    (collecting! hooks (pop args)))
-  (when (and args (listp (car args)))
-    (set! fargs (pop args)))
-  (when (stringp (car body))
-    (collecting! metadata (pop body)))
-  (when (equal 'declare (car-safe (car body)))
-    (collecting! metadata (pop body)))
-  (when (keywordp (car args))
-    (setq body (append args body)))
-  (while (keywordp (car body))
-    (appending! add-hook-args (list (pop body) (pop body))))
-  (dolist (hook hooks)
-    (set! out-name (intern (format "oo--%s--%s-h" hook name)))
-    (collecting! hook-forms `(oo-add-hook ',hook it :name ',out-name ,@add-hook-args)))
-  `(alet! (lambda ,fargs ,@metadata (autolet! nil ,@body))
-     ,@hook-forms))
-
 (defmacro! setq-hook! (hooks symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
   (let (forms)

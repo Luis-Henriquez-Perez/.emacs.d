@@ -36,11 +36,13 @@
 (oo-call-after-load 'denote #'denote-rename-buffer-mode)
 ;; Set denote to insert state after entering.
 (declare-function evil-insert-state "evil")
-(defhook! enter-insert-state (denote-after-new-note-hook)
+(defun oo-enter-insert-state-h ()
   "Enter insert state after entering denote buffer."
   ;; (message "LOG %s : %S" (format-time-string "%X") (current-buffer))
   (when (bound-and-true-p evil-mode)
     (evil-insert-state 1)))
+
+(add-hook 'denote-after-new-note-hook #'oo-enter-insert-state-h)
 
 (opt! denote-rename-confirmations nil)
 ;; Add to the kill buffer function telling it to delete the file if the note is empty.

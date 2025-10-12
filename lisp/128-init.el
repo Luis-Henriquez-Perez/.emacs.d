@@ -171,7 +171,7 @@ Replace `kill-buffer--possibly-save' as advice."
 (declare-function Info-copy-current-node-name "info")
 
 ;; This is not enough, the name should also be updated whenever your at a new node.
-(defhook! info-rename-buffer (Info-selection-hook)
+(defun oo-info-rename-buffer-h ()
   "Rename current Info buffer to match its visiting manual."
   (unless (eq major-mode 'Info-mode) (user-error "This is not an Info buffer"))
   (unless (not (string-match-p "^\\*info" (buffer-name)))
@@ -181,6 +181,8 @@ Replace `kill-buffer--possibly-save' as advice."
                      ;; (format "*info %s*" (file-name-base Info-current-file))
                      )
                    'unique)))
+
+(add-hook 'Info-selection-hook #'oo-info-rename-buffer-h)
 ;;;; sh-mode
 (add-hook 'sh-mode-hook #'aggressive-indent-mode)
 ;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))

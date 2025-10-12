@@ -69,32 +69,22 @@
 (add-hook 'after-init-hook #'window-divider-mode 12)
 (add-hook 'oo-first-input-hook #'minibuffer-depth-indicate-mode)
 
-;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
-;; to make it an intercept map for all evil states.  In evil, intercept maps are
-;; maps that take priority (intercept) evil bindings when they have a different
-;; binding for the same key (this is opposed to =overriding-maps=, which completely
-;; override an evil keymap).
-(defvar override-global-map)
-(declare-function evil-make-intercept-map "evil")
-(defhook! make-intercept-map (evil-mode-hook)
-  "Register `oo-override-map' as an intercept map."
-  (require 'bind-key)
-  (evil-make-intercept-map override-global-map 'all t))
-
-(defhook! setup-eval-after-bound-forms (after-init-hook :depth 99)
+(defun oo-setup-eval-after-bound-forms-h ()
   "Call `oo-call-after-load-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
   (oo-eval-after-bound-forms)
   (add-hook 'after-load-functions #'oo-eval-after-bound-forms))
+
+(add-hook 'after-init-hook #'oo-setup-eval-after-bound-forms-h :depth 99)
 ;;;; auto-filling
 (setq-hook! prog-mode-hook normal-auto-fill-function #'oo-progn-autofill-fn)
 
-(defun! oo-progn-autofill-fn ()
+(defun oo-progn-autofill-fn ()
   "Fill only if in a string or comment."
   (when (oo-in-string-or-comment-p) (do-auto-fill)))
 ;;;; emacs-lisp-mode specific
-(defhook! extend-elisp-font-lock (emacs-lisp-mode-hook)
+(defun oo-extend-elisp-font-lock-h ()
   "Add custom font-lock keywords."
   (font-lock-add-keywords
    'emacs-lisp-mode
@@ -104,6 +94,8 @@ file is loaded."
      ("\\_<\\(\\(?:it\\|other\\|this-fn\\)\\)\\_>"
       (1 font-lock-constant-face nil t)))))
 
+(add-hook 'emacs-lisp-mode-hook #'oo-extend-elisp-font-lock-h)
+
 (defun oo-require-base-h ()
   "Load base macros."
   (require! "^0[01]")
@@ -112,17 +104,21 @@ file is loaded."
 (add-hook 'emacs-lisp-mode-hook #'oo-require-base-h)
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
-(defhook! increase-garbage-collection (minibuffer-setup-hook :depth 10)
+(defun oo-increase-garbage-collection-h ()
   "Boost garbage collection settings to `gcmh-high-cons-threshold'."
   (set-register :gc-cons-threshold gc-cons-threshold)
   (set-register :gc-cons-percentage gc-cons-percentage)
   (setq gc-cons-threshold (* 32 1024 1024))
   (setq gc-cons-percentage 0.8))
 
-(defhook! decrease-garbage-collection (minibuffer-exit-hook :depth 90)
+(add-hook 'minibuffer-setup-hook #'oo-increase-garbage-collection-h :depth 10)
+
+(defun oo-decrease-garbage-collection-h ()
   "Reset garbage collection settings to `gcmh-low-cons-threshold'."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
+
+(add-hook 'minibuffer-exit-hook #'oo-decrease-garbage-collection-h :depth 90)
 
 (defun! oo--timer--lower-gc ()
   "Lower garbage collection until it reaches default values."
@@ -148,7 +144,7 @@ file is loaded."
         (oo-log 'trace "Done with timer.")
       (run-with-timer 7 nil #'oo--timer--lower-gc))))
 
-(defhook! restore-startup-values (emacs-startup-hook :depth 90 :level 'info)
+(defun oo-restore-startup-values-h ()
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
   (oo-log 'trace "Restore the value of `file-name-handler-alist'.")
   (setq file-name-handler-alist (get-register :file-name-handler-alist))
@@ -156,6 +152,8 @@ file is loaded."
   (set-register :gc-cons-threshold gc-cons-threshold)
   (oo-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-gc))
+
+(add-hook 'emacs-startup-hook #'oo-restore-startup-values-h :depth 90)
 ;;;; trailing whitespace
 (defun oo-delete-trailing-whitespace-at-line-h ()
   "Delete the trailing whitespace in the buffer except for the current line.
@@ -177,34 +175,42 @@ with a single space."
 (add-hook 'prog-mode-hook #'oo-setup-delete-whitespace-h)
 (add-hook 'text-mode-hook #'oo-setup-delete-whitespace-h)
 ;;;; startup time
-(defhook! record-after-init-hook-start-time (after-init-hook)
+(defun oo-record-after-init-hook-start-time-h ()
   "Record the start of `after-init-hook'."
   :depth -100
   (oo-log 'info "Running `after-init-hook'...")
   (set-register :after-init-start (float-time)))
 
+(add-hook 'after-init-hook #'oo-record-after-init-hook-start-time-h)
+
 (defsubst oo-hundredths (n)
   "Return N rounded to the nearest hundredth."
   (/ (fround (* n 100)) 100.0))
 
-(defhook! record-after-init-hook-end-time (after-init-hook :depth 100)
+(defun! oo-record-after-init-hook-end-time-h ()
   "Record the end of `after-init-hook'."
   (set! start (get-register :after-init-start))
   (set! time (oo-hundredths (- (float-time) start)))
   (set-register :after-init-hook-time time)
   (oo-log 'info "Finished running `after-init-hook' in %.2f seconds" time))
 
-(defhook! record-emacs-startup-hook-start-time (emacs-startup-hook :depth -100)
+(add-hook 'after-init-hook #'oo-record-after-init-hook-end-time-h :depth 100)
+
+(defun oo-record-emacs-startup-hook-start-time-h ()
   "Record the start of `emacs-startup-hook'."
   (oo-log 'info "Running `emacs-startup-hook'...")
   (set-register :emacs-startup-start (float-time)))
 
-(defhook! record-emacs-startup-hook-end-time (emacs-startup-hook :depth 100)
+(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-start-time-h :depth -100)
+
+(defun oo-record-emacs-startup-hook-end-time-h ()
   "Record the end of `emacs-startup-hook'."
   (set! start (get-register :emacs-startup-start))
   (set! time (oo-hundredths (- (float-time) start)))
   (set-register :emacs-startup-hook-time time)
   (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
+
+(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-end-time-h :depth 100)
 
 (unless noninteractive
   (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
@@ -221,7 +227,7 @@ with a single space."
 ;; disable existing themes before enabling new ones even after customizing a
 ;; theme the customization does not persist.  The following hook is to add
 ;; basic.  Honestly I do not know if I.
-(defhook! set-state-faces-from-theme (enable-theme-functions (_))
+(defun! oo-set-state-faces-from-theme-h (_)
   "Set face backgrounds dynamically based on theme faces.
 Specifically for each element (face . built-in-face) in `oo-custom-faces-alist'
 set the background of FACE to the foreground of BUILT-IN-FACE and the foreground
@@ -230,14 +236,16 @@ of FACE to the background color of the `default' face."
     (set! color (face-attribute theme-face :foreground nil 'default))
     (set! bg (face-attribute 'default :background))
     (set-face-attribute face nil :background color :foreground bg)))
+
+(add-hook 'enable-theme-functions #'oo-set-state-faces-from-theme-h)
 ;;;; miscellaneous
 ;; (add-hook 'after-init-hook #'oo-mode-line-mode 90)
 
-;; (defhook! initialize-server (emacs-startup-hook :level 'info)
+;; (defhook! initialize-server (emacs-startup-hook)
 ;;   "Enable server if it is not running."
 ;;   (unless (server-running-p) (server-start)))
 
-(defhook! initialize-config-files (emacs-startup-hook :depth 91 :level 'info)
+(defun oo-initialize-config-files-h ()
   "Setup config files to be loaded after their feature."
   (set! lisp-dir (expand-file-name "lisp/" user-emacs-directory))
   (set! rx "\\`990-config-\\([^[:space:]]+\\)\\.el\\'")
@@ -261,6 +269,8 @@ of FACE to the background color of the `default' face."
                                    (oo-log 'error "feature %s raised an error" ',feature)
                                    (signal (car err) (cdr err))))))
            (oo-call-after-load parent-feature fn)))))
+
+(add-hook 'emacs-startup-hook #'oo-initialize-config-files-h :depth 91)
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here

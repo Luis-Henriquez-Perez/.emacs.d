@@ -99,12 +99,12 @@
 ;; beyond moving to one forward unit.  So I have made the controversial decision
 ;; to rebind.
 
-(nvmap! "w" #'evilem|motion-beginning-of-word)
-(nvmap! "e" #'evilem|motion-end-of-word)
-(nvmap! "W" #'evilem|motion-beginning-of-WORD)
-(nvmap! "E" #'evilem|motion-end-of-WORD)
-(nvmap! "f" #'evilem|motion-char)
-(nvmap! "H" #'evilem|motion-beginning-of-line)
+;; (nvmap! "w" #'evilem|motion-beginning-of-word)
+;; (nvmap! "e" #'evilem|motion-end-of-word)
+;; (nvmap! "W" #'evilem|motion-beginning-of-WORD)
+;; (nvmap! "E" #'evilem|motion-end-of-WORD)
+;; (nvmap! "f" #'evilem|motion-char)
+;; (nvmap! "H" #'evilem|motion-beginning-of-line)
 
 (nvmap! "g b" #'evil|eval-print-operator)
 (nvmap! "g p" #'evil|eval-print-operator)

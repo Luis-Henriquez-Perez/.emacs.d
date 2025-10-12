@@ -28,10 +28,12 @@
 (autoload 'cape-dabbrev "cape" nil nil 'function)
 (autoload 'cape-file "cape" nil nil 'function)
 
-(defhook! initialize-capfs (org-mode-hook)
+(defun oo-init-org-capfs-h ()
   "Initialize `completion-at-point-functions' for `org-mode'."
   (add-hook 'completion-at-point-functions #'cape-dabbrev 10 'local)
   (add-hook 'completion-at-point-functions #'cape-file 11 'local))
+
+(add-hook 'org-mode-hook #'oo-init-org-capfs-h)
 ;;; provide
 (provide '130-init-cape)
 ;;; 130-init-cape.el ends here
