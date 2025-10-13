@@ -54,6 +54,8 @@
   (evil-make-intercept-map override-global-map 'all t))
 
 (add-hook 'evil-mode-hook #'oo-make-intercept-map-h)
+
+(oo-require-after-load 'evil '990-config-evil)
 ;;; provide
 (provide '130-init-evil)
 ;;; 130-init-evil.el ends here

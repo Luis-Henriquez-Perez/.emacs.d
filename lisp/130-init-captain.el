@@ -37,6 +37,8 @@
 (declare-function +captain--prog-mode-sentence-start "990-config-captain")
 (setq-hook! prog-mode-hook captain-predicate #'always)
 (setq-hook! prog-mode-hook captain-sentence-start-function #'+captain--prog-mode-sentence-start)
+
+(oo-require-after-load 'captain '990-config-captain)
 ;;; provide
 (provide '130-init-captain)
 ;;; 130-init-captain.el ends here
