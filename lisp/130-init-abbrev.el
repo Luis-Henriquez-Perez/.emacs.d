@@ -26,26 +26,51 @@
 ;;
 ;;; Code:
 (require! "^0[01]")
-;;;; hooks
+
+(declare-function abbrev|in-text-p "lib-abbrev")
+(declare-function abbrev|insert-period-maybe-a "lib-abbrev")
+(declare-function abbrev|pulse-expand-a "lib-abbrev")
+(declare-function abbrev|ensure-post-insert-a "lib-abbrev")
+(declare-function abbrev|write-abbrev-file-a "lib-abbrev")
+
+(autoload 'abbrev|in-text-p "lib-abbrev" nil nil 'function)
+(autoload 'abbrev|insert-period-maybe-a "lib-abbrev" nil nil 'function)
+(autoload 'abbrev|pulse-expand-a "lib-abbrev" nil nil 'function)
+(autoload 'abbrev|ensure-post-insert-a "lib-abbrev" nil nil 'function)
+(autoload 'abbrev|write-abbrev-file-a "lib-abbrev" nil nil 'function)
+
+;; Write abbrevs to files my way
+(setq save-abbrevs 'silently)
+
+(add-hook 'prog-mode-hook #'abbrev-mode)
+(add-hook 'text-mode-hook #'abbrev-mode)
+
+;; Prevent greedy expansion with `backward-word'
+(abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
+;; PARENT TABLES
+(abbrev-table-put text-mode-abbrev-table :enable-function  #'abbrev|in-text-p)
+(abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
+
 (defun oo-load-abbrevs-h ()
   "Load abbrev files.
 This function is designed to be added to `abbrev-mode-hook'.  It loads all my
 abbrevs and removes itself from the hook."
   ;; Abbrevs are loaded at startup so to properly defer this I need to load my
   ;; configuration when abbrev-mode is enabled.
-  (require '990-abbrev-configuration)
   (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
-
 (add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
 
-(add-hook 'prog-mode-hook #'abbrev-mode)
-(add-hook 'text-mode-hook #'abbrev-mode)
-;;;; Do not read abbrev at startup
+;; These do not need to be autoloaded because they will only ever happen when
+;; abbrev-mode is already enabled.
+(advice-add 'abbrev--default-expand :around #'abbrev|insert-period-maybe-a)
+(advice-add 'abbrev--default-expand :around #'abbrev|pulse-expand-a)
+(advice-add 'abbrev--default-expand :around #'abbrev|ensure-post-insert-a)
+(advice-add 'write-abbrev-file :around #'abbrev|write-abbrev-file-a)
+
 ;; Do not read the abbrev files at startup because I already load them myself.
+;; Emacs loads abbrevs so fast.
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
-;;;; Write abbrevs to files my way
-(setq save-abbrevs 'silently)
 ;;; provide
 (provide '130-init-abbrev)
 ;;; 130-init-abbrev.el ends here
