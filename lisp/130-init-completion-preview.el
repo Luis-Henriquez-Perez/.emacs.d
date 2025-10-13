@@ -31,10 +31,6 @@
 
 (opt! completion-preview-minimum-symbol-length 1)
 (opt! completion-preview-commands (cl-adjoin 'org-self-insert-command completion-preview-commands))
-
-(opt! dabbrev-check-all-buffers nil)
-(opt! dabbrev-case-fold-search t)
-(opt! dabbrev-check-other-buffers nil)
 ;;; provide
 (provide '130-init-completion-preview)
 ;;; 130-init-completion-preview.el ends here
