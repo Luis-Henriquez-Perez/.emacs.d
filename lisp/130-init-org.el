@@ -27,12 +27,14 @@
 ;;; Code:
 ;;;; requirements
 (require! "^0[01]")
-;;;; Idle features
+
 (each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
             org-keys oc org-table org-fold org-cycle)
   (push it oo-idle-features))
-;;;; org-agenda
+
 (autoload '+org-agenda-day-view "990-config-org-agenda" nil nil 'function)
+
+(oo-require-after-load 'org '990-config-org)
 ;;; provide
 (provide '130-init-org)
 ;;; 130-init-org.el ends here

@@ -72,6 +72,8 @@
 (autoload 'org-capture|choose-template "990-config-org-capture" nil nil 'function)
 
 (alt! org-capture org-capture|choose-template org-capture)
+
+(oo-call-after-load 'org-capture '990-config-org-capture)
 ;;;;; ORG-REFILE
 (setq org-refile-allow-creating-parent-nodes t)
 ;; The variable =org-refile-targets= specifies the places from which information
