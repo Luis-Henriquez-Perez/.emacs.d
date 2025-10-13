@@ -65,6 +65,17 @@ If SYMBOL is already bound FN is called immediately."
          (when it
            (eval (macroexp-progn (nreverse it)) 'lexical)
            (remhash ',feature oo-after-load-forms))))))
+
+(defun oo-require-config (feature)
+  "Load and log the loading of FEATURE."
+  (condition-case err
+      (aprog1! (time-elapsed! (require feature))
+        (oo-log 'info "Applied configuration to %s in %0.2f seconds" feature it))
+    (oo-log 'error "Failed apply configuration %s : %S -> %S" feature (car err) (cdr err))))
+
+(defun oo-require-after-load (feature1 feature2)
+  "Load FEATURE2 at FEATURE1 has been loaded."
+  (oo-call-after-load feature1 (apply-partially #'oo-require-config feature2)))
 ;;; provide
 (provide '015-call-after-functions)
 ;;; 015-call-after-functions.el ends here
