@@ -48,6 +48,8 @@
 (advice-add #'eshell-unload-all-modules :around #'oo-call-quietly-a)
 
 (advice-add #'eshell-mode :around #'oo-call-quietly-a)
+
+(oo-require-after-load 'eshell '990-config-eshell)
 ;;; provide
 (provide '130-init-eshell)
 ;;; 130-init-eshell.el ends here
