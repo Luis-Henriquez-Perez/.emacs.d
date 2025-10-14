@@ -51,15 +51,6 @@
 (abbrev-table-put text-mode-abbrev-table :enable-function  #'abbrev|in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 
-(defun oo-load-abbrevs-h ()
-  "Load abbrev files.
-This function is designed to be added to `abbrev-mode-hook'.  It loads all my
-abbrevs and removes itself from the hook."
-  ;; Abbrevs are loaded at startup so to properly defer this I need to load my
-  ;; configuration when abbrev-mode is enabled.
-  (remove-hook 'abbrev-mode-hook #'oo-load-abbrevs-h))
-(add-hook 'abbrev-mode-hook #'oo-load-abbrevs-h)
-
 ;; These do not need to be autoloaded because they will only ever happen when
 ;; abbrev-mode is already enabled.
 (advice-add 'abbrev--default-expand :around #'abbrev|insert-period-maybe-a)
