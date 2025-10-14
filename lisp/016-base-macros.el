@@ -106,15 +106,13 @@ This is like `setq' but it is meant for configuring variables."
                                 (funcall it ',symbol ,value-var)
                               (setq ,symbol ,value-var)))))))
 
-(defmacro! setq-hook! (hooks symbol value)
+(defmacro! setq-hook! (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (let (forms)
-    (dolist (hook (ensure-list hooks))
-      (set! name (intern (format "oo--%s--set-local-var--%s" hook symbol)))
-      (set! lambda `(lambda () (setq-local ,symbol ,value)))
-      ;; (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
-      (push `(oo-add-hook ',hook #',lambda :name ',name) forms))
-    `(progn ,@(nreverse forms))))
+  (set! name (intern (format "oo--%s--set-local-var--%s" hook symbol)))
+  (set! lambda `(lambda () (setq-local ,symbol ,value)))
+  ;; (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
+  (appending! forms `((fset ',name ,lambda) (add-hook ',hook #',name)))
+  (macroexp-progn (nreverse forms)))
 
 (declare-function tempel-insert "tempel")
 (defmacro! deftempel! (name &rest body)

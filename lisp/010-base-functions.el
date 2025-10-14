@@ -188,50 +188,6 @@ Return a list of."
         (decl (and (equal 'declare (car-safe (car args))) (pop args)))
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
     (list name arglist (remove nil (list doc decl inte)) args)))
-;;;; miscellaneous
-;; ;; Instead of adding hooks normally, create just one hook.  The complaint about
-;; ;; this is this could be over-engineering but it is important to me to have
-;; ;; complete control of how hooks are run.  This offers two advantages.  One is
-;; ;; you can run hooks the way you want to, as in with error handling.  Two is
-;; ;; that it is trivial to remove all or any user defined hooks.
-;; (defvar oo-hook-alist nil
-;;   "An alist of hook and hook symbols.")
-
-;; (defun oo-add-hook-1 (hook fn &optional depth local time-p log-p)
-;;   "Add hook."
-;;   (let ((user-hook (gensym hook)))
-;;     (cl-pushnew (cons hook user-hook) oo-user-hook-alist :test #'car)
-;;     (add-hook user-hook fn depth local)
-;;     ;; Define function for running hook.
-;;     ()
-;;     ;; Add the function to the actual hook instead of function.
-;;     (add-hook hook run-hook-fn)))
-
-;; (defun oo-remove-hook-1 (hook fn)
-;;   "Remove hook."
-;;   (remove-hook (alist-get hook oo-user-hook-alist) fn))
-
-(cl-defun oo-add-hook (hook fn &key depth local name expire ignore-args (level 'trace))
-  "Generate a hook function for HOOK calls FN.
-If name is given, bind resulting function to NAME and return NAME.
-If expire is non-nil, make the hook do nothing after it is called once.
-LOG-LEVEL is the log.  If LOG-LEVEL is nil, there is no log."
-  (setq name (if (and (not name) (symbolp fn)) (intern (format "oo--%s--%s-h" hook fn)) name))
-  (let ((fn `(lambda (&rest args)
-               (ignore args)
-               (when ',level (oo-log ',level "HOOK: %s -> %s" ',hook ',fn))
-               (condition-case err
-                   (prog1 ,(if ignore-args `(funcall ',fn) `(apply ',fn args))
-                     (when ,expire
-                       (oo-log 'success "Removing %s from %s" ',name ',hook)
-                       (remove-hook ',hook ',name ,local)))
-                 (error
-                  (if oo-debug-p
-                      (signal (car err) (cdr err))
-                    (oo-log 'error "%s : %s : %s -> %s" #',fn ',hook (car err) (cdr err))))))))
-    (setq fn (if name (progn (fset name fn) name) fn))
-    (add-hook hook fn depth local)
-    fn))
 ;;; provide
 (provide '010-base-functions)
 ;;; 010-base-functions.el ends here
