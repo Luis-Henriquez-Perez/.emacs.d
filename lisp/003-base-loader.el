@@ -64,7 +64,7 @@ FEATURE."
                          ,(macroexp-progn forms)))))
        (setq forms `((if oo-init-profile-p
                          (aprog1! (time-elapsed! ,(macroexp-progn forms))
-                           (oo-log 'info "Required %s in %.2f seconds" ',feature it)
+                           (oo-log 'success "Required %s in %.2f seconds" ',feature it)
                            (push (list ',feature it) oo-init-data))
                        ,(macroexp-progn forms))))
        ;; Ensure main forms are not evaluated more than once.

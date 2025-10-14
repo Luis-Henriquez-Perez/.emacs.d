@@ -37,18 +37,31 @@ The --debug-init flag and setting the DEBUG envar will enable this at startup.")
   "Function that formats the log messsage.")
 
 (defvar oo-log-level-alist '((fatal . 6)
+                             (failure . 5)
                              (error . 5)
                              (warn  . 4)
+                             (success . 3)
                              (info  . 3)
                              (debug . 2)
                              (trace . 1))
   "Alist of log level value.")
 
+;; Define log icons for success and failure
+(defvar oo-log-icons '((success . "🟢")  ; Green Circle for success
+                       (failure . "🔴")  ; Red Circle for failure
+                       (warn    . "🟠")  ; Orange Circle for warnings
+                       (info    . "🔵")  ; Blue Circle for info
+                       (debug   . "🟣")  ; Purple Circle for debug
+                       (trace   . "⚪")) ; White Circle for trace
+  "Alist of icons to display based on the log level.")
+
 (defvar oo-log-level 3
   "Current log level.")
 
 (defun oo--default-log-formatter (type message meta)
-  (format "[%s] %s" (upcase (symbol-name type)) (apply #'format message meta)))
+  (let* ((icon (alist-get type oo-log-icons))
+         (indicator (or icon (format "[%s]" (upcase (symbol-name type))))))
+    (format "%s %s" indicator (apply #'format message meta))))
 
 (defun oo-startup-format-fn (start-time type message meta)
   (let ((time (float-time (time-subtract (current-time) start-time))))

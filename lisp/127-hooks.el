@@ -192,7 +192,7 @@ with a single space."
   (set! start (get-register :after-init-start))
   (set! time (oo-hundredths (- (float-time) start)))
   (set-register :after-init-hook-time time)
-  (oo-log 'info "Finished running `after-init-hook' in %.2f seconds" time))
+  (oo-log 'success "Finished running `after-init-hook' in %.2f seconds" time))
 
 (add-hook 'after-init-hook #'oo-record-after-init-hook-end-time-h 100)
 
@@ -208,7 +208,7 @@ with a single space."
   (set! start (get-register :emacs-startup-start))
   (set! time (oo-hundredths (- (float-time) start)))
   (set-register :emacs-startup-hook-time time)
-  (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
+  (oo-log 'success "Finished running `emacs-startup-hook' in %.2f seconds" time))
 
 (add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-end-time-h 100)
 
