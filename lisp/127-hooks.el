@@ -244,33 +244,6 @@ of FACE to the background color of the `default' face."
 ;; (defhook! initialize-server (emacs-startup-hook)
 ;;   "Enable server if it is not running."
 ;;   (unless (server-running-p) (server-start)))
-
-(defun oo-initialize-config-files-h ()
-  "Setup config files to be loaded after their feature."
-  (set! lisp-dir (expand-file-name "lisp/" user-emacs-directory))
-  (set! rx "\\`990-config-\\([^[:space:]]+\\)\\.el\\'")
-  (dolist (path (directory-files lisp-dir t rx))
-    (set! filename (file-name-nondirectory (directory-file-name path)))
-    (string-match rx filename)
-    (set! parent-feature (intern (match-string 1 filename)))
-    (set! feature (intern (file-name-sans-extension filename)))
-    (cond ((featurep parent-feature)
-           (oo-log 'info "Requiring `%S' because `%s' is loaded" feature parent-feature)
-           (condition-case err
-               (require feature)
-             (error
-              (oo-log 'error "feature %s raised an error" feature)
-              (signal (car err) (cdr err)))))
-          (t
-           (oo-log 'trace "Deferring `%s' until parent feature, `%s', is loaded." feature parent-feature)
-           (set! fn `(lambda () (condition-case err
-                                    (require ',feature)
-                                  (error
-                                   (oo-log 'error "feature %s raised an error" ',feature)
-                                   (signal (car err) (cdr err))))))
-           (oo-call-after-load parent-feature fn)))))
-
-(add-hook 'emacs-startup-hook #'oo-initialize-config-files-h 91)
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here
