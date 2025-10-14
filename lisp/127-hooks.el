@@ -76,7 +76,7 @@ file is loaded."
   (oo-eval-after-bound-forms)
   (add-hook 'after-load-functions #'oo-eval-after-bound-forms))
 
-(add-hook 'after-init-hook #'oo-setup-eval-after-bound-forms-h :depth 99)
+(add-hook 'after-init-hook #'oo-setup-eval-after-bound-forms-h 99)
 ;;;; auto-filling
 (setq-hook! prog-mode-hook normal-auto-fill-function #'oo-progn-autofill-fn)
 
@@ -111,14 +111,14 @@ file is loaded."
   (setq gc-cons-threshold (* 32 1024 1024))
   (setq gc-cons-percentage 0.8))
 
-(add-hook 'minibuffer-setup-hook #'oo-increase-garbage-collection-h :depth 10)
+(add-hook 'minibuffer-setup-hook #'oo-increase-garbage-collection-h 10)
 
 (defun oo-decrease-garbage-collection-h ()
   "Reset garbage collection settings to `gcmh-low-cons-threshold'."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
 
-(add-hook 'minibuffer-exit-hook #'oo-decrease-garbage-collection-h :depth 90)
+(add-hook 'minibuffer-exit-hook #'oo-decrease-garbage-collection-h 90)
 
 (defun! oo--timer--lower-gc ()
   "Lower garbage collection until it reaches default values."
@@ -153,7 +153,7 @@ file is loaded."
   (oo-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'oo--timer--lower-gc))
 
-(add-hook 'emacs-startup-hook #'oo-restore-startup-values-h :depth 90)
+(add-hook 'emacs-startup-hook #'oo-restore-startup-values-h 90)
 ;;;; trailing whitespace
 (defun oo-delete-trailing-whitespace-at-line-h ()
   "Delete the trailing whitespace in the buffer except for the current line.
@@ -194,14 +194,14 @@ with a single space."
   (set-register :after-init-hook-time time)
   (oo-log 'info "Finished running `after-init-hook' in %.2f seconds" time))
 
-(add-hook 'after-init-hook #'oo-record-after-init-hook-end-time-h :depth 100)
+(add-hook 'after-init-hook #'oo-record-after-init-hook-end-time-h 100)
 
 (defun oo-record-emacs-startup-hook-start-time-h ()
   "Record the start of `emacs-startup-hook'."
   (oo-log 'info "Running `emacs-startup-hook'...")
   (set-register :emacs-startup-start (float-time)))
 
-(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-start-time-h :depth -100)
+(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-start-time-h -100)
 
 (defun oo-record-emacs-startup-hook-end-time-h ()
   "Record the end of `emacs-startup-hook'."
@@ -210,7 +210,7 @@ with a single space."
   (set-register :emacs-startup-hook-time time)
   (oo-log 'info "Finished running `emacs-startup-hook' in %.2f seconds" time))
 
-(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-end-time-h :depth 100)
+(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-end-time-h 100)
 
 (unless noninteractive
   (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
@@ -270,7 +270,7 @@ of FACE to the background color of the `default' face."
                                    (signal (car err) (cdr err))))))
            (oo-call-after-load parent-feature fn)))))
 
-(add-hook 'emacs-startup-hook #'oo-initialize-config-files-h :depth 91)
+(add-hook 'emacs-startup-hook #'oo-initialize-config-files-h 91)
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here
