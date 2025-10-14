@@ -150,7 +150,6 @@
                                   no-littering
                                   noccur
                                   notmuch
-                                  one-themes
                                   orderless
                                   org
                                   org-appear
