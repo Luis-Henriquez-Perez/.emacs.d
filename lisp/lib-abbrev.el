@@ -31,7 +31,7 @@
 (require '910-emacs-lisp-mode-abbrev-table)
 ;;;; PREDICATES
 ;;;;; MODAL
-(defun! abbrev|in-text-p ()
+(defun! oo-abbrev-in-text-p ()
   "Return non-nil when text-mode abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
@@ -50,17 +50,17 @@ string or comment."
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
 
-(defun abbrev|in-org-p ()
+(defun oo-abbrev-in-org-p ()
   "Return non-nil if the current buffer is in org-mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'org-mode))
 
-(defun abbrev|in-elisp-mode-p ()
+(defun oo-abbrev-in-elisp-mode-p ()
   "Return non-nil if current buffer is in emacs-lisp mode."
   (declare (pure t) (side-effect-free error-free))
   (derived-mode-p 'emacs-lisp-mode))
 
-(defun abbrev|in-elisp-code-p ()
+(defun oo-abbrev-in-elisp-code-p ()
   "Return non-nil if current buffer is elisp code."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'emacs-lisp-mode)
@@ -69,7 +69,7 @@ string or comment."
        ;; I do not want that to be expanded.
        (word-at-point)))
 
-(defun abbrev|in-elisp-comment-p ()
+(defun oo-abbrev-in-elisp-comment-p ()
   "Return non-nil if currently in an emacs-lisp comment."
   (declare (pure t) (side-effect-free error-free))
   (and (derived-mode-p 'emacs-lisp-mode)
@@ -78,7 +78,7 @@ string or comment."
 ;; Some abbrevs I do not want to expand if they are immediately preceded by a
 ;; non-space character.  For example, I want "emacs" to expand into "Emacs" but
 ;; not when in a symbol like `user-emacs-directory'.
-(defun! abbrev|part-of-another-word-p ()
+(defun! oo-abbrev-part-of-another-word-p ()
   "Return non-nil if current abbrev is part of another word."
   (declare (pure t) (side-effect-free error-free))
   (set! rx (rx-to-string `(seq (1+ (not blank)) ,(symbol-name last-abbrev) (0+ blank))))
@@ -86,7 +86,7 @@ string or comment."
 ;;;;; DO NOT EXPAND ESCAPE CHARACTERS
 ;; Do not expand single letter abbrevs when they are meant to be used as escape
 ;; characters.
-(defun abbrev|escape-char-p ()
+(defun oo-abbrev-escape-char-p ()
   "Return non-nil if what was typed was an escape character."
   (declare (pure t) (side-effect-free error-free))
   (not (and (equal 'string (oo-in-string-or-comment-p))
@@ -100,7 +100,7 @@ string or comment."
 ;; it is converted into period space space.  Additionally, if I end a sentence
 ;; line with two spaces and I press ESC, the trailing two spaces are replaced
 ;; with a period.
-(defun! abbrev|insert-period-maybe-a (expand-fn)
+(defun! oo-abbrev-insert-period-maybe-a (expand-fn)
   "Add a period when necessary."
   (prog1 (funcall expand-fn)
     (when (or (member major-mode '(org-mode text-mode)) (oo-in-string-or-comment-p))
@@ -113,7 +113,7 @@ string or comment."
 ;;;;; PULSE EXPANSION
 ;; You would be surprised at how much of an aesthetic improvement little things
 ;; like this can make a difference.
-(defun! abbrev|pulse-expand-a (expand-fn)
+(defun! oo-abbrev-pulse-expand-a (expand-fn)
   "Pulse around the expansion of an abbrev."
   (aprog1! (funcall expand-fn)
     (and it
@@ -126,7 +126,7 @@ string or comment."
 ;; captializes a word during `post-insert-hook' and a multi-word expansion will
 ;; skip calling that hook after each word except the last one.  So here I call
 ;; the hook myself at the proper places.
-(defun! abbrev|ensure-post-insert-a (expand-fn)
+(defun! oo-abbrev-ensure-post-insert-a (expand-fn)
   "Run `post-insert-hook' after each word in a multi-word expansion."
   (aprog1! (funcall expand-fn)
     (when (and it last-abbrev-location)
@@ -135,7 +135,7 @@ string or comment."
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
 ;;;;; WRITING THE ABBREV FILE
-(defun! abbrev|table-string (table)
+(defun! oo-abbrev-table-string (table)
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
   (set! abbrevs '())
   (set! name (symbol-name table))
@@ -177,7 +177,7 @@ string or comment."
     (insert-at-column (current-column) "))")
     (buffer-string)))
 
-(defun! abbrev|update-abbrev-tables ()
+(defun! oo-abbrev-update-abbrev-tables ()
   "Update abbrev tables and commit changes."
   (dolist (table abbrev-table-name-list)
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
@@ -193,7 +193,7 @@ string or comment."
               (forward-sexp)
               (delete-region beg (point))
               (goto-char beg)
-              (insert (abbrev|table-string table)))
+              (insert (oo-abbrev-table-string table)))
             (save-buffer)
             (when (equal 'edited (vc-state file))
               (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
@@ -203,9 +203,9 @@ string or comment."
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))
 
-(defun abbrev|write-abbrev-file-a (&rest _)
+(defun oo-abbrev-write-abbrev-file-a (&rest _)
   "Override `write-abbrev-file' with my own function."
-  (quiet! (abbrev|update-abbrev-tables))
+  (quiet! (oo-abbrev-update-abbrev-tables))
   (oo-log 'trace "Updating abbrevs."))
 ;; This is a bit crude.  It would be precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it

@@ -27,17 +27,17 @@
 ;;; Code:
 (require! "^0[01]")
 
-(declare-function abbrev|in-text-p "lib-abbrev")
-(declare-function abbrev|insert-period-maybe-a "lib-abbrev")
-(declare-function abbrev|pulse-expand-a "lib-abbrev")
-(declare-function abbrev|ensure-post-insert-a "lib-abbrev")
-(declare-function abbrev|write-abbrev-file-a "lib-abbrev")
+(declare-function oo-abbrev-in-text-p "lib-abbrev")
+(declare-function oo-abbrev-insert-period-maybe-a "lib-abbrev")
+(declare-function oo-abbrev-pulse-expand-a "lib-abbrev")
+(declare-function oo-abbrev-ensure-post-insert-a "lib-abbrev")
+(declare-function oo-abbrev-write-abbrev-file-a "lib-abbrev")
 
-(autoload 'abbrev|in-text-p "lib-abbrev" nil nil 'function)
-(autoload 'abbrev|insert-period-maybe-a "lib-abbrev" nil nil 'function)
-(autoload 'abbrev|pulse-expand-a "lib-abbrev" nil nil 'function)
-(autoload 'abbrev|ensure-post-insert-a "lib-abbrev" nil nil 'function)
-(autoload 'abbrev|write-abbrev-file-a "lib-abbrev" nil nil 'function)
+(autoload 'oo-abbrev-in-text-p "lib-abbrev" nil nil 'function)
+(autoload 'oo-abbrev-insert-period-maybe-a "lib-abbrev" nil nil 'function)
+(autoload 'oo-abbrev-pulse-expand-a "lib-abbrev" nil nil 'function)
+(autoload 'oo-abbrev-ensure-post-insert-a "lib-abbrev" nil nil 'function)
+(autoload 'oo-abbrev-write-abbrev-file-a "lib-abbrev" nil nil 'function)
 
 ;; Write abbrevs to files my way
 (setq save-abbrevs 'silently)
@@ -48,15 +48,15 @@
 ;; Prevent greedy expansion with `backward-word'
 (abbrev-table-put global-abbrev-table :regexp "\\<\\(\\sw+\\)\\Sw*")
 ;; PARENT TABLES
-(abbrev-table-put text-mode-abbrev-table :enable-function  #'abbrev|in-text-p)
+(abbrev-table-put text-mode-abbrev-table :enable-function  #'oo-abbrev-in-text-p)
 (abbrev-table-put global-abbrev-table :parents (list text-mode-abbrev-table emacs-lisp-mode-abbrev-table))
 
 ;; These do not need to be autoloaded because they will only ever happen when
 ;; abbrev-mode is already enabled.
-(advice-add 'abbrev--default-expand :around #'abbrev|insert-period-maybe-a)
-(advice-add 'abbrev--default-expand :around #'abbrev|pulse-expand-a)
-(advice-add 'abbrev--default-expand :around #'abbrev|ensure-post-insert-a)
-(advice-add 'write-abbrev-file :around #'abbrev|write-abbrev-file-a)
+(advice-add 'abbrev--default-expand :around #'oo-abbrev-insert-period-maybe-a)
+(advice-add 'abbrev--default-expand :around #'oo-abbrev-pulse-expand-a)
+(advice-add 'abbrev--default-expand :around #'oo-abbrev-ensure-post-insert-a)
+(advice-add 'write-abbrev-file :around #'oo-abbrev-write-abbrev-file-a)
 
 ;; Do not read the abbrev files at startup because I already load them myself.
 ;; Emacs loads abbrevs so fast.
