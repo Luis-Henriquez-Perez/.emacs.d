@@ -3100,7 +3100,6 @@
     ("indefinately" "indefinitely")
     ("indefineable" "undefinable")
     ("indefinitly" "indefinitely")
-    ("indentatoin" "indentation")
     ("indentical" "identical")
     ("indepedantly" "independently")
     ("indepedence" "independence")
