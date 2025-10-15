@@ -43,7 +43,6 @@
 (require! 130-init-aggressive-indent)
 (require! 130-init-auto-insert)
 (require! 130-init-avy)
-;; (require! 130-init-buffer-terminator)
 (require! 130-init-burly)
 (require! 130-init-cape)
 (require! 130-init-captain)
