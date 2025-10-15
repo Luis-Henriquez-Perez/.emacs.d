@@ -79,6 +79,8 @@
 (advice-add 'oo-evil-eval-operator						:around #'oo-require-evil-goggles-a)
 (advice-add 'oo-evil-eval-replace-operator				:around #'oo-require-evil-goggles-a)
 (advice-add 'oo-evil-eval-print-operator                  :around #'oo-require-evil-goggles-a)
+
+(oo-require-after-load 'evil-goggles '990-config-evil-goggles)
 ;;; provide
 (provide '130-init-evil-goggles)
 ;;; 130-init-evil-goggles.el ends here
