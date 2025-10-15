@@ -199,6 +199,24 @@
                                      (outli :url "https://github.com/jdtsmith/outli")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
+(defvar oo-package-alist-cache (expand-file-name "package-alist" oo-cache-dir)
+  "Cache for package descriptors.")
+
+(defun oo-update-package-alist-cache ()
+  (interactive)
+  (with-temp-file oo-package-alist-cache
+    (prin1 package-alist (current-buffer))))
+
+(defun oo-update-package-alist-cache-a (orig-fn &rest args)
+  "Update the package descriptor cache."
+  (prog1 (apply orig-fn args)
+    (with-temp-file oo-package-alist-cache
+      (prin1 package-alist (current-buffer)))))
+
+(advice-add 'package-install :around #'oo-update-package-alist-cache-a)
+;; I am not sure whether I need to update the cache after the package deletion.
+(advice-add 'package-delete :around #'oo-update-package-alist-cache-a)
+
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem for me.
 
@@ -219,15 +237,15 @@
   ;; (package-load-all-descriptors)
   ;; I need to update the cache when I install a package and only then can I use
   ;; this cache code to save a bit more startup time.
-  (package-load-all-descriptors)
-  ;; (let ((cache (expand-file-name "package-alist" oo-cache-dir)))
-  ;;   (if (file-exists-p cache)
-  ;;       (setq package-alist (with-temp-buffer
-  ;;                             (insert-file-contents cache)
-  ;;                             (read (current-buffer))))
-  ;;     (package-load-all-descriptors)
-  ;;     (with-temp-file cache
-  ;;       (prin1 package-alist (current-buffer)))))
+  ;; (package-load-all-descriptors)
+  (let ((cache oo-package-alist-cache))
+    (if (file-exists-p cache)
+        (setq package-alist (with-temp-buffer
+                              (insert-file-contents cache)
+                              (read (current-buffer))))
+      (package-load-all-descriptors)
+      (with-temp-file cache
+        (prin1 package-alist (current-buffer)))))
   (setq package--initialized t)
   (package-activate-all)
   (package--build-compatibility-table)
