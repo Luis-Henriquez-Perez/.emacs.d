@@ -30,8 +30,6 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-(require 'early-init)
-
 (require! 110-init-package)
 (require! 120-init-no-littering)
 (require! 127-hooks)
