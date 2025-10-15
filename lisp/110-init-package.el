@@ -183,6 +183,8 @@
                                   transpose-frame
                                   transwin
                                   try
+                                  mistty
+                                  gcmh
                                   ts
                                   vc-auto-commit
                                   vertico
