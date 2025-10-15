@@ -1,4 +1,4 @@
-;;; 130-init-cape.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; lib-cape.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -25,13 +25,15 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(autoload 'cape-dabbrev "cape" nil nil 'function)
-(autoload 'cape-file "cape" nil nil 'function)
-(autoload 'oo-init-org-capfs-h "lib-cape" nil nil 'function)
-(autoload 'oo-init-prog-capfs-h "lib-cape" nil nil 'function)
+(defun oo-init-org-capfs-h ()
+  "Initialize `completion-at-point-functions' for `org-mode'."
+  (add-hook 'completion-at-point-functions #'cape-dabbrev 10 'local)
+  (add-hook 'completion-at-point-functions #'cape-file 11 'local))
 
-(add-hook 'org-mode-hook #'oo-init-org-capfs-h)
-(add-hook 'prog-mode-hook #'oo-init-prog-capfs)
+(defun oo-init-prog-capfs ()
+  "Initialize `completion-at-point-functions' for `prog-mode'."
+  (add-hook 'completion-at-point-functions #'cape-file nil 'local)
+  (add-hook 'completion-at-point-functions #'cape-dabbrev nil 'local))
 ;;; provide
-(provide '130-init-cape)
-;;; 130-init-cape.el ends here
+(provide 'lib-cape)
+;;; lib-cape.el ends here
