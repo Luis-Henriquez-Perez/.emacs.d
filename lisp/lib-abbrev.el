@@ -82,7 +82,7 @@ string or comment."
   "Return non-nil if current abbrev is part of another word."
   (declare (pure t) (side-effect-free error-free))
   (set! rx (rx-to-string `(seq (1+ (not blank)) ,(symbol-name last-abbrev) (0+ blank))))
-  (not (looking-back rx)))
+  (not (looking-back rx (line-beginning-position))))
 ;;;;; DO NOT EXPAND ESCAPE CHARACTERS
 ;; Do not expand single letter abbrevs when they are meant to be used as escape
 ;; characters.
