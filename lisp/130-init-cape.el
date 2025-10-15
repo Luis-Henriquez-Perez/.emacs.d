@@ -32,7 +32,7 @@
 (autoload 'oo-init-prog-capfs-h "lib-cape" nil nil 'function)
 
 (add-hook 'org-mode-hook #'oo-init-org-capfs-h)
-(add-hook 'prog-mode-hook #'oo-init-prog-capfs)
+(add-hook 'prog-mode-hook #'oo-init-prog-capfs-h)
 ;;; provide
 (provide '130-init-cape)
 ;;; 130-init-cape.el ends here
