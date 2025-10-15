@@ -45,20 +45,6 @@
 (add-hook 'denote-after-new-note-hook #'oo-enter-insert-state-h)
 
 (opt! denote-rename-confirmations nil)
-;; Add to the kill buffer function telling it to delete the file if the note is empty.
-;; How do I determine if the note is empty?
-;; I need to go past the front matter and check the buffer.
-
-;; (defhook! delete-file-if-empty (kill-buffer-hook)
-;;   ()
-;;   )
-;; Name buffers after their.
-;; (opt! denote-rename-buffer-function #'denote-rename-buffer)
-
-;; (defun! +denote-rename-buffer (&optional buffer)
-;;   (set! file (buffer-file-name file))
-;;   (set! title (denote-retrieve-front-matter-title-value file denote-file-type))
-;;   (rename-buffer title :unique))
 ;;; provide
 (provide '130-init-denote)
 ;;; 130-init-denote.el ends here
