@@ -31,7 +31,7 @@
 ;; TODO: make conditional based on whether icons are available.
 (add-hook 'vertico-mode-hook #'nerd-icons-completion-mode)
 
-(opt! vertico-count-format '("%-6s " . "%2$s"))
+(opt! vertico-count-format nil)
 (opt! vertico-count 15)
 ;;; provide
 (provide '130-init-vertico)
