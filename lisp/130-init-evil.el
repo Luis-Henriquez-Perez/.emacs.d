@@ -37,7 +37,7 @@
   "Require `evil'."
   (require 'evil nil t))
 
-(add-hook 'after-init-hook #'oo-load-evil-h)
+(add-hook 'after-init-hook #'oo-load-evil-h -90)
 
 (add-hook 'emacs-startup-hook #'evil-mode)
 

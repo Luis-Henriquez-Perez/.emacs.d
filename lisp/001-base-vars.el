@@ -47,15 +47,6 @@ Each element is of the form (custom-face . built-in-face).  Whenever the theme
 is changed CUSTOM-FACE updates its background and foreground similar to
 built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'.")
 
-(defvar oo-after-init-features nil
-  "Features that should be required just after initializing Emacs.")
-
-(defun oo-require-after-init-features-h ()
-  (each! oo-after-init-features
-    (require it)))
-
-(add-hook 'after-init-hook #'oo-require-after-init-features-h 0)
-
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
 (defvar oo-init-theme (aremf! command-line-args
