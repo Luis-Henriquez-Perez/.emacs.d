@@ -99,8 +99,8 @@
 (setopt eshell-history-size 1000)
 ;; Stop eshell from printing messages.
 ;;;; keybindings
-(nmap eshell-mode-map "J" #'eshell-next-prompt)
-(nmap eshell-mode-map "K" #'eshell-previous-prompt)
+(nmap! eshell-mode-map "J" #'eshell-next-prompt)
+(nmap! eshell-mode-map "K" #'eshell-previous-prompt)
 ;;;; aliases
 (eshell/alias "home" "cd ~")
 ;;;;; git
