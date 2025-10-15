@@ -201,7 +201,7 @@ with a single space."
 
 (add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-start-time-h -100)
 
-(defun oo-record-emacs-startup-hook-end-time-h ()
+(defun! oo-record-emacs-startup-hook-end-time-h ()
   "Record the end of `emacs-startup-hook'."
   (set! start (get-register :emacs-startup-start))
   (set! time (oo-hundredths (- (float-time) start)))
