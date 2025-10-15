@@ -27,17 +27,22 @@
 ;;; Code:
 (require! "^0[01]")
 
+(declare-function dashboard-insert-startupify-lists "dashboard")
+(declare-function dashboard-initialize "dashboard")
+(declare-function dashboard-resize-on-hook "dashboard")
+
 (defun oo-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
 
+(opt! dashboard-items nil)
+(opt! dashboard-init-info #'oo-dashboard-init-info)
+(opt! dashboard-banner-logo-title "Welcome!")
+(opt! dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
+(opt! dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
+(opt! dashboard-center-content t)
+
 (defun oo-enable-dashboard-h ()
   (require 'dashboard)
-  (setq dashboard-items nil)
-  (setq dashboard-init-info #'oo-dashboard-init-info)
-  (setq dashboard-banner-logo-title "Welcome!")
-  (setq dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
-  (setq dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
-  (setq dashboard-center-content t)
   (add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
   (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
   (dashboard-insert-startupify-lists)
