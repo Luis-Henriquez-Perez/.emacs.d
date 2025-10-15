@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require 'evil-easymotion)
+
 (setq evilem-style 'at)
 (setq evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
 
