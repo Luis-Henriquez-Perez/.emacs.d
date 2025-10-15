@@ -27,6 +27,7 @@
 ;;; Code:
 (autoload 'cape-dabbrev "cape" nil nil 'function)
 (autoload 'cape-file "cape" nil nil 'function)
+
 (autoload 'oo-init-org-capfs-h "lib-cape" nil nil 'function)
 (autoload 'oo-init-prog-capfs-h "lib-cape" nil nil 'function)
 
