@@ -34,6 +34,13 @@
   (add-hook 'completion-at-point-functions #'cape-file 11 'local))
 
 (add-hook 'org-mode-hook #'oo-init-org-capfs-h)
+
+(defun oo-init-prog-mode-capfs ()
+  "Initialize `completion-at-point-functions' for `prog-mode'."
+  (add-hook 'completion-at-point-functions #'cape-file nil 'local)
+  (add-hook 'completion-at-point-functions #'cape-dabbrev nil 'local))
+
+(add-hook 'prog-mode-hook #'oo-init-prog-mode-capfs)
 ;;; provide
 (provide '130-init-cape)
 ;;; 130-init-cape.el ends here
