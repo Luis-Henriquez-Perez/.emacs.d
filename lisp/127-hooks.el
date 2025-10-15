@@ -239,11 +239,11 @@ of FACE to the background color of the `default' face."
 
 (add-hook 'enable-theme-functions #'oo-set-state-faces-from-theme-h)
 ;;;; miscellaneous
-;; (add-hook 'after-init-hook #'oo-mode-line-mode 90)
+(defun oo-init-server-h ()
+  "Enable server if it is not running."
+  (unless (server-running-p) (server-start)))
 
-;; (defhook! initialize-server (emacs-startup-hook)
-;;   "Enable server if it is not running."
-;;   (unless (server-running-p) (server-start)))
+(add-hook 'oo-emacs-startup-hook #'oo-init-server-h)
 ;;; provide
 (provide '127-hooks)
 ;;; 127-hooks.el ends here
