@@ -76,9 +76,9 @@
 (advice-add 'lispyville-substitute                      :around #'oo-require-evil-goggles-a)
 (advice-add 'lispyville-change-whole-line               :around #'oo-require-evil-goggles-a)
 (advice-add 'lispyville-join							:around #'oo-require-evil-goggles-a)
-(advice-add '+evil-eval-operator						:around #'oo-require-evil-goggles-a)
-(advice-add '+evil-eval-replace-operator				:around #'oo-require-evil-goggles-a)
-(advice-add '+evil-eval-print-operator                  :around #'oo-require-evil-goggles-a)
+(advice-add 'oo-evil-eval-operator						:around #'oo-require-evil-goggles-a)
+(advice-add 'oo-evil-eval-replace-operator				:around #'oo-require-evil-goggles-a)
+(advice-add 'oo-evil-eval-print-operator                  :around #'oo-require-evil-goggles-a)
 ;;; provide
 (provide '130-init-evil-goggles)
 ;;; 130-init-evil-goggles.el ends here
