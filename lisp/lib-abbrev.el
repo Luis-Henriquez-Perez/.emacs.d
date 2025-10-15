@@ -205,8 +205,9 @@ string or comment."
 
 (defun oo-abbrev-write-abbrev-file-a (&rest _)
   "Override `write-abbrev-file' with my own function."
-  (quiet! (oo-abbrev-update-abbrev-tables))
-  (oo-log 'trace "Updating abbrevs."))
+  ;; (quiet! (oo-abbrev-update-abbrev-tables))
+  ;; (oo-log 'trace "Updating abbrevs.")
+  )
 ;; This is a bit crude.  It would be precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;;;; COMMANDS
