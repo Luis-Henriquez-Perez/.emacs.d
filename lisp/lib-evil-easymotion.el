@@ -132,9 +132,6 @@ This is as opposed to character length."
     (when greater-than
       (pushing! interleaved (pop greater-than))))
   (nreverse interleaved))
-;;;; improve scope
-;; Something similar is used in doom.
-(put 'visible 'bounds-of-thing-at-point (lambda () (cons (window-start) (window-end))))
 ;;;; macro to simplify defining motions
 ;; It is a peeve of mine seeing excessive wordiness in defining these motions.
 ;; Instead of defining a helper function and then using it in the

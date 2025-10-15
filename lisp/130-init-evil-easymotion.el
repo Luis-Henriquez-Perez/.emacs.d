@@ -29,9 +29,6 @@
 
 (defvar evil-set-command-properties)
 
-(opt! evilem-style 'at)
-(opt! evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
-
 (declare-function oo-evilem-motion-beginning-of-word "lib-evil-easymotion")
 (declare-function oo-evilem-motion-beginning-of-WORD "lib-evil-easymotion")
 (declare-function oo-evilem-motion-end-of-word       "lib-evil-easymotion")
@@ -45,6 +42,8 @@
 (autoload #'oo-evilem-motion-end-of-WORD       "lib-evil-easymotion" nil t 'function)
 (autoload #'oo-evilem-motion-char              "lib-evil-easymotion" nil t 'function)
 (autoload #'oo-evilem-motion-beginning-of-line "lib-evil-easymotion" nil t 'function)
+
+(oo-require-after-load 'evil-easymotion '990-config-evil-easymotion)
 ;;; provide
 (provide '130-init-evil-easymotion)
 ;;; 130-init-evil-easymotion.el ends here
