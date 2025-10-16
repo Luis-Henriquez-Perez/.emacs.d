@@ -199,16 +199,12 @@ string or comment."
             (when (equal 'edited (vc-state file))
               (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
               (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
-              (message "update table: %S %S %S %S %S" file (vc-state file) (vc-root-dir) backend commit-msg)
-              ;; TODO: inhibit opening buffers.
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))
 
 (defun oo-abbrev-write-abbrev-file-a (&rest _)
   "Override `write-abbrev-file' with my own function."
-  ;; (quiet! (oo-abbrev-update-abbrev-tables))
-  ;; (oo-log 'trace "Updating abbrevs.")
-  )
+  (oo-abbrev-update-abbrev-tables))
 ;; This is a bit crude.  It would be precise to not load the elisp abbrev table when
 ;; enabling abbrev mode in a text-mode but it is not significant because it
 ;;;; COMMANDS
