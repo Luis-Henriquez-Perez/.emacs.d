@@ -2662,6 +2662,7 @@
     ("haemorrage" "haemorrhage")
     ("halarious" "hilarious")
     ("halp" "help")
+    ("handl" "handle")
     ("hapen" "happen")
     ("hapened" "happened")
     ("hapening" "happening")
