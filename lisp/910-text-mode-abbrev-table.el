@@ -5911,6 +5911,7 @@
     ("uch" "much")
     ("ud" "you would")
     ("udate" "update")
+    ("udating" "updating")
     ("ude" "you would")
     ("udpate" "update")
     ("udpating" "updating")
