@@ -6044,6 +6044,7 @@
     ("updae" "update")
     ("upding" "updating")
     ("upgradded" "upgraded")
+    ("uping" "updating")
     ("upsate" "update")
     ("upto" "up to")
     ("ur" "your")
