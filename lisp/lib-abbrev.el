@@ -184,7 +184,18 @@ string or comment."
     (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
       (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
-      ;; TODO: handle better opening an existing buffer.
+      (when (buffer-modified-p buffer)
+        (message "Abbrev buffer for %s is modified, aborting saving..." table)
+        ;; TODO: steps to properly handle modification.
+        ;; 1. Save the current abbrev table in case something goes wrong.
+        ;; 2. Clear the current abbrev table.
+        ;; 3. Try to evaluate the table in the buffer
+        ;; 4. If it works, delete the table in the buffer replace it with the
+        ;;    one in memory (so the table is consistently edited).  If it does
+        ;;    not work, then the current abbrev table (in the buffer) is invalid
+        ;;    and I should be notified.  Reset the abbrev table that was cleared
+        ;;    with the saved value and notify me that there was a problem.
+        (continue!))
       (unwind-protect
           (with-current-buffer buffer
             (goto-char (point-min))
