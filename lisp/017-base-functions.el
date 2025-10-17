@@ -40,17 +40,6 @@
   "Call FN with ARGS without producing any output."
   (quiet! (apply fn args)))
 
-;; I don't yet know where to put this function.  So for now, here it goes.
-(defun oo-popup-at-bottom (regexp)
-  "Open buffers at bottom that match regexp."
-  (alet! `(,regexp
-           (display-buffer-at-bottom)
-           (side bottom)
-           (slot 1)
-           (window-height 0.5)
-           (window-parameters ((no-other-window t))))
-    (push it display-buffer-alist)))
-
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar oo-alternate-commands (make-hash-table)
   "A hash-table mapping command symbols to a list of command symbols.")

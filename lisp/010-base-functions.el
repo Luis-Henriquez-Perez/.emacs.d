@@ -28,6 +28,17 @@
 ;;;; requirements
 (require 'cl-lib)
 (require 'pcase)
+;;;; miscellaneous
+;; I don't yet know where to put this function.  So for now, here it goes.
+(defun oo-popup-at-bottom (regexp)
+  "Open buffers at bottom that match regexp."
+  (push `(,regexp
+          (display-buffer-at-bottom)
+          (side bottom)
+          (slot 1)
+          (window-height 0.5)
+          (window-parameters ((no-other-window t))))
+        display-buffer-alist))
 ;;;; predicates
 (defun oo-in-string-or-comment-p ()
   "Return non-nil if point is in a string or comment.
