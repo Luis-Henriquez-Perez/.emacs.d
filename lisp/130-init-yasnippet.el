@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-:hook (prog-mode-hook . yas-minor-mode-on)
+(add-hook 'prog-mode-hook #'yas-minor-mode-on)
 :setq
 (yas-snippet-dirs . (list (concat VOID:DATA-DIR "snippets/")))
 (yas-verbosity . (if void:debug-p 3 0))
