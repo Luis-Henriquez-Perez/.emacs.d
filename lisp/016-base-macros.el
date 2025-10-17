@@ -96,23 +96,45 @@ writes to `standard-output'."
                          append (oo-pcase-bindings match-form value))
      ,@body))
 
-(defmacro opt! (symbol value)
+(defmacro! opt! (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
-  (let ((value-var (gensym "value")))
-    `(afterbound! ,symbol
-       ,(macroexpand-all `(let ((,value-var (with-demoted-errors "Error: %S" (with-no-warnings ,value))))
-                            (aif! (get ',symbol 'custom-set)
-                                (funcall it ',symbol ,value-var)
-                              (setq ,symbol ,value-var)))))))
+  `(alet! (lambda ()
+            (condition-case err
+                (let ((value (with-no-warnings ,value)))
+                  (if-let (setter (get ',symbol 'custom-set))
+                      (funcall setter ',symbol value)
+                    (setq ,symbol value)))
+              (error
+               (oo-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
+     (oo-call-after-bound ',symbol it)))
+
+(defconst OO-LOCAL-VAR-DEPTH -50
+  "Depth in hook at which to set local variables.")
+
+(defvar oo-local-var-alist nil
+  "An alist of (HOOK . VARIABLES-AND-VALUES).")
+
+(defun! oo-apply-local-vars (hook)
+  "Apply local variables for hook."
+  (for! ((symbol . value) (alist-get hook oo-local-var-alist))
+    `(condition-case err
+         (setq-local ,symbol ,value)
+       (error
+        (oo-log 'failure "Failed to set local variable %s" ',symbol))))
+  (eval (nreverse forms) t))
 
 (defmacro! setq-hook! (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (set! name (intern (format "oo--%s--set-local-var--%s" hook symbol)))
-  (set! lambda `(lambda () (setq-local ,symbol ,value)))
-  ;; (set! docstring (format "Set local variable `%S' to `%S'." ',symbol ',value))
-  (appending! forms `((fset ',name ,lambda) (add-hook ',hook #',name)))
-  (macroexp-progn (nreverse forms)))
+  (set! setter (intern (format "oo-set-local-vars-for-%s-h" hook)))
+  (set! docstring (format "Set local variable for `%s'." hook))
+  `(progn (unless (fboundp ',setter)
+            (defun ,setter (&rest _)
+              ,docstring
+              (oo-apply-local-vars ',hook)))
+          (setf (alist-get ',symbol (alist-get ',hook oo-local-var-alist)) ,value)
+          ;; Add one of these functions in.
+          (add-hook ',hook #',setter OO-LOCAL-VAR-DEPTH)))
 
 (declare-function tempel-insert "tempel")
 (defmacro! deftempel! (name &rest body)
