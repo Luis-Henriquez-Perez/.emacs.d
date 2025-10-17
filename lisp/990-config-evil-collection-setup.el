@@ -26,420 +26,602 @@
 ;;
 ;;; Code:
 
-(after! 2048-game evil-collection-2048-game-setup evil-collection)
+(autoload 'evil-collection-2048-game-setup "evil-collection" nil nil 'function)
+(oo-call-after-load '2048-game #'evil-collection-2048-game-setup)
 
-(after! ag evil-collection-ag-setup evil-collection)
+(autoload 'evil-collection-ag-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ag #'evil-collection-ag-setup)
 
-(after! alchemist evil-collection-alchemist-setup evil-collection)
+(autoload 'evil-collection-alchemist-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'alchemist #'evil-collection-alchemist-setup)
 
-(after! anaconda-mode evil-collection-anaconda-mode-setup evil-collection)
+(autoload 'evil-collection-anaconda-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'anaconda-mode #'evil-collection-anaconda-mode-setup)
 
-(after! apropos evil-collection-apropos-setup evil-collection)
+(autoload 'evil-collection-apropos-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'apropos #'evil-collection-apropos-setup)
 
-(after! arc-mode evil-collection-arc-mode-setup evil-collection)
+(autoload 'evil-collection-arc-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'arc-mode #'evil-collection-arc-mode-setup)
 
-(after! atomic-chrome evil-collection-atomic-chrome-setup evil-collection)
+(autoload 'evil-collection-atomic-chrome-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'atomic-chrome #'evil-collection-atomic-chrome-setup)
 
-(after! auto-package-update evil-collection-auto-package-update-setup evil-collection)
+(autoload 'evil-collection-auto-package-update-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'auto-package-update #'evil-collection-auto-package-update-setup)
 
-(after! beginend evil-collection-beginend-setup evil-collection)
+(autoload 'evil-collection-beginend-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'beginend #'evil-collection-beginend-setup)
 
-(after! bluetooth evil-collection-bluetooth-setup evil-collection)
+(autoload 'evil-collection-bluetooth-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'bluetooth #'evil-collection-bluetooth-setup)
 
-(after! bm evil-collection-bm-setup evil-collection)
+(autoload 'evil-collection-bm-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'bm #'evil-collection-bm-setup)
 
 (autoload #'evil-collection-bookmark-setup "evil-collection" nil nil 'function)
 (add-hook 'bookmark-bmenu-mode-hook #'evil-collection-bookmark-setup)
 
-(after! buff-menu evil-collection-buff-menu-setup evil-collection)
+(autoload 'evil-collection-buff-menu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'buff-menu #'evil-collection-buff-menu-setup)
 
-(after! bufler evil-collection-bufler-setup evil-collection)
+(autoload 'evil-collection-bufler-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'bufler #'evil-collection-bufler-setup)
 
-(after! calc evil-collection-calc-setup evil-collection)
+(autoload 'evil-collection-calc-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'calc #'evil-collection-calc-setup)
 
-(after! calendar evil-collection-calendar-setup evil-collection)
+(autoload 'evil-collection-calendar-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'calendar #'evil-collection-calendar-setup)
 
-(after! cider evil-collection-cider-setup evil-collection)
+(autoload 'evil-collection-cider-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'cider #'evil-collection-cider-setup)
 
-(after! cmake-mode evil-collection-cmake-mode-setup evil-collection)
+(autoload 'evil-collection-cmake-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'cmake-mode #'evil-collection-cmake-mode-setup)
 
-(after! color-rg evil-collection-color-rg-setup evil-collection)
+(autoload 'evil-collection-color-rg-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'color-rg #'evil-collection-color-rg-setup)
 
-(after! comint evil-collection-comint-setup evil-collection)
+(autoload 'evil-collection-comint-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'comint #'evil-collection-comint-setup)
 
-(after! company evil-collection-company-setup evil-collection)
+(autoload 'evil-collection-company-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'company #'evil-collection-company-setup)
 
-(after! compile evil-collection-compile-setup evil-collection)
+(autoload 'evil-collection-compile-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'compile #'evil-collection-compile-setup)
 
-(after! consult evil-collection-consult-setup evil-collection)
+(autoload 'evil-collection-consult-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'consult #'evil-collection-consult-setup)
 
-(after! corfu evil-collection-corfu-setup evil-collection)
+(autoload 'evil-collection-corfu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'corfu #'evil-collection-corfu-setup)
 
-(after! crdt evil-collection-crdt-setup evil-collection)
+(autoload 'evil-collection-crdt-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'crdt #'evil-collection-crdt-setup)
 
-(after! csv evil-collection-csv-setup evil-collection)
+(autoload 'evil-collection-csv-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'csv #'evil-collection-csv-setup)
 
 (autoload #'evil-collection-custom-setup "evil-collection" nil nil 'function)
 (add-hook 'custom-mode-hook #'evil-collection-custom-setup)
 
-(after! cus-theme evil-collection-cus-theme-setup evil-collection)
+(autoload 'evil-collection-cus-theme-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'cus-theme #'evil-collection-cus-theme-setup)
 
 (autoload #'evil-collection-dashboard-setup "evil-collection" nil nil 'function)
-(defun oo-setup-evil-collection-h ()
-  (if after-init-time
-      (evil-collection-dashboard-setup)
-    (add-hook 'emacs-startup-hook #'evil-collection-dashboard-setup)))
+(oo-call-after-load 'dashboard #'evil-collection-dashboard-setup)
 
-(add-hook 'dashboard-mode-hook #'oo-setup-evil-collection-h)
+(autoload 'evil-collection-daemons-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'daemons #'evil-collection-daemons-setup)
 
-(after! daemons evil-collection-daemons-setup evil-collection)
+(autoload 'evil-collection-deadgrep-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'deadgrep #'evil-collection-deadgrep-setup)
 
-(after! deadgrep evil-collection-deadgrep-setup evil-collection)
+(autoload 'evil-collection-debbugs-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'debbugs #'evil-collection-debbugs-setup)
 
-(after! debbugs evil-collection-debbugs-setup evil-collection)
+(autoload 'evil-collection-debug-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'debug #'evil-collection-debug-setup)
 
-(after! debug evil-collection-debug-setup evil-collection)
+(autoload 'evil-collection-devdocs-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'devdocs #'evil-collection-devdocs-setup)
 
-(after! devdocs evil-collection-devdocs-setup evil-collection)
+(autoload 'evil-collection-dictionary-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'dictionary #'evil-collection-dictionary-setup)
 
-(after! dictionary evil-collection-dictionary-setup evil-collection)
+(autoload 'evil-collection-diff-hl-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'diff-hl #'evil-collection-diff-hl-setup)
 
-(after! diff-hl evil-collection-diff-hl-setup evil-collection)
+(autoload 'evil-collection-diff-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'diff-mode #'evil-collection-diff-mode-setup)
 
-(after! diff-mode evil-collection-diff-mode-setup evil-collection)
+(autoload 'evil-collection-dired-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'dired #'evil-collection-dired-setup)
 
-(after! dired evil-collection-dired-setup evil-collection)
+(autoload 'evil-collection-dired-sidebar-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'dired-sidebar #'evil-collection-dired-sidebar-setup)
 
-(after! dired-sidebar evil-collection-dired-sidebar-setup evil-collection)
+(autoload 'evil-collection-disk-usage-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'disk-usage #'evil-collection-disk-usage-setup)
 
-(after! disk-usage evil-collection-disk-usage-setup evil-collection)
+(autoload 'evil-collection-distel-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'distel #'evil-collection-distel-setup)
 
-(after! distel evil-collection-distel-setup evil-collection)
+(autoload 'evil-collection-doc-view-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'doc-view #'evil-collection-doc-view-setup)
 
-(after! doc-view evil-collection-doc-view-setup evil-collection)
+(autoload 'evil-collection-docker-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'docker #'evil-collection-docker-setup)
 
-(after! docker evil-collection-docker-setup evil-collection)
+(autoload 'evil-collection-eat-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'eat #'evil-collection-eat-setup)
 
-(after! eat evil-collection-eat-setup evil-collection)
+(autoload 'evil-collection-ebib-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ebib #'evil-collection-ebib-setup)
 
-(after! ebib evil-collection-ebib-setup evil-collection)
+(autoload 'evil-collection-ebuku-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ebuku #'evil-collection-ebuku-setup)
 
-(after! ebuku evil-collection-ebuku-setup evil-collection)
+(autoload 'evil-collection-edbi-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'edbi #'evil-collection-edbi-setup)
 
-(after! edbi evil-collection-edbi-setup evil-collection)
+(autoload 'evil-collection-edebug-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'edebug #'evil-collection-edebug-setup)
 
-(after! edebug evil-collection-edebug-setup evil-collection)
+(autoload 'evil-collection-ediff-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ediff #'evil-collection-ediff-setup)
 
-(after! ediff evil-collection-ediff-setup evil-collection)
+(autoload 'evil-collection-eglot-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'eglot #'evil-collection-eglot-setup)
 
-(after! eglot evil-collection-eglot-setup evil-collection)
+(autoload 'evil-collection-elpaca-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'elpaca #'evil-collection-elpaca-setup)
 
-(after! elpaca evil-collection-elpaca-setup evil-collection)
+(autoload 'evil-collection-ement-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ement #'evil-collection-ement-setup)
 
-(after! ement evil-collection-ement-setup evil-collection)
-
-(after! explain-pause-mode evil-collection-explain-pause-mode-setup evil-collection)
+(autoload 'evil-collection-explain-pause-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'explain-pause-mode #'evil-collection-explain-pause-mode-setup)
 
 (autoload #'evil-collection-eldoc-setup "evil-collection" nil nil 'function)
 (add-hook 'emacs-lisp-mode-hook #'evil-collection-eldoc-setup)
 (add-hook 'eldoc-mode-hook #'evil-collection-eldoc-setup)
 
-(after! elfeed evil-collection-elfeed-setup evil-collection)
+(autoload 'evil-collection-elfeed-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'elfeed #'evil-collection-elfeed-setup)
 
 ;; Disable bindings from for elisp mode because they conflict with the bindings
 ;; I myself am adding.
 ;; (autoload #'evil-collection-elisp-mode-setup "evil-collection" nil nil 'function)
 ;; (add-hook 'emacs-lisp-mode-hook #'evil-collection-elisp-mode-setup)
 
-(after! elisp-refs evil-collection-elisp-refs-setup evil-collection)
+(autoload 'evil-collection-elisp-refs-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'elisp-refs #'evil-collection-elisp-refs-setup)
 
-(after! elisp-slime-nav evil-collection-elisp-slime-nav-setup evil-collection)
+(autoload 'evil-collection-elisp-slime-nav-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'elisp-slime-nav #'evil-collection-elisp-slime-nav-setup)
 
-(after! embark evil-collection-embark-setup evil-collection)
+(autoload 'evil-collection-embark-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'embark #'evil-collection-embark-setup)
 
-(after! emms evil-collection-emms-setup evil-collection)
+(autoload 'evil-collection-emms-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'emms #'evil-collection-emms-setup)
 
-(after! emoji evil-collection-emoji-setup evil-collection)
+(autoload 'evil-collection-emoji-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'emoji #'evil-collection-emoji-setup)
 
-(after! epa evil-collection-epa-setup evil-collection)
+(autoload 'evil-collection-epa-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'epa #'evil-collection-epa-setup)
 
-(after! ert evil-collection-ert-setup evil-collection)
+(autoload 'evil-collection-ert-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ert #'evil-collection-ert-setup)
 
-(after! eshell evil-collection-eshell-setup evil-collection)
+(autoload 'evil-collection-eshell-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'eshell #'evil-collection-eshell-setup)
 
-(after! eval-sexp-fu evil-collection-eval-sexp-fu-setup evil-collection)
+(autoload 'evil-collection-eval-sexp-fu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'eval-sexp-fu #'evil-collection-eval-sexp-fu-setup)
 
-(after! evil-mc evil-collection-evil-mc-setup evil-collection)
+(autoload 'evil-collection-evil-mc-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'evil-mc #'evil-collection-evil-mc-setup)
 
-(after! eww evil-collection-eww-setup evil-collection)
+(autoload 'evil-collection-eww-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'eww #'evil-collection-eww-setup)
 
-(after! fanyi evil-collection-fanyi-setup evil-collection)
+(autoload 'evil-collection-fanyi-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'fanyi #'evil-collection-fanyi-setup)
 
-(after! finder evil-collection-finder-setup evil-collection)
+(autoload 'evil-collection-finder-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'finder #'evil-collection-finder-setup)
 
-(after! flycheck evil-collection-flycheck-setup evil-collection)
+(autoload 'evil-collection-flycheck-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'flycheck #'evil-collection-flycheck-setup)
 
-(after! flymake evil-collection-flymake-setup evil-collection)
+(autoload 'evil-collection-flymake-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'flymake #'evil-collection-flymake-setup)
 
-(after! forge evil-collection-forge-setup evil-collection)
+(autoload 'evil-collection-forge-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'forge #'evil-collection-forge-setup)
 
-(after! free-keys evil-collection-free-keys-setup evil-collection)
+(autoload 'evil-collection-free-keys-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'free-keys #'evil-collection-free-keys-setup)
 
-(after! geiser evil-collection-geiser-setup evil-collection)
+(autoload 'evil-collection-geiser-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'geiser #'evil-collection-geiser-setup)
 
-(after! ggtags evil-collection-ggtags-setup evil-collection)
+(autoload 'evil-collection-ggtags-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ggtags #'evil-collection-ggtags-setup)
 
-(after! git-timemachine evil-collection-git-timemachine-setup evil-collection)
+(autoload 'evil-collection-git-timemachine-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'git-timemachine #'evil-collection-git-timemachine-setup)
 
-(after! gited evil-collection-gited-setup evil-collection)
+(autoload 'evil-collection-gited-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'gited #'evil-collection-gited-setup)
 
-(after! gnus evil-collection-gnus-setup evil-collection)
+(autoload 'evil-collection-gnus-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'gnus #'evil-collection-gnus-setup)
 
-(after! go-mode evil-collection-go-mode-setup evil-collection)
+(autoload 'evil-collection-go-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'go-mode #'evil-collection-go-mode-setup)
 
-(after! grep evil-collection-grep-setup evil-collection)
+(autoload 'evil-collection-grep-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'grep #'evil-collection-grep-setup)
 
-(after! guix evil-collection-guix-setup evil-collection)
+(autoload 'evil-collection-guix-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'guix #'evil-collection-guix-setup)
 
-(after! hackernews evil-collection-hackernews-setup evil-collection)
+(autoload 'evil-collection-hackernews-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'hackernews #'evil-collection-hackernews-setup)
 
-(after! helm evil-collection-helm-setup evil-collection)
+(autoload 'evil-collection-helm-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'helm #'evil-collection-helm-setup)
 
 (autoload #'evil-collection-help-setup "evil-collection" nil nil 'function)
 (add-hook 'help-mode-hook #'evil-collection-help-setup)
 
-(after! helpful evil-collection-helpful-setup evil-collection)
+(autoload 'evil-collection-helpful-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'helpful #'evil-collection-helpful-setup)
 
-(after! hg-histedit evil-collection-hg-histedit-setup evil-collection)
+(autoload 'evil-collection-hg-histedit-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'hg-histedit #'evil-collection-hg-histedit-setup)
 
-(after! hungry-delete evil-collection-hungry-delete-setup evil-collection)
+(autoload 'evil-collection-hungry-delete-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'hungry-delete #'evil-collection-hungry-delete-setup)
 
-(after! ibuffer evil-collection-ibuffer-setup evil-collection)
+(autoload 'evil-collection-ibuffer-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ibuffer #'evil-collection-ibuffer-setup)
 
 (autoload #'evil-collection-image-setup "evil-collection" nil nil 'function)
 (add-hook 'image-mode-hook #'evil-collection-image-setup)
 
-(after! image-dired evil-collection-image-dired-setup evil-collection)
+(autoload 'evil-collection-image-dired-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'image-dired #'evil-collection-image-dired-setup)
 
-(after! image+ evil-collection-image+-setup evil-collection)
+(autoload 'evil-collection-image+-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'image+ #'evil-collection-image+-setup)
 
-(after! imenu evil-collection-imenu-setup evil-collection)
+(autoload 'evil-collection-imenu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'imenu #'evil-collection-imenu-setup)
 
-(after! imenu-list evil-collection-imenu-list-setup evil-collection)
+(autoload 'evil-collection-imenu-list-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'imenu-list #'evil-collection-imenu-list-setup)
 
-(after! indent evil-collection-indent-setup evil-collection)
+(autoload 'evil-collection-indent-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'indent #'evil-collection-indent-setup)
 
-(after! indium evil-collection-indium-setup evil-collection)
+(autoload 'evil-collection-indium-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'indium #'evil-collection-indium-setup)
 
-(after! info evil-collection-info-setup evil-collection)
+(autoload 'evil-collection-info-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'info #'evil-collection-info-setup)
 
-(after! ivy evil-collection-ivy-setup evil-collection)
+(autoload 'evil-collection-ivy-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ivy #'evil-collection-ivy-setup)
 
-(after! js2-mode evil-collection-js2-mode-setup evil-collection)
+(autoload 'evil-collection-js2-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'js2-mode #'evil-collection-js2-mode-setup)
 
-(after! leetcode evil-collection-leetcode-setup evil-collection)
+(autoload 'evil-collection-leetcode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'leetcode #'evil-collection-leetcode-setup)
 
-(after! lispy evil-collection-lispy-setup evil-collection)
+(autoload 'evil-collection-lispy-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'lispy #'evil-collection-lispy-setup)
 
-(after! lms evil-collection-lms-setup evil-collection)
+(autoload 'evil-collection-lms-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'lms #'evil-collection-lms-setup)
 
-(after! log-edit evil-collection-log-edit-setup evil-collection)
+(autoload 'evil-collection-log-edit-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'log-edit #'evil-collection-log-edit-setup)
 
-(after! log-view evil-collection-log-view-setup evil-collection)
+(autoload 'evil-collection-log-view-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'log-view #'evil-collection-log-view-setup)
 
-(after! lsp-ui-imenu evil-collection-lsp-ui-imenu-setup evil-collection)
+(autoload 'evil-collection-lsp-ui-imenu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'lsp-ui-imenu #'evil-collection-lsp-ui-imenu-setup)
 
-(after! lua-mode evil-collection-lua-mode-setup evil-collection)
+(autoload 'evil-collection-lua-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'lua-mode #'evil-collection-lua-mode-setup)
 
-(after! kotlin-mode evil-collection-kotlin-mode-setup evil-collection)
+(autoload 'evil-collection-kotlin-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'kotlin-mode #'evil-collection-kotlin-mode-setup)
 
-(after! macrostep evil-collection-macrostep-setup evil-collection)
+(autoload 'evil-collection-macrostep-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'macrostep #'evil-collection-macrostep-setup)
 
-(after! man evil-collection-man-setup evil-collection)
+(autoload 'evil-collection-man-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'man #'evil-collection-man-setup)
 
-(after! magit evil-collection-magit-setup evil-collection)
+(autoload 'evil-collection-magit-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'magit #'evil-collection-magit-setup)
 
-(after! magit-repos evil-collection-magit-repos-setup evil-collection)
+(autoload 'evil-collection-magit-repos-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'magit-repos #'evil-collection-magit-repos-setup)
 
-(after! magit-section evil-collection-magit-section-setup evil-collection)
+(autoload 'evil-collection-magit-section-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'magit-section #'evil-collection-magit-section-setup)
 
-(after! magit-todos evil-collection-magit-todos-setup evil-collection)
+(autoload 'evil-collection-magit-todos-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'magit-todos #'evil-collection-magit-todos-setup)
 
-(after! markdown-mode evil-collection-markdown-mode-setup evil-collection)
+(autoload 'evil-collection-markdown-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'markdown-mode #'evil-collection-markdown-mode-setup)
 
-(after! monky evil-collection-monky-setup evil-collection)
+(autoload 'evil-collection-monky-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'monky #'evil-collection-monky-setup)
 
-(after! mpc evil-collection-mpc-setup evil-collection)
+(autoload 'evil-collection-mpc-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'mpc #'evil-collection-mpc-setup)
 
-(after! mpdel evil-collection-mpdel-setup evil-collection)
+(autoload 'evil-collection-mpdel-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'mpdel #'evil-collection-mpdel-setup)
 
-(after! mpdired evil-collection-mpdired-setup evil-collection)
+(autoload 'evil-collection-mpdired-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'mpdired #'evil-collection-mpdired-setup)
 
-(after! mu4e evil-collection-mu4e-setup evil-collection)
+(autoload 'evil-collection-mu4e-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'mu4e #'evil-collection-mu4e-setup)
 
-(after! mu4e-conversation evil-collection-mu4e-conversation-setup evil-collection)
+(autoload 'evil-collection-mu4e-conversation-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'mu4e-conversation #'evil-collection-mu4e-conversation-setup)
 
-(after! neotree evil-collection-neotree-setup evil-collection)
+(autoload 'evil-collection-neotree-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'neotree #'evil-collection-neotree-setup)
 
-(after! newsticker evil-collection-newsticker-setup evil-collection)
+(autoload 'evil-collection-newsticker-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'newsticker #'evil-collection-newsticker-setup)
 
-(after! notmuch evil-collection-notmuch-setup evil-collection)
+(autoload 'evil-collection-notmuch-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'notmuch #'evil-collection-notmuch-setup)
 
-(after! nov evil-collection-nov-setup evil-collection)
+(autoload 'evil-collection-nov-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'nov #'evil-collection-nov-setup)
 
-(after! omnisharp evil-collection-omnisharp-setup evil-collection)
+(autoload 'evil-collection-omnisharp-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'omnisharp #'evil-collection-omnisharp-setup)
 
-(after! org evil-collection-org-setup evil-collection)
+(autoload 'evil-collection-org-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'org #'evil-collection-org-setup)
 
-(after! org-present evil-collection-org-present-setup evil-collection)
+(autoload 'evil-collection-org-present-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'org-present #'evil-collection-org-present-setup)
 
-(after! org-roam evil-collection-org-roam-setup evil-collection)
+(autoload 'evil-collection-org-roam-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'org-roam #'evil-collection-org-roam-setup)
 
-(after! osx-dictionary evil-collection-osx-dictionary-setup evil-collection)
+(autoload 'evil-collection-osx-dictionary-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'osx-dictionary #'evil-collection-osx-dictionary-setup)
 
-(after! outline evil-collection-outline-setup evil-collection)
+(autoload 'evil-collection-outline-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'outline #'evil-collection-outline-setup)
 
-(after! p4 evil-collection-p4-setup evil-collection)
+(autoload 'evil-collection-p4-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'p4 #'evil-collection-p4-setup)
 
-(after! package-menu evil-collection-package-menu-setup evil-collection)
+(autoload 'evil-collection-package-menu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'package-menu #'evil-collection-package-menu-setup)
 
-(after! pass evil-collection-pass-setup evil-collection)
+(autoload 'evil-collection-pass-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'pass #'evil-collection-pass-setup)
 
-(after! pdf evil-collection-pdf-setup evil-collection)
+(autoload 'evil-collection-pdf-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'pdf #'evil-collection-pdf-setup)
 
-(after! popup evil-collection-popup-setup evil-collection)
+(autoload 'evil-collection-popup-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'popup #'evil-collection-popup-setup)
 
-(after! proced evil-collection-proced-setup evil-collection)
+(autoload 'evil-collection-proced-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'proced #'evil-collection-proced-setup)
 
-(after! process-menu evil-collection-process-menu-setup evil-collection)
+(autoload 'evil-collection-process-menu-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'process-menu #'evil-collection-process-menu-setup)
 
-(after! prodigy evil-collection-prodigy-setup evil-collection)
+(autoload 'evil-collection-prodigy-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'prodigy #'evil-collection-prodigy-setup)
 
-(after! profiler evil-collection-profiler-setup evil-collection)
+(autoload 'evil-collection-profiler-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'profiler #'evil-collection-profiler-setup)
 
-(after! python evil-collection-python-setup evil-collection)
+(autoload 'evil-collection-python-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'python #'evil-collection-python-setup)
 
-(after! quickrun evil-collection-quickrun-setup evil-collection)
+(autoload 'evil-collection-quickrun-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'quickrun #'evil-collection-quickrun-setup)
 
-(after! racer evil-collection-racer-setup evil-collection)
+(autoload 'evil-collection-racer-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'racer #'evil-collection-racer-setup)
 
-(after! racket-describe evil-collection-racket-describe-setup evil-collection)
+(autoload 'evil-collection-racket-describe-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'racket-describe #'evil-collection-racket-describe-setup)
 
-(after! realgud evil-collection-realgud-setup evil-collection)
+(autoload 'evil-collection-realgud-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'realgud #'evil-collection-realgud-setup)
 
-(after! reftex evil-collection-reftex-setup evil-collection)
+(autoload 'evil-collection-reftex-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'reftex #'evil-collection-reftex-setup)
 
 (autoload #'evil-collection-replace-setup "evil-collection" nil nil 'function)
 (add-hook 'occur-mode-hook #'evil-collection-replace-setup)
 
-(after! restclient evil-collection-restclient-setup evil-collection)
+(autoload 'evil-collection-restclient-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'restclient #'evil-collection-restclient-setup)
 
-(after! rg evil-collection-rg-setup evil-collection)
+(autoload 'evil-collection-rg-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'rg #'evil-collection-rg-setup)
 
-(after! ripgrep evil-collection-ripgrep-setup evil-collection)
+(autoload 'evil-collection-ripgrep-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ripgrep #'evil-collection-ripgrep-setup)
 
-(after! rjsx-mode evil-collection-rjsx-mode-setup evil-collection)
+(autoload 'evil-collection-rjsx-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'rjsx-mode #'evil-collection-rjsx-mode-setup)
 
-(after! robe evil-collection-robe-setup evil-collection)
+(autoload 'evil-collection-robe-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'robe #'evil-collection-robe-setup)
 
-(after! rtags evil-collection-rtags-setup evil-collection)
+(autoload 'evil-collection-rtags-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'rtags #'evil-collection-rtags-setup)
 
-(after! ruby-mode evil-collection-ruby-mode-setup evil-collection)
+(autoload 'evil-collection-ruby-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ruby-mode #'evil-collection-ruby-mode-setup)
 
-(after! scheme evil-collection-scheme-setup evil-collection)
+(autoload 'evil-collection-scheme-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'scheme #'evil-collection-scheme-setup)
 
-(after! scroll-lock evil-collection-scroll-lock-setup evil-collection)
+(autoload 'evil-collection-scroll-lock-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'scroll-lock #'evil-collection-scroll-lock-setup)
 
-(after! selectrum evil-collection-selectrum-setup evil-collection)
+(autoload 'evil-collection-selectrum-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'selectrum #'evil-collection-selectrum-setup)
 
-(after! sh-script evil-collection-sh-script-setup evil-collection)
+(autoload 'evil-collection-sh-script-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'sh-script #'evil-collection-sh-script-setup)
 
-(after! shortdoc evil-collection-shortdoc-setup evil-collection)
+(autoload 'evil-collection-shortdoc-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'shortdoc #'evil-collection-shortdoc-setup)
 
 (autoload #'evil-collection-simple-setup "evil-collection" nil nil 'function)
 (add-hook 'special-mode-hook #'evil-collection-simple-setup)
 
-(after! simple-mpc evil-collection-simple-mpc-setup evil-collection)
+(autoload 'evil-collection-simple-mpc-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'simple-mpc #'evil-collection-simple-mpc-setup)
 
-(after! slime evil-collection-slime-setup evil-collection)
+(autoload 'evil-collection-slime-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'slime #'evil-collection-slime-setup)
 
-(after! sly evil-collection-sly-setup evil-collection)
+(autoload 'evil-collection-sly-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'sly #'evil-collection-sly-setup)
 
-(after! snake evil-collection-snake-setup evil-collection)
+(autoload 'evil-collection-snake-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'snake #'evil-collection-snake-setup)
 
-(after! so-long evil-collection-so-long-setup evil-collection)
+(autoload 'evil-collection-so-long-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'so-long #'evil-collection-so-long-setup)
 
-(after! speedbar evil-collection-speedbar-setup evil-collection)
+(autoload 'evil-collection-speedbar-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'speedbar #'evil-collection-speedbar-setup)
 
 (autoload #'evil-collection-tab-bar-setup "evil-collection" nil nil 'function)
 (add-hook 'tab-bar-mode-hook #'evil-collection-tab-bar-setup)
 
-(after! tablist evil-collection-tablist-setup evil-collection)
+(autoload 'evil-collection-tablist-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'tablist #'evil-collection-tablist-setup)
 
 (autoload #'evil-collection-tabulated-list-setup "evil-collection" nil nil 'function)
 (add-hook 'tabulated-list-mode-hook #'evil-collection-tabulated-list-setup)
 
-(after! tar-mode evil-collection-tar-mode-setup evil-collection)
+(autoload 'evil-collection-tar-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'tar-mode #'evil-collection-tar-mode-setup)
 
-(after! telega evil-collection-telega-setup evil-collection)
+(autoload 'evil-collection-telega-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'telega #'evil-collection-telega-setup)
 
-(after! term evil-collection-term-setup evil-collection)
+(autoload 'evil-collection-term-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'term #'evil-collection-term-setup)
 
-(after! tetris evil-collection-tetris-setup evil-collection)
+(autoload 'evil-collection-tetris-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'tetris #'evil-collection-tetris-setup)
 
-(after! thread evil-collection-thread-setup evil-collection)
+(autoload 'evil-collection-thread-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'thread #'evil-collection-thread-setup)
 
-(after! tide evil-collection-tide-setup evil-collection)
+(autoload 'evil-collection-tide-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'tide #'evil-collection-tide-setup)
 
-(after! timer-list evil-collection-timer-list-setup evil-collection)
+(autoload 'evil-collection-timer-list-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'timer-list #'evil-collection-timer-list-setup)
 
-(after! transmission evil-collection-transmission-setup evil-collection)
+(autoload 'evil-collection-transmission-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'transmission #'evil-collection-transmission-setup)
 
-(after! trashed evil-collection-trashed-setup evil-collection)
+(autoload 'evil-collection-trashed-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'trashed #'evil-collection-trashed-setup)
 
-(after! tuareg evil-collection-tuareg-setup evil-collection)
+(autoload 'evil-collection-tuareg-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'tuareg #'evil-collection-tuareg-setup)
 
-(after! typescript-mode evil-collection-typescript-mode-setup evil-collection)
+(autoload 'evil-collection-typescript-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'typescript-mode #'evil-collection-typescript-mode-setup)
 
-(after! vc-annotate evil-collection-vc-annotate-setup evil-collection)
+(autoload 'evil-collection-vc-annotate-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vc-annotate #'evil-collection-vc-annotate-setup)
 
-(after! vc-dir evil-collection-vc-dir-setup evil-collection)
+(autoload 'evil-collection-vc-dir-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vc-dir #'evil-collection-vc-dir-setup)
 
-(after! vc-git evil-collection-vc-git-setup evil-collection)
+(autoload 'evil-collection-vc-git-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vc-git #'evil-collection-vc-git-setup)
 
-(after! vdiff evil-collection-vdiff-setup evil-collection)
+(autoload 'evil-collection-vdiff-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vdiff #'evil-collection-vdiff-setup)
 
-(after! vertico evil-collection-vertico-setup evil-collection)
+(autoload 'evil-collection-vertico-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vertico #'evil-collection-vertico-setup)
 
-(after! view evil-collection-view-setup evil-collection)
+(autoload 'evil-collection-view-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'view #'evil-collection-view-setup)
 
-(after! vlf evil-collection-vlf-setup evil-collection)
+(autoload 'evil-collection-vlf-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vlf #'evil-collection-vlf-setup)
 
-(after! vterm evil-collection-vterm-setup evil-collection)
+(autoload 'evil-collection-vterm-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vterm #'evil-collection-vterm-setup)
 
-(after! vundo evil-collection-vundo-setup evil-collection)
+(autoload 'evil-collection-vundo-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'vundo #'evil-collection-vundo-setup)
 
-(after! w3m evil-collection-w3m-setup evil-collection)
+(autoload 'evil-collection-w3m-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'w3m #'evil-collection-w3m-setup)
 
-(after! wdired evil-collection-wdired-setup evil-collection)
+(autoload 'evil-collection-wdired-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'wdired #'evil-collection-wdired-setup)
 
-(after! wgrep evil-collection-wgrep-setup evil-collection)
+(autoload 'evil-collection-wgrep-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'wgrep #'evil-collection-wgrep-setup)
 
-(after! which-key evil-collection-which-key-setup evil-collection)
+(autoload 'evil-collection-which-key-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'which-key #'evil-collection-which-key-setup)
 
-(after! woman evil-collection-woman-setup evil-collection)
+(autoload 'evil-collection-woman-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'woman #'evil-collection-woman-setup)
 
-(after! xref evil-collection-xref-setup evil-collection)
+(autoload 'evil-collection-xref-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'xref #'evil-collection-xref-setup)
 
-(after! xwidget evil-collection-xwidget-setup evil-collection)
+(autoload 'evil-collection-xwidget-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'xwidget #'evil-collection-xwidget-setup)
 
-(after! yaml-mode evil-collection-yaml-mode-setup evil-collection)
+(autoload 'evil-collection-yaml-mode-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'yaml-mode #'evil-collection-yaml-mode-setup)
 
-(after! youtube-dl evil-collection-youtube-dl-setup evil-collection)
+(autoload 'evil-collection-youtube-dl-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'youtube-dl #'evil-collection-youtube-dl-setup)
 
-(after! zmusic evil-collection-zmusic-setup evil-collection)
+(autoload 'evil-collection-zmusic-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'zmusic #'evil-collection-zmusic-setup)
 
-(after! ztree evil-collection-ztree-setup evil-collection)
+(autoload 'evil-collection-ztree-setup "evil-collection" nil nil 'function)
+(oo-call-after-load 'ztree #'evil-collection-ztree-setup)
 ;;; provide
 (provide '990-config-evil-collection-setup)
 ;;; 990-config-evil-collection-setup.el ends here
