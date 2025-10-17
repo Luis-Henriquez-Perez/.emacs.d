@@ -37,7 +37,7 @@
 (opt! which-key-side-window-slot -10)
 (opt! which-key-sort-order #'which-key-prefix-then-key-order)
 (opt! which-key-popup-type 'side-window)
-(opt! which-key-idle-delay 0.8)
+(opt! which-key-idle-delay 1.2)
 ;; (opt! line-spacing 3 :hook which-key-130-init-buffer-hook :local t)
 (opt! which-key-show-transient-maps t)
 (opt! which-key-allow-evil-operators t)
