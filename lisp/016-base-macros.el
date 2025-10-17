@@ -161,11 +161,6 @@ This is like `setq' but it is meant for configuring variables."
   "Eval BODY after FEATURE is loaded."
   (declare (indent 1))
   `(oo-call-after-load ',feature (lambda () (with-no-warnings ,@body))))
-
-(defmacro afterbound! (symbol &rest body)
-  "Eval BODY after SYMBOL is bound."
-  (declare (indent 1))
-  `(oo-call-after-bound ',symbol (lambda () (with-no-warnings ,@body))))
 ;;; provide
 (provide '016-base-macros)
 ;;; 016-base-macros.el ends here
