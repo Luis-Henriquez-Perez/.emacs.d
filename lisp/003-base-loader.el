@@ -60,7 +60,7 @@ FEATURE."
                            (condition-case ,err
                                ,(macroexp-progn forms)
                              (error
-                              (oo-log 'failure "requiring %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
+                              (oo-log 'failure "Failed to require %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
                          ,(macroexp-progn forms)))))
        (setq forms `((if oo-init-profile-p
                          (aprog1! (time-elapsed! ,(macroexp-progn forms))
