@@ -320,7 +320,8 @@
 (emap! override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
 ;;;; UNCATEGORIZED
 (declare-function which-key-add-keymap-based-replacements "which-key")
-(afterfeature! which-key
+
+(defafter! oo-register-localleader-with-which-key (which-key)
   (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
 
 (nmap! eww-mode-map "R" #'eww-reload)

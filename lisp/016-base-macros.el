@@ -150,17 +150,17 @@ This is like `setq' but it is meant for configuring variables."
           (put ',name 'no-self-insert t)
           ',name))
 
-(defmacro after! (expr fn &optional feature)
-  "Call function after EXPR is met."
-  (declare (indent 1))
-  `(progn (declare-function ,fn ,(if feature (symbol-name feature) nil))
-          ,@(when feature `((autoload #',fn ,(symbol-name feature) nil nil 'function)))
-          (oo-call-after-load ',expr #',fn)))
-
-(defmacro afterfeature! (feature &rest body)
+(defmacro! defafter! (&rest args)
   "Eval BODY after FEATURE is loaded."
-  (declare (indent 1))
-  `(oo-call-after-load ',feature (lambda () (with-no-warnings ,@body))))
+  (declare (indent defun))
+  (set! (name arglist meta body) (oo-destructure-defun args))
+  `(progn (defun! ,name ()
+            ,@meta
+            (condition-case err
+                (with-no-warnings ,@body)
+              (error
+               (oo-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
+          (oo-call-after-load ',feature #',name)))
 ;;; provide
 (provide '016-base-macros)
 ;;; 016-base-macros.el ends here

@@ -234,7 +234,7 @@ non-readonly file buffer, save the buffer."
   (when (bound-and-true-p evil-mode)
     (evil-insert-state 1)))
 
-(defun evil|normalize-keymaps-ignore-args (&rest _)
+(defun oo-evil-normalize-keymaps-ignore-args (&rest _)
   (when (bound-and-true-p evil-mode)
     (evil-normalize-keymaps)))
 ;;;; CROSS-CONFIGURATION
@@ -250,12 +250,12 @@ non-readonly file buffer, save the buffer."
 ;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
 ;; because the maps are overridden by evil.  In order for them to work, we need
 ;; to boost give the maps greater precedence.
-(afterfeature! corfu
+(defafter! oo-make-corfu-kbds-work-with-evil (corfu)
   (evil-make-overriding-map corfu-map)
-  (advice-add 'corfu--setup :after #'evil|normalize-keymaps-ignore-args)
-  (advice-add 'corfu--teardown :after #'evil|normalize-keymaps-ignore-args))
+  (advice-add 'corfu--setup :after #'oo-evil-normalize-keymaps-ignore-args)
+  (advice-add 'corfu--teardown :after #'oo-evil-normalize-keymaps-ignore-args))
 ;;;;; TEMPEL
-(afterfeature! tempel
+(defafter! oo-make-tempel-kbds-work-with-evil (tempel)
   (evil-make-overriding-map tempel-map))
 
 (advice-add 'tempel-insert :after #'evil-insert-state)
