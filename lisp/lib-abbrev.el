@@ -189,6 +189,7 @@ string or comment."
         ;; TODO: steps to properly handle modification.
         ;; 1. Save the current abbrev table in case something goes wrong.
         ;; 2. Clear the current abbrev table.
+        ;; (clear-abbrev-table table)
         ;; 3. Try to evaluate the table in the buffer
         ;; 4. If it works, delete the table in the buffer replace it with the
         ;;    one in memory (so the table is consistently edited).  If it does
