@@ -246,8 +246,11 @@ file that is in a git repo, enale git-gutter-mode."
 (defun oo-load-idle-features ()
   "Load one feature from `oo-idle-features' during idle time."
   (awhen! (pop oo-idle-features)
-    (oo-log 'info "Idle loading: %s" it)
-    (require it nil 'noerror)
+    (condition-case err
+        (progn (require it nil 'noerror)
+               (oo-log 'success "Idle-loaded %s" it))
+      (error
+       (oo-log 'failure "Failed to idle-load %s: %S -> %S" feature (car err) (cdr err))))
     (run-with-idle-timer 1 nil #'oo-load-idle-features)))
 
 (defun oo-setup-idle-loading-h ()
