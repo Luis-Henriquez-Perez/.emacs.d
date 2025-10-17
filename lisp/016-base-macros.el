@@ -117,12 +117,12 @@ This is like `setq' but it is meant for configuring variables."
 
 (defun! oo-apply-local-vars (hook)
   "Apply local variables for hook."
+  (set! failmsg "Failed to set local variable %s: %S ->%S")
   (for! ((symbol . value) (alist-get hook oo-local-var-alist))
-    `(condition-case err
-         (setq-local ,symbol ,value)
-       (error
-        (oo-log 'failure "Failed to set local variable %s" ',symbol))))
-  (eval (nreverse forms) t))
+    (set! bodyform `(setq-local ,symbol ,value))
+    (set! handlerbody `(oo-log 'failure ,failmsg ',symbol (car err) (cdr err)))
+    (pushing! forms `(condition-case err ,bodyform (error ,handlerbody))))
+  (eval (macroexp-progn (nreverse forms)) t))
 
 (defmacro! setq-hook! (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
