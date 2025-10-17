@@ -132,8 +132,7 @@ This is like `setq' but it is meant for configuring variables."
             (defun ,setter (&rest _)
               ,docstring
               (oo-apply-local-vars ',hook)))
-          (setf (alist-get ',symbol (alist-get ',hook oo-local-var-alist)) ,value)
-          ;; Add one of these functions in.
+          (setf (alist-get ',symbol (alist-get ',hook oo-local-var-alist)) ',value)
           (add-hook ',hook #',setter OO-LOCAL-VAR-DEPTH)))
 
 (declare-function tempel-insert "tempel")
