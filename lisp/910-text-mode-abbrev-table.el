@@ -2548,6 +2548,7 @@
     ("funguses" "fungi")
     ("funions" "functions")
     ("funly" "functionality")
+    ("funs" "functions")
     ("funtion" "function")
     ("furm" "furthermore")
     ("furuther" "further")
