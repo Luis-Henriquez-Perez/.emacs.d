@@ -44,7 +44,7 @@
   (zone))
 
 (defun zone|start-timer ()
-  (setq oo-zone-timer (run-with-idle-timer 80 t #'zone|enable)))
+  (setq oo-zone-timer (run-with-idle-timer 160 t #'zone|enable)))
 
 (add-hook 'oo-first-input-hook #'zone|start-timer)
 
