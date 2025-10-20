@@ -186,6 +186,7 @@
                                   mistty
                                   gcmh
                                   ts
+                                  projectile
                                   vc-auto-commit
                                   vertico
                                   w3m
