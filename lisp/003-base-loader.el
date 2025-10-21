@@ -28,18 +28,17 @@
 ;; make `load' a function the compiler will not detect the `require' calls.
 ;;
 ;;; Code:
-(require 'cl-lib)
 (require '001-base-vars)
 (require '002-base-log)
 
 (defmacro time-elapsed! (&rest forms)
   "Eval forms and return the time elapsed."
-  (cl-with-gensyms (start)
+  (let ((start (make-symbol "start")))
     `(let ((,start (float-time)))
        ,(macroexp-progn forms)
        (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
 
-(cl-defmacro require! (feature)
+(defmacro require! (feature)
   "Require feature in lisp directory.
 If FEATURE is a regexp, require all features in lisp directory that match
 FEATURE."
