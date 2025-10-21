@@ -34,6 +34,7 @@
 (require! 120-init-no-littering)
 (require! 127-hooks)
 (require! 128-init)
+(require! 130-init-goto-address)
 (require! 130-init-ws-butler)
 (require! 130-init-dabbrev)
 (require! 130-init-abbrev)
