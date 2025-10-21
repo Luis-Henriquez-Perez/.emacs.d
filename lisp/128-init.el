@@ -258,6 +258,8 @@ file that is in a git repo, enale git-gutter-mode."
   (run-with-idle-timer 3 nil #'oo-load-idle-features))
 
 (add-hook 'emacs-startup-hook #'oo-setup-idle-loading-h 90)
+
+(add-hook 'oo-first-file-hook #'global-auto-revert-mode)
 ;;; provide
 (provide '128-init)
 ;;; 128-init.el ends here
