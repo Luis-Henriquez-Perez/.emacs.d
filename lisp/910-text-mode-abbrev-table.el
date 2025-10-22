@@ -1764,6 +1764,7 @@
     ("determinining" "determining")
     ("determne" "determine")
     ("detial" "detail")
+    ("detm" "determine")
     ("detremental" "detrimental")
     ("devasted" "devastated")
     ("develope" "develop")
