@@ -30,7 +30,7 @@
 
 (add-hook 'emacs-startup-hook #'recentf-mode)
 
-(setopt recentf-save-file (expand-file-name "recentf-save.el" oo-cache-dir))
+(opt! recentf-save-file (expand-file-name "recentf-save.el" oo-cache-dir))
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'oo-call-quietly-a)

@@ -209,9 +209,9 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; Increase the blink interval slightly if I do enable it.
 (setq blink-cursor-interval 0.4)
 ;; Enable window dividers.
-(setopt window-divider-default-bottom-width 7)
-(setopt window-divider-default-right-width 7)
-(setopt window-divider-default-places t)
+(opt! window-divider-default-bottom-width 7)
+(opt! window-divider-default-right-width 7)
+(opt! window-divider-default-places t)
 ;;;; TRASH
 ;; By default Emacs actually deletes files.  By setting this to t, you tell Emacs
 ;; to move a file to trash instead of actually deleting it.  This is better because

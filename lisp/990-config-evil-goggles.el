@@ -28,7 +28,7 @@
 (require! "^0[01]")
 (require 'evil-goggles)
 ;;;; Remove advices
-(setopt evil-goggles-duration 0.1)
+(opt! evil-goggles-duration 0.1)
 
 ;; Now that `evil-goggles' is loaded we do not need the advice.
 (advice-remove 'evil-delete                                #'oo-require-evil-goggles-a)
