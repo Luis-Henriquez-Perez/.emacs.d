@@ -50,118 +50,118 @@
 ;; (setq evil-motion-state-modes nil)
 ;;;; CURSOR COLOR
 ;;;;; STATE FACES
-(defface evil|state-face
+(defface oo-evil-state-face
   '((t (:weight bold)))
   "Meta-face used for property inheritance on all evil state faces.")
 
-(defface evil|emacs-state-face
-  '((t (:inherit evil|state-face :background "#483d8b")))
+(defface oo-evil-emacs-state-face
+  '((t (:inherit oo-evil-state-face :background "#483d8b")))
   "Face for the Emacs state tag in evil indicator.")
 
-(setf (alist-get 'evil|emacs-state-face oo-custom-faces-alist) 'font-lock-builtin-face)
+(setf (alist-get 'oo-evil-emacs-state-face oo-custom-faces-alist) 'font-lock-builtin-face)
 
-(defface evil|insert-state-face
-  '((t (:inherit evil|state-face :background "#228b22")))
+(defface oo-evil-insert-state-face
+  '((t (:inherit oo-evil-state-face :background "#228b22")))
   "Face for the insert state tag in evil indicator.")
 
-(setf (alist-get 'evil|insert-state-face oo-custom-faces-alist) 'font-lock-type-face)
+(setf (alist-get 'oo-evil-insert-state-face oo-custom-faces-alist) 'font-lock-type-face)
 
-(defface evil|motion-state-face
-  '((t (:inherit evil|state-face :background "#a0522d")))
+(defface oo-evil-motion-state-face
+  '((t (:inherit oo-evil-state-face :background "#a0522d")))
   "Face for the motion state tag in evil indicator.")
 
-(setf (alist-get 'evil|motion-state-face oo-custom-faces-alist) 'font-lock-variable-name-face)
+(setf (alist-get 'oo-evil-motion-state-face oo-custom-faces-alist) 'font-lock-variable-name-face)
 
-(defface evil|normal-state-face
-  '((t (:inherit evil|state-face :background "purple")))
+(defface oo-evil-normal-state-face
+  '((t (:inherit oo-evil-state-face :background "purple")))
   "Face for the normal state tag in evil indicator.")
 
-(setf (alist-get 'evil|normal-state-face oo-custom-faces-alist) 'font-lock-keyword-face)
+(setf (alist-get 'oo-evil-normal-state-face oo-custom-faces-alist) 'font-lock-keyword-face)
 
-(defface evil|operator-state-face
-  '((t (:inherit evil|state-face :background "#0000ff")))
+(defface oo-evil-operator-state-face
+  '((t (:inherit oo-evil-state-face :background "#0000ff")))
   "Face for the operator state tag in evil indicator.")
 
-(setf (alist-get 'evil|operator-state-face oo-custom-faces-alist) 'font-lock-function-name-face)
+(setf (alist-get 'oo-evil-operator-state-face oo-custom-faces-alist) 'font-lock-function-name-face)
 
-(defface evil|visual-state-face
-  '((t (:inherit evil|state-face :background "#8b2252")))
+(defface oo-evil-visual-state-face
+  '((t (:inherit oo-evil-state-face :background "#8b2252")))
   "Face for the visual state tag in evil indicator.")
 
-(setf (alist-get 'evil|visual-state-face oo-custom-faces-alist) 'font-lock-string-face)
+(setf (alist-get 'oo-evil-visual-state-face oo-custom-faces-alist) 'font-lock-string-face)
 
-(defface evil|replace-state-face
-  '((t (:inherit evil|state-face :background "#008b8b")))
+(defface oo-evil-replace-state-face
+  '((t (:inherit oo-evil-state-face :background "#008b8b")))
   "Face for the replace state tag in evil indicator.")
 
-(setf (alist-get 'evil|replace-state-face oo-custom-faces-alist) 'font-lock-constant-face)
+(setf (alist-get 'oo-evil-replace-state-face oo-custom-faces-alist) 'font-lock-constant-face)
 ;;;;; CHANGE CURSOR COLOR AND SHAPE ACCORDING TO CURRENT EVIL STATE
 ;; Did not realize for the longest time that evil cursor can be a function that
 ;; changes the cursor.  With this in mind, the best way to set the cursor size
 ;; and shape dynamically is to set the corresponding cursor symbols to functions.
-(defun evil|state-face ()
+(defun oo-evil-state-face ()
   "Return the cursor color for state as a string."
-  (intern (format "evil|%s-state-face" evil-state)))
+  (intern (format "oo-evil-%s-state-face" evil-state)))
 
-(defun evil|state-background ()
+(defun oo-evil-state-background ()
   "Return the background of the current evil state face."
-  (aand! (evil|state-face) (face-attribute it :background)))
+  (aand! (oo-evil-state-face) (face-attribute it :background)))
 
-(defun evil|set-default-cursor ()
+(defun oo-evil-set-default-cursor ()
   "Set cursor for normal state."
-  (evil-set-cursor (list t (evil|state-background))))
+  (evil-set-cursor (list t (oo-evil-state-background))))
 
-(defun evil|set-insert-state-cursor ()
+(defun oo-evil-set-insert-state-cursor ()
   "Set cursor for insert state."
-  (evil-set-cursor (list '(bar . 2) (evil|state-background))))
+  (evil-set-cursor (list '(bar . 2) (oo-evil-state-background))))
 
-(defun evil|set-operator-state-cursor ()
+(defun oo-evil-set-operator-state-cursor ()
   "Set cursor for operator state."
-  (evil-set-cursor (list '(hbar . 9) (evil|state-background))))
+  (evil-set-cursor (list '(hbar . 9) (oo-evil-state-background))))
 
-(defalias 'evil|set-normal-state-cursor 'evil|set-default-cursor)
-(defalias 'evil|set-motion-state-cursor 'evil|set-default-cursor)
-(defalias 'evil|set-replace-state-cursor 'evil|set-default-cursor)
-(defalias 'evil|set-emacs-state-cursor 'evil|set-default-cursor)
-(defalias 'evil|set-visual-state-cursor 'evil|set-default-cursor)
+(defalias 'oo-evil-set-normal-state-cursor 'oo-evil-set-default-cursor)
+(defalias 'oo-evil-set-motion-state-cursor 'oo-evil-set-default-cursor)
+(defalias 'oo-evil-set-replace-state-cursor 'oo-evil-set-default-cursor)
+(defalias 'oo-evil-set-emacs-state-cursor 'oo-evil-set-default-cursor)
+(defalias 'oo-evil-set-visual-state-cursor 'oo-evil-set-default-cursor)
 ;;;;; CURSOR COLORS
-(setq evil-default-cursor        #'evil|set-default-cursor)
-(setq evil-normal-state-cursor   #'evil|set-normal-state-cursor)
-(setq evil-insert-state-cursor   #'evil|set-insert-state-cursor)
-(setq evil-visual-state-cursor   #'evil|set-visual-state-cursor)
-(setq evil-motion-state-cursor   #'evil|set-motion-state-cursor)
-(setq evil-replace-state-cursor  #'evil|set-replace-state-cursor)
-(setq evil-operator-state-cursor #'evil|set-operator-state-cursor)
-(setq evil-emacs-state-cursor    #'evil|set-emacs-state-cursor)
+(setq evil-default-cursor        #'oo-evil-set-default-cursor)
+(setq evil-normal-state-cursor   #'oo-evil-set-normal-state-cursor)
+(setq evil-insert-state-cursor   #'oo-evil-set-insert-state-cursor)
+(setq evil-visual-state-cursor   #'oo-evil-set-visual-state-cursor)
+(setq evil-motion-state-cursor   #'oo-evil-set-motion-state-cursor)
+(setq evil-replace-state-cursor  #'oo-evil-set-replace-state-cursor)
+(setq evil-operator-state-cursor #'oo-evil-set-operator-state-cursor)
+(setq evil-emacs-state-cursor    #'oo-evil-set-emacs-state-cursor)
 ;;;; MINIBUFFER
-(defvar evil|state-before-minibuffer nil
+(defvar oo-evil-state-before-minibuffer nil
   "Store the evil state before entering the minibuffer.")
 
 ;; It is easier to make all the hooks and functions "safe" than to remember all
 ;; the hooks and remove them when evil-mode is disabled.
-(defun evil|save-prior-evil-state-h ()
+(defun oo-evil-save-prior-evil-state-h ()
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
-    (setq evil|state-before-minibuffer evil-state)
+    (setq oo-evil-state-before-minibuffer evil-state)
     (evil-insert-state)))
 
-(defun evil|restore-prior-evil-state-h ()
+(defun oo-evil-restore-prior-evil-state-h ()
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
-    (when evil|state-before-minibuffer
-      (evil-change-state evil|state-before-minibuffer))
-    (setq evil|state-before-minibuffer nil)))
+    (when oo-evil-state-before-minibuffer
+      (evil-change-state oo-evil-state-before-minibuffer))
+    (setq oo-evil-state-before-minibuffer nil)))
 
-(add-hook 'minibuffer-setup-hook #'evil|save-prior-evil-state-h)
-(add-hook 'minibuffer-exit-hook #'evil|restore-prior-evil-state-h)
+(add-hook 'minibuffer-setup-hook #'oo-evil-save-prior-evil-state-h)
+(add-hook 'minibuffer-exit-hook #'oo-evil-restore-prior-evil-state-h)
 ;;;; THEME
-(defun evil|refresh-cursor-ignore-args (&rest _)
+(defun oo-evil-refresh-cursor-ignore-args (&rest _)
   (when (bound-and-true-p evil-mode)
     (evil-refresh-cursor)))
 
-(add-hook 'enable-theme-functions #'evil|refresh-cursor-ignore-args)
+(add-hook 'enable-theme-functions #'oo-evil-refresh-cursor-ignore-args)
 ;;;; BETTER ESCAPE
-(defun evil|dwim-escape ()
+(defun oo-evil-dwim-escape ()
   "Exit out of whatever is happening after escape.
 Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
 non-readonly file buffer, save the buffer."
@@ -182,7 +182,7 @@ non-readonly file buffer, save the buffer."
 ;;;; OPERATORS
 ;;;;; EVALUATING
 ;; This is shamelessly copied from `evil-extra-operator'.
-(evil-define-operator evil|eval-operator (beg end)
+(evil-define-operator oo-evil-eval-operator (beg end)
   "Evil operator for evaluating code."
   :move-point nil
   (interactive "<r>")
@@ -190,7 +190,7 @@ non-readonly file buffer, save the buffer."
 
 ;; This is also shamelessly copied with the difference that the format string is
 ;; "%S" instead of "%s".  Honestly, I think not having it that way was a bug.
-(evil-define-operator evil|eval-replace-operator (beg end)
+(evil-define-operator oo-evil-eval-replace-operator (beg end)
   "Evil operator for replacing contents with result from eval."
   :move-point nil
   (interactive "<r>")
@@ -199,7 +199,7 @@ non-readonly file buffer, save the buffer."
     (delete-region beg end)
     (insert result)))
 
-(evil-define-operator evil|eval-print-operator (beg end)
+(evil-define-operator oo-evil-eval-print-operator (beg end)
   "Evil operator for printing the results of contents below."
   :move-point nil
   (interactive "<r>")
@@ -211,7 +211,7 @@ non-readonly file buffer, save the buffer."
       (comment-region it (point)))))
 ;;;;; HUNGRY DELETE (EXPERIMENTAL AND IN PROGRESS)
 ;; This needs some more fine-tuning.
-(defun evil|consume-ws-a (orig-fn &rest args)
+(defun oo-evil-consume-ws-a (orig-fn &rest args)
   (prog1 (apply orig-fn args)
     ;; TODO: this should happen as well for lines behind.
     (cond ((looking-at (rx (>= 2 "\n")))
@@ -219,19 +219,19 @@ non-readonly file buffer, save the buffer."
           ((looking-at (rx (>= 2 "\s")))
            (just-one-space)))))
 
-(advice-add 'evil-delete :around #'evil|consume-ws-a)
-(advice-add 'lispyville-delete :around #'evil|consume-ws-a)
-(advice-add 'lispyville-delete-char-or-splice :around #'evil|consume-ws-a)
+(advice-add 'evil-delete :around #'oo-evil-consume-ws-a)
+(advice-add 'lispyville-delete :around #'oo-evil-consume-ws-a)
+(advice-add 'lispyville-delete-char-or-splice :around #'oo-evil-consume-ws-a)
 ;;;; TEXT-OBJECTS
-(evil-define-text-object evil|outer-buffer (_ &optional _ _ type)
+(evil-define-text-object oo-evil-outer-buffer (_ &optional _ _ type)
   "Select the entire buffer as a text object."
   (list (point-min) (point-max) type))
 
-(evil-define-text-object evil|inner-buffer (_ &optional _ _ type)
+(evil-define-text-object oo-evil-inner-buffer (_ &optional _ _ type)
   "Select the inner buffer (same as outer in this case)."
   (list (point-min) (point-max) type))
 ;;;; INSERT STATE HOOK
-(defun evil|enter-insert-state-ignore-args (&rest _)
+(defun oo-evil-enter-insert-state-ignore-args (&rest _)
   "Enter insert state if `evil-mode' is enabled."
   (when (bound-and-true-p evil-mode)
     (evil-insert-state 1)))
