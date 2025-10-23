@@ -1,4 +1,4 @@
-;;; 010-base-functions.el -*- lexical-binding: t; -*-
+;;; 001-base-functions.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -200,5 +200,5 @@ Return a list of."
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
     (list name arglist (remove nil (list doc decl inte)) args)))
 ;;; provide
-(provide '010-base-functions)
-;;; 010-base-functions.el ends here
+(provide '001-base-functions)
+;;; 001-base-functions.el ends here

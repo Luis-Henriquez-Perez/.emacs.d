@@ -1,4 +1,4 @@
-;;; 001-base-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; 006-base-vars.el --- core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
-(eval-when-compile (require '000-anaphoric-macros))
+(eval-when-compile (require '002-anaphoric-macros))
 
 (defconst oo-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory where handcrafted configuration files go.")
@@ -73,5 +73,5 @@ built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'."
   "Initialization data.
 This includes the time that features took to load.")
 ;;; provide
-(provide '001-base-vars)
-;;; 001-base-vars.el ends here
+(provide '006-base-vars)
+;;; 006-base-vars.el ends here

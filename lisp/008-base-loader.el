@@ -1,4 +1,4 @@
-;;; 003-base-loader.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
+;;; 008-base-loader.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,8 +28,8 @@
 ;; make `load' a function the compiler will not detect the `require' calls.
 ;;
 ;;; Code:
-(require '001-base-vars)
-(require '002-base-log)
+(require '006-base-vars)
+(require '007-base-log)
 
 (defmacro time-elapsed! (&rest forms)
   "Eval forms and return the time elapsed."
@@ -75,5 +75,5 @@ FEATURE."
     (_
      (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
 ;;; provide
-(provide '003-base-loader)
-;;; 003-base-loader.el ends here
+(provide '008-base-loader)
+;;; 008-base-loader.el ends here

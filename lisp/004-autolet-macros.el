@@ -1,4 +1,4 @@
-;;; 012-autolet-macros.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
+;;; 004-autolet-macros.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'pcase)
 (require 'cl-lib)
-(require '010-base-functions)
+(require '001-base-functions)
 
 (defun oo-arglist-symbols (arglist)
   "Return a list of argument symbols."
@@ -241,5 +241,5 @@ NAME, ARGS and BODY are the same as in `defun'.
        (autolet! ,(oo-arglist-symbols arglist)
          ,@body))))
 ;;; provide
-(provide '012-autolet-macros)
-;;; 012-autolet-macros.el ends here
+(provide '004-autolet-macros)
+;;; 004-autolet-macros.el ends here

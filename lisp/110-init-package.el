@@ -27,7 +27,7 @@
 ;;
 ;;; Code:
 (require 'cl-lib)
-(require '001-base-vars)
+(require '006-base-vars)
 ;; If this variable is not set beforehand, `package-gnupghome-dir' will not be
 ;; set to the right place.
 (defvar package-user-dir)

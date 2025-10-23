@@ -73,9 +73,9 @@
 
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
-(require '001-base-vars)
-(require '002-base-log)
-(eval-when-compile (require '003-base-loader))
+(require '006-base-vars)
+(require '007-base-log)
+(eval-when-compile (require '008-base-loader))
 
 (require! "^0[15]")
 
