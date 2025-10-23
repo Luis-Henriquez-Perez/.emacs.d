@@ -6016,6 +6016,7 @@
     ("unrepentent" "unrepentant")
     ("unrepetant" "unrepentant")
     ("unrepetent" "unrepentant")
+    ("unspecied" "unspecified")
     ("unsubstanciated" "unsubstantiated")
     ("unsuccesful" "unsuccessful")
     ("unsuccesfully" "unsuccessfully")
