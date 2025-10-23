@@ -70,7 +70,7 @@
 (advice-remove 'oo-evil-eval-replace-operator                #'oo-require-evil-goggles-a)
 (advice-remove 'oo-evil-eval-print-operator                  #'oo-require-evil-goggles-a)
 
-(autolet!
+(autolet! nil
   (set! list '((oo-evil-eval-operator evil-change)
                (oo-evil-eval-replace-operator evil-change)
                (oo-evil-eval-print-operator evil-change)
