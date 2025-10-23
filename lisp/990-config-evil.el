@@ -214,7 +214,7 @@ non-readonly file buffer, save the buffer."
 (defun oo-evil-consume-ws-a (orig-fn &rest args)
   (prog1 (apply orig-fn args)
     ;; TODO: this should happen as well for lines behind.
-    (cond ((looking-at (rx (>= 2 "\n")))
+    (cond ((looking-at (rx (>= 3 "\n")))
            (delete-blank-lines))
           ((looking-at (rx (>= 2 "\s")))
            (just-one-space)))))
