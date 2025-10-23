@@ -215,11 +215,13 @@ non-readonly file buffer, save the buffer."
   (prog1 (apply orig-fn args)
     ;; TODO: this should happen as well for lines behind.
     (cond ((looking-at (rx (>= 2 "\n")))
-           (delete-blank-lines)))))
+           (delete-blank-lines))
+          ((looking-at (rx (>= 2 "\s")))
+           (just-one-space)))))
 
 (advice-add 'evil-delete :around #'evil|consume-ws-a)
 (advice-add 'lispyville-delete :around #'evil|consume-ws-a)
-;; (advice-add 'lispyville-delete-char-or-splice :around #'evil|consume-ws-a)
+(advice-add 'lispyville-delete-char-or-splice :around #'evil|consume-ws-a)
 ;;;; TEXT-OBJECTS
 (evil-define-text-object evil|outer-buffer (_ &optional _ _ type)
   "Select the entire buffer as a text object."
