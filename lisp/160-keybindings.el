@@ -284,9 +284,6 @@
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
 ;;;; PACKAGE-SPECIFIC
-;;;;; LISPYVILLE
-(imap! lispyville-mode-map "SPC" #'lispy-space)
-(imap! lispyville-mode-map ";" #'lispy-comment)
 ;;;;; INFO
 (nmap! Info-mode-map "H" #'Info-last)
 (nmap! Info-mode-map "L" #'Info-next)

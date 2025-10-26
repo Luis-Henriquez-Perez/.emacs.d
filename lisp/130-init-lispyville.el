@@ -30,6 +30,9 @@
 ;; Do not bind any keys by default.
 (add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
 (opt! lispyville-key-theme nil)
+
+(imap! lispyville-mode-map "SPC" #'lispy-space)
+(imap! lispyville-mode-map ";" #'lispy-comment)
 ;;; provide
 (provide '130-init-lispyville)
 ;;; 130-init-lispyville.el ends here
