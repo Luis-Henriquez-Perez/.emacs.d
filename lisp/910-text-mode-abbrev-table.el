@@ -4922,6 +4922,7 @@
     ("reqed" "required")
     ("reqing" "requiring")
     ("reqm" "requirement")
+    ("reqrs" "requires")
     ("reqs" "requirements")
     ("requirem" "requirement")
     ("requirment" "requirement")
