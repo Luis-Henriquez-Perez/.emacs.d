@@ -31,6 +31,12 @@
 (autoload 'tempel-complete "tempel" nil nil 'function)
 (autoload 'tempel-insert "tempel" nil nil 'function)
 (autoload 'tempel-expand "tempel" nil nil 'function)
+
+(imap! tempel-map "C-l" #'tempel-abort)
+(imap! tempel-map "C-j" #'tempel-next)
+(imap! tempel-map "C-k" #'tempel-previous)
+(imap! tempel-map "TAB" #'tempel-next)
+(imap! tempel-map [backtab] #'tempel-previous)
 ;;; provide
 (provide '130-init-tempel)
 ;;; 130-init-tempel.el ends here

@@ -34,6 +34,15 @@
 
 (autoload '+org-agenda-day-view "990-config-org-agenda" nil nil 'function)
 
+(llmap org-mode-map "a" #'org-archive-subtree)
+(llmap org-mode-map "n" #'org-add-note)
+(llmap org-mode-map "t" #'org-todo)
+
+(nmap! org-mode-map "T" #'org-todo)
+(nmap! org-mode-map "t" #'+org-choose-tags)
+(nmap! org-mode-map "R" #'org-refile)
+(nmap! org-mode-map "n" #'org-add-note)
+
 (oo-require-after-load 'org '990-config-org)
 ;;; provide
 (provide '130-init-org)

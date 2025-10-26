@@ -1,4 +1,4 @@
-;;; 130-init-corfu.el --- initialize corfu -*- lexical-binding: t; -*-
+;;; 130-init-macrostep.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,29 +22,24 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize corfu.
+;; TODO: add commentary
 ;;
 ;;; Code:
-(require! "^0[01]")
+(declare-function macrostep-expand "macrostep")
+(declare-function macrostep-collapse-all "macrostep")
+(declare-function macrostep-collapse "macrostep")
 
-;; TODO: make it so moving on a candidate if I press espace insert that candidate.
-(opt! corfu-preview-current t)
-(opt! corfu-preselect-first t)
-(opt! corfu-quit-at-boundary nil)
-(opt! corfu-auto t)
-(opt! corfu-auto-delay 0.1)
-(opt! corfu-auto-prefix 1)
-(opt! corfu-bar-width 0)
+(llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-map))
+(llmap emacs-lisp-mode-map "e" #'macrostep-expand)
+(llmap emacs-lisp-mode-map "c" #'macrostep-collapse)
+(llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
+(llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
-(imap! corfu-map "<tab>"   #'corfu-next)
-(imap! corfu-map [backtab] #'corfu-previous)
-(imap! corfu-map "S-TAB"   #'corfu-previous)
-(imap! corfu-map "C-;"     #'corfu-quick-complete)
-(imap! corfu-map "C-j"     #'corfu-next)
-(imap! corfu-map "C-k"     #'corfu-previous)
-(imap! corfu-map "C-p"     #'corfu-previous)
-(imap! corfu-map ";"       #'corfu-quick-complete)
-(imap! corfu-map "SPC"     #'corfu-insert)
+(defvar-keymap! oo-macrostep-map
+  "e" #'macrostep-expand
+  "c" #'macrostep-collapse
+  "C" #'macrostep-collapse-all
+  "a" #'macrostep-collapse-all)
 ;;; provide
-(provide '130-init-corfu)
-;;; 130-init-corfu.el ends here
+(provide '130-init-macrostep)
+;;; 130-init-macrostep.el ends here

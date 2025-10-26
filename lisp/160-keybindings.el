@@ -330,80 +330,9 @@
 ;;;;; LISPYVILLE
 (imap! lispyville-mode-map "SPC" #'lispy-space)
 (imap! lispyville-mode-map ";" #'lispy-comment)
-;;;;; MACROSTEP
-(declare-function macrostep-expand "macrostep")
-(declare-function macrostep-collapse-all "macrostep")
-(declare-function macrostep-collapse "macrostep")
-
-(llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-map))
-(llmap emacs-lisp-mode-map "e" #'macrostep-expand)
-(llmap emacs-lisp-mode-map "c" #'macrostep-collapse)
-(llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
-(llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
-
-(llmap org-mode-map "a" #'org-archive-subtree)
-(llmap org-mode-map "n" #'org-add-note)
-(llmap org-mode-map "t" #'org-todo)
-
-(defvar-keymap! oo-macrostep-map
-  "e" #'macrostep-expand
-  "c" #'macrostep-collapse
-  "C" #'macrostep-collapse-all
-  "a" #'macrostep-collapse-all)
 ;;;;; INFO
 (nmap! Info-mode-map "H" #'Info-last)
 (nmap! Info-mode-map "L" #'Info-next)
-;;;;; HELM
-(imap! helm-map "TAB" #'helm-next-line)
-(imap! helm-map [backtab] #'helm-previous-line)
-(imap! helm-map "C-j" #'helm-next-line)
-(imap! helm-map "C-k" #'helm-previous-line)
-(imap! helm-map "C-a" #'helm-select-action)
-(imap! helm-map "C-m" #'helm-toggle-visible-mark-forward)
-(imap! helm-map "RET" #'+helm-select-nth-action)
-(imap! helm-map "S-TAB" #'helm-mark-current-line)
-(imap! helm-map "C-;" #'ace-jump-helm-line)
-;;;;; CORFU
-(imap! corfu-map "<tab>"   #'corfu-next)
-(imap! corfu-map [backtab] #'corfu-previous)
-(imap! corfu-map "S-TAB"   #'corfu-previous)
-(imap! corfu-map "C-;"     #'corfu-quick-complete)
-(imap! corfu-map "C-j"     #'corfu-next)
-(imap! corfu-map "C-k"     #'corfu-previous)
-(imap! corfu-map "C-p"     #'corfu-previous)
-(imap! corfu-map ";"       #'corfu-quick-complete)
-(imap! corfu-map "SPC"     #'corfu-insert)
-;;;;; DIRED
-(nmap! dired-mode-map "h" #'dired-up-directory)
-(nmap! dired-mode-map "l" #'dired-find-file)
-(nmap! dired-mode-map "RET" #'dired-find-file)
-(nmap! dired-mode-map "o" #'dired-omit-mode)
-;;;;; BINDINGS
-(nmap! org-mode-map "T" #'org-todo)
-(nmap! org-mode-map "t" #'+org-choose-tags)
-(nmap! org-mode-map "R" #'org-refile)
-(nmap! org-mode-map "n" #'org-add-note)
-;;;;; TEMPEL
-(imap! tempel-map "C-l" #'tempel-abort)
-(imap! tempel-map "C-j" #'tempel-next)
-(imap! tempel-map "C-k" #'tempel-previous)
-(imap! tempel-map "TAB" #'tempel-next)
-(imap! tempel-map [backtab] #'tempel-previous)
-;;;;; VERTICO
-(imap! vertico-map "C-n" #'vertico-scroll-up)
-(imap! vertico-map "C-p" #'vertico-scroll-down)
-(imap! vertico-map "TAB" #'vertico-next)
-(imap! vertico-map "C-k" #'vertico-previous)
-(imap! vertico-map "C-j" #'vertico-next)
-(imap! vertico-map ";" #'vertico-quick-exit)
-(imap! vertico-map "C-;" #'vertico-quick-exit)
-(imap! vertico-map [backtab] #'vertico-previous)
-(imap! vertico-map "C-o" #'embark-act)
-;;;;; YEETUBE
-(nmap! yeetube-mode-map "p" #'yeetube-play)
-(nmap! yeetube-mode-map "a" #'oo-yeetube-download-audio)
-(nmap! yeetube-mode-map "v" #'oo-yeetube-download-video)
-(nmap! yeetube-mode-map "s" #'yeetube-search)
 ;;; provide
 (provide '160-keybindings)
 ;;; 160-keybindings.el ends here

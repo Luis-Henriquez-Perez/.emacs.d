@@ -33,6 +33,16 @@
 
 (opt! vertico-count-format nil)
 (opt! vertico-count 15)
+
+(imap! vertico-map "C-n" #'vertico-scroll-up)
+(imap! vertico-map "C-p" #'vertico-scroll-down)
+(imap! vertico-map "TAB" #'vertico-next)
+(imap! vertico-map "C-k" #'vertico-previous)
+(imap! vertico-map "C-j" #'vertico-next)
+(imap! vertico-map ";" #'vertico-quick-exit)
+(imap! vertico-map "C-;" #'vertico-quick-exit)
+(imap! vertico-map [backtab] #'vertico-previous)
+(imap! vertico-map "C-o" #'embark-act)
 ;;; provide
 (provide '130-init-vertico)
 ;;; 130-init-vertico.el ends here
