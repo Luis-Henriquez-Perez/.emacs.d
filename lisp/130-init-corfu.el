@@ -27,6 +27,12 @@
 ;;; Code:
 (require! "^0[01]")
 
+(add-hook 'corfu-mode-hook #'corfu-history-mode)
+
+(opt! corfu-quick1 "ajskdlghty")
+(opt! corfu-quick2 "ajskdlghty")
+;; https://github.com/minad/corfu/issues/12
+
 ;; TODO: make it so moving on a candidate if I press espace insert that candidate.
 (opt! corfu-preview-current t)
 (opt! corfu-preselect-first t)
