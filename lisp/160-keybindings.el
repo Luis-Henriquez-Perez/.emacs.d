@@ -38,6 +38,8 @@
 (nmap! "J" #'evil-scroll-page-down)
 (nmap! "K" #'evil-scroll-page-up)
 (nmap! [escape] #'oo-evil-dwim-escape)
+(nmap! "ff" #'evil-find-char)
+(nmap! "fj" #'oo-evilem-motion-char)
 
 (imap! "A-x" #'execute-extended-command)
 (imap! "M-x" #'execute-extended-command)
