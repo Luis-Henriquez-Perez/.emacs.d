@@ -27,9 +27,30 @@
 ;;; Code:
 (require! "^0[01]")
 
+(add-hook 'vertico-mode-hook #'vertico-buffer-mode)
+
+(opt! vertico-buffer-display-action
+      '(display-buffer-in-direction
+        (direction . below)
+        (window-height . ,(+ 3 vertico-count))))
+
+(oo-popup-at-bottom "\\*Vertico")
+
 (add-hook 'oo-first-input-hook #'vertico-mode)
 ;; TODO: make conditional based on whether icons are available.
 (add-hook 'vertico-mode-hook #'nerd-icons-completion-mode)
+
+(add-hook 'vertico-mode-hook #'vertico-multiform-mode)
+
+;; (pushing! vertico-multiform-commands '(Info-menu (vertico-sort-function . nil)))
+(opt! vertico-multiform-commands
+      '((Info-menu (vertico-sort-function . nil))
+        ;; (execute-extended-command (vertico-sort-function . vertico-sort-history-alpha))
+        ;; (t (vertico-sort-function . vertico-sort-history-length-alpha))
+        ))
+
+(opt! vertico-quick1 "asdfgh")
+(opt! vertico-quick2 "jkluionm")
 
 (opt! vertico-count-format nil)
 (opt! vertico-count 15)
