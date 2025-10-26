@@ -324,7 +324,6 @@
 (defafter! oo-register-localleader-with-which-key (which-key)
   (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
 
-(nmap! eww-mode-map "R" #'eww-reload)
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
 ;;;; PACKAGE-SPECIFIC
 ;;;;; LISPYVILLE

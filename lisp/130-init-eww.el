@@ -29,7 +29,7 @@
 
 (opt! eww-auto-rename-buffer t)
 
-
+(nmap! eww-mode-map "R" #'eww-reload)
 ;;; provide
 (provide '130-init-eww)
 ;;; 130-init-eww.el ends here
