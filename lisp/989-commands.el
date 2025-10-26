@@ -259,6 +259,19 @@ Additionally, make any duplicate spaces in line become a single space."
   (set! model (make-ctbl:model :column-model column-model :data data))
   (set! component (ctbl:create-table-component-buffer :model model))
   (pop-to-buffer (ctbl:cp-get-buffer component)))
+
+(defun! oo/kill-emacs-no-errors ()
+  "Ignore `kill-emacs-hook' when killing Emacs."
+  (interactive)
+  ;; Manually run kill-Emacs-ho
+  (flet! noerrs (fn &rest args) (ignore-errors (apply fn args)) nil)
+  (run-hooks-wrapped 'kill-emacs-hook #'noerrs))
+
+(defun oo/kill-emacs-no-hook ()
+  "Ignore `kill-emacs-hook' when killing Emacs."
+  (interactive)
+  (let (kill-emacs-hook)
+    (kill-emacs)))
 ;;; provide
 (provide '989-commands)
 ;;; 989-commands.el ends here

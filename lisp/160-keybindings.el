@@ -31,18 +31,6 @@
 (declare-function minibuffer-keyboard-quit "delsel")
 (declare-function evil-normal-state "evil")
 ;;;; COMMANDS
-(defun! oo/kill-emacs-no-errors ()
-  "Ignore `kill-emacs-hook' when killing Emacs."
-  (interactive)
-  ;; Manually run kill-Emacs-ho
-  (flet! noerrs (fn &rest args) (ignore-errors (apply fn args)) nil)
-  (run-hooks-wrapped 'kill-emacs-hook #'noerrs))
-
-(defun oo/kill-emacs-no-hook ()
-  "Ignore `kill-emacs-hook' when killing Emacs."
-  (interactive)
-  (let (kill-emacs-hook)
-    (kill-emacs)))
 ;;;; leader bindings
 ;;;;; window
 (defvar-keymap! oo-window-map
