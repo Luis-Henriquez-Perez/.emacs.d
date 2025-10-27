@@ -331,7 +331,11 @@
           :is-input t)))
 
   (my-meep-basis-keys)
-  (bray-mode 1))
+  (add-hook
+   'after-change-major-mode-hook
+   (lambda ()
+     (when (and (not (minibufferp)) (not (derived-mode-p 'special-mode)))
+       (bray-mode)))))
 
 (add-hook 'emacs-startup-hook #'my-meep-setup-once)
 ;;; provide
