@@ -187,7 +187,7 @@
   "," #'meep-isearch-repeat-prev
   "<" #'meep-move-paragraph-prev
 
-  "#'" . meep-move-symbol-next
+  "." #'meep-move-symbol-next
   ">" #'meep-move-same-syntax-and-space-next
 
   "/" #'meep-move-symbol-next-end
