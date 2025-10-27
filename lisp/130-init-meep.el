@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(defvar-keymap! meep-state-keymap-motion
+(defvar-keymap meep-state-keymap-motion
   "1" #'meep-digit-argument-repeat
   "2" #'meep-digit-argument-repeat
   "3" #'meep-digit-argument-repeat
@@ -36,7 +36,7 @@
   "8" #'meep-digit-argument-repeat
   "9" #'meep-digit-argument-repeat
   "0" #'meep-digit-argument-repeat
-  "-" #'meep-digit-argument-repeat
+  ;; "-" #'meep-digit-argument-repeat
 
   "`" #'meep-region-to-secondary-selection
   "~" #'meep-region-swap
@@ -106,7 +106,7 @@
   "f L" #'meep-move-find-char-on-line-till-next
 
   ;; Find "repeat" are below the keys for find.
-  "for #'" . meep-move-find-char-on-line-repeat-at-next
+  "f ." #'meep-move-find-char-on-line-repeat-at-next
   "f n" #'meep-move-find-char-on-line-repeat-at-prev
   "f >" #'meep-move-find-char-on-line-repeat-till-next
   "f N" #'meep-move-find-char-on-line-repeat-till-prev
@@ -217,13 +217,13 @@
     (message "Key Free: %s" (format-kbd-macro keys))))
 
 (defun my-meep-basis-keys ()
-  (define-key meep-state-keymap-normal nil nil)
+  ;; (define-key meep-state-keymap-normal nil nil)
 
-  (define-key meep-state-keymap-visual nil nil)
+  ;; (define-key meep-state-keymap-visual nil nil)
 
-  (define-key meep-state-keymap-insert "<escape>" #'bray-state-stack-pop)
+  (define-key meep-state-keymap-insert (kbd "<escape>") #'bray-state-stack-pop)
 
-  (defvar-keymap! meep-clipboard-register-map
+  (defvar-keymap meep-clipboard-register-map
     "e" #'meep-clipboard-register-cut
     "r" #'meep-clipboard-register-yank
     "t" #'meep-clipboard-register-copy))
