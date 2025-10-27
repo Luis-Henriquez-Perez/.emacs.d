@@ -25,6 +25,25 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(defun oo-evil-dwim-escape ()
+  "Exit out of whatever is happening after escape.
+Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
+non-readonly file buffer, save the buffer."
+  (interactive)
+  (when (bound-and-true-p evil-mode)
+    (evil-normal-state 1))
+  (cond ((minibuffer-window-active-p (minibuffer-window))
+		 (if (or defining-kbd-macro executing-kbd-macro)
+			 (minibuffer-keyboard-quit)
+           (abort-recursive-edit)))
+		((or defining-kbd-macro executing-kbd-macro) nil)
+        (t
+         (when (and (not buffer-read-only)
+                    (buffer-file-name)
+                    (buffer-modified-p))
+           (save-buffer))
+		 (keyboard-quit))))
+
 (defvar-keymap meep-state-keymap-motion
   "1" #'meep-digit-argument-repeat
   "2" #'meep-digit-argument-repeat
@@ -47,8 +66,10 @@
   "q" #'repeat-fu-execute
   "Q" #'my-key-free
 
-  "w" #'meep-clipboard-register-actions
-  "W" #'my-key-free
+  "w" #'meep-move-symbol-next
+  "W" #'meep-move-symbol-prev
+  ;; "w" #'meep-clipboard-register-actions
+  ;; "W" #'my-key-free
 
   "e" #'meep-clipboard-killring-cut
   "E" #'meep-clipboard-only-cut
@@ -74,6 +95,7 @@
   "s l" #'meep-insert-line-end
   "s h" #'meep-insert-line-beginning
 
+  "s e" #'oo-eval-and-replace-region
   "s m" #'downcase-region
   "s ," #'upcase-region
 
@@ -205,6 +227,7 @@
 
   "<tab>" #'meep-indent-rigidly
 
+  "<escape" #'oo-evil-dwim-escape
   "S-<delete>" #'meep-join-line-prev
   "S-<backspace>" #'meep-join-line-next
 
