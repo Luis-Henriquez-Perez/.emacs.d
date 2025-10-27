@@ -2916,6 +2916,7 @@
     ("idnw" "I do not want")
     ("idnwt" "I do not want to")
     ("idnwtht" "I do not want to have to")
+    ("idomatic" "idiomatic")
     ("idonht" "I do not have to")
     ("idont" "I do not")
     ("idrc" "I do not care")

@@ -216,11 +216,6 @@
   (let ((keys (this-command-keys-vector)))
     (message "Key Free: %s" (format-kbd-macro keys))))
 
-(defun my-meep-define-keys (map &rest keybinds)
-  (declare (indent 1))
-  (pcase-dolist (`(,key . ,def) keybinds)
-    (define-key map (kbd key) def)))
-
 (defun my-meep-basis-keys ()
   (define-key meep-state-keymap-normal nil nil)
 
