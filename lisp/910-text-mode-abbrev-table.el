@@ -967,7 +967,6 @@
     ("bilateraly" "bilaterally")
     ("billingualism" "bilingualism")
     ("bindngs" "bindings")
-    ("binds" "binds")
     ("binominal" "binomial")
     ("bir" "but I realized")
     ("biult" "built")
