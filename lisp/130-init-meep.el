@@ -44,6 +44,15 @@ non-readonly file buffer, save the buffer."
            (save-buffer))
 		 (keyboard-quit))))
 
+(defun oo-pulse-region-a (orig-fn &rest args)
+  "Highlight the region."
+  (require 'pulse nil t)
+  (message "highlighting...")
+  (pulse-momentary-highlight-region (mark-marker) (point) 'mode-line)
+  (apply orig-fn args))
+
+(advice-add 'meep-insert-change :around #'oo-pulse-region-a)
+
 (defvar-keymap meep-state-keymap-motion
   "1" #'meep-digit-argument-repeat
   "2" #'meep-digit-argument-repeat
@@ -95,7 +104,9 @@ non-readonly file buffer, save the buffer."
   "s l" #'meep-insert-line-end
   "s h" #'meep-insert-line-beginning
 
-  "s e" #'oo-eval-and-replace-region
+  "s e" #'eval-region
+  "s E" #'oo-eval-and-replace-region
+  "s r" #'oo-eval-and-replace-region
   "s m" #'downcase-region
   "s ," #'upcase-region
 
@@ -227,7 +238,7 @@ non-readonly file buffer, save the buffer."
 
   "<tab>" #'meep-indent-rigidly
 
-  "<escape" #'oo-evil-dwim-escape
+  "<escape>" #'oo-evil-dwim-escape
   "S-<delete>" #'meep-join-line-prev
   "S-<backspace>" #'meep-join-line-next
 
