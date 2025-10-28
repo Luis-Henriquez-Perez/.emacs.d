@@ -54,6 +54,9 @@ non-readonly file buffer, save the buffer."
 (advice-add 'meep-insert-change :around #'oo-pulse-region-a)
 
 (defvar-keymap meep-state-keymap-motion
+  "+" #'text-scale-increase
+  "-" #'text-scale-decrease
+
   "1" #'meep-digit-argument-repeat
   "2" #'meep-digit-argument-repeat
   "3" #'meep-digit-argument-repeat
@@ -75,13 +78,16 @@ non-readonly file buffer, save the buffer."
   "q" #'repeat-fu-execute
   "Q" #'my-key-free
 
-  "w" #'meep-move-symbol-next
-  "W" #'meep-move-symbol-prev
   ;; "w" #'meep-clipboard-register-actions
   ;; "W" #'my-key-free
+  "w" #'meep-move-word-next
+  "W" #'meep-move-symbol-next
 
-  "e" #'meep-clipboard-killring-cut
-  "E" #'meep-clipboard-only-cut
+  "e" #'meep-move-word-next-end
+  "E" #'meep-move-symbol-next-end
+
+  ;; "e" #'meep-clipboard-killring-cut
+  ;; "E" #'meep-clipboard-only-cut
 
   "r" #'meep-clipboard-killring-yank
   "R" #'meep-clipboard-only-yank
@@ -128,7 +134,7 @@ non-readonly file buffer, save the buffer."
   "s 0" #'digit-argument
   "s -" #'negative-argument
 
-  "d" #'meep-region-toggle
+  "d" #'meep-clipboard-only-cut
   "D" #'meep-region-expand-to-line-bounds
 
   "f h" #'meep-move-find-char-on-line-at-prev
@@ -233,8 +239,8 @@ non-readonly file buffer, save the buffer."
   "[" #'meep-move-to-bounds-of-thing-beginning
   "]" #'meep-move-to-bounds-of-thing-end
 
-  "-" #'meep-region-syntax-contract
-  "=" #'meep-region-syntax-expand
+  ;; "-" #'meep-region-syntax-contract
+  ;; "=" #'meep-region-syntax-expand
 
   "<tab>" #'meep-indent-rigidly
 
