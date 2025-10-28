@@ -98,6 +98,7 @@
 (each! '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
   (oo-bind-key it "g c" #'lispyville-comment-or-uncomment '(normal visual)))
 (nvmap! emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
+(nvmap! "g e" #'oo-evil-eval-operator)
 (nvmap! "g h" #'oo-evil-eval-operator)
 (nvmap! "g l" #'oo-evil-eval-replace-operator)
 (nvmap! "g r" #'oo-evil-eval-replace-operator)
