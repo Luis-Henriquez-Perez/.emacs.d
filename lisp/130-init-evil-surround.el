@@ -30,8 +30,6 @@
 (add-hook 'text-mode-hook #'evil-surround-mode)
 (add-hook 'eshell-mode-hook #'evil-surround-mode)
 
-;; Try to make evil more efficient for editing text.  Try to embrace evil and
-;; see what it has to offer for text editing.
 (setq-hook! emacs-lisp-mode-hook evil-surround-pairs-alist (cons '("`" . "'") evil-surround-pairs-alist))
 (setq-hook! emacs-lisp-mode-hook evil-surround-pairs-alist (cons '(?~ . ("`" . "'")) evil-surround-pairs-alist))
 ;;; provide
