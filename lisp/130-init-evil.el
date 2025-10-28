@@ -117,7 +117,6 @@
 (iotmap! "f" #'evil-cp-inner-form #'evil-cp-a-form)
 ;; (iotmap! "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
 (iotmap! "b" #'oo-evil-inner-buffer #'oo-evil-outer-buffer)
-;; (iotmap! "a" #'evilnc-inner-commenter #'evilnc-outer-commenter)
 ;;; provide
 (provide '130-init-evil)
 ;;; 130-init-evil.el ends here
