@@ -1069,6 +1069,7 @@
     ("candiate" "candidate")
     ("candidiate" "candidate")
     ("cands" "candidates")
+    ("cange" "change")
     ("cann" "cannot")
     ("cannister" "canister")
     ("cannisters" "canisters")
