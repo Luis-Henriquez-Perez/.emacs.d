@@ -374,8 +374,13 @@ non-readonly file buffer, save the buffer."
   (add-hook
    'after-change-major-mode-hook
    (lambda ()
-     (when (and (not (minibufferp)) (not (derived-mode-p 'special-mode)))
-       (bray-mode)))))
+     ;; Enable it in the minibuffer.
+     (when (not (derived-mode-p 'special-mode))
+       (bray-mode)
+       (when (minibufferp)
+         (bray-state-set 'insert)))))
+
+  (keymap-set meep-state-keymap-normal oo-normal-leader-key #'oo-leader-map))
 
 (add-hook 'emacs-startup-hook #'my-meep-setup-once)
 ;;; provide
