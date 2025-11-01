@@ -25,8 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-;; We use modaled instead of bray for it is ability to create specific.
-(require 'modaled)
+(require 'bray)
 (require 'meep)
 (require 'mark-thing-at)
 
@@ -60,20 +59,30 @@ non-readonly file buffer, save the buffer."
            (save-buffer))
 		 (keyboard-quit))))
 
-(defun oo-set-state-with-modaled-a (state)
-  (modaled-set-state (symbol-name state)))
-
-(setq meep-state-insert 'insert)
-(advice-add 'bray-state-stack-push :override #'oo-set-state-with-modaled-a)
-(advice-add 'bray-state-set :override #'oo-set-state-with-modaled-a)
-(advice-add 'bray-state-set :override #'oo-set-state-with-modaled-a)
-
 (defun my-key-free ()
   (interactive)
   (let ((keys (this-command-keys-vector)))
     (message "Key Free: %s" (format-kbd-macro keys))))
 
-(defvar-keymap modaled-normal-state-keymap
+(defvar meep-state-hook-insert-enter nil)
+(defvar meep-state-hook-insert-exit nil)
+
+(defvar meep-state-hook-normal-enter nil)
+(defvar meep-state-hook-normal-exit nil)
+
+(defvar meep-state-hook-motion-enter nil)
+(defvar meep-state-hook-motion-exit nil)
+
+(defvar meep-state-hook-visual-enter nil)
+(defvar meep-state-hook-visual-exit nil)
+
+(defvar-keymap meep-state-keymap-motion
+  [remap self-insert-command] 'my-key-free
+  "<escape>" #'oo-dwim-escape)
+
+;; (keymap-set meep-state-keymap-motion [remap self-insert-command] 'my-key-free)
+
+(defvar-keymap meep-state-keymap-normal
   "+" #'text-scale-increase
   "-" #'text-scale-decrease
 
@@ -184,17 +193,22 @@ non-readonly file buffer, save the buffer."
   "<escape>" #'oo-dwim-escape
   oo-normal-leader-key #'oo-leader-map)
 
+(defvar-keymap meep-state-keymap-insert
+  "<escape>" #'oo-dwim-escape)
+
+(defvar-keymap meep-state-keymap-visual
+  "<escape>" #'oo-dwim-escape)
+
 (defvar-keymap meep-clipboard-register-map
   "e" #'meep-clipboard-register-cut
   "r" #'meep-clipboard-register-yank
   "t" #'meep-clipboard-register-copy)
 
-(defvar-keymap modaled-insert-state-keymap
-  "<escape>" #'oo-dwim-escape)
-
-(modaled-define-state "normal"
-  :lighter "[NOR]"
-  :cursor-type 'box)
+;; Visual mode.
+(defun meep-mark-hook-activate ()
+  "Activate visual state."
+  (when (bray-state-derived-p 'normal)
+    (bray-state-stack-push 'visual)))
 
 (modaled-define-state "insert"
   :sparse t
@@ -214,49 +228,67 @@ non-readonly file buffer, save the buffer."
   "<backtab>" #'vertico-previous
   "C-o" #'embark-act)
 
-(modaled-define-substate "vertico"
-  :sparse t
-  :no-suppress t)
+(add-hook 'bray-mode-hook #'oo-setup-visual-state)
+;; End visual mode support.
 
-(modaled-enable-substate-on-state-change "vertico"
-  :states '("insert")
-  :pred #'minibufferp)
+(setq meep-state-insert 'insert)
+(setq bray-state-default 'normal)
 
-;; (defun meep-mark-hook-activate ()
-;;   "Activate visual state."
-;;   (when (bray-state-derived-p 'normal)
-;;     (bray-state-stack-push 'visual)))
+(setq bray-state-definitions
+      (list
+       (list
+        :id 'normal
+        ;; Define.
+        :cursor-type 'box
+        :lighter "<N>"
+        :keymaps (list (cons t 'meep-state-keymap-motion) (cons t 'meep-state-keymap-normal))
 
-;; (defun meep-mark-hook-deactivate ()
-;;   "Activate visual state."
-;;   (when (bray-state-derived-p 'visual)
-;;     (bray-state-stack-pop)))
+        :enter-hook 'meep-state-hook-normal-enter
+        :exit-hook 'meep-state-hook-normal-exit)
 
-;; (defun oo-setup-visual-state ()
-;;   (cond
-;;    (bray-mode
-;;     (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
-;;     (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
-;;    (t
-;;     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
-;;     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
+       (list
+        :id 'visual
+        ;; Define.
+        :cursor-type 'hollow
+        :lighter "<V>"
+        :keymaps (list (cons t 'meep-state-keymap-motion) (cons t 'meep-state-keymap-visual))
 
-(defun oo-setup-modal-editing ()
-  "Enable modal-editing."
-  (add-hook 'after-change-major-mode-hook
-            (lambda ()
-              (setq modaled--initialized nil)
-              (if modaled-init-state-fn
-                  (modaled-set-init-state))))
-  ;; update on creation (no major mode change yet)
-  (add-hook 'buffer-list-update-hook #'modaled-initialize-all-buffers)
-  ;; enable it for all existing buffers
-  (modaled-initialize-all-buffers)
-  ;; manually switch to it
-  ;; (modaled-set-init-state)
-  )
+        :enter-hook 'meep-state-hook-visual-enter
+        :exit-hook 'meep-state-hook-visual-exit)
 
-(add-hook 'emacs-startup-hook #'oo-setup-modal-editing 80)
+       (list
+        :id 'insert
+        ;; Define.
+        :cursor-type 'bar
+        :lighter "<I>"
+        :keymaps (list (cons t 'meep-state-keymap-insert))
+
+        :enter-hook 'meep-state-hook-insert-enter
+        :exit-hook 'meep-state-hook-insert-exit
+
+        ;; Optional.
+        :is-input t)))
+
+(defun oo-init-meep ()
+  (add-hook 'meep-state-hook-insert-enter (lambda () (set-mark (point)) (deactivate-mark)))
+  ;; Testing this out!
+  ;; VIM style '^' register for when we leave insert mode.
+  (add-hook 'meep-state-hook-insert-exit (lambda () (deactivate-mark) (let ((reg ?^)) (let ((reg-val (get-register reg))) (cond ((and reg-val (markerp reg-val)) (set-marker reg-val (point) (current-buffer))) (t (set-register reg (point-marker))))))))
+
+  ;; Optional, a quick way to mask insertion.
+  (add-hook
+   'after-change-major-mode-hook
+   (lambda ()
+     ;; Enable it in the minibuffer.
+     (when (not (derived-mode-p 'special-mode))
+       (bray-mode)
+       (when (minibufferp)
+         (bray-state-set 'insert)))))
+
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer (bray-mode 1))))
+
+(add-hook 'emacs-startup-hook #'oo-init-meep 80)
 ;;; provide
 (provide '130-init-meep)
 ;;; 130-init-meep.el ends here
