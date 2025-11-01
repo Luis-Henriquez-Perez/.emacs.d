@@ -189,6 +189,7 @@
                                   projectile
                                   vc-auto-commit
                                   vertico
+                                  visible-mark
                                   w3m
                                   web-mode
                                   wgrep
