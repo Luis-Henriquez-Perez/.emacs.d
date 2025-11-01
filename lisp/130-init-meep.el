@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require 'modaled)
+(require 'meep)
 (require 'mark-thing-at)
 
 (mark-thing-at-make-functions)
@@ -48,14 +50,20 @@ non-readonly file buffer, save the buffer."
            (save-buffer))
 		 (keyboard-quit))))
 
-;; (defun oo-pulse-region-a (orig-fn &rest args)
-;;   "Highlight the region."
-;;   (require 'pulse nil t)
-;;   (pulse-momentary-highlight-region (mark-marker) (point) 'mode-line)
-;;   (apply orig-fn args))
+(defun oo-set-state-with-modaled-a (state)
+  (modaled-set-state (symbol-name state)))
 
-;; (advice-add 'meep-insert-change :around #'oo-pulse-region-a)
-(defvar-keymap meep-state-keymap-motion
+(setq meep-state-insert 'insert)
+(advice-add 'bray-state-stack-push :override #'oo-set-state-with-modaled-a)
+(advice-add 'bray-state-set :override #'oo-set-state-with-modaled-a)
+(advice-add 'bray-state-set :override #'oo-set-state-with-modaled-a)
+
+(defun my-key-free ()
+  (interactive)
+  (let ((keys (this-command-keys-vector)))
+    (message "Key Free: %s" (format-kbd-macro keys))))
+
+(defvar-keymap modaled-normal-state-keymap
   "+" #'text-scale-increase
   "-" #'text-scale-decrease
 
@@ -166,16 +174,43 @@ non-readonly file buffer, save the buffer."
   "<escape>" #'oo-dwim-escape
   oo-normal-leader-key #'oo-leader-map)
 
-(defun my-key-free ()
-  (interactive)
-  (let ((keys (this-command-keys-vector)))
-    (message "Key Free: %s" (format-kbd-macro keys))))
+(defvar-keymap meep-clipboard-register-map
+  "e" #'meep-clipboard-register-cut
+  "r" #'meep-clipboard-register-yank
+  "t" #'meep-clipboard-register-copy)
 
-(defun my-meep-basis-keys ()
-  (defvar-keymap meep-clipboard-register-map
-    "e" #'meep-clipboard-register-cut
-    "r" #'meep-clipboard-register-yank
-    "t" #'meep-clipboard-register-copy))
+(defvar-keymap modaled-insert-state-keymap
+  "<escape>" #'oo-dwim-escape)
+
+(modaled-define-state "normal"
+  :lighter "[NOR]"
+  :cursor-type 'box)
+
+(modaled-define-state "insert"
+  :sparse t
+  ;; insert state must be no-suppress to support inserting char
+  :no-suppress t
+  :cursor-type 'bar
+  :lighter "[INS]")
+
+(defvar-keymap modaled-vertico-substate-keymap
+  "C-n" #'vertico-scroll-up
+  "C-p" #'vertico-scroll-down
+  "TAB" #'vertico-next
+  "C-k" #'vertico-previous
+  "C-j" #'vertico-next
+  ";" #'vertico-quick-exit
+  "C-;" #'vertico-quick-exit
+  "<backtab>" #'vertico-previous
+  "C-o" #'embark-act)
+
+(modaled-define-substate "vertico"
+  :sparse t
+  :no-suppress t)
+
+(modaled-enable-substate-on-state-change "vertico"
+  :states '("insert")
+  :pred #'minibufferp)
 
 (defun meep-mark-hook-activate ()
   "Activate visual state."
@@ -195,6 +230,21 @@ non-readonly file buffer, save the buffer."
    (t
     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
+
+(defun oo-setup-modal-editing ()
+  "Enable modal-editing."
+  (add-hook 'after-change-major-mode-hook
+            (lambda ()
+              (setq modaled--initialized nil)
+              (if (minibufferp)
+                  (modaled-set-state "insert")
+                (modaled-initialize))))
+  ;; update on creation (no major mode change yet)
+  (add-hook 'buffer-list-update-hook #'modaled-initialize-all-buffers)
+  ;; enable it for all existing buffers
+  (modaled-initialize-all-buffers)
+  ;; manually switch to it
+  (modaled-set-init-state))
 
 (defun my-meep-setup-once ()
   ;; Extended functions.
@@ -277,7 +327,7 @@ non-readonly file buffer, save the buffer."
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer (bray-mode 1))))
 
-(add-hook 'emacs-startup-hook #'my-meep-setup-once 80)
+(add-hook 'emacs-startup-hook #'oo-setup-modal-editing 80)
 ;;; provide
 (provide '130-init-meep)
 ;;; 130-init-meep.el ends here
