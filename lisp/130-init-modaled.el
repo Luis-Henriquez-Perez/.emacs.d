@@ -129,12 +129,6 @@
   "b" #'meep-insert-change
   "B" #'meep-insert-change-lines
 
-  "u" #'meep-clipboard-killring-yank
-  "U" #'meep-clipboard-only-yank
-
-  "i" #'meep-clipboard-killring-cut
-  "I" #'meep-clipboard-only-cut
-
   "o" #'meep-insert-open-below
   "O" #'meep-insert-open-above
 
