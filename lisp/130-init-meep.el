@@ -46,7 +46,7 @@ non-readonly file buffer, save the buffer."
   (interactive)
   (when (bound-and-true-p evil-mode)
     (evil-normal-state 1))
-  (modaled-set-state 'normal)
+  (bray-state-set 'normal)
   (cond ((minibuffer-window-active-p (minibuffer-window))
 		 (if (or defining-kbd-macro executing-kbd-macro)
 			 (minibuffer-keyboard-quit)
