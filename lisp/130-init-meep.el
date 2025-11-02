@@ -229,26 +229,6 @@ non-readonly file buffer, save the buffer."
   "t" #'meep-move-matching-syntax-inner
   "T" #'meep-move-matching-syntax-outer
 
-  ;; "a a" #'meep-insert
-  ;; "a h" #'meep-insert-line-beginning
-  ;; "a s" #'meep-insert-append
-  ;; "a l" #'meep-insert-line-end
-  ;; "a k" #'meep-insert-open-above
-  ;; "a j" #'meep-insert-open-below
-
-  ;; "s w" #'mark-word
-  ;; "s a" #'mark-word
-  ;; "s l" #'meep-region-expand-to-line-bounds
-  ;; "s n" #'mark-line-this
-  ;; "s h" #'mark-line-this
-  ;; "s o" #'mark-symbol
-  ;; "s d" #'mark-defun
-  ;; "s j" #'mark-symbol
-  ;; "s s" #'mark-sentence
-  ;; "s p" #'mark-paragraph
-  ;; "s k" #'mark-list
-  ;; "s t" #'mark-whitespace
-
   "d" #'meep-clipboard-only-cut
   "D" #'meep-clipboard-killring-cut
 
