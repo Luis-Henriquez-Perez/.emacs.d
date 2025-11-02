@@ -3525,6 +3525,7 @@
     ("lieuenant" "lieutenant")
     ("lieved" "lived")
     ("liftime" "lifetime")
+    ("ligher" "lighter")
     ("lightyear" "light year")
     ("lightyears" "light years")
     ("likelyhood" "likelihood")
