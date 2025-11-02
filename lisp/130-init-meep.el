@@ -303,8 +303,7 @@ non-readonly file buffer, save the buffer."
   "m" #'meep-isearch-at-point-next
   "M" #'meep-isearch-at-point-prev
 
-  "<escape>" #'oo-dwim-escape
-  )
+  "<escape>" #'oo-dwim-escape)
 
 ;; In insert state when the minibuffer is activated and `vertico-mode' is
 ;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
