@@ -336,7 +336,6 @@ non-readonly file buffer, save the buffer."
                                               oo-mode-maps-alist)))))
 
 (add-hook 'meep-state-hook-insert-enter #'oo-enable-bindings-maybe)
-(add-hook 'meep-state-hook-insert-exit #'oo-enable-bindings-maybe)
 
 ;; Probably make the other bindings high priority too.
 
