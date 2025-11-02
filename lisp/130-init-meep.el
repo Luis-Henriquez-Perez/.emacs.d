@@ -120,7 +120,7 @@ non-readonly file buffer, save the buffer."
 
   "s w" #'mark-word
   "s a" #'mark-word
-  "s l" #'mark-line
+  "s l" #'meep-region-expand-to-line-bounds
   "s n" #'mark-line-this
   "s h" #'mark-line-this
   "s o" #'mark-symbol
