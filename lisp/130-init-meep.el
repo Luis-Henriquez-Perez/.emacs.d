@@ -92,7 +92,7 @@ non-readonly file buffer, save the buffer."
   "8" #'meep-digit-argument-repeat
   "9" #'meep-digit-argument-repeat
   "0" #'meep-digit-argument-repeat
-  "-" #'meep-digit-argument-repeat
+  ;; "-" #'meep-digit-argument-repeat
 
   "`" #'meep-region-to-secondary-selection
   "~" #'meep-region-swap
@@ -263,7 +263,9 @@ non-readonly file buffer, save the buffer."
 
   "-" #'meep-region-syntax-contract
   "=" #'meep-region-syntax-expand
-  "<tab>" #'meep-indent-rigidly)
+  "<tab>" #'meep-indent-rigidly
+  "<escape>" #'oo-dwim-escape
+  oo-normal-leader-key #'oo-leader-map)
 
 (defvar-keymap meep-state-keymap-insert
   "<escape>" #'oo-dwim-escape)
