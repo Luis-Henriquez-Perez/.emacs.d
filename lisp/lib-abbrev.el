@@ -36,7 +36,8 @@
   "Return non-nil when text-mode abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
-  (or (member major-mode '(org-mode text-mode vc-git-log-edit-mode))
+  (or (member major-mode '(vc-git-log-edit-mode))
+      (derived-mode-p 'text-mode)
 	  ;; These cases prevent abbreviation from expanding words outside of a
 	  ;; string or comment when in some programming mode.
 	  (cl-case (oo-in-string-or-comment-p)
