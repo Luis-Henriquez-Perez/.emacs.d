@@ -77,10 +77,9 @@ non-readonly file buffer, save the buffer."
 (defvar meep-state-hook-visual-exit nil)
 
 (defvar-keymap meep-state-keymap-motion
-  [remap self-insert-command] 'my-key-free
   "<escape>" #'oo-dwim-escape)
 
-;; (keymap-set meep-state-keymap-motion [remap self-insert-command] 'my-key-free)
+(define-key meep-state-keymap-motion [remap self-insert-command] #'my-key-free)
 
 (defvar-keymap meep-state-keymap-normal
   "+" #'text-scale-increase
