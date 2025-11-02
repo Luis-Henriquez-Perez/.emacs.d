@@ -195,6 +195,117 @@ non-readonly file buffer, save the buffer."
 (defvar-keymap meep-state-keymap-insert
   "<escape>" #'oo-dwim-escape)
 
+(defvar-keymap meep-state-keymap-visual
+  "+" #'text-scale-increase
+  "-" #'text-scale-decrease
+
+  "1" #'meep-digit-argument-repeat
+  "2" #'meep-digit-argument-repeat
+  "3" #'meep-digit-argument-repeat
+  "4" #'meep-digit-argument-repeat
+  "5" #'meep-digit-argument-repeat
+  "6" #'meep-digit-argument-repeat
+  "7" #'meep-digit-argument-repeat
+  "8" #'meep-digit-argument-repeat
+  "9" #'meep-digit-argument-repeat
+  "0" #'meep-digit-argument-repeat
+
+  "q" #'meep-register-kmacro-start-or-end
+  "Q" #'repeat-fu-execute
+
+  "w" #'meep-move-word-next
+  "W" #'meep-move-symbol-next
+
+  "e" #'meep-move-word-next-end
+  "E" #'meep-move-symbol-next-end
+
+  "r" #'meep-clipboard-killring-yank
+  "R" #'meep-clipboard-only-yank
+
+  "t" #'meep-move-matching-syntax-inner
+  "T" #'meep-move-matching-syntax-outer
+
+  ;; "a a" #'meep-insert
+  ;; "a h" #'meep-insert-line-beginning
+  ;; "a s" #'meep-insert-append
+  ;; "a l" #'meep-insert-line-end
+  ;; "a k" #'meep-insert-open-above
+  ;; "a j" #'meep-insert-open-below
+
+  ;; "s w" #'mark-word
+  ;; "s a" #'mark-word
+  ;; "s l" #'meep-region-expand-to-line-bounds
+  ;; "s n" #'mark-line-this
+  ;; "s h" #'mark-line-this
+  ;; "s o" #'mark-symbol
+  ;; "s d" #'mark-defun
+  ;; "s j" #'mark-symbol
+  ;; "s s" #'mark-sentence
+  ;; "s p" #'mark-paragraph
+  ;; "s k" #'mark-list
+  ;; "s t" #'mark-whitespace
+
+  "d" #'meep-clipboard-only-cut
+  "D" #'meep-clipboard-killring-cut
+
+  "f" #'meep-insert-change
+  "F" #'meep-insert-change-lines
+
+  "g" #'meep-exchange-point-and-mark
+  "G" #'meep-exchange-point-and-mark-motion
+
+  ;; Right Hand: Row 2.
+  "h" #'meep-move-char-prev
+  "H" #'meep-move-line-beginning
+
+  "j" #'meep-move-line-next
+  ;; "J" #'undo-only
+
+  "k" #'meep-move-line-prev
+  ;; "K" #'undo-redo
+
+  "l" #'meep-move-char-next
+  "L" #'meep-move-line-end
+
+  ";" #'execute-extended-command
+  ":" #'meep-move-matching-bracket-outer
+
+  "y" #'meep-clipboard-killring-copy
+  "Y" #'meep-clipboard-only-copy
+
+  "u" #'meep-clipboard-killring-yank
+  "U" #'meep-clipboard-only-yank
+
+  "i" #'meep-clipboard-killring-cut
+  "I" #'meep-clipboard-only-cut
+
+  "z" #'meep-region-toggle
+  "Z" #'meep-clipboard-killring-copy
+
+  "x" #'meep-move-matching-syntax-inner
+  "X" #'meep-clipboard-killring-copy
+
+  "c" #'meep-move-matching-syntax-inner
+  "C" #'meep-clipboard-killring-copy
+
+  ;; "v" #'meep-region-toggle
+  "V" #'meep-move-matching-syntax-outer
+
+  "b" #'meep-insert-change
+  "B" #'meep-insert-change-lines
+
+  ;; "o" #'meep-insert-open-below
+  ;; "O" #'meep-insert-open-above
+
+  "n" #'meep-isearch-at-point-next
+  "N" #'meep-isearch-at-point-prev
+
+  "m" #'meep-isearch-at-point-next
+  "M" #'meep-isearch-at-point-prev
+
+  "<escape>" #'oo-dwim-escape
+  )
+
 ;; In insert state when the minibuffer is activated and `vertico-mode' is
 ;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
 ;; have the vertico bindings there.
@@ -215,14 +326,21 @@ non-readonly file buffer, save the buffer."
 ;;     ;; Add the vertico insert map as higher priority to the emulation.
 ;;     ;; (setq-local)
 ;;     ()))
+(defvar-local oo-mode-maps-alist nil
+  "")
 
-;; (add-hook 'meep-state-hook-insert-enter #'oo-enable-bindings-maybe)
-;; (add-hook 'meep-state-hook-insert-exit #'oo-enable-bindings-maybe)
+(add-to-list 'emulation-mode-map-alists 'oo-mode-maps-alist)
+
+(defun oo-enable-bindings-maybe ()
+  "If in minibuffer and Vertico is active, give Vertico bindings highest priority."
+  (cond ((and (minibufferp) (bound-and-true-p vertico-mode))
+         (setq-local oo-mode-maps-alist (cons (cons t oo-vertico-state-insert-keymap)
+                                              oo-mode-maps-alist)))))
+
+(add-hook 'meep-state-hook-insert-enter #'oo-enable-bindings-maybe)
+(add-hook 'meep-state-hook-insert-exit #'oo-enable-bindings-maybe)
 
 ;; Probably make the other bindings high priority too.
-
-(defvar-keymap meep-state-keymap-visual
-  "<escape>" #'oo-dwim-escape)
 
 (defvar-keymap meep-clipboard-register-map
   "e" #'meep-clipboard-register-cut
@@ -294,12 +412,18 @@ non-readonly file buffer, save the buffer."
         ;; Optional.
         :is-input t)))
 
+(defun oo-init-bray ()
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (unless bray-mode (bray-mode 1)))))
+
 (defun oo-init-meep ()
   (add-hook 'meep-state-hook-insert-enter (lambda () (set-mark (point)) (deactivate-mark)))
   ;; Testing this out!
   ;; VIM style '^' register for when we leave insert mode.
   (add-hook 'meep-state-hook-insert-exit (lambda () (deactivate-mark) (let ((reg ?^)) (let ((reg-val (get-register reg))) (cond ((and reg-val (markerp reg-val)) (set-marker reg-val (point) (current-buffer))) (t (set-register reg (point-marker))))))))
 
+  (add-hook 'buffer-list-update-hook #'oo-init-bray)
   ;; Optional, a quick way to mask insertion.
   (add-hook
    'after-change-major-mode-hook
@@ -309,9 +433,7 @@ non-readonly file buffer, save the buffer."
        (bray-mode)
        (when (minibufferp)
          (bray-state-set 'insert)))))
-
-  (dolist (buffer (buffer-list))
-    (with-current-buffer buffer (bray-mode 1))))
+  (oo-init-bray))
 
 (add-hook 'emacs-startup-hook #'oo-init-meep 80)
 ;;; provide
