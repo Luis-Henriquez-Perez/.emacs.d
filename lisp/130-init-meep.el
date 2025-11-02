@@ -320,11 +320,6 @@ non-readonly file buffer, save the buffer."
   "<backtab>" #'vertico-previous
   "C-o" #'embark-act)
 
-;; (defun oo-enable-bindings-maybe ()
-;;   (when (and (minibufferp) (bound-and-true-p vertico-mode))
-;;     ;; Add the vertico insert map as higher priority to the emulation.
-;;     ;; (setq-local)
-;;     ()))
 (defvar-local oo-mode-maps-alist nil
   "")
 
