@@ -25,6 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+;; We use modaled instead of bray for it is ability to create specific.
 (require 'modaled)
 (require 'meep)
 (require 'mark-thing-at)
@@ -212,24 +213,24 @@ non-readonly file buffer, save the buffer."
   :states '("insert")
   :pred #'minibufferp)
 
-(defun meep-mark-hook-activate ()
-  "Activate visual state."
-  (when (bray-state-derived-p 'normal)
-    (bray-state-stack-push 'visual)))
+;; (defun meep-mark-hook-activate ()
+;;   "Activate visual state."
+;;   (when (bray-state-derived-p 'normal)
+;;     (bray-state-stack-push 'visual)))
 
-(defun meep-mark-hook-deactivate ()
-  "Activate visual state."
-  (when (bray-state-derived-p 'visual)
-    (bray-state-stack-pop)))
+;; (defun meep-mark-hook-deactivate ()
+;;   "Activate visual state."
+;;   (when (bray-state-derived-p 'visual)
+;;     (bray-state-stack-pop)))
 
-(defun oo-setup-visual-state ()
-  (cond
-   (bray-mode
-    (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
-    (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
-   (t
-    (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
-    (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
+;; (defun oo-setup-visual-state ()
+;;   (cond
+;;    (bray-mode
+;;     (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
+;;     (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
+;;    (t
+;;     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
+;;     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
 
 (defun oo-setup-modal-editing ()
   "Enable modal-editing."
@@ -245,87 +246,6 @@ non-readonly file buffer, save the buffer."
   (modaled-initialize-all-buffers)
   ;; manually switch to it
   (modaled-set-init-state))
-
-(defun my-meep-setup-once ()
-  ;; Extended functions.
-  (require 'bray)
-
-  (setq meep-state-insert 'insert)
-  (setq bray-state-default 'normal)
-
-  (defvar meep-state-hook-insert-enter nil)
-  (defvar meep-state-hook-insert-exit nil)
-
-  (defvar meep-state-hook-normal-enter nil)
-  (defvar meep-state-hook-normal-exit nil)
-
-  ;; Visual mode.
-  (add-hook 'bray-mode-hook #'oo-setup-visual-state)
-  ;; End visual mode support.
-
-  (add-hook 'meep-state-hook-insert-enter (lambda () (set-mark (point)) (deactivate-mark)))
-
-  ;; (set-mark (point))
-  ;; Testing this out!
-  ;; VIM style '^' register for when we leave insert mode.
-  (add-hook 'meep-state-hook-insert-exit (lambda () (deactivate-mark) (let ((reg ?^)) (let ((reg-val (get-register reg))) (cond ((and reg-val (markerp reg-val)) (set-marker reg-val (point) (current-buffer))) (t (set-register reg (point-marker))))))))
-
-  (defvar meep-state-keymap-motion (make-keymap))
-  (defvar meep-state-keymap-normal (make-keymap))
-  (defvar meep-state-keymap-visual (make-keymap))
-  (defvar meep-state-keymap-insert (make-keymap))
-
-  ;; Optional, a quick way to mask insertion.
-  (define-key meep-state-keymap-motion [remap self-insert-command] 'my-key-free)
-
-  (keymap-set meep-state-keymap-insert "<escape>" #'oo-dwim-escape)
-
-  (setq bray-state-definitions
-        (list
-         (list
-          :id 'normal
-          ;; Define.
-          :cursor-type 'box
-          :lighter "<N>"
-          :keymaps (list (cons t 'meep-state-keymap-motion) (cons t 'meep-state-keymap-normal))
-
-          :enter-hook 'meep-state-hook-normal-enter
-          :exit-hook 'meep-state-hook-normal-exit)
-
-         (list
-          :id 'visual
-          ;; Define.
-          :cursor-type 'hollow
-          :lighter "<V>"
-          :keymaps (list (cons t 'meep-state-keymap-motion) (cons t 'meep-state-keymap-visual))
-
-          :enter-hook 'meep-state-hook-visual-enter
-          :exit-hook 'meep-state-hook-visual-exit)
-
-         (list
-          :id 'insert
-          ;; Define.
-          :cursor-type 'bar
-          :lighter "<I>"
-          :keymaps (list (cons t 'meep-state-keymap-insert))
-
-          :enter-hook 'meep-state-hook-insert-enter
-          :exit-hook 'meep-state-hook-insert-exit
-
-          ;; Optional.
-          :is-input t)))
-
-  (add-hook
-   'after-change-major-mode-hook
-   (lambda ()
-     ;; Enable it in the minibuffer.
-     (when (not (derived-mode-p 'special-mode))
-       (bray-mode)
-       (when (minibufferp)
-         (bray-state-set 'insert)))))
-
-  (dolist (buffer (buffer-list))
-    (with-current-buffer buffer (bray-mode 1))))
 
 (add-hook 'emacs-startup-hook #'oo-setup-modal-editing 80)
 ;;; provide
