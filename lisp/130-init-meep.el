@@ -131,6 +131,10 @@ non-readonly file buffer, save the buffer."
   "s k" #'mark-list
   "s t" #'mark-whitespace
 
+  "[" #'meep-move-to-bounds-of-thing-beginning
+  "]" #'meep-move-to-bounds-of-thing-end
+  "'" #'meep-exchange-point-and-mark
+
   "d" #'meep-clipboard-only-cut
   "D" #'meep-clipboard-killring-cut
 
