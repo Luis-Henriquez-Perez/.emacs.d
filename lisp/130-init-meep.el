@@ -195,6 +195,32 @@ non-readonly file buffer, save the buffer."
 (defvar-keymap meep-state-keymap-insert
   "<escape>" #'oo-dwim-escape)
 
+;; In insert state when the minibuffer is activated and `vertico-mode' is
+;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
+;; have the vertico bindings there.
+
+(defvar-keymap oo-vertico-state-insert-keymap
+  "C-n" #'vertico-scroll-up
+  "C-p" #'vertico-scroll-down
+  "TAB" #'vertico-next
+  "C-k" #'vertico-previous
+  "C-j" #'vertico-next
+  ";" #'vertico-quick-exit
+  "C-;" #'vertico-quick-exit
+  "<backtab>" #'vertico-previous
+  "C-o" #'embark-act)
+
+;; (defun oo-enable-bindings-maybe ()
+;;   (when (and (minibufferp) (bound-and-true-p vertico-mode))
+;;     ;; Add the vertico insert map as higher priority to the emulation.
+;;     ;; (setq-local)
+;;     ()))
+
+;; (add-hook 'meep-state-hook-insert-enter #'oo-enable-bindings-maybe)
+;; (add-hook 'meep-state-hook-insert-exit #'oo-enable-bindings-maybe)
+
+;; Probably make the other bindings high priority too.
+
 (defvar-keymap meep-state-keymap-visual
   "<escape>" #'oo-dwim-escape)
 
