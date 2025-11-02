@@ -32,6 +32,14 @@
 
 (mark-thing-at-make-functions)
 
+(setq modaled-init-state-fn #'oo-init-state-fn)
+
+(defun oo-init-state-fn ()
+  (cond ((minibufferp)
+         "insert")
+        (t
+         "normal")))
+
 (defun oo-dwim-escape ()
   "Exit out of whatever is happening after escape.
 Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
@@ -39,6 +47,7 @@ non-readonly file buffer, save the buffer."
   (interactive)
   (when (bound-and-true-p evil-mode)
     (evil-normal-state 1))
+  (modaled-set-state 'normal)
   (cond ((minibuffer-window-active-p (minibuffer-window))
 		 (if (or defining-kbd-macro executing-kbd-macro)
 			 (minibuffer-keyboard-quit)
@@ -237,15 +246,15 @@ non-readonly file buffer, save the buffer."
   (add-hook 'after-change-major-mode-hook
             (lambda ()
               (setq modaled--initialized nil)
-              (if (minibufferp)
-                  (modaled-set-state "insert")
-                (modaled-initialize))))
+              (if modaled-init-state-fn
+                  (modaled-set-init-state))))
   ;; update on creation (no major mode change yet)
   (add-hook 'buffer-list-update-hook #'modaled-initialize-all-buffers)
   ;; enable it for all existing buffers
   (modaled-initialize-all-buffers)
   ;; manually switch to it
-  (modaled-set-init-state))
+  ;; (modaled-set-init-state)
+  )
 
 (add-hook 'emacs-startup-hook #'oo-setup-modal-editing 80)
 ;;; provide
