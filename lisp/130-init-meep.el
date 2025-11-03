@@ -270,95 +270,8 @@ non-readonly file buffer, save the buffer."
 (defvar-keymap meep-state-keymap-insert
   "<escape>" #'oo-dwim-escape)
 
-(defvar-keymap meep-state-keymap-visual
-  "+" #'text-scale-increase
-  "-" #'text-scale-decrease
-
-  "1" #'meep-digit-argument-repeat
-  "2" #'meep-digit-argument-repeat
-  "3" #'meep-digit-argument-repeat
-  "4" #'meep-digit-argument-repeat
-  "5" #'meep-digit-argument-repeat
-  "6" #'meep-digit-argument-repeat
-  "7" #'meep-digit-argument-repeat
-  "8" #'meep-digit-argument-repeat
-  "9" #'meep-digit-argument-repeat
-  "0" #'meep-digit-argument-repeat
-
-  "q" #'meep-register-kmacro-start-or-end
-  "Q" #'repeat-fu-execute
-
-  "w" #'meep-move-word-next
-  "W" #'meep-move-symbol-next
-
-  "e" #'meep-move-word-next-end
-  "E" #'meep-move-symbol-next-end
-
-  "r" #'meep-clipboard-killring-yank
-  "R" #'meep-clipboard-only-yank
-
-  "t" #'meep-move-matching-syntax-inner
-  "T" #'meep-move-matching-syntax-outer
-
-  "d" #'meep-clipboard-only-cut
-  "D" #'meep-clipboard-killring-cut
-
-  "f" #'meep-insert-change
-  "F" #'meep-insert-change-lines
-
-  "g" #'meep-exchange-point-and-mark
-  "G" #'meep-exchange-point-and-mark-motion
-
-  ;; Right Hand: Row 2.
-  "h" #'meep-move-char-prev
-  "H" #'meep-move-line-beginning
-
-  "j" #'meep-move-line-next
-  ;; "J" #'undo-only
-
-  "k" #'meep-move-line-prev
-  ;; "K" #'undo-redo
-
-  "l" #'meep-move-char-next
-  "L" #'meep-move-line-end
-
-  ";" #'execute-extended-command
-  ":" #'meep-move-matching-bracket-outer
-
-  "y" #'meep-clipboard-killring-copy
-  "Y" #'meep-clipboard-only-copy
-
-  "u" #'meep-clipboard-killring-yank
-  "U" #'meep-clipboard-only-yank
-
-  "i" #'meep-clipboard-killring-cut
-  "I" #'meep-clipboard-only-cut
-
-  "z" #'meep-region-toggle
-  "Z" #'meep-clipboard-killring-copy
-
-  "x" #'meep-move-matching-syntax-inner
-  "X" #'meep-clipboard-killring-copy
-
-  "c" #'meep-move-matching-syntax-inner
-  "C" #'meep-clipboard-killring-copy
-
-  ;; "v" #'meep-region-toggle
-  "V" #'meep-move-matching-syntax-outer
-
-  "b" #'meep-insert-change
-  "B" #'meep-insert-change-lines
-
-  ;; "o" #'meep-insert-open-below
-  ;; "O" #'meep-insert-open-above
-
-  "n" #'meep-isearch-at-point-next
-  "N" #'meep-isearch-at-point-prev
-
-  "m" #'meep-isearch-at-point-next
-  "M" #'meep-isearch-at-point-prev
-
-  "<escape>" #'oo-dwim-escape)
+;; (defvar-keymap meep-state-keymap-visual
+;;   "<escape>" #'oo-dwim-escape)
 
 ;; In insert state when the minibuffer is activated and `vertico-mode' is
 ;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
@@ -396,30 +309,26 @@ non-readonly file buffer, save the buffer."
   "t" #'meep-clipboard-register-copy)
 
 ;; Visual mode.
-(defun meep-mark-hook-activate ()
-  "Activate visual state."
-  (when (bray-state-derived-p 'normal)
-    (bray-state-stack-push 'visual)))
+;; (defun meep-mark-hook-activate ()
+;;   "Activate visual state."
+;;   (when (bray-state-derived-p 'normal)
+;;     (bray-state-stack-push 'visual)))
 
-(modaled-define-state "insert"
-  :sparse t
-  ;; insert state must be no-suppress to support inserting char
-  :no-suppress t
-  :cursor-type 'bar
-  :lighter "[INS]")
+;; (defun meep-mark-hook-deactivate ()
+;;   "Activate visual state."
+;;   (when (bray-state-derived-p 'visual)
+;;     (bray-state-stack-pop)))
 
-(defvar-keymap modaled-vertico-substate-keymap
-  "C-n" #'vertico-scroll-up
-  "C-p" #'vertico-scroll-down
-  "TAB" #'vertico-next
-  "C-k" #'vertico-previous
-  "C-j" #'vertico-next
-  ";" #'vertico-quick-exit
-  "C-;" #'vertico-quick-exit
-  "<backtab>" #'vertico-previous
-  "C-o" #'embark-act)
+;; (defun oo-setup-visual-state ()
+;;   (cond
+;;    (bray-mode
+;;     (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
+;;     (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
+;;    (t
+;;     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
+;;     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
 
-(add-hook 'bray-mode-hook #'oo-setup-visual-state)
+;; (add-hook 'bray-mode-hook #'oo-setup-visual-state)
 ;; End visual mode support.
 
 (setq meep-state-insert 'insert)
