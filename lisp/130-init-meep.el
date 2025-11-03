@@ -222,7 +222,6 @@ non-readonly file buffer, save the buffer."
   "h" #'meep-move-char-prev
   "H" #'meep-move-line-non-space-beginning
 
-
   "j" #'meep-move-line-next
   "J" #'meep-move-paragraph-next
 
