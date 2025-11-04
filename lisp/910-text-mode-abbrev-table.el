@@ -972,6 +972,7 @@
     ("bilateraly" "bilaterally")
     ("billingualism" "bilingualism")
     ("bindins" "bindings")
+    ("bindis" "bindings")
     ("bindngs" "bindings")
     ("bindss" "bindings")
     ("binominal" "binomial")
