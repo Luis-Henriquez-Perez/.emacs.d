@@ -93,17 +93,6 @@ non-readonly file buffer, save the buffer."
   "9" #'digit-argument
   "0" #'digit-argument
   "-" #'digit-argument
-  ;; "1" #'meep-digit-argument-repeat
-  ;; "2" #'meep-digit-argument-repeat
-  ;; "3" #'meep-digit-argument-repeat
-  ;; "4" #'meep-digit-argument-repeat
-  ;; "5" #'meep-digit-argument-repeat
-  ;; "6" #'meep-digit-argument-repeat
-  ;; "7" #'meep-digit-argument-repeat
-  ;; "8" #'meep-digit-argument-repeat
-  ;; "9" #'meep-digit-argument-repeat
-  ;; "0" #'meep-digit-argument-repeat
-  ;; "-" #'meep-digit-argument-repeat
 
   "`" #'meep-region-to-secondary-selection
   "~" #'meep-region-swap
@@ -117,13 +106,9 @@ non-readonly file buffer, save the buffer."
 
   "w" #'meep-move-word-next
   "W" #'meep-move-symbol-next
-  ;; "w" #'meep-clipboard-killring-copy
-  ;; "W" #'meep-clipboard-only-copy
 
   "e" #'meep-move-word-next-end
   "E" #'meep-move-symbol-next-end
-  ;; "e" #'meep-clipboard-killring-cut
-  ;; "E" #'meep-clipboard-only-cut
 
   "r" #'meep-clipboard-killring-yank-pop-stack
   "R" #'meep-clipboard-only-yank
@@ -133,8 +118,6 @@ non-readonly file buffer, save the buffer."
 
   ;; Left Hand: Row 2.
 
-  ;; NOTE: a more comprehensive surround map is really needed.
-  ;; This is only character level surround insertion.
   "a a" #'meep-insert
   "a s" #'meep-insert-append
   "a l" #'meep-insert-append
@@ -307,8 +290,10 @@ non-readonly file buffer, save the buffer."
 (defvar-keymap meep-state-keymap-insert
   "<escape>" #'oo-dwim-escape)
 
-;; (defvar-keymap meep-state-keymap-visual
-;;   "<escape>" #'oo-dwim-escape)
+(defvar-keymap meep-state-keymap-visual
+  "e" #'eval-region
+  "E" #'oo-eval-and-replace-region
+  "<escape>" #'oo-dwim-escape)
 
 ;; In insert state when the minibuffer is activated and `vertico-mode' is
 ;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
