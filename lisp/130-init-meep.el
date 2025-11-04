@@ -82,16 +82,27 @@ non-readonly file buffer, save the buffer."
 (define-key meep-state-keymap-motion [remap self-insert-command] #'my-key-free)
 
 (defvar-keymap meep-state-keymap-normal
-  "1" #'meep-digit-argument-repeat
-  "2" #'meep-digit-argument-repeat
-  "3" #'meep-digit-argument-repeat
-  "4" #'meep-digit-argument-repeat
-  "5" #'meep-digit-argument-repeat
-  "6" #'meep-digit-argument-repeat
-  "7" #'meep-digit-argument-repeat
-  "8" #'meep-digit-argument-repeat
-  "9" #'meep-digit-argument-repeat
-  "0" #'meep-digit-argument-repeat
+  "1" #'digit-argument
+  "2" #'digit-argument
+  "3" #'digit-argument
+  "4" #'digit-argument
+  "5" #'digit-argument
+  "6" #'digit-argument
+  "7" #'digit-argument
+  "8" #'digit-argument
+  "9" #'digit-argument
+  "0" #'digit-argument
+  "-" #'digit-argument
+  ;; "1" #'meep-digit-argument-repeat
+  ;; "2" #'meep-digit-argument-repeat
+  ;; "3" #'meep-digit-argument-repeat
+  ;; "4" #'meep-digit-argument-repeat
+  ;; "5" #'meep-digit-argument-repeat
+  ;; "6" #'meep-digit-argument-repeat
+  ;; "7" #'meep-digit-argument-repeat
+  ;; "8" #'meep-digit-argument-repeat
+  ;; "9" #'meep-digit-argument-repeat
+  ;; "0" #'meep-digit-argument-repeat
   ;; "-" #'meep-digit-argument-repeat
 
   "`" #'meep-region-to-secondary-selection
@@ -102,13 +113,17 @@ non-readonly file buffer, save the buffer."
   ;; ----
 
   "q" #'repeat-fu-execute
-  "Q" #'my-key-free
+  "Q" #'meep-register-kmacro-start-or-end
 
-  "w" #'meep-clipboard-killring-copy
-  "W" #'meep-clipboard-only-copy
+  "w" #'meep-move-word-next
+  "W" #'meep-move-symbol-next
+  ;; "w" #'meep-clipboard-killring-copy
+  ;; "W" #'meep-clipboard-only-copy
 
-  "e" #'meep-clipboard-killring-cut
-  "E" #'meep-clipboard-only-cut
+  "e" #'meep-move-word-next-end
+  "E" #'meep-move-symbol-next-end
+  ;; "e" #'meep-clipboard-killring-cut
+  ;; "E" #'meep-clipboard-only-cut
 
   "r" #'meep-clipboard-killring-yank-pop-stack
   "R" #'meep-clipboard-only-yank
@@ -120,11 +135,12 @@ non-readonly file buffer, save the buffer."
 
   ;; NOTE: a more comprehensive surround map is really needed.
   ;; This is only character level surround insertion.
-  "a" #'meep-keypad
-  "A" #'my-key-free
+  "a" #'meep-insert
+  "A" #'meep-insert-append
+  ;; "a" #'meep-keypad
+  ;; "A" #'my-key-free
 
   "s r" #'meep-delete-char-ring-yank
-  "s c" #'meep-space-shrink-contextual
 
   "s s" #'meep-insert-at-last
   "s d" #'rectangle-mark-mode
@@ -136,6 +152,9 @@ non-readonly file buffer, save the buffer."
 
   "s m" #'downcase-region
   "s ," #'upcase-region
+  "s o" #'rot13-region
+  "s r" #'oo-eval-and-replace-region
+  "s e" #'eval-region
 
   "s <return>" #'fill-region
   "s <end>" #'end-of-buffer
@@ -143,16 +162,16 @@ non-readonly file buffer, save the buffer."
 
   ;; Run commands "after" numeric has been set.
   ;; Unlike the default to re-running N times.
-  "s 1" #'digit-argument
-  "s 2" #'digit-argument
-  "s 3" #'digit-argument
-  "s 4" #'digit-argument
-  "s 5" #'digit-argument
-  "s 6" #'digit-argument
-  "s 7" #'digit-argument
-  "s 8" #'digit-argument
-  "s 9" #'digit-argument
-  "s 0" #'digit-argument
+  "s 1" #'meep-digit-argument-repeat
+  "s 2" #'meep-digit-argument-repeat
+  "s 3" #'meep-digit-argument-repeat
+  "s 4" #'meep-digit-argument-repeat
+  "s 5" #'meep-digit-argument-repeat
+  "s 6" #'meep-digit-argument-repeat
+  "s 7" #'meep-digit-argument-repeat
+  "s 8" #'meep-digit-argument-repeat
+  "s 9" #'meep-digit-argument-repeat
+  "s 0" #'meep-digit-argument-repeat
   "s -" #'negative-argument
 
   "d" #'meep-region-toggle
@@ -185,6 +204,8 @@ non-readonly file buffer, save the buffer."
 
   "g" #'meep-char-replace
   "G" #'meep-char-insert
+  ;; "g" #'meep-char-replace
+  ;; "G" #'meep-char-insert
 
   ;; Left Hand: Row 3.
   "z" #'undo-only
@@ -203,17 +224,25 @@ non-readonly file buffer, save the buffer."
   "B" #'meep-insert-change-lines
 
   ;; Right Hand: Row 1.
-  "y" #'my-key-free
-  "Y" #'my-key-free
+  "y" #'meep-clipboard-killring-copy
+  "Y" #'meep-clipboard-only-copy
+  ;; "y" #'my-key-free
+  ;; "Y" #'my-key-free
 
-  "u" #'meep-exchange-point-and-mark
-  "U" #'my-key-free
+  "u" #'meep-clipboard-killring-cut
+  "U" #'meep-clipboard-only-cut
+  ;; "u" #'meep-exchange-point-and-mark
+  ;; "U" #'my-key-free
 
-  "i" #'meep-exchange-point-and-mark-motion
-  "I" #'my-key-free
+  "i" #'meep-insert
+  "I" #'meep-append
+  ;; "i" #'meep-exchange-point-and-mark-motion
+  ;; "I" #'my-key-free
 
-  "o" #'meep-region-mark-bounds-of-char-inner
-  "O" #'meep-region-mark-bounds-of-char-outer
+  "o" #'meep-region-mark-bounds-of-char-contextual-inner
+  "O" #'meep-region-mark-bounds-of-char-contextual-outer
+  ;; "o" #'meep-region-mark-bounds-of-char-inner
+  ;; "O" #'meep-region-mark-bounds-of-char-outer
 
   "p" #'meep-clipboard-register-actions
   "P" #'point-to-register
@@ -223,15 +252,18 @@ non-readonly file buffer, save the buffer."
   "H" #'meep-move-line-non-space-beginning
 
   "j" #'meep-move-line-next
-  "J" #'meep-move-paragraph-next
+  "J" #'meep-insert
+  ;; "J" #'meep-move-paragraph-next
 
   "k" #'meep-move-line-prev
-  "K" #'meep-move-paragraph-prev
+  "K" #'meep-insert-append
+  ;; "K" #'meep-move-paragraph-prev
 
   "l" #'meep-move-char-next
   "L" #'meep-move-line-non-space-end
 
-  ";" #'meep-move-matching-bracket-inner
+  ";" #'execute-extended-command
+  ;; ";" #'meep-move-matching-bracket-inner
   ":" #'meep-move-matching-bracket-outer
 
   "'" #'meep-move-matching-syntax-inner
@@ -287,8 +319,8 @@ non-readonly file buffer, save the buffer."
   "<backtab>" #'vertico-previous
   "C-o" #'embark-act)
 
-(defvar-local oo-mode-maps-alist nil
-  "")
+(defvar oo-mode-maps-alist nil
+  "Alist of modes to keymaps.")
 
 (add-to-list 'emulation-mode-map-alists 'oo-mode-maps-alist)
 
