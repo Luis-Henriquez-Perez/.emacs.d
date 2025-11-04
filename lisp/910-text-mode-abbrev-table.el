@@ -2304,6 +2304,7 @@
     ("excells" "excels")
     ("excercise" "exercise")
     ("exchanching" "exchanging")
+    ("exching" "exchanging")
     ("excisted" "existed")
     ("exculsivly" "exclusively")
     ("exe" "executable")
