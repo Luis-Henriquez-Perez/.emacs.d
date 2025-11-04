@@ -234,10 +234,8 @@ non-readonly file buffer, save the buffer."
   ;; "u" #'meep-exchange-point-and-mark
   ;; "U" #'my-key-free
 
-  "i" #'meep-insert
-  "I" #'meep-append
-  ;; "i" #'meep-exchange-point-and-mark-motion
-  ;; "I" #'my-key-free
+  "i" #'meep-exchange-point-and-mark-motion
+  "I" #'my-key-free
 
   "o" #'meep-region-mark-bounds-of-char-contextual-inner
   "O" #'meep-region-mark-bounds-of-char-contextual-outer
