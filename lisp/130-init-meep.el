@@ -135,21 +135,26 @@ non-readonly file buffer, save the buffer."
 
   ;; NOTE: a more comprehensive surround map is really needed.
   ;; This is only character level surround insertion.
-  "a" #'meep-insert
-  "A" #'meep-insert-append
+  "a a" #'meep-insert
+  "a s" #'meep-insert-append
+  "a l" #'meep-insert-append
   ;; "a" #'meep-keypad
   ;; "A" #'my-key-free
 
-  "s r" #'meep-delete-char-ring-yank
+  ;; "s r" #'meep-delete-char-ring-yank
 
-  "s s" #'meep-insert-at-last
+  ;; "s s" #'meep-insert-at-last
   "s d" #'rectangle-mark-mode
 
+  "s s" #'meep-insert
+  "s a" #'meep-insert-append
   "s j" #'meep-insert-open-below
   "s k" #'meep-insert-open-above
   "s l" #'meep-insert-line-end
   "s h" #'meep-insert-line-beginning
 
+  "s c" #'comment-or-uncomment-region
+  "s M" #'morse-region
   "s m" #'downcase-region
   "s ," #'upcase-region
   "s o" #'rot13-region
@@ -202,7 +207,12 @@ non-readonly file buffer, save the buffer."
 
   "F" #'my-key-free
 
-  "g" #'meep-char-replace
+  "g g" #'meep-clipboard-killring-copy
+  "g j" #'meep-clipboard-killring-copy
+  "g k" #'meep-clipboard-killring-cut
+  "g h" #'meep-clipboard-killring-yank
+  "g l" #'meep-clipboard-killring-yank
+
   "G" #'meep-char-insert
   ;; "g" #'meep-char-replace
   ;; "G" #'meep-char-insert
@@ -250,12 +260,10 @@ non-readonly file buffer, save the buffer."
   "H" #'meep-move-line-non-space-beginning
 
   "j" #'meep-move-line-next
-  "J" #'meep-insert
-  ;; "J" #'meep-move-paragraph-next
+  "J" #'meep-move-paragraph-next
 
   "k" #'meep-move-line-prev
-  "K" #'meep-insert-append
-  ;; "K" #'meep-move-paragraph-prev
+  "K" #'meep-move-paragraph-prev
 
   "l" #'meep-move-char-next
   "L" #'meep-move-line-non-space-end
