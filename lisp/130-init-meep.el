@@ -121,10 +121,6 @@ non-readonly file buffer, save the buffer."
   "a a" #'meep-insert
   "a s" #'meep-insert-append
   "a l" #'meep-insert-append
-  ;; "a" #'meep-keypad
-  ;; "A" #'my-key-free
-
-  ;; "s r" #'meep-delete-char-ring-yank
 
   ;; "s s" #'meep-insert-at-last
   "s d" #'rectangle-mark-mode
@@ -331,26 +327,26 @@ non-readonly file buffer, save the buffer."
   "t" #'meep-clipboard-register-copy)
 
 ;; Visual mode.
-;; (defun meep-mark-hook-activate ()
-;;   "Activate visual state."
-;;   (when (bray-state-derived-p 'normal)
-;;     (bray-state-stack-push 'visual)))
+(defun meep-mark-hook-activate ()
+  "Activate visual state."
+  (when (bray-state-derived-p 'normal)
+    (bray-state-stack-push 'visual)))
 
-;; (defun meep-mark-hook-deactivate ()
-;;   "Activate visual state."
-;;   (when (bray-state-derived-p 'visual)
-;;     (bray-state-stack-pop)))
+(defun meep-mark-hook-deactivate ()
+  "Activate visual state."
+  (when (bray-state-derived-p 'visual)
+    (bray-state-stack-pop)))
 
-;; (defun oo-setup-visual-state ()
-;;   (cond
-;;    (bray-mode
-;;     (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
-;;     (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
-;;    (t
-;;     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
-;;     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
+(defun oo-setup-visual-state ()
+  (cond
+   (bray-mode
+    (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
+    (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
+   (t
+    (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
+    (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
 
-;; (add-hook 'bray-mode-hook #'oo-setup-visual-state)
+(add-hook 'bray-mode-hook #'oo-setup-visual-state)
 ;; End visual mode support.
 
 (setq meep-state-insert 'insert)
