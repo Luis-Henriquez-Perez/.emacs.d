@@ -158,7 +158,9 @@ non-readonly file buffer, save the buffer."
   "s 0" #'meep-digit-argument-repeat
   "s -" #'negative-argument
 
-  "d" #'meep-region-toggle
+  "d d" #'meep-clipboard-only-cut
+  "d j" #'meep-insert-change
+  "d f" #'meep-insert-change
   "D" #'meep-region-expand-to-line-bounds
 
   "f h" #'meep-move-find-char-on-line-at-prev
