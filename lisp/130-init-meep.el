@@ -188,9 +188,11 @@ non-readonly file buffer, save the buffer."
 
   "g g" #'meep-clipboard-killring-copy
   "g j" #'meep-clipboard-killring-copy
+  "g J" #'meep-clipboard-only-copy
   "g k" #'meep-clipboard-killring-cut
-  "g h" #'meep-clipboard-killring-yank
+  "g K" #'meep-clipboard-only-cut
   "g l" #'meep-clipboard-killring-yank
+  "g L" #'meep-clipboard-only-yank
 
   "G" #'meep-char-insert
   ;; "g" #'meep-char-replace
