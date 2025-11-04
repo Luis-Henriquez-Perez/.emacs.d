@@ -288,10 +288,11 @@ non-readonly file buffer, save the buffer."
 (defvar-keymap meep-state-keymap-insert
   "<escape>" #'oo-dwim-escape)
 
-(defvar-keymap meep-state-keymap-visual
-  "e" #'eval-region
-  "E" #'oo-eval-and-replace-region
-  "<escape>" #'oo-dwim-escape)
+;; (defvar-keymap meep-state-keymap-visual
+;;   "" #'
+;;   "e" #'eval-region
+;;   "E" #'oo-eval-and-replace-region
+;;   "<escape>" #'oo-dwim-escape)
 
 ;; In insert state when the minibuffer is activated and `vertico-mode' is
 ;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
@@ -328,28 +329,28 @@ non-readonly file buffer, save the buffer."
   "r" #'meep-clipboard-register-yank
   "t" #'meep-clipboard-register-copy)
 
-;; Visual mode.
-(defun meep-mark-hook-activate ()
-  "Activate visual state."
-  (when (bray-state-derived-p 'normal)
-    (bray-state-stack-push 'visual)))
+;; ;; Visual mode.
+;; (defun meep-mark-hook-activate ()
+;;   "Activate visual state."
+;;   (when (bray-state-derived-p 'normal)
+;;     (bray-state-stack-push 'visual)))
 
-(defun meep-mark-hook-deactivate ()
-  "Activate visual state."
-  (when (bray-state-derived-p 'visual)
-    (bray-state-stack-pop)))
+;; (defun meep-mark-hook-deactivate ()
+;;   "Activate visual state."
+;;   (when (bray-state-derived-p 'visual)
+;;     (bray-state-stack-pop)))
 
-(defun oo-setup-visual-state ()
-  (cond
-   (bray-mode
-    (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
-    (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
-   (t
-    (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
-    (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
+;; (defun oo-setup-visual-state ()
+;;   (cond
+;;    (bray-mode
+;;     (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
+;;     (add-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))
+;;    (t
+;;     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
+;;     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
 
-(add-hook 'bray-mode-hook #'oo-setup-visual-state)
-;; End visual mode support.
+;; (add-hook 'bray-mode-hook #'oo-setup-visual-state)
+;; ;; End visual mode support.
 
 (setq meep-state-insert 'insert)
 (setq bray-state-default 'normal)
