@@ -1821,6 +1821,7 @@
     ("diferent" "different")
     ("diferrent" "different")
     ("diff" "different")
+    ("differens" "differences")
     ("differentiatiations" "differentiations")
     ("differnt" "different")
     ("diffi" "difficult")
