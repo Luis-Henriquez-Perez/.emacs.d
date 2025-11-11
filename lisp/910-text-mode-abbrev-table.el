@@ -2334,6 +2334,7 @@
     ("exibitions" "exhibitions")
     ("exicting" "exciting")
     ("exinct" "extinct")
+    ("exing" "exiting")
     ("exising" "existing")
     ("existance" "existence")
     ("existant" "existent")
