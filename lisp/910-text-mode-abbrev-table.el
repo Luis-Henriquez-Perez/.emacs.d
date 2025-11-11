@@ -1659,6 +1659,7 @@
     ("decomposited" "decomposed")
     ("decompositing" "decomposing")
     ("decomposits" "decomposes")
+    ("decoup" "decouple")
     ("decress" "decrees")
     ("decribe" "describe")
     ("decribed" "described")
