@@ -3530,6 +3530,7 @@
     ("lieuenant" "lieutenant")
     ("lieved" "lived")
     ("liftime" "lifetime")
+    ("lightw" "lightweight")
     ("lightyear" "light year")
     ("lightyears" "light years")
     ("likelyhood" "likelihood")
