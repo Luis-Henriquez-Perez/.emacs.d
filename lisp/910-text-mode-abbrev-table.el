@@ -2566,6 +2566,7 @@
     ("fulfiled" "fulfilled")
     ("fullfill" "fulfill")
     ("fullfilled" "fulfilled")
+    ("funcion" "function")
     ("functinos" "functions")
     ("functioin" "function")
     ("functoin" "function")
