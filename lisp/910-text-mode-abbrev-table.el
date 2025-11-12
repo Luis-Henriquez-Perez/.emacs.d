@@ -3309,6 +3309,7 @@
     ("investigatoin" "investigation")
     ("investingate" "investigate")
     ("invis" "invisible")
+    ("invoki" "invoking")
     ("involvment" "involvement")
     ("inwiw" "is not what I want")
     ("io" "instead of")
