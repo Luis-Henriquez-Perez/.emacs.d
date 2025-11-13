@@ -30,8 +30,8 @@
 ;; README for information on how to run and modify them.
 ;;
 ;;; Code:
-(require! 110-init-package)
-(require! 120-init-no-littering)
+(require! init-package)
+(require! init-no-littering)
 (require! 127-hooks)
 (require! init-macrostep)
 (require! init-proceed)

@@ -1,4 +1,4 @@
-;;; 120-init-no-littering.el --- initialize no-littering -*- lexical-binding: t; -*-
+;;; init-no-littering.el --- initialize no-littering -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -36,5 +36,5 @@
 
 (add-hook 'after-init-hook #'oo-load-no-littering-h -95)
 ;;; provide
-(provide '120-init-no-littering)
-;;; 120-init-no-littering.el ends here
+(provide 'init-no-littering)
+;;; init-no-littering.el ends here

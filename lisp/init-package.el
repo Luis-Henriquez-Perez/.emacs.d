@@ -1,4 +1,4 @@
-;;; 110-init-package.el --- Initialize package -*- lexical-binding: t; -*-
+;;; init-package.el --- Initialize package -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -297,5 +297,5 @@
 
 (oo-install-packages-h)
 ;;; provide
-(provide '110-init-package)
-;;; 110-init-package.el ends here
+(provide 'init-package)
+;;; init-package.el ends here
