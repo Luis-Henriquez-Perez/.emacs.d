@@ -30,7 +30,6 @@
 ;;;; miscellaneous
 (declare-function minibuffer-keyboard-quit "delsel")
 (declare-function evil-normal-state "evil")
-;;;; COMMANDS
 ;;;; leader bindings
 ;;;;; window
 (defvar-keymap! oo-window-map
