@@ -70,9 +70,9 @@ If SYMBOL is already bound FN is called immediately."
   "Load and log the loading of FEATURE."
   (condition-case err
       (aprog1! (time-elapsed! (require feature))
-        (oo-log 'success "Applied configuration to %s in %0.2f seconds" feature it))
+        (oo-log 'success "Applied %s in %0.2f seconds" feature it))
     (error
-     (oo-log 'failure "Failed apply configuration %s : %S -> %S" feature (car err) (cdr err)))))
+     (oo-log 'failure "Failed to apply %s : %S -> %S" feature (car err) (cdr err)))))
 
 (defun oo-require-after-load (feature1 feature2)
   "Load FEATURE2 at FEATURE1 has been loaded."
