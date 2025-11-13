@@ -1,4 +1,4 @@
-;;; 130-init-grugru.el --- initialize grugru -*- lexical-binding: t; -*-
+;;; init-grugru.el --- initialize grugru -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
 
 
 ;;; provide
-(provide '130-init-grugru)
-;;; 130-init-grugru.el ends here
+(provide 'init-grugru)
+;;; init-grugru.el ends here

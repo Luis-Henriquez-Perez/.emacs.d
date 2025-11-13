@@ -1,4 +1,4 @@
-;;; 130-init-savehist.el --- savehist configuration -*- lexical-binding: t; -*-
+;;; init-savehist.el --- savehist configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -43,5 +43,5 @@
 
 (advice-add 'savehist-save :before #'oo-remove-kill-ring-properties-a)
 ;;; provide
-(provide '130-init-savehist)
-;;; 130-init-savehist.el ends here
+(provide 'init-savehist)
+;;; init-savehist.el ends here

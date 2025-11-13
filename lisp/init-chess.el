@@ -1,4 +1,4 @@
-;;; 130-init-chess.el --- Initialize chess -*- lexical-binding: t; -*-
+;;; init-chess.el --- Initialize chess -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (opt! chess-images-directory (expand-file-name "~/Downloads/chess-pieces"))
 (opt! chess-images-extension "xpm")
 ;;; provide
-(provide '130-init-chess)
-;;; 130-init-chess.el ends here
+(provide 'init-chess)
+;;; init-chess.el ends here

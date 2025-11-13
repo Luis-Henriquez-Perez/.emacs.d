@@ -1,4 +1,4 @@
-;;; 130-init-dimmer.el --- Initialize dimmer -*- lexical-binding: t; -*-
+;;; init-dimmer.el --- Initialize dimmer -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -40,5 +40,5 @@
 ;; something like an open window hook.
 ;; (add-hook 'oo-first-input-hook #'dimmer-mode)
 ;;; provide
-(provide '130-init-dimmer)
-;;; 130-init-dimmer.el ends here
+(provide 'init-dimmer)
+;;; init-dimmer.el ends here

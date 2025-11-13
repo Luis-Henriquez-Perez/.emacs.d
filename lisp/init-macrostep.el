@@ -1,4 +1,4 @@
-;;; 130-init-macrostep.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-macrostep.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -41,5 +41,5 @@
   "C" #'macrostep-collapse-all
   "a" #'macrostep-collapse-all)
 ;;; provide
-(provide '130-init-macrostep)
-;;; 130-init-macrostep.el ends here
+(provide 'init-macrostep)
+;;; init-macrostep.el ends here

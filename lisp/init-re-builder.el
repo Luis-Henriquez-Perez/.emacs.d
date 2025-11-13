@@ -1,4 +1,4 @@
-;;; 130-init-re-builder.el --- Initialize re-builder -*- lexical-binding: t; -*-
+;;; init-re-builder.el --- Initialize re-builder -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,5 +29,5 @@
 ;; By default, use `rx' syntax.  It is my preferred syntax.
 (setq reb-re-syntax 'rx)
 ;;; provide
-(provide '130-init-re-builder)
-;;; 130-init-re-builder.el ends here
+(provide 'init-re-builder)
+;;; init-re-builder.el ends here

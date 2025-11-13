@@ -1,4 +1,4 @@
-;;; 130-init-marginalia.el --- initialize marginalia -*- lexical-binding: t; -*-
+;;; init-marginalia.el --- initialize marginalia -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (autoload 'marginalia-mode "marginalia" nil nil 'function)
 (add-hook 'vertico-mode-hook #'marginalia-mode)
 ;;; provide
-(provide '130-init-marginalia)
-;;; 130-init-marginalia.el ends here
+(provide 'init-marginalia)
+;;; init-marginalia.el ends here

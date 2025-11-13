@@ -1,4 +1,4 @@
-;;; 130-init-ace-window.el --- ace-window configuration -*- lexical-binding: t; -*-
+;;; init-ace-window.el --- ace-window configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 ;; The character z conflicts.
 (opt! aw-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxb")))
 ;;; provide
-(provide '130-init-ace-window)
-;;; 130-init-ace-window.el ends here
+(provide 'init-ace-window)
+;;; init-ace-window.el ends here

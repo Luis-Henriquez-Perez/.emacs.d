@@ -1,4 +1,4 @@
-;;; 130-init-evil-collection.el --- Initialize `evil-collection' -*- lexical-binding: t; -*-
+;;; init-evil-collection.el --- Initialize `evil-collection' -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -35,5 +35,5 @@
 
 (add-hook 'evil-mode-hook #'oo-initialize-evil-collection-h)
 ;;; provide
-(provide '130-init-evil-collection)
-;;; 130-init-evil-collection.el ends here
+(provide 'init-evil-collection)
+;;; init-evil-collection.el ends here

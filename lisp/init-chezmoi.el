@@ -1,4 +1,4 @@
-;;; 130-init-chezmoi.el --- initialize chezmoi -*- lexical-binding: t; -*-
+;;; init-chezmoi.el --- initialize chezmoi -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
 (autoload #'chezmoi-write "chezmoi" nil t 'function)
 (autoload #'chezmoi-open-other "chezmoi" nil t 'function)
 ;;; provide
-(provide '130-init-chezmoi)
-;;; 130-init-chezmoi.el ends here
+(provide 'init-chezmoi)
+;;; init-chezmoi.el ends here

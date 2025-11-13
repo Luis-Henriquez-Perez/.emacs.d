@@ -1,4 +1,4 @@
-;;; 130-init-smartparens.el --- initialize smartparens -*- lexical-binding: t; -*-
+;;; init-smartparens.el --- initialize smartparens -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -54,5 +54,5 @@
 
 (oo-require-after-load 'smartparens '990-config-smartparens)
 ;;; provide
-(provide '130-init-smartparens)
-;;; 130-init-smartparens.el ends here
+(provide 'init-smartparens)
+;;; init-smartparens.el ends here

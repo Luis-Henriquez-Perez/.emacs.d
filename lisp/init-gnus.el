@@ -1,4 +1,4 @@
-;;; 130-init-gnus.el --- Initialize `gnus` -*- lexical-binding: t; -*-
+;;; init-gnus.el --- Initialize `gnus` -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -61,5 +61,5 @@
         "^X-Mailer:"))
 (opt! gnus-sorted-header-list gnus-visible-headers);;; provide
 
-(provide '130-init-gnus)
-;;; 130-init-gnus.el ends here
+(provide 'init-gnus)
+;;; init-gnus.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-w3m.el --- Initialize nil -*- lexical-binding: t; -*-
+;;; init-w3m.el --- Initialize nil -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -41,5 +41,5 @@
 		                    nil coding-system-for-read
 		                    nil nil nil))
 ;;; provide
-(provide '130-init-w3m)
-;;; 130-init-w3m.el ends here
+(provide 'init-w3m)
+;;; init-w3m.el ends here

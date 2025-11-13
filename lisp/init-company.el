@@ -1,4 +1,4 @@
-;;; 130-init-company.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-company.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -42,5 +42,5 @@
 
 (add-hook 'prog-mode-hook #'oo-init-company-h)
 ;;; provide
-(provide '130-init-company)
-;;; 130-init-company.el ends here
+(provide 'init-company)
+;;; init-company.el ends here

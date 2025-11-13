@@ -1,4 +1,4 @@
-;;; 130-init-which-key.el --- initialize which-key -*- lexical-binding: t; -*-
+;;; init-which-key.el --- initialize which-key -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -38,11 +38,11 @@
 (opt! which-key-sort-order #'which-key-prefix-then-key-order)
 (opt! which-key-popup-type 'side-window)
 (opt! which-key-idle-delay 1.2)
-;; (opt! line-spacing 3 :hook which-key-130-init-buffer-hook :local t)
+;; (opt! line-spacing 3 :hook which-key-init-buffer-hook :local t)
 (opt! which-key-show-transient-maps t)
 (opt! which-key-allow-evil-operators t)
 (opt! which-key-show-operator-state-maps t)
 (opt! which-key-show-prefix 'top)
 ;;; provide
-(provide '130-init-which-key)
-;;; 130-init-which-key.el ends here
+(provide 'init-which-key)
+;;; init-which-key.el ends here

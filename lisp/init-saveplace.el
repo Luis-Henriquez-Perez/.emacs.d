@@ -1,4 +1,4 @@
-;;; 130-init-saveplace.el --- Initialize saveplace -*- lexical-binding: t; -*-
+;;; init-saveplace.el --- Initialize saveplace -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,5 +29,5 @@
 
 (opt! save-place-file (expand-file-name "save-place.el" oo-cache-dir))
 ;;; provide
-(provide '130-init-saveplace)
-;;; 130-init-saveplace.el ends here
+(provide 'init-saveplace)
+;;; init-saveplace.el ends here

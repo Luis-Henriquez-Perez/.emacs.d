@@ -1,4 +1,4 @@
-;;; 130-init-evil-textobj-syntax.el --- Initialize evil-textobj-syntax -*- lexical-binding: t; -*-
+;;; init-evil-textobj-syntax.el --- Initialize evil-textobj-syntax -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,5 +28,5 @@
 (autoload 'evil-i-syntax "evil-textobj-syntax" nil nil 'function)
 (autoload 'evil-a-syntax "evil-textobj-syntax" nil nil 'function)
 ;;; provide
-(provide '130-init-evil-textobj-syntax)
-;;; 130-init-evil-textobj-syntax.el ends here
+(provide 'init-evil-textobj-syntax)
+;;; init-evil-textobj-syntax.el ends here

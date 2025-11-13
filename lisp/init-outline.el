@@ -1,4 +1,4 @@
-;;; 130-init-outline.el --- Initialize outline -*- lexical-binding: t; -*-
+;;; init-outline.el --- Initialize outline -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,5 +27,5 @@
 ;;; Code:
 (advice-add 'outline-cycle :around #'oo-call-quietly-a)
 ;;; provide
-(provide '130-init-outline)
-;;; 130-init-outline.el ends here
+(provide 'init-outline)
+;;; init-outline.el ends here

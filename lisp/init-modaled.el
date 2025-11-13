@@ -1,4 +1,4 @@
-;;; 130-init-modaled.el --- Initialize modaled -*- lexical-binding: t; -*-
+;;; init-modaled.el --- Initialize modaled -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -275,5 +275,5 @@ non-readonly file buffer, save the buffer."
 ;; manually switch to it
 (modaled-set-init-state)
 ;;; provide
-(provide '130-init-modaled)
-;;; 130-init-modaled.el ends here
+(provide 'init-modaled)
+;;; init-modaled.el ends here

@@ -64,7 +64,7 @@
   (set-frame-font font nil t))
 ;;;; sorting
 ;; This is meant to sort the great number of install package forms I have in
-;; `130-init-elpaca'.
+;; `init-elpaca'.
 (defun! oo-sort-elpaca-forms (beg end)
   "Sort elpaca forms lexicographically by package name."
   (set! rx "^\\(?:;; \\)?(elpaca \\(?:(\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\|\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\)[^z-a]+?$")

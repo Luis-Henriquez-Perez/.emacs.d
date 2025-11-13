@@ -1,4 +1,4 @@
-;;; 130-init-emmet.el --- initialize emmet -*- lexical-binding: t; -*-
+;;; init-emmet.el --- initialize emmet -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (add-hook 'mhtml-mode-hook #'emmet-mode)
 (add-hook 'html-mode-hook #'emmet-mode)
 ;;; provide
-(provide '130-init-emmet)
-;;; 130-init-emmet.el ends here
+(provide 'init-emmet)
+;;; init-emmet.el ends here

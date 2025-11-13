@@ -1,4 +1,4 @@
-;;; 130-init-evil-textobj-line.el --- initialize evil-textobj-line -*- lexical-binding: t; -*-
+;;; init-evil-textobj-line.el --- initialize evil-textobj-line -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -33,5 +33,5 @@
 (autoload #'evil-inner-line "evil-textobj-line" nil t 'function)
 (autoload #'evil-a-line "evil-textobj-line" nil t 'function)
 ;;; provide
-(provide '130-init-evil-textobj-line)
-;;; 130-init-evil-textobj-line.el ends here
+(provide 'init-evil-textobj-line)
+;;; init-evil-textobj-line.el ends here

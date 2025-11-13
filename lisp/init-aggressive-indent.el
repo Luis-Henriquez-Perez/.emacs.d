@@ -1,4 +1,4 @@
-;;; 130-init-aggressive-indent.el --- initialize aggressive-indent -*- lexical-binding: t; -*-
+;;; init-aggressive-indent.el --- initialize aggressive-indent -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,5 +29,5 @@
 
 (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 ;;; provide
-(provide '130-init-aggressive-indent)
-;;; 130-init-aggressive-indent.el ends here
+(provide 'init-aggressive-indent)
+;;; init-aggressive-indent.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-magit.el --- initialize magit -*- lexical-binding: t; -*-
+;;; init-magit.el --- initialize magit -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
 ;; (appending! oo-idle-features '(magit-log magit-blame magit-commit magit-pull magit-push))
 (oo-popup-at-bottom "\\`magit")
 ;;; provide
-(provide '130-init-magit)
-;;; 130-init-magit.el ends here
+(provide 'init-magit)
+;;; init-magit.el ends here

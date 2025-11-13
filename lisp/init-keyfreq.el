@@ -1,4 +1,4 @@
-;;; 130-init-keyfreq.el --- Initialize keyfreq -*- lexical-binding: t; -*-
+;;; init-keyfreq.el --- Initialize keyfreq -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -35,5 +35,5 @@
         previous-line
         next-line))
 ;;; provide
-(provide '130-init-keyfreq)
-;;; 130-init-keyfreq.el ends here
+(provide 'init-keyfreq)
+;;; init-keyfreq.el ends here

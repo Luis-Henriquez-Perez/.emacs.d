@@ -1,4 +1,4 @@
-;;; 130-init-browse-url.el --- Initialize browse-url -*- lexical-binding: t; -*-
+;;; init-browse-url.el --- Initialize browse-url -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
         ('windows-nt "start")
         (_ "xdg-open")))
 ;;; provide
-(provide '130-init-browse-url)
-;;; 130-init-browse-url.el ends here
+(provide 'init-browse-url)
+;;; init-browse-url.el ends here

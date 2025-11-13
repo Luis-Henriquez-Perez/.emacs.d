@@ -1,4 +1,4 @@
-;;; 130-init-eshell.el --- initialize eshell -*- lexical-binding: t; -*-
+;;; init-eshell.el --- initialize eshell -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -51,5 +51,5 @@
 
 (oo-require-after-load 'eshell '990-config-eshell)
 ;;; provide
-(provide '130-init-eshell)
-;;; 130-init-eshell.el ends here
+(provide 'init-eshell)
+;;; init-eshell.el ends here

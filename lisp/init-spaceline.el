@@ -1,4 +1,4 @@
-;;; 130-init-spaceline.el --- Initialize spaceline -*- lexical-binding: t; -*-
+;;; init-spaceline.el --- Initialize spaceline -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -112,5 +112,5 @@
 (defhook! oo-initialize-modeline-h (after-init-hook :depth 90)
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 ;;; provide
-(provide '130-init-spaceline)
-;;; 130-init-spaceline.el ends here
+(provide 'init-spaceline)
+;;; init-spaceline.el ends here

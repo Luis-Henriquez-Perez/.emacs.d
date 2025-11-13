@@ -1,4 +1,4 @@
-;;; 130-init-mu4e.el --- Initialize mu4e -*- lexical-binding: t; -*-
+;;; init-mu4e.el --- Initialize mu4e -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -129,5 +129,5 @@
 ;; [mu4e] Tip: `user-mail-address' ('luis@luishp.xyz') is not part of mu's addresses; add it with 'mu init
 ;; --my-address='
 ;;; provide
-(provide '130-init-mu4e)
-;;; 130-init-mu4e.el ends here
+(provide 'init-mu4e)
+;;; init-mu4e.el ends here

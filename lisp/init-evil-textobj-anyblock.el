@@ -1,4 +1,4 @@
-;;; 130-init-evil-textobj-anyblock.el --- initialize evil-textobj-anyblock -*- lexical-binding: t; -*-
+;;; init-evil-textobj-anyblock.el --- initialize evil-textobj-anyblock -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,5 +27,5 @@
 ;;; Code:
 (require! "^0[01]")
 ;;; provide
-(provide '130-init-evil-textobj-anyblock)
-;;; 130-init-evil-textobj-anyblock.el ends here
+(provide 'init-evil-textobj-anyblock)
+;;; init-evil-textobj-anyblock.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-ws-butler.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-ws-butler.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,5 +28,5 @@
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (add-hook 'text-mode-hook #'ws-butler-mode)
 ;;; provide
-(provide '130-init-ws-butler)
-;;; 130-init-ws-butler.el ends here
+(provide 'init-ws-butler)
+;;; init-ws-butler.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-orderless.el --- initialize orderless -*- lexical-binding: t; -*-
+;;; init-orderless.el --- initialize orderless -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -37,5 +37,5 @@
 
 (add-hook 'vertico-mode-hook #'oo-enable-orderless-h)
 ;;; provide
-(provide '130-init-orderless)
-;;; 130-init-orderless.el ends here
+(provide 'init-orderless)
+;;; init-orderless.el ends here

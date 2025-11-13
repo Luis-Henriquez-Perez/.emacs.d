@@ -1,4 +1,4 @@
-;;; 130-init-project.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-project.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -40,5 +40,5 @@
 
 (add-to-list 'project-find-functions #'oo-project-find-root)
 ;;; provide
-(provide '130-init-project)
-;;; 130-init-project.el ends here
+(provide 'init-project)
+;;; init-project.el ends here

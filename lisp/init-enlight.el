@@ -1,4 +1,4 @@
-;;; 130-init-enlight.el --- Initialize enlight -*- lexical-binding: t; -*-
+;;; init-enlight.el --- Initialize enlight -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -26,5 +26,5 @@
 ;;
 ;;; Code:
 ;;; provide
-(provide '130-init-enlight)
-;;; 130-init-enlight.el ends here
+(provide 'init-enlight)
+;;; init-enlight.el ends here

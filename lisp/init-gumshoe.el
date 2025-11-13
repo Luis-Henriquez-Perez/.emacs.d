@@ -1,4 +1,4 @@
-;;; 130-init-gumshoe.el --- Initialize gumshoe -*- lexical-binding: t; -*-
+;;; init-gumshoe.el --- Initialize gumshoe -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,5 +29,5 @@
 
 (add-hook 'oo-first-input-hook #'global-gumshoe-mode)
 ;;; provide
-(provide '130-init-gumshoe)
-;;; 130-init-gumshoe.el ends here
+(provide 'init-gumshoe)
+;;; init-gumshoe.el ends here

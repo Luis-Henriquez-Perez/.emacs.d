@@ -1,4 +1,4 @@
-;;; 130-init-evil-fringe-mark.el --- Initialize evil-fringe-mark -*- lexical-binding: t; -*-
+;;; init-evil-fringe-mark.el --- Initialize evil-fringe-mark -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -40,5 +40,5 @@
 
 (advice-add 'evil-set-marker :around #'oo-enable-evil-fringe-mark-a)
 ;;; provide
-(provide '130-init-evil-fringe-mark)
-;;; 130-init-evil-fringe-mark.el ends here
+(provide 'init-evil-fringe-mark)
+;;; init-evil-fringe-mark.el ends here

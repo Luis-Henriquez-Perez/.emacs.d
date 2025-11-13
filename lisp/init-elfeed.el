@@ -1,4 +1,4 @@
-;;; 130-init-elfeed.el --- Initialize `elfeed' -*- lexical-binding: t; -*-
+;;; init-elfeed.el --- Initialize `elfeed' -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
         "https://planet.emacslife.com/atom.xml"
         "https://archlinux.org/feeds/news/"))
 ;;; provide
-(provide '130-init-elfeed)
-;;; 130-init-elfeed.el ends here
+(provide 'init-elfeed)
+;;; init-elfeed.el ends here

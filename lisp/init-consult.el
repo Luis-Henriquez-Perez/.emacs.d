@@ -1,4 +1,4 @@
-;;; 130-init-consult.el --- initialize consult -*- lexical-binding: t; -*-
+;;; init-consult.el --- initialize consult -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -46,5 +46,5 @@
 ;; Do not load bookmarks as buffer sources.  It is expensive and unnecessary.
 (opt! consult-buffer-sources (remove 'consult--source-bookmark consult-buffer-sources))
 ;;; provide
-(provide '130-init-consult)
-;;; 130-init-consult.el ends here
+(provide 'init-consult)
+;;; init-consult.el ends here

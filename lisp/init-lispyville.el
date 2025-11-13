@@ -1,4 +1,4 @@
-;;; 130-init-lispyville.el --- initialize lispyville -*- lexical-binding: t; -*-
+;;; init-lispyville.el --- initialize lispyville -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -34,5 +34,5 @@
 (imap! lispyville-mode-map "SPC" #'lispy-space)
 (imap! lispyville-mode-map ";" #'lispy-comment)
 ;;; provide
-(provide '130-init-lispyville)
-;;; 130-init-lispyville.el ends here
+(provide 'init-lispyville)
+;;; init-lispyville.el ends here

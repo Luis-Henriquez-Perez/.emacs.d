@@ -1,4 +1,4 @@
-;;; 130-init-dashboard.el --- initialize dashboard -*- lexical-binding: t; -*-
+;;; init-dashboard.el --- initialize dashboard -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -50,5 +50,5 @@
 
 (add-hook 'emacs-startup-hook #'oo-enable-dashboard-h)
 ;;; provide
-(provide '130-init-dashboard)
-;;; 130-init-dashboard.el ends here
+(provide 'init-dashboard)
+;;; init-dashboard.el ends here

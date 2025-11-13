@@ -1,4 +1,4 @@
-;;; 130-init-telephone-line.el --- Initialize telephone-line -*- lexical-binding: t; -*-
+;;; init-telephone-line.el --- Initialize telephone-line -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -106,5 +106,5 @@ the modeline is updated."
                 +telephone-line-kbd-macro-segment)
         (evil +telephone-line-current-time-segment)))
 ;;; provide
-(provide '130-init-telephone-line)
-;;; 130-init-telephone-line.el ends here
+(provide 'init-telephone-line)
+;;; init-telephone-line.el ends here

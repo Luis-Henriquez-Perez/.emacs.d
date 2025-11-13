@@ -1,4 +1,4 @@
-;;; 130-init-avy.el --- avy configuration -*- lexical-binding: t; -*-
+;;; init-avy.el --- avy configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -38,5 +38,5 @@
 ;; Probably not the best binding, but I just want it to be bound to something
 ;; for now.
 ;;; provide
-(provide '130-init-avy)
-;;; 130-init-avy.el ends here
+(provide 'init-avy)
+;;; init-avy.el ends here

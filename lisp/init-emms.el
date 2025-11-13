@@ -1,4 +1,4 @@
-;;; 130-init-emms.el --- initialize emms -*- lexical-binding: t; -*-
+;;; init-emms.el --- initialize emms -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -63,5 +63,5 @@
   (or (and (executable-find "mpv") (require 'emms-player-mpv))
       (and (executable-find "vlc") (require 'emms-player-vlc))))
 ;;; provide
-(provide '130-init-emms)
-;;; 130-init-emms.el ends here
+(provide 'init-emms)
+;;; init-emms.el ends here

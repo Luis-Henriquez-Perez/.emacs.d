@@ -1,4 +1,4 @@
-;;; 130-init-escr.el --- Initialize `escr` -*- lexical-binding: t; -*-
+;;; init-escr.el --- Initialize `escr` -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -37,5 +37,5 @@
 (autoload #'escr-window-screenshot "escr" nil t 'function)
 (autoload #'escr-frame-screenshot "escr" nil t 'function)
 ;;; provide
-(provide '130-init-escr)
-;;; 130-init-escr.el ends here
+(provide 'init-escr)
+;;; init-escr.el ends here

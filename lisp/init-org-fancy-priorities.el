@@ -1,4 +1,4 @@
-;;; 130-init-org-fancy-priorities.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-org-fancy-priorities.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -39,5 +39,5 @@
                                          ;; (?F . ,(nerd-icons-mdicon "nf-md-exclamation_thick"))
                                          )))
 ;;; provide
-(provide '130-init-org-fancy-priorities)
-;;; 130-init-org-fancy-priorities.el ends here
+(provide 'init-org-fancy-priorities)
+;;; init-org-fancy-priorities.el ends here

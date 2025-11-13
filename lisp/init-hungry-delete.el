@@ -1,4 +1,4 @@
-;;; 130-init-hungry-delete.el --- initialize hungry-delete -*- lexical-binding: t; -*-
+;;; init-hungry-delete.el --- initialize hungry-delete -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 ;; Leave one space in between instead of deleting everything.
 (opt! hungry-delete-join-reluctantly t)
 ;;; provide
-(provide '130-init-hungry-delete)
-;;; 130-init-hungry-delete.el ends here
+(provide 'init-hungry-delete)
+;;; init-hungry-delete.el ends here

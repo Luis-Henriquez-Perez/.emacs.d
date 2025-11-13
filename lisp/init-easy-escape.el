@@ -1,4 +1,4 @@
-;;; 130-init-easy-escape.el --- Initialize easy-escape -*- lexical-binding: t; -*-
+;;; init-easy-escape.el --- Initialize easy-escape -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (add-hook 'lisp-mode-hook #'easy-escape-minor-mode)
 (add-hook 'emacs-lisp-mode-hook #'easy-escape-minor-mode)
 ;;; provide
-(provide '130-init-easy-escape)
-;;; 130-init-easy-escape.el ends here
+(provide 'init-easy-escape)
+;;; init-easy-escape.el ends here

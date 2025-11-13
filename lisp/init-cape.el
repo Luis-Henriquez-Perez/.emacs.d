@@ -1,4 +1,4 @@
-;;; 130-init-cape.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-cape.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -34,5 +34,5 @@
 (add-hook 'org-mode-hook #'oo-init-org-capfs-h)
 (add-hook 'prog-mode-hook #'oo-init-prog-capfs-h)
 ;;; provide
-(provide '130-init-cape)
-;;; 130-init-cape.el ends here
+(provide 'init-cape)
+;;; init-cape.el ends here

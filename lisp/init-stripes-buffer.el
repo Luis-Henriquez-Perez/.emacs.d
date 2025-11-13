@@ -1,4 +1,4 @@
-;;; 130-init-stripes-buffer.el --- Initialize stripes-buffer -*- lexical-binding: t; -*-
+;;; init-stripes-buffer.el --- Initialize stripes-buffer -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,5 +27,5 @@
 ;;; Code:
 (add-hook 'dired-mode-hook #'stripe-buffer-mode)
 ;;; provide
-(provide '130-init-stripes-buffer)
-;;; 130-init-stripes-buffer.el ends here
+(provide 'init-stripes-buffer)
+;;; init-stripes-buffer.el ends here

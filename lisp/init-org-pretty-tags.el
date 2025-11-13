@@ -1,4 +1,4 @@
-;;; 130-init-org-pretty-tags.el --- setup org-pretty-tags -*- lexical-binding: t; -*-
+;;; init-org-pretty-tags.el --- setup org-pretty-tags -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -81,5 +81,5 @@
                ("windowmanager" . ,(nerd-icons-mdicon "nf-md-dock_window"))
                ("workflow"      . ,(nerd-icons-octicon "nf-oct-workflow")))))
 ;;; provide
-(provide '130-init-org-pretty-tags)
-;;; 130-init-org-pretty-tags.el ends here
+(provide 'init-org-pretty-tags)
+;;; init-org-pretty-tags.el ends here

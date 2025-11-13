@@ -1,4 +1,4 @@
-;;; 130-init-hy-mode.el --- Initialize hy-mode -*- lexical-binding: t; -*-
+;;; init-hy-mode.el --- Initialize hy-mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,5 +28,5 @@
 (autoload 'lispyville-mode "lispyville" nil nil 'function)
 (add-hook 'hy-mode-hook #'lispyville-mode)
 ;;; provide
-(provide '130-init-hy-mode)
-;;; 130-init-hy-mode.el ends here
+(provide 'init-hy-mode)
+;;; init-hy-mode.el ends here

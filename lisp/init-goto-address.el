@@ -1,4 +1,4 @@
-;;; 130-init-goto-address.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-goto-address.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -33,5 +33,5 @@
 (setq goto-address-mail-face nil)
 (setq goto-address-mail-mouse-face 'highlight)
 ;;; provide
-(provide '130-init-goto-address)
-;;; 130-init-goto-address.el ends here
+(provide 'init-goto-address)
+;;; init-goto-address.el ends here

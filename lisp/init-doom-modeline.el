@@ -1,4 +1,4 @@
-;;; 130-init-doom-modeline.el --- Initialize doom-modeline -*- lexical-binding: t; -*-
+;;; init-doom-modeline.el --- Initialize doom-modeline -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 
 (add-hook 'after-init-hook #'doom-modeline-mode)
 ;;; provide
-(provide '130-init-doom-modeline)
-;;; 130-init-doom-modeline.el ends here
+(provide 'init-doom-modeline)
+;;; init-doom-modeline.el ends here

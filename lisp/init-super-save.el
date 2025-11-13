@@ -1,4 +1,4 @@
-;;; 130-init-super-save.el --- initialize super-save -*- lexical-binding: t; -*-
+;;; init-super-save.el --- initialize super-save -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -41,5 +41,5 @@
 ;; Save after 5 seconds of idle time.
 (opt! super-save-idle-duration 5)
 ;;; provide
-(provide '130-init-super-save)
-;;; 130-init-super-save.el ends here
+(provide 'init-super-save)
+;;; init-super-save.el ends here

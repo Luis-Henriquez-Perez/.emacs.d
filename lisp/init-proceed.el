@@ -1,4 +1,4 @@
-;;; 130-init-proceed.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-proceed.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
 (setq proced-descend t)
 (setq proced-filter 'user)
 ;;; provide
-(provide '130-init-proceed)
-;;; 130-init-proceed.el ends here
+(provide 'init-proceed)
+;;; init-proceed.el ends here

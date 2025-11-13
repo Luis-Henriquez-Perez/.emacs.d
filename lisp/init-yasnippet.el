@@ -1,4 +1,4 @@
-;;; 130-init-yasnippet.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-yasnippet.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -40,5 +40,5 @@
         ;; tell smartparens overlays not to interfere with yasnippet keybinds
         (advice-add #'yas-expand :before #'sp-remove-active-pair-overlay))
 ;;; provide
-(provide '130-init-yasnippet)
-;;; 130-init-yasnippet.el ends here
+(provide 'init-yasnippet)
+;;; init-yasnippet.el ends here

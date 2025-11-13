@@ -1,4 +1,4 @@
-;;; 130-init-ef-themes.el --- Initialize ef-themes -*- lexical-binding: t; -*-
+;;; init-ef-themes.el --- Initialize ef-themes -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -41,5 +41,5 @@
 
 (+ef-themes-setup-custom-faces-h 'ef-light)
 ;;; provide
-(provide '130-init-ef-themes)
-;;; 130-init-ef-themes.el ends here
+(provide 'init-ef-themes)
+;;; init-ef-themes.el ends here

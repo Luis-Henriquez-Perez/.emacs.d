@@ -1,4 +1,4 @@
-;;; 130-init-htmlize.el --- Initialize htmlize -*- lexical-binding: t; -*-
+;;; init-htmlize.el --- Initialize htmlize -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
 (opt! htmlize-html-charset "utf-8")
 (opt! htmlize-untabify nil)
 ;;; provide
-(provide '130-init-htmlize)
-;;; 130-init-htmlize.el ends here
+(provide 'init-htmlize)
+;;; init-htmlize.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-outli.el --- initialize outli -*- lexical-binding: t; -*-
+;;; init-outli.el --- initialize outli -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
 
 (oo-require-after-load 'outli '990-config-outli)
 ;;; provide
-(provide '130-init-outli)
-;;; 130-init-outli.el ends here
+(provide 'init-outli)
+;;; init-outli.el ends here

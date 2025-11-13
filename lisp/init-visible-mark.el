@@ -1,4 +1,4 @@
-;;; 130-init-visible-mark.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-visible-mark.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (opt! visible-mark-max 1)
 (opt! visible-mark-faces `(visible-mark-face1 visible-mark-face2))
 ;;; provide
-(provide '130-init-visible-mark)
-;;; 130-init-visible-mark.el ends here
+(provide 'init-visible-mark)
+;;; init-visible-mark.el ends here

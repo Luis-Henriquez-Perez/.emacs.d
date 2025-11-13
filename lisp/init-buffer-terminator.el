@@ -1,4 +1,4 @@
-;;; 130-init-buffer-terminator.el --- Initialize buffer-terminator -*- lexical-binding: t; -*-
+;;; init-buffer-terminator.el --- Initialize buffer-terminator -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
 (opt! buffer-terminator-verbose nil)
 (opt! buffer-terminator-inactivity-timeout (* 15 60))
 ;;; provide
-(provide '130-init-buffer-terminator)
-;;; 130-init-buffer-terminator.el ends here
+(provide 'init-buffer-terminator)
+;;; init-buffer-terminator.el ends here

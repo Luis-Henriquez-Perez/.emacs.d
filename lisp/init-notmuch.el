@@ -1,4 +1,4 @@
-;;; 130-init-notmuch.el --- initialize notmuch -*- lexical-binding: t; -*-
+;;; init-notmuch.el --- initialize notmuch -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -36,5 +36,5 @@
 ;; (notmuch-search "tag:inbox and path:luis@luishp.xyz/**")
 ;; (notmuch-search "tag:inbox and path:luishenriquezperez@gmail.com/**")
 ;;; provide
-(provide '130-init-notmuch)
-;;; 130-init-notmuch.el ends here
+(provide 'init-notmuch)
+;;; init-notmuch.el ends here

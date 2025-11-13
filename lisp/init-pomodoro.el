@@ -1,4 +1,4 @@
-;;; 130-init-pomodoro.el --- Initialize pomodoro -*- lexical-binding: t; -*-
+;;; init-pomodoro.el --- Initialize pomodoro -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
 (opt! pomodoro-work-end-sound (expand-file-name "~/bell.wav"))
 (opt! pomodoro-break-start-sound (expand-file-name "~/bell.wav"))
 ;;; provide
-(provide '130-init-pomodoro)
-;;; 130-init-pomodoro.el ends here
+(provide 'init-pomodoro)
+;;; init-pomodoro.el ends here

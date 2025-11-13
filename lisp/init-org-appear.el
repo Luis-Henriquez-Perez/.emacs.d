@@ -1,4 +1,4 @@
-;;; 130-init-org-appear.el --- Initialize org-appear -*- lexical-binding: t; -*-
+;;; init-org-appear.el --- Initialize org-appear -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -47,5 +47,5 @@
 ;;                                      nil
 ;;                                      t)))
 ;;; provide
-(provide '130-init-org-appear)
-;;; 130-init-org-appear.el ends here
+(provide 'init-org-appear)
+;;; init-org-appear.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-tab-bar.el --- Initialize tab-bar -*- lexical-binding: t; -*-
+;;; init-tab-bar.el --- Initialize tab-bar -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -57,5 +57,5 @@
 ;; restore a bookmark it creates a tab with the same name as it was.  I do not
 ;; know if `burly-tabs-mode' does the exact same thing.
 ;;; provide
-(provide '130-init-tab-bar)
-;;; 130-init-tab-bar.el ends here
+(provide 'init-tab-bar)
+;;; init-tab-bar.el ends here

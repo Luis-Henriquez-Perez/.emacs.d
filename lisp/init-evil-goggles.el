@@ -1,4 +1,4 @@
-;;; 130-init-evil-goggles.el --- Initialize evil-goggles -*- lexical-binding: t; -*-
+;;; init-evil-goggles.el --- Initialize evil-goggles -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -82,5 +82,5 @@
 
 (oo-require-after-load 'evil-goggles '990-config-evil-goggles)
 ;;; provide
-(provide '130-init-evil-goggles)
-;;; 130-init-evil-goggles.el ends here
+(provide 'init-evil-goggles)
+;;; init-evil-goggles.el ends here

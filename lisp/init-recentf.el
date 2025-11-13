@@ -1,4 +1,4 @@
-;;; 130-init-recentf.el --- initialize recentf -*- lexical-binding: t; -*-
+;;; init-recentf.el --- initialize recentf -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -65,5 +65,5 @@
 (recentf-push (recentf-expand-file-name "~/.local/share/qtile/qtile.log"))
 (recentf-push (recentf-expand-file-name "/etc/xdg/awesome/rc.lua"))
 ;;; provide
-(provide '130-init-recentf)
-;;; 130-init-recentf.el ends here
+(provide 'init-recentf)
+;;; init-recentf.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-meep.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-meep.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -417,5 +417,5 @@ non-readonly file buffer, save the buffer."
 
 (add-hook 'emacs-startup-hook #'oo-init-meep 80)
 ;;; provide
-(provide '130-init-meep)
-;;; 130-init-meep.el ends here
+(provide 'init-meep)
+;;; init-meep.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-dirvish.el --- Initialize dirvish -*- lexical-binding: t; -*-
+;;; init-dirvish.el --- Initialize dirvish -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -48,5 +48,5 @@
 ;; dirvish-yank-new-name-style 'append-to-ext
 (opt! dirvish-mode-line-format nil)
 ;;; provide
-(provide '130-init-dirvish)
-;;; 130-init-dirvish.el ends here
+(provide 'init-dirvish)
+;;; init-dirvish.el ends here

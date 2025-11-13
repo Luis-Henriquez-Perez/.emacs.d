@@ -1,4 +1,4 @@
-;;; 130-init-vertico.el --- initialize vertico -*- lexical-binding: t; -*-
+;;; init-vertico.el --- initialize vertico -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -65,5 +65,5 @@
 (imap! vertico-map [backtab] #'vertico-previous)
 (imap! vertico-map "C-o" #'embark-act)
 ;;; provide
-(provide '130-init-vertico)
-;;; 130-init-vertico.el ends here
+(provide 'init-vertico)
+;;; init-vertico.el ends here

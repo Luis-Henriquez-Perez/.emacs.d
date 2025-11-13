@@ -1,4 +1,4 @@
-;;; 130-init-dired.el --- initialize dired -*- lexical-binding: t; -*-
+;;; init-dired.el --- initialize dired -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -47,5 +47,5 @@
 (nmap! dired-mode-map "RET" #'dired-find-file)
 (nmap! dired-mode-map "o" #'dired-omit-mode)
 ;;; provide
-(provide '130-init-dired)
-;;; 130-init-dired.el ends here
+(provide 'init-dired)
+;;; init-dired.el ends here

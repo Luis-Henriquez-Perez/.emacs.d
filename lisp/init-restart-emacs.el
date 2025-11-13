@@ -1,4 +1,4 @@
-;;; 130-init-restart-emacs.el --- Initialize restart-emacs -*- lexical-binding: t; -*-
+;;; init-restart-emacs.el --- Initialize restart-emacs -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;
 ;; Initialize `restart-emacs'.
@@ -38,5 +38,5 @@
 
 
 ;;; provide
-(provide '130-init-restart-emacs)
-;;; 130-init-restart-emacs.el ends here
+(provide 'init-restart-emacs)
+;;; init-restart-emacs.el ends here

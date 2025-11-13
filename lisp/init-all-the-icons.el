@@ -1,4 +1,4 @@
-;;; 130-init-all-the-icons.el --- Initialize all-the-icons -*- lexical-binding: t; -*-
+;;; init-all-the-icons.el --- Initialize all-the-icons -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -26,5 +26,5 @@
 ;;
 ;;; Code:
 ;;; provide
-(provide '130-init-all-the-icons)
-;;; 130-init-all-the-icons.el ends here
+(provide 'init-all-the-icons)
+;;; init-all-the-icons.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-dabbrev.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-dabbrev.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,5 +27,5 @@
 ;;; Code:
 (oo-require-after-load 'dabbrev '990-config-dabbrev)
 ;;; provide
-(provide '130-init-dabbrev)
-;;; 130-init-dabbrev.el ends here
+(provide 'init-dabbrev)
+;;; init-dabbrev.el ends here

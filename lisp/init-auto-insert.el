@@ -1,4 +1,4 @@
-;;; 130-init-auto-insert.el --- Initialize auto-insert -*- lexical-binding: t; -*-
+;;; init-auto-insert.el --- Initialize auto-insert -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -49,5 +49,5 @@
 (define-auto-insert "\\.hy$"   #'oo-auto-insert-hy-file-header)
 (define-auto-insert "\\.org$"  #'oo-auto-insert-org-file-header)
 ;;; provide
-(provide '130-init-auto-insert)
-;;; 130-init-auto-insert.el ends here
+(provide 'init-auto-insert)
+;;; init-auto-insert.el ends here

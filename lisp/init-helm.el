@@ -1,4 +1,4 @@
-;;; 130-init-helm.el --- initialize helm -*- lexical-binding: t; -*-
+;;; init-helm.el --- initialize helm -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -46,5 +46,5 @@
 ;;
 ;; This binding has a problem.  (:ie "C-i" #'helm-toggle-visible-mark-backward)
 ;;; provide
-(provide '130-init-helm)
-;;; 130-init-helm.el ends here
+(provide 'init-helm)
+;;; init-helm.el ends here

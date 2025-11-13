@@ -1,4 +1,4 @@
-;;; 130-init-tempel.el --- initialize tempel -*- lexical-binding: t; -*-
+;;; init-tempel.el --- initialize tempel -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -38,5 +38,5 @@
 (imap! tempel-map "TAB" #'tempel-next)
 (imap! tempel-map [backtab] #'tempel-previous)
 ;;; provide
-(provide '130-init-tempel)
-;;; 130-init-tempel.el ends here
+(provide 'init-tempel)
+;;; init-tempel.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-evil-surround.el --- Initialize evil-surround -*- lexical-binding: t; -*-
+;;; init-evil-surround.el --- Initialize evil-surround -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -33,5 +33,5 @@
 (setq-hook! emacs-lisp-mode-hook evil-surround-pairs-alist (cons '("`" . "'") evil-surround-pairs-alist))
 (setq-hook! emacs-lisp-mode-hook evil-surround-pairs-alist (cons '(?~ . ("`" . "'")) evil-surround-pairs-alist))
 ;;; provide
-(provide '130-init-evil-surround)
-;;; 130-init-evil-surround.el ends here
+(provide 'init-evil-surround)
+;;; init-evil-surround.el ends here

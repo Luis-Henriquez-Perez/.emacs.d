@@ -1,4 +1,4 @@
-;;; 130-init-org.el --- initialize org -*- lexical-binding: t; -*-
+;;; init-org.el --- initialize org -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -45,5 +45,5 @@
 
 (oo-require-after-load 'org '990-config-org)
 ;;; provide
-(provide '130-init-org)
-;;; 130-init-org.el ends here
+(provide 'init-org)
+;;; init-org.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-fill-adapt.el --- initialize fill-adapt -*- lexical-binding: t; -*-
+;;; init-fill-adapt.el --- initialize fill-adapt -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,5 +29,5 @@
 
 (add-hook 'auto-fill-mode-hook #'filladapt-mode)
 ;;; provide
-(provide '130-init-fill-adapt)
-;;; 130-init-fill-adapt.el ends here
+(provide 'init-fill-adapt)
+;;; init-fill-adapt.el ends here

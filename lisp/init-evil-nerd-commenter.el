@@ -1,4 +1,4 @@
-;;; 130-init-evil-nerd-commenter.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-evil-nerd-commenter.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,5 +27,5 @@
 ;;; Code:
 (autoload 'evilnc-comment-operator "evil-nerd-commenter" nil nil 'function)
 ;;; provide
-(provide '130-init-evil-nerd-commenter)
-;;; 130-init-evil-nerd-commenter.el ends here
+(provide 'init-evil-nerd-commenter)
+;;; init-evil-nerd-commenter.el ends here

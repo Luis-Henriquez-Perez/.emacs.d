@@ -1,4 +1,4 @@
-;;; 130-init-wdired.el --- initialize wdired -*- lexical-binding: t; -*-
+;;; init-wdired.el --- initialize wdired -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -29,5 +29,5 @@
 
 (opt! wdired-confirm-overwrite nil)
 ;;; provide
-(provide '130-init-wdired)
-;;; 130-init-wdired.el ends here
+(provide 'init-wdired)
+;;; init-wdired.el ends here

@@ -1,4 +1,4 @@
-;;; 130-init-zone.el --- Initialize zone -*- lexical-binding: t; -*-
+;;; init-zone.el --- Initialize zone -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -52,5 +52,5 @@
   (interactive)
   (cancel-timer oo-zone-timer))
 ;;; provide
-(provide '130-init-zone)
-;;; 130-init-zone.el ends here
+(provide 'init-zone)
+;;; init-zone.el ends here

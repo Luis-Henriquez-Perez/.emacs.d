@@ -1,4 +1,4 @@
-;;; 130-init-burly.el --- Initialize burly -*- lexical-binding: t; -*-
+;;; init-burly.el --- Initialize burly -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -36,5 +36,5 @@
 ;; (declare-function burly-tabs-mode "burly")
 ;; (oo-call-after-load 'burly #'burly-tabs-mode)
 ;;; provide
-(provide '130-init-burly)
-;;; 130-init-burly.el ends here
+(provide 'init-burly)
+;;; init-burly.el ends here

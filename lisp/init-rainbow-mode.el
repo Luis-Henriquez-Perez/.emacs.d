@@ -1,4 +1,4 @@
-;;; 130-init-rainbow-mode.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-rainbow-mode.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,5 +28,5 @@
 (autoload 'rainbow-mode "rainbow-mode" nil nil 'function)
 (add-hook 'prog-mode-hook #'rainbow-mode)
 ;;; provide
-(provide '130-init-rainbow-mode)
-;;; 130-init-rainbow-mode.el ends here
+(provide 'init-rainbow-mode)
+;;; init-rainbow-mode.el ends here

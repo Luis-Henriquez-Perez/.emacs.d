@@ -1,4 +1,4 @@
-;;; 130-init-eww.el --- Initialize eww -*- lexical-binding: t; -*-
+;;; init-eww.el --- Initialize eww -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -31,5 +31,5 @@
 
 (nmap! eww-mode-map "R" #'eww-reload)
 ;;; provide
-(provide '130-init-eww)
-;;; 130-init-eww.el ends here
+(provide 'init-eww)
+;;; init-eww.el ends here

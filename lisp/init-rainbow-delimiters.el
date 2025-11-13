@@ -1,4 +1,4 @@
-;;; 130-init-rainbow-delimiters.el --- initialize rainbow-delimiters -*- lexical-binding: t; -*-
+;;; init-rainbow-delimiters.el --- initialize rainbow-delimiters -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'reb-mode-hook #'rainbow-delimiters-mode)
 ;;; provide
-(provide '130-init-rainbow-delimiters)
-;;; 130-init-rainbow-delimiters.el ends here
+(provide 'init-rainbow-delimiters)
+;;; init-rainbow-delimiters.el ends here

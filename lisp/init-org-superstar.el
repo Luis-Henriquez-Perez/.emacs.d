@@ -1,4 +1,4 @@
-;;; 130-init-org-superstar.el --- Initialize `org-superstar` -*- lexical-binding: t; -*-
+;;; init-org-superstar.el --- Initialize `org-superstar` -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -41,5 +41,5 @@
                                         ("DONE" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-checkbox_outline"))))
                                         ("CANCELLED" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-cancel"))))))
 ;;; provide
-(provide '130-init-org-superstar)
-;;; 130-init-org-superstar.el ends here
+(provide 'init-org-superstar)
+;;; init-org-superstar.el ends here

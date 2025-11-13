@@ -1,4 +1,4 @@
-;;; 130-init-helpful.el --- initialize helpful -*- lexical-binding: t; -*-
+;;; init-helpful.el --- initialize helpful -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
 (alt! describe-variable helpful-variable helpful)
 (alt! describe-key helpful-key helpful)
 ;;; provide
-(provide '130-init-helpful)
-;;; 130-init-helpful.el ends here
+(provide 'init-helpful)
+;;; init-helpful.el ends here

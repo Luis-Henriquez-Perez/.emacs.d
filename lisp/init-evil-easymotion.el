@@ -1,4 +1,4 @@
-;;; 130-init-evil-easymotion.el --- initialize evil-easymotion -*- lexical-binding: t; -*-
+;;; init-evil-easymotion.el --- initialize evil-easymotion -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -45,5 +45,5 @@
 
 (oo-require-after-load 'evil-easymotion '990-config-evil-easymotion)
 ;;; provide
-(provide '130-init-evil-easymotion)
-;;; 130-init-evil-easymotion.el ends here
+(provide 'init-evil-easymotion)
+;;; init-evil-easymotion.el ends here

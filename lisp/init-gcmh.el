@@ -1,4 +1,4 @@
-;;; 130-init-gcmh.el --- initialize gcmh -*- lexical-binding: t; -*-
+;;; init-gcmh.el --- initialize gcmh -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -33,5 +33,5 @@
 (opt! gcmh-high-cons-threshold (* 8 1024 1024))
 (opt! gcmh-low-cons-threshold (* 4 1024 1024))
 ;;; provide
-(provide '130-init-gcmh)
-;;; 130-init-gcmh.el ends here
+(provide 'init-gcmh)
+;;; init-gcmh.el ends here

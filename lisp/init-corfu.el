@@ -1,4 +1,4 @@
-;;; 130-init-corfu.el --- initialize corfu -*- lexical-binding: t; -*-
+;;; init-corfu.el --- initialize corfu -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -52,5 +52,5 @@
 (imap! corfu-map ";"       #'corfu-quick-complete)
 (imap! corfu-map "SPC"     #'corfu-insert)
 ;;; provide
-(provide '130-init-corfu)
-;;; 130-init-corfu.el ends here
+(provide 'init-corfu)
+;;; init-corfu.el ends here

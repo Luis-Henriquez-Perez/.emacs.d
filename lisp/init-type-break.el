@@ -1,4 +1,4 @@
-;;; 130-init-type-break.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-type-break.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -34,5 +34,5 @@
 
 (opt! type-break-good-rest-interval nil) ;; 5 minutes break required
 ;;; provide
-(provide '130-init-type-break)
-;;; 130-init-type-break.el ends here
+(provide 'init-type-break)
+;;; init-type-break.el ends here

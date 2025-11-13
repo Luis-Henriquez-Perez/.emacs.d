@@ -1,4 +1,4 @@
-;;; 130-init-evil.el --- initialize evil -*- lexical-binding: t; -*-
+;;; init-evil.el --- initialize evil -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -57,5 +57,5 @@
 
 (oo-require-after-load 'evil '990-config-evil)
 ;;; provide
-(provide '130-init-evil)
-;;; 130-init-evil.el ends here
+(provide 'init-evil)
+;;; init-evil.el ends here

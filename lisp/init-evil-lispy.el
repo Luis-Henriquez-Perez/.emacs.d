@@ -1,4 +1,4 @@
-;;; 130-init-evil-lispy.el --- Initialize evil-lispy -*- lexical-binding: t; -*-
+;;; init-evil-lispy.el --- Initialize evil-lispy -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,5 +28,5 @@
 (add-hook 'emacs-lisp-mode-hook #'evil-lispy-mode)
 (add-hook 'clojure-mode-hook #'evil-lispy-mode)
 ;;; provide
-(provide '130-init-evil-lispy)
-;;; 130-init-evil-lispy.el ends here
+(provide 'init-evil-lispy)
+;;; init-evil-lispy.el ends here

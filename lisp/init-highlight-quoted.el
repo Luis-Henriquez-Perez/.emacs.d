@@ -1,4 +1,4 @@
-;;; 130-init-highlight-quoted.el --- initialize highlight-quoted -*- lexical-binding: t; -*-
+;;; init-highlight-quoted.el --- initialize highlight-quoted -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,5 +30,5 @@
 (autoload 'highlight-quoted-mode "highlight-quoted" nil nil 'function)
 (add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode)
 ;;; provide
-(provide '130-init-highlight-quoted)
-;;; 130-init-highlight-quoted.el ends here
+(provide 'init-highlight-quoted)
+;;; init-highlight-quoted.el ends here

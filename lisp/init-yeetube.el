@@ -1,4 +1,4 @@
-;;; 130-init-yeetube.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-yeetube.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -36,5 +36,5 @@
 (nmap! yeetube-mode-map "v" #'oo-yeetube-download-video)
 (nmap! yeetube-mode-map "s" #'yeetube-search)
 ;;; provide
-(provide '130-init-yeetube)
-;;; 130-init-yeetube.el ends here
+(provide 'init-yeetube)
+;;; init-yeetube.el ends here

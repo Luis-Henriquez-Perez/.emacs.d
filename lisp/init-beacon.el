@@ -1,4 +1,4 @@
-;;; 130-init-beacon.el --- Initialize beacon -*- lexical-binding: t; -*-
+;;; init-beacon.el --- Initialize beacon -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,5 +27,5 @@
 ;;; Code:
 (add-hook 'oo-first-input-hook #'beacon-mode)
 ;;; provide
-(provide '130-init-beacon)
-;;; 130-init-beacon.el ends here
+(provide 'init-beacon)
+;;; init-beacon.el ends here

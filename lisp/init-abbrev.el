@@ -1,4 +1,4 @@
-;;; 130-init-abbrev.el --- initialize abbrev-mode -*- lexical-binding: t; -*-
+;;; init-abbrev.el --- initialize abbrev-mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -63,5 +63,5 @@
 (advice-add 'read-abbrev-file :around #'ignore)
 (advice-add 'quietly-read-abbrev-file :around #'ignore)
 ;;; provide
-(provide '130-init-abbrev)
-;;; 130-init-abbrev.el ends here
+(provide 'init-abbrev)
+;;; init-abbrev.el ends here
