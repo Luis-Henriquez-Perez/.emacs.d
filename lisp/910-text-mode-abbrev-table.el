@@ -3310,6 +3310,7 @@
     ("investingate" "investigate")
     ("invis" "invisible")
     ("invoki" "invoking")
+    ("invoks" "invocations")
     ("involvment" "involvement")
     ("inwiw" "is not what I want")
     ("io" "instead of")
