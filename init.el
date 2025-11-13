@@ -33,7 +33,6 @@
 (require! 110-init-package)
 (require! 120-init-no-littering)
 (require! 127-hooks)
-(require! 128-init)
 (require! 130-init-macrostep)
 (require! 130-init-proceed)
 (require! 130-init-goto-address)
