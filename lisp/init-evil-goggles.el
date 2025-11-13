@@ -80,7 +80,7 @@
 (advice-add 'oo-evil-eval-replace-operator				:around #'oo-require-evil-goggles-a)
 (advice-add 'oo-evil-eval-print-operator                  :around #'oo-require-evil-goggles-a)
 
-(oo-require-after-load 'evil-goggles '990-config-evil-goggles)
+(oo-require-after-load 'evil-goggles 'config-evil-goggles)
 ;;; provide
 (provide 'init-evil-goggles)
 ;;; init-evil-goggles.el ends here

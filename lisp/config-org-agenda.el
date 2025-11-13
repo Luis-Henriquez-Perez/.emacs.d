@@ -1,4 +1,4 @@
-;;; 990-config-org-agenda.el --- Configure `org-agenda' -*- lexical-binding: t; -*-
+;;; config-org-agenda.el --- Configure `org-agenda' -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -344,5 +344,5 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
                            (org-agenda-max-entries 5))))))))
     (org-agenda nil "_")))
 ;;; provide
-(provide '990-config-org-agenda)
-;;; 990-config-org-agenda.el ends here
+(provide 'config-org-agenda)
+;;; config-org-agenda.el ends here

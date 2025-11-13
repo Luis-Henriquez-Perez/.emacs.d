@@ -1,4 +1,4 @@
-;;; 990-config-mu4e.el --- Configure mu4e -*- lexical-binding: t; -*-
+;;; config-mu4e.el --- Configure mu4e -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -57,5 +57,5 @@
   (set! maildir (completing-read "Maildir: " (mu4e-get-maildirs)))
   (mu4e-search (format "maildir:\"%s\"" maildir)))
 ;;; provide
-(provide '990-config-mu4e)
-;;; 990-config-mu4e.el ends here
+(provide 'config-mu4e)
+;;; config-mu4e.el ends here

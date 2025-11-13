@@ -1,4 +1,4 @@
-;;; 990-config-evil.el --- evil configuration -*- lexical-binding: t; -*-
+;;; config-evil.el --- evil configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -358,5 +358,5 @@ non-readonly file buffer, save the buffer."
 ;; (iotmap! "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
 (iotmap! "b" #'oo-evil-inner-buffer #'oo-evil-outer-buffer)
 ;;; provide
-(provide '990-config-evil)
-;;; 990-config-evil.el ends here
+(provide 'config-evil)
+;;; config-evil.el ends here

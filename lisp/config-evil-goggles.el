@@ -1,4 +1,4 @@
-;;; 990-config-evil-goggles.el --- Configure evil-goggles -*- lexical-binding: t; -*-
+;;; config-evil-goggles.el --- Configure evil-goggles -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -91,5 +91,5 @@
   (cl-assert (cl-every (lambda (it) (assoc it list)) (mapcar #'car list))))
 ;;;; register lispyville commands
 ;;; provide
-(provide '990-config-evil-goggles)
-;;; 990-config-evil-goggles.el ends here
+(provide 'config-evil-goggles)
+;;; config-evil-goggles.el ends here

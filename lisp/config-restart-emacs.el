@@ -1,4 +1,4 @@
-;;; 990-config-evil-easymotion.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-restart-emacs.el --- Configure restart-emacs -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,17 +22,21 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Configure restart-emacs.
 ;;
 ;;; Code:
-(require 'evil-easymotion)
+(require 'restart-emacs)
+;;;; fix interactive call
+;; When using the function `restart-emacs-start-new-emacs' I find that restart
+;; Emacs does not properly work with prefix arguments because in its body it
+;; converts the prefix argument to shell arguments only if its called
+;; interactively but its not.
+(defun oo--work-interactively (&optional args)
+  "Call `restart-emacs' interactively."
+  (let ((restart-emacs--inhibit-kill-p t))
+    (funcall-interactively #'restart-emacs args)))
 
-(setq evilem-style 'at)
-(setq evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
-
-;; Improve scope.
-;; Something similar is used in doom.
-(put 'visible 'bounds-of-thing-at-point (lambda () (cons (window-start) (window-end))))
+(advice-add 'restart-emacs-start-new-emacs :override #'oo--work-interactively)
 ;;; provide
-(provide '990-config-evil-easymotion)
-;;; 990-config-evil-easymotion.el ends here
+(provide 'config-restart-emacs)
+;;; config-restart-emacs.el ends here

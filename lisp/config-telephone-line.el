@@ -1,4 +1,4 @@
-;;; 990-config-telephone-line.el --- Configure telephone-line -*- lexical-binding: t; -*-
+;;; config-telephone-line.el --- Configure telephone-line -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -62,5 +62,5 @@
 (defun +telephone-line-read-only-segment nil
   (lambda (_) (oo-modeline-component--read-only)))
 ;;; provide
-(provide '990-config-telephone-line)
-;;; 990-config-telephone-line.el ends here
+(provide 'config-telephone-line)
+;;; config-telephone-line.el ends here

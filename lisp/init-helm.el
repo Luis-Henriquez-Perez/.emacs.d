@@ -39,7 +39,7 @@
 (imap! helm-map "RET" #'+helm-select-nth-action)
 (imap! helm-map "S-TAB" #'helm-mark-current-line)
 (imap! helm-map "C-;" #'ace-jump-helm-line)
-;; (autoload '+helm-select-nth-action "990-config-helm" nil t 'function)
+;; (autoload '+helm-select-nth-action "config-helm" nil t 'function)
 ;; (defun +helm-select-current ()
 ;;   (interactive)
 ;;   (funcall #'helm-select-nth-action 0))

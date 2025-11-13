@@ -1,4 +1,4 @@
-;;; 990-config-eshell.el --- configuration for eshell -*- lexical-binding: t; -*-
+;;; config-eshell.el --- configuration for eshell -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -178,5 +178,5 @@
 (eshell/alias "ffow" "find-file-other-window $1")
 (eshell/alias "d" "dired $1")
 ;;; provide
-(provide '990-config-eshell)
-;;; 990-config-eshell.el ends here
+(provide 'config-eshell)
+;;; config-eshell.el ends here

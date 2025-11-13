@@ -1,4 +1,4 @@
-;;; 990-config-org.el --- Configure nil -*- lexical-binding: t; -*-
+;;; config-org.el --- Configure nil -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -64,16 +64,16 @@
 (opt! org-edit-src-content-indentation 0)
 (opt! org-src-window-setup 'plain)
 ;;;;; ORG-CAPTURE
-(autoload 'org-capture|plain "990-config-org-capture" nil nil 'function)
-(autoload 'org-capture|todo "990-config-org-capture" nil nil 'function)
-(autoload 'org-capture|open "990-config-org-capture" nil nil 'function)
-(autoload 'org-capture|question "990-config-org-capture" nil nil 'function)
-(autoload 'org-capture|bug "990-config-org-capture" nil nil 'function)
-(autoload 'org-capture|choose-template "990-config-org-capture" nil nil 'function)
+(autoload 'org-capture|plain "config-org-capture" nil nil 'function)
+(autoload 'org-capture|todo "config-org-capture" nil nil 'function)
+(autoload 'org-capture|open "config-org-capture" nil nil 'function)
+(autoload 'org-capture|question "config-org-capture" nil nil 'function)
+(autoload 'org-capture|bug "config-org-capture" nil nil 'function)
+(autoload 'org-capture|choose-template "config-org-capture" nil nil 'function)
 
 (alt! org-capture org-capture|choose-template org-capture)
 
-(oo-call-after-load 'org-capture '990-config-org-capture)
+(oo-call-after-load 'org-capture 'config-org-capture)
 ;;;;; ORG-REFILE
 (setq org-refile-allow-creating-parent-nodes t)
 ;; The variable =org-refile-targets= specifies the places from which information
@@ -139,5 +139,5 @@ are in alphabetical order."
 
 (advice-add 'org-capture :around #'org|suppress-window-deletion)
 ;;; provide
-(provide '990-config-org)
-;;; 990-config-org.el ends here
+(provide 'config-org)
+;;; config-org.el ends here

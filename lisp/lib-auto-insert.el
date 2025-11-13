@@ -1,4 +1,4 @@
-;;; 990-config-auto-insert.el --- Configure auto-insert -*- lexical-binding: t; -*-
+;;; config-auto-insert.el --- Configure auto-insert -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -224,5 +224,5 @@ in the commentary part."
                      "# Description: " p > n))
     (add-hook 'after-save-hook #'oo-make-this-file-executable nil 'local)))
 ;;; provide
-(provide '990-config-auto-insert)
-;;; 990-config-auto-insert.el ends here
+(provide 'config-auto-insert)
+;;; config-auto-insert.el ends here

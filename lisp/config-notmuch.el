@@ -1,4 +1,4 @@
-;;; 990-config-notmuch.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-notmuch.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -89,5 +89,5 @@
 ;; (notmuch-search "tag:inbox and path:yadiraperez2029@gmail.com/**")
 ;; (notmuch-search "tag:spam and path:yadiraperez2029@gmail.com/**")
 ;;; provide
-(provide '990-config-notmuch)
-;;; 990-config-notmuch.el ends here
+(provide 'config-notmuch)
+;;; config-notmuch.el ends here

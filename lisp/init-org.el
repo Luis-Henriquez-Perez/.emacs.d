@@ -32,7 +32,7 @@
             org-keys oc org-table org-fold org-cycle)
   (push it oo-idle-features))
 
-(autoload '+org-agenda-day-view "990-config-org-agenda" nil nil 'function)
+(autoload '+org-agenda-day-view "config-org-agenda" nil nil 'function)
 
 (llmap org-mode-map "a" #'org-archive-subtree)
 (llmap org-mode-map "n" #'org-add-note)
@@ -43,7 +43,7 @@
 (nmap! org-mode-map "R" #'org-refile)
 (nmap! org-mode-map "n" #'org-add-note)
 
-(oo-require-after-load 'org '990-config-org)
+(oo-require-after-load 'org 'config-org)
 ;;; provide
 (provide 'init-org)
 ;;; init-org.el ends here

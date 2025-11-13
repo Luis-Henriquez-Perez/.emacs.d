@@ -1,4 +1,4 @@
-;;; 990-config-yeetube.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-yeetube.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -67,5 +67,5 @@ Optionally, provide custom own URL."
       (call-process-shell-command (format "download_video %s" url) nil 0)
       (message "Downloading: '%s'" yeetube-download-directory))))
 ;;; provide
-(provide '990-config-yeetube)
-;;; 990-config-yeetube.el ends here
+(provide 'config-yeetube)
+;;; config-yeetube.el ends here

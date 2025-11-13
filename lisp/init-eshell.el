@@ -49,7 +49,7 @@
 
 (advice-add #'eshell-mode :around #'oo-call-quietly-a)
 
-(oo-require-after-load 'eshell '990-config-eshell)
+(oo-require-after-load 'eshell 'config-eshell)
 ;;; provide
 (provide 'init-eshell)
 ;;; init-eshell.el ends here

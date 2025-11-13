@@ -55,7 +55,7 @@
 
 (add-hook 'evil-mode-hook #'oo-make-intercept-map-h)
 
-(oo-require-after-load 'evil '990-config-evil)
+(oo-require-after-load 'evil 'config-evil)
 ;;; provide
 (provide 'init-evil)
 ;;; init-evil.el ends here

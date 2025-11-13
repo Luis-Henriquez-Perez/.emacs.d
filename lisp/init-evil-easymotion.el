@@ -43,7 +43,7 @@
 (autoload #'oo-evilem-motion-char              "lib-evil-easymotion" nil t 'function)
 (autoload #'oo-evilem-motion-beginning-of-line "lib-evil-easymotion" nil t 'function)
 
-(oo-require-after-load 'evil-easymotion '990-config-evil-easymotion)
+(oo-require-after-load 'evil-easymotion 'config-evil-easymotion)
 ;;; provide
 (provide 'init-evil-easymotion)
 ;;; init-evil-easymotion.el ends here

@@ -20,4 +20,4 @@
 ;;   Most shell applications accept Perl Compatible Regular Expressions."
 ;;   `(rxt-elisp-to-pcre (rx ,@expressions)))
 
-(provide '990-config-rx)
+(provide 'config-rx)

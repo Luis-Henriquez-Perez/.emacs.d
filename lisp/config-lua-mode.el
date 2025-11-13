@@ -1,4 +1,4 @@
-;;; 990-config-restart-emacs.el --- Configure restart-emacs -*- lexical-binding: t; -*-
+;;; config-lua-mode.el --- Configure lua-mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,21 +22,11 @@
 ;;
 ;;; Commentary:
 ;;
-;; Configure restart-emacs.
+;; Configure lua-mode.
 ;;
 ;;; Code:
-(require 'restart-emacs)
-;;;; fix interactive call
-;; When using the function `restart-emacs-start-new-emacs' I find that restart
-;; Emacs does not properly work with prefix arguments because in its body it
-;; converts the prefix argument to shell arguments only if its called
-;; interactively but its not.
-(defun oo--work-interactively (&optional args)
-  "Call `restart-emacs' interactively."
-  (let ((restart-emacs--inhibit-kill-p t))
-    (funcall-interactively #'restart-emacs args)))
-
-(advice-add 'restart-emacs-start-new-emacs :override #'oo--work-interactively)
+(require! "^0[01]")
+(opt! lua-indent-level 4)
 ;;; provide
-(provide '990-config-restart-emacs)
-;;; 990-config-restart-emacs.el ends here
+(provide 'config-lua-mode)
+;;; config-lua-mode.el ends here

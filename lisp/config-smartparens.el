@@ -1,4 +1,4 @@
-;;; 990-config-dabbrev.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,10 +22,28 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; This is my configuration for smartparens.
 ;;
 ;;; Code:
-(setq dabbrev-check-all-buffers nil)
+(require! "^0[01]")
+(require 'smartparens)
+
+(opt! sp-highlight-wrap-tag-overlay nil)
+
+(opt! sp-highlight-pair-overlay nil)
+
+(opt! sp-highlight-wrap-overlay nil)
+
+(opt! sp-show-pair-delay 0.2)
+
+(sp-local-pair sp-lisp-modes "'" nil :actions nil)
+
+(sp-local-pair sp-lisp-modes "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+
+(sp-local-pair 'minibuffer-mode "'" nil :actions nil)
+(sp-local-pair 'minibuffer-mode "`" nil :actions nil)
+
+(require 'smartparens-config)
 ;;; provide
-(provide '990-config-dabbrev)
-;;; 990-config-dabbrev.el ends here
+(provide 'config-smartparens)
+;;; config-smartparens.el ends here

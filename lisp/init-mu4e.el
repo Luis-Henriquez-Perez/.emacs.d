@@ -30,12 +30,12 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
 (autoload 'mu4e "/usr/share/emacs/site-lisp/mu4e/mu4e" nil nil 'function)
-(autoload '+mu4e--main-enter-message "990-config-mu4e" nil nil 'function)
-(autoload '+mu4e--main-leave-message "990-config-mu4e" nil nil 'function)
-(autoload '+mu4e--legacy-enter-message "990-config-mu4e" nil nil 'function)
-(autoload '+mu4e--legacy-leave-message "990-config-mu4e" nil nil 'function)
-(autoload '+mu4e-jump-to-maildir "990-config-mu4e" nil nil 'function)
-(autoload 'oo--mail-signature "990-config-mu4e" nil nil 'function)
+(autoload '+mu4e--main-enter-message "config-mu4e" nil nil 'function)
+(autoload '+mu4e--main-leave-message "config-mu4e" nil nil 'function)
+(autoload '+mu4e--legacy-enter-message "config-mu4e" nil nil 'function)
+(autoload '+mu4e--legacy-leave-message "config-mu4e" nil nil 'function)
+(autoload '+mu4e-jump-to-maildir "config-mu4e" nil nil 'function)
+(autoload 'oo--mail-signature "config-mu4e" nil nil 'function)
 
 (defun! oo--message-signature (&rest _)
   "Produce a signature for a message."
