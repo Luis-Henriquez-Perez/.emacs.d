@@ -29,7 +29,6 @@
 (require 'abbrev)
 (require! text-mode-abbrev-table)
 (require! emacs-lisp-mode-abbrev-table)
-(require 'log-edit)
 ;;;; PREDICATES
 ;;;;; MODAL
 (defun! oo-abbrev-in-text-p ()
@@ -209,9 +208,11 @@ string or comment."
               (goto-char beg)
               (insert (oo-abbrev-table-string table)))
             (save-buffer)
+            (require 'vc)
             (when (equal 'edited (vc-state file))
               (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
               (set! commit-msg (format "Add abbrevs to the %s..." (file-name-base file)))
+              (require 'log-edit)
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))
 
