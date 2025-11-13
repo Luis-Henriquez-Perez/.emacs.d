@@ -27,8 +27,8 @@
 ;;; Code:
 (require! "^0[01]")
 (require 'abbrev)
-(require! 910-text-mode-abbrev-table)
-(require! 910-emacs-lisp-mode-abbrev-table)
+(require! text-mode-abbrev-table)
+(require! emacs-lisp-mode-abbrev-table)
 (require 'log-edit)
 ;;;; PREDICATES
 ;;;;; MODAL
@@ -182,7 +182,7 @@ string or comment."
 (defun! oo-abbrev-update-abbrev-tables ()
   "Update abbrev tables and commit changes."
   (dolist (table abbrev-table-name-list)
-    (set! file (expand-file-name (format "910-%s.el" table) oo-lisp-dir))
+    (set! file (expand-file-name (format "%s.el" table) oo-lisp-dir))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
       (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
       (when (buffer-modified-p buffer)
@@ -211,7 +211,7 @@ string or comment."
             (save-buffer)
             (when (equal 'edited (vc-state file))
               (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-              (set! commit-msg (format "Add abbrevs to the %s..." (string-remove-prefix "910-" (file-name-base file))))
+              (set! commit-msg (format "Add abbrevs to the %s..." (file-name-base file)))
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))
 

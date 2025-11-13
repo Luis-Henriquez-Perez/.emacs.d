@@ -1,4 +1,4 @@
-;;; 910-text-mode-abbrev-table.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; text-mode-abbrev-table.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -6470,5 +6470,5 @@
     ("yuo" "you")
     ("zeebra" "zebra")))
 ;;; provide
-(provide '910-text-mode-abbrev-table)
-;;; 910-text-mode-abbrev-table.el ends here
+(provide 'text-mode-abbrev-table)
+;;; text-mode-abbrev-table.el ends here
