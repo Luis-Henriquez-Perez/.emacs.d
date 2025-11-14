@@ -80,7 +80,7 @@
 (require! 016-base-macros)
 (require! 017-base-functions)
 (require! 018-keybinding-macros)
-(require! 052-base-settings)
+(require! base-settings)
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.

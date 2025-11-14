@@ -1,4 +1,4 @@
-;;; 052-base-settings.el --- core settings -*- lexical-binding: t; -*-
+;;; base-settings.el --- core settings -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -250,5 +250,5 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq auto-save-timeout 30)
 (auto-save-mode -1)
 ;;; provide
-(provide '052-base-settings)
-;;; 052-base-settings.el ends here
+(provide 'base-settings)
+;;; base-settings.el ends here
