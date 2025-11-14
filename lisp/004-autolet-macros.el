@@ -87,7 +87,7 @@ iteration and move to the next."
 (defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `lef!'.")
 (defalias 'nflet! 'stub! "Same as `noflet!'")
 
-(defun oo-autolet-process-iterative-cond (body)
+(defun oo-autolet-process-body (body)
   "Return a list of (LETB FORM).
 LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
   (let ((letb '())
@@ -213,7 +213,7 @@ Enhanced looping control flow:
 (while|dotimes|dolist CONDITION . BODY) Replace with
 `(catch \='return! (LOOP CONDITION (catch \='break! BODY)))'."
   (declare (indent defun))
-  (pcase-let ((`(,bindings ,body) (oo-autolet-process-iterative-cond body)))
+  (pcase-let ((`(,bindings ,body) (oo-autolet-process-body body)))
     `(let ,(cl-remove-if (lambda (it) (member (car it) noinits)) bindings)
        (catch 'return! ,@body))))
 
@@ -223,7 +223,7 @@ NAME, ARGLIST and BODY are the same as `defmacro!'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,meta ,body) (oo-destructure-defun args)))
+  (pcase-let ((`(,name ,arglist ,meta ,body) (oo-destructure-defun-args args)))
     `(defmacro ,name ,arglist
        ,@meta
        (autolet! ,(oo-arglist-symbols arglist)
@@ -235,7 +235,7 @@ NAME, ARGS and BODY are the same as in `defun'.
 
 \(fn NAME ARGLIST [DOCSTRING] [DECL] [INTERACTIVE] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,metadata ,body) (oo-destructure-defun args)))
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (oo-destructure-defun-args args)))
     `(defun ,name ,arglist
        ,@metadata
        (autolet! ,(oo-arglist-symbols arglist)

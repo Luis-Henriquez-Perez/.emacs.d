@@ -152,7 +152,7 @@ This is like `setq' but it is meant for configuring variables."
 (defmacro! defafter! (&rest args)
   "Eval BODY after FEATURE is loaded."
   (declare (indent defun))
-  (set! (name (feature) meta body) (oo-destructure-defun args))
+  (set! (name (feature) meta body) (oo-destructure-defun-args args))
   `(progn (defun! ,name ()
             ,@meta
             (condition-case err

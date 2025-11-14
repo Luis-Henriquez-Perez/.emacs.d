@@ -204,7 +204,7 @@ Return a flat list of unique components in MATCH-FORM."
                 symbols)))
     (cl-set-difference (flatten-pattern match-form) '(\, \`))))
 
-(defun oo-destructure-defun (args)
+(defun oo-destructure-defun-args (args)
   "Destructure the arguments of a \"defun-like\" thing.
 Return a list of."
   (let ((name (pop args))
