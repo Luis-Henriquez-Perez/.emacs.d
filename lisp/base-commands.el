@@ -1,4 +1,4 @@
-;;; 989-commands.el --- Generic commands -*- lexical-binding: t; -*-
+;;; base-commands.el --- Generic commands -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -273,5 +273,5 @@ Additionally, make any duplicate spaces in line become a single space."
   (let (kill-emacs-hook)
     (kill-emacs)))
 ;;; provide
-(provide '989-commands)
-;;; 989-commands.el ends here
+(provide 'base-commands)
+;;; base-commands.el ends here
