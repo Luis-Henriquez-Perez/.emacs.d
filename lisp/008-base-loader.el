@@ -28,8 +28,8 @@
 ;; make `load' a function the compiler will not detect the `require' calls.
 ;;
 ;;; Code:
-(require '006-base-vars)
-(require '007-base-log)
+(require 'base-vars)
+(require 'base-log)
 
 (defmacro time-elapsed! (&rest forms)
   "Eval forms and return the time elapsed."
