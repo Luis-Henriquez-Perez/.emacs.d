@@ -1,4 +1,4 @@
-;;; 007-base-log.el --- A simple log function -*- lexical-binding: t; -*-
+;;; base-log.el --- A simple log function -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -102,5 +102,5 @@ logged."
               (goto-char (point-min))
               (dotimes (_ excess) (delete-line)))))))))
 ;;; provide
-(provide '007-base-log)
-;;; 007-base-log.el ends here
+(provide 'base-log)
+;;; base-log.el ends here
