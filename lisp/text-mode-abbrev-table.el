@@ -6175,7 +6175,7 @@
     ("varing" "varying")
     ("varities" "varieties")
     ("varity" "variety")
-    ("vars" "variables")
+    ("varss" "variables")
     ("vasall" "vassal")
     ("vasalls" "vassals")
     ("vc" "version-control")
