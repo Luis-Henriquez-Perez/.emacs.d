@@ -1,4 +1,4 @@
-;;; 127-hooks.el --- Define and set several hooks -*- lexical-binding: t; -*-
+;;; base-extra.el --- Define and set several hooks -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -449,5 +449,5 @@ file that is in a git repo, enale git-gutter-mode."
 
 (add-hook 'oo-first-file-hook #'global-auto-revert-mode)
 ;;; provide
-(provide '127-hooks)
-;;; 127-hooks.el ends here
+(provide 'base-extra)
+;;; base-extra.el ends here
