@@ -1,4 +1,4 @@
-;;; 006-base-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; base-vars.el --- core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -115,5 +115,5 @@ This includes the time that features took to load.")
 (defconst oo-emacs-localleader-key "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
 ;;; provide
-(provide '006-base-vars)
-;;; 006-base-vars.el ends here
+(provide 'base-vars)
+;;; base-vars.el ends here
