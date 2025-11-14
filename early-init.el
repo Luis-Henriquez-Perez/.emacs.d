@@ -76,8 +76,11 @@
 (require '006-base-vars)
 (require '007-base-log)
 (eval-when-compile (require '008-base-loader))
-
-(require! "^0[15]")
+(require! 015-call-after-functions)
+(require! 016-base-macros)
+(require! 017-base-functions)
+(require! 018-keybinding-macros)
+(require! 052-base-settings)
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.
