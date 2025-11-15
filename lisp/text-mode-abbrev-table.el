@@ -5078,6 +5078,7 @@
     ("rmed" "removed")
     ("rn" "right now")
     ("rnadom" "random")
+    ("rnaming" "renaming")
     ("rnni" "return non-nil if")
     ("rnt" "are not")
     ("ro" "or")
