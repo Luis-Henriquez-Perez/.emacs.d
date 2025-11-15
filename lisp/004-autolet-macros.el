@@ -27,17 +27,7 @@
 ;;; Code:
 (require 'pcase)
 (require 'cl-lib)
-(require '001-base-functions)
-
-(defun oo-arglist-symbols (arglist)
-  "Return a list of argument symbols."
-  (let (symbols)
-    (dolist (arg (flatten-list arglist))
-      (when (and (symbolp arg)
-                 (not (equal arg '_))
-                 (not (string-match "^&" (symbol-name arg))))
-        (push arg symbols)))
-    (nreverse symbols)))
+(require 'base-functions)
 
 (defmacro set! (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.
@@ -181,6 +171,11 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (error "Unknown frame %S" frame))))
     (list (nreverse letb) (car result))))
 
+(defun oo-autolet-defun-args (args)
+  ""
+  (pcase-let ((`(,name ,arglist ,meta ,body) (oo-destructure-defun-args args)))
+    `(,name ,arglist ,@meta ,(oo-autolet-expand-body (oo-arglist-symbols arglist)))))
+
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
 ;; want to just modify the original symbol without let-binding it at all.  In
 ;; that case use `:noinit' which tells `autolet!' not to bind specified symbols
@@ -223,11 +218,7 @@ NAME, ARGLIST and BODY are the same as `defmacro!'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,meta ,body) (oo-destructure-defun-args args)))
-    `(defmacro ,name ,arglist
-       ,@meta
-       (autolet! ,(oo-arglist-symbols arglist)
-         ,@body))))
+  `(defmacro ,@(oo-autolet-defun-args args)))
 
 (defmacro defun! (&rest args)
   "Same as `defun' but wrap body with `autolet!'.

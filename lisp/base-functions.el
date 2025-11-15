@@ -1,4 +1,4 @@
-;;; 001-base-functions.el -*- lexical-binding: t; -*-
+;;; base-functions.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -213,6 +213,16 @@ Return a list of."
         (decl (and (equal 'declare (car-safe (car args))) (pop args)))
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
     (list name arglist (remove nil (list doc decl inte)) args)))
+
+(defun oo-arglist-symbols (arglist)
+  "Return a list of argument symbols."
+  (let (symbols)
+    (dolist (arg (flatten-list arglist))
+      (when (and (symbolp arg)
+                 (not (equal arg '_))
+                 (not (string-match "^&" (symbol-name arg))))
+        (push arg symbols)))
+    (nreverse symbols)))
 ;;; provide
-(provide '001-base-functions)
-;;; 001-base-functions.el ends here
+(provide 'base-functions)
+;;; base-functions.el ends here
