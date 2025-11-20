@@ -171,11 +171,6 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (error "Unknown frame %S" frame))))
     (list (nreverse letb) (car result))))
 
-(defun oo-autolet-defun-args (args)
-  ""
-  (pcase-let ((`(,name ,arglist ,meta ,body) (oo-destructure-defun-args args)))
-    `(,name ,arglist ,@meta ,(oo-autolet-process-body (oo-arglist-symbols arglist)))))
-
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
 ;; want to just modify the original symbol without let-binding it at all.  In
 ;; that case use `:noinit' which tells `autolet!' not to bind specified symbols
@@ -218,7 +213,11 @@ NAME, ARGLIST and BODY are the same as `defmacro!'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
-  `(defmacro ,@(oo-autolet-defun-args args)))
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (oo-destructure-defun-args args)))
+    `(defmacro ,name ,arglist
+       ,@metadata
+       (autolet! ,(oo-arglist-symbols arglist)
+         ,@body))))
 
 (defmacro defun! (&rest args)
   "Same as `defun' but wrap body with `autolet!'.
