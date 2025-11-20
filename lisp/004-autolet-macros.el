@@ -174,7 +174,7 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
 (defun oo-autolet-defun-args (args)
   ""
   (pcase-let ((`(,name ,arglist ,meta ,body) (oo-destructure-defun-args args)))
-    `(,name ,arglist ,@meta ,(oo-autolet-expand-body (oo-arglist-symbols arglist)))))
+    `(,name ,arglist ,@meta ,(oo-autolet-process-body (oo-arglist-symbols arglist)))))
 
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
 ;; want to just modify the original symbol without let-binding it at all.  In
