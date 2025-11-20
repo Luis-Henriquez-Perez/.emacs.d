@@ -5080,6 +5080,7 @@
     ("rn" "right now")
     ("rnadom" "random")
     ("rnaming" "renaming")
+    ("rnming" "renaming")
     ("rnni" "return non-nil if")
     ("rnt" "are not")
     ("ro" "or")
