@@ -4921,6 +4921,7 @@
     ("renedered" "rende")
     ("renesaince" "renaissance")
     ("renewl" "renewal")
+    ("renimg" "renaming")
     ("rennovate" "renovate")
     ("rennovated" "renovated")
     ("rennovating" "renovating")
