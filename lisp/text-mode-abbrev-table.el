@@ -1315,6 +1315,7 @@
     ("commemmorating" "commemorating")
     ("commen" "common")
     ("commendt" "comment")
+    ("commener" "commenter")
     ("commentar" "commentary")
     ("commerical" "commercial")
     ("commerically" "commercially")
