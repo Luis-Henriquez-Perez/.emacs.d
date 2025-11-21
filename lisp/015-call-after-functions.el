@@ -26,7 +26,10 @@
 ;;
 ;;; Code:
 (require 'subr-x)
-(require! "\\`0[01][0-4]")
+(eval-when-compile (require '002-anaphoric-macros))
+(eval-when-compile (require '003-ing-macros))
+(eval-when-compile (require '004-autolet-macros))
+(eval-when-compile (require '005-looping-macros))
 
 (defvar oo-after-bound-forms nil
   "An alist whose elements are (SYMBOL . FORMS).
