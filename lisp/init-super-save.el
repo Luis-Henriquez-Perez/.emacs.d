@@ -25,7 +25,7 @@
 ;; Initialize super-save.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (autoload 'super-save-mode "super-save" nil nil 'function)
 (add-hook 'oo-first-file-hook #'super-save-mode)

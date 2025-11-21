@@ -25,7 +25,7 @@
 ;; Initialize smartparens.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (declare-function smartparens-strict-mode "smartparens")
 

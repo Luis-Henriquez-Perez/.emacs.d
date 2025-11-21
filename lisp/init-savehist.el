@@ -25,7 +25,7 @@
 ;; This is my configuration for savehist.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 (require 'savehist)
 
 (add-hook 'oo-first-input-hook #'savehist-mode)

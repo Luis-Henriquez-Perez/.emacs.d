@@ -73,15 +73,7 @@
 
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
-(require 'base-functions)
-(require 'base-vars)
-(require 'base-log)
-(eval-when-compile (require '008-base-loader))
-(require! 015-call-after-functions)
-(require! 016-base-macros)
-(require! 017-base-functions)
-(require! 018-keybinding-macros)
-(require! base-settings)
+(require 'base)
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.

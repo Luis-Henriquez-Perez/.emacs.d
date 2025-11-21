@@ -25,7 +25,7 @@
 ;; Initialize org-appear.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (opt! org-appear-autoemphasis t)
 (opt! org-appear-autolinks t)

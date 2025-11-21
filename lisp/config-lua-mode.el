@@ -25,7 +25,7 @@
 ;; Configure lua-mode.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 (opt! lua-indent-level 4)
 ;;; provide
 (provide 'config-lua-mode)

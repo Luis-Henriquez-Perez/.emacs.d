@@ -25,7 +25,7 @@
 ;; Initialize aggressive-indent.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 ;;; provide

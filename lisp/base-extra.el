@@ -96,7 +96,7 @@ file is loaded."
 
 (defun oo-require-base-h ()
   "Load base macros."
-  (require! "^0[01]")
+  (require 'base)
   (remove-hook 'emacs-lisp-mode-hook #'oo-require-base-h))
 
 (add-hook 'emacs-lisp-mode-hook #'oo-require-base-h)

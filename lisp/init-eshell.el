@@ -25,7 +25,7 @@
 ;; Initialize eshell.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (setq-hook! eshell-mode-hook completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 

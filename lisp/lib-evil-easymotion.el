@@ -83,7 +83,7 @@
 ;; sort them based on.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 (require 'rx)
 (require 'dash)
 (require 'evil)

@@ -25,7 +25,7 @@
 ;; Initialize notmuch.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 ;; If you do not use `setq-default' this setting will not persist across
 ;; different searches.

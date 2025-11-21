@@ -25,7 +25,7 @@
 ;; Initialize orderless.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (opt! orderless-matching-styles '(orderless-initialism orderless-regexp))
 

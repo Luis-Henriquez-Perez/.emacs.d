@@ -25,7 +25,7 @@
 ;; Initialize fill-adapt.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (add-hook 'auto-fill-mode-hook #'filladapt-mode)
 ;;; provide

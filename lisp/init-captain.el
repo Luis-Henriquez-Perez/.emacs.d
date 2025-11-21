@@ -25,7 +25,7 @@
 ;; Initialize captain-mode.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (add-hook 'prog-mode-hook #'captain-mode)
 (add-hook 'text-mode-hook #'captain-mode)

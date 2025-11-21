@@ -25,7 +25,7 @@
 ;; Initialize `elfeed'
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (opt! elfeed-feeds
       '("http://nullprogram.com/feed/"

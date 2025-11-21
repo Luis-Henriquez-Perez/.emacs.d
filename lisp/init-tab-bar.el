@@ -25,7 +25,7 @@
 ;; Initialize tab-bar.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 ;; I do toggle showing the tab display sometimes, at least as I get used to
 ;; using `tab-bar-mode'.  I imagine that later I will not be using it.
 ;; Do not show the new tab buffer  I will never use it to be honest.  Ideally I

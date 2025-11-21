@@ -25,7 +25,7 @@
 ;; Initialize no-littering.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (eval-and-compile (defvar no-littering-etc-directory oo-etc-dir)
                   (defvar no-littering-var-directory oo-cache-dir))

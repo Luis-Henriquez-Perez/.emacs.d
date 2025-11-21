@@ -25,7 +25,7 @@
 ;; Initialize `org-fancy-priorities`.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (autoload 'org-fancy-priorities-mode "org-fancy-priorities" nil nil 'function)
 (add-hook 'org-mode-hook #'org-fancy-priorities-mode)

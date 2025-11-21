@@ -25,7 +25,7 @@
 ;; Initialize corfu.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (add-hook 'corfu-mode-hook #'corfu-history-mode)
 

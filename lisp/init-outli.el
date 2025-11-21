@@ -25,7 +25,7 @@
 ;; Initialize outli.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (add-hook 'prog-mode-hook #'outli-mode)
 (add-hook 'conf-mode-hook #'outli-mode)

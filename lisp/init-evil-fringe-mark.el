@@ -25,7 +25,7 @@
 ;; Initialize evil-fringe-mark.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (declare-function global-evil-fringe-mark-mode "evil-fringe-mark")
 

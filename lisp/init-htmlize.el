@@ -25,7 +25,7 @@
 ;; Initialize htmlize.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (opt! htmlize-convert-nonascii-to-entities nil)
 (opt! htmlize-html-charset "utf-8")

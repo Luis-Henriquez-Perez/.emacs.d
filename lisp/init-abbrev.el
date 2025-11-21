@@ -25,7 +25,7 @@
 ;; Initialize abbrev-mode.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (declare-function oo-abbrev-in-text-p "lib-abbrev")
 (declare-function oo-abbrev-insert-period-maybe-a "lib-abbrev")

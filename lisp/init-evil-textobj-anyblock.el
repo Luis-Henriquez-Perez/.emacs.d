@@ -25,7 +25,7 @@
 ;; Initialize evil-textobj-anyblock.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 ;;; provide
 (provide 'init-evil-textobj-anyblock)
 ;;; init-evil-textobj-anyblock.el ends here

@@ -25,7 +25,7 @@
 ;; Configure nil.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 ;;;; SETTINGS
 ;;;;; GENERAL
 (setq org-directory (expand-file-name "~/Documents/org/"))

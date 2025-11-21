@@ -25,7 +25,7 @@
 ;; This is my configuration for evil.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 (require 'evil)
 ;;;; SETTINGS
 ;; To ensure that =oo-override-mode-map= takes priority over evil states, we need

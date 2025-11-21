@@ -25,7 +25,7 @@
 ;; This is my configuration for abbrev.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 (require 'abbrev)
 (require! text-mode-abbrev-table)
 (require! emacs-lisp-mode-abbrev-table)

@@ -25,7 +25,7 @@
 ;; Initialize buffer-terminator.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (add-hook 'oo-first-input-hook #'buffer-terminator-mode)
 

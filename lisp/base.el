@@ -1,4 +1,4 @@
-;;; init-burly.el --- Initialize burly -*- lexical-binding: t; -*-
+;;; base.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,19 +22,19 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize burly.
+;; Requires all the base files in the proper order.  This makes it easy for
+;; files to require all base dependencies.
 ;;
 ;;; Code:
-(require 'base)
-;; Do I really need a prefix to differentiate burly bookmarks?  I do not know.
-;; I guess so.  But at least I want it to be short.
-;; Do not differentiate.
-(opt! burly-bookmark-prefix "")
-
-;; The mode `burly-tabs-mode' causes opening a burly bookmark to enable
-;; `tab-bar-mode' automatically and create a new tab.
-;; (declare-function burly-tabs-mode "burly")
-;; (oo-call-after-load 'burly #'burly-tabs-mode)
+(require 'base-functions)
+(require 'base-vars)
+(require 'base-log)
+(eval-when-compile (require '008-base-loader))
+(require '015-call-after-functions)
+(eval-when-compile (require '016-base-macros))
+(require '017-base-functions)
+(eval-when-compile (require '018-keybinding-macros))
+(require 'base-settings)
 ;;; provide
-(provide 'init-burly)
-;;; init-burly.el ends here
+(provide 'base)
+;;; base.el ends here

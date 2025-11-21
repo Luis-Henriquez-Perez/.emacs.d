@@ -25,7 +25,7 @@
 ;; Initialize eww.
 ;;
 ;;; Code:
-(require! "^0[01]")
+(require 'base)
 
 (opt! eww-auto-rename-buffer t)
 

@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require! "^0[01]")
+(require 'base)
 ;;;; autoloads
 (autoload 'tempel-complete "tempel" nil nil 'function)
 (autoload 'tempel-insert "tempel" nil nil 'function)
