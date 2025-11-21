@@ -26,6 +26,8 @@
 ;;
 ;;; Code:
 (autoload 'evilnc-comment-operator "evil-nerd-commenter" nil nil 'function)
+(autoload 'evilnc-inner-comment "evil-nerd-commenter" nil nil 'function)
+(autoload 'evilnc-outer-comment "evil-nerd-commenter" nil nil 'function)
 ;;; provide
 (provide 'init-evil-nerd-commenter)
 ;;; init-evil-nerd-commenter.el ends here

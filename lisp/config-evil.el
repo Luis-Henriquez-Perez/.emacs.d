@@ -346,9 +346,6 @@ non-readonly file buffer, save the buffer."
 (nvmap! "g x" #'evil-exchange)
 (nvmap! "g X" #'evil-exchange-cancel)
 ;;;; TEXT-OBJECTS
-(autoload 'evilnc-inner-comment "evil-nerd-commenter" nil nil 'function)
-(autoload 'evilnc-outer-comment "evil-nerd-commenter" nil nil 'function)
-
 (iotmap! "c" #'evilnc-inner-comment #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
 (iotmap! "a" #'lispyville-inner-comment #'lispyville-outer-comment)
