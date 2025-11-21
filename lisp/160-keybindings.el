@@ -200,11 +200,6 @@
   "q" '("quit" . oo-quit-map))
 
 (add-hook 'emacs-startup-hook #'override-global-mode)
-
-(nmap! override-global-map oo-normal-leader-key #'oo-leader-map)
-(imap! override-global-map oo-insert-leader-key #'oo-leader-map)
-(emap! override-global-map oo-emacs-leader-key #'oo-leader-map)
-(emap! override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
 ;;;; UNCATEGORIZED
 (declare-function which-key-add-keymap-based-replacements "which-key")
 
@@ -212,10 +207,6 @@
   (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
-;;;; PACKAGE-SPECIFIC
-;;;;; INFO
-(nmap! Info-mode-map "H" #'Info-last)
-(nmap! Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide '160-keybindings)
 ;;; 160-keybindings.el ends here

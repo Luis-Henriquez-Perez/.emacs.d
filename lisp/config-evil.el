@@ -357,6 +357,14 @@ non-readonly file buffer, save the buffer."
 (iotmap! "f" #'evil-cp-inner-form #'evil-cp-a-form)
 ;; (iotmap! "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
 (iotmap! "b" #'oo-evil-inner-buffer #'oo-evil-outer-buffer)
+
+(nmap! override-global-map oo-normal-leader-key #'oo-leader-map)
+(imap! override-global-map oo-insert-leader-key #'oo-leader-map)
+(emap! override-global-map oo-emacs-leader-key #'oo-leader-map)
+(emap! override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
+
+(nmap! Info-mode-map "H" #'Info-last)
+(nmap! Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide 'config-evil)
 ;;; config-evil.el ends here
