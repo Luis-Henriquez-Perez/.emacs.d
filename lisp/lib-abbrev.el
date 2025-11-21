@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'base)
 (require 'abbrev)
-(require! text-mode-abbrev-table)
-(require! emacs-lisp-mode-abbrev-table)
+(require 'text-mode-abbrev-table)
+(require 'emacs-lisp-mode-abbrev-table)
 ;;;; PREDICATES
 ;;;;; MODAL
 (defun! oo-abbrev-in-text-p ()
