@@ -89,14 +89,6 @@ writes to `standard-output'."
                         mustbenew))))
        ,@body)))
 
-(defmacro! let! (letbs &rest body)
-  "Like `let*' but with support for destructuring."
-  (declare (indent defun))
-  (for! ((match-form value) letbs)
-    (appending! bindings (oo-pcase-bindings match-form value)))
-  `(pcase-let* ,bindings
-     ,@body))
-
 (defmacro! opt! (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
