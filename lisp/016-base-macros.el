@@ -89,11 +89,12 @@ writes to `standard-output'."
                         mustbenew))))
        ,@body)))
 
-(defmacro let! (letbs &rest body)
+(defmacro! let! (letbs &rest body)
   "Like `let*' but with support for destructuring."
   (declare (indent defun))
-  `(pcase-let* ,(cl-loop for (match-form value) in letbs
-                         append (oo-pcase-bindings match-form value))
+  (for! ((match-form value) letbs)
+    (appending! bindings (oo-pcase-bindings match-form value)))
+  `(pcase-let* ,bindings
      ,@body))
 
 (defmacro! opt! (symbol value)
