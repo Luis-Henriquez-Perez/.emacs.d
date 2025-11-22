@@ -26,10 +26,10 @@
 ;;
 ;;; Code:
 (require 'subr-x)
-(eval-when-compile (require '002-anaphoric-macros))
+(eval-when-compile (require 'anaphoric-macros))
 (eval-when-compile (require '003-ing-macros))
 (eval-when-compile (require '004-autolet-macros))
-(eval-when-compile (require '005-looping-macros))
+(eval-when-compile (require 'looping-macros))
 
 (defvar oo-after-bound-forms nil
   "An alist whose elements are (SYMBOL . FORMS).

@@ -1,4 +1,4 @@
-;;; 005-looping-macros.el --- Looping macros -*- lexical-binding: t; -*-
+;;; looping-macros.el --- Looping macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -82,5 +82,5 @@ take the following forms:
          (push (progn ,@body) ,collection))
        (nreverse ,collection))))
 ;;; provide
-(provide '005-looping-macros)
-;;; 005-looping-macros.el ends here
+(provide 'looping-macros)
+;;; looping-macros.el ends here

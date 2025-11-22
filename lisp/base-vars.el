@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
-(eval-when-compile (require '002-anaphoric-macros))
+(eval-when-compile (require 'anaphoric-macros))
 
 (defconst oo-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory where handcrafted configuration files go.")
