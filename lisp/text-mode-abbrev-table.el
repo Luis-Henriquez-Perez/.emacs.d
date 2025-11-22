@@ -4981,6 +4981,7 @@
     ("requirem" "requirement")
     ("requirment" "requirement")
     ("requred" "required")
+    ("requs" "requires")
     ("res" "result")
     ("resaurant" "restaurant")
     ("rese" "research")
