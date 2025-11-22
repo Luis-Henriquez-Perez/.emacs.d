@@ -31,7 +31,12 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require! "^0[01][1-6]")
+(require 'anaphoric-macros)
+(require '003-ing-macros)
+(require '004-autolet-macros)
+(require 'looping-macros)
+(require '015-call-after-functions)
+(require '016-base-macros)
 
 (defvar evil-state-properties)
 (declare-function evil-define-key* "evil")
