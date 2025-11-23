@@ -4409,6 +4409,7 @@
     ("pomegranite" "pomegranate")
     ("pomotion" "promotion")
     ("popl" "populate")
+    ("poplate" "populate")
     ("poportional" "proportional")
     ("popoulation" "population")
     ("poppulated" "populated")
