@@ -32,7 +32,7 @@
 ;;
 ;;; Code:
 (require 'anaphoric-macros)
-(require '003-ing-macros)
+(require 'ing-macros)
 (require '004-autolet-macros)
 (require 'looping-macros)
 (require '015-call-after-functions)
