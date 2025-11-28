@@ -3523,7 +3523,7 @@
     ("liasion" "liaison")
     ("liason" "liaison")
     ("liasons" "liaisons")
-    ("lib" "library")
+    ("libb" "library")
     ("libary" "library")
     ("libell" "libel")
     ("libguistic" "linguistic")
