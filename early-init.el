@@ -79,11 +79,21 @@
 ;; these variables in the previous `require!' macro.
 (defvar oo-cache-dir)
 (defvar oo-init-font)
+
+;; Populate base variables.
+(dolist (arg command-line-args)
+  (cond ((string-match "^--noerrors" arg)
+         (setq oo-init-errors t))
+        ((string-match "^--profile" arg)
+         (setq oo-init-profile-p t))
+        ((string-match "^--font=\\(.+\\)" arg)
+         (setq oo-init-font (match-string 1 arg))
+         (push (cons 'font oo-init-font) default-frame-alist))
+        ((string-match "^--theme=\\(.+\\)" arg)
+         (setq oo-init-theme (intern (match-string 1 arg))))))
+
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))
-
-(when oo-init-font
-  (push `(font . ,oo-init-font) default-frame-alist))
 
 ;; Adding advice triggers the creation of the "eln-cache" directory.  To avoid
 ;; creating it prematurely advices should go after `startup-redirect-eln-cache'.

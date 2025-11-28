@@ -22,8 +22,6 @@
 ;;
 ;;; Commentary:
 ;;; Code:
-(eval-when-compile (require 'anaphoric-macros))
-
 (defconst oo-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory where handcrafted configuration files go.")
 
@@ -49,24 +47,20 @@ built-in-face.  See `oo--enable-theme-functions--set-state-faces-from-theme-h'."
 
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
-(defvar oo-init-theme (aremf! command-line-args
-                        (and (string-match "^--theme=\\(.+\\)" it)
-                             (intern (match-string 1 it))))
+(defvar oo-init-theme nil
   "Initial theme.")
 
-(defvar oo-init-font (aremf! command-line-args
-                       (and (string-match "^--font=\\(.+\\)" it)
-                            (match-string 1 it)))
+(defvar oo-init-font nil
   "Initial font.")
 
-(defvar oo-init-profile-p (aremf! command-line-args
-                            (and (string-match "^--profile" it)
-                                 t))
-  "Whether")
+;; Since it is inexpensive I set this to non-nil by default.
+(defvar oo-init-profile-p t
+  "Non-nil if Emacs configuration should be profiled at startup.")
 
-(defvar oo-init-noerrors-p (aremf! command-line-args
-                             (and (string-match "^--noerrors" it)
-                                  t))
+;; I set this to non-nil so that I can get a functional Emacs instance and can
+;; debug errors.  If I want to see the specific error I can restart Emacs with
+;; this enabled.
+(defvar oo-init-noerrors-p t
   "Non-nil if errors in init files should be ignored at startup.")
 
 (defvar oo-init-data nil
