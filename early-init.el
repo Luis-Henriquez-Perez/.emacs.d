@@ -78,7 +78,7 @@
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.
 (defvar oo-cache-dir)
-(defvar oo-initial-font)
+(defvar oo-init-font)
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))
 
