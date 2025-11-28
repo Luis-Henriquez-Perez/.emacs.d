@@ -1,4 +1,4 @@
-;;; base.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; base-lib.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,16 +22,14 @@
 ;;
 ;;; Commentary:
 ;;
-;; Requires all the base files in the proper order.  This makes it easy for
-;; files to require all base dependencies.
+;; TODO: add commentary
 ;;
 ;;; Code:
-(require 'base-vars)
-(require 'base-log)
-(require 'base-settings)
-(require 'base-lib)
-(require 'base-commands)
-(require '160-keybindings)
+(eval-when-compile (require 'lib-macros-0))
+(eval-when-compile (require 'anaphoric-macros))
+(eval-when-compile (require 'ing-macros))
+(eval-when-compile (require 'autolet-macros))
+(require 'lib-after-call-functions)
 ;;; provide
-(provide 'base)
-;;; base.el ends here
+(provide 'base-lib)
+;;; base-lib.el ends here
