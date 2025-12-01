@@ -1,4 +1,4 @@
-;;; 004-autolet-macros.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
+;;; macros-autolet.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'pcase)
 (require 'cl-lib)
-(require 'base-functions)
+(require 'functions-1)
 
 (defmacro set! (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.
@@ -231,5 +231,5 @@ NAME, ARGS and BODY are the same as in `defun'.
        (autolet! ,(oo-arglist-symbols arglist)
          ,@body))))
 ;;; provide
-(provide '004-autolet-macros)
-;;; 004-autolet-macros.el ends here
+(provide 'macros-autolet)
+;;; macros-autolet.el ends here

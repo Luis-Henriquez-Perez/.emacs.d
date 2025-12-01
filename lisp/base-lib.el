@@ -26,10 +26,11 @@
 ;;
 ;;; Code:
 (eval-when-compile (require 'lib-macros-0))
-(eval-when-compile (require 'anaphoric-macros))
-(eval-when-compile (require 'ing-macros))
-(eval-when-compile (require 'autolet-macros))
-(require 'lib-after-call-functions)
+(eval-when-compile (require 'macros-anaphora))
+(eval-when-compile (require 'macros-setters))
+(eval-when-compile (require 'macros-autolet))
+(eval-when-compile (require 'macros-looping))
+(require 'functions-call-after)
 ;;; provide
 (provide 'base-lib)
 ;;; base-lib.el ends here

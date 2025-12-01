@@ -1,4 +1,4 @@
-;;; 015-call-after-functions.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
+;;; functions-call-after.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -26,10 +26,6 @@
 ;;
 ;;; Code:
 (require 'subr-x)
-(eval-when-compile (require 'anaphoric-macros))
-(eval-when-compile (require '003-ing-macros))
-(eval-when-compile (require '004-autolet-macros))
-(eval-when-compile (require 'looping-macros))
 
 (defvar oo-after-bound-forms nil
   "An alist whose elements are (SYMBOL . FORMS).
@@ -41,13 +37,16 @@ evaluated when symbol is bound.")
 FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
 after FEATURE is loaded.")
 
-(defun! oo-eval-after-bound-forms (&rest _)
+(defun oo-eval-after-bound-forms (&rest _)
   "Evaluate forms of any bound symbols in `oo-after-bound-forms'."
-  (for! (:reverse (&as elt (symbol . forms)) oo-after-bound-forms)
-    (if (boundp symbol)
-        (eval `(progn ,@(nreverse forms)) 'lexical)
-      (pushing! updated elt)))
-  (setq oo-after-bound-forms updated))
+  (let (updated symbol forms)
+    (dolist (elt (reverse oo-after-bound-forms))
+      (setq symbol (car elt))
+      (setq forms (cdr elt))
+      (if (boundp symbol)
+          (eval `(progn ,@(nreverse forms)) 'lexical)
+        (push elt updated)))
+    (setq oo-after-bound-forms updated)))
 
 (defun oo-call-after-bound (symbol fn)
   "Call FN after SYMBOL is bound.
@@ -81,5 +80,5 @@ If SYMBOL is already bound FN is called immediately."
   "Load FEATURE2 at FEATURE1 has been loaded."
   (oo-call-after-load feature1 (apply-partially #'oo-require-config feature2)))
 ;;; provide
-(provide '015-call-after-functions)
-;;; 015-call-after-functions.el ends here
+(provide 'functions-call-after)
+;;; functions-call-after.el ends here

@@ -1,4 +1,4 @@
-;;; looping-macros.el --- Looping macros -*- lexical-binding: t; -*-
+;;; macros-looping.el --- Looping macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,7 +28,7 @@
 (require 'pcase)
 (require 'seq)
 (require 'cl-lib)
-(require 'base-functions)
+(require 'functions-1)
 
 (defmacro for! (loop-struct &rest body)
   "A generic looping macro and drop-in replacement for `dolist'.
@@ -82,5 +82,5 @@ take the following forms:
          (push (progn ,@body) ,collection))
        (nreverse ,collection))))
 ;;; provide
-(provide 'looping-macros)
-;;; looping-macros.el ends here
+(provide 'macros-looping)
+;;; macros-looping.el ends here
