@@ -31,11 +31,11 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require 'anaphoric-macros)
-(require 'ing-macros)
-(require '004-autolet-macros)
-(require 'looping-macros)
-(require '015-call-after-functions)
+(require 'macros-anaphora)
+(require 'macros-ing)
+(require 'macros-autolet)
+(require 'macros-looping)
+(require 'functions-call-after)
 (require '016-base-macros)
 
 (defvar evil-state-properties)
