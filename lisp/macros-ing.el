@@ -1,4 +1,4 @@
-;;; ing-macros.el --- Macros for modifying symbols -*- lexical-binding: t; -*-
+;;; macros-ing.el --- Macros for modifying symbols -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -108,5 +108,5 @@ SETTER, KEY, TEST, TEST-NOT are the same as in `adjoining!'."
 (defalias 'subtracting! 'cl-decf)
 (defalias 'minusing! 'cl-decf)
 ;;; provide
-(provide 'ing-macros)
-;;; ing-macros.el ends here
+(provide 'macros-ing)
+;;; macros-ing.el ends here
