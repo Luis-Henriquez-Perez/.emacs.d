@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'functions-1)
+(eval-when-compile (require 'macros-generic))
 (eval-when-compile (require 'macros-anaphora))
 (eval-when-compile (require 'macros-ing))
 (eval-when-compile (require 'macros-autolet))
