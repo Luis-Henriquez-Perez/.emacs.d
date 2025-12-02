@@ -176,10 +176,6 @@ with a single space."
 
 (add-hook 'after-init-hook #'o-record-after-init-hook-start-time-h)
 
-(defsubst o-hundredths (n)
-  "Return N rounded to the nearest hundredth."
-  (/ (fround (* n 100)) 100.0))
-
 (defun! o-record-after-init-hook-end-time-h ()
   "Record the end of `after-init-hook'."
   (set! start (get-register :after-init-start))
