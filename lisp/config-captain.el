@@ -34,10 +34,10 @@
 (require 'lispy)
 ;;;; determine where I am
 ;; TODO: generalize regexp with `defun!', `cl-defun', etc.
-(defvar oo-docstring-regexp "(\\(?:def\\(?:advice!\\|hook!\\|macro\\|un!?\\)\\)[[:blank:]]\\([^[:space:]]+\\)[[:blank:]](\\(.*\\))\n[[:blank:]]*\"")
+(defvar o-docstring-regexp "(\\(?:def\\(?:advice!\\|hook!\\|macro\\|un!?\\)\\)[[:blank:]]\\([^[:space:]]+\\)[[:blank:]](\\(.*\\))\n[[:blank:]]*\"")
 
 ;; TODO: generalize this regexp for comments in different languages.
-(defun oo--beg-comment-block-rx ()
+(defun o--beg-comment-block-rx ()
   "Return a regular expression that matches the beginning of a comment block."
   (rx-to-string
    `(: (or bos
@@ -48,7 +48,7 @@
            (: bol (not ,comment-start) (* any) eol "\n"))
        (: bol (zero-or-more blank) (= 2 ,comment-start) blank))))
 
-(defvar oo--definer-list '("defun"
+(defvar o--definer-list '("defun"
 						   "defmacro"
 						   "cl-defun"
 						   "cl-defmacro"
@@ -61,19 +61,19 @@
 
 ;; Influenced from smartparens.  This does it for emacs-lisp but I wonder if
 ;; there is a general way to determine.
-(defun! oo--in-elisp-docstring-p ()
+(defun! o--in-elisp-docstring-p ()
   "Return the bounds of docstring."
   (alet! (bounds-of-thing-at-point 'string)
     (and (derived-mode-p 'emacs-lisp-mode)
          (save-excursion
 	       (goto-char (car it))
 	       (ignore-errors (backward-sexp 3))
-	       (looking-at-p (regexp-opt oo--definer-list)))
+	       (looking-at-p (regexp-opt o--definer-list)))
          it)))
 
 (defun! +captain--prog-mode-sentence-start ()
   "Return point where sentence should be capitalized."
-  (pcase (oo-in-string-or-comment-p)
+  (pcase (o-in-string-or-comment-p)
     ('comment
      ;; For now use `lispy--bounds-comment' because I do not think there is a
      ;; built-in alternative.
@@ -88,7 +88,7 @@
                        (goto-char (match-end 0)))
                      (point)))
     ('string
-     (aand! (car (oo--in-elisp-docstring-p))
+     (aand! (car (o--in-elisp-docstring-p))
     	    (max it (or (car (bounds-of-thing-at-point 'sentence)) it))))))
 ;;; provide
 (provide 'config-captain)

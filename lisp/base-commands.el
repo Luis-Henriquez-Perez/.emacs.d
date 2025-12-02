@@ -32,32 +32,32 @@
 ;; (require 'f)
 ;; (require 'ctable)
 ;;;; opening specific files
-(defun oo-open-emacs-config ()
+(defun o-open-emacs-config ()
   "Open Emacs configuration."
   (interactive)
   (switch-to-buffer (dired user-emacs-directory)))
 
-(defun oo-open-emacs-init-file ()
+(defun o-open-emacs-init-file ()
   "Open init file."
   (interactive)
   (switch-to-buffer (find-file-noselect user-init-file)))
 
-(defun oo-open-emacs-lisp-dir ()
+(defun o-open-emacs-lisp-dir ()
   "Open lisp directory."
   (interactive)
   (switch-to-buffer (dired (expand-file-name "lisp" user-emacs-directory))))
 ;;;; window splitting
-(defun oo-split-window-right-and-focus ()
+(defun o-split-window-right-and-focus ()
   "Split window right and select the window created with the split."
   (interactive)
   (select-window (split-window-right)))
 
-(defun oo-split-window-below-and-focus ()
+(defun o-split-window-below-and-focus ()
   "Split window below and select the window created with the split."
   (interactive)
   (select-window (split-window-below)))
 ;;;; font
-(defun! oo-set-font-face ()
+(defun! o-set-font-face ()
   "Apply an existing xfont to all graphical frames."
   (interactive)
   (set! font (completing-read "Choose font: " (x-list-fonts "*")))
@@ -65,23 +65,23 @@
 ;;;; sorting
 ;; This is meant to sort the great number of install package forms I have in
 ;; `init-elpaca'.
-(defun! oo-sort-elpaca-forms (beg end)
+(defun! o-sort-elpaca-forms (beg end)
   "Sort elpaca forms lexicographically by package name."
   (set! rx "^\\(?:;; \\)?(elpaca \\(?:(\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\|\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\)[^z-a]+?$")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
-(defun! oo-sort-autoload-forms (beg end)
+(defun! o-sort-autoload-forms (beg end)
   "Sort autoload forms lexicographically by package name."
   (set! rx "(autoload[[:blank:]]+#'[^[:space:]]+[[:blank:]]+\"\\(.+?\\)\".+?$")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
 ;; This is meant to sort the great number of `require' forms in the init file.
-(defun! oo-sort-require-forms (beg end)
+(defun! o-sort-require-forms (beg end)
   "Sort require forms lexicographically by feature name."
   (set! rx "(require[[:blank:]]+'\\(.+\\))")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
-(defun! oo-sort-dwim (beg end)
+(defun! o-sort-dwim (beg end)
   "Sort lines the way I like it."
   (interactive
    (cond ((region-active-p)
@@ -94,15 +94,15 @@
   (save-excursion
     (goto-char beg)
     (pcase (match-string 1)
-	  ("autoload" (oo-sort-autoload-forms beg end))
-	  ("require" (oo-sort-require-forms beg end))
-	  ("elpaca" (oo-sort-elpaca-forms beg end))
+	  ("autoload" (o-sort-autoload-forms beg end))
+	  ("require" (o-sort-require-forms beg end))
+	  ("elpaca" (o-sort-elpaca-forms beg end))
 	  (_ (error "No sorting method detected")))))
 ;;;; miscellaneous
 (declare-function org-narrow-to-block "org")
 (declare-function org-narrow-to-subtree "org")
 (declare-function outli-toggle-narrow-to-subtree "org")
-(defun oo-dwim-narrow (keep-narrowing-p)
+(defun o-dwim-narrow (keep-narrowing-p)
   "Widen if buffer is narrowed, narrow-dwim otherwise.
 Dwim means: narrow to region, outline heading, org-src-block, org-subtree, or
 defun, whichever applies first.
@@ -114,7 +114,7 @@ is already narrowed."
         ((region-active-p)
          (narrow-to-region (region-beginning)
                            (region-end)))
-        ((equal 'comment (oo-in-string-or-comment-p))
+        ((equal 'comment (o-in-string-or-comment-p))
          (save-excursion (outli-toggle-narrow-to-subtree)))
         ((derived-mode-p 'org-mode)
          (or (ignore-errors (org-narrow-to-block) t)
@@ -123,11 +123,11 @@ is already narrowed."
          (narrow-to-defun))))
 ;; You could actually do this via abbrev-mode as well.  And actually it might be
 ;; better in a sense because.
-(defun! oo-dwim-space ()
+(defun! o-dwim-space ()
   "Replace two consecutive spaces with a period."
   (interactive)
   (cond ((and (or (derived-mode-p 'text-mode)
-                  (oo-in-string-or-comment-p))
+                  (o-in-string-or-comment-p))
               (looking-back "\\([[:word:]]\\)[[:space:]]\\{2,\\}" nil))
          (replace-match "\\1.\s\s"))
         (t
@@ -135,42 +135,42 @@ is already narrowed."
 
 (declare-function consult-buffer "consult")
 (defvar consult--buffer-display)
-(defun! oo-pop-to-buffer ()
+(defun! o-pop-to-buffer ()
   (interactive)
   (require 'consult)
   (set! consult--buffer-display #'pop-to-buffer)
   (call-interactively #'consult-buffer))
 
-(defun oo-kill-emacs-no-confirm ()
+(defun o-kill-emacs-no-confirm ()
   "Kill Emacs without confirmation."
   (let (confirm-kill-emacs)
     (call-interactively #'kill-emacs)))
 
 ;; Keep track of the themes that I have loaded and do not allow repetitions.
-(defvar oo-loaded-themes nil
+(defvar o-loaded-themes nil
   "Themes that have already been loaded.")
 
-(defun! oo-load-random-theme ()
+(defun! o-load-random-theme ()
   "Load a random theme."
   (interactive)
-  (set! not-loaded (cl-set-difference (custom-available-themes) oo-loaded-themes))
+  (set! not-loaded (cl-set-difference (custom-available-themes) o-loaded-themes))
   (set! theme (seq-random-elt not-loaded))
   (message "Loading theme `%s'..." theme)
   (load-theme theme 'noconfirm)
-  (push theme oo-loaded-themes))
+  (push theme o-loaded-themes))
 
 ;; This idea is based on the following link where xah lee talks about why the
 ;; scratch buffer is outdated.  It does not follow the trend of "untitled1",
 ;; "untitled2" as xah lee recommended because it is just easier and more
 ;; consistent to use Emacs's buffer naming style.
 ;; http://xahlee.info/emacs/emacs/modernization_scratch_buffer.html
-(defun! oo-new-buffer ()
+(defun! o-new-buffer ()
   "Create a new blank buffer."
   (interactive)
   (display-buffer (generate-new-buffer "untitled")))
 
 (declare-function vc-git--pushpull "vc-git")
-(defun! oo-dwim-vc-push ()
+(defun! o-dwim-vc-push ()
   (interactive)
   (pushing! display-buffer-alist '("\\*vc-git"
                                    (display-buffer-no-window)
@@ -181,8 +181,8 @@ is already narrowed."
 (declare-function vc-checkin "vc")
 (declare-function vc-deduce-fileset "vc")
 
-(defalias 'eshell/dotadd 'oo-dwim-vc-action)
-(defun! oo-dwim-vc-action (file)
+(defalias 'eshell/dotadd 'o-dwim-vc-action)
+(defun! o-dwim-vc-action (file)
   "Register, stage, commit and push FILE to dotfiles repository.
 If FILE is not in registered in dotfile repo, register it.  In any case commit
 the file.  Additionally, push the file but only if the battery is charging or
@@ -213,32 +213,32 @@ the battery percentage is greater than 90%."
   (pcase (vc-state file)
     ('edited
      (vc-checkin (list file) backend commit-msg)
-     (oo-dwim-vc-push))
+     (o-dwim-vc-push))
     ('nil
      (vc-register)
      (vc-checkin (list file) backend commit-msg)
-     (oo-dwim-vc-push))
+     (o-dwim-vc-push))
     (_
      nil)))
 
-(defun! oo-one-line (beg end)
+(defun! o-one-line (beg end)
   "Join lines in the region between BEG and END into a single line.
 Additionally, make any duplicate spaces in line become a single space."
   (interactive "r")
   (replace-string-in-region "\n" "\s" beg end))
 
-(defun! oo-remove-consequtive-spaces (beg end)
+(defun! o-remove-consequtive-spaces (beg end)
   "Replace consequtive spaces in region with a single space."
   (interactive "r")
   (replace-regexp-in-region "[[:space:]]\\{2,\\}" "\s" beg end))
 
-(defun! oo-startup-time-table ()
+(defun! o-startup-time-table ()
   "Produce a table that shows the time taken by each feature during startup."
   (interactive)
 
   (require 'ctable)
 
-  (pcase-dolist (`(,feature ,time) oo-init-data)
+  (pcase-dolist (`(,feature ,time) o-init-data)
     (collecting! new (list feature time))
     (summing! total time))
 

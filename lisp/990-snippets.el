@@ -37,7 +37,7 @@
   "(let* (" p ")" n> r ")")
 
 (deftempel! tempel|expand-elisp-hook-bang
-  "Expand to a `oo-add-hook' form."
+  "Expand to a `o-add-hook' form."
   "(hook! " p " " r ")")
 
 (deftempel! tempel|expand-elisp-cond
@@ -84,7 +84,7 @@
   "Expand to printing a variable value with `message'."
   "(set! " p "\s" r ")")
 
-(defun oo-in-html-p ()
+(defun o-in-html-p ()
   (member major-mode '(mhtml-mode web-mode)))
 
 (deftempel! tempel|expand-html-elisp-source-block

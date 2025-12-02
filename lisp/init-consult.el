@@ -30,12 +30,12 @@
 (opt! consult-preview-key nil)
 (opt! consult-fontify-preserve nil)
 
-(autoload 'oo-pop-to-buffer "oo-commands" nil nil 'function)
+(autoload 'o-pop-to-buffer "o-commands" nil nil 'function)
 
-(alt! display-buffer oo-pop-to-buffer consult)
+(alt! display-buffer o-pop-to-buffer consult)
 
 (alt! imenu consult-imenu consult)
-(alt! pop-to-buffer oo-pop-to-buffer consult)
+(alt! pop-to-buffer o-pop-to-buffer consult)
 (alt! switch-to-buffer consult-buffer consult)
 (alt! yank-pop consult-yank-pop consult)
 (alt! apropos consult-apropos consult)

@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(add-hook 'oo-first-input-hook #'buffer-terminator-mode)
+(add-hook 'o-first-input-hook #'buffer-terminator-mode)
 
 (opt! buffer-terminator-verbose nil)
 (opt! buffer-terminator-inactivity-timeout (* 15 60))

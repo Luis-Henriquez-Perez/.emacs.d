@@ -28,7 +28,7 @@
 (opt! company-minimum-prefix-length 1)
 (opt! company-dabbrev-minimum-length 1)
 
-(defun oo-init-company-h ()
+(defun o-init-company-h ()
   "Initialize company for text-mode."
   (setq-local company-frontends '(company-preview-if-just-one-frontend))
   (setq-local company-backends '(company-dabbrev))
@@ -38,9 +38,9 @@
   (setq-local company-dabbrev-other-buffers t)
   (company-mode 1))
 
-(add-hook 'text-mode-hook #'oo-init-company-h)
+(add-hook 'text-mode-hook #'o-init-company-h)
 
-(add-hook 'prog-mode-hook #'oo-init-company-h)
+(add-hook 'prog-mode-hook #'o-init-company-h)
 ;;; provide
 (provide 'init-company)
 ;;; init-company.el ends here

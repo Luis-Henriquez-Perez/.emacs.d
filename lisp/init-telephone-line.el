@@ -29,14 +29,14 @@
 (require 'seq)
 (require 'telephone-line)
 ;;;; basic setup
-(defun oo-setup-telephone-line-h ()
+(defun o-setup-telephone-line-h ()
   "Enable telephone-line mode.
 Additionally make it so that whenever telephone-line-mode is called after this,
 the modeline is updated."
   (telephone-line-mode 1)
-  (add-hook 'telephone-line-mode-hook #'oo-update-modeline))
+  (add-hook 'telephone-line-mode-hook #'o-update-modeline))
 
-(add-hook 'emacs-startup-hook #'oo-setup-telephone-line-h)
+(add-hook 'emacs-startup-hook #'o-setup-telephone-line-h)
 
 ;; Add a timer to toggle the separators.
 ;; (opt! telephone-line-height 30)
@@ -48,7 +48,7 @@ the modeline is updated."
   (interactive)
   (set! modeline (if telephone-line-mode `("%e" ,@(telephone-line--generate-mode-line)) telephone-line--default-mode-line))
   (setq-default mode-line-format modeline)
-  (oo-update-modeline))
+  (o-update-modeline))
 ;;;; allow toggling different separators
 (defun +telephone-line-apply-gradient-separator (&optional update)
   (interactive)

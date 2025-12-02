@@ -48,34 +48,34 @@
 (add-hook 'enable-theme-functions #'powerline-reset)
 ;;;; segments
 (spaceline-define-segment +kbd-macro
-  (oo-modeline-component--kbd-macro))
+  (o-modeline-component--kbd-macro))
 
 (spaceline-define-segment +narrow
-  (oo-modeline-component--narrow))
+  (o-modeline-component--narrow))
 
 (spaceline-define-segment +buffer-read-only
-  (oo-modeline-component--read-only))
+  (o-modeline-component--read-only))
 
 (spaceline-define-segment +buffer-modified
-  (oo-modeline-component--buffer-modified))
+  (o-modeline-component--buffer-modified))
 
 (spaceline-define-segment +pomodoro
-  (oo-modeline-component--pomodoro))
+  (o-modeline-component--pomodoro))
 
 (spaceline-define-segment +version-control
-  (oo-modeline-component--version-control))
+  (o-modeline-component--version-control))
 
 (spaceline-define-segment +evil-state
-  (oo-modeline-component--evil-state))
+  (o-modeline-component--evil-state))
 
 (spaceline-define-segment +current-time
-  (oo-modeline-component--current-time))
+  (o-modeline-component--current-time))
 
 (spaceline-define-segment +buffer-name
-  (oo-modeline-component--buffer-name))
+  (o-modeline-component--buffer-name))
 
 (spaceline-define-segment +emms
-  (oo-modeline-component--emms))
+  (o-modeline-component--emms))
 ;;;; define main modeline
 (spaceline-compile
   'main
@@ -89,7 +89,7 @@
 ;;;; toggle default separator
 ;; I want the ability to quickly switch between different separators.
 
-;; (defun! oo-choose-modeline-separator ()
+;; (defun! o-choose-modeline-separator ()
 ;;   ;; "Choose a separator for the modeline."
 ;;   (interactive)
 ;;   (set! separators '(alternate arrow arrow-fade bar box brace
@@ -99,7 +99,7 @@
 ;;     (setq powerline-default-separator it)
 ;;     (spaceline-compile)))
 
-;; (defun! oo-choose-random-separator ()
+;; (defun! o-choose-random-separator ()
 ;;   "Set a random separator."
 ;;   (interactive)
 ;;   (set! separators '(alternate arrow arrow-fade bar box brace
@@ -109,7 +109,7 @@
 ;;   (spaceline-compile)
 ;;   (message "set separator to %s" powerline-default-separator))
 ;;;; initialize modeline at startup
-(defhook! oo-initialize-modeline-h (after-init-hook :depth 90)
+(defhook! o-initialize-modeline-h (after-init-hook :depth 90)
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 ;;; provide
 (provide 'init-spaceline)

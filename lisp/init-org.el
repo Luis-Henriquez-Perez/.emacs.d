@@ -30,7 +30,7 @@
 
 (each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
             org-keys oc org-table org-fold org-cycle)
-  (push it oo-idle-features))
+  (push it o-idle-features))
 
 (autoload '+org-agenda-day-view "config-org-agenda" nil nil 'function)
 
@@ -43,7 +43,7 @@
 (nmap! org-mode-map "R" #'org-refile)
 (nmap! org-mode-map "n" #'org-add-note)
 
-(oo-require-after-load 'org 'config-org)
+(o-require-after-load 'org 'config-org)
 ;;; provide
 (provide 'init-org)
 ;;; init-org.el ends here

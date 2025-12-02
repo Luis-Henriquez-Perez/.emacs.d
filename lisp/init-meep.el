@@ -31,15 +31,15 @@
 
 (mark-thing-at-make-functions)
 
-(setq modaled-init-state-fn #'oo-init-state-fn)
+(setq modaled-init-state-fn #'o-init-state-fn)
 
-(defun oo-init-state-fn ()
+(defun o-init-state-fn ()
   (cond ((minibufferp)
          "insert")
         (t
          "normal")))
 
-(defun oo-dwim-escape ()
+(defun o-dwim-escape ()
   "Exit out of whatever is happening after escape.
 Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
 non-readonly file buffer, save the buffer."
@@ -77,7 +77,7 @@ non-readonly file buffer, save the buffer."
 (defvar meep-state-hook-visual-exit nil)
 
 (defvar-keymap meep-state-keymap-motion
-  "<escape>" #'oo-dwim-escape)
+  "<escape>" #'o-dwim-escape)
 
 (define-key meep-state-keymap-motion [remap self-insert-command] #'my-key-free)
 
@@ -137,7 +137,7 @@ non-readonly file buffer, save the buffer."
   "s m" #'downcase-region
   "s ," #'upcase-region
   "s o" #'rot13-region
-  "s r" #'oo-eval-and-replace-region
+  "s r" #'o-eval-and-replace-region
   "s e" #'eval-region
 
   "s <return>" #'fill-region
@@ -284,23 +284,23 @@ non-readonly file buffer, save the buffer."
   "-" #'meep-region-syntax-contract
   "=" #'meep-region-syntax-expand
   "<tab>" #'meep-indent-rigidly
-  "<escape>" #'oo-dwim-escape
-  oo-normal-leader-key #'oo-leader-map)
+  "<escape>" #'o-dwim-escape
+  o-normal-leader-key #'o-leader-map)
 
 (defvar-keymap meep-state-keymap-insert
-  "<escape>" #'oo-dwim-escape)
+  "<escape>" #'o-dwim-escape)
 
 ;; (defvar-keymap meep-state-keymap-visual
 ;;   "" #'
 ;;   "e" #'eval-region
-;;   "E" #'oo-eval-and-replace-region
-;;   "<escape>" #'oo-dwim-escape)
+;;   "E" #'o-eval-and-replace-region
+;;   "<escape>" #'o-dwim-escape)
 
 ;; In insert state when the minibuffer is activated and `vertico-mode' is
 ;; enabled, make a keymap that has priority over `meep-state-keymap-insert' and
 ;; have the vertico bindings there.
 
-(defvar-keymap oo-vertico-state-insert-keymap
+(defvar-keymap o-vertico-state-insert-keymap
   "C-n" #'vertico-scroll-up
   "C-p" #'vertico-scroll-down
   "TAB" #'vertico-next
@@ -311,18 +311,18 @@ non-readonly file buffer, save the buffer."
   "<backtab>" #'vertico-previous
   "C-o" #'embark-act)
 
-(defvar oo-mode-maps-alist nil
+(defvar o-mode-maps-alist nil
   "Alist of modes to keymaps.")
 
-(add-to-list 'emulation-mode-map-alists 'oo-mode-maps-alist)
+(add-to-list 'emulation-mode-map-alists 'o-mode-maps-alist)
 
-(defun oo-enable-bindings-maybe ()
+(defun o-enable-bindings-maybe ()
   "If in minibuffer and Vertico is active, give Vertico bindings highest priority."
   (cond ((and (minibufferp) (bound-and-true-p vertico-mode))
-         (setq-local oo-mode-maps-alist (cons (cons t oo-vertico-state-insert-keymap)
-                                              oo-mode-maps-alist)))))
+         (setq-local o-mode-maps-alist (cons (cons t o-vertico-state-insert-keymap)
+                                              o-mode-maps-alist)))))
 
-(add-hook 'meep-state-hook-insert-enter #'oo-enable-bindings-maybe)
+(add-hook 'meep-state-hook-insert-enter #'o-enable-bindings-maybe)
 
 ;; Probably make the other bindings high priority too.
 
@@ -342,7 +342,7 @@ non-readonly file buffer, save the buffer."
 ;;   (when (bray-state-derived-p 'visual)
 ;;     (bray-state-stack-pop)))
 
-;; (defun oo-setup-visual-state ()
+;; (defun o-setup-visual-state ()
 ;;   (cond
 ;;    (bray-mode
 ;;     (add-hook 'activate-mark-hook #'meep-mark-hook-activate)
@@ -351,7 +351,7 @@ non-readonly file buffer, save the buffer."
 ;;     (remove-hook 'activate-mark-hook #'meep-mark-hook-activate)
 ;;     (remove-hook 'deactivate-mark-hook #'meep-mark-hook-deactivate))))
 
-;; (add-hook 'bray-mode-hook #'oo-setup-visual-state)
+;; (add-hook 'bray-mode-hook #'o-setup-visual-state)
 ;; ;; End visual mode support.
 
 (setq meep-state-insert 'insert)
@@ -392,18 +392,18 @@ non-readonly file buffer, save the buffer."
         ;; Optional.
         :is-input t)))
 
-(defun oo-init-bray ()
+(defun o-init-bray ()
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer
       (unless bray-mode (bray-mode 1)))))
 
-(defun oo-init-meep ()
+(defun o-init-meep ()
   (add-hook 'meep-state-hook-insert-enter (lambda () (set-mark (point)) (deactivate-mark)))
   ;; Testing this out!
   ;; VIM style '^' register for when we leave insert mode.
   (add-hook 'meep-state-hook-insert-exit (lambda () (deactivate-mark) (let ((reg ?^)) (let ((reg-val (get-register reg))) (cond ((and reg-val (markerp reg-val)) (set-marker reg-val (point) (current-buffer))) (t (set-register reg (point-marker))))))))
 
-  (add-hook 'buffer-list-update-hook #'oo-init-bray)
+  (add-hook 'buffer-list-update-hook #'o-init-bray)
   ;; Optional, a quick way to mask insertion.
   (add-hook
    'after-change-major-mode-hook
@@ -413,9 +413,9 @@ non-readonly file buffer, save the buffer."
        (bray-mode)
        (when (minibufferp)
          (bray-state-set 'insert)))))
-  (oo-init-bray))
+  (o-init-bray))
 
-(add-hook 'emacs-startup-hook #'oo-init-meep 80)
+(add-hook 'emacs-startup-hook #'o-init-meep 80)
 ;;; provide
 (provide 'init-meep)
 ;;; init-meep.el ends here

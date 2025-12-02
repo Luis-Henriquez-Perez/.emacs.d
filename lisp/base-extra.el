@@ -28,25 +28,25 @@
 (require! "^0")
 (require 'server)
 ;;;; setup custom hooks
-(defvar oo-first-file-hook nil
+(defvar o-first-file-hook nil
   "Hook run after the first file is loaded.")
 
-(defun oo-run-first-file-hook-h (&rest _)
-  "Run `oo-first-file-hook'."
-  (run-hooks 'oo-first-file-hook)
-  (remove-hook 'find-file-hook 'oo-run-first-file-hook-h))
+(defun o-run-first-file-hook-h (&rest _)
+  "Run `o-first-file-hook'."
+  (run-hooks 'o-first-file-hook)
+  (remove-hook 'find-file-hook 'o-run-first-file-hook-h))
 
-(add-hook 'find-file-hook #'oo-run-first-file-hook-h)
+(add-hook 'find-file-hook #'o-run-first-file-hook-h)
 
-(defvar oo-first-input-hook nil
+(defvar o-first-input-hook nil
   "Hook run after the first file is loaded.")
 
-(defun oo-run-first-input-hook-h (&rest _)
-  "Run `oo-first-input-hook'."
-  (run-hooks 'oo-first-input-hook)
-  (remove-hook 'pre-command-hook 'oo-run-first-input-hook-h))
+(defun o-run-first-input-hook-h (&rest _)
+  "Run `o-first-input-hook'."
+  (run-hooks 'o-first-input-hook)
+  (remove-hook 'pre-command-hook 'o-run-first-input-hook-h))
 
-(add-hook 'pre-command-hook #'oo-run-first-input-hook-h)
+(add-hook 'pre-command-hook #'o-run-first-input-hook-h)
 ;;;; hooks
 ;; I had been organizing the init file by packages and that is not entirely
 ;; useless but I think maybe an abstraction in which I look at what is happening
@@ -65,24 +65,24 @@
 ;; (unless noninteractive
 ;;   (add-hook 'text-mode-hook #'flyspell-mode))
 (add-hook 'after-init-hook #'window-divider-mode 12)
-(add-hook 'oo-first-input-hook #'minibuffer-depth-indicate-mode)
+(add-hook 'o-first-input-hook #'minibuffer-depth-indicate-mode)
 
-(defun oo-setup-eval-after-bound-forms-h ()
-  "Call `oo-call-after-load-functions' once.
+(defun o-setup-eval-after-bound-forms-h ()
+  "Call `o-call-after-load-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
-  (oo-eval-after-bound-forms)
-  (add-hook 'after-load-functions #'oo-eval-after-bound-forms))
+  (o-eval-after-bound-forms)
+  (add-hook 'after-load-functions #'o-eval-after-bound-forms))
 
-(add-hook 'after-init-hook #'oo-setup-eval-after-bound-forms-h 99)
+(add-hook 'after-init-hook #'o-setup-eval-after-bound-forms-h 99)
 ;;;; auto-filling
-(setq-hook! prog-mode-hook normal-auto-fill-function #'oo-progn-autofill-fn)
+(setq-hook! prog-mode-hook normal-auto-fill-function #'o-progn-autofill-fn)
 
-(defun oo-progn-autofill-fn ()
+(defun o-progn-autofill-fn ()
   "Fill only if in a string or comment."
-  (when (oo-in-string-or-comment-p) (do-auto-fill)))
+  (when (o-in-string-or-comment-p) (do-auto-fill)))
 ;;;; emacs-lisp-mode specific
-(defun oo-extend-elisp-font-lock-h ()
+(defun o-extend-elisp-font-lock-h ()
   "Add custom font-lock keywords."
   (font-lock-add-keywords
    'emacs-lisp-mode
@@ -92,38 +92,38 @@ file is loaded."
      ("\\_<\\(\\(?:it\\|other\\|this-fn\\)\\)\\_>"
       (1 font-lock-constant-face nil t)))))
 
-(add-hook 'emacs-lisp-mode-hook #'oo-extend-elisp-font-lock-h)
+(add-hook 'emacs-lisp-mode-hook #'o-extend-elisp-font-lock-h)
 
-(defun oo-require-base-h ()
+(defun o-require-base-h ()
   "Load base macros."
   (require 'base)
-  (remove-hook 'emacs-lisp-mode-hook #'oo-require-base-h))
+  (remove-hook 'emacs-lisp-mode-hook #'o-require-base-h))
 
-(add-hook 'emacs-lisp-mode-hook #'oo-require-base-h)
+(add-hook 'emacs-lisp-mode-hook #'o-require-base-h)
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
-(defun oo-increase-garbage-collection-h ()
+(defun o-increase-garbage-collection-h ()
   "Boost garbage collection settings to `gcmh-high-cons-threshold'."
   (set-register :gc-cons-threshold gc-cons-threshold)
   (set-register :gc-cons-percentage gc-cons-percentage)
   (setq gc-cons-threshold (* 32 1024 1024))
   (setq gc-cons-percentage 0.8))
 
-(add-hook 'minibuffer-setup-hook #'oo-increase-garbage-collection-h 10)
+(add-hook 'minibuffer-setup-hook #'o-increase-garbage-collection-h 10)
 
-(defun oo-decrease-garbage-collection-h ()
+(defun o-decrease-garbage-collection-h ()
   "Reset garbage collection settings to `gcmh-low-cons-threshold'."
   (setq gc-cons-threshold (get-register :gc-cons-threshold))
   (setq gc-cons-percentage (get-register :gc-cons-percentage)))
 
-(add-hook 'minibuffer-exit-hook #'oo-decrease-garbage-collection-h 90)
+(add-hook 'minibuffer-exit-hook #'o-decrease-garbage-collection-h 90)
 
-(defun! oo--timer--lower-gc ()
+(defun! o--timer--lower-gc ()
   "Lower garbage collection until it reaches default values."
   (flet! mb (x) (/ (float x) 1024 1024))
   (if (minibuffer-window-active-p (minibuffer-window))
-      (run-with-timer 5 nil #'oo--timer--lower-gc)
-    (oo-log 'trace "Running timer for lowering garbage collection...")
+      (run-with-timer 5 nil #'o--timer--lower-gc)
+    (o-log 'trace "Running timer for lowering garbage collection...")
     (set! reduction (/ (get-register :gc-cons-threshold) 10))
     (set! gc-floor (* 8 1024 1024))
     (set! gcp-default 0.2)
@@ -131,29 +131,29 @@ file is loaded."
       (set! old gc-cons-threshold)
       (set! new (max (- old reduction) gc-floor))
       (setq gc-cons-threshold new)
-      (oo-log 'trace "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
+      (o-log 'trace "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
     (when (/= gc-cons-percentage gcp-default)
       (set! old (max gc-cons-percentage gcp-default))
       (set! new (max (- gc-cons-percentage 0.1) gcp-default))
-      (oo-log 'trace "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
+      (o-log 'trace "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
       (setq gc-cons-percentage new))
     (if (and (= gc-cons-threshold gc-floor)
              (= gc-cons-percentage gcp-default))
-        (oo-log 'trace "Done with timer.")
-      (run-with-timer 7 nil #'oo--timer--lower-gc))))
+        (o-log 'trace "Done with timer.")
+      (run-with-timer 7 nil #'o--timer--lower-gc))))
 
-(defun oo-restore-startup-values-h ()
+(defun o-restore-startup-values-h ()
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
-  (oo-log 'trace "Restore the value of `file-name-handler-alist'.")
+  (o-log 'trace "Restore the value of `file-name-handler-alist'.")
   (setq file-name-handler-alist (get-register :file-name-handler-alist))
   (setq gc-cons-threshold (* 40 1024 1024))
   (set-register :gc-cons-threshold gc-cons-threshold)
-  (oo-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
-  (run-with-timer 5 nil #'oo--timer--lower-gc))
+  (o-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
+  (run-with-timer 5 nil #'o--timer--lower-gc))
 
-(add-hook 'emacs-startup-hook #'oo-restore-startup-values-h 90)
+(add-hook 'emacs-startup-hook #'o-restore-startup-values-h 90)
 ;;;; trailing whitespace
-(defun oo-delete-trailing-whitespace-at-line-h ()
+(defun o-delete-trailing-whitespace-at-line-h ()
   "Delete the trailing whitespace in the buffer except for the current line.
 Also if there is more than one trailing space in the current line, replace them
 with a single space."
@@ -163,52 +163,52 @@ with a single space."
       (replace-match "\s" nil nil nil 1)))
   (delete-trailing-whitespace (line-end-position) (point-max)))
 
-(defun oo-setup-delete-whitespace-h ()
+(defun o-setup-delete-whitespace-h ()
   "Show trailing whitespace and delete it before saving."
   (setq-local show-trailing-whitespace t)
-  (add-hook 'before-save-hook #'oo-delete-trailing-whitespace-at-line-h nil 'local)
+  (add-hook 'before-save-hook #'o-delete-trailing-whitespace-at-line-h nil 'local)
   (add-hook 'kill-buffer-hook #'delete-trailing-whitespace nil 'local))
 
-(add-hook 'conf-mode-hook #'oo-setup-delete-whitespace-h)
-(add-hook 'prog-mode-hook #'oo-setup-delete-whitespace-h)
-(add-hook 'text-mode-hook #'oo-setup-delete-whitespace-h)
+(add-hook 'conf-mode-hook #'o-setup-delete-whitespace-h)
+(add-hook 'prog-mode-hook #'o-setup-delete-whitespace-h)
+(add-hook 'text-mode-hook #'o-setup-delete-whitespace-h)
 ;;;; startup time
-(defun oo-record-after-init-hook-start-time-h ()
+(defun o-record-after-init-hook-start-time-h ()
   "Record the start of `after-init-hook'."
   :depth -100
-  (oo-log 'info "Running `after-init-hook'...")
+  (o-log 'info "Running `after-init-hook'...")
   (set-register :after-init-start (float-time)))
 
-(add-hook 'after-init-hook #'oo-record-after-init-hook-start-time-h)
+(add-hook 'after-init-hook #'o-record-after-init-hook-start-time-h)
 
-(defsubst oo-hundredths (n)
+(defsubst o-hundredths (n)
   "Return N rounded to the nearest hundredth."
   (/ (fround (* n 100)) 100.0))
 
-(defun! oo-record-after-init-hook-end-time-h ()
+(defun! o-record-after-init-hook-end-time-h ()
   "Record the end of `after-init-hook'."
   (set! start (get-register :after-init-start))
-  (set! time (oo-hundredths (- (float-time) start)))
+  (set! time (o-hundredths (- (float-time) start)))
   (set-register :after-init-hook-time time)
-  (oo-log 'success "Finished running `after-init-hook' in %.2f seconds" time))
+  (o-log 'success "Finished running `after-init-hook' in %.2f seconds" time))
 
-(add-hook 'after-init-hook #'oo-record-after-init-hook-end-time-h 100)
+(add-hook 'after-init-hook #'o-record-after-init-hook-end-time-h 100)
 
-(defun oo-record-emacs-startup-hook-start-time-h ()
+(defun o-record-emacs-startup-hook-start-time-h ()
   "Record the start of `emacs-startup-hook'."
-  (oo-log 'info "Running `emacs-startup-hook'...")
+  (o-log 'info "Running `emacs-startup-hook'...")
   (set-register :emacs-startup-start (float-time)))
 
-(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-start-time-h -100)
+(add-hook 'emacs-startup-hook #'o-record-emacs-startup-hook-start-time-h -100)
 
-(defun! oo-record-emacs-startup-hook-end-time-h ()
+(defun! o-record-emacs-startup-hook-end-time-h ()
   "Record the end of `emacs-startup-hook'."
   (set! start (get-register :emacs-startup-start))
-  (set! time (oo-hundredths (- (float-time) start)))
+  (set! time (o-hundredths (- (float-time) start)))
   (set-register :emacs-startup-hook-time time)
-  (oo-log 'success "Finished running `emacs-startup-hook' in %.2f seconds" time))
+  (o-log 'success "Finished running `emacs-startup-hook' in %.2f seconds" time))
 
-(add-hook 'emacs-startup-hook #'oo-record-emacs-startup-hook-end-time-h 100)
+(add-hook 'emacs-startup-hook #'o-record-emacs-startup-hook-end-time-h 100)
 
 (unless noninteractive
   (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
@@ -225,23 +225,23 @@ with a single space."
 ;; disable existing themes before enabling new ones even after customizing a
 ;; theme the customization does not persist.  The following hook is to add
 ;; basic.  Honestly I do not know if I.
-(defun! oo-set-state-faces-from-theme-h (_)
+(defun! o-set-state-faces-from-theme-h (_)
   "Set face backgrounds dynamically based on theme faces.
-Specifically for each element (face . built-in-face) in `oo-custom-faces-alist'
+Specifically for each element (face . built-in-face) in `o-custom-faces-alist'
 set the background of FACE to the foreground of BUILT-IN-FACE and the foreground
 of FACE to the background color of the `default' face."
-  (pcase-dolist (`(,face . ,theme-face) oo-custom-faces-alist)
+  (pcase-dolist (`(,face . ,theme-face) o-custom-faces-alist)
     (set! color (face-attribute theme-face :foreground nil 'default))
     (set! bg (face-attribute 'default :background))
     (set-face-attribute face nil :background color :foreground bg)))
 
-(add-hook 'enable-theme-functions #'oo-set-state-faces-from-theme-h)
+(add-hook 'enable-theme-functions #'o-set-state-faces-from-theme-h)
 ;;;; Enable server if it is not running
-(defun oo-init-server-h ()
+(defun o-init-server-h ()
   "Enable server if it is not running."
   (unless (server-running-p) (server-start)))
 
-(add-hook 'oo-emacs-startup-hook #'oo-init-server-h)
+(add-hook 'o-emacs-startup-hook #'o-init-server-h)
 ;;;; disable old themes before enabling new ones
 ;; We end up with remants of the faces of old themes when we load a new
 ;; one.  For this reason, I make sure to disable any enabled themes before applying
@@ -254,17 +254,17 @@ of FACE to the background color of the `default' face."
 ;; Don't know why deleting the previous theme before enabling a new
 ;; one isn't the default behavior.  When would anyone want to layer
 ;; the colors of one theme on top of an older one.
-(defun oo-disable-old-themes-a (orig-fn &rest args)
+(defun o-disable-old-themes-a (orig-fn &rest args)
   "Disable old themes before loading new ones."
   (mapc #'disable-theme custom-enabled-themes)
   (apply orig-fn args))
 
-(advice-add 'load-theme :around #'oo-disable-old-themes-a)
+(advice-add 'load-theme :around #'o-disable-old-themes-a)
 ;;;; Do not short-circuit themes with invalid box property
 ;; This comes from the fact that :box (:style unspecified ...) was silently
 ;; tolerated before, but in Emacs 30 the :style slot must be either nil,
 ;; 'released-button, or 'pressed-button.
-(defun! oo-set-face-attribute-a (orig-fn face frame &rest args)
+(defun! o-set-face-attribute-a (orig-fn face frame &rest args)
   "Remove :box properties from attributes."
   (condition-case nil
       (apply orig-fn face frame args)
@@ -281,7 +281,7 @@ of FACE to the background color of the `default' face."
          plist))
      (apply orig-fn face frame (sanitize-attrs args)))))
 
-(advice-add 'set-face-attribute :around #'oo-set-face-attribute-a)
+(advice-add 'set-face-attribute :around #'o-set-face-attribute-a)
 ;;;; Only consider real themes
 ;; Annoyingly some themes, such spacemacs, solarized, moe and
 ;; immaterial, have helper files for defining themes that Emacs wrongly confuses
@@ -295,11 +295,11 @@ of FACE to the background color of the `default' face."
 ;; benefit implementation-wise is it is simple, fast, and does not have
 ;; the potential performance cost of the cache solution which would need to read
 ;; all the theme files the first time its called.
-(defun oo-only-real-themes-a (themes)
+(defun o-only-real-themes-a (themes)
   "Do not count \"fake\" themes."
   (cl-set-difference themes '(light-blue spacemacs solarized moe immaterial)))
 
-(advice-add 'custom-available-themes :filter-return #'oo-only-real-themes-a)
+(advice-add 'custom-available-themes :filter-return #'o-only-real-themes-a)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"
@@ -316,25 +316,25 @@ of FACE to the background color of the `default' face."
 (setq emacs-lock-default-locking-mode 'kill)
 (with-current-buffer "*Messages*" (emacs-lock-mode 1))
 ;;;; autoload commands
-(autoload 'oo-open-emacs-config "base-commands" nil nil 'function)
-(autoload 'oo-open-emacs-init-file "base-commands" nil nil 'function)
-(autoload 'oo-open-emacs-lisp-dir "base-commands" nil nil 'function)
-(autoload 'oo-split-window-below-and-focus "base-commands" nil nil 'function)
-(autoload 'oo-split-window-right-and-focus "base-commands" nil nil 'function)
-(autoload 'oo-set-font-face "base-commands" nil nil 'function)
-(autoload 'oo-dwim-space "base-commands" nil nil 'function)
-(autoload 'oo-dwim-narrow "base-commands" nil nil 'function)
-(autoload 'oo-pop-to-buffer "base-commands" nil nil 'function)
-(autoload 'oo-dwim-align "base-commands" nil nil 'function)
-(autoload 'oo-kill-emacs-no-confirm "base-commands" nil nil 'function)
-(autoload 'oo-new-buffer "base-commands" nil nil 'function)
-(autoload 'oo-load-random-theme "base-commands" nil nil 'function)
-(autoload 'oo-sort-dwim "base-commands" nil nil 'function)
-(autoload 'oo-startup-time-table "base-commands" nil nil 'function)
-(autoload 'oo-one-line "base-commands" nil nil 'function)
-(autoload 'oo-remove-consequtive-spaces "base-commands" nil nil 'function)
-(autoload 'oo-open-emacs-lisp-dir "base-commands" nil nil 'function)
-(autoload 'oo-dwim-vc-action "base-commands" nil nil 'function)
+(autoload 'o-open-emacs-config "base-commands" nil nil 'function)
+(autoload 'o-open-emacs-init-file "base-commands" nil nil 'function)
+(autoload 'o-open-emacs-lisp-dir "base-commands" nil nil 'function)
+(autoload 'o-split-window-below-and-focus "base-commands" nil nil 'function)
+(autoload 'o-split-window-right-and-focus "base-commands" nil nil 'function)
+(autoload 'o-set-font-face "base-commands" nil nil 'function)
+(autoload 'o-dwim-space "base-commands" nil nil 'function)
+(autoload 'o-dwim-narrow "base-commands" nil nil 'function)
+(autoload 'o-pop-to-buffer "base-commands" nil nil 'function)
+(autoload 'o-dwim-align "base-commands" nil nil 'function)
+(autoload 'o-kill-emacs-no-confirm "base-commands" nil nil 'function)
+(autoload 'o-new-buffer "base-commands" nil nil 'function)
+(autoload 'o-load-random-theme "base-commands" nil nil 'function)
+(autoload 'o-sort-dwim "base-commands" nil nil 'function)
+(autoload 'o-startup-time-table "base-commands" nil nil 'function)
+(autoload 'o-one-line "base-commands" nil nil 'function)
+(autoload 'o-remove-consequtive-spaces "base-commands" nil nil 'function)
+(autoload 'o-open-emacs-lisp-dir "base-commands" nil nil 'function)
+(autoload 'o-dwim-vc-action "base-commands" nil nil 'function)
 ;;;; xref
 (opt! xref-search-program (if (executable-find "rg") 'ripgrep xref-search-program))
 ;; Select from xref candidates in minibuffer
@@ -359,7 +359,7 @@ of FACE to the background color of the `default' face."
 (declare-function Info-copy-current-node-name "info")
 
 ;; This is not enough, the name should also be updated whenever your at a new node.
-(defun oo-info-rename-buffer-h ()
+(defun o-info-rename-buffer-h ()
   "Rename current Info buffer to match its visiting manual."
   (unless (eq major-mode 'Info-mode) (user-error "This is not an Info buffer"))
   (unless (not (string-match-p "^\\*info" (buffer-name)))
@@ -370,7 +370,7 @@ of FACE to the background color of the `default' face."
                      )
                    'unique)))
 
-(add-hook 'Info-selection-hook #'oo-info-rename-buffer-h)
+(add-hook 'Info-selection-hook #'o-info-rename-buffer-h)
 ;;;; sh-mode
 (add-hook 'sh-mode-hook #'aggressive-indent-mode)
 ;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))
@@ -383,7 +383,7 @@ of FACE to the background color of the `default' face."
 ;;;; make certain files read-only
 (autoload 'git-gutter-mode "git-gutter" nil nil 'function)
 
-(defun! oo-dwim-file-rules ()
+(defun! o-dwim-file-rules ()
   "Do special things depending on what file is opened.
 If I open a file in my package directory, do it in `view-mode'.  If I open a
 file that is in a git repo, enale git-gutter-mode."
@@ -397,26 +397,26 @@ file that is in a git repo, enale git-gutter-mode."
       (git-gutter-mode 1)
       ;; If it is in anyone of my dotfile directories, enable auto-committing.
       ;; (when (in-any-dir-p "~/.config/awesome/" "~/.config/emacs/" "~/")
-      ;;   (oo-auto-commit-mode 1))
+      ;;   (o-auto-commit-mode 1))
       )))
 
 ;; Do not add this hook to `find-file-hook' immediately because anytime a file
 ;; is visited it will run this function.
 ;; Try to put this at the end.
-(add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'oo-dwim-file-rules 90)))
+(add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'o-dwim-file-rules 90)))
 
-(defun! oo-load-theme-maybe-h ()
+(defun! o-load-theme-maybe-h ()
   "Load theme."
-  (set! theme oo-init-theme)
+  (set! theme o-init-theme)
   (cond ((member "--random-theme" command-line-args)
          (load-theme (seq-random-elt (custom-available-themes)) :no-confirm))
         ((not theme))
         ((member theme (custom-available-themes))
          (load-theme theme :no-confirm))
         (t
-         (oo-log 'info "Theme %s not found." theme))))
+         (o-log 'info "Theme %s not found." theme))))
 
-(add-hook 'after-init-hook #'oo-load-theme-maybe-h 90)
+(add-hook 'after-init-hook #'o-load-theme-maybe-h 90)
 
 ;; This makes opening sh files way too slow.  These are simple files, it should
 ;; not be slow.
@@ -428,26 +428,26 @@ file that is in a git repo, enale git-gutter-mode."
 ;; session.  This attempts to mitigate that by loading features gradually during
 ;; idle time.  The idea is that by the time one of these big features is loaded,
 ;; many of its subfeatures will have been loaded thereby reducing the load time.
-(defvar oo-idle-features nil
+(defvar o-idle-features nil
   "List of features to load during idle time.")
 
-(defun oo-load-idle-features ()
-  "Load one feature from `oo-idle-features' during idle time."
-  (awhen! (pop oo-idle-features)
+(defun o-load-idle-features ()
+  "Load one feature from `o-idle-features' during idle time."
+  (awhen! (pop o-idle-features)
     (condition-case err
         (progn (require it nil 'noerror)
-               (oo-log 'success "Idle-loaded %s" it))
+               (o-log 'success "Idle-loaded %s" it))
       (error
-       (oo-log 'failure "Failed to idle-load %s: %S -> %S" feature (car err) (cdr err))))
-    (run-with-idle-timer 1 nil #'oo-load-idle-features)))
+       (o-log 'failure "Failed to idle-load %s: %S -> %S" feature (car err) (cdr err))))
+    (run-with-idle-timer 1 nil #'o-load-idle-features)))
 
-(defun oo-setup-idle-loading-h ()
+(defun o-setup-idle-loading-h ()
   "Setup the loading of idle features."
-  (run-with-idle-timer 3 nil #'oo-load-idle-features))
+  (run-with-idle-timer 3 nil #'o-load-idle-features))
 
-(add-hook 'emacs-startup-hook #'oo-setup-idle-loading-h 90)
+(add-hook 'emacs-startup-hook #'o-setup-idle-loading-h 90)
 
-(add-hook 'oo-first-file-hook #'global-auto-revert-mode)
+(add-hook 'o-first-file-hook #'global-auto-revert-mode)
 ;;; provide
 (provide 'base-extra)
 ;;; base-extra.el ends here

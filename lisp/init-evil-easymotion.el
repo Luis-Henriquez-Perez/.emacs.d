@@ -29,21 +29,21 @@
 
 (defvar evil-set-command-properties)
 
-(declare-function oo-evilem-motion-beginning-of-word "lib-evil-easymotion")
-(declare-function oo-evilem-motion-beginning-of-WORD "lib-evil-easymotion")
-(declare-function oo-evilem-motion-end-of-word       "lib-evil-easymotion")
-(declare-function oo-evilem-motion-end-of-WORD       "lib-evil-easymotion")
-(declare-function oo-evilem-motion-char              "lib-evil-easymotion")
-(declare-function oo-evilem-motion-beginning-of-line "lib-evil-easymotion")
+(declare-function o-evilem-motion-beginning-of-word "lib-evil-easymotion")
+(declare-function o-evilem-motion-beginning-of-WORD "lib-evil-easymotion")
+(declare-function o-evilem-motion-end-of-word       "lib-evil-easymotion")
+(declare-function o-evilem-motion-end-of-WORD       "lib-evil-easymotion")
+(declare-function o-evilem-motion-char              "lib-evil-easymotion")
+(declare-function o-evilem-motion-beginning-of-line "lib-evil-easymotion")
 
-(autoload #'oo-evilem-motion-beginning-of-word "lib-evil-easymotion" nil t 'function)
-(autoload #'oo-evilem-motion-beginning-of-WORD "lib-evil-easymotion" nil t 'function)
-(autoload #'oo-evilem-motion-end-of-word       "lib-evil-easymotion" nil t 'function)
-(autoload #'oo-evilem-motion-end-of-WORD       "lib-evil-easymotion" nil t 'function)
-(autoload #'oo-evilem-motion-char              "lib-evil-easymotion" nil t 'function)
-(autoload #'oo-evilem-motion-beginning-of-line "lib-evil-easymotion" nil t 'function)
+(autoload #'o-evilem-motion-beginning-of-word "lib-evil-easymotion" nil t 'function)
+(autoload #'o-evilem-motion-beginning-of-WORD "lib-evil-easymotion" nil t 'function)
+(autoload #'o-evilem-motion-end-of-word       "lib-evil-easymotion" nil t 'function)
+(autoload #'o-evilem-motion-end-of-WORD       "lib-evil-easymotion" nil t 'function)
+(autoload #'o-evilem-motion-char              "lib-evil-easymotion" nil t 'function)
+(autoload #'o-evilem-motion-beginning-of-line "lib-evil-easymotion" nil t 'function)
 
-(oo-require-after-load 'evil-easymotion 'config-evil-easymotion)
+(o-require-after-load 'evil-easymotion 'config-evil-easymotion)
 ;;; provide
 (provide 'init-evil-easymotion)
 ;;; init-evil-easymotion.el ends here

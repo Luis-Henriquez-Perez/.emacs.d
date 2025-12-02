@@ -34,33 +34,33 @@
   (lambda (face) (alet! (format-mode-line (funcall (telephone-line-major-mode-segment) face)) (if (string-match "\\`ELisp" it) (substring it (match-beginning 0) (match-end 0)) it))))
 ;;;;; kbd-macro information
 (defun +telephone-line-kbd-macro-segment nil
-  (lambda (_) (oo-modeline-component--kbd-macro)))
+  (lambda (_) (o-modeline-component--kbd-macro)))
 ;;;;; narrowing information
 (defun +telephone-line-narrow-segment nil
-  (lambda (_) (oo-modeline-component--narrow)))
+  (lambda (_) (o-modeline-component--narrow)))
 ;;;;; buffer
 (defun +telephone-line-buffer-segment nil
-  (lambda (_) (oo-modeline-component--buffer-name)))
+  (lambda (_) (o-modeline-component--buffer-name)))
 ;;;;; pomodoro
 (defun +telephone-line-pomodoro-segment nil
-  (lambda (_) (oo-modeline-component--pomodoro)))
+  (lambda (_) (o-modeline-component--pomodoro)))
 ;;;;; current-time
 ;; TODO: how to display somet
 (defun +telephone-line-current-time-segment nil
-  (lambda (_) (oo-modeline-component--current-time)))
+  (lambda (_) (o-modeline-component--current-time)))
 ;;;;; battery
 (defun +telephone-line-battery-segment nil
-  (lambda (_) (oo-modeline-component--battery)))
+  (lambda (_) (o-modeline-component--battery)))
 ;;;;; emms
 ;; TODO: Add how much time is left plaing...
 (defun +telephone-line-emms-segment nil
-  (lambda (_) (oo-modeline-component--emms)))
+  (lambda (_) (o-modeline-component--emms)))
 ;;;;; version control information
 (defun +telephone-line-vc-segment nil
-  (lambda (_) (oo-modeline-component--version-control)))
+  (lambda (_) (o-modeline-component--version-control)))
 ;;;;; read-only
 (defun +telephone-line-read-only-segment nil
-  (lambda (_) (oo-modeline-component--read-only)))
+  (lambda (_) (o-modeline-component--read-only)))
 ;;; provide
 (provide 'config-telephone-line)
 ;;; config-telephone-line.el ends here

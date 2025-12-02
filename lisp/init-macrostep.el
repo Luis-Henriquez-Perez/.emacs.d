@@ -29,13 +29,13 @@
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
 
-(llmap emacs-lisp-mode-map "m" '("macrostep" . oo-macrostep-map))
+(llmap emacs-lisp-mode-map "m" '("macrostep" . o-macrostep-map))
 (llmap emacs-lisp-mode-map "e" #'macrostep-expand)
 (llmap emacs-lisp-mode-map "c" #'macrostep-collapse)
 (llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
 (llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
-(defvar-keymap! oo-macrostep-map
+(defvar-keymap! o-macrostep-map
   "e" #'macrostep-expand
   "c" #'macrostep-collapse
   "C" #'macrostep-collapse-all

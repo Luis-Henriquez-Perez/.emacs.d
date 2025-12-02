@@ -25,12 +25,12 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(defun oo-init-org-capfs-h ()
+(defun o-init-org-capfs-h ()
   "Initialize `completion-at-point-functions' for `org-mode'."
   (add-hook 'completion-at-point-functions #'cape-dabbrev 10 'local)
   (add-hook 'completion-at-point-functions #'cape-file 11 'local))
 
-(defun oo-init-prog-capfs-h ()
+(defun o-init-prog-capfs-h ()
   "Initialize `completion-at-point-functions' for `prog-mode'."
   (add-hook 'completion-at-point-functions #'cape-file nil 'local)
   (add-hook 'completion-at-point-functions #'cape-dabbrev nil 'local))

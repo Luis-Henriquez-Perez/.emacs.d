@@ -77,23 +77,23 @@
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.
-(defvar oo-cache-dir)
-(defvar oo-init-font)
+(defvar o-cache-dir)
+(defvar o-init-font)
 
 ;; Populate base variables.
 (dolist (arg command-line-args)
   (cond ((string-match "^--noerrors" arg)
-         (setq oo-init-errors t))
+         (setq o-init-errors t))
         ((string-match "^--profile" arg)
-         (setq oo-init-profile-p t))
+         (setq o-init-profile-p t))
         ((string-match "^--font=\\(.+\\)" arg)
-         (setq oo-init-font (match-string 1 arg))
-         (push (cons 'font oo-init-font) default-frame-alist))
+         (setq o-init-font (match-string 1 arg))
+         (push (cons 'font o-init-font) default-frame-alist))
         ((string-match "^--theme=\\(.+\\)" arg)
-         (setq oo-init-theme (intern (match-string 1 arg))))))
+         (setq o-init-theme (intern (match-string 1 arg))))))
 
 (when (fboundp 'startup-redirect-eln-cache)
-  (startup-redirect-eln-cache (expand-file-name "eln-cache/" oo-cache-dir)))
+  (startup-redirect-eln-cache (expand-file-name "eln-cache/" o-cache-dir)))
 
 ;; Adding advice triggers the creation of the "eln-cache" directory.  To avoid
 ;; creating it prematurely advices should go after `startup-redirect-eln-cache'.
@@ -105,14 +105,14 @@
 ;; `woman-topic-history' by aliasing it to `Man-topic-history' and emacs tells
 ;; you this by popping up a *Warnings* buffer whenever woman.el is loaded.  This
 ;; whole thing is probably some bug.  So I stop this whole thing from happening.
-(defun oo--suppress-woman-warning (orig-fn &rest args)
+(defun o--suppress-woman-warning (orig-fn &rest args)
   (pcase args
     (`(woman-topic-history Man-topic-history . ,_)
-     (advice-remove 'defvaralias #'oo--suppress-woman-warning))
+     (advice-remove 'defvaralias #'o--suppress-woman-warning))
     (_
      (apply orig-fn args))))
 
-(advice-add 'defvaralias :around #'oo--suppress-woman-warning)
+(advice-add 'defvaralias :around #'o--suppress-woman-warning)
 
 ;; Essentially, I am telling all Emacs functions that prompt the user for a =yes=
 ;; or =no= to instead allow me to type =y= or =p=.  [[helpfn:yes-or-no-p][yes-or-no-p]] is defined in c

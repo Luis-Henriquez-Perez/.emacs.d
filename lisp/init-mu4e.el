@@ -35,13 +35,13 @@
 (autoload '+mu4e--legacy-enter-message "config-mu4e" nil nil 'function)
 (autoload '+mu4e--legacy-leave-message "config-mu4e" nil nil 'function)
 (autoload '+mu4e-jump-to-maildir "config-mu4e" nil nil 'function)
-(autoload 'oo--mail-signature "config-mu4e" nil nil 'function)
+(autoload 'o--mail-signature "config-mu4e" nil nil 'function)
 
-(defun! oo--message-signature (&rest _)
+(defun! o--message-signature (&rest _)
   "Produce a signature for a message."
   (insert (string-join '("-- Yours Truly," "Luis M Henriquez-Perez\n") "\n")))
 
-(opt! message-signature '(funcall #'oo--message-signature))
+(opt! message-signature '(funcall #'o--message-signature))
 
 (opt! mu4e-maildir (expand-file-name "~/.mail"))
 (opt! mu4e-headers-skip-duplicates t)
@@ -51,7 +51,7 @@
 (opt! mu4e-headers-date-format "%Y/%m/%d")
 (opt! mu4e-change-filenames-when-moving t)
 (opt! mu4e-attachments-dir (expand-file-name "~/Downloads"))
-(opt! mu4e-compose-signature '(funcall #'oo--message-signature))
+(opt! mu4e-compose-signature '(funcall #'o--message-signature))
 
 (opt! mu4e-get-mail-command "mbsync -a")
 (opt! sendmail-program (executable-find "msmtp"))

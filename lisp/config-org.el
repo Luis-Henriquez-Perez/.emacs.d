@@ -55,7 +55,7 @@
 (add-to-list 'org-modules 'org-habit :append)
 ;; (string-join (--map (format "0:%.2d" it) (number-sequence 5 55 5)) "\s")
 ;;;;; ORG-SRC
-(oo-popup-at-bottom "\\*Org Src")
+(o-popup-at-bottom "\\*Org Src")
 (opt! org-edit-src-persistent-message nil)
 ;; (adjoin! org-src-lang-modes '("emacs-lisp" . emacs-lisp))
 ;; (adjoin! org-src-lang-modes '("lua" . lua))
@@ -73,7 +73,7 @@
 
 (alt! org-capture org-capture|choose-template org-capture)
 
-(oo-call-after-load 'org-capture 'config-org-capture)
+(o-call-after-load 'org-capture 'config-org-capture)
 ;;;;; ORG-REFILE
 (setq org-refile-allow-creating-parent-nodes t)
 ;; The variable =org-refile-targets= specifies the places from which information
@@ -91,8 +91,8 @@
 (setq org-refile-use-outline-path 'file)
 ;; Although it is possible to have a parent headline that also has a source
 ;; block, I prefer not to.  I guess it is a stylistic thing.
-;; TODO: Fix `oo-has-source-block-p' is not defined.
-;; (opt! org-refile-target-verify-function (lambda () (not (oo-has-src-block-p))))
+;; TODO: Fix `o-has-source-block-p' is not defined.
+;; (opt! org-refile-target-verify-function (lambda () (not (o-has-src-block-p))))
 ;;;;; ORG-CLOCK
 ;; TODO: do not load org-clock on `org-mode-hook'.
 (add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
@@ -100,7 +100,7 @@
 (setq org-clock-sound (expand-file-name "~/Downloads/ding-101492.wav"))
 ;;;;; ORG-ID
 (setq org-id-track-globally t)
-(setq org-id-locations-file (expand-file-name "org-id-locations" oo-cache-dir))
+(setq org-id-locations-file (expand-file-name "org-id-locations" o-cache-dir))
 
 ;; The way I see it, if I can have a universally unique identifier that also tells
 ;; me the date my headline was created; we hit two birds with one stone.  That way I

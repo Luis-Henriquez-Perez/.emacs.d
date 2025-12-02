@@ -30,7 +30,7 @@
 (setq-hook! eshell-mode-hook completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 
 (each! '(esh-arg esh-util esh-proc esh-io esh-cmd em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
-  (push it oo-idle-features))
+  (push it o-idle-features))
 
 (autoload 'eshell-z "eshell-z" nil t 'function)
 (autoload 'eshell-up "eshell-up" nil t 'function)
@@ -42,14 +42,14 @@
 ;; Do not let me kill the eshell buffer, at least not easily.
 ;; (add-hook 'eshell-mode-hook #'emacs-lock-mode)
 
-(oo-popup-at-bottom "\\*eshell")
+(o-popup-at-bottom "\\*eshell")
 
 (declare-function eshell-unload-all-modules "eshell")
-(advice-add #'eshell-unload-all-modules :around #'oo-call-quietly-a)
+(advice-add #'eshell-unload-all-modules :around #'o-call-quietly-a)
 
-(advice-add #'eshell-mode :around #'oo-call-quietly-a)
+(advice-add #'eshell-mode :around #'o-call-quietly-a)
 
-(oo-require-after-load 'eshell 'config-eshell)
+(o-require-after-load 'eshell 'config-eshell)
 ;;; provide
 (provide 'init-eshell)
 ;;; init-eshell.el ends here

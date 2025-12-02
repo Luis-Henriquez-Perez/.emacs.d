@@ -28,11 +28,11 @@
 (autoload 'cape-dabbrev "cape" nil nil 'function)
 (autoload 'cape-file "cape" nil nil 'function)
 
-(autoload 'oo-init-org-capfs-h "lib-cape" nil nil 'function)
-(autoload 'oo-init-prog-capfs-h "lib-cape" nil nil 'function)
+(autoload 'o-init-org-capfs-h "lib-cape" nil nil 'function)
+(autoload 'o-init-prog-capfs-h "lib-cape" nil nil 'function)
 
-(add-hook 'org-mode-hook #'oo-init-org-capfs-h)
-(add-hook 'prog-mode-hook #'oo-init-prog-capfs-h)
+(add-hook 'org-mode-hook #'o-init-org-capfs-h)
+(add-hook 'prog-mode-hook #'o-init-prog-capfs-h)
 ;;; provide
 (provide 'init-cape)
 ;;; init-cape.el ends here

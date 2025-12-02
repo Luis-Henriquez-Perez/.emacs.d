@@ -31,24 +31,24 @@
 (declare-function dashboard-initialize "dashboard")
 (declare-function dashboard-resize-on-hook "dashboard")
 
-(defun oo-dashboard-init-info (&rest _)
+(defun o-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
 
 (opt! dashboard-items nil)
-(opt! dashboard-init-info #'oo-dashboard-init-info)
+(opt! dashboard-init-info #'o-dashboard-init-info)
 (opt! dashboard-banner-logo-title "Welcome!")
 (opt! dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
 (opt! dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
 (opt! dashboard-center-content t)
 
-(defun oo-enable-dashboard-h ()
+(defun o-enable-dashboard-h ()
   (require 'dashboard)
   (add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
   (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
   (dashboard-insert-startupify-lists)
   (dashboard-initialize))
 
-(add-hook 'emacs-startup-hook #'oo-enable-dashboard-h)
+(add-hook 'emacs-startup-hook #'o-enable-dashboard-h)
 ;;; provide
 (provide 'init-dashboard)
 ;;; init-dashboard.el ends here

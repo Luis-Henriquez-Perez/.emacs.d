@@ -25,18 +25,18 @@
 ;; Provide a simple log function.
 ;;
 ;;; Code:
-(defvar oo-debug-p (or (getenv "DEBUG") init-file-debug)
+(defvar o-debug-p (or (getenv "DEBUG") init-file-debug)
   "When non-nil print debug messages.
-The --debug-init flag and setting the DEBUG envar will enable this at startup.")(defvar oo-log-buffer "*log*"
+The --debug-init flag and setting the DEBUG envar will enable this at startup.")(defvar o-log-buffer "*log*"
   "Name of the log buffer.")
 
-(defvar oo-log-buffer-max 500
+(defvar o-log-buffer-max 500
   "Maximum number of lines in log buffer.")
 
-(defvar oo-log-format-fn #'oo--default-log-formatter
+(defvar o-log-format-fn #'o--default-log-formatter
   "Function that formats the log messsage.")
 
-(defvar oo-log-level-alist '((fatal . 6)
+(defvar o-log-level-alist '((fatal . 6)
                              (failure . 5)
                              (error . 5)
                              (warn  . 4)
@@ -47,7 +47,7 @@ The --debug-init flag and setting the DEBUG envar will enable this at startup.")
   "Alist of log level value.")
 
 ;; Define log icons for success and failure
-(defvar oo-log-icons '((success . "🟢")  ; Green Circle for success
+(defvar o-log-icons '((success . "🟢")  ; Green Circle for success
                        (failure . "🔴")  ; Red Circle for failure
                        (warn    . "🟠")  ; Orange Circle for warnings
                        (info    . "🔵")  ; Blue Circle for info
@@ -55,30 +55,30 @@ The --debug-init flag and setting the DEBUG envar will enable this at startup.")
                        (trace   . "⚪")) ; White Circle for trace
   "Alist of icons to display based on the log level.")
 
-(defvar oo-log-level 3
+(defvar o-log-level 3
   "Current log level.")
 
-(defun oo--default-log-formatter (type message meta)
-  (let* ((icon (alist-get type oo-log-icons))
+(defun o--default-log-formatter (type message meta)
+  (let* ((icon (alist-get type o-log-icons))
          (indicator (or icon (format "[%s]" (upcase (symbol-name type))))))
     (format "%s %s" indicator (apply #'format message meta))))
 
-(defun oo-startup-format-fn (start-time type message meta)
+(defun o-startup-format-fn (start-time type message meta)
   (let ((time (float-time (time-subtract (current-time) start-time))))
     (setq time (/ (fround (* time 100)) 100.0))
     (format "[%s] %.2f %s" (upcase (symbol-name type)) time (apply #'format message meta))))
 
-(defun oo-log (level message &rest meta)
-  "Log a formatted MESSAGE of a given TYPE to the `oo-log-buffer`.
+(defun o-log (level message &rest meta)
+  "Log a formatted MESSAGE of a given TYPE to the `o-log-buffer`.
 
-Append a log entry to the buffer specified by `oo-log-buffer`.
+Append a log entry to the buffer specified by `o-log-buffer`.
 If the last log entry in the buffer matches the new message, it increments a
 repeat count at the end of the line displayed instead of creating a new entry.
 The count is displayed as ‘(N)’ where N is the number of times the message was
 logged."
-  (when (>= (alist-get level oo-log-level-alist) oo-log-level)
-    (let* ((buffer (get-buffer-create oo-log-buffer))
-           (output (funcall oo-log-format-fn level message meta))
+  (when (>= (alist-get level o-log-level-alist) o-log-level)
+    (let* ((buffer (get-buffer-create o-log-buffer))
+           (output (funcall o-log-format-fn level message meta))
            (excess nil))
       (with-current-buffer buffer
         (unless view-mode (view-mode t))
@@ -97,7 +97,7 @@ logged."
                            (progn (insert " ( 2 )") t))))
                 (progn (insert output)
                        (insert "\n")))
-            (setq excess (- (line-number-at-pos (point-max)) (1+ oo-log-buffer-max)))
+            (setq excess (- (line-number-at-pos (point-max)) (1+ o-log-buffer-max)))
             (when (> excess 0)
               (goto-char (point-min))
               (dotimes (_ excess) (delete-line)))))))))

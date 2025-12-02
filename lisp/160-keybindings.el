@@ -32,7 +32,7 @@
 (declare-function evil-normal-state "evil")
 ;;;; leader bindings
 ;;;;; window
-(defvar-keymap! oo-window-map
+(defvar-keymap! o-window-map
   "D" #'delete-other-windows
   "M" #'maximize-window
   "S" #'burly-bookmark-windows
@@ -48,20 +48,20 @@
   "v" #'split-window-horizontally
   "w" #'ace-window)
 ;;;;; git
-(defvar-keymap! oo-git-map
+(defvar-keymap! o-git-map
   "B" #'magit-branch
   "b" #'vc-switch-branch
   "c" #'magit-commit
   "g" #'magit-status
-  ;; "j" #'oo-dwim-vc-action
+  ;; "j" #'o-dwim-vc-action
   "l" #'vc-switch-branch
-  ;; "n" #'oo-dwim-vc-action
+  ;; "n" #'o-dwim-vc-action
   "p" #'magit-push
   "r" #'vc-register
   "s" #'magit-status)
 ;;;;; org
-(defvar-keymap! oo-org-map
-  :prefix 'oo-org-map
+(defvar-keymap! o-org-map
+  :prefix 'o-org-map
   "t" #'org-capture|todo
   "j" #'org-capture|todo
   "a" #'org-archive-subtree
@@ -73,45 +73,45 @@
   "n" #'org-add-note
   "p" #'org-capture|plain)
 ;;;;; app
-(defvar-keymap! oo-screenshot-map
+(defvar-keymap! o-screenshot-map
   "r" #'escr-region-screenshot
   "f" #'escr-frame-screenshot
   "w" #'escr-window-screenshot)
 
-(defvar-keymap! oo-app-map
+(defvar-keymap! o-app-map
   "E" #'restart-emacs-start-new-emacs
   "d" #'dired-jump
   "j" #'org-capture|todo
   "n" #'notmuch
   "e" #'eshell
   "f" #'elfeed
-  "s" '("screenshot" . oo-screenshot-map))
+  "s" '("screenshot" . o-screenshot-map))
 ;;;;; toggle
-(defvar-keymap! oo-toggle-map
+(defvar-keymap! o-toggle-map
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
-  "r" #'oo-load-random-theme
+  "r" #'o-load-random-theme
   "t" #'load-theme
   "h" #'whitespace-mode
   "W" #'whitespace-mode
   "w" #'widen
   "l" #'display-line-numbers-mode
   "u" #'toggle-truncate-lines
-  "n" #'oo-dwim-narrow
+  "n" #'o-dwim-narrow
   "e" #'eval-expression
-  "f" #'oo-set-font-face
+  "f" #'o-set-font-face
   "d" #'toggle-debug-on-error
   "S" #'profiler-start
   "P" #'profiler-stop)
 ;;;;; buffer
-(defvar-keymap! oo-buffer-map
+(defvar-keymap! o-buffer-map
   "x" #'kill-current-buffer
   "b" #'switch-to-buffer
   "j" #'next-buffer
   "k" #'previous-buffer)
 ;;;;; help
-(defvar-keymap! oo-help-map
+(defvar-keymap! o-help-map
   "m" #'describe-mode
   "l" #'describe-function
   "f" #'describe-function
@@ -124,13 +124,13 @@
   "a" #'describe-face
   "F" #'describe-face)
 ;;;;; find
-(defvar-keymap! oo-find-map
+(defvar-keymap! o-find-map
   "t" #'tab-switch
   ";" #'save-buffer
   "o" #'find-file
-  "E" #'oo-open-emacs-config
-  "I" #'oo-open-emacs-init-file
-  "L" #'oo-open-emacs-lisp-dir
+  "E" #'o-open-emacs-config
+  "I" #'o-open-emacs-init-file
+  "L" #'o-open-emacs-lisp-dir
   "G" #'rgrep
   "p" #'consult-yank-pop
   "k" #'consult-bookmark
@@ -140,13 +140,13 @@
   "z" #'ace-link
   "b" #'burly-open-bookmark
   "i" #'imenu
-  ;; "j" #'oo-dwim-vc-action
-  "n" #'oo-new-buffer
+  ;; "j" #'o-dwim-vc-action
+  "n" #'o-new-buffer
   "f" #'switch-to-buffer
   "a" #'find-library
   "d" #'pop-to-buffer)
 ;;;;; quit
-(defvar-keymap! oo-quit-map
+(defvar-keymap! o-quit-map
   "R" #'restart-emacs
   "E" #'restart-emacs-start-new-emacs
   "r" #'restart-emacs
@@ -154,8 +154,8 @@
   "Q" #'oo/kill-emacs-no-hook
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
-(defvar-keymap! oo-music-map
-  "e" #'oo-emms-playlist-mode-go
+(defvar-keymap! o-music-map
+  "e" #'o-emms-playlist-mode-go
   "l" #'emms-toggle-repeat-track
   "g" #'emms-playlist-mode-go
   "f" #'emms-play-file
@@ -167,44 +167,44 @@
   "V" #'emms-volume-raise
   "s" #'emms-seek-to)
 ;;;;; package
-(defvar-keymap! oo-package-map
+(defvar-keymap! o-package-map
   "l" #'list-packages
   "i" #'package-install
   "d" #'package-install)
 ;;;;; quick map
-(defvar-keymap! oo-quick-map
+(defvar-keymap! o-quick-map
   "j" #'org-capture|todo
   "a" #'org-archive-subtree
   "g" #'grugru
   "i" #'tempel-insert
   "l" #'tempel-insert)
 ;;;;; leader map
-(defvar-keymap! oo-leader-map
+(defvar-keymap! o-leader-map
   "SPC" #'execute-extended-command
   ";" #'+org-agenda-day-view
-  "a" '("app" . oo-app-map)
-  "b" '("buffer" . oo-buffer-map)
-  "e" '("music" . oo-music-map)
-  "f" '("find" . oo-find-map)
-  "g" '("git" . oo-git-map)
-  "h" '("help" . oo-help-map)
-  "j" '("quick" . oo-quick-map)
+  "a" '("app" . o-app-map)
+  "b" '("buffer" . o-buffer-map)
+  "e" '("music" . o-music-map)
+  "f" '("find" . o-find-map)
+  "g" '("git" . o-git-map)
+  "h" '("help" . o-help-map)
+  "j" '("quick" . o-quick-map)
   "l" #'consult-buffer
-  "y" #'oo-load-random-theme
-  "s" #'oo-load-random-theme
+  "y" #'o-load-random-theme
+  "s" #'o-load-random-theme
   "d" #'transwin-toggle
   "k" #'evil-keypad-start
-  "p" '("package" . oo-package-map)
-  "t" '("toggle" . oo-toggle-map)
-  "w" '("window" . oo-window-map)
-  "q" '("quit" . oo-quit-map))
+  "p" '("package" . o-package-map)
+  "t" '("toggle" . o-toggle-map)
+  "w" '("window" . o-window-map)
+  "q" '("quit" . o-quit-map))
 
 (add-hook 'emacs-startup-hook #'override-global-mode)
 ;;;; UNCATEGORIZED
 (declare-function which-key-add-keymap-based-replacements "which-key")
 
-(defafter! oo-register-localleader-with-which-key (which-key)
-  (which-key-add-keymap-based-replacements oo-leader-map "m" "localleader"))
+(defafter! o-register-localleader-with-which-key (which-key)
+  (which-key-add-keymap-based-replacements o-leader-map "m" "localleader"))
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
 ;;; provide

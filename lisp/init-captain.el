@@ -38,7 +38,7 @@
 (setq-hook! prog-mode-hook captain-predicate #'always)
 (setq-hook! prog-mode-hook captain-sentence-start-function #'+captain--prog-mode-sentence-start)
 
-(oo-require-after-load 'captain 'config-captain)
+(o-require-after-load 'captain 'config-captain)
 ;;; provide
 (provide 'init-captain)
 ;;; init-captain.el ends here

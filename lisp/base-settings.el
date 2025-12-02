@@ -153,13 +153,13 @@
 ;; When you try to move past the beginning and end of a buffer Emacs produces
 ;; error messages.
 ;; [[https://emacs.stackexchange.com/questions/10932/how-do-you-disable-the-buffer-end-beginning-warnings-in-the-minibuffer][disable warnings]]
-(defun oo-command-error-function (data context caller)
+(defun o-command-error-function (data context caller)
   "Ignore the buffer-read-only, beginning-of-buffer,
 end-of-buffer signals; pass the rest to the default handler."
   (unless (memq (car data) '(buffer-read-only beginning-of-buffer end-of-buffer))
     (command-error-default-function data context caller)))
 
-(setq command-error-function #'oo-command-error-function)
+(setq command-error-function #'o-command-error-function)
 ;;;; PERFORMANCE
 (setq redisplay-skip-fontification-on-input t)
 ;; https://stackoverflow.com/questions/35658509/gnu-emacs-how-to-disable-prompt-to-save-modified-buffer-on-exit

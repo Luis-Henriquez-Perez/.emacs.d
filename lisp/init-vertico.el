@@ -34,9 +34,9 @@
         (direction . below)
         (window-height . ,(+ 3 vertico-count))))
 
-(oo-popup-at-bottom "\\*Vertico")
+(o-popup-at-bottom "\\*Vertico")
 
-(add-hook 'oo-first-input-hook #'vertico-mode)
+(add-hook 'o-first-input-hook #'vertico-mode)
 ;; TODO: make conditional based on whether icons are available.
 (add-hook 'vertico-mode-hook #'nerd-icons-completion-mode)
 

@@ -55,16 +55,16 @@ FEATURE."
      (let (forms)
        (setq forms `((require ',feature)))
        (setq forms (let ((err (gensym "error")))
-                     `((if oo-init-noerrors-p
+                     `((if o-init-noerrors-p
                            (condition-case ,err
                                ,(macroexp-progn forms)
                              (error
-                              (oo-log 'failure "Failed to require %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
+                              (o-log 'failure "Failed to require %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
                          ,(macroexp-progn forms)))))
-       (setq forms `((if oo-init-profile-p
+       (setq forms `((if o-init-profile-p
                          (aprog1! (time-elapsed! ,(macroexp-progn forms))
-                           (oo-log 'success "Required %s in %.2f seconds" ',feature it)
-                           (push (list ',feature it) oo-init-data))
+                           (o-log 'success "Required %s in %.2f seconds" ',feature it)
+                           (push (list ',feature it) o-init-data))
                        ,(macroexp-progn forms))))
        ;; Ensure main forms are not evaluated more than once.
        (setq forms `((unless (featurep ',feature)

@@ -28,7 +28,7 @@
 (defvar zone-programs)
 ;; I intentionally set the timer object returned to a variable so I can cancel
 ;; zoning if I want to.
-(defvar oo-zone-timer nil
+(defvar o-zone-timer nil
   "Timer for when to zone out.")
 
 ;; (autoload #'zone|choose "zone" nil t 'function)
@@ -44,13 +44,13 @@
   (zone))
 
 (defun zone|start-timer ()
-  (setq oo-zone-timer (run-with-idle-timer 160 t #'zone|enable)))
+  (setq o-zone-timer (run-with-idle-timer 160 t #'zone|enable)))
 
-(add-hook 'oo-first-input-hook #'zone|start-timer)
+(add-hook 'o-first-input-hook #'zone|start-timer)
 
 (defun zone/stop ()
   (interactive)
-  (cancel-timer oo-zone-timer))
+  (cancel-timer o-zone-timer))
 ;;; provide
 (provide 'init-zone)
 ;;; init-zone.el ends here

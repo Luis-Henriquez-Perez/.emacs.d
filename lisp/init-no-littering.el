@@ -27,14 +27,14 @@
 ;;; Code:
 (require 'base)
 
-(eval-and-compile (defvar no-littering-etc-directory oo-etc-dir)
-                  (defvar no-littering-var-directory oo-cache-dir))
+(eval-and-compile (defvar no-littering-etc-directory o-etc-dir)
+                  (defvar no-littering-var-directory o-cache-dir))
 
-(defun oo-load-no-littering-h ()
+(defun o-load-no-littering-h ()
   "Load `no-littering'."
   (require 'no-littering))
 
-(add-hook 'after-init-hook #'oo-load-no-littering-h -95)
+(add-hook 'after-init-hook #'o-load-no-littering-h -95)
 ;;; provide
 (provide 'init-no-littering)
 ;;; init-no-littering.el ends here

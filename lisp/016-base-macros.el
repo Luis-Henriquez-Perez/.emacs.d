@@ -25,11 +25,6 @@
 ;; Initialize 016-base-macros.
 ;;
 ;;; Code:
-(defmacro nif! (cond then &rest else)
-  (declare (indent 2))
-  `(if (not ,cond)
-       ,then
-     ,@else))
 (require 'functions-call-after)
 (eval-when-compile (require 'macros-anaphora))
 (eval-when-compile (require 'macros-autolet))
@@ -102,33 +97,30 @@ This is like `setq' but it is meant for configuring variables."
                       (funcall setter ',symbol value)
                     (setq ,symbol value)))
               (error
-               (oo-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
-     (oo-call-after-bound ',symbol it)))
+               (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
+     (o-call-after-bound ',symbol it)))
 
 (defconst OO-LOCAL-VAR-DEPTH -50
   "Depth in hook at which to set local variables.")
 
-(defvar oo-local-var-alist nil
-  "An alist of (HOOK . VARIABLES-AND-VALUES).")
-
-(defun! oo-apply-local-vars (hook)
+(defun! o-apply-local-vars (hook)
   "Apply local variables for hook."
   (set! failmsg "Failed to set local variable %s: %S ->%S")
-  (for! ((symbol . value) (alist-get hook oo-local-var-alist))
+  (for! ((symbol . value) (alist-get hook o-local-var-alist))
     (set! bodyform `(setq-local ,symbol ,value))
-    (set! handlerbody `(oo-log 'failure ,failmsg ',symbol (car err) (cdr err)))
+    (set! handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
     (pushing! forms `(condition-case err ,bodyform (error ,handlerbody))))
   (eval (macroexp-progn (nreverse forms)) t))
 
 (defmacro! setq-hook! (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (set! setter (intern (format "oo-set-local-vars-for-%s-h" hook)))
+  (set! setter (intern (format "o-set-local-vars-for-%s-h" hook)))
   (set! docstring (format "Set local variable for `%s'." hook))
   `(progn (unless (fboundp ',setter)
             (defun ,setter (&rest _)
               ,docstring
-              (oo-apply-local-vars ',hook)))
-          (setf (alist-get ',symbol (alist-get ',hook oo-local-var-alist)) ',value)
+              (o-apply-local-vars ',hook)))
+          (setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)
           (add-hook ',hook #',setter OO-LOCAL-VAR-DEPTH)))
 
 (declare-function tempel-insert "tempel")
@@ -148,14 +140,14 @@ This is like `setq' but it is meant for configuring variables."
 (defmacro! defafter! (&rest args)
   "Eval BODY after FEATURE is loaded."
   (declare (indent defun))
-  (set! (name (feature) meta body) (oo-destructure-defun-args args))
+  (set! (name (feature) meta body) (o-destructure-defun-args args))
   `(progn (defun! ,name ()
             ,@meta
             (condition-case err
                 (with-no-warnings ,@body)
               (error
-               (oo-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
-          (oo-call-after-load ',feature #',name)))
+               (o-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
+          (o-call-after-load ',feature #',name)))
 ;;; provide
 (provide '016-base-macros)
 ;;; 016-base-macros.el ends here

@@ -29,13 +29,13 @@
 
 (opt! orderless-matching-styles '(orderless-initialism orderless-regexp))
 
-(defun oo-enable-orderless-h ()
+(defun o-enable-orderless-h ()
   (when (require 'orderless nil t)
     (setq completion-styles '(orderless))
     (setq completion-category-defaults nil)
     (setq completion-category-overrides '((file (styles partial-completion))))))
 
-(add-hook 'vertico-mode-hook #'oo-enable-orderless-h)
+(add-hook 'vertico-mode-hook #'o-enable-orderless-h)
 ;;; provide
 (provide 'init-orderless)
 ;;; init-orderless.el ends here

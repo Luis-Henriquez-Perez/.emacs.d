@@ -52,7 +52,7 @@
 (opt! sp-highlight-wrap-overlay nil)
 (opt! sp-show-pair-delay 0.2)
 
-(oo-require-after-load 'smartparens 'config-smartparens)
+(o-require-after-load 'smartparens 'config-smartparens)
 ;;; provide
 (provide 'init-smartparens)
 ;;; init-smartparens.el ends here

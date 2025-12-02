@@ -35,9 +35,9 @@ If MATCH-FORM is a symbol act as `setq'."
   (if (symbolp match-form)
       `(setq ,match-form ,value)
     (cl-flet ((list-marker-p (it) (and (symbolp it) (equal ?& (aref (symbol-name it) 0)))))
-      (let* ((binds (oo-pcase-bindings match-form value))
-             (non-gensyms (cl-remove-if #'list-marker-p (oo-flatten-pcase-match-form match-form)))
-             (all (oo-flatten-pcase-match-form (mapcar #'car binds)))
+      (let* ((binds (o-pcase-bindings match-form value))
+             (non-gensyms (cl-remove-if #'list-marker-p (o-flatten-pcase-match-form match-form)))
+             (all (o-flatten-pcase-match-form (mapcar #'car binds)))
              (gensyms (cl-set-difference all non-gensyms)))
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
@@ -77,7 +77,7 @@ iteration and move to the next."
 (defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `lef!'.")
 (defalias 'nflet! 'stub! "Same as `noflet!'")
 
-(defun oo-autolet-process-body (body)
+(defun o-autolet-process-body (body)
   "Return a list of (LETB FORM).
 LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
   (let ((letb '())
@@ -110,7 +110,7 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
                   (nthcdr 2 (cdr frame))
                   (caddr frame))
              (if (sequencep (caddr frame))
-                 (dolist (symbol (reverse (oo-flatten-pcase-match-form (caddr frame))))
+                 (dolist (symbol (reverse (o-flatten-pcase-match-form (caddr frame))))
                    (cl-pushnew (list symbol nil) letb :key #'car))
                (cl-pushnew (list (caddr frame) nil) letb :key #'car))
              (push (cdr frame) result))
@@ -203,7 +203,7 @@ Enhanced looping control flow:
 (while|dotimes|dolist CONDITION . BODY) Replace with
 `(catch \='return! (LOOP CONDITION (catch \='break! BODY)))'."
   (declare (indent defun))
-  (pcase-let ((`(,bindings ,body) (oo-autolet-process-body body)))
+  (pcase-let ((`(,bindings ,body) (o-autolet-process-body body)))
     `(let ,(cl-remove-if (lambda (it) (member (car it) noinits)) bindings)
        (catch 'return! ,@body))))
 
@@ -213,10 +213,10 @@ NAME, ARGLIST and BODY are the same as `defmacro!'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,metadata ,body) (oo-destructure-defun-args args)))
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destructure-defun-args args)))
     `(defmacro ,name ,arglist
        ,@metadata
-       (autolet! ,(oo-arglist-symbols arglist)
+       (autolet! ,(o-arglist-symbols arglist)
          ,@body))))
 
 (defmacro defun! (&rest args)
@@ -225,10 +225,10 @@ NAME, ARGS and BODY are the same as in `defun'.
 
 \(fn NAME ARGLIST [DOCSTRING] [DECL] [INTERACTIVE] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,metadata ,body) (oo-destructure-defun-args args)))
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destructure-defun-args args)))
     `(defun ,name ,arglist
        ,@metadata
-       (autolet! ,(oo-arglist-symbols arglist)
+       (autolet! ,(o-arglist-symbols arglist)
          ,@body))))
 ;;; provide
 (provide 'macros-autolet)

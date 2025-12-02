@@ -28,8 +28,8 @@
 ;;;; requirements
 (require 'base)
 ;; Loading these idle features trigger the annoying auto-rever-mode.
-;; (appending! oo-idle-features '(magit-log magit-blame magit-commit magit-pull magit-push))
-(oo-popup-at-bottom "\\`magit")
+;; (appending! o-idle-features '(magit-log magit-blame magit-commit magit-pull magit-push))
+(o-popup-at-bottom "\\`magit")
 ;;; provide
 (provide 'init-magit)
 ;;; init-magit.el ends here

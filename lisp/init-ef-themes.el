@@ -28,7 +28,7 @@
 (defun +ef-themes-setup-custom-faces-h (theme)
   (when (and (bound-and-true-p ef-themes-items) (member theme ef-themes-items))
     (ef-themes-with-colors
-      (oo-custom-set-faces
+      (o-custom-set-faces
         theme
         ;; Evil state faces
         `(spaceline-evil-normal   ((t (:background ,magenta-cooler :foreground ,bg-main))))

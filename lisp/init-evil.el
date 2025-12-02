@@ -33,29 +33,29 @@
 (defvar evil-want-keybinding)
 (setq evil-want-keybinding nil)
 
-(defun oo-load-evil-h ()
+(defun o-load-evil-h ()
   "Require `evil'."
   (require 'evil nil t))
 
-(add-hook 'after-init-hook #'oo-load-evil-h -90)
+(add-hook 'after-init-hook #'o-load-evil-h -90)
 
 (add-hook 'emacs-startup-hook #'evil-mode)
 
-;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
+;; To ensure that =o-override-mode-map= takes priority over evil states, we need
 ;; to make it an intercept map for all evil states.  In evil, intercept maps are
 ;; maps that take priority (intercept) evil bindings when they have a different
 ;; binding for the same key (this is opposed to =overriding-maps=, which completely
 ;; override an evil keymap).
 (defvar override-global-map)
 (declare-function evil-make-intercept-map "evil")
-(defun oo-make-intercept-map-h ()
-  "Register `oo-override-map' as an intercept map."
+(defun o-make-intercept-map-h ()
+  "Register `o-override-map' as an intercept map."
   (require 'bind-key)
   (evil-make-intercept-map override-global-map 'all t))
 
-(add-hook 'evil-mode-hook #'oo-make-intercept-map-h)
+(add-hook 'evil-mode-hook #'o-make-intercept-map-h)
 
-(oo-require-after-load 'evil 'config-evil)
+(o-require-after-load 'evil 'config-evil)
 ;;; provide
 (provide 'init-evil)
 ;;; init-evil.el ends here

@@ -231,11 +231,11 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
   (when (not (org-with-entry! entry (+org-has-tasks-to-be-done-p)))
     entry))
 ;;;;;; Update agenda after certain actions
-(defun oo--update-agenda (orig-fn &rest args)
+(defun o--update-agenda (orig-fn &rest args)
   (prog1 (apply orig-fn args)
     (quiet! (call-interactively #'org-agenda-redo))))
 
-(advice-add 'org-agenda-todo :around #'oo--update-agenda)
+(advice-add 'org-agenda-todo :around #'o--update-agenda)
 ;;;; miscellaneous
 ;; A task is overdue if the deadline of the task is past the current time.
 (defun +org-overdue-p ()

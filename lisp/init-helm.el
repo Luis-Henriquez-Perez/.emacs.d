@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(oo-popup-at-bottom "\\*Helm")
+(o-popup-at-bottom "\\*Helm")
 (opt! helm-candidate-number-limit 50)
 
 (imap! helm-map "TAB" #'helm-next-line)

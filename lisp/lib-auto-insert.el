@@ -29,7 +29,7 @@
 (require 'f)
 (require 'tempel)
 
-(defun oo-copyright-license ()
+(defun o-copyright-license ()
   "Return the copyright license."
   (string-join (list ";;"
                      ";; Copyright (c) 2024 Free Software Foundation, Inc."
@@ -61,11 +61,11 @@
                      "")
                "\n"))
 
-(defun oo-ensure-provide ()
+(defun o-ensure-provide ()
   (interactive)
-  (oo--ensure-provide (buffer-file-name)))
+  (o--ensure-provide (buffer-file-name)))
 
-(defun oo-header-regexp ()
+(defun o-header-regexp ()
   "Return the regular expression for an emacs package header."
   (rx-to-string '(: bos ";;;" (one-or-more space)
                     (group (one-or-more (not space)))
@@ -75,7 +75,7 @@
                     (1+ nonl)
                     "-*- lexical-binding: t; -*-\n")))
 
-(defun oo--ensure-provide (file)
+(defun o--ensure-provide (file)
   "Ensure FILE ends with proper provide footer."
   (let* ((feature (file-name-sans-extension (file-name-nondirectory file)))
          (provide-name feature)
@@ -112,14 +112,14 @@
              (goto-char (point-max))
              (insert (format ";;; provide\n(provide '%s)\n%s" feature footer-commentary)))))))
 
-(defun oo--ensure-file-header (&optional comment1 comment2)
+(defun o--ensure-file-header (&optional comment1 comment2)
   "Add an emacs-lisp copyright header to current buffer.
 COMMENT1 is the description of the file at the top.  COMMENT2 is the description
 in the commentary part."
   (let* ((file (buffer-file-name))
          (filename (file-name-sans-extension (file-name-nondirectory file)))
-         (header-rx (oo-header-regexp))
-         (lisence-rx (rx-to-string (oo-copyright-license))))
+         (header-rx (o-header-regexp))
+         (lisence-rx (rx-to-string (o-copyright-license))))
     (setq comment1 (or comment1 "TODO: add commentary"))
     (setq comment2 (or comment2 "TODO: add commentary"))
     (save-excursion
@@ -130,7 +130,7 @@ in the commentary part."
         (insert (format ";;; %s.el --- %s -*- lexical-binding: t; -*-\n" filename comment1)))
       ;; Ensure license.
       (unless (looking-at lisence-rx)
-        (insert (oo-copyright-license)))
+        (insert (o-copyright-license)))
       ;; Ensure commentary.
       (if (looking-at ";;; Commentary:\n\\(?:\\(?:^;;$\\)\n\\|\\(?:^;;[^;].*$\\)\n\\)*")
           (goto-char (match-end 0))
@@ -139,7 +139,7 @@ in the commentary part."
           (goto-char (match-end 0))
         (insert ";;; Code:\n")))))
 
-(defun! oo-auto-insert-elisp-template ()
+(defun! o-auto-insert-elisp-template ()
   "Insert emacs-lisp template in file."
   (set! path (buffer-file-name))
   (set! base (f-base path))
@@ -147,19 +147,19 @@ in the commentary part."
     (pcase path
       ((rx "test.el" eos)
        (alet! (format "Test `%s'." base)
-         (oo--ensure-file-header (substring it 0 -1) it)))
+         (o--ensure-file-header (substring it 0 -1) it)))
       ((rx (= 3 digit) "init-" (1+ nonl) ".el" eos)
        (alet! (format "Initialize `%s'." base)
-         (oo--ensure-file-header (substring it 0 -1) it)))
+         (o--ensure-file-header (substring it 0 -1) it)))
       ((rx (= 3 digit) "config-" (1+ nonl) ".el" eos)
        (alet! (format "Configure `%s'." base)
-         (oo--ensure-file-header (substring it 0 -1) it)))
+         (o--ensure-file-header (substring it 0 -1) it)))
       (_
-       (oo--ensure-file-header)))
+       (o--ensure-file-header)))
     (goto-char (point-min))
-    (save-excursion (oo--ensure-provide path))))
+    (save-excursion (o--ensure-provide path))))
 
-(defun oo-auto-insert-html-template ()
+(defun o-auto-insert-html-template ()
   "Insert html template in file."
   (interactive)
   (tempel-insert '("<!doctype html>" n
@@ -172,14 +172,14 @@ in the commentary part."
                    "</body>" > n
                    "</html>")))
 
-(defun oo-auto-insert-python-file-header ()
+(defun o-auto-insert-python-file-header ()
   "Insert python file header."
   (tempel-insert '("# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                    "# Author: " user-full-name " <" user-mail-address ">" > n
                    "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    "# Description: " p > n)))
 
-(defun oo-auto-insert-bash-file-header ()
+(defun o-auto-insert-bash-file-header ()
   "Insert bash file header."
   (tempel-insert '("#!/bin/bash" > n
                    "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
@@ -187,24 +187,24 @@ in the commentary part."
                    "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    "# Description: " p > n)))
 
-(defun oo-auto-insert-hy-file-header ()
+(defun o-auto-insert-hy-file-header ()
   "Insert hy file header."
   (tempel-insert '(";; Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                    ";; Author: " user-full-name " <" user-mail-address ">" > n
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
 
-(defun oo-auto-insert-org-file-header ()
+(defun o-auto-insert-org-file-header ()
   "Insert org file header."
   (tempel-insert '("#+title:" (string-replace "_" "\s" (f-base (buffer-file-name))) > n
                    "#+author:" user-full-name > n)))
 
-(defun oo-make-this-file-executable ()
+(defun o-make-this-file-executable ()
   "Hook that makes this file executable."
   (set-file-modes buffer-file-name (logior (file-modes buffer-file-name) #o111))
-  (remove-hook 'after-save-hook #'oo-make-this-file-executable))
+  (remove-hook 'after-save-hook #'o-make-this-file-executable))
 
-(defun oo-auto-insert--pound-comment-header ()
+(defun o-auto-insert--pound-comment-header ()
   (when buffer-file-name
     (tempel-insert '("# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n
                      "# Author: " user-full-name " <" user-mail-address ">" > n
@@ -212,7 +212,7 @@ in the commentary part."
                      "# Description: " p > n))))
 ;; I need to make this file executable in a hook because the file is not
 ;; actually created until the buffer is saved.
-(defun! oo-auto-insert-script-file-header ()
+(defun! o-auto-insert-script-file-header ()
   "Insert script header and make it executable."
   (set! file-dir (file-truename (file-name-directory buffer-file-name)))
   (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
@@ -222,7 +222,7 @@ in the commentary part."
                      "# Author: " user-full-name " <" user-mail-address ">" > n
                      "# Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                      "# Description: " p > n))
-    (add-hook 'after-save-hook #'oo-make-this-file-executable nil 'local)))
+    (add-hook 'after-save-hook #'o-make-this-file-executable nil 'local)))
 ;;; provide
 (provide 'config-auto-insert)
 ;;; config-auto-insert.el ends here

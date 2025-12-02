@@ -138,8 +138,8 @@
   "m" #'meep-isearch-at-point-next
   "M" #'meep-isearch-at-point-prev
 
-  "<escape>" #'oo-dwim-escape
-  oo-normal-leader-key #'oo-leader-map)
+  "<escape>" #'o-dwim-escape
+  o-normal-leader-key #'o-leader-map)
 
 ;; (defun meep-kbd (def)
 ;;   "Command that converts current key."
@@ -162,19 +162,19 @@
 ;; (defvar-keymap meep-state-keymap-motion
 ;;   "<SPC>"  (meep-kbd "C-c"))
 
-(defun oo-set-state-with-modaled-a (state)
+(defun o-set-state-with-modaled-a (state)
   (modaled-set-state (symbol-name state)))
 
 (setq meep-state-insert 'insert)
-(advice-add 'bray-state-stack-push :override #'oo-set-state-with-modaled-a)
-(advice-add 'bray-state-set :override #'oo-set-state-with-modaled-a)
-(advice-add 'bray-state-set :override #'oo-set-state-with-modaled-a)
+(advice-add 'bray-state-stack-push :override #'o-set-state-with-modaled-a)
+(advice-add 'bray-state-set :override #'o-set-state-with-modaled-a)
+(advice-add 'bray-state-set :override #'o-set-state-with-modaled-a)
 
 (modaled-define-state "normal"
   :lighter "[NOR]"
   :cursor-type 'box)
 
-(defun oo-dwim-escape ()
+(defun o-dwim-escape ()
   "Exit out of whatever is happening after escape.
 Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
 non-readonly file buffer, save the buffer."
@@ -195,10 +195,10 @@ non-readonly file buffer, save the buffer."
   (when (require 'modaled)
     (modaled-set-state "normal")))
 
-;; (keymap-set modaled-normal-state-keymap oo-normal-leader-key #'oo-leader-map)
+;; (keymap-set modaled-normal-state-keymap o-normal-leader-key #'o-leader-map)
 
 ;; (defvar-keymap modaled-normal-state-keymap
-;;   "<escape>" #'oo-dwim-escape)
+;;   "<escape>" #'o-dwim-escape)
 
 ;; (add-hook 'modaled-normal-state-mode-hook (apply-partially #'set-cursor-color "orange"))
 ;; (add-hook 'modaled-insert-state-mode-hook (apply-partially #'set-cursor-color "green"))
@@ -209,7 +209,7 @@ non-readonly file buffer, save the buffer."
   :cursor-type 'bar
   :lighter "[INS]")
 
-(keymap-set modaled-insert-state-keymap "<escape>" #'oo-dwim-escape)
+(keymap-set modaled-insert-state-keymap "<escape>" #'o-dwim-escape)
 
 ;; set init state using a function
 (setq modaled-init-state-fn (lambda () "normal"))
@@ -250,7 +250,7 @@ non-readonly file buffer, save the buffer."
   '(("j" . org-next-visible-heading)
     ("k" . org-previous-visible-heading)))
 
-;; (defun oo-state-changed-p ()
+;; (defun o-state-changed-p ()
 ;;   ""
 ;;   (message "State changed...")
 ;;   t)
@@ -258,7 +258,7 @@ non-readonly file buffer, save the buffer."
   "org"
   :states '("normal")
   :major '(org-mode)
-  ;; :pred #'oo-state-changed-p
+  ;; :pred #'o-state-changed-p
   )
 
 ;; update after major mode changes

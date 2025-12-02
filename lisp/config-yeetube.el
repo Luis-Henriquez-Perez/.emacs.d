@@ -28,7 +28,7 @@
 (require 'base)
 (require 'yeetube)
 
-(defun oo-yeetube-download-audio (&optional url)
+(defun o-yeetube-download-audio (&optional url)
   "Download entry at point in *yeetube* buffer with yt-dlp.
 
 Content will be downloaded at `yeetube-download-directory'.
@@ -42,10 +42,10 @@ Optionally, provide custom own URL."
          (music-dir (expand-file-name "~/Audio/Music")))
     (when (string-prefix-p "http" url)
       (let ((default-directory music-dir))
-        (oo-yeetube-download-audio--ytdlp url)
+        (o-yeetube-download-audio--ytdlp url)
         (message "Downloading audio at '%s'" music-dir)))))
 
-(defun! oo-yeetube-download-audio--ytdlp (url)
+(defun! o-yeetube-download-audio--ytdlp (url)
   "Download URL using yt-dlp."
   (unless (executable-find "yt-dlp")
     (error "Executable for yt-dlp not found.  Please install yt-dlp"))
@@ -53,7 +53,7 @@ Optionally, provide custom own URL."
   (set! command (format "%s %s --write-thumbnail --extract-audio --no-keep-video" ytdlp url))
   (call-process-shell-command command nil 0))
 
-(defun oo-yeetube-download-video (&optional url)
+(defun o-yeetube-download-video (&optional url)
   "Download entry at point in *yeetube* buffer with yt-dlp.
 
 Content will be downloaded at `yeetube-download-directory'.

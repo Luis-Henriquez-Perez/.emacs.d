@@ -28,19 +28,19 @@
 (require 'notmuch)
 
 ;; These functions allow me to access my inboxes much faster.
-(defun oo-notmuch-search-luishp-inbox ()
+(defun o-notmuch-search-luishp-inbox ()
   (interactive)
   (notmuch-search "path:luis@luishp.xyz/** and tag:inbox"))
 
-(defun oo-notmuch-search-yadira-inbox ()
+(defun o-notmuch-search-yadira-inbox ()
   (interactive)
   (notmuch-search "path:yadiraperez2029@gmail.com/** and tag:inbox"))
 
-(defun oo-notmuch-search-gmail-inbox ()
+(defun o-notmuch-search-gmail-inbox ()
   (interactive)
   (notmuch-search "path:luishenriquezperez@gmail.com/** and tag:inbox"))
 
-(defun oo-notmuch-show-mark-as-spam ()
+(defun o-notmuch-show-mark-as-spam ()
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; (message "from:%S" (notmuch-show-get-from))
@@ -50,7 +50,7 @@
   )
 
 ;; Also show me all the emails from the address at point.
-(defun oo-notmuch-show-mail ()
+(defun o-notmuch-show-mail ()
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; (message "from:%S" (notmuch-show-get-from))
@@ -59,7 +59,7 @@
   ;; (notmuch-tag "from:%S" "+spam-inbox+deleted")
   )
 
-(defun! oo-notmuch-search-email-at-point ()
+(defun! o-notmuch-search-email-at-point ()
   "Open a notmuch search of the current message."
   (interactive)
   ;; (message "email -> %s" (substring (thing-at-point 'email) 1 -1))
@@ -68,7 +68,7 @@
   (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
   (notmuch-search query))
 
-(defun! oo-notmuch-tag-spam ()
+(defun! o-notmuch-tag-spam ()
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; Get the email at point.
@@ -77,7 +77,7 @@
   (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
   (notmuch-tag query '("+deleted" "+spam" "-inbox")))
 
-(defun! oo-notmuch-tag-delete ()
+(defun! o-notmuch-tag-delete ()
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; Get the email at point.

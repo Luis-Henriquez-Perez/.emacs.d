@@ -28,7 +28,7 @@
 (require 'base)
 
 (opt! emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
-(opt! emms-directory (expand-file-name "emms/" oo-cache-dir))
+(opt! emms-directory (expand-file-name "emms/" o-cache-dir))
 
 ;; As of right now using VLC or MPV will have the effect of repeating the current track
 ;; in the playlist indefinitely.  These parameters at least prevent this form
@@ -50,7 +50,7 @@
 
 (declare-function emms-add-directory "emms")
 
-(defun oo-emms-playlist-mode-go ()
+(defun o-emms-playlist-mode-go ()
   (interactive)
   (require 'emms)
   ;; Ah I need to figure out a better way to do this.
@@ -59,7 +59,7 @@
   (call-interactively #'emms-playlist-mode-go))
 
 ;; Without this I get an error that `emms-player-mpv' is not loaded.
-(defafter! oo-ensure-proper-emms-player-is-loaded (emms)
+(defafter! o-ensure-proper-emms-player-is-loaded (emms)
   (or (and (executable-find "mpv") (require 'emms-player-mpv))
       (and (executable-find "vlc") (require 'emms-player-vlc))))
 ;;; provide

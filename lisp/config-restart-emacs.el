@@ -31,12 +31,12 @@
 ;; Emacs does not properly work with prefix arguments because in its body it
 ;; converts the prefix argument to shell arguments only if its called
 ;; interactively but its not.
-(defun oo--work-interactively (&optional args)
+(defun o--work-interactively (&optional args)
   "Call `restart-emacs' interactively."
   (let ((restart-emacs--inhibit-kill-p t))
     (funcall-interactively #'restart-emacs args)))
 
-(advice-add 'restart-emacs-start-new-emacs :override #'oo--work-interactively)
+(advice-add 'restart-emacs-start-new-emacs :override #'o--work-interactively)
 ;;; provide
 (provide 'config-restart-emacs)
 ;;; config-restart-emacs.el ends here

@@ -75,7 +75,7 @@
                     ,@(pcase def
                         (`(function ,fn)
                          `((declare-function ,fn nil))))
-                    (oo-bind-key ',keymap ,key ,def ',states))))))
+                    (o-bind-key ',keymap ,key ,def ',states))))))
 
 (generate-evil-keybinders! n i v nv ni eg g)
 
@@ -105,8 +105,8 @@ INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
     `(progn
        (defvar evil-inner-text-objects-map)
        (defvar evil-outer-text-objects-map)
-       (oo-bind-key 'evil-inner-text-objects-map ,key ,inner)
-       (oo-bind-key 'evil-outer-text-objects-map ,key ,outer))))
+       (o-bind-key 'evil-inner-text-objects-map ,key ,inner)
+       (o-bind-key 'evil-outer-text-objects-map ,key ,outer))))
 
 (defmacro! llmap (&rest args)
   "Define localleader key."
@@ -115,14 +115,14 @@ INNER and OUTER are the key definitions for `evil-inner-text-objects-map' and
   (flet! lkey (leader key)
     `(alet! ,key (if (vectorp it) it (concat ,leader "\s" it))))
   (flet! bind (leader state)
-    `(oo-bind-key ',keymap ,(lkey leader key) ,def ',state))
+    `(o-bind-key ',keymap ,(lkey leader key) ,def ',state))
   `(progn (defvar ,keymap)
-          ,(bind 'oo-emacs-localleader-key 'global)
-          ,(bind 'oo-normal-localleader-key 'normal)
-          ,(bind 'oo-normal-localleader-short-key 'normal)
-          ,(bind 'oo-insert-localleader-key 'insert)
-          ,(bind 'oo-insert-localleader-short-key 'insert)
-          ,(bind 'oo-emacs-localleader-key 'emacs)))
+          ,(bind 'o-emacs-localleader-key 'global)
+          ,(bind 'o-normal-localleader-key 'normal)
+          ,(bind 'o-normal-localleader-short-key 'normal)
+          ,(bind 'o-insert-localleader-key 'insert)
+          ,(bind 'o-insert-localleader-short-key 'insert)
+          ,(bind 'o-emacs-localleader-key 'emacs)))
 ;;; provide
 (provide 'macros-keybinding)
 ;;; macros-keybinding.el ends here

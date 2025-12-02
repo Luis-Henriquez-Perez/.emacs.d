@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(oo-require-after-load 'dabbrev 'config-dabbrev)
+(o-require-after-load 'dabbrev 'config-dabbrev)
 ;;; provide
 (provide 'init-dabbrev)
 ;;; init-dabbrev.el ends here

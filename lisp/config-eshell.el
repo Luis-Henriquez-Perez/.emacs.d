@@ -31,7 +31,7 @@
 (require 'base)
 (require 'vc-git)
 ;;;; prompt function
-(defun! oo-eshell-prompt ()
+(defun! o-eshell-prompt ()
   (set! path (abbreviate-file-name default-directory))
   (set! branch (aand! (car-safe (vc-git-branches)) (format "[ %s ]" it)))
   ;; Get the current time.
@@ -77,7 +77,7 @@
 ;; faces by which I mean constant faces, not existing ones that change with
 ;; themes.  So the prompt is difficult to read with certain themes, particularly
 ;; light themes.
-(opt! eshell-prompt-function 'oo-eshell-prompt)
+(opt! eshell-prompt-function 'o-eshell-prompt)
 ;; This is obsolete as of Emacs 30.1.
 (opt! eshell-prompt-regexp "^[^λ]+λ ")
 (opt! eshell-hist-ignoredups t)

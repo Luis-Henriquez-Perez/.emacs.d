@@ -56,7 +56,7 @@
 ;; but not by much--maybe 0.2 seconds.  As I mention later
 ;; `package-read-archive-contents' accounts for the bulk of package-initialize's
 ;; slowness.
-(setq package-quickstart-file (expand-file-name "package-quickstart.el" oo-cache-dir))
+(setq package-quickstart-file (expand-file-name "package-quickstart.el" o-cache-dir))
 (setq package-quickstart t)
 
 (setq package-archive-priorities '(("melpa" . 10) ("gnu-elpa" . 9) ("nongnu" . 8)))
@@ -205,23 +205,23 @@
                                      (outli :url "https://github.com/jdtsmith/outli")
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
-(defvar oo-package-alist-cache (expand-file-name "package-alist" oo-cache-dir)
+(defvar o-package-alist-cache (expand-file-name "package-alist" o-cache-dir)
   "Cache for package descriptors.")
 
-(defun oo-update-package-alist-cache ()
+(defun o-update-package-alist-cache ()
   (interactive)
-  (with-temp-file oo-package-alist-cache
+  (with-temp-file o-package-alist-cache
     (prin1 package-alist (current-buffer))))
 
-(defun oo-update-package-alist-cache-a (orig-fn &rest args)
+(defun o-update-package-alist-cache-a (orig-fn &rest args)
   "Update the package descriptor cache."
   (prog1 (apply orig-fn args)
-    (with-temp-file oo-package-alist-cache
+    (with-temp-file o-package-alist-cache
       (prin1 package-alist (current-buffer)))))
 
-(advice-add 'package-install :around #'oo-update-package-alist-cache-a)
+(advice-add 'package-install :around #'o-update-package-alist-cache-a)
 ;; I am not sure whether I need to update the cache after the package deletion.
-(advice-add 'package-delete :around #'oo-update-package-alist-cache-a)
+(advice-add 'package-delete :around #'o-update-package-alist-cache-a)
 
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem for me.
@@ -233,7 +233,7 @@
 ;; needed when installing packages but not when all of our packages are already
 ;; installed, which is the situation most of the time.
 (if (bound-and-true-p package--initialized)
-    (oo-log 'warn "The variable `package--initialized' unexpectedly non-nil")
+    (o-log 'warn "The variable `package--initialized' unexpectedly non-nil")
   ;; The variable `package-alist' is an alist of installed packages.  It is
   ;; populated by `package-load-all-descriptors'.
   (setq package-alist nil)
@@ -244,7 +244,7 @@
   ;; I need to update the cache when I install a package and only then can I use
   ;; this cache code to save a bit more startup time.
   ;; (package-load-all-descriptors)
-  (let ((cache oo-package-alist-cache))
+  (let ((cache o-package-alist-cache))
     (if (file-exists-p cache)
         (setq package-alist (with-temp-buffer
                               (insert-file-contents cache)
@@ -262,16 +262,16 @@
 
 ;; Make sure I do not have to initialize package contents from scratch when
 ;; installing package.
-(defun oo--read-archive-contents (orig-fn &rest args)
+(defun o--read-archive-contents (orig-fn &rest args)
   ;; Reading archive contents is really expensive and you do not want to do it
   ;; on startup.
   (prog2 (package-read-all-archive-contents)
       (apply orig-fn args)
-    (advice-remove 'package-install #'oo--read-archive-contents)))
+    (advice-remove 'package-install #'o--read-archive-contents)))
 
-(advice-add 'package--archives-initialize :around #'oo--read-archive-contents)
+(advice-add 'package--archives-initialize :around #'o--read-archive-contents)
 
-(defun oo-install-packages-h ()
+(defun o-install-packages-h ()
   "Ensure all packages are installed."
   (let ((read-archive-contents-p nil))
     (dolist (package package-selected-packages)
@@ -282,11 +282,11 @@
           ;; (unless (cl-every (lambda (package) (assoc package package-archive-contents)) uninstalled)
           ;;   (package-refresh-contents))
           )
-        (oo-log 'info "Installing %S..." package)
+        (o-log 'info "Installing %S..." package)
         (condition-case _
             (package-install package)
           (error
-           (oo-log 'error "Failed to install package `%s'" package)
+           (o-log 'error "Failed to install package `%s'" package)
            t))
         ;; If the `gc-cons-threshold' is set to `most-positive-fixum' (essentially
         ;; disabling garbage collection), accumulating too much garbage via
@@ -295,7 +295,7 @@
         (garbage-collect))))
   (package-vc-install-selected-packages))
 
-(oo-install-packages-h)
+(o-install-packages-h)
 ;;; provide
 (provide 'init-package)
 ;;; init-package.el ends here

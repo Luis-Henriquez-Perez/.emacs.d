@@ -28,7 +28,7 @@
 (require 'base)
 (require 'evil)
 ;;;; SETTINGS
-;; To ensure that =oo-override-mode-map= takes priority over evil states, we need
+;; To ensure that =o-override-mode-map= takes priority over evil states, we need
 ;; to make it an intercept map for all evil states.  In evil, intercept maps are
 ;; maps that take priority (intercept) evil bindings when they have a different
 ;; binding for the same key (this is opposed to =overriding-maps=, which completely
@@ -50,118 +50,118 @@
 ;; (setq evil-motion-state-modes nil)
 ;;;; CURSOR COLOR
 ;;;;; STATE FACES
-(defface oo-evil-state-face
+(defface o-evil-state-face
   '((t (:weight bold)))
   "Meta-face used for property inheritance on all evil state faces.")
 
-(defface oo-evil-emacs-state-face
-  '((t (:inherit oo-evil-state-face :background "#483d8b")))
+(defface o-evil-emacs-state-face
+  '((t (:inherit o-evil-state-face :background "#483d8b")))
   "Face for the Emacs state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-emacs-state-face oo-custom-faces-alist) 'font-lock-builtin-face)
+(setf (alist-get 'o-evil-emacs-state-face o-custom-faces-alist) 'font-lock-builtin-face)
 
-(defface oo-evil-insert-state-face
-  '((t (:inherit oo-evil-state-face :background "#228b22")))
+(defface o-evil-insert-state-face
+  '((t (:inherit o-evil-state-face :background "#228b22")))
   "Face for the insert state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-insert-state-face oo-custom-faces-alist) 'font-lock-type-face)
+(setf (alist-get 'o-evil-insert-state-face o-custom-faces-alist) 'font-lock-type-face)
 
-(defface oo-evil-motion-state-face
-  '((t (:inherit oo-evil-state-face :background "#a0522d")))
+(defface o-evil-motion-state-face
+  '((t (:inherit o-evil-state-face :background "#a0522d")))
   "Face for the motion state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-motion-state-face oo-custom-faces-alist) 'font-lock-variable-name-face)
+(setf (alist-get 'o-evil-motion-state-face o-custom-faces-alist) 'font-lock-variable-name-face)
 
-(defface oo-evil-normal-state-face
-  '((t (:inherit oo-evil-state-face :background "purple")))
+(defface o-evil-normal-state-face
+  '((t (:inherit o-evil-state-face :background "purple")))
   "Face for the normal state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-normal-state-face oo-custom-faces-alist) 'font-lock-keyword-face)
+(setf (alist-get 'o-evil-normal-state-face o-custom-faces-alist) 'font-lock-keyword-face)
 
-(defface oo-evil-operator-state-face
-  '((t (:inherit oo-evil-state-face :background "#0000ff")))
+(defface o-evil-operator-state-face
+  '((t (:inherit o-evil-state-face :background "#0000ff")))
   "Face for the operator state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-operator-state-face oo-custom-faces-alist) 'font-lock-function-name-face)
+(setf (alist-get 'o-evil-operator-state-face o-custom-faces-alist) 'font-lock-function-name-face)
 
-(defface oo-evil-visual-state-face
-  '((t (:inherit oo-evil-state-face :background "#8b2252")))
+(defface o-evil-visual-state-face
+  '((t (:inherit o-evil-state-face :background "#8b2252")))
   "Face for the visual state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-visual-state-face oo-custom-faces-alist) 'font-lock-string-face)
+(setf (alist-get 'o-evil-visual-state-face o-custom-faces-alist) 'font-lock-string-face)
 
-(defface oo-evil-replace-state-face
-  '((t (:inherit oo-evil-state-face :background "#008b8b")))
+(defface o-evil-replace-state-face
+  '((t (:inherit o-evil-state-face :background "#008b8b")))
   "Face for the replace state tag in evil indicator.")
 
-(setf (alist-get 'oo-evil-replace-state-face oo-custom-faces-alist) 'font-lock-constant-face)
+(setf (alist-get 'o-evil-replace-state-face o-custom-faces-alist) 'font-lock-constant-face)
 ;;;;; CHANGE CURSOR COLOR AND SHAPE ACCORDING TO CURRENT EVIL STATE
 ;; Did not realize for the longest time that evil cursor can be a function that
 ;; changes the cursor.  With this in mind, the best way to set the cursor size
 ;; and shape dynamically is to set the corresponding cursor symbols to functions.
-(defun oo-evil-state-face ()
+(defun o-evil-state-face ()
   "Return the cursor color for state as a string."
-  (intern (format "oo-evil-%s-state-face" evil-state)))
+  (intern (format "o-evil-%s-state-face" evil-state)))
 
-(defun oo-evil-state-background ()
+(defun o-evil-state-background ()
   "Return the background of the current evil state face."
-  (aand! (oo-evil-state-face) (face-attribute it :background)))
+  (aand! (o-evil-state-face) (face-attribute it :background)))
 
-(defun oo-evil-set-default-cursor ()
+(defun o-evil-set-default-cursor ()
   "Set cursor for normal state."
-  (evil-set-cursor (list t (oo-evil-state-background))))
+  (evil-set-cursor (list t (o-evil-state-background))))
 
-(defun oo-evil-set-insert-state-cursor ()
+(defun o-evil-set-insert-state-cursor ()
   "Set cursor for insert state."
-  (evil-set-cursor (list '(bar . 2) (oo-evil-state-background))))
+  (evil-set-cursor (list '(bar . 2) (o-evil-state-background))))
 
-(defun oo-evil-set-operator-state-cursor ()
+(defun o-evil-set-operator-state-cursor ()
   "Set cursor for operator state."
-  (evil-set-cursor (list '(hbar . 9) (oo-evil-state-background))))
+  (evil-set-cursor (list '(hbar . 9) (o-evil-state-background))))
 
-(defalias 'oo-evil-set-normal-state-cursor 'oo-evil-set-default-cursor)
-(defalias 'oo-evil-set-motion-state-cursor 'oo-evil-set-default-cursor)
-(defalias 'oo-evil-set-replace-state-cursor 'oo-evil-set-default-cursor)
-(defalias 'oo-evil-set-emacs-state-cursor 'oo-evil-set-default-cursor)
-(defalias 'oo-evil-set-visual-state-cursor 'oo-evil-set-default-cursor)
+(defalias 'o-evil-set-normal-state-cursor 'o-evil-set-default-cursor)
+(defalias 'o-evil-set-motion-state-cursor 'o-evil-set-default-cursor)
+(defalias 'o-evil-set-replace-state-cursor 'o-evil-set-default-cursor)
+(defalias 'o-evil-set-emacs-state-cursor 'o-evil-set-default-cursor)
+(defalias 'o-evil-set-visual-state-cursor 'o-evil-set-default-cursor)
 ;;;;; CURSOR COLORS
-(setq evil-default-cursor        #'oo-evil-set-default-cursor)
-(setq evil-normal-state-cursor   #'oo-evil-set-normal-state-cursor)
-(setq evil-insert-state-cursor   #'oo-evil-set-insert-state-cursor)
-(setq evil-visual-state-cursor   #'oo-evil-set-visual-state-cursor)
-(setq evil-motion-state-cursor   #'oo-evil-set-motion-state-cursor)
-(setq evil-replace-state-cursor  #'oo-evil-set-replace-state-cursor)
-(setq evil-operator-state-cursor #'oo-evil-set-operator-state-cursor)
-(setq evil-emacs-state-cursor    #'oo-evil-set-emacs-state-cursor)
+(setq evil-default-cursor        #'o-evil-set-default-cursor)
+(setq evil-normal-state-cursor   #'o-evil-set-normal-state-cursor)
+(setq evil-insert-state-cursor   #'o-evil-set-insert-state-cursor)
+(setq evil-visual-state-cursor   #'o-evil-set-visual-state-cursor)
+(setq evil-motion-state-cursor   #'o-evil-set-motion-state-cursor)
+(setq evil-replace-state-cursor  #'o-evil-set-replace-state-cursor)
+(setq evil-operator-state-cursor #'o-evil-set-operator-state-cursor)
+(setq evil-emacs-state-cursor    #'o-evil-set-emacs-state-cursor)
 ;;;; MINIBUFFER
-(defvar oo-evil-state-before-minibuffer nil
+(defvar o-evil-state-before-minibuffer nil
   "Store the evil state before entering the minibuffer.")
 
 ;; It is easier to make all the hooks and functions "safe" than to remember all
 ;; the hooks and remove them when evil-mode is disabled.
-(defun oo-evil-save-prior-evil-state-h ()
+(defun o-evil-save-prior-evil-state-h ()
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
-    (setq oo-evil-state-before-minibuffer evil-state)
+    (setq o-evil-state-before-minibuffer evil-state)
     (evil-insert-state)))
 
-(defun oo-evil-restore-prior-evil-state-h ()
+(defun o-evil-restore-prior-evil-state-h ()
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
-    (when oo-evil-state-before-minibuffer
-      (evil-change-state oo-evil-state-before-minibuffer))
-    (setq oo-evil-state-before-minibuffer nil)))
+    (when o-evil-state-before-minibuffer
+      (evil-change-state o-evil-state-before-minibuffer))
+    (setq o-evil-state-before-minibuffer nil)))
 
-(add-hook 'minibuffer-setup-hook #'oo-evil-save-prior-evil-state-h)
-(add-hook 'minibuffer-exit-hook #'oo-evil-restore-prior-evil-state-h)
+(add-hook 'minibuffer-setup-hook #'o-evil-save-prior-evil-state-h)
+(add-hook 'minibuffer-exit-hook #'o-evil-restore-prior-evil-state-h)
 ;;;; THEME
-(defun oo-evil-refresh-cursor-ignore-args (&rest _)
+(defun o-evil-refresh-cursor-ignore-args (&rest _)
   (when (bound-and-true-p evil-mode)
     (evil-refresh-cursor)))
 
-(add-hook 'enable-theme-functions #'oo-evil-refresh-cursor-ignore-args)
+(add-hook 'enable-theme-functions #'o-evil-refresh-cursor-ignore-args)
 ;;;; BETTER ESCAPE
-(defun oo-evil-dwim-escape ()
+(defun o-evil-dwim-escape ()
   "Exit out of whatever is happening after escape.
 Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
 non-readonly file buffer, save the buffer."
@@ -182,7 +182,7 @@ non-readonly file buffer, save the buffer."
 ;;;; OPERATORS
 ;;;;; EVALUATING
 ;; This is shamelessly copied from `evil-extra-operator'.
-(evil-define-operator oo-evil-eval-operator (beg end)
+(evil-define-operator o-evil-eval-operator (beg end)
   "Evil operator for evaluating code."
   :move-point nil
   (interactive "<r>")
@@ -190,7 +190,7 @@ non-readonly file buffer, save the buffer."
 
 ;; This is also shamelessly copied with the difference that the format string is
 ;; "%S" instead of "%s".  Honestly, I think not having it that way was a bug.
-(evil-define-operator oo-evil-eval-replace-operator (beg end)
+(evil-define-operator o-evil-eval-replace-operator (beg end)
   "Evil operator for replacing contents with result from eval."
   :move-point nil
   (interactive "<r>")
@@ -199,7 +199,7 @@ non-readonly file buffer, save the buffer."
     (delete-region beg end)
     (insert result)))
 
-(evil-define-operator oo-evil-eval-print-operator (beg end)
+(evil-define-operator o-evil-eval-print-operator (beg end)
   "Evil operator for printing the results of contents below."
   :move-point nil
   (interactive "<r>")
@@ -211,7 +211,7 @@ non-readonly file buffer, save the buffer."
       (comment-region it (point)))))
 ;;;;; HUNGRY DELETE (EXPERIMENTAL AND IN PROGRESS)
 ;; This needs some more fine-tuning.
-(defun oo-evil-consume-ws-a (orig-fn &rest args)
+(defun o-evil-consume-ws-a (orig-fn &rest args)
   (prog1 (apply orig-fn args)
     ;; TODO: this should happen as well for lines behind.
     (cond ((looking-at (rx (>= 3 "\n")))
@@ -219,24 +219,24 @@ non-readonly file buffer, save the buffer."
           ((looking-at (rx (>= 2 "\s")))
            (just-one-space)))))
 
-(advice-add 'evil-delete :around #'oo-evil-consume-ws-a)
-(advice-add 'lispyville-delete :around #'oo-evil-consume-ws-a)
-(advice-add 'lispyville-delete-char-or-splice :around #'oo-evil-consume-ws-a)
+(advice-add 'evil-delete :around #'o-evil-consume-ws-a)
+(advice-add 'lispyville-delete :around #'o-evil-consume-ws-a)
+(advice-add 'lispyville-delete-char-or-splice :around #'o-evil-consume-ws-a)
 ;;;; TEXT-OBJECTS
-(evil-define-text-object oo-evil-outer-buffer (_ &optional _ _ type)
+(evil-define-text-object o-evil-outer-buffer (_ &optional _ _ type)
   "Select the entire buffer as a text object."
   (list (point-min) (point-max) type))
 
-(evil-define-text-object oo-evil-inner-buffer (_ &optional _ _ type)
+(evil-define-text-object o-evil-inner-buffer (_ &optional _ _ type)
   "Select the inner buffer (same as outer in this case)."
   (list (point-min) (point-max) type))
 ;;;; INSERT STATE HOOK
-(defun oo-evil-enter-insert-state-ignore-args (&rest _)
+(defun o-evil-enter-insert-state-ignore-args (&rest _)
   "Enter insert state if `evil-mode' is enabled."
   (when (bound-and-true-p evil-mode)
     (evil-insert-state 1)))
 
-(defun oo-evil-normalize-keymaps-ignore-args (&rest _)
+(defun o-evil-normalize-keymaps-ignore-args (&rest _)
   (when (bound-and-true-p evil-mode)
     (evil-normalize-keymaps)))
 ;;;; CROSS-CONFIGURATION
@@ -252,12 +252,12 @@ non-readonly file buffer, save the buffer."
 ;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
 ;; because the maps are overridden by evil.  In order for them to work, we need
 ;; to boost give the maps greater precedence.
-(defafter! oo-make-corfu-kbds-work-with-evil (corfu)
+(defafter! o-make-corfu-kbds-work-with-evil (corfu)
   (evil-make-overriding-map corfu-map)
-  (advice-add 'corfu--setup :after #'oo-evil-normalize-keymaps-ignore-args)
-  (advice-add 'corfu--teardown :after #'oo-evil-normalize-keymaps-ignore-args))
+  (advice-add 'corfu--setup :after #'o-evil-normalize-keymaps-ignore-args)
+  (advice-add 'corfu--teardown :after #'o-evil-normalize-keymaps-ignore-args))
 ;;;;; TEMPEL
-(defafter! oo-make-tempel-kbds-work-with-evil (tempel)
+(defafter! o-make-tempel-kbds-work-with-evil (tempel)
   (evil-make-overriding-map tempel-map))
 
 (advice-add 'tempel-insert :after #'evil-insert-state)
@@ -285,13 +285,13 @@ non-readonly file buffer, save the buffer."
 (nmap! "L" #'evil-last-non-blank)
 (nmap! "J" #'evil-scroll-page-down)
 (nmap! "K" #'evil-scroll-page-up)
-(nmap! [escape] #'oo-evil-dwim-escape)
+(nmap! [escape] #'o-evil-dwim-escape)
 ;; Finding a place for motion commands.
 ;; (nmap! "ff" #'evil-find-char)
-;; (nmap! "fw" #'oo-evilem-motion-beginning-of-word)
-;; (nmap! "fe" #'oo-evilem-motion-end-of-word)
-;; (nmap! "fl" #'oo-evilem-motion-beginning-of-line)
-;; (nmap! "fj" #'oo-evilem-motion-char)
+;; (nmap! "fw" #'o-evilem-motion-beginning-of-word)
+;; (nmap! "fe" #'o-evilem-motion-end-of-word)
+;; (nmap! "fl" #'o-evilem-motion-beginning-of-line)
+;; (nmap! "fj" #'o-evilem-motion-char)
 
 ;; Hello world!
 ;; (nmap! "sj" #'evil-open-below)
@@ -307,7 +307,7 @@ non-readonly file buffer, save the buffer."
 (imap! "A-x" #'execute-extended-command)
 (imap! "M-x" #'execute-extended-command)
 (imap! "C-c h" #'grugru)
-(imap! [escape] #'oo-evil-dwim-escape)
+(imap! [escape] #'o-evil-dwim-escape)
 (imap! "TAB" #'completion-preview-insert)
 
 ;; Lump open line above and below into the same binding.
@@ -324,23 +324,23 @@ non-readonly file buffer, save the buffer."
 ;; beyond moving to one forward unit.  So I have made the controversial decision
 ;; to rebind.
 
-;; (nvmap! "w" #'oo-evilem-motion-beginning-of-word)
-;; (nvmap! "e" #'oo-evilem-motion-end-of-word)
-;; (nvmap! "W" #'oo-evilem-motion-beginning-of-WORD)
-;; (nvmap! "E" #'oo-evilem-motion-end-of-WORD)
-;; (nvmap! "f" #'oo-evilem-motion-char)
-;; (nvmap! "H" #'oo-evilem-motion-beginning-of-line)
+;; (nvmap! "w" #'o-evilem-motion-beginning-of-word)
+;; (nvmap! "e" #'o-evilem-motion-end-of-word)
+;; (nvmap! "W" #'o-evilem-motion-beginning-of-WORD)
+;; (nvmap! "E" #'o-evilem-motion-end-of-WORD)
+;; (nvmap! "f" #'o-evilem-motion-char)
+;; (nvmap! "H" #'o-evilem-motion-beginning-of-line)
 
-(nvmap! "g b" #'oo-evil-eval-print-operator)
-(nvmap! "g p" #'oo-evil-eval-print-operator)
+(nvmap! "g b" #'o-evil-eval-print-operator)
+(nvmap! "g p" #'o-evil-eval-print-operator)
 (nvmap! "g c" #'evilnc-comment-operator)
 (each! '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
-  (oo-bind-key it "g c" #'lispyville-comment-or-uncomment '(normal visual)))
+  (o-bind-key it "g c" #'lispyville-comment-or-uncomment '(normal visual)))
 (nvmap! emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
-(nvmap! "g e" #'oo-evil-eval-operator)
-(nvmap! "g h" #'oo-evil-eval-operator)
-(nvmap! "g l" #'oo-evil-eval-replace-operator)
-(nvmap! "g r" #'oo-evil-eval-replace-operator)
+(nvmap! "g e" #'o-evil-eval-operator)
+(nvmap! "g h" #'o-evil-eval-operator)
+(nvmap! "g l" #'o-evil-eval-replace-operator)
+(nvmap! "g r" #'o-evil-eval-replace-operator)
 (nvmap! "g s" #'evil-exchange)
 (nvmap! "g S" #'evil-exchange-cancel)
 (nvmap! "g x" #'evil-exchange)
@@ -353,12 +353,12 @@ non-readonly file buffer, save the buffer."
 (iotmap! "l" #'evil-inner-line #'evil-a-line)
 (iotmap! "f" #'evil-cp-inner-form #'evil-cp-a-form)
 ;; (iotmap! "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
-(iotmap! "b" #'oo-evil-inner-buffer #'oo-evil-outer-buffer)
+(iotmap! "b" #'o-evil-inner-buffer #'o-evil-outer-buffer)
 
-(nmap! override-global-map oo-normal-leader-key #'oo-leader-map)
-(imap! override-global-map oo-insert-leader-key #'oo-leader-map)
-(emap! override-global-map oo-emacs-leader-key #'oo-leader-map)
-(emap! override-global-map oo-emacs-alt-leader-key #'oo-leader-map)
+(nmap! override-global-map o-normal-leader-key #'o-leader-map)
+(imap! override-global-map o-insert-leader-key #'o-leader-map)
+(emap! override-global-map o-emacs-leader-key #'o-leader-map)
+(emap! override-global-map o-emacs-alt-leader-key #'o-leader-map)
 
 (nmap! Info-mode-map "H" #'Info-last)
 (nmap! Info-mode-map "L" #'Info-next)

@@ -30,7 +30,7 @@
 (require 'pcase)
 ;;;; miscellaneous
 ;; I don't yet know where to put this function.  So for now, here it goes.
-(defun oo-popup-at-bottom (regexp)
+(defun o-popup-at-bottom (regexp)
   "Open buffers at bottom that match regexp."
   (push `(,regexp
           (display-buffer-at-bottom)
@@ -40,7 +40,7 @@
           (window-parameters ((no-other-window t))))
         display-buffer-alist))
 
-(defun oo-eval-and-replace-region (beg end)
+(defun o-eval-and-replace-region (beg end)
   "Evaluate the region between BEG and END as Elisp, and replace it with the result.
 If there's an error during evaluation, restore the original region and display the error message."
   (interactive "r")
@@ -54,7 +54,7 @@ If there's an error during evaluation, restore the original region and display t
       (delete-region beg end)
       (prin1 result (current-buffer)))))
 ;;;; predicates
-(defun oo-in-string-or-comment-p ()
+(defun o-in-string-or-comment-p ()
   "Return non-nil if point is in a string or comment.
 Specifically, return the symbol `string' if point is in a string, the symbol
 `comment' if in a comment and nil otherwise."
@@ -66,7 +66,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
 ;;;; destructuring
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
-(defun oo-tree-map-nodes (pred fn tree)
+(defun o-tree-map-nodes (pred fn tree)
   "Recursively map FN over tree nodes satisfying PRED.
 
 PRED is a predicate function applied to each node in TREE.  TREE can be a nested
@@ -75,15 +75,15 @@ matching PRED."
   (cond ((funcall pred tree)
          (funcall fn tree))
         ((consp tree)
-         (cons (oo-tree-map-nodes pred fn (car tree))
-               (oo-tree-map-nodes pred fn (cdr tree))))
+         (cons (o-tree-map-nodes pred fn (car tree))
+               (o-tree-map-nodes pred fn (cdr tree))))
         ((vectorp tree)
-         `[,@(mapcar (apply-partially #'oo-tree-map-nodes pred fn)
+         `[,@(mapcar (apply-partially #'o-tree-map-nodes pred fn)
                      (append tree nil))])
         (t
          tree)))
 
-(defun oo-into-pcase-pattern (match-form)
+(defun o-into-pcase-pattern (match-form)
   "Convert MATCH-FORM into a `pcase` pattern.
 
 MATCH-FORM is a potentially nested structure containing lists, vectors, or
@@ -95,9 +95,9 @@ Return a pcase-compatible pattern."
       match-form
     (cl-flet ((true-symbolp (o) (and o (symbolp o)))
               (add-comma (o) (list '\, o)))
-      (list '\` (oo-tree-map-nodes #'true-symbolp #'add-comma match-form)))))
+      (list '\` (o-tree-map-nodes #'true-symbolp #'add-comma match-form)))))
 
-(defun oo-destructure-special-match-form (match-form value)
+(defun o-destructure-special-match-form (match-form value)
   "Generate `let*` bindings for handling special match forms.
 
 MATCH-FORM is a destructuring pattern to be matched.  A special match-form
@@ -143,7 +143,7 @@ If MATCH-FORM is not a special form, return nil."
     (_
      nil)))
 
-(defun oo-generate-special-match-form-bindings (match-form value)
+(defun o-generate-special-match-form-bindings (match-form value)
   "Generate bindings for special forms in MATCH-FORM relative to VALUE.
 
 Process MATCH-FORM to identify and replace any special forms, returning a list
@@ -152,30 +152,30 @@ and subsequent elements are additional bindings required to handle the special
 forms.
 
 MATCH-FORM is a destructuring pattern that may include special forms (see
-`oo-destructure-special-match-form').  VALUE is the value to be matched and
+`o-destructure-special-match-form').  VALUE is the value to be matched and
 destructured."
   (let (bindings match-form-value)
     (setq match-form-value (gensym "mfvalue-"))
     (cl-flet ((special-mf-p (mf)
-                (let ((it (oo-destructure-special-match-form mf match-form-value)))
+                (let ((it (o-destructure-special-match-form mf match-form-value)))
                   (when it
                     (setq bindings (append bindings it)))
                   it))
               (replace-with-value (lambda (_) match-form-value)))
-      `((,(oo-tree-map-nodes #'special-mf-p #'replace-with-value match-form) ,value)
+      `((,(o-tree-map-nodes #'special-mf-p #'replace-with-value match-form) ,value)
         ,@bindings))))
 
-(defun oo-pcase-bindings (match-form value)
+(defun o-pcase-bindings (match-form value)
   "Generate pcase-compatible bindings from MATCH-FORM and VALUE.
 
 MATCH-FORM is the destructuring pattern that specifies how VALUE should be
 decomposed.  VALUE is the data to be matched and destructured.
 
 Return a list of bindings compatible with `pcase`."
-  (mapcar (pcase-lambda (`(,mf ,val)) (list (oo-into-pcase-pattern mf) val))
-          (oo-generate-special-match-form-bindings match-form value)))
+  (mapcar (pcase-lambda (`(,mf ,val)) (list (o-into-pcase-pattern mf) val))
+          (o-generate-special-match-form-bindings match-form value)))
 
-(defun oo-flatten-pcase-match-form (match-form)
+(defun o-flatten-pcase-match-form (match-form)
   "Flatten MATCH-FORM into a list of components.
 
 MATCH-FORM can contain nested lists or vectors. This function extracts all
@@ -204,7 +204,7 @@ Return a flat list of unique components in MATCH-FORM."
                 symbols)))
     (cl-set-difference (flatten-pattern match-form) '(\, \`))))
 
-(defun oo-destructure-defun-args (args)
+(defun o-destructure-defun-args (args)
   "Destructure the arguments of a \"defun-like\" thing.
 Return a list of."
   (let ((name (pop args))
@@ -214,7 +214,7 @@ Return a list of."
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
     (list name arglist (remove nil (list doc decl inte)) args)))
 
-(defun oo-arglist-symbols (arglist)
+(defun o-arglist-symbols (arglist)
   "Return a list of argument symbols."
   (let (symbols)
     (dolist (arg (flatten-list arglist))
