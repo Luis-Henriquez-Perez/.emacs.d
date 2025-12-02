@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'subr-x)
+(eval-when-compile (require 'base-anaphora))
 (require 'base-log)
 
 (defvar o-after-bound-forms nil
