@@ -1,4 +1,4 @@
-;;; 017-base-functions.el --- external package library -*- lexical-binding: t; -*-
+;;; functions-2.el --- external package library -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -76,5 +76,5 @@ KEYMAP is a keymap symbol."
     (o-call-after-load 'evil (apply-partially #'o-call-after-bound keymap fn)))
   nil)
 ;;; provide
-(provide '017-base-functions)
-;;; 017-base-functions.el ends here
+(provide 'functions-2)
+;;; functions-2.el ends here

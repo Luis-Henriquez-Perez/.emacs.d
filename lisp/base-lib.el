@@ -33,7 +33,7 @@
 (eval-when-compile (require 'macros-keybinding))
 (eval-when-compile (require '008-base-loader))
 (eval-when-compile (require '016-base-macros))
-(require '017-base-functions)
+(require 'functions-2)
 (require 'functions-call-after)
 ;;; provide
 (provide 'base-lib)
