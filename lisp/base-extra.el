@@ -48,11 +48,6 @@
 
 (add-hook 'pre-command-hook #'o-run-first-input-hook-h)
 ;;;; hooks
-;; I had been organizing the init file by packages and that is not entirely
-;; useless but I think maybe an abstraction in which I look at what is happening
-;; when as opposed to the configuration for over 50 individual packages.  The
-;; focus is now on what is happening in my configuration as opposed to the many
-;; individual configurations.
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
