@@ -25,11 +25,15 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(eval-when-compile (require 'lib-macros-0))
+(require 'functions-1)
 (eval-when-compile (require 'macros-anaphora))
-(eval-when-compile (require 'macros-setters))
+(eval-when-compile (require 'macros-ing))
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-looping))
+(eval-when-compile (require 'macros-keybinding))
+(eval-when-compile (require '008-base-loader))
+(eval-when-compile (require '016-base-macros))
+(require '017-base-functions)
 (require 'functions-call-after)
 ;;; provide
 (provide 'base-lib)

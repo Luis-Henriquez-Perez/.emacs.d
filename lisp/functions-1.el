@@ -1,4 +1,4 @@
-;;; base-functions.el -*- lexical-binding: t; -*-
+;;; functions-1.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -224,5 +224,5 @@ Return a list of."
         (push arg symbols)))
     (nreverse symbols)))
 ;;; provide
-(provide 'base-functions)
-;;; base-functions.el ends here
+(provide 'functions-1)
+;;; functions-1.el ends here

@@ -28,9 +28,9 @@
 ;; these functions are very specific to me and my workflow.
 ;;
 ;;; Code:
-(require 'base)
-(require 'f)
-(require 'ctable)
+(eval-when-compile (require 'macros-autolet))
+;; (require 'f)
+;; (require 'ctable)
 ;;;; opening specific files
 (defun oo-open-emacs-config ()
   "Open Emacs configuration."

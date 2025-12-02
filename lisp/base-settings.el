@@ -29,6 +29,7 @@
 ;; should occur afterwards.
 ;;
 ;;; Code:
+(eval-when-compile (require '016-base-macros))
 ;;;; UNCATEGORIZED
 (setq user-full-name "Luis Henriquez-Perez")
 (setq user-mail-address "luis@luishp.xyz")

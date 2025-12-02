@@ -25,13 +25,16 @@
 ;; Initialize 016-base-macros.
 ;;
 ;;; Code:
-(require! "^01[0-5]")
-
 (defmacro nif! (cond then &rest else)
   (declare (indent 2))
   `(if (not ,cond)
        ,then
      ,@else))
+(require 'functions-call-after)
+(eval-when-compile (require 'macros-anaphora))
+(eval-when-compile (require 'macros-autolet))
+(eval-when-compile (require 'macros-looping))
+(eval-when-compile (require 'macros-ing))
 
 (defmacro stripplist! (list)
   "Strip and return plist from the front of LIST.
