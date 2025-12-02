@@ -1724,6 +1724,7 @@
     ("deparment" "department")
     ("deparmental" "departmental")
     ("deparments" "departments")
+    ("depe" "dependency")
     ("dependance" "dependence")
     ("dependancy" "dependency")
     ("dependant" "dependent")
