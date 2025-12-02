@@ -28,7 +28,7 @@
 ;; these functions are very specific to me and my workflow.
 ;;
 ;;; Code:
-(eval-when-compile (require 'macros-autolet))
+(require 'base-lib)
 ;; (require 'f)
 ;; (require 'ctable)
 ;;;; opening specific files

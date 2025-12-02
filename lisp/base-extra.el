@@ -25,7 +25,7 @@
 ;; Define and set several hooks.
 ;;
 ;;; Code:
-(require! "^0")
+(require 'base-lib)
 (require 'server)
 ;;;; setup custom hooks
 (defvar o-first-file-hook nil
