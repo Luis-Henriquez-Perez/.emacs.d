@@ -100,7 +100,7 @@ This is like `setq' but it is meant for configuring variables."
                (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
      (o-call-after-bound ',symbol it)))
 
-(defconst OO-LOCAL-VAR-DEPTH -50
+(defconst o-local-var-depth -50
   "Depth in hook at which to set local variables.")
 
 (defun! o-apply-local-vars (hook)
@@ -121,7 +121,7 @@ This is like `setq' but it is meant for configuring variables."
               ,docstring
               (o-apply-local-vars ',hook)))
           (setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)
-          (add-hook ',hook #',setter OO-LOCAL-VAR-DEPTH)))
+          (add-hook ',hook #',setter o-local-var-depth)))
 
 (declare-function tempel-insert "tempel")
 (defmacro! deftempel! (name &rest body)
