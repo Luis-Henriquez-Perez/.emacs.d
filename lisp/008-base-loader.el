@@ -31,13 +31,6 @@
 (require 'base-vars)
 (require 'base-log)
 
-(defmacro time-elapsed! (&rest forms)
-  "Eval forms and return the time elapsed."
-  (let ((start (make-symbol "start")))
-    `(let ((,start (float-time)))
-       ,(macroexp-progn forms)
-       (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
-
 (defmacro require! (feature)
   "Require feature in lisp directory.
 If FEATURE is a regexp, require all features in lisp directory that match
