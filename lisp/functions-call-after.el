@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'subr-x)
+(require 'base-log)
 
 (defvar o-after-bound-forms nil
   "An alist whose elements are (SYMBOL . FORMS).
