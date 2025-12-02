@@ -34,7 +34,7 @@
 (require 'macros-anaphora)
 (require 'macros-ing)
 (require 'macros-autolet)
-(require 'macros-looping)
+(require 'macros-loop)
 (require 'functions-call-after)
 (require '016-base-macros)
 
