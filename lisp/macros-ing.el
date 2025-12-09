@@ -25,19 +25,19 @@
 ;; Define macros for modifying symbols.
 ;;
 ;;; Code:
-(cl-defmacro appending! (place list &key (setter 'setf))
+(defmacro appending! (place list)
   "Append LIST to the end of PLACE.
 SETTER is the symbol of the macro or function used to do the setting."
-  `(,setter ,place (append ,place ,list)))
+  `(setf ,place (append ,place ,list)))
 
 ;; Important to note that this macro is not as efficient as pushing because it's
 ;; adding to the end of the list.  So this macro should be used only in
 ;; non-performance-intensive code.  In performance-intensive code we need the
 ;; =push-nreverse= idiom.
-(cl-defmacro collecting! (place item &key (setter 'setf))
+(defmacro collecting! (place item)
   "Affix ITEM to the end of PLACE.
 SETTER is the same as in `appending!'."
-  `(,setter ,place (append ,place (list ,item))))
+  `(setf ,place (append ,place (list ,item))))
 
 (defalias 'snocing! 'collecting!)
 (defalias 'affixing! 'collecting!)
@@ -49,19 +49,20 @@ SETTER is the same as in `appending!'."
 (defalias 'counting! 'cl-incf)
 (defalias 'decrementing! 'cl-decf)
 
-(cl-defmacro prepending! (place list &key (setter 'setf))
+(cl-defmacro prepending! (place list)
   "Prepend LIST to beginning of PLACE.
 SETTER is the same as in `appending!'."
-  `(,setter ,place (append ,list ,place)))
+  `(setf ,place (append ,list ,place)))
 
-(cl-defmacro maxing! (place form &key (setter 'setf) (comparator '>))
+(defmacro maxing! (place form &optional (comparator '>))
   "Set PLACE to the greater of PLACE and FORM.
 SETTER is the same as in `appending!'.  COMPARATOR is the comparison function
 to determine the greater value."
-  (cl-with-gensyms (value1 value2)
-    `(,setter ,place (let ((,value1 ,form)
-                           (,value2 ,place))
-                       (if (,comparator ,value1 ,value2) ,value1 ,value2)))))
+  (let ((value1 (gensym "value1"))
+        (value2 (gensym "value2")))
+    `(setf ,place (let ((,value1 ,form)
+                        (,value2 ,place))
+                    (if (,comparator ,value1 ,value2) ,value1 ,value2)))))
 
 (cl-defmacro minning! (place form &key (setter 'setf) (comparator '<))
   "Set PLACE to the lesser of PLACE and FORM.
@@ -69,7 +70,7 @@ SETTER is the same as in `appending!'.  COMPARATOR is used to determine the
 lesser value."
   `(maxing! ,place ,form :setter ,setter :comparator ,comparator))
 
-(cl-defmacro concating! (place string &key (setter 'setf) separator)
+(cl-defmacro concating! (place string &optional separator)
   "Concat PLACE and STRING with SEPARATOR.
 SETTER is the same as in `appending!'"
   `(,setter ,place (string-join (list ,place ,string) ,separator)))
@@ -84,10 +85,10 @@ SETTER is the same as in `appending!'.  KEY, TEST, TEST-NOT are the same as in
 
 ;; I know =push= already exists.  But I want a variant of push that can be used
 ;; with the =autolet!= macro.
-(cl-defmacro pushing! (place item &key (setter 'setf))
+(cl-defmacro pushing! (place item)
   "Cons ITEM to PLACE.
 SETTER is the same as in `appending!'."
-  `(,setter ,place (cons ,item ,place)))
+  `(setf ,place (cons ,item ,place)))
 
 ;; To configure variables I don't use the standard =setq=--at least not
 ;; directly.  Instead, I use =set!=.  Adjoining is one of the most common
