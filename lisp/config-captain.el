@@ -33,7 +33,7 @@
 (require 'rx)
 (require 'lispy)
 ;;;; determine where I am
-;; TODO: generalize regexp with `defun!', `cl-defun', etc.
+;; TODO: generalize regexp with `o-defun', `cl-defun', etc.
 (defvar o-docstring-regexp "(\\(?:def\\(?:advice!\\|hook!\\|macro\\|un!?\\)\\)[[:blank:]]\\([^[:space:]]+\\)[[:blank:]](\\(.*\\))\n[[:blank:]]*\"")
 
 ;; TODO: generalize this regexp for comments in different languages.
@@ -55,15 +55,15 @@
 						   "defun*"
 						   "defmacro*"
 						   "lambda"
-						   "defmacro!"
-						   "defun!"
+						   "o-defmacro"
+						   "o-defun"
 						   "-lambda"))
 
 ;; Influenced from smartparens.  This does it for emacs-lisp but I wonder if
 ;; there is a general way to determine.
-(defun! o--in-elisp-docstring-p ()
+(o-defun o--in-elisp-docstring-p ()
   "Return the bounds of docstring."
-  (alet! (bounds-of-thing-at-point 'string)
+  (o-alet (bounds-of-thing-at-point 'string)
     (and (derived-mode-p 'emacs-lisp-mode)
          (save-excursion
 	       (goto-char (car it))
@@ -71,13 +71,13 @@
 	       (looking-at-p (regexp-opt o--definer-list)))
          it)))
 
-(defun! +captain--prog-mode-sentence-start ()
+(o-defun +captain--prog-mode-sentence-start ()
   "Return point where sentence should be capitalized."
   (pcase (o-in-string-or-comment-p)
     ('comment
      ;; For now use `lispy--bounds-comment' because I do not think there is a
      ;; built-in alternative.
-     (set! beg (car (lispy--bounds-comment)))
+     (o-set beg (car (lispy--bounds-comment)))
      ;; The reason I go forwared one character is that I could be at the first
      ;; word of the sentence.  I am doubtful this method is perfect but I could
      ;; not think of a better way yet.
@@ -88,7 +88,7 @@
                        (goto-char (match-end 0)))
                      (point)))
     ('string
-     (aand! (car (o--in-elisp-docstring-p))
+     (o-aand (car (o--in-elisp-docstring-p))
     	    (max it (or (car (bounds-of-thing-at-point 'sentence)) it))))))
 ;;; provide
 (provide 'config-captain)

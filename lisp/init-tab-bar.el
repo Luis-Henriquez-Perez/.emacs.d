@@ -31,24 +31,24 @@
 ;; Do not show the new tab buffer  I will never use it to be honest.  Ideally I
 ;; should not ever use this bar and will be able to navigate my tabs via
 ;; indicator in the mode line.
-(opt! tab-bar-new-button-show nil)
+(o-opt tab-bar-new-button-show nil)
 ;; Do not show the close button either--same reason.
-(opt! tab-bar-close-button-show nil)
+(o-opt tab-bar-close-button-show nil)
 
 ;; For now just use the current buffer.  At first I wanted to create "untitled"
 ;; buffers but I was not using them and it just created more clutter if anything.
-(opt! tab-bar-new-tab-choice t)
+(o-opt tab-bar-new-tab-choice t)
 ;; Do not show the tabs.  I prefer to save as much screen real-estate as
 ;; possible.
 
 ;; I need to create some link between tab-bar and burly.  As in when I open a
 ;; bookmark in burly it should be in a new tab.
-(opt! tab-bar-show nil)
+(o-opt tab-bar-show nil)
 
 (defun +tab-bar-toggle-show ()
   "Toggle the tab bar display."
   (interactive)
-  (opt! tab-bar-show (not tab-bar-show)))
+  (o-opt tab-bar-show (not tab-bar-show)))
 
 ;; https://mmk2410.org/2022/02/11/using-emacs-tab-bar-mode
 

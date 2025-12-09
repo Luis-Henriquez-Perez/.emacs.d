@@ -27,10 +27,10 @@
 ;;; Code:
 (require 'base)
 
-(alt! describe-function helpful-callable helpful)
-(alt! describe-command helpful-command helpful)
-(alt! describe-variable helpful-variable helpful)
-(alt! describe-key helpful-key helpful)
+(o-alt describe-function helpful-callable helpful)
+(o-alt describe-command helpful-command helpful)
+(o-alt describe-variable helpful-variable helpful)
+(o-alt describe-key helpful-key helpful)
 ;;; provide
 (provide 'init-helpful)
 ;;; init-helpful.el ends here

@@ -35,7 +35,7 @@
 ;; https://www.emacswiki.org/emacs/ZoneMode
 (defun zone|choose (pgm)
   "Choose a PGM to run for `zone'."
-  (interactive (list (awhen! (completing-read "Program: " (mapcar #'symbol-name (append zone-programs nil)))
+  (interactive (list (o-awhen (completing-read "Program: " (mapcar #'symbol-name (append zone-programs nil)))
                        (intern it))))
   (zone pgm))
 

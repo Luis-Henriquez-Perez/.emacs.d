@@ -30,9 +30,9 @@
 (require 'spaceline-segments)
 (require 'all-the-icons)
 ;;;; settings
-(opt! spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
-(opt! powerline-height 40)
-(opt! powerline-default-separator 'arrow)
+(o-opt spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
+(o-opt powerline-height 40)
+(o-opt powerline-default-separator 'arrow)
 (setq spaceline-separator-dir-left '(left . left))
 (setq spaceline-separator-dir-right '(right . right))
 ;; Although this saves time the longer you use the modeline, it means that the
@@ -89,27 +89,27 @@
 ;;;; toggle default separator
 ;; I want the ability to quickly switch between different separators.
 
-;; (defun! o-choose-modeline-separator ()
+;; (o-defun o-choose-modeline-separator ()
 ;;   ;; "Choose a separator for the modeline."
 ;;   (interactive)
-;;   (set! separators '(alternate arrow arrow-fade bar box brace
+;;   (o-set separators '(alternate arrow arrow-fade bar box brace
 ;;                                butt chamfer contour curve rounded roundstub wave zigzag
 ;;                                slant utf-8))
-;;   (awhen! (completing-read "Choose separator: " separators)
+;;   (o-awhen (completing-read "Choose separator: " separators)
 ;;     (setq powerline-default-separator it)
 ;;     (spaceline-compile)))
 
-;; (defun! o-choose-random-separator ()
+;; (o-defun o-choose-random-separator ()
 ;;   "Set a random separator."
 ;;   (interactive)
-;;   (set! separators '(alternate arrow arrow-fade bar box brace
+;;   (o-set separators '(alternate arrow arrow-fade bar box brace
 ;;                                butt chamfer contour curve rounded roundstub wave zigzag
 ;;                                slant utf-8))
 ;;   (setq powerline-default-separator (seq-random-elt separators))
 ;;   (spaceline-compile)
 ;;   (message "set separator to %s" powerline-default-separator))
 ;;;; initialize modeline at startup
-(defhook! o-initialize-modeline-h (after-init-hook :depth 90)
+(o-defhook o-initialize-modeline-h (after-init-hook :depth 90)
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 ;;; provide
 (provide 'init-spaceline)

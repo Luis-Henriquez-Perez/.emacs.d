@@ -30,9 +30,9 @@
 (require 'cl-lib)
 (require 'functions-1)
 
-(defmacro for! (loop-struct &rest body)
+(defmacro o-for (loop-struct &rest body)
   "A generic looping macro and drop-in replacement for `dolist'.
-BODY is the body of the loop.  LOOP-STRUCT determines how `for!' loops and can
+BODY is the body of the loop.  LOOP-STRUCT determines how `o-for' loops and can
 take the following forms:
 
 (VAR NUMBER) Same as `dotimes'.
@@ -57,7 +57,7 @@ take the following forms:
               ,@body)))))
     (`(,(and match-form (or (pred listp) (pred vectorp))) ,list . ,(and rest (guard t)))
      (cl-with-gensyms (elt)
-       `(for! (,elt ,list ,@rest)
+       `(o-for (,elt ,list ,@rest)
           (pcase-let* ,(o-pcase-bindings match-form elt)
             ,@body))))
     (`(,elt ,list :by ,fn)
@@ -78,7 +78,7 @@ take the following forms:
   (declare (indent 1))
   (let ((collection (make-symbol "--collection--")))
     `(let (,collection)
-       (for! ,loop-struct
+       (o-for ,loop-struct
          (push (progn ,@body) ,collection))
        (nreverse ,collection))))
 ;;; provide

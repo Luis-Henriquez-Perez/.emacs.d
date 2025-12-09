@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'chess)
 ;; (push 'chess-stockfish chess-default-engine)
-(opt! chess-images-directory (expand-file-name "~/Downloads/chess-pieces"))
-(opt! chess-images-extension "xpm")
+(o-opt chess-images-directory (expand-file-name "~/Downloads/chess-pieces"))
+(o-opt chess-images-extension "xpm")
 ;;; provide
 (provide 'init-chess)
 ;;; init-chess.el ends here

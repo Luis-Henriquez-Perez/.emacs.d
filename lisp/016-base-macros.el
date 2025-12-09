@@ -30,10 +30,10 @@
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-loop))
 
-(defmacro! opt! (symbol value)
+(o-defmacro o-opt (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
-  `(alet! (lambda ()
+  `(o-alet (lambda ()
             (condition-case err
                 (let ((value (with-no-warnings ,value)))
                   (if-let (setter (get ',symbol 'custom-set))
@@ -46,19 +46,19 @@ This is like `setq' but it is meant for configuring variables."
 (defconst o-local-var-depth -50
   "Depth in hook at which to set local variables.")
 
-(defun! o-apply-local-vars (hook)
+(o-defun o-apply-local-vars (hook)
   "Apply local variables for hook."
-  (set! failmsg "Failed to set local variable %s: %S ->%S")
-  (for! ((symbol . value) (alist-get hook o-local-var-alist))
-    (set! bodyform `(setq-local ,symbol ,value))
-    (set! handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
-    (pushing! forms `(condition-case err ,bodyform (error ,handlerbody))))
+  (o-set failmsg "Failed to set local variable %s: %S ->%S")
+  (o-for ((symbol . value) (alist-get hook o-local-var-alist))
+    (o-set bodyform `(setq-local ,symbol ,value))
+    (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
+    (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))
   (eval (macroexp-progn (nreverse forms)) t))
 
-(defmacro! setq-hook! (hook symbol value)
+(o-defmacro o-setq-mode-local (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (set! setter (intern (format "o--%s--init-local-variables-h" hook)))
-  (set! docstring (format "Set local variable for `%s'." hook))
+  (o-set setter (intern (format "o--%s--init-local-variables-h" hook)))
+  (o-set docstring (format "Set local variable for `%s'." hook))
   `(progn (unless (fboundp ',setter)
             (defun ,setter (&rest _)
               ,docstring
@@ -67,10 +67,10 @@ This is like `setq' but it is meant for configuring variables."
           (add-hook ',hook #',setter o-local-var-depth)))
 
 (declare-function tempel-insert "tempel")
-(defmacro! deftempel! (name &rest body)
+(o-defmacro o-deftemplate (name &rest body)
   "Define a tempel template."
   (declare (doc-string 2) (indent defun))
-  (set! documentation (when (stringp (car body)) (list (pop body))))
+  (o-set documentation (when (stringp (car body)) (list (pop body))))
   `(progn (defun ,name ()
             ,@documentation
             (interactive)
@@ -80,11 +80,11 @@ This is like `setq' but it is meant for configuring variables."
           (put ',name 'no-self-insert t)
           ',name))
 
-(defmacro! defafter! (&rest args)
+(o-defmacro o-defafter (&rest args)
   "Eval BODY after FEATURE is loaded."
   (declare (indent defun))
-  (set! (name (feature) meta body) (o-destructure-defun-args args))
-  `(progn (defun! ,name ()
+  (o-set (name (feature) meta body) (o-destructure-defun-args args))
+  `(progn (o-defun ,name ()
             ,@meta
             (condition-case err
                 (with-no-warnings ,@body)

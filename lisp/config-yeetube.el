@@ -45,12 +45,12 @@ Optionally, provide custom own URL."
         (o-yeetube-download-audio--ytdlp url)
         (message "Downloading audio at '%s'" music-dir)))))
 
-(defun! o-yeetube-download-audio--ytdlp (url)
+(o-defun o-yeetube-download-audio--ytdlp (url)
   "Download URL using yt-dlp."
   (unless (executable-find "yt-dlp")
     (error "Executable for yt-dlp not found.  Please install yt-dlp"))
-  (set! ytdlp (executable-find "yt-dlp"))
-  (set! command (format "%s %s --write-thumbnail --extract-audio --no-keep-video" ytdlp url))
+  (o-set ytdlp (executable-find "yt-dlp"))
+  (o-set command (format "%s %s --write-thumbnail --extract-audio --no-keep-video" ytdlp url))
   (call-process-shell-command command nil 0))
 
 (defun o-yeetube-download-video (&optional url)

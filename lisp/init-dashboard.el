@@ -34,12 +34,12 @@
 (defun o-dashboard-init-info (&rest _)
   (format "Emacs started in %.2f seconds" (string-to-number (emacs-init-time))))
 
-(opt! dashboard-items nil)
-(opt! dashboard-init-info #'o-dashboard-init-info)
-(opt! dashboard-banner-logo-title "Welcome!")
-(opt! dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
-(opt! dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
-(opt! dashboard-center-content t)
+(o-opt dashboard-items nil)
+(o-opt dashboard-init-info #'o-dashboard-init-info)
+(o-opt dashboard-banner-logo-title "Welcome!")
+(o-opt dashboard-startupify-list (cl-set-difference dashboard-startupify-list '(dashboard-insert-items dashboard-insert-footer)))
+(o-opt dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
+(o-opt dashboard-center-content t)
 
 (defun o-enable-dashboard-h ()
   (require 'dashboard)

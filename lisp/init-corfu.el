@@ -29,28 +29,28 @@
 
 (add-hook 'corfu-mode-hook #'corfu-history-mode)
 
-(opt! corfu-quick1 "ajskdlghty")
-(opt! corfu-quick2 "ajskdlghty")
+(o-opt corfu-quick1 "ajskdlghty")
+(o-opt corfu-quick2 "ajskdlghty")
 ;; https://github.com/minad/corfu/issues/12
 
 ;; TODO: make it so moving on a candidate if I press espace insert that candidate.
-(opt! corfu-preview-current t)
-(opt! corfu-preselect-first t)
-(opt! corfu-quit-at-boundary nil)
-(opt! corfu-auto t)
-(opt! corfu-auto-delay 0.1)
-(opt! corfu-auto-prefix 1)
-(opt! corfu-bar-width 0)
+(o-opt corfu-preview-current t)
+(o-opt corfu-preselect-first t)
+(o-opt corfu-quit-at-boundary nil)
+(o-opt corfu-auto t)
+(o-opt corfu-auto-delay 0.1)
+(o-opt corfu-auto-prefix 1)
+(o-opt corfu-bar-width 0)
 
-(imap! corfu-map "<tab>"   #'corfu-next)
-(imap! corfu-map [backtab] #'corfu-previous)
-(imap! corfu-map "S-TAB"   #'corfu-previous)
-(imap! corfu-map "C-;"     #'corfu-quick-complete)
-(imap! corfu-map "C-j"     #'corfu-next)
-(imap! corfu-map "C-k"     #'corfu-previous)
-(imap! corfu-map "C-p"     #'corfu-previous)
-(imap! corfu-map ";"       #'corfu-quick-complete)
-(imap! corfu-map "SPC"     #'corfu-insert)
+(o-imap corfu-map "<tab>"   #'corfu-next)
+(o-imap corfu-map [backtab] #'corfu-previous)
+(o-imap corfu-map "S-TAB"   #'corfu-previous)
+(o-imap corfu-map "C-;"     #'corfu-quick-complete)
+(o-imap corfu-map "C-j"     #'corfu-next)
+(o-imap corfu-map "C-k"     #'corfu-previous)
+(o-imap corfu-map "C-p"     #'corfu-previous)
+(o-imap corfu-map ";"       #'corfu-quick-complete)
+(o-imap corfu-map "SPC"     #'corfu-insert)
 ;;; provide
 (provide 'init-corfu)
 ;;; init-corfu.el ends here

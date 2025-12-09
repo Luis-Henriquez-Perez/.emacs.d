@@ -28,66 +28,66 @@
 (require 'base)
 (require 'tempel)
 
-(deftempel! tempel|expand-elisp-defhook
+(o-deftemplate expand-elisp-defhook
   "Expand to a `defun' form."
-  "(defhook! " p " (" p ")" n> "\"" p "\"" n> r ")")
+  "(o-defhook " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(deftempel! tempel|expand-elisp-let*
+(o-deftemplate expand-elisp-let*
   "Expand to a `let' form."
   "(let* (" p ")" n> r ")")
 
-(deftempel! tempel|expand-elisp-hook-bang
+(o-deftemplate expand-elisp-hook-bang
   "Expand to a `o-add-hook' form."
   "(hook! " p " " r ")")
 
-(deftempel! tempel|expand-elisp-cond
+(o-deftemplate expand-elisp-cond
   "Expand to a `cond' form."
   "(cond " ")")
 
-(deftempel! tempel|expand-elisp-defun
+(o-deftemplate expand-elisp-defun
   "Expand to `defun'."
   "(defun " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(deftempel! tempel|expand-elisp-defun-bang
+(o-deftemplate expand-elisp-defun-bang
   "Expand to `defun'."
-  "(defun! " p " (" p ")" n> "\"" p "\"" n> r ")")
+  "(o-defun " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(deftempel! tempel|expand-elisp-command
+(o-deftemplate expand-elisp-command
   "Expand to command."
   "(defun " p " (" p ")\n  \"" p "\"" n> "(interactive" p ")" n> r> ")")
 
-(deftempel! tempel|expand-elisp-defvar
+(o-deftemplate expand-elisp-defvar
   "Expand to `defvar'."
   "(defvar " p "\s" p "\n  \"" q "\"" ")")
 
-(deftempel! tempel|expand-elisp-message
+(o-deftemplate expand-elisp-message
   "Expand to `message'."
   "(message \"" r  "\")")
 
-(deftempel! tempel|expand-elisp-message-var
+(o-deftemplate expand-elisp-message-var
   "Expand to printing a variable value with `message'."
   "(message \"" (s var)  " -> %S\" " var ")" q)
 
-;; (deftempel! tempel|expand-elisp-re-search-forward
+;; (o-deftemplate expand-elisp-re-search-forward
 ;;   "Expand to `message'."
 ;;   "(rsf \"" p  "\")")
 
-(deftempel! tempel|expand-elisp-with-current-buffer
+(o-deftemplate expand-elisp-with-current-buffer
   "Expand to printing a variable value with `message'."
   "(with-current-buffer " p n> r ")")
 
-(deftempel! tempel|expand-elisp-setq
+(o-deftemplate expand-elisp-setq
   "Expand to printing a variable value with `message'."
   "(setq " p "\s" r ")")
 
-(deftempel! tempel|expand-elisp-setq-bang
+(o-deftemplate expand-elisp-setq-bang
   "Expand to printing a variable value with `message'."
-  "(set! " p "\s" r ")")
+  "(o-set " p "\s" r ")")
 
 (defun o-in-html-p ()
   (member major-mode '(mhtml-mode web-mode)))
 
-(deftempel! tempel|expand-html-elisp-source-block
+(o-deftemplate expand-html-elisp-source-block
   "Expand to source block."
   > "<div class=\"org-src-container\">" n
   > "<pre>" n
@@ -97,7 +97,7 @@
   > "</pre>" n
   > "</div>" n)
 
-(deftempel! tempel|expand-html-bold
+(o-deftemplate expand-html-bold
   "Expand to html bold tag"
   "<b>" r "</b>")
 ;;; provide

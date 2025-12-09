@@ -26,9 +26,9 @@
 ;;; Code:
 (require 'base)
 
-(opt! aw-swap-invert t)
+(o-opt aw-swap-invert t)
 ;; The character z conflicts.
-(opt! aw-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxb")))
+(o-opt aw-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxb")))
 ;;; provide
 (provide 'init-ace-window)
 ;;; init-ace-window.el ends here

@@ -52,9 +52,9 @@
   "Log when `luishenriquezperez@gmail.com' is entered."
   (o-log 'info "Exiting main account."))
 
-(defun! +mu4e-jump-to-maildir ()
+(o-defun +mu4e-jump-to-maildir ()
   (interactive)
-  (set! maildir (completing-read "Maildir: " (mu4e-get-maildirs)))
+  (o-set maildir (completing-read "Maildir: " (mu4e-get-maildirs)))
   (mu4e-search (format "maildir:\"%s\"" maildir)))
 ;;; provide
 (provide 'config-mu4e)

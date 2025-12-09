@@ -32,14 +32,14 @@
 (require 'ts)
 (require 'org-capture)
 ;;;; disable header-line
-(setq-hook! org-capture-mode-hook header-line-format nil)
+(o-setq-mode-local org-capture-mode-hook header-line-format nil)
 ;;;; use completing-read for org-capture
-(defun! org-capture|choose-template ()
+(o-defun org-capture|choose-template ()
   "Choose capture template to open."
   (interactive)
-  (set! templates (mapcar (lambda (it) (cons (cl-second it) (cl-first it))) org-capture-templates))
-  (set! choosen (completing-read "Choose a Templates: " templates))
-  (set! key (cdr (assoc choosen templates)))
+  (o-set templates (mapcar (lambda (it) (cons (cl-second it) (cl-first it))) org-capture-templates))
+  (o-set choosen (completing-read "Choose a Templates: " templates))
+  (o-set key (cdr (assoc choosen templates)))
   (if key
       (org-capture nil key)
     (error "No capture template corresponding to %S" choosen)))
@@ -54,7 +54,7 @@
                      (ts-min now))))
     (org-ml-build-planning! :deadline time)))
 
-(defun! org-capture|template (&optional todo-keyword)
+(o-defun org-capture|template (&optional todo-keyword)
   "Return template string."
   (require 'org-ml)
   (thread-last (org-ml-build-headline! :level 1 :todo-keyword todo-keyword :title-text "%?")

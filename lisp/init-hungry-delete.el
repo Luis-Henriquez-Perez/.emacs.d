@@ -28,7 +28,7 @@
 (require 'base)
 
 ;; Leave one space in between instead of deleting everything.
-(opt! hungry-delete-join-reluctantly t)
+(o-opt hungry-delete-join-reluctantly t)
 ;;; provide
 (provide 'init-hungry-delete)
 ;;; init-hungry-delete.el ends here

@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(opt! auto-insert-query nil)
+(o-opt auto-insert-query nil)
 
 (add-hook 'o-first-file-hook #'auto-insert-mode)
 

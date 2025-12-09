@@ -27,8 +27,8 @@
 ;;; Code:
 (add-hook 'prog-mode-hook #'visible-mark-mode)
 (add-hook 'text-mode-hook #'visible-mark-mode)
-(opt! visible-mark-max 1)
-(opt! visible-mark-faces `(visible-mark-face1 visible-mark-face2))
+(o-opt visible-mark-max 1)
+(o-opt visible-mark-faces `(visible-mark-face1 visible-mark-face2))
 ;;; provide
 (provide 'init-visible-mark)
 ;;; init-visible-mark.el ends here

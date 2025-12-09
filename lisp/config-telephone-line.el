@@ -31,7 +31,7 @@
 ;;;; custom segments
 ;;;;; major-mode information
 (defun +telephone-line-major-mode-segment nil
-  (lambda (face) (alet! (format-mode-line (funcall (telephone-line-major-mode-segment) face)) (if (string-match "\\`ELisp" it) (substring it (match-beginning 0) (match-end 0)) it))))
+  (lambda (face) (o-alet (format-mode-line (funcall (telephone-line-major-mode-segment) face)) (if (string-match "\\`ELisp" it) (substring it (match-beginning 0) (match-end 0)) it))))
 ;;;;; kbd-macro information
 (defun +telephone-line-kbd-macro-segment nil
   (lambda (_) (o-modeline-component--kbd-macro)))

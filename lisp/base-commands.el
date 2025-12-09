@@ -57,36 +57,36 @@
   (interactive)
   (select-window (split-window-below)))
 ;;;; font
-(defun! o-set-font-face ()
+(o-defun o-set-font-face ()
   "Apply an existing xfont to all graphical frames."
   (interactive)
-  (set! font (completing-read "Choose font: " (x-list-fonts "*")))
+  (o-set font (completing-read "Choose font: " (x-list-fonts "*")))
   (set-frame-font font nil t))
 ;;;; sorting
 ;; This is meant to sort the great number of install package forms I have in
 ;; `init-elpaca'.
-(defun! o-sort-elpaca-forms (beg end)
+(o-defun o-sort-elpaca-forms (beg end)
   "Sort elpaca forms lexicographically by package name."
-  (set! rx "^\\(?:;; \\)?(elpaca \\(?:(\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\|\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\)[^z-a]+?$")
+  (o-set rx "^\\(?:;; \\)?(elpaca \\(?:(\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\|\\(?1:\\(?:[[:alnum:]]\\|-\\)+\\)\\)[^z-a]+?$")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
-(defun! o-sort-autoload-forms (beg end)
+(o-defun o-sort-autoload-forms (beg end)
   "Sort autoload forms lexicographically by package name."
-  (set! rx "(autoload[[:blank:]]+#'[^[:space:]]+[[:blank:]]+\"\\(.+?\\)\".+?$")
+  (o-set rx "(autoload[[:blank:]]+#'[^[:space:]]+[[:blank:]]+\"\\(.+?\\)\".+?$")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
 ;; This is meant to sort the great number of `require' forms in the init file.
-(defun! o-sort-require-forms (beg end)
+(o-defun o-sort-require-forms (beg end)
   "Sort require forms lexicographically by feature name."
-  (set! rx "(require[[:blank:]]+'\\(.+\\))")
+  (o-set rx "(require[[:blank:]]+'\\(.+\\))")
   (save-excursion (sort-regexp-fields nil rx "\\1" beg end)))
 
-(defun! o-sort-dwim (beg end)
+(o-defun o-sort-dwim (beg end)
   "Sort lines the way I like it."
   (interactive
    (cond ((region-active-p)
 	      (list (region-beginning) (region-end)))
-	     ((save-excursion (aand! "(\\(\\(?:autoload\\|elpaca\\|require\\)\\)"
+	     ((save-excursion (o-aand "(\\(\\(?:autoload\\|elpaca\\|require\\)\\)"
                                  (re-search-forward it (point-max) t nil)))
           (list (match-beginning 0) (point-max)))
          (t
@@ -123,7 +123,7 @@ is already narrowed."
          (narrow-to-defun))))
 ;; You could actually do this via abbrev-mode as well.  And actually it might be
 ;; better in a sense because.
-(defun! o-dwim-space ()
+(o-defun o-dwim-space ()
   "Replace two consecutive spaces with a period."
   (interactive)
   (cond ((and (or (derived-mode-p 'text-mode)
@@ -135,10 +135,10 @@ is already narrowed."
 
 (declare-function consult-buffer "consult")
 (defvar consult--buffer-display)
-(defun! o-pop-to-buffer ()
+(o-defun o-pop-to-buffer ()
   (interactive)
   (require 'consult)
-  (set! consult--buffer-display #'pop-to-buffer)
+  (o-set consult--buffer-display #'pop-to-buffer)
   (call-interactively #'consult-buffer))
 
 (defun o-kill-emacs-no-confirm ()
@@ -150,11 +150,11 @@ is already narrowed."
 (defvar o-loaded-themes nil
   "Themes that have already been loaded.")
 
-(defun! o-load-random-theme ()
+(o-defun o-load-random-theme ()
   "Load a random theme."
   (interactive)
-  (set! not-loaded (cl-set-difference (custom-available-themes) o-loaded-themes))
-  (set! theme (seq-random-elt not-loaded))
+  (o-set not-loaded (cl-set-difference (custom-available-themes) o-loaded-themes))
+  (o-set theme (seq-random-elt not-loaded))
   (message "Loading theme `%s'..." theme)
   (load-theme theme 'noconfirm)
   (push theme o-loaded-themes))
@@ -164,15 +164,15 @@ is already narrowed."
 ;; "untitled2" as xah lee recommended because it is just easier and more
 ;; consistent to use Emacs's buffer naming style.
 ;; http://xahlee.info/emacs/emacs/modernization_scratch_buffer.html
-(defun! o-new-buffer ()
+(o-defun o-new-buffer ()
   "Create a new blank buffer."
   (interactive)
   (display-buffer (generate-new-buffer "untitled")))
 
 (declare-function vc-git--pushpull "vc-git")
-(defun! o-dwim-vc-push ()
+(o-defun o-dwim-vc-push ()
   (interactive)
-  (pushing! display-buffer-alist '("\\*vc-git"
+  (o-pushing display-buffer-alist '("\\*vc-git"
                                    (display-buffer-no-window)
                                    (allow-no-window . t)))
   (vc-git--pushpull "push" nil (list "--force")))
@@ -182,7 +182,7 @@ is already narrowed."
 (declare-function vc-deduce-fileset "vc")
 
 (defalias 'eshell/dotadd 'o-dwim-vc-action)
-(defun! o-dwim-vc-action (file)
+(o-defun o-dwim-vc-action (file)
   "Register, stage, commit and push FILE to dotfiles repository.
 If FILE is not in registered in dotfile repo, register it.  In any case commit
 the file.  Additionally, push the file but only if the battery is charging or
@@ -190,9 +190,9 @@ the file.  Additionally, push the file but only if the battery is charging or
 the battery percentage is greater than 90%."
   (interactive (list (or (buffer-file-name)
                          (read-file-name "Select file to add to dofiles:"))))
-  (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-  (set! root (vc-root-dir))
-  (set! commit-msg (format "%s" (f-relative file root)))
+  (o-set backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+  (o-set root (vc-root-dir))
+  (o-set commit-msg (format "%s" (f-relative file root)))
   ;; Adding the log-edit-files to the display-buffer-alist and even nopping
   ;; display-buffer does not work.  I have to actually nope the function
   ;; `log-edit-show-files'.
@@ -203,7 +203,7 @@ the battery percentage is greater than 90%."
   ;;  (allow-no-window . t))
   ;; (noflet! pop-to-buffer #'ignore)
   (noflet! log-edit-show-files #'ignore)
-  (set! display-buffer-alist `(("\\*vc-git.+\\*"
+  (o-set display-buffer-alist `(("\\*vc-git.+\\*"
                                 (display-buffer-no-window)
                                 (allow-no-window . t))
                                ,@display-buffer-alist))
@@ -221,50 +221,50 @@ the battery percentage is greater than 90%."
     (_
      nil)))
 
-(defun! o-one-line (beg end)
+(o-defun o-one-line (beg end)
   "Join lines in the region between BEG and END into a single line.
 Additionally, make any duplicate spaces in line become a single space."
   (interactive "r")
   (replace-string-in-region "\n" "\s" beg end))
 
-(defun! o-remove-consequtive-spaces (beg end)
+(o-defun o-remove-consequtive-spaces (beg end)
   "Replace consequtive spaces in region with a single space."
   (interactive "r")
   (replace-regexp-in-region "[[:space:]]\\{2,\\}" "\s" beg end))
 
-(defun! o-startup-time-table ()
+(o-defun o-startup-time-table ()
   "Produce a table that shows the time taken by each feature during startup."
   (interactive)
 
   (require 'ctable)
 
   (pcase-dolist (`(,feature ,time) o-init-data)
-    (collecting! new (list feature time))
+    (o-collecting new (list feature time))
     (summing! total time))
 
-  (set! init-time (string-to-number (emacs-init-time "%.2f")))
+  (o-set init-time (string-to-number (emacs-init-time "%.2f")))
 
-  (flet! percent (time total) (format "%3d%%" (* 100 (/ time total))))
+  (o-flet percent (time total) (format "%3d%%" (* 100 (/ time total))))
 
   (pcase-dolist (`(,feature ,time) new)
-    (set! dtime (format "%.2f" (/ (fround (* time 100)) 100.0)))
-    (pushing! data (list feature dtime (percent time total) (percent time init-time))))
+    (o-set dtime (format "%.2f" (/ (fround (* time 100)) 100.0)))
+    (o-pushing data (list feature dtime (percent time total) (percent time init-time))))
 
-  (set! data (sort data (-on #'> (-compose #'string-to-number #'cl-second))))
+  (o-set data (sort data (-on #'> (-compose #'string-to-number #'cl-second))))
 
-  (set! column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
-                           (make-ctbl:cmodel :title "Time (s)" :align 'center)
-                           (make-ctbl:cmodel :title "% of Total" :align 'center)
-                           (make-ctbl:cmodel :title "% of Init" :align 'center)))
-  (set! model (make-ctbl:model :column-model column-model :data data))
-  (set! component (ctbl:create-table-component-buffer :model model))
+  (o-set column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
+                            (make-ctbl:cmodel :title "Time (s)" :align 'center)
+                            (make-ctbl:cmodel :title "% of Total" :align 'center)
+                            (make-ctbl:cmodel :title "% of Init" :align 'center)))
+  (o-set model (make-ctbl:model :column-model column-model :data data))
+  (o-set component (ctbl:create-table-component-buffer :model model))
   (pop-to-buffer (ctbl:cp-get-buffer component)))
 
-(defun! oo/kill-emacs-no-errors ()
+(o-defun oo/kill-emacs-no-errors ()
   "Ignore `kill-emacs-hook' when killing Emacs."
   (interactive)
   ;; Manually run kill-Emacs-ho
-  (flet! noerrs (fn &rest args) (ignore-errors (apply fn args)) nil)
+  (o-flet noerrs (fn &rest args) (ignore-errors (apply fn args)) nil)
   (run-hooks-wrapped 'kill-emacs-hook #'noerrs))
 
 (defun oo/kill-emacs-no-hook ()

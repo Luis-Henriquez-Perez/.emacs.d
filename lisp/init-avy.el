@@ -27,13 +27,13 @@
 ;;; Code:
 (require 'base)
 
-(opt! avy-style 'pre)
+(o-opt avy-style 'pre)
 
-(opt! avy-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
+(o-opt avy-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
 
-(opt! avy-background nil)
+(o-opt avy-background nil)
 
-(opt! avy-timeout-seconds 0.3)
+(o-opt avy-timeout-seconds 0.3)
 
 ;; Probably not the best binding, but I just want it to be bound to something
 ;; for now.

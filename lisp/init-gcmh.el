@@ -29,9 +29,9 @@
 
 (add-hook 'emacs-startup-hook #'gcmh-mode 91)
 
-(opt! gcmh-idle-delay 'auto)
-(opt! gcmh-high-cons-threshold (* 8 1024 1024))
-(opt! gcmh-low-cons-threshold (* 4 1024 1024))
+(o-opt gcmh-idle-delay 'auto)
+(o-opt gcmh-high-cons-threshold (* 8 1024 1024))
+(o-opt gcmh-low-cons-threshold (* 4 1024 1024))
 ;;; provide
 (provide 'init-gcmh)
 ;;; init-gcmh.el ends here

@@ -73,7 +73,7 @@ If SYMBOL is already bound FN is called immediately."
 (defun o-require-config (feature)
   "Load and log the loading of FEATURE."
   (condition-case err
-      (aprog1! (time-elapsed! (require feature))
+      (o-aprog1 (o-time-elapsed (require feature))
         (o-log 'success "Applied %s in %0.2f seconds" feature it))
     (error
      (o-log 'failure "Failed to apply %s : %S -> %S" feature (car err) (cdr err)))))

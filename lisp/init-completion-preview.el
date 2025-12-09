@@ -29,8 +29,8 @@
 (add-hook 'text-mode-hook #'completion-preview-mode)
 (add-hook 'eshell-mode-hook #'completion-preview-mode)
 
-(opt! completion-preview-minimum-symbol-length 1)
-(opt! completion-preview-commands (cl-adjoin 'org-self-insert-command completion-preview-commands))
+(o-opt completion-preview-minimum-symbol-length 1)
+(o-opt completion-preview-commands (cl-adjoin 'org-self-insert-command completion-preview-commands))
 ;;; provide
 (provide 'init-completion-preview)
 ;;; init-completion-preview.el ends here

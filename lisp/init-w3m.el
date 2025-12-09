@@ -25,10 +25,10 @@
 ;; Initialize nil.
 ;;
 ;;; Code:
-(opt! w3m-profile-directory (expand-file-name "w3m" o-cache-dir))
+(o-opt w3m-profile-directory (expand-file-name "w3m" o-cache-dir))
 
 ;; Do not make new tabs.  Instead make new windows.
-(opt! w3m-display-mode 'plain)
+(o-opt w3m-display-mode 'plain)
 
 ;; This is in the same spirit as `w3m-display-mode'.  The stock `w3m-find-file'
 ;; reuses an existing w3m buffer instead of creating a new one--this is not want

@@ -28,7 +28,7 @@
 (require 'base)
 (require 'evil-goggles)
 ;;;; Remove advices
-(opt! evil-goggles-duration 0.1)
+(o-opt evil-goggles-duration 0.1)
 
 ;; Now that `evil-goggles' is loaded we do not need the advice.
 (advice-remove 'evil-delete                                #'o-require-evil-goggles-a)
@@ -70,8 +70,8 @@
 (advice-remove 'o-evil-eval-replace-operator                #'o-require-evil-goggles-a)
 (advice-remove 'o-evil-eval-print-operator                  #'o-require-evil-goggles-a)
 
-(autolet! nil
-  (set! list '((o-evil-eval-operator evil-change)
+(o-autolet nil
+  (o-set list '((o-evil-eval-operator evil-change)
                (o-evil-eval-replace-operator evil-change)
                (o-evil-eval-print-operator evil-change)
                (lispyville-delete-line evil-delete-line)
@@ -86,7 +86,7 @@
 			   (lispyville-delete evil-delete)
 			   (lispyville-yank evil-yank)))
   (pcase-dolist (`(,new ,old) list)
-    (set! elt (cons new (cdr (assoc old evil-goggles--commands))))
+    (o-set elt (cons new (cdr (assoc old evil-goggles--commands))))
     (cl-pushnew elt evil-goggles--commands :key #'car))
   (cl-assert (cl-every (lambda (it) (assoc it list)) (mapcar #'car list))))
 ;;;; register lispyville commands

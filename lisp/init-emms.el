@@ -27,26 +27,26 @@
 ;;; Code:
 (require 'base)
 
-(opt! emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
-(opt! emms-directory (expand-file-name "emms/" o-cache-dir))
+(o-opt emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
+(o-opt emms-directory (expand-file-name "emms/" o-cache-dir))
 
 ;; As of right now using VLC or MPV will have the effect of repeating the current track
 ;; in the playlist indefinitely.  These parameters at least prevent this form
 ;; happening with MPV.  Actually, I think the only pertinent one for this is
 ;; "--no-config".
-(opt! emms-player-mpv-parameters (list "--quiet"
+(o-opt emms-player-mpv-parameters (list "--quiet"
                                        "--really-quiet"
                                        "--no-config"
                                        "--no-audio-display"
                                        "--force-window=no"
                                        "--vo=null"))
 
-(opt! emms-player-list '(emms-player-mpv emms-player-vlc))
+(o-opt emms-player-list '(emms-player-mpv emms-player-vlc))
 (autoload 'emms-player-mpv "emms-player-mpv" nil nil 'function)
 
-(opt! emms-info-functions '(emms-info-native))
+(o-opt emms-info-functions '(emms-info-native))
 ;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
-(opt! emms-playlist-buffer "*EMMS Playlist*")
+(o-opt emms-playlist-buffer "*EMMS Playlist*")
 
 (declare-function emms-add-directory "emms")
 
@@ -59,7 +59,7 @@
   (call-interactively #'emms-playlist-mode-go))
 
 ;; Without this I get an error that `emms-player-mpv' is not loaded.
-(defafter! o-ensure-proper-emms-player-is-loaded (emms)
+(o-defafter o-ensure-proper-emms-player-is-loaded (emms)
   (or (and (executable-find "mpv") (require 'emms-player-mpv))
       (and (executable-find "vlc") (require 'emms-player-vlc))))
 ;;; provide

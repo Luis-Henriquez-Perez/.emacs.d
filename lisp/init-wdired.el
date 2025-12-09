@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(opt! wdired-confirm-overwrite nil)
+(o-opt wdired-confirm-overwrite nil)
 ;;; provide
 (provide 'init-wdired)
 ;;; init-wdired.el ends here

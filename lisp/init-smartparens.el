@@ -47,10 +47,10 @@
 
 (add-hook 'minibuffer-setup-hook #'smartparens|enable-in-minibuffer)
 
-(opt! sp-highlight-wrap-tag-overlay nil)
-(opt! sp-highlight-pair-overlay nil)
-(opt! sp-highlight-wrap-overlay nil)
-(opt! sp-show-pair-delay 0.2)
+(o-opt sp-highlight-wrap-tag-overlay nil)
+(o-opt sp-highlight-pair-overlay nil)
+(o-opt sp-highlight-wrap-overlay nil)
+(o-opt sp-show-pair-delay 0.2)
 
 (o-require-after-load 'smartparens 'config-smartparens)
 ;;; provide

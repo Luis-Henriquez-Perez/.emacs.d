@@ -31,7 +31,7 @@
 (require 'emacs-lisp-mode-abbrev-table)
 ;;;; PREDICATES
 ;;;;; MODAL
-(defun! o-abbrev-in-text-p ()
+(o-defun o-abbrev-in-text-p ()
   "Return non-nil when text-mode abbrevs should be enabled.
 This is when the current major-mode is derived from text-mode or point is in a
 string or comment."
@@ -41,12 +41,12 @@ string or comment."
 	  ;; string or comment when in some programming mode.
 	  (cl-case (o-in-string-or-comment-p)
 		(string
-		 (set! string-beg (car (bounds-of-thing-at-point 'string)))
-		 (set! word-beg (save-excursion (backward-word) (point)))
+		 (o-set string-beg (car (bounds-of-thing-at-point 'string)))
+		 (o-set word-beg (save-excursion (backward-word) (point)))
 		 (> word-beg string-beg))
 		(comment
-		 (set! comment-beg (save-excursion (comment-beginning) (point)))
-		 (set! word-beg (save-excursion (backward-word) (point)))
+		 (o-set comment-beg (save-excursion (comment-beginning) (point)))
+		 (o-set word-beg (save-excursion (backward-word) (point)))
          ;; The first word of a comment actually starts at `comment-beg' but
          ;; this never happens for a string.
          (>= word-beg comment-beg)))))
@@ -79,10 +79,10 @@ string or comment."
 ;; Some abbrevs I do not want to expand if they are immediately preceded by a
 ;; non-space character.  For example, I want "emacs" to expand into "Emacs" but
 ;; not when in a symbol like `user-emacs-directory'.
-(defun! o-abbrev-part-of-another-word-p ()
+(o-defun o-abbrev-part-of-another-word-p ()
   "Return non-nil if current abbrev is part of another word."
   (declare (pure t) (side-effect-free error-free))
-  (set! rx (rx-to-string `(seq (1+ (not blank)) ,(symbol-name last-abbrev) (0+ blank))))
+  (o-set rx (rx-to-string `(seq (1+ (not blank)) ,(symbol-name last-abbrev) (0+ blank))))
   (not (looking-back rx (line-beginning-position))))
 ;;;;; DO NOT EXPAND ESCAPE CHARACTERS
 ;; Do not expand single letter abbrevs when they are meant to be used as escape
@@ -101,12 +101,12 @@ string or comment."
 ;; it is converted into period space space.  Additionally, if I end a sentence
 ;; line with two spaces and I press ESC, the trailing two spaces are replaced
 ;; with a period.
-(defun! o-abbrev-insert-period-maybe-a (expand-fn)
+(o-defun o-abbrev-insert-period-maybe-a (expand-fn)
   "Add a period when necessary."
   (prog1 (funcall expand-fn)
     (when (or (member major-mode '(org-mode text-mode)) (o-in-string-or-comment-p))
-      (set! eol (line-beginning-position -1))
-      (set! rx "\\([^\n!.?[:blank:]]\\)\\([[:blank:]][[:blank:]]\\)\\([^[:blank:]]+\\)")
+      (o-set eol (line-beginning-position -1))
+      (o-set rx "\\([^\n!.?[:blank:]]\\)\\([[:blank:]][[:blank:]]\\)\\([^[:blank:]]+\\)")
       (cond ((looking-back rx eol)
              (replace-match "\\1.\\2\\3" nil nil nil 0))
             ((looking-back "\\([^!.?[:blank:]]\\)[[:blank:]]\\{2,\\}" eol)
@@ -114,9 +114,9 @@ string or comment."
 ;;;;; PULSE EXPANSION
 ;; You would be surprised at how much of an aesthetic improvement little things
 ;; like this can make a difference.
-(defun! o-abbrev-pulse-expand-a (expand-fn)
+(o-defun o-abbrev-pulse-expand-a (expand-fn)
   "Pulse around the expansion of an abbrev."
-  (aprog1! (funcall expand-fn)
+  (o-aprog1 (funcall expand-fn)
     (and it
          last-abbrev-location
          (require 'pulse nil t)
@@ -127,25 +127,25 @@ string or comment."
 ;; captializes a word during `post-insert-hook' and a multi-word expansion will
 ;; skip calling that hook after each word except the last one.  So here I call
 ;; the hook myself at the proper places.
-(defun! o-abbrev-ensure-post-insert-a (expand-fn)
+(o-defun o-abbrev-ensure-post-insert-a (expand-fn)
   "Run `post-insert-hook' after each word in a multi-word expansion."
-  (aprog1! (funcall expand-fn)
+  (o-aprog1 (funcall expand-fn)
     (when (and it last-abbrev-location)
-      (set! end (point))
+      (o-set end (point))
       (save-excursion (goto-char last-abbrev-location)
                       (while (re-search-forward ".+?[[:blank:]]" end t nil)
                         (run-hooks 'post-self-insert-hook))))))
 ;;;;; WRITING THE ABBREV FILE
-(defun! o-abbrev-table-string (table)
+(o-defun o-abbrev-table-string (table)
   "Print TABLE as `define-abbrev-table' with aligned abbrevs and no :count."
-  (set! abbrevs '())
-  (set! name (symbol-name table))
-  (flet! insert-at-column (column string)
-    "Insert STRING at COLUMN, padding with spaces if necessary."
-    (let ((pad (- column (current-column))))
-      (when (> pad 0)
-        (insert (make-string pad ?\s)))
-      (insert string)))
+  (o-set abbrevs '())
+  (o-set name (symbol-name table))
+  (o-flet insert-at-column (column string)
+          "Insert STRING at COLUMN, padding with spaces if necessary."
+          (let ((pad (- column (current-column))))
+            (when (> pad 0)
+              (insert (make-string pad ?\s)))
+            (insert string)))
   (mapatoms
    (lambda (sym)
      (let* ((name (symbol-name sym))
@@ -170,7 +170,7 @@ string or comment."
   (with-temp-buffer
     (erase-buffer)
     (insert (format "(define-abbrev-table '%s\n  '(" name))
-    (set! column (current-column))
+    (o-set column (current-column))
     (dolist (abbrev abbrevs)
       (insert-at-column column (format "%S\n" abbrev)))
     ;; This is the last newline.
@@ -178,12 +178,12 @@ string or comment."
     (insert-at-column (current-column) "))")
     (buffer-string)))
 
-(defun! o-abbrev-update-abbrev-tables ()
+(o-defun o-abbrev-update-abbrev-tables ()
   "Update abbrev tables and commit changes."
   (dolist (table abbrev-table-name-list)
-    (set! file (expand-file-name (format "%s.el" table) o-lisp-dir))
+    (o-set file (expand-file-name (format "%s.el" table) o-lisp-dir))
     (when (and (abbrev--table-symbols table) (file-exists-p file))
-      (set! buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
+      (o-set buffer (or (get-file-buffer file) (find-file-noselect file nil t)))
       (when (buffer-modified-p buffer)
         (message "Abbrev buffer for %s is modified, aborting saving..." table)
         ;; TODO: steps to properly handle modification.
@@ -196,13 +196,13 @@ string or comment."
         ;;    not work, then the current abbrev table (in the buffer) is invalid
         ;;    and I should be notified.  Reset the abbrev table that was cleared
         ;;    with the saved value and notify me that there was a problem.
-        (continue!))
+        (o-continue))
       (unwind-protect
           (with-current-buffer buffer
             (goto-char (point-min))
             (when (re-search-forward "^(define-abbrev-table" nil)
               (goto-char (match-beginning 0))
-              (set! beg (point))
+              (o-set beg (point))
               (forward-sexp)
               (delete-region beg (point))
               (goto-char beg)
@@ -210,8 +210,8 @@ string or comment."
             (save-buffer)
             (require 'vc)
             (when (equal 'edited (vc-state file))
-              (set! backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
-              (set! commit-msg (format "Add abbrevs to the %s..." (file-name-base file)))
+              (o-set backend (car (vc-deduce-fileset nil t 'state-model-only-files)))
+              (o-set commit-msg (format "Add abbrevs to the %s..." (file-name-base file)))
               (require 'log-edit)
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))

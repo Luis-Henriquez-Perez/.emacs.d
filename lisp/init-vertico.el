@@ -29,7 +29,7 @@
 
 (add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 
-(opt! vertico-buffer-display-action
+(o-opt vertico-buffer-display-action
       '(display-buffer-in-direction
         (direction . below)
         (window-height . ,(+ 3 vertico-count))))
@@ -42,28 +42,28 @@
 
 (add-hook 'vertico-mode-hook #'vertico-multiform-mode)
 
-;; (pushing! vertico-multiform-commands '(Info-menu (vertico-sort-function . nil)))
-(opt! vertico-multiform-commands
+;; (o-pushing vertico-multiform-commands '(Info-menu (vertico-sort-function . nil)))
+(o-opt vertico-multiform-commands
       '((Info-menu (vertico-sort-function . nil))
         ;; (execute-extended-command (vertico-sort-function . vertico-sort-history-alpha))
         ;; (t (vertico-sort-function . vertico-sort-history-length-alpha))
         ))
 
-(opt! vertico-quick1 "asdfgh")
-(opt! vertico-quick2 "jkluionm")
+(o-opt vertico-quick1 "asdfgh")
+(o-opt vertico-quick2 "jkluionm")
 
-(opt! vertico-count-format nil)
-(opt! vertico-count 15)
+(o-opt vertico-count-format nil)
+(o-opt vertico-count 15)
 
-(imap! vertico-map "C-n" #'vertico-scroll-up)
-(imap! vertico-map "C-p" #'vertico-scroll-down)
-(imap! vertico-map "TAB" #'vertico-next)
-(imap! vertico-map "C-k" #'vertico-previous)
-(imap! vertico-map "C-j" #'vertico-next)
-(imap! vertico-map ";" #'vertico-quick-exit)
-(imap! vertico-map "C-;" #'vertico-quick-exit)
-(imap! vertico-map [backtab] #'vertico-previous)
-(imap! vertico-map "C-o" #'embark-act)
+(o-imap vertico-map "C-n" #'vertico-scroll-up)
+(o-imap vertico-map "C-p" #'vertico-scroll-down)
+(o-imap vertico-map "TAB" #'vertico-next)
+(o-imap vertico-map "C-k" #'vertico-previous)
+(o-imap vertico-map "C-j" #'vertico-next)
+(o-imap vertico-map ";" #'vertico-quick-exit)
+(o-imap vertico-map "C-;" #'vertico-quick-exit)
+(o-imap vertico-map [backtab] #'vertico-previous)
+(o-imap vertico-map "C-o" #'embark-act)
 ;;; provide
 (provide 'init-vertico)
 ;;; init-vertico.el ends here

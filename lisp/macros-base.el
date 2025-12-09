@@ -26,14 +26,14 @@
 ;;
 ;;; Code:
 ;;;; generic
-(defmacro time-elapsed! (&rest forms)
+(defmacro o-time-elapsed (&rest forms)
   "Eval forms and return the time elapsed."
   (let ((start (make-symbol "start")))
     `(let ((,start (float-time)))
        ,(macroexp-progn forms)
        (/ (fround (* (- (float-time) ,start) 100)) 100.0))))
 
-(defmacro lef! (bindings &rest body)
+(defmacro o-lef (bindings &rest body)
   "Bind each symbol in BINDINGS to its corresponding function during BODY.
 BINDINGS is a list of either (SYMBOL FUNCTION), where symbol is the symbol to be
 bound and FUNCTION is the function to bind it to; or (SYMBOL ARGS BODY).  In
@@ -61,14 +61,14 @@ original function to `this-fn', otherwise bind `this-fn' to nil."
             binds))
     `(cl-letf* ,(nreverse binds) ,@body)))
 
-(defmacro quiet! (&rest body)
+(defmacro o-quiet (&rest body)
   "Run BODY without generating any output.
 Silence calls to `message', `load', `write-region' and anything that
 writes to `standard-output'."
   `(let ((inhibit-message t)
          (save-silently t)
          (standard-output #'ignore))
-     (lef! ((message #'ignore)
+     (o-lef ((message #'ignore)
             (load
              (lambda (file &optional noerror nomessage nosuffix must-suffix)
                (ignore nomessage)
@@ -80,7 +80,7 @@ writes to `standard-output'."
                         mustbenew))))
        ,@body)))
 
-(defmacro stripplist! (list)
+(defmacro o-stripplist (list)
   "Strip and return plist from the front of LIST.
 LIST is a list symbol."
   (let ((plist (gensym "plist")))
@@ -89,50 +89,50 @@ LIST is a list symbol."
          (setq ,plist (append (list (pop ,list) (pop ,list)) ,plist)))
        ,plist)))
 ;;;; anaphora
-(defmacro alet! (form &rest body)
+(defmacro o-alet (form &rest body)
   "Bind the result FORM to `it' for the duration of BODY."
   (declare (debug let) (indent 1))
   `(let ((it ,form))
      ,@body))
 
-(defmacro aand! (&rest conditions)
+(defmacro o-aand (&rest conditions)
   "Like `and' but bind the result of first condition to `it'."
-  `(alet! ,(car conditions)
+  `(o-alet ,(car conditions)
      (and it ,@(cdr conditions))))
 
-(defmacro and! (&rest conditions)
-  "Like `aand!' but bind the result of each condition to `it'."
+(defmacro o-and (&rest conditions)
+  "Like `o-aand' but bind the result of each condition to `it'."
   `(let (it) (and ,@(mapcar (lambda (c) `(setq it ,c)) conditions))))
 
-(defmacro aif! (cond then &rest else)
+(defmacro o-aif (cond then &rest else)
   "Like `if' but bind the result of COND to `it' for duration of THEN and ELSE."
   (declare (debug t) (indent 2))
-  `(alet! ,cond (if it ,then ,@else)))
+  `(o-alet ,cond (if it ,then ,@else)))
 
-(defmacro awhen! (cond &rest body)
+(defmacro o-awhen (cond &rest body)
   "Like `when' but the result of COND is bound to `it'."
   (declare (debug when) (indent 1))
-  `(aif! ,cond (progn ,@body) nil))
+  `(o-aif ,cond (progn ,@body) nil))
 
-(defmacro aprog1! (form &rest body)
+(defmacro o-aprog1 (form &rest body)
   "Like `prog1' but bind first form to `it'."
   (declare (debug when) (indent 1))
-  `(alet! ,form (prog1 it ,@body)))
+  `(o-alet ,form (prog1 it ,@body)))
 
-(defmacro each! (list &rest body)
+(defmacro o-each (list &rest body)
   "Evaluate BODY for each element of LIST and return nil.
 Each element of LIST is bound to `it'."
   (declare (debug (form body)) (indent 1))
   `(dolist (it ,list) ,@body))
 
-(defmacro alet2! (form1 form2 &rest body)
+(defmacro o-alet2 (form1 form2 &rest body)
   "Bind FORM1 and FORM2 to `it' and `other' and evaluate BODY."
   (declare (debug let) (indent 2))
   `(let ((it ,form1)
          (other ,form2))
      ,@body))
 
-(defmacro aremf! (list pred)
+(defmacro o-aremf (list pred)
   "Remove the first element that satisfies PRED and return PRED.
 -PRED should be a form that evaluates with `it` bound to each element."
   (declare (indent 1))
@@ -154,7 +154,7 @@ Each element of LIST is bound to `it'."
            (setq ,glist (cdr ,glist))))
        ,gpred)))
 ;;;; place macros
-(defmacro appending! (place list)
+(defmacro o-appending (place list)
   "Append LIST to the end of PLACE.
 SETTER is the symbol of the macro or function used to do the setting."
   `(setf ,place (append ,place ,list)))
@@ -163,21 +163,21 @@ SETTER is the symbol of the macro or function used to do the setting."
 ;; adding to the end of the list.  So this macro should be used only in
 ;; non-performance-intensive code.  In performance-intensive code we need the
 ;; =push-nreverse= idiom.
-(defmacro collecting! (place item)
+(defmacro o-collecting (place item)
   "Affix ITEM to the end of PLACE.
-SETTER is the same as in `appending!'."
+SETTER is the same as in `o-appending'."
   `(setf ,place (append ,place (list ,item))))
 
-(defmacro prepending! (place list)
+(defmacro o-prepending (place list)
   "Prepend LIST to beginning of PLACE.
-SETTER is the same as in `appending!'."
+SETTER is the same as in `o-appending'."
   `(setf ,place (append ,list ,place)))
 
 ;; I know =push= already exists.  But I want a variant of push that can be used
-;; with the =autolet!= macro.
-(defmacro pushing! (place item)
+;; with the =o-autolet= macro.
+(defmacro o-pushing (place item)
   "Cons ITEM to PLACE.
-SETTER is the same as in `appending!'."
+SETTER is the same as in `o-appending'."
   `(setf ,place (cons ,item ,place)))
 ;;; provide
 (provide 'macros-base)

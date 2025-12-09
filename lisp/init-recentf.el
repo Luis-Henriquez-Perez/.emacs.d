@@ -30,7 +30,7 @@
 
 (add-hook 'emacs-startup-hook #'recentf-mode)
 
-(opt! recentf-save-file (expand-file-name "recentf-save.el" o-cache-dir))
+(o-opt recentf-save-file (expand-file-name "recentf-save.el" o-cache-dir))
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'o-call-quietly-a)
@@ -47,7 +47,7 @@
 
 (defun recentf|update-recentf-list-maybe ()
   "Update the recentf list just before killing a buffer."
-  (awhen! (buffer-file-name)
+  (o-awhen (buffer-file-name)
     (recentf-add-file it)
     (run-with-idle-timer 5 nil #'recentf-save-list)))
 
@@ -56,7 +56,7 @@
 (setq recentf-max-saved-items nil)
 ;;;; always keep important files in recentf-list
 (recentf-push (recentf-expand-file-name "~/.xinitrc"))
-(each! (directory-files (expand-file-name "lisp/" user-emacs-directory) :full)
+(o-each (directory-files (expand-file-name "lisp/" user-emacs-directory) :full)
   (recentf-push it))
 (recentf-push (recentf-expand-file-name "~/.bashrc"))
 (recentf-push (recentf-expand-file-name "~/.xinitrc"))

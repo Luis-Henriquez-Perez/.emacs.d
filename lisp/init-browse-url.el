@@ -25,7 +25,7 @@
 ;; Initialize browse-url.
 ;;
 ;;; Code:
-(opt! browse-url-generic-program
+(o-opt browse-url-generic-program
       (pcase system-type
         ('darwin "open")
         ('windows-nt "start")

@@ -139,20 +139,20 @@ in the commentary part."
           (goto-char (match-end 0))
         (insert ";;; Code:\n")))))
 
-(defun! o-auto-insert-elisp-template ()
+(o-defun o-auto-insert-elisp-template ()
   "Insert emacs-lisp template in file."
-  (set! path (buffer-file-name))
-  (set! base (f-base path))
+  (o-set path (buffer-file-name))
+  (o-set base (f-base path))
   (when (f-descendant-of-p path user-emacs-directory)
     (pcase path
       ((rx "test.el" eos)
-       (alet! (format "Test `%s'." base)
+       (o-alet (format "Test `%s'." base)
          (o--ensure-file-header (substring it 0 -1) it)))
       ((rx (= 3 digit) "init-" (1+ nonl) ".el" eos)
-       (alet! (format "Initialize `%s'." base)
+       (o-alet (format "Initialize `%s'." base)
          (o--ensure-file-header (substring it 0 -1) it)))
       ((rx (= 3 digit) "config-" (1+ nonl) ".el" eos)
-       (alet! (format "Configure `%s'." base)
+       (o-alet (format "Configure `%s'." base)
          (o--ensure-file-header (substring it 0 -1) it)))
       (_
        (o--ensure-file-header)))
@@ -212,10 +212,10 @@ in the commentary part."
                      "# Description: " p > n))))
 ;; I need to make this file executable in a hook because the file is not
 ;; actually created until the buffer is saved.
-(defun! o-auto-insert-script-file-header ()
+(o-defun o-auto-insert-script-file-header ()
   "Insert script header and make it executable."
-  (set! file-dir (file-truename (file-name-directory buffer-file-name)))
-  (set! script-dir (file-truename (expand-file-name "~/.local/bin/")))
+  (o-set file-dir (file-truename (file-name-directory buffer-file-name)))
+  (o-set script-dir (file-truename (expand-file-name "~/.local/bin/")))
   (when (and buffer-file-name (equal file-dir script-dir))
     (tempel-insert '("#!/bin/sh" > n
                      "# Filename: " (file-name-nondirectory (directory-file-name (buffer-file-name))) > n

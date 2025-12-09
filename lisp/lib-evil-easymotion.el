@@ -104,8 +104,8 @@
 ;;;; set the evilem-keys
 ;; The package `evil-easymotion' has its own style and keys separate from avy
 ;; keys.
-(opt! evilem-style 'at)
-(opt! evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
+(o-opt evilem-style 'at)
+(o-opt evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
 ;;;; more appropriate sort function
 ;; TODO: The reason that the letters are inconsistent is because the default
 ;; sorting function assigns values based on the /character distance/ not the
@@ -116,66 +116,66 @@
 ;; 1. sort the points by distance from the main point
 ;; 2. separate the points into points less than origin and points greater than it
 ;; 3. interleave the points
-(defun! o-evilem--sort-by-match (points)
+(o-defun o-evilem--sort-by-match (points)
   "Return points sorted by match occurance.
 This is as opposed to character length."
-  (set! point (point))
-  (set! points (cl-remove-if (-compose (apply-partially #'= point) #'car) points))
-  (set! points (sort points (-on (apply-partially #'< point) #'car)))
-  (set! (less-than greater-than) (-separate (-on (apply-partially #'< point) #'car) points))
+  (o-set point (point))
+  (o-set points (cl-remove-if (-compose (apply-partially #'= point) #'car) points))
+  (o-set points (sort points (-on (apply-partially #'< point) #'car)))
+  (o-set (less-than greater-than) (-separate (-on (apply-partially #'< point) #'car) points))
   ;; Interleave the points.  I really wish that I could use dash's `-interleave'
   ;; but if the interleaved lists are not the same size the extra values are
   ;; thrown away.
   (while (or less-than greater-than)
     (when less-than
-      (pushing! interleaved (pop less-than)))
+      (o-pushing interleaved (pop less-than)))
     (when greater-than
-      (pushing! interleaved (pop greater-than))))
+      (o-pushing interleaved (pop greater-than))))
   (nreverse interleaved))
 ;;;; macro to simplify defining motions
 ;; It is a peeve of mine seeing excessive wordiness in defining these motions.
 ;; Instead of defining a helper function and then using it in the
 ;; `evil-make-motion' invocation, I would like to do it all at once.
-(defmacro! o-evilem-defmotion! (name args &rest body)
+(o-defmacro o-evilem-defmotion (name args &rest body)
   "Convenience macro for defining evil motions.
 This is a wrapper around `evilem-make-motion'."
   (declare (indent defun))
   ;; TODO: use what I defined on 040-base-lib for this.
   ;; Remove the keywords passed in after docstring.
   (when (stringp (car body))
-    (set! docstring (pop body)))
+    (o-set docstring (pop body)))
   (while (keywordp (car body))
-    (appending! map (list (pop body) (pop body))))
-  `(evilem-make-motion ,name (lambda ,args ,docstring (interactive) (autolet! nil ,@body)) ,@map))
+    (o-appending map (list (pop body) (pop body))))
+  `(evilem-make-motion ,name (lambda ,args ,docstring (interactive) (o-autolet nil ,@body)) ,@map))
 ;;;; beginning of word
-(o-evilem-defmotion! o-evilem-motion-beginning-of-word ()
+(o-evilem-defmotion o-evilem-motion-beginning-of-word ()
   "Jump to the beginning of a word in the current visible buffer."
   :initial-point #'window-start
   :scope 'visible
   :collect-postprocess #'o-evilem--sort-by-match
-  (set! regexp (rx (seq (one-or-more (not word)) (group word) (zero-or-more word))))
+  (o-set regexp (rx (seq (one-or-more (not word)) (group word) (zero-or-more word))))
   (and (save-excursion (forward-char)
                        (re-search-forward regexp nil t nil))
        (goto-char (match-beginning 1))))
 ;;;; beginning of WORD
-(o-evilem-defmotion! o-evilem-motion-beginning-of-WORD ()
+(o-evilem-defmotion o-evilem-motion-beginning-of-WORD ()
   "Jump to the beginning of a WORD in the current visible buffer."
   :initial-point #'window-start
   :scope 'visible
   :collect-postprocess #'o-evilem--sort-by-match
-  (set! blank-rx (rx (or bol (1+ white)) (group (not white))))
-  (set! rx (rx (: bow (group word) (* (not white)) eow)))
+  (o-set blank-rx (rx (or bol (1+ white)) (group (not white))))
+  (o-set rx (rx (: bow (group word) (* (not white)) eow)))
   (and (re-search-forward blank-rx nil t nil)
        (goto-char (match-beginning 0))
        (re-search-forward rx nil t nil)
        (goto-char (match-beginning 1))))
 ;;;; end of word
-(o-evilem-defmotion! o-evilem-motion-end-of-word ()
+(o-evilem-defmotion o-evilem-motion-end-of-word ()
   "Jump to the beginning of a word in the current visible buffer."
   :initial-point #'window-start
   :scope 'visible
   :collect-postprocess #'o-evilem--sort-by-match
-  (set! regexp "[[:alnum:]]+")
+  (o-set regexp "[[:alnum:]]+")
   ;; I need to ensure that the regexp does not match the word on top of the
   ;; current point.
   ;; TODO: Fix capitalization rules, current at the top of the sentence above
@@ -184,36 +184,36 @@ This is a wrapper around `evilem-make-motion'."
                        (re-search-forward regexp nil t nil))
        (goto-char (1- (match-end 0)))))
 ;;;; end of WORD
-(o-evilem-defmotion! o-evilem-motion-end-of-WORD ()
+(o-evilem-defmotion o-evilem-motion-end-of-WORD ()
   "Jump to the end of a WORD in the current visible buffer."
   :initial-point #'window-start
   :scope 'visible
   :collect-postprocess #'o-evilem--sort-by-match
-  (set! regexp "\\(?:\\`\\|[^[:blank:]]+\\)\\([[:word:]]\\)")
+  (o-set regexp "\\(?:\\`\\|[^[:blank:]]+\\)\\([[:word:]]\\)")
   (and (re-search-forward regexp nil t nil)
        (goto-char (match-beginning 1))))
 ;;;; parentheses
 ;; TODO: how to find current form?
-(o-evilem-defmotion! o-evilem-open-paren ()
+(o-evilem-defmotion o-evilem-open-paren ()
   "Jump to opening parenthesis in current form."
   :scope 'visible
   :collect-postprocess #'o-evilem--sort-by-match
-  (set! regexp "(")
+  (o-set regexp "(")
   (and (save-excursion (forward-char) (re-search-forward regexp nil t nil))
        (goto-char (match-beginning 0))))
 ;;;; first non-whitespace character in line
 ;; TODO: screenshot the difference between this with and without the
 ;; postprocess.
-(o-evilem-defmotion! o-evilem-motion-beginning-of-line ()
+(o-evilem-defmotion o-evilem-motion-beginning-of-line ()
   "Jump to the beginning of line in the current visible buffer."
   :initial-point #'window-start
   :scope 'visible
   :collect-postprocess #'o-evilem--sort-by-match
-  (set! regexp "^[[:space:]]*\\(.\\)")
+  (o-set regexp "^[[:space:]]*\\(.\\)")
   (and (save-excursion (forward-char) (re-search-forward regexp nil t nil))
        (goto-char (match-beginning 1))))
 ;;;; a character
-(o-evilem-defmotion! o-evilem-motion-char ()
+(o-evilem-defmotion o-evilem-motion-char ()
   "Jump to a character in current visible buffer."
   :bind ((char (read-char "Char: ")))
   :initial-point #'window-start

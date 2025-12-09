@@ -42,7 +42,7 @@
 (setq org-default-priority ?D)
 (setq org-enforce-todo-dependencies t)
 (setq org-tags-column 0)
-(setq org-archive-location (alet! (expand-file-name "archive.org" org-directory)
+(setq org-archive-location (o-alet (expand-file-name "archive.org" org-directory)
                              (format "%s::" it)))
 (setq org-archive-mark-done t)
 (setq org-global-properties `(("Effort_ALL" .
@@ -56,13 +56,13 @@
 ;; (string-join (--map (format "0:%.2d" it) (number-sequence 5 55 5)) "\s")
 ;;;;; ORG-SRC
 (o-popup-at-bottom "\\*Org Src")
-(opt! org-edit-src-persistent-message nil)
+(o-opt org-edit-src-persistent-message nil)
 ;; (adjoin! org-src-lang-modes '("emacs-lisp" . emacs-lisp))
 ;; (adjoin! org-src-lang-modes '("lua" . lua))
-(opt! org-src-ask-before-returning-to-edit-buffer nil)
-(opt! org-src-preserve-indentation t)
-(opt! org-edit-src-content-indentation 0)
-(opt! org-src-window-setup 'plain)
+(o-opt org-src-ask-before-returning-to-edit-buffer nil)
+(o-opt org-src-preserve-indentation t)
+(o-opt org-edit-src-content-indentation 0)
+(o-opt org-src-window-setup 'plain)
 ;;;;; ORG-CAPTURE
 (autoload 'org-capture|plain "config-org-capture" nil nil 'function)
 (autoload 'org-capture|todo "config-org-capture" nil nil 'function)
@@ -71,7 +71,7 @@
 (autoload 'org-capture|bug "config-org-capture" nil nil 'function)
 (autoload 'org-capture|choose-template "config-org-capture" nil nil 'function)
 
-(alt! org-capture org-capture|choose-template org-capture)
+(o-alt org-capture org-capture|choose-template org-capture)
 
 (o-call-after-load 'org-capture 'config-org-capture)
 ;;;;; ORG-REFILE
@@ -92,7 +92,7 @@
 ;; Although it is possible to have a parent headline that also has a source
 ;; block, I prefer not to.  I guess it is a stylistic thing.
 ;; TODO: Fix `o-has-source-block-p' is not defined.
-;; (opt! org-refile-target-verify-function (lambda () (not (o-has-src-block-p))))
+;; (o-opt org-refile-target-verify-function (lambda () (not (o-has-src-block-p))))
 ;;;;; ORG-CLOCK
 ;; TODO: do not load org-clock on `org-mode-hook'.
 (add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
@@ -109,30 +109,30 @@
 
 (setq org-id-link-to-org-use-id t)
 ;;;;; ORG-TIMER
-(opt! org-timer-default-timer "0:05:00")
+(o-opt org-timer-default-timer "0:05:00")
 ;;;; COMMANDS
-(defun! org|choose-tags ()
+(o-defun org|choose-tags ()
   "Choose tags to add to current headline.
 If you choose a tag that is already in the current headline, remove it.  Any
 tags that are not in the current headline are added to it.  The Resulting tags
 are in alphabetical order."
   (interactive)
-  (set! all (save-restriction (widen) (org-get-buffer-tags)))
-  (set! current (mapcar #'substring-no-properties (org-get-tags (point) t)))
-  (set! selected (completing-read-multiple "Choose tag: " all))
-  (set! new (append (cl-set-difference selected current :test #'equal)
+  (o-set all (save-restriction (widen) (org-get-buffer-tags)))
+  (o-set current (mapcar #'substring-no-properties (org-get-tags (point) t)))
+  (o-set selected (completing-read-multiple "Choose tag: " all))
+  (o-set new (append (cl-set-difference selected current :test #'equal)
                     (cl-set-difference current selected :test #'equal)))
   (org-set-tags (sort (cl-remove-duplicates new :test #'equal) #'string<)))
 
-(defun! org|alphabetize-tags ()
+(o-defun org|alphabetize-tags ()
   "Alphabetize tags in current buffer."
   (interactive)
-  (flet! fn (headline)
-    (alet! (org-ml-get-property :tags headline)
-      (org-ml-set-property :tags (sort it #'string<) headline)))
+  (o-flet fn (headline)
+          (o-alet (org-ml-get-property :tags headline)
+            (org-ml-set-property :tags (sort it #'string<) headline)))
   (org-ml-do-headlines #'fn))
 
-(defun! org|suppress-window-deletion (orig-fn &rest args)
+(o-defun org|suppress-window-deletion (orig-fn &rest args)
   "Suppress window deletion."
   (nflet! delete-other-windows #'ignore)
   (apply orig-fn args))

@@ -42,19 +42,19 @@
 
 (defun o-call-quietly-a (fn &rest args)
   "Call FN with ARGS without producing any output."
-  (quiet! (apply fn args)))
+  (o-quiet (apply fn args)))
 
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar o-alternate-commands (make-hash-table)
   "A hash-table mapping command symbols to a list of command symbols.")
 
-(defun! o-alternate-command-choose-fn (command)
+(o-defun o-alternate-command-choose-fn (command)
   "Return an alternate command that should be called instead of COMMAND."
-  (or (each! (gethash command o-alternate-commands)
-        (aand! (funcall it) (return! it)))
+  (or (o-each (gethash command o-alternate-commands)
+        (o-aand (funcall it) (o-return it)))
       command))
 
-(defmacro alt! (old new feature)
+(defmacro o-alt (old new feature)
   `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
                 (gethash ',old o-alternate-commands))
           (define-key global-map [remap ,old] '(menu-item "" ,old :filter o-alternate-command-choose-fn))))
@@ -63,15 +63,15 @@
 ;; where I do not have to worry about whether the keymap is defined or whether
 ;; evil is loaded.  Furthermore by having a function I can apply a change from
 ;; one to all bindings.
-(defun! o-bind-key (keymap key def &optional states)
+(o-defun o-bind-key (keymap key def &optional states)
   "Bind KEY to DEF in KEYMAP.
 KEYMAP is a keymap symbol."
-  (set! states (ensure-list states))
-  (when (or (not states) (aremf! states (and (equal it 'global))))
+  (o-set states (ensure-list states))
+  (when (or (not states) (o-aremf states (and (equal it 'global))))
     (o-call-after-bound keymap `(lambda () (keymap-set ,keymap ,key ',def))))
   (when states
     (setq key (if (vectorp key) key (kbd key)))
-    (set! fn `(lambda () (evil-define-key* ',states ,keymap ,key ',def)))
+    (o-set fn `(lambda () (evil-define-key* ',states ,keymap ,key ',def)))
     (o-call-after-load 'evil (apply-partially #'o-call-after-bound keymap fn)))
   nil)
 ;;; provide

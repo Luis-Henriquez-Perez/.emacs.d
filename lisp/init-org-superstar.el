@@ -30,14 +30,14 @@
 (autoload 'org-superstar-mode "org-superstar" nil nil 'function)
 (add-hook 'org-mode-hook #'org-superstar-mode)
 
-(opt! org-superstar-leading-bullet ?\s)
-(opt! org-superstar-special-todo-items t)
-;; (opt! org-superstar-special-todo-items 'hide)
-;; (opt! org-superstar-todo-bullet-alist
+(o-opt org-superstar-leading-bullet ?\s)
+(o-opt org-superstar-special-todo-items t)
+;; (o-opt org-superstar-special-todo-items 'hide)
+;; (o-opt org-superstar-todo-bullet-alist
 ;;       `(("TODO" . ,(seq-first "☐"))
 ;;         ("CANCELLED" . ,(seq-first "✘"))
 ;;         ("DONE" . ,(seq-first "✔"))))
-(opt! org-superstar-todo-bullet-alist `(("TODO" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-checkbox_blank_outline"))))
+(o-opt org-superstar-todo-bullet-alist `(("TODO" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-checkbox_blank_outline"))))
                                         ("DONE" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-checkbox_outline"))))
                                         ("CANCELLED" . ,(seq-first (format "%s" (nerd-icons-mdicon "nf-md-cancel"))))))
 ;;; provide

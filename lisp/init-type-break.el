@@ -25,14 +25,14 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(opt! type-break-interval (* 0.26 60))  ;; 25 minutes in seconds
-(opt! type-break-good-rest-interval (* 5 60))  ;; 5 minutes in seconds
+(o-opt type-break-interval (* 0.26 60))  ;; 25 minutes in seconds
+(o-opt type-break-good-rest-interval (* 5 60))  ;; 5 minutes in seconds
 
-(opt! type-break-warning-repeat 3)  ;; Repeat warnings 3 times
-(opt! type-break-time-warning-intervals '(60 30 10)) ;; Warnings at 60s, 30s, 10s before break
-(opt! type-break-query-mode t) ;; Force confirmation to skip breaks
+(o-opt type-break-warning-repeat 3)  ;; Repeat warnings 3 times
+(o-opt type-break-time-warning-intervals '(60 30 10)) ;; Warnings at 60s, 30s, 10s before break
+(o-opt type-break-query-mode t) ;; Force confirmation to skip breaks
 
-(opt! type-break-good-rest-interval nil) ;; 5 minutes break required
+(o-opt type-break-good-rest-interval nil) ;; 5 minutes break required
 ;;; provide
 (provide 'init-type-break)
 ;;; init-type-break.el ends here

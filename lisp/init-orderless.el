@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(opt! orderless-matching-styles '(orderless-initialism orderless-regexp))
+(o-opt orderless-matching-styles '(orderless-initialism orderless-regexp))
 
 (defun o-enable-orderless-h ()
   (when (require 'orderless nil t)

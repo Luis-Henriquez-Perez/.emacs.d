@@ -32,20 +32,20 @@
 ;; By default hide details.
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
-(opt! dired-deletion-confirmer #'always)
+(o-opt dired-deletion-confirmer #'always)
 ;; This omits:
 ;; 1. Backup files
 ;; 2. Previous and current directory.
 ;; 3. Dotfiles
-(opt! dired-omit-files "\\`\\.?#\\|\\`\\.\\.?\\'\\|^\\..*$")
-(opt! dired-clean-confirm-killing-deleted-buffers nil)
-(opt! dired-recursive-copies 'always)
-(opt! dired-recursive-deletes 'always)
+(o-opt dired-omit-files "\\`\\.?#\\|\\`\\.\\.?\\'\\|^\\..*$")
+(o-opt dired-clean-confirm-killing-deleted-buffers nil)
+(o-opt dired-recursive-copies 'always)
+(o-opt dired-recursive-deletes 'always)
 
-(nmap! dired-mode-map "h" #'dired-up-directory)
-(nmap! dired-mode-map "l" #'dired-find-file)
-(nmap! dired-mode-map "RET" #'dired-find-file)
-(nmap! dired-mode-map "o" #'dired-omit-mode)
+(o-nmap dired-mode-map "h" #'dired-up-directory)
+(o-nmap dired-mode-map "l" #'dired-find-file)
+(o-nmap dired-mode-map "RET" #'dired-find-file)
+(o-nmap dired-mode-map "o" #'dired-omit-mode)
 ;;; provide
 (provide 'init-dired)
 ;;; init-dired.el ends here

@@ -29,12 +29,12 @@
 ;; Also, confirmed that this hook does not work from the yeetube config file.
 (add-hook 'yeetube-mode-hook #'hl-line-mode)
 
-(opt! yeetube-download-directory (expand-file-name "~/Videos/"))
+(o-opt yeetube-download-directory (expand-file-name "~/Videos/"))
 
-(nmap! yeetube-mode-map "p" #'yeetube-play)
-(nmap! yeetube-mode-map "a" #'o-yeetube-download-audio)
-(nmap! yeetube-mode-map "v" #'o-yeetube-download-video)
-(nmap! yeetube-mode-map "s" #'yeetube-search)
+(o-nmap yeetube-mode-map "p" #'yeetube-play)
+(o-nmap yeetube-mode-map "a" #'o-yeetube-download-audio)
+(o-nmap yeetube-mode-map "v" #'o-yeetube-download-video)
+(o-nmap yeetube-mode-map "s" #'yeetube-search)
 ;;; provide
 (provide 'init-yeetube)
 ;;; init-yeetube.el ends here

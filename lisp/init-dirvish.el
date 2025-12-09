@@ -33,20 +33,20 @@
 ;; Do not touch the mode-line.
 (advice-add 'dirvish--setup-mode-line :override #'ignore)
 ;; (setq nerd-icons-scale-factor 1.0)
-(opt! dirvish-use-mode-line t)
-(opt! dirvish-mode-line-format nil)
-(opt! dirvish-use-header-line nil)
-(opt! dirvish-attributes '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg))
-(opt! dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
+(o-opt dirvish-use-mode-line t)
+(o-opt dirvish-mode-line-format nil)
+(o-opt dirvish-use-header-line nil)
+(o-opt dirvish-attributes '(nerd-icons file-time file-size collapse subtree-state vc-state git-msg))
+(o-opt dired-listing-switches "-l --almost-all --human-readable --group-directories-first --no-group")
 
-(opt! dirvish-layout-recipes (list '(0 0 0.8)
+(o-opt dirvish-layout-recipes (list '(0 0 0.8)
                                    '(0 0 0.4)
                                    dirvish-default-layout))
 ;; dirvish-yank-overwrite-existing-files 'never
 ;; dirvish-attributes '(all-the-icons file-size vc-state symlink-arrow)
-(opt! dirvish-yank-new-name-style 'append-to-filename)
+(o-opt dirvish-yank-new-name-style 'append-to-filename)
 ;; dirvish-yank-new-name-style 'append-to-ext
-(opt! dirvish-mode-line-format nil)
+(o-opt dirvish-mode-line-format nil)
 ;;; provide
 (provide 'init-dirvish)
 ;;; init-dirvish.el ends here

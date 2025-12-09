@@ -71,7 +71,7 @@ file is loaded."
 
 (add-hook 'after-init-hook #'o-setup-eval-after-bound-forms-h 99)
 ;;;; auto-filling
-(setq-hook! prog-mode-hook normal-auto-fill-function #'o-progn-autofill-fn)
+(o-setq-mode-local prog-mode-hook normal-auto-fill-function #'o-progn-autofill-fn)
 
 (defun o-progn-autofill-fn ()
   "Fill only if in a string or comment."
@@ -113,23 +113,23 @@ file is loaded."
 
 (add-hook 'minibuffer-exit-hook #'o-decrease-garbage-collection-h 90)
 
-(defun! o--timer--lower-gc ()
+(o-defun o--timer--lower-gc ()
   "Lower garbage collection until it reaches default values."
-  (flet! mb (x) (/ (float x) 1024 1024))
+  (o-flet mb (x) (/ (float x) 1024 1024))
   (if (minibuffer-window-active-p (minibuffer-window))
       (run-with-timer 5 nil #'o--timer--lower-gc)
     (o-log 'trace "Running timer for lowering garbage collection...")
-    (set! reduction (/ (get-register :gc-cons-threshold) 10))
-    (set! gc-floor (* 8 1024 1024))
-    (set! gcp-default 0.2)
+    (o-set reduction (/ (get-register :gc-cons-threshold) 10))
+    (o-set gc-floor (* 8 1024 1024))
+    (o-set gcp-default 0.2)
     (when (/= gc-cons-threshold gc-floor)
-      (set! old gc-cons-threshold)
-      (set! new (max (- old reduction) gc-floor))
+      (o-set old gc-cons-threshold)
+      (o-set new (max (- old reduction) gc-floor))
       (setq gc-cons-threshold new)
       (o-log 'trace "Lower `gc-cons-threshold' from %.2f to %.2f MB..." (mb old) (mb new)))
     (when (/= gc-cons-percentage gcp-default)
-      (set! old (max gc-cons-percentage gcp-default))
-      (set! new (max (- gc-cons-percentage 0.1) gcp-default))
+      (o-set old (max gc-cons-percentage gcp-default))
+      (o-set new (max (- gc-cons-percentage 0.1) gcp-default))
       (o-log 'trace "Lower `gc-cons-percentage' from %.1f to %.1f..." old new)
       (setq gc-cons-percentage new))
     (if (and (= gc-cons-threshold gc-floor)
@@ -176,10 +176,10 @@ with a single space."
 
 (add-hook 'after-init-hook #'o-record-after-init-hook-start-time-h)
 
-(defun! o-record-after-init-hook-end-time-h ()
+(o-defun o-record-after-init-hook-end-time-h ()
   "Record the end of `after-init-hook'."
-  (set! start (get-register :after-init-start))
-  (set! time (o-hundredths (- (float-time) start)))
+  (o-set start (get-register :after-init-start))
+  (o-set time (o-hundredths (- (float-time) start)))
   (set-register :after-init-hook-time time)
   (o-log 'success "Finished running `after-init-hook' in %.2f seconds" time))
 
@@ -192,10 +192,10 @@ with a single space."
 
 (add-hook 'emacs-startup-hook #'o-record-emacs-startup-hook-start-time-h -100)
 
-(defun! o-record-emacs-startup-hook-end-time-h ()
+(o-defun o-record-emacs-startup-hook-end-time-h ()
   "Record the end of `emacs-startup-hook'."
-  (set! start (get-register :emacs-startup-start))
-  (set! time (o-hundredths (- (float-time) start)))
+  (o-set start (get-register :emacs-startup-start))
+  (o-set time (o-hundredths (- (float-time) start)))
   (set-register :emacs-startup-hook-time time)
   (o-log 'success "Finished running `emacs-startup-hook' in %.2f seconds" time))
 
@@ -205,7 +205,7 @@ with a single space."
   (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
   (add-hook 'mhtml-mode-hook #'highlight-indent-guides-mode))
 
-(opt! highlight-indent-guides-method 'character)
+(o-opt highlight-indent-guides-method 'character)
 
 (add-hook 'text-mode-hook #'delete-selection-mode)
 (add-hook 'prog-mode-hook #'delete-selection-mode)
@@ -216,14 +216,14 @@ with a single space."
 ;; disable existing themes before enabling new ones even after customizing a
 ;; theme the customization does not persist.  The following hook is to add
 ;; basic.  Honestly I do not know if I.
-(defun! o-set-state-faces-from-theme-h (_)
+(o-defun o-set-state-faces-from-theme-h (_)
   "Set face backgrounds dynamically based on theme faces.
 Specifically for each element (face . built-in-face) in `o-custom-faces-alist'
 set the background of FACE to the foreground of BUILT-IN-FACE and the foreground
 of FACE to the background color of the `default' face."
   (pcase-dolist (`(,face . ,theme-face) o-custom-faces-alist)
-    (set! color (face-attribute theme-face :foreground nil 'default))
-    (set! bg (face-attribute 'default :background))
+    (o-set color (face-attribute theme-face :foreground nil 'default))
+    (o-set bg (face-attribute 'default :background))
     (set-face-attribute face nil :background color :foreground bg)))
 
 (add-hook 'enable-theme-functions #'o-set-state-faces-from-theme-h)
@@ -255,21 +255,21 @@ of FACE to the background color of the `default' face."
 ;; This comes from the fact that :box (:style unspecified ...) was silently
 ;; tolerated before, but in Emacs 30 the :style slot must be either nil,
 ;; 'released-button, or 'pressed-button.
-(defun! o-set-face-attribute-a (orig-fn face frame &rest args)
+(o-defun o-set-face-attribute-a (orig-fn face frame &rest args)
   "Remove :box properties from attributes."
   (condition-case nil
       (apply orig-fn face frame args)
     (error
      ;; Remove invalid :box properties from ATTRS.
-     (flet! sanitize-attrs (attrs)
-       (let ((plist (copy-sequence attrs)))
-         (when-let* ((box (plist-get plist :box)))
-           (when (and (listp box)
-                      (eq (plist-get box :style) 'unspecified))
-             ;; Drop the :style element entirely
-             (setq box (plist-put (copy-sequence box) :style nil))
-             (setq plist (plist-put plist :box box))))
-         plist))
+     (o-flet sanitize-attrs (attrs)
+             (let ((plist (copy-sequence attrs)))
+               (when-let* ((box (plist-get plist :box)))
+                 (when (and (listp box)
+                            (eq (plist-get box :style) 'unspecified))
+                   ;; Drop the :style element entirely
+                   (setq box (plist-put (copy-sequence box) :style nil))
+                   (setq plist (plist-put plist :box box))))
+               plist))
      (apply orig-fn face frame (sanitize-attrs args)))))
 
 (advice-add 'set-face-attribute :around #'o-set-face-attribute-a)
@@ -327,10 +327,10 @@ of FACE to the background color of the `default' face."
 (autoload 'o-open-emacs-lisp-dir "base-commands" nil nil 'function)
 (autoload 'o-dwim-vc-action "base-commands" nil nil 'function)
 ;;;; xref
-(opt! xref-search-program (if (executable-find "rg") 'ripgrep xref-search-program))
+(o-opt xref-search-program (if (executable-find "rg") 'ripgrep xref-search-program))
 ;; Select from xref candidates in minibuffer
-(opt! xref-show-definitions-function #'xref-show-definitions-completing-read)
-(opt! xref-show-xrefs-function #'xref-show-definitions-completing-read)
+(o-opt xref-show-definitions-function #'xref-show-definitions-completing-read)
+(o-opt xref-show-xrefs-function #'xref-show-definitions-completing-read)
 ;;;; settings for unix
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
@@ -364,7 +364,7 @@ of FACE to the background color of the `default' face."
 (add-hook 'Info-selection-hook #'o-info-rename-buffer-h)
 ;;;; sh-mode
 (add-hook 'sh-mode-hook #'aggressive-indent-mode)
-;; (after! smartparens (lambda () (sp-local-pair 'sh-mode "'")))
+;; (o-after smartparens (lambda () (sp-local-pair 'sh-mode "'")))
 ;;;; vc
 ;; Use text-mode tools when editing.
 (add-hook 'vc-git-log-edit-mode-hook #'abbrev-mode)
@@ -374,12 +374,12 @@ of FACE to the background color of the `default' face."
 ;;;; make certain files read-only
 (autoload 'git-gutter-mode "git-gutter" nil nil 'function)
 
-(defun! o-dwim-file-rules ()
+(o-defun o-dwim-file-rules ()
   "Do special things depending on what file is opened.
 If I open a file in my package directory, do it in `view-mode'.  If I open a
 file that is in a git repo, enale git-gutter-mode."
-  (flet! in-dir-p (apply-partially #'file-in-directory-p buffer-file-name))
-  (flet! in-any-dir-p (&rest dirs) (seq-some #'in-dir-p (mapcar #'expand-file-name dirs)))
+  (o-flet in-dir-p (apply-partially #'file-in-directory-p buffer-file-name))
+  (o-flet in-any-dir-p (&rest dirs) (seq-some #'in-dir-p (mapcar #'expand-file-name dirs)))
   (when buffer-file-name
     (when (in-any-dir-p "~/.config/emacs/elpa/" "~/Downloads/")
       (read-only-mode 1))
@@ -396,9 +396,9 @@ file that is in a git repo, enale git-gutter-mode."
 ;; Try to put this at the end.
 (add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'o-dwim-file-rules 90)))
 
-(defun! o-load-theme-maybe-h ()
+(o-defun o-load-theme-maybe-h ()
   "Load theme."
-  (set! theme o-init-theme)
+  (o-set theme o-init-theme)
   (cond ((member "--random-theme" command-line-args)
          (load-theme (seq-random-elt (custom-available-themes)) :no-confirm))
         ((not theme))
@@ -424,7 +424,7 @@ file that is in a git repo, enale git-gutter-mode."
 
 (defun o-load-idle-features ()
   "Load one feature from `o-idle-features' during idle time."
-  (awhen! (pop o-idle-features)
+  (o-awhen (pop o-idle-features)
     (condition-case err
         (progn (require it nil 'noerror)
                (o-log 'success "Idle-loaded %s" it))

@@ -29,7 +29,7 @@
 ;; Do I really need a prefix to differentiate burly bookmarks?  I do not know.
 ;; I guess so.  But at least I want it to be short.
 ;; Do not differentiate.
-(opt! burly-bookmark-prefix "")
+(o-opt burly-bookmark-prefix "")
 
 ;; The mode `burly-tabs-mode' causes opening a burly bookmark to enable
 ;; `tab-bar-mode' automatically and create a new tab.

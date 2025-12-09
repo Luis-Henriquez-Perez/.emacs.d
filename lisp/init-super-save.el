@@ -37,9 +37,9 @@
 ;; time and after certain commands like [[helpfn:switch-to-buffer][switch-to-buffer]] (see [[helpvar:super-save-triggers][super-save-triggers]]).
 ;; Note that this is the same strategy employed by [[id:c550f82a-9608-47e6-972b-eca460015e3c][idle-require]] to load packages.
 ;; Saving files like this reduces the likelihood of user delays.
-(opt! super-save-auto-save-when-idle t)
+(o-opt super-save-auto-save-when-idle t)
 ;; Save after 5 seconds of idle time.
-(opt! super-save-idle-duration 5)
+(o-opt super-save-idle-duration 5)
 ;;; provide
 (provide 'init-super-save)
 ;;; init-super-save.el ends here

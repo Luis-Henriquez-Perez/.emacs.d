@@ -27,9 +27,9 @@
 ;;; Code:
 (require 'base)
 
-(opt! eww-auto-rename-buffer t)
+(o-opt eww-auto-rename-buffer t)
 
-(nmap! eww-mode-map "R" #'eww-reload)
+(o-nmap eww-mode-map "R" #'eww-reload)
 ;;; provide
 (provide 'init-eww)
 ;;; init-eww.el ends here

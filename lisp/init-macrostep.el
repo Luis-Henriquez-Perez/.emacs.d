@@ -35,7 +35,7 @@
 (llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
 (llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
 
-(defvar-keymap! o-macrostep-map
+(o-defvar-keymap o-macrostep-map
   "e" #'macrostep-expand
   "c" #'macrostep-collapse
   "C" #'macrostep-collapse-all

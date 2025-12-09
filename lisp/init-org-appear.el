@@ -27,14 +27,14 @@
 ;;; Code:
 (require 'base)
 
-(opt! org-appear-autoemphasis t)
-(opt! org-appear-autolinks t)
-(opt! org-appear-trigger 'always)
+(o-opt org-appear-autoemphasis t)
+(o-opt org-appear-autolinks t)
+(o-opt org-appear-trigger 'always)
 
 (autoload 'org-appear-mode "org-appear" nil nil 'function)
 (add-hook 'org-mode-hook #'org-appear-mode)
 
-;; (opt! org-appear-trigger 'manual)
+;; (o-opt org-appear-trigger 'manual)
 ;; (add-hook 'evil-insert-state-entry-hook #'org-appear-manual-start)
 ;; (add-hook 'evil-insert-state-exit-hook #'org-appear-manual-stop)
 ;; (add-hook 'org-mode-hook (lambda ()

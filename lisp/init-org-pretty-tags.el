@@ -29,7 +29,7 @@
 
 (add-hook 'org-mode-hook #'org-pretty-tags-mode)
 
-(opt! org-pretty-tags-surrogate-strings
+(o-opt org-pretty-tags-surrogate-strings
       (progn (require 'nerd-icons)
              `(("account"       . ,(nerd-icons-mdicon "nf-md-account"))
                ("agenda"        . ,(nerd-icons-mdicon "nf-md-view_agenda_outline"))

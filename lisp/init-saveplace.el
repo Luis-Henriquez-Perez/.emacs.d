@@ -27,7 +27,7 @@
 ;;; Code:
 (add-hook 'o-first-file-hook #'save-place-mode)
 
-(opt! save-place-file (expand-file-name "save-place.el" o-cache-dir))
+(o-opt save-place-file (expand-file-name "save-place.el" o-cache-dir))
 ;;; provide
 (provide 'init-saveplace)
 ;;; init-saveplace.el ends here

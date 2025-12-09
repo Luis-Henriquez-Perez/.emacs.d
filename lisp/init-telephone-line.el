@@ -39,51 +39,51 @@ the modeline is updated."
 (add-hook 'emacs-startup-hook #'o-setup-telephone-line-h)
 
 ;; Add a timer to toggle the separators.
-;; (opt! telephone-line-height 30)
-(opt! telephone-line-height 24)
-(opt! telephone-line-evil-use-short-tag nil)
+;; (o-opt telephone-line-height 30)
+(o-opt telephone-line-height 24)
+(o-opt telephone-line-evil-use-short-tag nil)
 ;;;; fn for updating the ml
-(defun! +telephone-line-update ()
+(o-defun +telephone-line-update ()
   "Update the telephone-line modeline."
   (interactive)
-  (set! modeline (if telephone-line-mode `("%e" ,@(telephone-line--generate-mode-line)) telephone-line--default-mode-line))
+  (o-set modeline (if telephone-line-mode `("%e" ,@(telephone-line--generate-mode-line)) telephone-line--default-mode-line))
   (setq-default mode-line-format modeline)
   (o-update-modeline))
 ;;;; allow toggling different separators
 (defun +telephone-line-apply-gradient-separator (&optional update)
   (interactive)
   (setq update (or update (called-interactively-p 'any)))
-  (opt! telephone-line-primary-left-separator 'telephone-line-gradient)
-  (opt! telephone-line-secondary-left-separator 'telephone-line-nil)
-  (opt! telephone-line-primary-right-separator 'telephone-line-gradient)
-  (opt! telephone-line-secondary-right-separator 'telephone-line-nil)
+  (o-opt telephone-line-primary-left-separator 'telephone-line-gradient)
+  (o-opt telephone-line-secondary-left-separator 'telephone-line-nil)
+  (o-opt telephone-line-primary-right-separator 'telephone-line-gradient)
+  (o-opt telephone-line-secondary-right-separator 'telephone-line-nil)
   (when update (+telephone-line-update)))
 
 (defun +telephone-line-apply-abs-separator (&optional update)
   (interactive)
   (setq update (or update (called-interactively-p 'any)))
-  (opt! telephone-line-primary-right-separator 'telephone-line-abs-right)
-  (opt! telephone-line-secondary-right-separator 'telephone-line-abs-hollow-right)
-  (opt! telephone-line-primary-left-separator 'telephone-line-abs-left)
-  (opt! telephone-line-secondary-left-separator 'telephone-line-abs-hollow-left)
+  (o-opt telephone-line-primary-right-separator 'telephone-line-abs-right)
+  (o-opt telephone-line-secondary-right-separator 'telephone-line-abs-hollow-right)
+  (o-opt telephone-line-primary-left-separator 'telephone-line-abs-left)
+  (o-opt telephone-line-secondary-left-separator 'telephone-line-abs-hollow-left)
   (when update (+telephone-line-update)))
 
 (defun +telephone-line-apply-cos-separator (&optional update)
   (interactive)
   (setq update (or update (called-interactively-p 'any)))
-  (opt! telephone-line-primary-right-separator 'telephone-line-cos-right)
-  (opt! telephone-line-secondary-right-separator 'telephone-line-cos-hollow-right)
-  (opt! telephone-line-primary-left-separator 'telephone-line-cos-left)
-  (opt! telephone-line-secondary-left-separator 'telephone-line-cos-hollow-left)
+  (o-opt telephone-line-primary-right-separator 'telephone-line-cos-right)
+  (o-opt telephone-line-secondary-right-separator 'telephone-line-cos-hollow-right)
+  (o-opt telephone-line-primary-left-separator 'telephone-line-cos-left)
+  (o-opt telephone-line-secondary-left-separator 'telephone-line-cos-hollow-left)
   (when update (+telephone-line-update)))
 
 (defun +telephone-line-apply-cubed-separator (&optional update)
   (interactive)
   (setq update (or update (called-interactively-p 'any)))
-  (opt! telephone-line-primary-left-separator 'telephone-line-cubed-left)
-  (opt! telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left)
-  (opt! telephone-line-primary-right-separator 'telephone-line-cubed-right)
-  (opt! telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+  (o-opt telephone-line-primary-left-separator 'telephone-line-cubed-left)
+  (o-opt telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left)
+  (o-opt telephone-line-primary-right-separator 'telephone-line-cubed-right)
+  (o-opt telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
   (when update (+telephone-line-update)))
 ;;;; segments
 ;; Choose a random separator.  Probably I will remove this in favor of
@@ -94,12 +94,12 @@ the modeline is updated."
                            +telephone-line-apply-cos-separator))
          nil)
 
-(opt! telephone-line-lhs
+(o-opt telephone-line-lhs
       '((evil   telephone-line-evil-tag-segment)
         (accent +telephone-line-vc-segment telephone-line-process-segment)
         (nil    +telephone-line-buffer-segment)))
 
-(opt! telephone-line-rhs
+(o-opt telephone-line-rhs
       '((nil    telephone-line-misc-info-segment)
         (accent +telephone-line-pomodoro-segment
                 +telephone-line-major-mode-segment

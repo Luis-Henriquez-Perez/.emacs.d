@@ -36,7 +36,7 @@
 :defer-config
 (--each yas-snippet-dirs (mkdir it t))
 (delq #'yas-dropdown-prompt yas-prompt-functions)
-(after! smartparens
+(o-after smartparens
         ;; tell smartparens overlays not to interfere with yasnippet keybinds
         (advice-add #'yas-expand :before #'sp-remove-active-pair-overlay))
 ;;; provide

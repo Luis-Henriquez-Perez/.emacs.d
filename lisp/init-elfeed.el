@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(opt! elfeed-feeds
+(o-opt elfeed-feeds
       '("http://nullprogram.com/feed/"
         "https://planet.emacslife.com/atom.xml"
         "https://archlinux.org/feeds/news/"))

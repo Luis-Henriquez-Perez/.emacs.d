@@ -59,31 +59,31 @@
   ;; (notmuch-tag "from:%S" "+spam-inbox+deleted")
   )
 
-(defun! o-notmuch-search-email-at-point ()
+(o-defun o-notmuch-search-email-at-point ()
   "Open a notmuch search of the current message."
   (interactive)
   ;; (message "email -> %s" (substring (thing-at-point 'email) 1 -1))
-  (set! email (substring (thing-at-point 'email) 1 -1))
+  (o-set email (substring (thing-at-point 'email) 1 -1))
   (message "email -> %s" email)
-  (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
+  (o-set query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
   (notmuch-search query))
 
-(defun! o-notmuch-tag-spam ()
+(o-defun o-notmuch-tag-spam ()
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; Get the email at point.
-  (set! email (substring (thing-at-point 'email) 1 -1))
+  (o-set email (substring (thing-at-point 'email) 1 -1))
   (message "email -> %s" email)
-  (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
+  (o-set query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
   (notmuch-tag query '("+deleted" "+spam" "-inbox")))
 
-(defun! o-notmuch-tag-delete ()
+(o-defun o-notmuch-tag-delete ()
   "Mark message with the send of the current message as spam."
   (interactive)
   ;; Get the email at point.
-  (set! email (substring (thing-at-point 'email) 1 -1))
+  (o-set email (substring (thing-at-point 'email) 1 -1))
   (message "email -> %s" email)
-  (set! query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
+  (o-set query (format "tag:inbox path:luishenriquezperez@gmail.com/** from:%s" email))
   (notmuch-tag query '("+deleted" "-inbox")))
 
 ;; (notmuch-search "tag:inbox and path:yadiraperez2029@gmail.com/**")

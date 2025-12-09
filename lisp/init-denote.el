@@ -27,11 +27,11 @@
 ;;; Code:
 (require 'base)
 
-(opt! denote-directory "~/Documents/notes/")
-(opt! denote-file-type 'org)
-(opt! denote-prompts nil)
-(opt! denote-org-front-matter "#+title: %1$s\n#+filetags: %3$s\n#+identifier: %4$s\n")
-(opt! denote-save-buffers t)
+(o-opt denote-directory "~/Documents/notes/")
+(o-opt denote-file-type 'org)
+(o-opt denote-prompts nil)
+(o-opt denote-org-front-matter "#+title: %1$s\n#+filetags: %3$s\n#+identifier: %4$s\n")
+(o-opt denote-save-buffers t)
 (declare-function denote-rename-buffer-mode "denote")
 (o-call-after-load 'denote #'denote-rename-buffer-mode)
 ;; Set denote to insert state after entering.
@@ -44,7 +44,7 @@
 
 (add-hook 'denote-after-new-note-hook #'o-enter-insert-state-h)
 
-(opt! denote-rename-confirmations nil)
+(o-opt denote-rename-confirmations nil)
 ;;; provide
 (provide 'init-denote)
 ;;; init-denote.el ends here

@@ -28,7 +28,7 @@
 ;;;; requirements
 (require 'base)
 
-(each! '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
+(o-each '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
             org-keys oc org-table org-fold org-cycle)
   (push it o-idle-features))
 
@@ -38,10 +38,10 @@
 (llmap org-mode-map "n" #'org-add-note)
 (llmap org-mode-map "t" #'org-todo)
 
-(nmap! org-mode-map "T" #'org-todo)
-(nmap! org-mode-map "t" #'+org-choose-tags)
-(nmap! org-mode-map "R" #'org-refile)
-(nmap! org-mode-map "n" #'org-add-note)
+(o-nmap org-mode-map "T" #'org-todo)
+(o-nmap org-mode-map "t" #'+org-choose-tags)
+(o-nmap org-mode-map "R" #'org-refile)
+(o-nmap org-mode-map "n" #'org-add-note)
 
 (o-require-after-load 'org 'config-org)
 ;;; provide

@@ -30,15 +30,15 @@
 
 (add-hook 'o-first-input-hook #'savehist-mode)
 
-(opt! savehist-file (expand-file-name "savehist.el" o-cache-dir))
-(opt! savehist-save-minibuffer-history t)
-(opt! savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(opt! savehist-autosave-interval (* 60 5))
+(o-opt savehist-file (expand-file-name "savehist.el" o-cache-dir))
+(o-opt savehist-save-minibuffer-history t)
+(o-opt savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(o-opt savehist-autosave-interval (* 60 5))
 
-(opt! savehist-additional-variables (cl-adjoin 'register-alist savehist-additional-variables))
+(o-opt savehist-additional-variables (cl-adjoin 'register-alist savehist-additional-variables))
 
-(defun! o-remove-kill-ring-properties-a (&rest _)
-  (flet! when-fn (pred function) (lambda (x) (if (funcall pred x) (funcall function x) x)))
+(o-defun o-remove-kill-ring-properties-a (&rest _)
+  (o-flet when-fn (pred function) (lambda (x) (if (funcall pred x) (funcall function x) x)))
   (setq kill-ring (mapcar (when-fn #'stringp #'substring-no-properties) kill-ring)))
 
 (advice-add 'savehist-save :before #'o-remove-kill-ring-properties-a)

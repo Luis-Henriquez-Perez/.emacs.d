@@ -27,7 +27,7 @@
 ;;; Code:
 (add-hook 'icomplete-mode-hook #'icomplete-vertical-mode)
 
-(opt! icomplete-show-matches-on-no-input t)
+(o-opt icomplete-show-matches-on-no-input t)
 ;;; provide
 (provide 'init-icomplete)
 ;;; init-icomplete.el ends here

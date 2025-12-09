@@ -29,7 +29,7 @@
 (require 'cl-lib)
 (require 'functions-destructure)
 
-(defmacro set! (match-form value)
+(defmacro o-set (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.
 If MATCH-FORM is a symbol act as `setq'."
   (if (symbolp match-form)
@@ -42,39 +42,37 @@ If MATCH-FORM is a symbol act as `setq'."
         `(let ,gensyms
            ,(macroexp-progn (mapcar (apply-partially #'cons 'pcase-setq) binds)))))))
 
-(defmacro return! (&optional value)
-  "Exit `autolet!' and return VALUE.
-Inside an `autolet!' form, throw a `return!' signal, immediately terminating the
-evaluation of the `autolet!' form and return VALUE."
-  `(throw 'return! ,value))
+(defmacro o-return (&optional value)
+  "Exit `o-autolet' and return VALUE.
+Inside an `o-autolet' form, throw a `o-return' signal, immediately terminating the
+evaluation of the `o-autolet' form and return VALUE."
+  `(throw 'o-return ,value))
 
-(defmacro done! ()
-  "This is a shorthand for `(return! nil)'.
-See `return!'."
-  `(return! nil))
+(defmacro o-done ()
+  "This is a shorthand for `(o-return nil)'.
+See `o-return'."
+  `(o-return nil))
 
-(defmacro break! (&optional value)
+(defmacro o-break (&optional value)
   "Exit the current loop and return VALUE.
-Inside an `autolet!' form, exit the current loop and return VALUE."
-  `(throw 'break! ,value))
+Inside an `o-autolet' form, exit the current loop and return VALUE."
+  `(throw 'break ,value))
 
-(defmacro continue! ()
+(defmacro o-continue ()
   "Skip the current iteration of a loop.
-Inside an `autolet!' form, throw a `continue!' signal to end the current
+Inside an `o-autolet' form, throw a `o-continue' signal to end the current
 iteration and move to the next."
-  `(throw 'continue! nil))
-
-(defalias 'skip! 'continue!)
+  `(throw 'o-continue nil))
 
 (defmacro stub! (name args &rest body)
-  "Indicator for defining local functions via `cl-flet' in `autolet!' forms."
+  "Indicator for defining local functions via `cl-flet' in `o-autolet' forms."
   (declare (indent defun))
   (ignore name args body))
 
-(defalias 'macrolet! 'stub! "Indicator for defining local macros via `cl-macrolet' in `autolet!' forms.")
+(defalias 'macrolet! 'stub! "Indicator for defining local macros via `cl-macrolet' in `o-autolet' forms.")
 (defalias 'mlet! 'macrolet!)
-(defalias 'flet! 'stub! "Same as `stub!'.")
-(defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `lef!'.")
+(defalias 'o-flet 'stub! "Same as `stub!'.")
+(defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `o-lef'.")
 (defalias 'nflet! 'stub! "Same as `noflet!'")
 
 (defun o-autolet-process-body (body)
@@ -94,7 +92,7 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (let ((loop-type (cadr frame))
                    (body (cdr (pop result)))
                    (pred (cadr (pop result))))
-               (push `(catch 'break! (,loop-type ,pred (catch 'continue! ,@body))) result)))
+               (push `(catch 'break! (,loop-type ,pred (catch 'o-continue ,@body))) result)))
             ((equal (car frame) :shortcut)
              (let ((type (cadr frame))
                    (args (caddr frame)))
@@ -105,8 +103,8 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (push (cdr frame) result))
             ((memq (car (cdr frame)) '(quote backquote function cl-function))
              (push (cdr frame) result))
-            ;; Set!
-            ((and (equal (cadr frame) 'set!)
+            ;; o-set
+            ((and (equal (cadr frame) 'o-set)
                   (nthcdr 2 (cdr frame))
                   (caddr frame))
              (if (sequencep (caddr frame))
@@ -115,28 +113,28 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
                (cl-pushnew (list (caddr frame) nil) letb :key #'car))
              (push (cdr frame) result))
             ;; Ing Macros
-            ((and (memq (cadr frame) '(maxing! maximizing!))
-                  (symbolp (caddr frame))
-                  (nthcdr 2 (cdr frame)))
-             (cl-pushnew `(,(caddr frame) most-negative-fixnum) letb)
-             (push (cdr frame) result))
-            ((and (memq (cadr frame) '(mining! minimizing!))
-                  (symbolp (caddr frame))
-                  (nthcdr 2 (cdr frame)))
-             (cl-pushnew `(,(caddr frame) most-positive-fixnum) letb)
-             (push (cdr frame) result))
-            ((and (memq (cadr frame) '(summing! adding! counting!))
-                  (symbolp (caddr frame))
-                  (nthcdr 2 (cdr frame)))
-             (push `(,(caddr frame) 0) letb)
-             (push (cdr frame) result))
+            ;; ((and (memq (cadr frame) '(maxing! maximizing!))
+            ;;       (symbolp (caddr frame))
+            ;;       (nthcdr 2 (cdr frame)))
+            ;;  (cl-pushnew `(,(caddr frame) most-negative-fixnum) letb)
+            ;;  (push (cdr frame) result))
+            ;; ((and (memq (cadr frame) '(mining! minimizing!))
+            ;;       (symbolp (caddr frame))
+            ;;       (nthcdr 2 (cdr frame)))
+            ;;  (cl-pushnew `(,(caddr frame) most-positive-fixnum) letb)
+            ;;  (push (cdr frame) result))
+            ;; ((and (memq (cadr frame) '(summing! adding! counting!))
+            ;;       (symbolp (caddr frame))
+            ;;       (nthcdr 2 (cdr frame)))
+            ;;  (push `(,(caddr frame) 0) letb)
+            ;;  (push (cdr frame) result))
             ((and (symbolp (cadr frame))
-                  (string-match-p "ing!$" (symbol-name (cadr frame)))
+                  (string-match-p "^o-[[:alpha:]-]+ing$" (symbol-name (cadr frame)))
                   (nthcdr 2 (cdr frame)))
              (cl-pushnew `(,(caddr frame) nil) letb :key #'car)
              (push (cdr frame) result))
             ;; Loop
-            ((and (memq (cadr frame) '(while dolist dotimes for!))
+            ((and (memq (cadr frame) '(while dolist dotimes o-for))
                   (nthcdr 1 (cdr frame)))
              (push `(:loop ,(cadr frame)) stack)
              (push `(nil . (progn ,@(cdddr frame))) stack)
@@ -145,10 +143,10 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
             ((and (listp (cadr frame))
                   (memq (caadr frame) '(nflet! noflet!))
                   (nthcdr 1 (cadr frame)))
-             (push `(:shortcut lef! ,(cdadr frame)) stack)
+             (push `(:shortcut o-lef ,(cdadr frame)) stack)
              (push `(nil . (progn ,@(cddr frame))) stack))
             ((and (listp (cadr frame))
-                  (memq (caadr frame) '(flet! stub!))
+                  (memq (caadr frame) '(o-flet stub!))
                   (nthcdr 1 (cadr frame)))
              (push `(:shortcut cl-flet ,(cdadr frame)) stack)
              (push `(nil . (progn ,@(cddr frame))) stack))
@@ -173,12 +171,12 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
 
 ;; Sometimes you do not want symbol to be auto let-bound to nil, you actually
 ;; want to just modify the original symbol without let-binding it at all.  In
-;; that case use `:noinit' which tells `autolet!' not to bind specified symbols
+;; that case use `:noinit' which tells `o-autolet' not to bind specified symbols
 ;; at all.  Other times you want a symbol to be bound to something else than the
 ;; default.  For example, counting! starts at 0 by default but maybe you want to
 ;; start at 10, in that case you can do `:init' ((count 10)).  I suppose init
 ;; can be used as a single-line alternative to `let*'.
-(defmacro autolet! (noinits &rest body)
+(defmacro o-autolet (noinits &rest body)
   "Dynamically let-bind symbols and modify forms in BODY.
 
 Process BODY by recognizing special forms and keywords for dynamically
@@ -186,7 +184,7 @@ let-binding symbols, automatically wrapping forms and enhancing the control flow
 of loops.
 
 Dynamic let-binding:
-(set! SYM _)      Let bind SYM to nil.
+(o-set SYM _)      Let bind SYM to nil.
 (maxing! SYM _)   Let bind SYM to `most-negative-fixnum'.
 (minning! SYM _)  Let bind SYM to `most-positive-fixnum'.
 (counting! SYM _) Let bind SYM to 0.
@@ -196,31 +194,31 @@ Wrapping forms:
 (mlet!|macrolet! NAME ARGS . BODY) Wrap subsequent forms with
 `(cl-macrolet ((NAME ARGS . BODY)))'.
 (stub!|flet! NAME ARGS . BODY)     Same as macrolet but use `cl-letf'.
-(nflet!|noflet! NAME ARGS . BODY)  Same as `stub!' but use `lef!'.
+(nflet!|noflet! NAME ARGS . BODY)  Same as `stub!' but use `o-lef'.
 (label!|labels! NAME ARGS . BODY)  Same as `stub!' but use `cl-labels'.
 
 Enhanced looping control flow:
 (while|dotimes|dolist CONDITION . BODY) Replace with
-`(catch \='return! (LOOP CONDITION (catch \='break! BODY)))'."
+`(catch \='o-return (LOOP CONDITION (catch \='break! BODY)))'."
   (declare (indent defun))
   (pcase-let ((`(,bindings ,body) (o-autolet-process-body body)))
     `(let ,(cl-remove-if (lambda (it) (member (car it) noinits)) bindings)
-       (catch 'return! ,@body))))
+       (catch 'o-return ,@body))))
 
-(defmacro defmacro! (&rest args)
-  "Same as `defmacro!' but wrap body with `autolet!'.
-NAME, ARGLIST and BODY are the same as `defmacro!'.
+(defmacro o-defmacro (&rest args)
+  "Same as `o-defmacro' but wrap body with `o-autolet'.
+NAME, ARGLIST and BODY are the same as `o-defmacro'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
   (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destructure-defun-args args)))
     `(defmacro ,name ,arglist
        ,@metadata
-       (autolet! ,(o-arglist-symbols arglist)
+       (o-autolet ,(o-arglist-symbols arglist)
          ,@body))))
 
-(defmacro defun! (&rest args)
-  "Same as `defun' but wrap body with `autolet!'.
+(defmacro o-defun (&rest args)
+  "Same as `defun' but wrap body with `o-autolet'.
 NAME, ARGS and BODY are the same as in `defun'.
 
 \(fn NAME ARGLIST [DOCSTRING] [DECL] [INTERACTIVE] BODY...)"
@@ -228,7 +226,7 @@ NAME, ARGS and BODY are the same as in `defun'.
   (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destructure-defun-args args)))
     `(defun ,name ,arglist
        ,@metadata
-       (autolet! ,(o-arglist-symbols arglist)
+       (o-autolet ,(o-arglist-symbols arglist)
          ,@body))))
 ;;; provide
 (provide 'macros-autolet)

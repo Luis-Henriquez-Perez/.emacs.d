@@ -65,9 +65,9 @@
   "Comparators used for sorting org agenda.
 This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 ;;;;; helpers
-(defun! +org-agenda-call-at-entry (entry fn)
+(o-defun +org-agenda-call-at-entry (entry fn)
   "Call function from entry."
-  (set! marker (get-text-property 0 'org-marker entry))
+  (o-set marker (get-text-property 0 'org-marker entry))
   (unless marker (error "Entry: %S" entry))
   (with-current-buffer (marker-buffer marker)
     (goto-char (marker-position marker))
@@ -85,31 +85,31 @@ This is a more flexible replacement for `org-agenda-sorting-strategy'.")
 If B requires more effort than A, return -1.  Otherwise, return 0."
   (* -1 (or (org-cmp-effort a b) 0)))
 ;;;;;; priority comparator
-(defun! +org-agenda-priority-comparator (a b)
+(o-defun +org-agenda-priority-comparator (a b)
   "Return 1 if priority A is greater than priority B.
 Return -1 if priority B is greater than priority A.  Otherwise, if return 0."
   (or (org-cmp-values a b 'priority) 0))
 ;;;;;; tag comparator
-(defun! +org-agenda-tag-comparator (a b)
+(o-defun +org-agenda-tag-comparator (a b)
   "Compare two entries A and B based on their tags."
-  (set! tag-weights '(("job" . 2) ("blog" . 1) ("emacs" . 0)))
-  (flet! weight (tag)
-    (alist-get (substring-no-properties tag) tag-weights 0 nil #'equal))
-  (set! weight-a (apply #'+ (mapcar #'weight (get-text-property 0 'tags a))))
-  (set! weight-b (apply #'+ (mapcar #'weight (get-text-property 0 'tags b))))
+  (o-set tag-weights '(("job" . 2) ("blog" . 1) ("emacs" . 0)))
+  (o-flet weight (tag)
+          (alist-get (substring-no-properties tag) tag-weights 0 nil #'equal))
+  (o-set weight-a (apply #'+ (mapcar #'weight (get-text-property 0 'tags a))))
+  (o-set weight-b (apply #'+ (mapcar #'weight (get-text-property 0 'tags b))))
   (cond ((> weight-a weight-b) 1)
         ((< weight-a weight-b) -1)
         (t 0)))
 ;;;;;; schedule comparator
 ;;;;;; overdue deadline comparator
-(defun! +org-agenda-overdue-deadline-comparator (a b)
+(o-defun +org-agenda-overdue-deadline-comparator (a b)
   "Return 1 if A is more overdue than B.
 Return -1 if B is more overdue than A.  Otherwise return 0."
-  (set! da (org-with-entry! a (org-get-deadline-time (point))))
-  (set! db (org-with-entry! b (org-get-deadline-time (point))))
-  (set! now (current-time))
-  (set! diff-a (and da (float-time (time-subtract da now))))
-  (set! diff-b (and db (float-time (time-subtract db now))))
+  (o-set da (org-with-entry! a (org-get-deadline-time (point))))
+  (o-set db (org-with-entry! b (org-get-deadline-time (point))))
+  (o-set now (current-time))
+  (o-set diff-a (and da (float-time (time-subtract da now))))
+  (o-set diff-b (and db (float-time (time-subtract db now))))
   (cond ((or (and (not diff-a) (not diff-b))
              (and diff-a (cl-plusp diff-a) (not diff-b))
              (and (not diff-a) diff-b (cl-plusp diff-b))
@@ -127,22 +127,22 @@ Return -1 if B is more overdue than A.  Otherwise return 0."
         ((and (cl-minusp diff-a) (cl-minusp diff-b) (/= diff-a diff-b))
          (if (> diff-a diff-b) 1 -1))))
 ;;;;;; deadline comparator
-(defun! +org-agenda-has-deadline-comparator (a b)
-  (set! da (org-with-entry! a (org-get-deadline-time (point))))
-  (set! db (org-with-entry! b (org-get-deadline-time (point))))
+(o-defun +org-agenda-has-deadline-comparator (a b)
+  (o-set da (org-with-entry! a (org-get-deadline-time (point))))
+  (o-set db (org-with-entry! b (org-get-deadline-time (point))))
   (cond ((and da (not db)) 1)
         ((and (not da) db) -1)
         (t 0)))
 ;;;;;; closest deadline comparator
-(defun! +org-agenda-closest-deadline-comparator (a b)
+(o-defun +org-agenda-closest-deadline-comparator (a b)
   "Prioritize entries with the closest non-overdue deadline.
 This assumes that an entry with a non-overdue deadline is always closer than one
 with no deadline."
-  (set! da (org-with-entry! a (org-get-deadline-time (point))))
-  (set! db (org-with-entry! b (org-get-deadline-time (point))))
-  (set! now (current-time))
-  (set! diff-a (and da (float-time (time-subtract da now))))
-  (set! diff-b (and db (float-time (time-subtract db now))))
+  (o-set da (org-with-entry! a (org-get-deadline-time (point))))
+  (o-set db (org-with-entry! b (org-get-deadline-time (point))))
+  (o-set now (current-time))
+  (o-set diff-a (and da (float-time (time-subtract da now))))
+  (o-set diff-b (and db (float-time (time-subtract db now))))
   (cond ((and diff-a (cl-plusp diff-a) (not diff-b))
          1)
         ((and diff-b (cl-plusp diff-b) (not diff-a))
@@ -173,7 +173,7 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 
 ;; The sort function accepts two entries and by entries the manual means
 ;; propertized strings.  These strings have references to the headline it refers to.
-(defun! +org-agenda-tsid-comparator (a b)
+(o-defun +org-agenda-tsid-comparator (a b)
   "Compare two entries A and B based on their ID property to sort by oldest first."
   (if-let* ((time-a (org-with-entry! a (org-id-get)))
             (time-b (org-with-entry! b (org-id-get)))
@@ -183,10 +183,10 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
     0))
 ;;;;;; STARTED comparator
 ;; I should prefer entries that have already been started.
-(defun! +org-agenda-started-comparator (a b)
+(o-defun +org-agenda-started-comparator (a b)
   "Prefer entries that have a \"STARTED\" TODO keyword."
-  (flet! started-or-not (entry)
-    (if (equal "STARTED" (org-with-entry! entry (org-get-todo-state))) "STARTED" ""))
+  (o-flet started-or-not (entry)
+          (if (equal "STARTED" (org-with-entry! entry (org-get-todo-state))) "STARTED" ""))
   (pcase (mapcar #'started-or-not (list a b))
     (`("" "") 0)
     (`("STARTED" "") 1)
@@ -198,14 +198,14 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 ;; just one additional sorting strategy.  It is design makes it inconvenient to
 ;; add more sorters.  I have decided to scrap the default sorters and use my
 ;; own.
-(defun! +org-agenda-main-comparator (a b)
+(o-defun +org-agenda-main-comparator (a b)
   "Return whether entry A should be ordered before entry B."
-  (set! comparators +org-agenda-comparators)
+  (o-set comparators +org-agenda-comparators)
   (while comparators
-    (set! comparator (pop comparators))
-    (set! result (funcall comparator a b))
+    (o-set comparator (pop comparators))
+    (o-set result (funcall comparator a b))
     (unless (zerop result)
-      (return! result)))
+      (o-return result)))
   0)
 
 (setq org-agenda-cmp-user-defined #'+org-agenda-main-comparator)
@@ -213,19 +213,19 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 ;; Composite tasks are entries that contain one or more subtasks.  These are
 ;; created when.  They have certain props.
 
-(defun! +org-has-tasks-to-be-done-p ()
+(o-defun +org-has-tasks-to-be-done-p ()
   "Return non-nil if current headline has any subtasks that need to be done."
   (interactive)
-  (flet! not-done-p ()
-    (aand! (substring-no-properties (org-get-todo-state))
-           (not (member it '("DONE" "CANCELLED")))))
+  (o-flet not-done-p ()
+          (o-aand (substring-no-properties (org-get-todo-state))
+                  (not (member it '("DONE" "CANCELLED")))))
   (save-excursion
     (when (org-goto-first-child)
       (when (not-done-p)
-        (return! t))
+        (o-return t))
       (while (org-goto-sibling)
         (when (not-done-p)
-          (return! t))))))
+          (o-return t))))))
 
 (defun +org-agenda--filter-parents-with-undone-children (entry)
   (when (not (org-with-entry! entry (+org-has-tasks-to-be-done-p)))
@@ -233,14 +233,14 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 ;;;;;; Update agenda after certain actions
 (defun o--update-agenda (orig-fn &rest args)
   (prog1 (apply orig-fn args)
-    (quiet! (call-interactively #'org-agenda-redo))))
+    (o-quiet (call-interactively #'org-agenda-redo))))
 
 (advice-add 'org-agenda-todo :around #'o--update-agenda)
 ;;;; miscellaneous
 ;; A task is overdue if the deadline of the task is past the current time.
 (defun +org-overdue-p ()
   "Return non-nil if entry is overdue."
-  (aand! (org-get-deadline-time (point))
+  (o-aand (org-get-deadline-time (point))
         (< (float-time (time-subtract it (current-time))) 0)
         (not (org-entry-is-done-p))))
 
@@ -254,59 +254,59 @@ ORG-ID should be in the format 'YYYYMMDDTHHMMSS.SSSSSS'."
 
 ;; If the difference in dates is less than 7 days, display the days left until
 ;; entry is due.
-(defun! +org-agenda--deadline-string (deadline-time)
+(o-defun +org-agenda--deadline-string (deadline-time)
   "Return string describing the deadline of entry."
-  (set! seconds (- (float-time deadline-time) (float-time (current-time))))
-  (set! seconds-in-day 86400)
-  (set! seconds-in-week (* 7 seconds-in-day))
-  (set! seconds-in-hour 3600)
+  (o-set seconds (- (float-time deadline-time) (float-time (current-time))))
+  (o-set seconds-in-day 86400)
+  (o-set seconds-in-week (* 7 seconds-in-day))
+  (o-set seconds-in-hour 3600)
   (cond ((>= seconds seconds-in-week)
          "")
         ((> seconds (* 2 seconds-in-day))
-         (set! days (/ seconds seconds-in-day))
+         (o-set days (/ seconds seconds-in-day))
          (format "due in %d days " days))
         ((> seconds seconds-in-day)
          "due in 1 day")
         ((> seconds (* 2 seconds-in-hour))
-         (set! hours (round (/ seconds seconds-in-hour)))
+         (o-set hours (round (/ seconds seconds-in-hour)))
          (format "due in %d hours " hours))
         ((> seconds seconds-in-hour)
-         (set! minutes (round (/ seconds 60.0)))
+         (o-set minutes (round (/ seconds 60.0)))
          "due in 1 hour")
         ((> seconds (* 2 60))
-         (set! minutes (round (/ seconds 60.0)))
+         (o-set minutes (round (/ seconds 60.0)))
          (format "due in %d minutes" minutes))
         ((> seconds 60)
-         (set! minutes (round (/ seconds 60.0)))
+         (o-set minutes (round (/ seconds 60.0)))
          "due in 1 minute")
         ((> seconds 0)
          (format "due %d seconds " seconds))
         ((> (abs seconds) (* 2 seconds-in-week))
-         (set! weeks (round (/ (abs seconds) seconds-in-week)))
+         (o-set weeks (round (/ (abs seconds) seconds-in-week)))
          (format "%d weeks overdue " weeks))
         ((> (abs seconds) seconds-in-week)
          "1 week overdue ")
         ((> (abs seconds) (* 2 seconds-in-day))
-         (set! days (round (/ (abs seconds) seconds-in-day)))
+         (o-set days (round (/ (abs seconds) seconds-in-day)))
          (format "%d days overdue " days))
         ((> (abs seconds) seconds-in-day)
          "1 day overdue ")
         ((> (abs seconds) (* 2 seconds-in-hour))
-         (set! hours (round (abs seconds) seconds-in-hour))
+         (o-set hours (round (abs seconds) seconds-in-hour))
          (format "%d hours overdue " hours))
         ((> (abs seconds) seconds-in-hour)
          "1 hour overdue ")
         ((> (abs seconds) (* 2 60))
-         (set! minutes (/ (abs seconds) 60))
+         (o-set minutes (/ (abs seconds) 60))
          (format "%d minutes overdue " minutes))
         ((> (abs seconds) 60)
          "1 minute overdue ")
         ((> (abs seconds) 0)
          (format "%s seconds overdue" (round (abs seconds))))))
 
-(defun! +org-agenda-deadline-string ()
+(o-defun +org-agenda-deadline-string ()
   "Return string indicating deadline status."
-  (aif! (org-get-deadline-time (point))
+  (o-aif (org-get-deadline-time (point))
       (+org-agenda--deadline-string it)
     ""))
 ;;;; views

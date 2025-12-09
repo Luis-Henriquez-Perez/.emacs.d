@@ -32,7 +32,7 @@
 (require 'base-log)
 (require 'macros-base)
 
-(defmacro require! (feature)
+(defmacro o-require (feature)
   "Require feature in lisp directory.
 If FEATURE is a regexp, require all features in lisp directory that match
 FEATURE."
@@ -43,7 +43,7 @@ FEATURE."
          (setq filename (file-name-sans-extension (file-name-nondirectory (directory-file-name file))))
          (when (string-match-p regexp filename)
            (setq feature (intern filename))
-           (push `(require! ,feature) forms)))
+           (push `(o-require ,feature) forms)))
        (macroexp-progn (reverse forms))))
     ((pred symbolp)
      (let (forms)
@@ -56,7 +56,7 @@ FEATURE."
                               (o-log 'failure "Failed to require %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
                          ,(macroexp-progn forms)))))
        (setq forms `((if o-init-profile-p
-                         (aprog1! (time-elapsed! ,(macroexp-progn forms))
+                         (o-aprog1 (o-time-elapsed ,(macroexp-progn forms))
                            (o-log 'success "Required %s in %.2f seconds" ',feature it)
                            (push (list ',feature it) o-init-data))
                        ,(macroexp-progn forms))))

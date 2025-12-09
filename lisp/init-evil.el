@@ -28,7 +28,7 @@
 (require 'base)
 ;;;; settings
 ;; Must be set before evil is loaded.  This, therefore, cannot be deferred with
-;; `opt!'.  If this is not set evil with add opinionated bindings to certain
+;; `o-opt'.  If this is not set evil with add opinionated bindings to certain
 ;; programs like dired which will override my own.
 (defvar evil-want-keybinding)
 (setq evil-want-keybinding nil)

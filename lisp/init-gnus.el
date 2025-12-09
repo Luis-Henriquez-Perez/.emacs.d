@@ -27,39 +27,39 @@
 ;;; Code:
 (require 'base)
 
-(opt! gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
-(opt! gnus-select-method '(nnnil))
-(opt! gnus-agent t)
-(opt! gnus-agent-article-alist-save-format 1)
-(opt! gnus-agent-cache t)
-(opt! gnus-agent-confirmation-function 'y-or-n-p)
-(opt! gnus-agent-consider-all-articles  nil)
-(opt! gnus-agent-directory "~/News/agent/")
-(opt! gnus-agent-enable-expiration 'ENABLE)
-(opt! gnus-agent-expire-all nil)
-(opt! gnus-agent-expire-days 30)
-(opt! gnus-agent-mark-unread-after-downloaded t)
-(opt! gnus-agent-queue-mail t)
-(opt! gnus-agent-synchronize-flags nil)
+(o-opt gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
+(o-opt gnus-select-method '(nnnil))
+(o-opt gnus-agent t)
+(o-opt gnus-agent-article-alist-save-format 1)
+(o-opt gnus-agent-cache t)
+(o-opt gnus-agent-confirmation-function 'y-or-n-p)
+(o-opt gnus-agent-consider-all-articles  nil)
+(o-opt gnus-agent-directory "~/News/agent/")
+(o-opt gnus-agent-enable-expiration 'ENABLE)
+(o-opt gnus-agent-expire-all nil)
+(o-opt gnus-agent-expire-days 30)
+(o-opt gnus-agent-mark-unread-after-downloaded t)
+(o-opt gnus-agent-queue-mail t)
+(o-opt gnus-agent-synchronize-flags nil)
 
-(opt! gnus-article-browse-delete-temp 'ask)
-(opt! gnus-article-over-scroll nil)
-(opt! gnus-article-show-cursor t)
-(opt! gnus-article-sort-functions
+(o-opt gnus-article-browse-delete-temp 'ask)
+(o-opt gnus-article-over-scroll nil)
+(o-opt gnus-article-show-cursor t)
+(o-opt gnus-article-sort-functions
       '(gnus-article-sort-by-most-recent-number
         gnus-article-sort-by-most-recent-date))
-(opt! gnus-article-truncate-lines nil)
+(o-opt gnus-article-truncate-lines nil)
 ;; (gnus-html-frame-width 80)
 ;; (gnus-html-image-automatic-caching t)
-(opt! gnus-inhibit-images t)
-(opt! gnus-max-image-proportion 0.3)
-(opt! gnus-treat-display-smileys nil)
+(o-opt gnus-inhibit-images t)
+(o-opt gnus-max-image-proportion 0.3)
+(o-opt gnus-treat-display-smileys nil)
 ;; (gnus-article-mode-line-format "%G %S %m")
-(opt! gnus-visible-headers
+(o-opt gnus-visible-headers
       '("^From:" "^To:" "^Cc:" "^Newsgroups:" "^Subject:" "^Date:"
         "Followup-To:" "Reply-To:" "^Organization:" "^X-Newsreader:"
         "^X-Mailer:"))
-(opt! gnus-sorted-header-list gnus-visible-headers);;; provide
+(o-opt gnus-sorted-header-list gnus-visible-headers);;; provide
 
 (provide 'init-gnus)
 ;;; init-gnus.el ends here

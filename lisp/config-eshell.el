@@ -31,11 +31,11 @@
 (require 'base)
 (require 'vc-git)
 ;;;; prompt function
-(defun! o-eshell-prompt ()
-  (set! path (abbreviate-file-name default-directory))
-  (set! branch (aand! (car-safe (vc-git-branches)) (format "[ %s ]" it)))
+(o-defun o-eshell-prompt ()
+  (o-set path (abbreviate-file-name default-directory))
+  (o-set branch (o-aand (car-safe (vc-git-branches)) (format "[ %s ]" it)))
   ;; Get the current time.
-  (set! time (format-time-string "%H:%M"))
+  (o-set time (format-time-string "%H:%M"))
   (string-join (delq nil (list time path branch "λ\s")) "\s"))
 ;;;; clear
 ;; TODO: make into a snippet and/or abbrev
@@ -63,44 +63,44 @@
 ;; I do not necessarily want to always scroll to the top but I want eshell to
 ;; preserve it is previous position in the window.
 ;;;; eshell
-(defun! eshell/less (&rest files)
+(o-defun eshell/less (&rest files)
   "Essentially an alias to the `view-file' function."
-  (set! (first . rest) files)
+  (o-set (first . rest) files)
   (when files
 	(view-file first)
 	(when rest
 	  (mapc #'view-file-other-window rest))))
 ;;;; settings
-(opt! eshell-banner-message "")
-(opt! eshell-highlight-prompt nil)
+(o-opt eshell-banner-message "")
+(o-opt eshell-highlight-prompt nil)
 ;; For now outsource to epe, but later I will make my own.  Also epe uses static
 ;; faces by which I mean constant faces, not existing ones that change with
 ;; themes.  So the prompt is difficult to read with certain themes, particularly
 ;; light themes.
-(opt! eshell-prompt-function 'o-eshell-prompt)
+(o-opt eshell-prompt-function 'o-eshell-prompt)
 ;; This is obsolete as of Emacs 30.1.
-(opt! eshell-prompt-regexp "^[^λ]+λ ")
-(opt! eshell-hist-ignoredups t)
-(opt! eshell-prefer-lisp-functions nil)
+(o-opt eshell-prompt-regexp "^[^λ]+λ ")
+(o-opt eshell-hist-ignoredups t)
+(o-opt eshell-prefer-lisp-functions nil)
 ;; Represent buffers as #<buffer-name>
-(opt! eshell-buffer-shorthand t)
+(o-opt eshell-buffer-shorthand t)
 ;; boost eshell history-size
 ;; Increase the history size from 128 to 1000.
-(opt! eshell-history-size 1000)
+(o-opt eshell-history-size 1000)
 ;; By "highlight" eshell does not just mean coloring the font with the
 ;; `eshell-prompt' face.  It also makes the prompt read-only.  Strangely, the
 ;; prompt is not read-only by default.  Furthermore, there is no way to override
 ;; the text properties `eshell-emit-prompt' adds to the prompt without advising
 ;; the it.
-(opt! eshell-highlight-prompt t)
-(opt! eshell-hist-ignoredups t)
+(o-opt eshell-highlight-prompt t)
+(o-opt eshell-hist-ignoredups t)
 ;; boost eshell history-size
 ;; Increase the history size from 128 to 1000.
-(opt! eshell-history-size 1000)
+(o-opt eshell-history-size 1000)
 ;; Stop eshell from printing messages.
 ;;;; keybindings
-(nmap! eshell-mode-map "J" #'eshell-next-prompt)
-(nmap! eshell-mode-map "K" #'eshell-previous-prompt)
+(o-nmap eshell-mode-map "J" #'eshell-next-prompt)
+(o-nmap eshell-mode-map "K" #'eshell-previous-prompt)
 ;;;; aliases
 (eshell/alias "home" "cd ~")
 ;;;;; git

@@ -25,8 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(opt! company-minimum-prefix-length 1)
-(opt! company-dabbrev-minimum-length 1)
+(o-opt company-minimum-prefix-length 1)
+(o-opt company-dabbrev-minimum-length 1)
 
 (defun o-init-company-h ()
   "Initialize company for text-mode."

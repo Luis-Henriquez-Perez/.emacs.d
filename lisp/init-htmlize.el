@@ -27,9 +27,9 @@
 ;;; Code:
 (require 'base)
 
-(opt! htmlize-convert-nonascii-to-entities nil)
-(opt! htmlize-html-charset "utf-8")
-(opt! htmlize-untabify nil)
+(o-opt htmlize-convert-nonascii-to-entities nil)
+(o-opt htmlize-html-charset "utf-8")
+(o-opt htmlize-untabify nil)
 ;;; provide
 (provide 'init-htmlize)
 ;;; init-htmlize.el ends here

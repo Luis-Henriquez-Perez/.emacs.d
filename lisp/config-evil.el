@@ -105,7 +105,7 @@
 
 (defun o-evil-state-background ()
   "Return the background of the current evil state face."
-  (aand! (o-evil-state-face) (face-attribute it :background)))
+  (o-aand (o-evil-state-face) (face-attribute it :background)))
 
 (defun o-evil-set-default-cursor ()
   "Set cursor for normal state."
@@ -206,7 +206,7 @@ non-readonly file buffer, save the buffer."
   (let* ((text (buffer-substring-no-properties beg end))
          (result (format "\n=> %S" (eval (read text)))))
     (goto-char end)
-    (alet! (point)
+    (o-alet (point)
       (insert result)
       (comment-region it (point)))))
 ;;;;; HUNGRY DELETE (EXPERIMENTAL AND IN PROGRESS)
@@ -252,12 +252,12 @@ non-readonly file buffer, save the buffer."
 ;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
 ;; because the maps are overridden by evil.  In order for them to work, we need
 ;; to boost give the maps greater precedence.
-(defafter! o-ensure-corfu-kbds-work-with-evil (corfu)
+(o-defafter o-ensure-corfu-kbds-work-with-evil (corfu)
   (evil-make-overriding-map corfu-map)
   (advice-add 'corfu--setup :after #'o-evil-normalize-keymaps-ignore-args)
   (advice-add 'corfu--teardown :after #'o-evil-normalize-keymaps-ignore-args))
 ;;;;; TEMPEL
-(defafter! o-make-tempel-kbds-work-with-evil (tempel)
+(o-defafter o-make-tempel-kbds-work-with-evil (tempel)
   (evil-make-overriding-map tempel-map))
 
 (advice-add 'tempel-insert :after #'evil-insert-state)
@@ -273,95 +273,95 @@ non-readonly file buffer, save the buffer."
 ;; For some reason the cursor color changes with eldoc.  Here I tell.  This also
 ;; fixes the cursor color change when expanding a tempel snippet.
 (advice-add 'elisp-eldoc-funcall :around #'+elisp-eldoc-funcall@preserve-cursor-color)
-(defun! +elisp-eldoc-funcall@preserve-cursor-color (orig &rest args)
-  (set! bg (face-attribute 'cursor :background))
+(o-defun +elisp-eldoc-funcall@preserve-cursor-color (orig &rest args)
+  (o-set bg (face-attribute 'cursor :background))
   (prog1 (apply orig args)
     (unless (equal bg (face-attribute 'cursor :background))
       (set-cursor-color bg))))
 ;;;; KEYBINDINGS
-(nmap! "+" #'text-scale-increase)
-(nmap! "-" #'text-scale-decrease)
-(nmap! "H" #'evil-first-non-blank)
-(nmap! "L" #'evil-last-non-blank)
-(nmap! "J" #'evil-scroll-page-down)
-(nmap! "K" #'evil-scroll-page-up)
-(nmap! [escape] #'o-evil-dwim-escape)
+(o-nmap "+" #'text-scale-increase)
+(o-nmap "-" #'text-scale-decrease)
+(o-nmap "H" #'evil-first-non-blank)
+(o-nmap "L" #'evil-last-non-blank)
+(o-nmap "J" #'evil-scroll-page-down)
+(o-nmap "K" #'evil-scroll-page-up)
+(o-nmap [escape] #'o-evil-dwim-escape)
 ;; Finding a place for motion commands.
-;; (nmap! "ff" #'evil-find-char)
-;; (nmap! "fw" #'o-evilem-motion-beginning-of-word)
-;; (nmap! "fe" #'o-evilem-motion-end-of-word)
-;; (nmap! "fl" #'o-evilem-motion-beginning-of-line)
-;; (nmap! "fj" #'o-evilem-motion-char)
+;; (o-nmap "ff" #'evil-find-char)
+;; (o-nmap "fw" #'o-evilem-motion-beginning-of-word)
+;; (o-nmap "fe" #'o-evilem-motion-end-of-word)
+;; (o-nmap "fl" #'o-evilem-motion-beginning-of-line)
+;; (o-nmap "fj" #'o-evilem-motion-char)
 
 ;; Hello world!
-;; (nmap! "sj" #'evil-open-below)
-;; (nmap! "sk" #'evil-open-above)
+;; (o-nmap "sj" #'evil-open-below)
+;; (o-nmap "sk" #'evil-open-above)
 ;; Invert bindings for downcase and upcase because I am more often going from
 ;; down to up than from up to down.
-(nmap! "gu" #'evil-upcase)
-(nmap! "gU" #'evil-downcase)
+(o-nmap "gu" #'evil-upcase)
+(o-nmap "gU" #'evil-downcase)
 ;; Evil operators that are by default on the main keyboard.  Consider whether I
 ;; really need them there or can put them in "g" keybinding.
 ;; c - change
 ;; y - yank
-(imap! "A-x" #'execute-extended-command)
-(imap! "M-x" #'execute-extended-command)
-(imap! "C-c h" #'grugru)
-(imap! [escape] #'o-evil-dwim-escape)
-(imap! "TAB" #'completion-preview-insert)
+(o-imap "A-x" #'execute-extended-command)
+(o-imap "M-x" #'execute-extended-command)
+(o-imap "C-c h" #'grugru)
+(o-imap [escape] #'o-evil-dwim-escape)
+(o-imap "TAB" #'completion-preview-insert)
 
 ;; Lump open line above and below into the same binding.
 
-(nimap! "C-c j" #'abbrev/inverse-add)
-(nimap! "C-c k" #'unexpand-abbrev)
+(o-imap "C-c j" #'abbrev/inverse-add)
+(o-imap "C-c k" #'unexpand-abbrev)
 
-(vmap! "V" #'expreg-contract)
-(vmap! "v" #'expreg-expand)
+(o-vmap "V" #'expreg-contract)
+(o-vmap "v" #'expreg-expand)
 ;; Ensure that ";" is always available as `execute-extended-command'.  Modes
 ;; like dired bind it themselves and would otherwise override it.
-(nvmap! override-global-map ";" #'execute-extended-command)
+(o-nvmap override-global-map ";" #'execute-extended-command)
 ;; The problem is I feel like the default evil motions are not that useful
 ;; beyond moving to one forward unit.  So I have made the controversial decision
 ;; to rebind.
 
-;; (nvmap! "w" #'o-evilem-motion-beginning-of-word)
-;; (nvmap! "e" #'o-evilem-motion-end-of-word)
-;; (nvmap! "W" #'o-evilem-motion-beginning-of-WORD)
-;; (nvmap! "E" #'o-evilem-motion-end-of-WORD)
-;; (nvmap! "f" #'o-evilem-motion-char)
-;; (nvmap! "H" #'o-evilem-motion-beginning-of-line)
+;; (o-nvmap "w" #'o-evilem-motion-beginning-of-word)
+;; (o-nvmap "e" #'o-evilem-motion-end-of-word)
+;; (o-nvmap "W" #'o-evilem-motion-beginning-of-WORD)
+;; (o-nvmap "E" #'o-evilem-motion-end-of-WORD)
+;; (o-nvmap "f" #'o-evilem-motion-char)
+;; (o-nvmap "H" #'o-evilem-motion-beginning-of-line)
 
-(nvmap! "g b" #'o-evil-eval-print-operator)
-(nvmap! "g p" #'o-evil-eval-print-operator)
-(nvmap! "g c" #'evilnc-comment-operator)
-(each! '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
+(o-nvmap "g b" #'o-evil-eval-print-operator)
+(o-nvmap "g p" #'o-evil-eval-print-operator)
+(o-nvmap "g c" #'evilnc-comment-operator)
+(o-each '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
   (o-bind-key it "g c" #'lispyville-comment-or-uncomment '(normal visual)))
-(nvmap! emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
-(nvmap! "g e" #'o-evil-eval-operator)
-(nvmap! "g h" #'o-evil-eval-operator)
-(nvmap! "g l" #'o-evil-eval-replace-operator)
-(nvmap! "g r" #'o-evil-eval-replace-operator)
-(nvmap! "g s" #'evil-exchange)
-(nvmap! "g S" #'evil-exchange-cancel)
-(nvmap! "g x" #'evil-exchange)
-(nvmap! "g X" #'evil-exchange-cancel)
+(o-nvmap emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
+(o-nvmap "g e" #'o-evil-eval-operator)
+(o-nvmap "g h" #'o-evil-eval-operator)
+(o-nvmap "g l" #'o-evil-eval-replace-operator)
+(o-nvmap "g r" #'o-evil-eval-replace-operator)
+(o-nvmap "g s" #'evil-exchange)
+(o-nvmap "g S" #'evil-exchange-cancel)
+(o-nvmap "g x" #'evil-exchange)
+(o-nvmap "g X" #'evil-exchange-cancel)
 ;;;; TEXT-OBJECTS
-(iotmap! "c" #'evilnc-inner-comment #'evilnc-outer-comment)
+(o-iotmap "c" #'evilnc-inner-comment #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
-(iotmap! "a" #'lispyville-inner-comment #'lispyville-outer-comment)
-(iotmap! "h" #'evil-i-syntax #'evil-a-syntax)
-(iotmap! "l" #'evil-inner-line #'evil-a-line)
-(iotmap! "f" #'evil-cp-inner-form #'evil-cp-a-form)
-;; (iotmap! "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
-(iotmap! "b" #'o-evil-inner-buffer #'o-evil-outer-buffer)
+(o-iotmap "a" #'lispyville-inner-comment #'lispyville-outer-comment)
+(o-iotmap "h" #'evil-i-syntax #'evil-a-syntax)
+(o-iotmap "l" #'evil-inner-line #'evil-a-line)
+(o-iotmap "f" #'evil-cp-inner-form #'evil-cp-a-form)
+;; (o-iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
+(o-iotmap "b" #'o-evil-inner-buffer #'o-evil-outer-buffer)
 
-(nmap! override-global-map o-normal-leader-key #'o-leader-map)
-(imap! override-global-map o-insert-leader-key #'o-leader-map)
-(emap! override-global-map o-emacs-leader-key #'o-leader-map)
-(emap! override-global-map o-emacs-alt-leader-key #'o-leader-map)
+(o-nmap override-global-map o-normal-leader-key #'o-leader-map)
+(o-imap override-global-map o-insert-leader-key #'o-leader-map)
+(o-emap override-global-map o-emacs-leader-key #'o-leader-map)
+(o-emap override-global-map o-emacs-alt-leader-key #'o-leader-map)
 
-(nmap! Info-mode-map "H" #'Info-last)
-(nmap! Info-mode-map "L" #'Info-next)
+(o-nmap Info-mode-map "H" #'Info-last)
+(o-nmap Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide 'config-evil)
 ;;; config-evil.el ends here

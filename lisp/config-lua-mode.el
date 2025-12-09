@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (require 'base)
-(opt! lua-indent-level 4)
+(o-opt lua-indent-level 4)
 ;;; provide
 (provide 'config-lua-mode)
 ;;; config-lua-mode.el ends here

@@ -27,24 +27,24 @@
 ;;; Code:
 (require 'base)
 
-(opt! consult-preview-key nil)
-(opt! consult-fontify-preserve nil)
+(o-opt consult-preview-key nil)
+(o-opt consult-fontify-preserve nil)
 
 (autoload 'o-pop-to-buffer "o-commands" nil nil 'function)
 
-(alt! display-buffer o-pop-to-buffer consult)
+(o-alt display-buffer o-pop-to-buffer consult)
 
-(alt! imenu consult-imenu consult)
-(alt! pop-to-buffer o-pop-to-buffer consult)
-(alt! switch-to-buffer consult-buffer consult)
-(alt! yank-pop consult-yank-pop consult)
-(alt! apropos consult-apropos consult)
-(alt! man consult-man consult)
+(o-alt imenu consult-imenu consult)
+(o-alt pop-to-buffer o-pop-to-buffer consult)
+(o-alt switch-to-buffer consult-buffer consult)
+(o-alt yank-pop consult-yank-pop consult)
+(o-alt apropos consult-apropos consult)
+(o-alt man consult-man consult)
 
-;; (opt! consult-project-function #'projectile-project-root)
-(opt! consult-project-function #'consult--default-project-function)
+;; (o-opt consult-project-function #'projectile-project-root)
+(o-opt consult-project-function #'consult--default-project-function)
 ;; Do not load bookmarks as buffer sources.  It is expensive and unnecessary.
-(opt! consult-buffer-sources (remove 'consult--source-bookmark consult-buffer-sources))
+(o-opt consult-buffer-sources (remove 'consult--source-bookmark consult-buffer-sources))
 ;;; provide
 (provide 'init-consult)
 ;;; init-consult.el ends here

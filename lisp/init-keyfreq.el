@@ -28,7 +28,7 @@
 (add-hook 'o-first-input-hook #'keyfreq-mode)
 (add-hook 'o-first-input-hook #'keyfreq-autosave-mode)
 
-(opt! keyfreq-excluded-commands
+(o-opt keyfreq-excluded-commands
       '(self-insert-command
         forward-char
         backward-char
