@@ -5152,6 +5152,7 @@
     ("scandanavia" "Scandinavia")
     ("scaricity" "scarcity")
     ("scavanged" "scavenged")
+    ("sceme" "scheme")
     ("schedual" "schedule")
     ("scholarhip" "scholarship")
     ("scientfic" "scientific")
