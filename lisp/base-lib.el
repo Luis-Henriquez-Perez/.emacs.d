@@ -32,7 +32,7 @@
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-loop))
 (eval-when-compile (require 'macros-keybinding))
-(eval-when-compile (require '008-base-loader))
+(eval-when-compile (require 'macros-require))
 (eval-when-compile (require '016-base-macros))
 (require 'functions-2)
 (require 'functions-call-after)

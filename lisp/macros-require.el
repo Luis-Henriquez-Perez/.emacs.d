@@ -1,4 +1,4 @@
-;;; 008-base-loader.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
+;;; macros-require.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,6 +30,7 @@
 ;;; Code:
 (require 'base-vars)
 (require 'base-log)
+(require 'macros-base)
 
 (defmacro require! (feature)
   "Require feature in lisp directory.
@@ -68,5 +69,5 @@ FEATURE."
     (_
      (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
 ;;; provide
-(provide '008-base-loader)
-;;; 008-base-loader.el ends here
+(provide 'macros-require)
+;;; macros-require.el ends here
