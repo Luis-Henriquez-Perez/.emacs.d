@@ -131,6 +131,28 @@ Each element of LIST is bound to `it'."
   `(let ((it ,form1)
          (other ,form2))
      ,@body))
+
+(defmacro aremf! (list pred)
+  "Remove the first element that satisfies PRED and return PRED.
+-PRED should be a form that evaluates with `it` bound to each element."
+  (declare (indent 1))
+  (let ((glist (gensym "list"))
+        (gpred (gensym "pred"))
+        (grest (gensym "rest")))
+    `(let* ((,glist ,list)
+            (,grest nil)
+            (,gpred nil)
+            (it nil))
+       (while ,glist
+         (setq it (car ,glist))
+         (setq ,gpred ,pred)
+         (if ,gpred
+             (progn
+               (setq ,list (nconc (nreverse ,grest) (cdr ,glist)))
+               (setq ,glist nil)) ; exit loop
+           (push it ,grest)
+           (setq ,glist (cdr ,glist))))
+       ,gpred)))
 ;;;; place macros
 (defmacro appending! (place list)
   "Append LIST to the end of PLACE.
