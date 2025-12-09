@@ -89,6 +89,74 @@ LIST is a list symbol."
          (setq ,plist (append (list (pop ,list) (pop ,list)) ,plist)))
        ,plist)))
 ;;;; anaphora
+(defmacro alet! (form &rest body)
+  "Bind the result FORM to `it' for the duration of BODY."
+  (declare (debug let) (indent 1))
+  `(let ((it ,form))
+     ,@body))
+
+(defmacro aand! (&rest conditions)
+  "Like `and' but bind the result of first condition to `it'."
+  `(alet! ,(car conditions)
+     (and it ,@(cdr conditions))))
+
+(defmacro and! (&rest conditions)
+  "Like `aand!' but bind the result of each condition to `it'."
+  `(let (it) (and ,@(mapcar (lambda (c) `(setq it ,c)) conditions))))
+
+(defmacro aif! (cond then &rest else)
+  "Like `if' but bind the result of COND to `it' for duration of THEN and ELSE."
+  (declare (debug t) (indent 2))
+  `(alet! ,cond (if it ,then ,@else)))
+
+(defmacro awhen! (cond &rest body)
+  "Like `when' but the result of COND is bound to `it'."
+  (declare (debug when) (indent 1))
+  `(aif! ,cond (progn ,@body) nil))
+
+(defmacro aprog1! (form &rest body)
+  "Like `prog1' but bind first form to `it'."
+  (declare (debug when) (indent 1))
+  `(alet! ,form (prog1 it ,@body)))
+
+(defmacro each! (list &rest body)
+  "Evaluate BODY for each element of LIST and return nil.
+Each element of LIST is bound to `it'."
+  (declare (debug (form body)) (indent 1))
+  `(dolist (it ,list) ,@body))
+
+(defmacro alet2! (form1 form2 &rest body)
+  "Bind FORM1 and FORM2 to `it' and `other' and evaluate BODY."
+  (declare (debug let) (indent 2))
+  `(let ((it ,form1)
+         (other ,form2))
+     ,@body))
+;;;; place macros
+(defmacro appending! (place list)
+  "Append LIST to the end of PLACE.
+SETTER is the symbol of the macro or function used to do the setting."
+  `(setf ,place (append ,place ,list)))
+
+;; Important to note that this macro is not as efficient as pushing because it's
+;; adding to the end of the list.  So this macro should be used only in
+;; non-performance-intensive code.  In performance-intensive code we need the
+;; =push-nreverse= idiom.
+(defmacro collecting! (place item)
+  "Affix ITEM to the end of PLACE.
+SETTER is the same as in `appending!'."
+  `(setf ,place (append ,place (list ,item))))
+
+(defmacro prepending! (place list)
+  "Prepend LIST to beginning of PLACE.
+SETTER is the same as in `appending!'."
+  `(setf ,place (append ,list ,place)))
+
+;; I know =push= already exists.  But I want a variant of push that can be used
+;; with the =autolet!= macro.
+(defmacro pushing! (place item)
+  "Cons ITEM to PLACE.
+SETTER is the same as in `appending!'."
+  `(setf ,place (cons ,item ,place)))
 ;;; provide
 (provide 'macros-base)
 ;;; macros-base.el ends here

@@ -31,8 +31,7 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require 'macros-anaphora)
-(require 'macros-ing)
+(require 'macros-base)
 (require 'macros-autolet)
 (require 'macros-loop)
 (require 'functions-call-after)

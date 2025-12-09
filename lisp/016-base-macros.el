@@ -26,10 +26,9 @@
 ;;
 ;;; Code:
 (require 'functions-call-after)
-(eval-when-compile (require 'macros-anaphora))
+(eval-when-compile (require 'macros-base))
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-loop))
-(eval-when-compile (require 'macros-ing))
 
 (defmacro! opt! (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.

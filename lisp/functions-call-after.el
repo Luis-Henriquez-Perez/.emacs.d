@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (require 'subr-x)
-(eval-when-compile (require 'macros-anaphora))
+(eval-when-compile (require 'macros-base))
 (require 'base-log)
 
 (defvar o-after-bound-forms nil

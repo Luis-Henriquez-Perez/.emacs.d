@@ -27,8 +27,6 @@
 ;;; Code:
 (require 'functions-1)
 (eval-when-compile (require 'macros-base))
-(eval-when-compile (require 'macros-anaphora))
-(eval-when-compile (require 'macros-ing))
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-loop))
 (eval-when-compile (require 'macros-keybinding))
