@@ -58,7 +58,7 @@ This is like `setq' but it is meant for configuring variables."
 
 (defmacro! setq-hook! (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (set! setter (intern (format "o-set-local-vars-for-%s-h" hook)))
+  (set! setter (intern (format "o--%s--init-local-variables-h" hook)))
   (set! docstring (format "Set local variable for `%s'." hook))
   `(progn (unless (fboundp ',setter)
             (defun ,setter (&rest _)
