@@ -32,7 +32,6 @@
 ;;; Code:
 (require! init-package)
 (require! init-no-littering)
-(require! base-extra)
 (require! init-macrostep)
 (require! init-proceed)
 (require! init-goto-address)

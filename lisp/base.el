@@ -30,6 +30,7 @@
 (require 'base-log)
 (require 'base-settings)
 (require 'base-lib)
+(require 'base-extra)
 (require '160-keybindings)
 ;;; provide
 (provide 'base)
