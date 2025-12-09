@@ -1,4 +1,4 @@
-;;; macros-generic.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; macros-base.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -90,5 +90,5 @@ LIST is a list symbol."
        ,plist)))
 ;;;; anaphora
 ;;; provide
-(provide 'macros-generic)
-;;; macros-generic.el ends here
+(provide 'macros-base)
+;;; macros-base.el ends here
