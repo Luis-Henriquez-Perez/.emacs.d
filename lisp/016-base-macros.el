@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'functions-call-after)
+(require 'functions-2)
 (eval-when-compile (require 'macros-base))
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-loop))
@@ -43,21 +44,9 @@ This is like `setq' but it is meant for configuring variables."
                (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
      (o-call-after-bound ',symbol it)))
 
-(defconst o-local-var-depth -50
-  "Depth in hook at which to set local variables.")
-
-(o-defun o-apply-local-vars (hook)
-  "Apply local variables for hook."
-  (o-set failmsg "Failed to set local variable %s: %S ->%S")
-  (o-for ((symbol . value) (alist-get hook o-local-var-alist))
-    (o-set bodyform `(setq-local ,symbol ,value))
-    (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
-    (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))
-  (eval (macroexp-progn (nreverse forms)) t))
-
 (o-defmacro o-setq-mode-local (hook symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
-  (o-set setter (intern (format "o--%s--init-local-variables-h" hook)))
+  (o-set setter (intern (format "o--%s--set-local-variables-h" hook)))
   (o-set docstring (format "Set local variable for `%s'." hook))
   `(progn (unless (fboundp ',setter)
             (defun ,setter (&rest _)

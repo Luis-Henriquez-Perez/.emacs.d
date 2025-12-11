@@ -35,7 +35,6 @@
 (require 'macros-autolet)
 (require 'macros-loop)
 (require 'functions-call-after)
-(require '016-base-macros)
 
 (defvar evil-state-properties)
 (declare-function evil-define-key* "evil")
@@ -74,6 +73,15 @@ KEYMAP is a keymap symbol."
     (o-set fn `(lambda () (evil-define-key* ',states ,keymap ,key ',def)))
     (o-call-after-load 'evil (apply-partially #'o-call-after-bound keymap fn)))
   nil)
+
+(o-defun o-apply-local-vars (hook)
+  "Apply local variables for hook."
+  (o-set failmsg "Failed to set local variable %s: %S ->%S")
+  (o-for ((symbol . value) (alist-get hook o-local-var-alist))
+    (o-set bodyform `(setq-local ,symbol ,value))
+    (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
+    (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))
+  (eval (macroexp-progn (nreverse forms)) t))
 ;;; provide
 (provide 'functions-2)
 ;;; functions-2.el ends here
