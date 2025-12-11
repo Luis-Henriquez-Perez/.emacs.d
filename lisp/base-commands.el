@@ -240,7 +240,7 @@ Additionally, make any duplicate spaces in line become a single space."
 
   (pcase-dolist (`(,feature ,time) o-init-data)
     (o-collecting new (list feature time))
-    (summing! total time))
+    (o-summing total time))
 
   (o-set init-time (string-to-number (emacs-init-time "%.2f")))
 

@@ -179,6 +179,9 @@ SETTER is the same as in `o-appending'."
   "Cons ITEM to PLACE.
 SETTER is the same as in `o-appending'."
   `(setf ,place (cons ,item ,place)))
+
+(defmacro o-summing (place num)
+  `(setf ,place (+ ,place ,num)))
 ;;; provide
 (provide 'macros-base)
 ;;; macros-base.el ends here
