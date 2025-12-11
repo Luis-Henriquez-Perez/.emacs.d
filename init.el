@@ -109,7 +109,7 @@
 (o-require init-which-key)
 (o-require init-yeetube)
 (o-require init-zone)
-(o-require 160-keybindings)
+(o-require my-keybindings)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here

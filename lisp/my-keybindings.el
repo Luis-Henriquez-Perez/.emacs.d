@@ -1,4 +1,4 @@
-;;; 160-keybindings.el --- Initialize keybindings -*- lexical-binding: t; -*-
+;;; my-keybindings.el --- Initialize keybindings -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -208,5 +208,5 @@
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
 ;;; provide
-(provide '160-keybindings)
-;;; 160-keybindings.el ends here
+(provide 'my-keybindings)
+;;; my-keybindings.el ends here
