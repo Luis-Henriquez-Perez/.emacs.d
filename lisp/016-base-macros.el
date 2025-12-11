@@ -55,20 +55,6 @@ This is like `setq' but it is meant for configuring variables."
           (setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)
           (add-hook ',hook #',setter -50)))
 
-(declare-function tempel-insert "tempel")
-(o-defmacro o-deftemplate (name &rest body)
-  "Define a tempel template."
-  (declare (doc-string 2) (indent defun))
-  (o-set documentation (when (stringp (car body)) (list (pop body))))
-  `(progn (defun ,name ()
-            ,@documentation
-            (interactive)
-            (require 'tempel)
-            (tempel-insert ',body)
-            t)
-          (put ',name 'no-self-insert t)
-          ',name))
-
 (o-defmacro o-defafter (&rest args)
   "Eval BODY after FEATURE is loaded."
   (declare (indent defun))

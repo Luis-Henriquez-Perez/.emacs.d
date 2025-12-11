@@ -32,6 +32,12 @@
 (autoload 'tempel-insert "tempel" nil nil 'function)
 (autoload 'tempel-expand "tempel" nil nil 'function)
 
+(autoload 'o-tempel-expand-elisp-defun "config-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-defhook "config-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-defvar "config-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-message "config-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-message-var "config-tempel" nil nil 'function)
+
 (o-imap tempel-map "C-l" #'tempel-abort)
 (o-imap tempel-map "C-j" #'tempel-next)
 (o-imap tempel-map "C-k" #'tempel-previous)

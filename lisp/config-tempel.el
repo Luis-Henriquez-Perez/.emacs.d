@@ -1,4 +1,4 @@
-;;; 990-snippets.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-tempel.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,66 +28,66 @@
 (require 'base)
 (require 'tempel)
 
-(o-deftemplate expand-elisp-defhook
+(o-tempel-deftemplate expand-elisp-defhook
   "Expand to a `defun' form."
   "(o-defhook " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(o-deftemplate expand-elisp-let*
+(o-tempel-deftemplate expand-elisp-let*
   "Expand to a `let' form."
   "(let* (" p ")" n> r ")")
 
-(o-deftemplate expand-elisp-hook-bang
+(o-tempel-deftemplate expand-elisp-hook-bang
   "Expand to a `o-add-hook' form."
   "(hook! " p " " r ")")
 
-(o-deftemplate expand-elisp-cond
+(o-tempel-deftemplate expand-elisp-cond
   "Expand to a `cond' form."
   "(cond " ")")
 
-(o-deftemplate expand-elisp-defun
+(o-tempel-deftemplate expand-elisp-defun
   "Expand to `defun'."
   "(defun " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(o-deftemplate expand-elisp-defun-bang
+(o-tempel-deftemplate expand-elisp-defun-bang
   "Expand to `defun'."
   "(o-defun " p " (" p ")" n> "\"" p "\"" n> r ")")
 
-(o-deftemplate expand-elisp-command
+(o-tempel-deftemplate expand-elisp-command
   "Expand to command."
   "(defun " p " (" p ")\n  \"" p "\"" n> "(interactive" p ")" n> r> ")")
 
-(o-deftemplate expand-elisp-defvar
+(o-tempel-deftemplate expand-elisp-defvar
   "Expand to `defvar'."
   "(defvar " p "\s" p "\n  \"" q "\"" ")")
 
-(o-deftemplate expand-elisp-message
+(o-tempel-deftemplate expand-elisp-message
   "Expand to `message'."
   "(message \"" r  "\")")
 
-(o-deftemplate expand-elisp-message-var
+(o-tempel-deftemplate expand-elisp-message-var
   "Expand to printing a variable value with `message'."
   "(message \"" (s var)  " -> %S\" " var ")" q)
 
-;; (o-deftemplate expand-elisp-re-search-forward
+;; (o-tempel-deftemplate expand-elisp-re-search-forward
 ;;   "Expand to `message'."
 ;;   "(rsf \"" p  "\")")
 
-(o-deftemplate expand-elisp-with-current-buffer
+(o-tempel-deftemplate expand-elisp-with-current-buffer
   "Expand to printing a variable value with `message'."
   "(with-current-buffer " p n> r ")")
 
-(o-deftemplate expand-elisp-setq
+(o-tempel-deftemplate expand-elisp-setq
   "Expand to printing a variable value with `message'."
   "(setq " p "\s" r ")")
 
-(o-deftemplate expand-elisp-setq-bang
+(o-tempel-deftemplate expand-elisp-setq-bang
   "Expand to printing a variable value with `message'."
   "(o-set " p "\s" r ")")
 
 (defun o-in-html-p ()
   (member major-mode '(mhtml-mode web-mode)))
 
-(o-deftemplate expand-html-elisp-source-block
+(o-tempel-deftemplate expand-html-elisp-source-block
   "Expand to source block."
   > "<div class=\"org-src-container\">" n
   > "<pre>" n
@@ -97,9 +97,9 @@
   > "</pre>" n
   > "</div>" n)
 
-(o-deftemplate expand-html-bold
+(o-tempel-deftemplate expand-html-bold
   "Expand to html bold tag"
   "<b>" r "</b>")
 ;;; provide
-(provide '990-snippets)
-;;; 990-snippets.el ends here
+(provide 'config-tempel)
+;;; config-tempel.el ends here
