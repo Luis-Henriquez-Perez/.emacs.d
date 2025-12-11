@@ -1545,6 +1545,7 @@
     ("copmetitors" "competitors")
     ("coputer" "computer")
     ("copywrite" "copyright")
+    ("cores" "correspond")
     ("coridal" "cordial")
     ("cornmitted" "committed")
     ("corosion" "corrosion")
