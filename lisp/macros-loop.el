@@ -74,7 +74,7 @@ take the following forms:
               (t
                (error "Unknown list predicate: %S" ',loop-struct)))))))
 
-(defmacro collect! (loop-struct &rest body)
+(defmacro o-collect (loop-struct &rest body)
   (declare (indent 1))
   (let ((collection (make-symbol "--collection--")))
     `(let (,collection)

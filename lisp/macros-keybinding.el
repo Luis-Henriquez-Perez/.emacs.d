@@ -61,7 +61,7 @@
   (o-flet split-spec (spec)
           (mapcar #'state-name (string-to-list (symbol-name spec))))
   `(progn
-     ,@(collect! (spec specs)
+     ,@(o-collect (spec specs)
          (o-set states (split-spec spec))
          (o-set docstring (format "Define an evil keybinding in %s state." (to-text states)))
          (o-set macroname (intern (concat "o-" (symbol-name spec) "map")))
