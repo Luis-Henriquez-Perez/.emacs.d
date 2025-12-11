@@ -5085,7 +5085,7 @@
     ("rm" "remove")
     ("rmb" "remember")
     ("rmed" "removed")
-    ("rn" "right now")
+    ("rn" "rename")
     ("rnadom" "random")
     ("rnaming" "renaming")
     ("rning" "renaming")
