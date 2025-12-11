@@ -35,14 +35,14 @@
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(("aih" "after-init-hook")
-    ("dfn" "" o-tempel-expand-elisp-defun :enable-function oo-abbrev-in-elisp-code-p)
-    ("dhk" "" o-tempel-expand-elisp-defhook :enable-function oo-abbrev-in-elisp-code-p)
-    ("dvar" "" o-tempel-expand-elisp-defvar :enable-function oo-abbrev-in-elisp-code-p)
+    ("dfn" "" tempel|expand-elisp-defun :enable-function oo-abbrev-in-elisp-code-p)
+    ("dhk" "" tempel|expand-elisp-defhook :enable-function oo-abbrev-in-elisp-code-p)
+    ("dvar" "" tempel|expand-elisp-defvar :enable-function oo-abbrev-in-elisp-code-p)
     ("elasped" "elapsed")
     ("esh" "emacs-startup-hook")
-    ("funn" "" o-tempel-expand-elisp-defun :enable-function oo-abbrev-in-elisp-code-p)
-    ("msg" "" o-tempel-expand-elisp-message :enable-function oo-abbrev-in-elisp-code-p)
-    ("msgv" "" o-tempel-expand-elisp-message-var :enable-function oo-abbrev-in-elisp-code-p)))
+    ("funn" "" tempel|expand-elisp-defun :enable-function oo-abbrev-in-elisp-code-p)
+    ("msg" "" tempel|expand-elisp-message :enable-function oo-abbrev-in-elisp-code-p)
+    ("msgv" "" tempel|expand-elisp-message-var :enable-function oo-abbrev-in-elisp-code-p)))
 ;;; provide
 (provide 'emacs-lisp-mode-abbrev-table)
 ;;; emacs-lisp-mode-abbrev-table.el ends here
