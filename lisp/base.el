@@ -31,7 +31,6 @@
 (require 'base-settings)
 (require 'base-lib)
 (require 'base-extra)
-(require '160-keybindings)
 ;;; provide
 (provide 'base)
 ;;; base.el ends here
