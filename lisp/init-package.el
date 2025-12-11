@@ -192,6 +192,7 @@
                                   visible-mark
                                   w3m
                                   web-mode
+                                  nameless
                                   wgrep
                                   which-key
                                   ws-butler
