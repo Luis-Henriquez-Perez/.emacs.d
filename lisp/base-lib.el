@@ -31,9 +31,9 @@
 (eval-when-compile (require 'macros-loop))
 (eval-when-compile (require 'macros-keybinding))
 (eval-when-compile (require 'macros-require))
-(eval-when-compile (require '016-base-macros))
 (require 'functions-2)
 (require 'functions-call-after)
+(eval-when-compile (require 'macros-config-helpers))
 ;;; provide
 (provide 'base-lib)
 ;;; base-lib.el ends here

@@ -1,4 +1,4 @@
-;;; macros-require.el --- Macro for loading numbered files -*- lexical-binding: t; -*-
+;;; macros-config-helpers.el --- Initialize macros-config-helpers -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,15 +22,16 @@
 ;;
 ;;; Commentary:
 ;;
-;; Provide tools to profile my configuration as well as to gracefully handle
-;; errors in initialization.  Specifically, provide the macro `load!'.  Load is
-;; designed to free me from having to explicitly manage the.  I cannot
-;; make `load' a function the compiler will not detect the `require' calls.
+;; Initialize macros-config-helpers.
 ;;
 ;;; Code:
 (require 'base-vars)
 (require 'base-log)
-(require 'macros-base)
+(require 'functions-call-after)
+(require 'functions-2)
+(eval-when-compile (require 'macros-base))
+(eval-when-compile (require 'macros-autolet))
+(eval-when-compile (require 'macros-loop))
 
 (defmacro o-require (feature)
   "Require feature in lisp directory.
@@ -68,6 +69,42 @@ FEATURE."
        (macroexp-progn forms)))
     (_
      (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
+
+(o-defmacro o-opt (symbol value)
+  "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
+This is like `setq' but it is meant for configuring variables."
+  `(o-alet (lambda ()
+            (condition-case err
+                (let ((value (with-no-warnings ,value)))
+                  (if-let (setter (get ',symbol 'custom-set))
+                      (funcall setter ',symbol value)
+                    (setq ,symbol value)))
+              (error
+               (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
+     (o-call-after-bound ',symbol it)))
+
+(o-defmacro o-setq-mode-local (mode symbol value)
+  "Add function to hook that sets the local value of SYMBOL to VALUE."
+  (o-set hook (intern (format "%s-hook" mode)))
+  (o-set setter (intern (format "o--%s--set-local-variables-h" hook)))
+  (o-set docstring (format "Set local variable for `%s'." hook))
+  `(progn (defun ,setter (&rest _)
+            ,docstring
+            (o--set-mode-local-vars ',hook))
+          (setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)
+          (add-hook ',hook #',setter -50)))
+
+(o-defmacro o-defafter (&rest args)
+  "Eval BODY after FEATURE is loaded."
+  (declare (indent defun))
+  (o-set (name (feature) meta body) (o-destructure-defun-args args))
+  `(progn (o-defun ,name ()
+            ,@meta
+            (condition-case err
+                (with-no-warnings ,@body)
+              (error
+               (o-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
+          (o-call-after-load ',feature #',name)))
 ;;; provide
-(provide 'macros-require)
-;;; macros-require.el ends here
+(provide 'macros-config-helpers)
+;;; macros-config-helpers.el ends here

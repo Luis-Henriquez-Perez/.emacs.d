@@ -28,7 +28,7 @@
 ;;; Code:
 (require 'macros-autolet)
 (require 'macros-loop)
-(require '016-base-macros)
+(require 'macros-config-helpers)
 
 (declare-function evil-define-key* "evil")
 
