@@ -71,7 +71,7 @@ file is loaded."
 
 (add-hook 'after-init-hook #'o-setup-eval-after-bound-forms-h 99)
 ;;;; auto-filling
-(o-setq-mode-local prog-mode-hook normal-auto-fill-function #'o-progn-autofill-fn)
+(o-setq-mode-local prog-mode normal-auto-fill-function #'o-progn-autofill-fn)
 
 (defun o-progn-autofill-fn ()
   "Fill only if in a string or comment."

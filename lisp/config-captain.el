@@ -71,7 +71,7 @@
 	       (looking-at-p (regexp-opt o--definer-list)))
          it)))
 
-(o-defun +captain--prog-mode-sentence-start ()
+(o-defun o-captain-prog-mode-sentence-start ()
   "Return point where sentence should be capitalized."
   (pcase (o-in-string-or-comment-p)
     ('comment

@@ -74,9 +74,9 @@ KEYMAP is a keymap symbol."
     (o-call-after-load 'evil (apply-partially #'o-call-after-bound keymap fn)))
   nil)
 
-(o-defun o-apply-local-vars (hook)
-  "Apply local variables for hook."
-  (o-set failmsg "Failed to set local variable %s: %S ->%S")
+(o-defun o--set-mode-local-vars (hook)
+  "Set local variables for mode corresponding to HOOK."
+  (o-set failmsg "Failed to set local variable %s to value %S")
   (o-for ((symbol . value) (alist-get hook o-local-var-alist))
     (o-set bodyform `(setq-local ,symbol ,value))
     (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))

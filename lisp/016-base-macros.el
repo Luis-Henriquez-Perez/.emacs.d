@@ -44,16 +44,16 @@ This is like `setq' but it is meant for configuring variables."
                (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
      (o-call-after-bound ',symbol it)))
 
-(o-defmacro o-setq-mode-local (hook symbol value)
+(o-defmacro o-setq-mode-local (mode symbol value)
   "Add function to hook that sets the local value of SYMBOL to VALUE."
+  (o-set hook (intern (format "%s-hook" mode)))
   (o-set setter (intern (format "o--%s--set-local-variables-h" hook)))
   (o-set docstring (format "Set local variable for `%s'." hook))
-  `(progn (unless (fboundp ',setter)
-            (defun ,setter (&rest _)
-              ,docstring
-              (o-apply-local-vars ',hook)))
+  `(progn (defun ,setter (&rest _)
+            ,docstring
+            (o--set-mode-local-vars ',hook))
           (setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)
-          (add-hook ',hook #',setter o-local-var-depth)))
+          (add-hook ',hook #',setter -50)))
 
 (declare-function tempel-insert "tempel")
 (o-defmacro o-deftemplate (name &rest body)

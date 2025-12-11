@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'base)
 
-(o-setq-mode-local eshell-mode-hook completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
+(o-setq-mode-local eshell-mode completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 
 (o-each '(esh-arg esh-util esh-proc esh-io esh-cmd em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
   (push it o-idle-features))
