@@ -27,9 +27,6 @@
 ;;; Code:
 (require 'bray)
 (require 'meep)
-(require 'mark-thing-at)
-
-(mark-thing-at-make-functions)
 
 (setq modaled-init-state-fn #'o-init-state-fn)
 
