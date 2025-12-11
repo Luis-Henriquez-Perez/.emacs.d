@@ -192,7 +192,6 @@
                                   visible-mark
                                   w3m
                                   web-mode
-                                  mark-thing-at
                                   wgrep
                                   which-key
                                   ws-butler
