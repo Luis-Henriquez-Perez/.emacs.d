@@ -2828,7 +2828,7 @@
     ("holf" "hold")
     ("holliday" "holiday")
     ("homestate" "home state")
-    ("homog" "homogenous")
+    ("homog" "homogeneous")
     ("homogeneize" "homogenize")
     ("homogeneized" "homogenized")
     ("homogenous" "homogeneous")
