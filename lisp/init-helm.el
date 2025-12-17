@@ -30,12 +30,7 @@
 (o-popup-at-bottom "\\*Helm")
 (o-opt helm-candidate-number-limit 50)
 
-;; (autoload '+helm-select-nth-action "config-helm" nil t 'function)
-;; (defun +helm-select-current ()
-;;   (interactive)
-;;   (funcall #'helm-select-nth-action 0))
-;;
-;; This binding has a problem.  (:ie "C-i" #'helm-toggle-visible-mark-backward)
+(add-hook 'emacs-startup-hook #'helm-mode)
 ;;; provide
 (provide 'init-helm)
 ;;; init-helm.el ends here
