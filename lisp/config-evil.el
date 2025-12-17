@@ -305,16 +305,16 @@ non-readonly file buffer, save the buffer."
 ;; really need them there or can put them in "g" keybinding.
 ;; c - change
 ;; y - yank
-(evil-define-key* 'insert global-map "A-x" #'execute-extended-command)
-(evil-define-key* 'insert global-map "M-x" #'execute-extended-command)
-(evil-define-key* 'insert global-map "C-c h" #'grugru)
+(evil-define-key* 'insert global-map (kbd "A-x") #'execute-extended-command)
+(evil-define-key* 'insert global-map (kbd "M-x") #'execute-extended-command)
+(evil-define-key* 'insert global-map (kbd "C-c h") #'grugru)
 (evil-define-key* 'insert global-map [escape] #'o-evil-dwim-escape)
-(evil-define-key* 'insert global-map "TAB" #'completion-preview-insert)
+(evil-define-key* 'insert global-map (kbd "TAB") #'completion-preview-insert)
 
 ;; Lump open line above and below into the same binding.
 
-(evil-define-key* 'insert global-map "C-c j" #'abbrev/inverse-add)
-(evil-define-key* 'insert global-map "C-c k" #'unexpand-abbrev)
+(evil-define-key* 'insert global-map (kbd "C-c j") #'abbrev/inverse-add)
+(evil-define-key* 'insert global-map (kbd "C-c k") #'unexpand-abbrev)
 
 (evil-define-key* 'visual global-map "V" #'expreg-contract)
 (evil-define-key* 'visual global-map "v" #'expreg-expand)
@@ -335,9 +335,10 @@ non-readonly file buffer, save the buffer."
 (evil-define-key* '(normal visual) global-map "g b" #'o-evil-eval-print-operator)
 (evil-define-key* '(normal visual) global-map "g p" #'o-evil-eval-print-operator)
 (evil-define-key* '(normal visual) global-map "g c" #'evilnc-comment-operator)
-(o-each '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
-  (evil-define-key* '(normal visual) it "g c" #'lispyville-comment-or-uncomment))
-(evil-define-key* '(normal visual) global-map emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
+;; TODO: need to make it happen after symbols are bound.
+;; (o-each '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
+;;   (evil-define-key* '(normal visual) it "g c" #'lispyville-comment-or-uncomment))
+(evil-define-key* '(normal visual) emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
 (evil-define-key* '(normal visual) global-map "g e" #'o-evil-eval-operator)
 (evil-define-key* '(normal visual) global-map "g h" #'o-evil-eval-operator)
 (evil-define-key* '(normal visual) global-map "g l" #'o-evil-eval-replace-operator)
@@ -349,31 +350,31 @@ non-readonly file buffer, save the buffer."
 ;;;;; helm
 ;; This binding has a problem.  (:ie "C-i" #'helm-toggle-visible-mark-backward)
 (o-after helm
-  (evil-define-key* 'insert global-map helm-map "TAB" #'helm-next-line)
+  (evil-define-key* 'insert global-map helm-map (kbd "TAB") #'helm-next-line)
   (evil-define-key* 'insert global-map helm-map [backtab] #'helm-previous-line)
-  (evil-define-key* 'insert global-map helm-map "C-j" #'helm-next-line)
-  (evil-define-key* 'insert global-map helm-map "C-k" #'helm-previous-line)
-  (evil-define-key* 'insert global-map helm-map "C-a" #'helm-select-action)
-  (evil-define-key* 'insert global-map helm-map "C-m" #'helm-toggle-visible-mark-forward)
+  (evil-define-key* 'insert global-map helm-map (kbd "C-j") #'helm-next-line)
+  (evil-define-key* 'insert global-map helm-map (kbd "C-k") #'helm-previous-line)
+  (evil-define-key* 'insert global-map helm-map (kbd "C-a") #'helm-select-action)
+  (evil-define-key* 'insert global-map helm-map (kbd "C-m") #'helm-toggle-visible-mark-forward)
   ;; (evil-define-key* 'insert global-map helm-map "RET" #'+helm-select-nth-action)
-  (evil-define-key* 'insert global-map helm-map "S-TAB" #'helm-mark-current-line)
-  (evil-define-key* 'insert global-map helm-map "C-;" #'ace-jump-helm-line))
+  (evil-define-key* 'insert global-map helm-map (kbd "S-TAB") #'helm-mark-current-line)
+  (evil-define-key* 'insert global-map helm-map (kbd "C-;") #'ace-jump-helm-line))
 ;;;;; vertico
 (o-after vertico
-  (evil-define-key* 'insert vertico-map "C-n" #'vertico-scroll-up)
-  (evil-define-key* 'insert vertico-map "C-p" #'vertico-scroll-down)
-  (evil-define-key* 'insert vertico-map "TAB" #'vertico-next)
-  (evil-define-key* 'insert vertico-map "C-k" #'vertico-previous)
-  (evil-define-key* 'insert vertico-map "C-j" #'vertico-next)
+  (evil-define-key* 'insert vertico-map (kbd "C-n") #'vertico-scroll-up)
+  (evil-define-key* 'insert vertico-map (kbd "C-p") #'vertico-scroll-down)
+  (evil-define-key* 'insert vertico-map (kbd "TAB") #'vertico-next)
+  (evil-define-key* 'insert vertico-map (kbd "C-k") #'vertico-previous)
+  (evil-define-key* 'insert vertico-map (kbd "C-j") #'vertico-next)
   (evil-define-key* 'insert vertico-map ";" #'vertico-quick-exit)
-  (evil-define-key* 'insert vertico-map "C-;" #'vertico-quick-exit)
+  (evil-define-key* 'insert vertico-map (kbd "C-;") #'vertico-quick-exit)
   (evil-define-key* 'insert vertico-map [backtab] #'vertico-previous)
-  (evil-define-key* 'insert vertico-map "C-o" #'embark-act))
+  (evil-define-key* 'insert vertico-map (kbd "C-o") #'embark-act))
 ;;;;; dired
 (o-after dired
   (evil-define-key* 'normal dired-mode-map "h" #'dired-up-directory)
   (evil-define-key* 'normal dired-mode-map "l" #'dired-find-file)
-  (evil-define-key* 'normal dired-mode-map "RET" #'dired-find-file)
+  (evil-define-key* 'normal dired-mode-map (kbd "RET") #'dired-find-file)
   (evil-define-key* 'normal dired-mode-map "o" #'dired-omit-mode))
 ;;;;; eshell
 (o-after eshell
@@ -396,52 +397,54 @@ non-readonly file buffer, save the buffer."
   (evil-define-key* 'normal eww-mode-map "R" #'eww-reload))
 ;;;;; lispyville
 (o-after lispyville
-  (evil-define-key* 'insert lispyville-mode-map "SPC" #'lispy-space)
+  (evil-define-key* 'insert lispyville-mode-map (kbd "SPC") #'lispy-space)
   (evil-define-key* 'insert lispyville-mode-map ";" #'lispy-comment))
 ;;;;; tempel
 (o-after tempel
-  (evil-define-key* 'insert tempel-map "C-l" #'tempel-abort)
-  (evil-define-key* 'insert tempel-map "C-j" #'tempel-next)
-  (evil-define-key* 'insert tempel-map "C-k" #'tempel-previous)
-  (evil-define-key* 'insert tempel-map "TAB" #'tempel-next)
+  (evil-define-key* 'insert tempel-map (kbd "C-l") #'tempel-abort)
+  (evil-define-key* 'insert tempel-map (kbd "C-j") #'tempel-next)
+  (evil-define-key* 'insert tempel-map (kbd "C-k") #'tempel-previous)
+  (evil-define-key* 'insert tempel-map (kbd "TAB") #'tempel-next)
   (evil-define-key* 'insert tempel-map [backtab] #'tempel-previous))
 ;;;;; over
 (o-after corfu
   (evil-define-key* 'insert corfu-map "<tab>"   #'corfu-next)
   (evil-define-key* 'insert corfu-map [backtab] #'corfu-previous)
-  (evil-define-key* 'insert corfu-map "S-TAB"   #'corfu-previous)
-  (evil-define-key* 'insert corfu-map "C-;"     #'corfu-quick-complete)
-  (evil-define-key* 'insert corfu-map "C-j"     #'corfu-next)
-  (evil-define-key* 'insert corfu-map "C-k"     #'corfu-previous)
-  (evil-define-key* 'insert corfu-map "C-p"     #'corfu-previous)
+  (evil-define-key* 'insert corfu-map (kbd "S-TAB")   #'corfu-previous)
+  (evil-define-key* 'insert corfu-map (kbd "C-;")     #'corfu-quick-complete)
+  (evil-define-key* 'insert corfu-map (kbd "C-j")     #'corfu-next)
+  (evil-define-key* 'insert corfu-map (kbd "C-k")     #'corfu-previous)
+  (evil-define-key* 'insert corfu-map (kbd "C-p")     #'corfu-previous)
   (evil-define-key* 'insert corfu-map ";"       #'corfu-quick-complete)
-  (evil-define-key* 'insert corfu-map "SPC"     #'corfu-insert))
+  (evil-define-key* 'insert corfu-map (kbd "SPC")     #'corfu-insert))
 ;;;; TEXT-OBJECTS
-(evil-define-key* evil-inner-text-objects-map "c" #'evilnc-inner-comment)
-(evil-define-key* evil-outer-text-objects-map "c" #'evilnc-outer-comment)
+(keymap-set evil-inner-text-objects-map "c" #'evilnc-inner-comment)
+(keymap-set evil-outer-text-objects-map "c" #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
-(evil-define-key* evil-inner-text-objects-map "a" #'lispyville-inner-comment)
-(evil-define-key* evil-outer-text-objects-map "a" #'lispyville-outer-comment)
+(keymap-set evil-inner-text-objects-map "a" #'lispyville-inner-comment)
+(keymap-set evil-outer-text-objects-map "a" #'lispyville-outer-comment)
 
-(evil-define-key* evil-inner-text-objects-map "h" #'evil-i-syntax)
-(evil-define-key* evil-outer-text-objects-map "h" #'evil-a-syntax)
+(keymap-set evil-inner-text-objects-map "h" #'evil-i-syntax)
+(keymap-set evil-outer-text-objects-map "h" #'evil-a-syntax)
 
-(evil-define-key* evil-inner-text-objects-map "l" #'evil-inner-line)
-(evil-define-key* evil-outer-text-objects-map "l" #'evil-a-line)
+(keymap-set evil-inner-text-objects-map "l" #'evil-inner-line)
+(keymap-set evil-outer-text-objects-map "l" #'evil-a-line)
 
-(evil-define-key* evil-inner-text-objects-map "f" #'evil-cp-inner-form)
-(evil-define-key* evil-outer-text-objects-map "f" #'evil-cp-a-form)
-;; (evil-define-key* evil-inner-text-objects-map "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
-(evil-define-key* evil-inner-text-objects-map "b" #'o-evil-inner-buffer)
-(evil-define-key* evil-outer-text-objects-map "b" #'o-evil-outer-buffer)
+(keymap-set evil-inner-text-objects-map "f" #'evil-cp-inner-form)
+(keymap-set evil-outer-text-objects-map "f" #'evil-cp-a-form)
+;; (keymap-set evil-inner-text-objects-map "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
+(keymap-set evil-inner-text-objects-map "b" #'o-evil-inner-buffer)
+(keymap-set evil-outer-text-objects-map "b" #'o-evil-outer-buffer)
 
-(evil-define-key* 'normal global-map override-global-map o-key-leader-normal #'o-leader-map)
-(evil-define-key* 'insert global-map override-global-map o-key-leader-insert #'o-leader-map)
-(evil-define-key* 'emacs override-global-map o-key-leader-emacs #'o-leader-map)
-(evil-define-key* 'emacs override-global-map o-key-leader-emacs-alt #'o-leader-map)
+(evil-define-key* 'motion override-global-map (kbd o-key-leader-normal) #'o-leader-map)
+(evil-define-key* 'normal override-global-map (kbd o-key-leader-normal) #'o-leader-map)
+(evil-define-key* 'normal override-global-map (kbd o-key-leader-normal) #'o-leader-map)
+(evil-define-key* 'insert override-global-map (kbd o-key-leader-insert) #'o-leader-map)
+(evil-define-key* 'emacs override-global-map (kbd o-key-leader-emacs) #'o-leader-map)
+(evil-define-key* 'emacs override-global-map (kbd o-key-leader-emacs-alt) #'o-leader-map)
 
-(evil-define-key* 'normal global-map Info-mode-map "H" #'Info-last)
-(evil-define-key* 'normal global-map Info-mode-map "L" #'Info-next)
+(evil-define-key* 'normal Info-mode-map "H" #'Info-last)
+(evil-define-key* 'normal Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide 'config-evil)
 ;;; config-evil.el ends here
