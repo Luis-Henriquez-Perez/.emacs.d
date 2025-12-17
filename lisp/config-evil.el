@@ -252,7 +252,7 @@ non-readonly file buffer, save the buffer."
 ;; When using evil, neither `corfu-map' nor `tempel-map' bindings will work
 ;; because the maps are overridden by evil.  In order for them to work, we need
 ;; to boost give the maps greater precedence.
-(o-defafter o-ensure-corfu-kbds-work-with-evil (corfu)
+(o-after corfu
   (evil-make-overriding-map corfu-map)
   (advice-add 'corfu--setup :after #'o-evil-normalize-keymaps-ignore-args)
   (advice-add 'corfu--teardown :after #'o-evil-normalize-keymaps-ignore-args))

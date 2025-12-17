@@ -59,7 +59,7 @@
   (call-interactively #'emms-playlist-mode-go))
 
 ;; Without this I get an error that `emms-player-mpv' is not loaded.
-(o-defafter o-ensure-proper-emms-player-is-loaded (emms)
+(o-after emms
   (or (and (executable-find "mpv") (require 'emms-player-mpv))
       (and (executable-find "vlc") (require 'emms-player-vlc))))
 ;;; provide
