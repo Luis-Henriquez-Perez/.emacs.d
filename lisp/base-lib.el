@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require 'functions-1)
+(require 'functions-base)
 (eval-when-compile (require 'macros-base))
 (eval-when-compile (require 'macros-autolet))
 (eval-when-compile (require 'macros-loop))

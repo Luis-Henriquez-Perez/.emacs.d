@@ -1,4 +1,4 @@
-;;; functions-1.el -*- lexical-binding: t; -*-
+;;; functions-base.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'pcase)
+(eval-when-compile (require 'macros-base))
 
 (defsubst o-hundredths (n)
   "Return N rounded to the nearest hundredth."
@@ -65,6 +66,10 @@ Specifically, return the symbol `string' if point is in a string, the symbol
     (cond ((nth 3 ppss) 'string)
           ((nth 4 ppss) 'comment)
           (t nil))))
+
+(defun o-call-quietly-a (fn &rest args)
+  "Call FN with ARGS without producing any output."
+  (o-quiet (apply fn args)))
 ;;; provide
-(provide 'functions-1)
-;;; functions-1.el ends here
+(provide 'functions-base)
+;;; functions-base.el ends here
