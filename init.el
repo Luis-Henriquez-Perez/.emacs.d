@@ -73,7 +73,6 @@
 (o-require init-fill-adapt)
 (o-require init-gnus)
 (o-require init-grugru)
-(o-require init-helm)
 (o-require init-helpful)
 (o-require init-highlight-quoted)
 (o-require init-htmlize)
