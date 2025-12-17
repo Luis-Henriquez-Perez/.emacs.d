@@ -43,7 +43,7 @@
 (defvar o-alternate-commands (make-hash-table)
   "A hash-table mapping command symbols to a list of command symbols.")
 
-(o-defun o-alternate-command-choose-fn (command)
+(defun o-alternate-command-choose-fn (command)
   "Return an alternate command that should be called instead of COMMAND."
   (or (o-each (gethash command o-alternate-commands)
         (o-aand (funcall it) (o-return it)))
