@@ -32,6 +32,7 @@
             org-keys oc org-table org-fold org-cycle)
   (push it o-idle-features))
 
+(autoload 'o-org-agenda-day-view "config-org-agenda" nil nil 'function)
 
 (o-require-after-load 'org 'config-org)
 ;;; provide
