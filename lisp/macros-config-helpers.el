@@ -94,6 +94,10 @@ This is like `setq' but it is meant for configuring variables."
           (setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)
           (add-hook ',hook #',setter -50)))
 
+(defmacro o-after (feature &rest body)
+  (declare (indent 1))
+  `(o-call-after-load ',feature (lambda () ,@body)))
+
 (o-defmacro o-defafter (&rest args)
   "Eval BODY after FEATURE is loaded."
   (declare (indent defun))

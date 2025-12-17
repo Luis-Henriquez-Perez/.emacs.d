@@ -81,13 +81,18 @@ file is loaded."
   "Add custom font-lock keywords."
   (font-lock-add-keywords
    'emacs-lisp-mode
-   '(("(\\(\\(?:def\\(?:\\(?:advice\\|hook\\|macro\\|un\\)!\\)\\)\\)\\_>\\s-*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+   '(("(\\(o-def\\(?:macro\\|un\\)\\)\\_>\\s-*\\(\\(?:\\w\\|\\s_\\)+\\)?"
       (1 font-lock-keyword-face nil t)
       (2 font-lock-function-name-face nil t))
-     ("\\_<\\(\\(?:it\\|other\\|this-fn\\)\\)\\_>"
+     ("\\_<\\(\\(?:it\\|this-fn\\)\\)\\_>"
       (1 font-lock-constant-face nil t)))))
 
-(add-hook 'emacs-lisp-mode-hook #'o-extend-elisp-font-lock-h)
+;; This needs to be done before emacs-lisp-mode is enabled.  Otherwise it will
+;; not work the first time (though it will work every subsequent time the mode
+;; is enabled).  So I do not know, this could be a before advice to
+;; emacs-lisp-mode perhaps ensuring it's run beforehand.  Even if I need to do
+;; this in startup hook, it is not performance intensive.
+(add-hook 'emacs-startup-hook #'o-extend-elisp-font-lock-h)
 
 (defun o-require-base-h ()
   "Load base macros."
