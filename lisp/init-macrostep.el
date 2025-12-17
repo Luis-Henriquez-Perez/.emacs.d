@@ -29,17 +29,6 @@
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
 
-(llmap emacs-lisp-mode-map "m" '("macrostep" . o-macrostep-map))
-(llmap emacs-lisp-mode-map "e" #'macrostep-expand)
-(llmap emacs-lisp-mode-map "c" #'macrostep-collapse)
-(llmap emacs-lisp-mode-map "C" #'macrostep-collapse-all)
-(llmap emacs-lisp-mode-map "a" #'macrostep-collapse-all)
-
-(o-defvar-keymap o-macrostep-map
-  "e" #'macrostep-expand
-  "c" #'macrostep-collapse
-  "C" #'macrostep-collapse-all
-  "a" #'macrostep-collapse-all)
 ;;; provide
 (provide 'init-macrostep)
 ;;; init-macrostep.el ends here

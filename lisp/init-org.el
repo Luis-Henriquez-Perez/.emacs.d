@@ -32,11 +32,6 @@
             org-keys oc org-table org-fold org-cycle)
   (push it o-idle-features))
 
-(autoload '+org-agenda-day-view "config-org-agenda" nil nil 'function)
-
-(llmap org-mode-map "a" #'org-archive-subtree)
-(llmap org-mode-map "n" #'org-add-note)
-(llmap org-mode-map "t" #'org-todo)
 
 (o-require-after-load 'org 'config-org)
 ;;; provide
