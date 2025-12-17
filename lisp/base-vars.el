@@ -70,46 +70,30 @@ This includes the time that features took to load.")
 (defvar o-local-var-alist nil
   "An alist of (HOOK . VARIABLES-AND-VALUES).")
 ;;;; LEADERS
-;; This file provides leaders keys for evil and non-evil states and it binds
-;; these leader keys.
-
-;; These leaders are specifically for evil mode states (not including insert and
-;;                                                          Emacs).  I choose the space (=SPC=) key for evil leaders because it is one of if
-;; not the easiest key to press because of its central placement on the keyboard
-;; and its sheer size--at least on the [[https://en.wikipedia.org/wiki/QWERTY][qwerty]] keyboard that I use.  The choice
-;; of =SPC m= for the major mode specific keys is simply for the pnemonic =m= which
-;; stands for "major mode".  The short major mode prefix key =,= is for cases when I
-;; want to shorten a key binding.  Although obviously not as easy to remember as
-;; =m=, it provides me with one shorter keypress in certain situations.
-(defconst o-normal-leader-key "SPC"
+(defconst o-key-leader-normal "SPC"
   "The evil leader prefix key.")
 
-(defconst o-normal-localleader-key "SPC m"
+(defconst o-key-localleader-normal "SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
-(defconst o-normal-localleader-short-key ","
+(defconst o-key-localleader-normal-alt ","
   "A shorter alternative `o-localleader-key'.")
-;; These leaders are for evil insert and emacs states as well as vanilla
-;; Emacs.  Note that evil Emacs state is different from vanilla Emacs.  One of the
-;; goals with these bindings is to set up keybindings in the case that I disable
-;; evil mode or in the case that I want to use my bindings in insert or Emacs
-;; state--or even vanilla Emacs.  The choice behind the bindings is the same as
-;; [[id:][before]], except I just prepended the =Meta= (a.k.a. the =Alt= key) to everything.
-(defconst o-insert-leader-key "M-SPC"
+
+(defconst o-key-leader-insert "M-SPC"
   "The leader prefix key used for Insert state.")
 
-(defconst o-insert-localleader-key "M-SPC m"
+(defconst o-key-localleader-insert "M-SPC m"
   "The localleader prefix key for major-mode specific commands.")
 
-(defconst o-insert-localleader-short-key "M-,"
+(defconst o-key-localleader-insert-alt "M-,"
   "A short non-normal `o-localleader-key'.")
 
-(defconst o-emacs-leader-key "C-c l"
+(defconst o-key-leader-emacs "C-c l"
   "The leader prefix key used for Emacs states.")
 
-(defconst o-emacs-alt-leader-key "C-c SPC")
+(defconst o-key-leader-emacs-alt "C-c SPC")
 
-(defconst o-emacs-localleader-key "C-c l m"
+(defconst o-key-localleader-emacs "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
 ;;; provide
 (provide 'base-vars)

@@ -139,7 +139,7 @@
   "M" #'meep-isearch-at-point-prev
 
   "<escape>" #'o-dwim-escape
-  o-normal-leader-key #'o-leader-map)
+  o-key-leader-normal #'o-leader-map)
 
 ;; (defun meep-kbd (def)
 ;;   "Command that converts current key."
@@ -195,7 +195,7 @@ non-readonly file buffer, save the buffer."
   (when (require 'modaled)
     (modaled-set-state "normal")))
 
-;; (keymap-set modaled-normal-state-keymap o-normal-leader-key #'o-leader-map)
+;; (keymap-set modaled-normal-state-keymap o-key-leader-normal #'o-leader-map)
 
 ;; (defvar-keymap modaled-normal-state-keymap
 ;;   "<escape>" #'o-dwim-escape)
