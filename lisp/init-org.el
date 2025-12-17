@@ -29,7 +29,7 @@
 (require 'base)
 
 (o-each '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
-            org-keys oc org-table org-fold org-cycle)
+             org-keys oc org-table org-fold org-cycle)
   (push it o-idle-features))
 
 (autoload 'o-org-agenda-day-view "config-org-agenda" nil nil 'function)
