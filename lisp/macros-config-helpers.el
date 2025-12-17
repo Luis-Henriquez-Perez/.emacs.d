@@ -70,17 +70,17 @@ FEATURE."
     (_
      (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
 
-(o-defmacro o-opt (symbol value)
+(defmacro o-opt (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
   `(o-alet (lambda ()
-            (condition-case err
-                (let ((value (with-no-warnings ,value)))
-                  (if-let (setter (get ',symbol 'custom-set))
-                      (funcall setter ',symbol value)
-                    (setq ,symbol value)))
-              (error
-               (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
+             (condition-case err
+                 (let ((value (with-no-warnings ,value)))
+                   (if-let (setter (get ',symbol 'custom-set))
+                       (funcall setter ',symbol value)
+                     (setq ,symbol value)))
+               (error
+                (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
      (o-call-after-bound ',symbol it)))
 
 (o-defmacro o-setq-mode-local (mode symbol value)
