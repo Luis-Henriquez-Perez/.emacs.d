@@ -29,6 +29,12 @@
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
 
+;; TODO: add which-key name.
+(keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m") nil)
+(keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m e") #'macrostep-expand)
+(keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m c") #'macrostep-collapse)
+(keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m C") #'macrostep-collapse-all)
+(keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m a") #'macrostep-collapse-all)
 ;;; provide
 (provide 'init-macrostep)
 ;;; init-macrostep.el ends here
