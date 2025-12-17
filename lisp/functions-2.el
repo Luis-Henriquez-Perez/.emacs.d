@@ -39,10 +39,6 @@
 (defvar evil-state-properties)
 (declare-function evil-define-key* "evil")
 
-(defun o-call-quietly-a (fn &rest args)
-  "Call FN with ARGS without producing any output."
-  (o-quiet (apply fn args)))
-
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar o-alternate-commands (make-hash-table)
   "A hash-table mapping command symbols to a list of command symbols.")
@@ -62,18 +58,6 @@
 ;; where I do not have to worry about whether the keymap is defined or whether
 ;; evil is loaded.  Furthermore by having a function I can apply a change from
 ;; one to all bindings.
-(o-defun o-bind-key (keymap key def &optional states)
-  "Bind KEY to DEF in KEYMAP.
-KEYMAP is a keymap symbol."
-  (o-set states (ensure-list states))
-  (when (or (not states) (o-aremf states (and (equal it 'global))))
-    (o-call-after-bound keymap `(lambda () (keymap-set ,keymap ,key ',def))))
-  (when states
-    (setq key (if (vectorp key) key (kbd key)))
-    (o-set fn `(lambda () (evil-define-key* ',states ,keymap ,key ',def)))
-    (o-call-after-load 'evil (apply-partially #'o-call-after-bound keymap fn)))
-  nil)
-
 (o-defun o--set-mode-local-vars (hook)
   "Set local variables for mode corresponding to HOOK."
   (o-set failmsg "Failed to set local variable %s to value %S")
