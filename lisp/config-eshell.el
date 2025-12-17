@@ -98,9 +98,6 @@
 ;; Increase the history size from 128 to 1000.
 (o-opt eshell-history-size 1000)
 ;; Stop eshell from printing messages.
-;;;; keybindings
-(o-nmap eshell-mode-map "J" #'eshell-next-prompt)
-(o-nmap eshell-mode-map "K" #'eshell-previous-prompt)
 ;;;; aliases
 (eshell/alias "home" "cd ~")
 ;;;;; git

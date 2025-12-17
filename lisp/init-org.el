@@ -38,11 +38,6 @@
 (llmap org-mode-map "n" #'org-add-note)
 (llmap org-mode-map "t" #'org-todo)
 
-(o-nmap org-mode-map "T" #'org-todo)
-(o-nmap org-mode-map "t" #'+org-choose-tags)
-(o-nmap org-mode-map "R" #'org-refile)
-(o-nmap org-mode-map "n" #'org-add-note)
-
 (o-require-after-load 'org 'config-org)
 ;;; provide
 (provide 'init-org)

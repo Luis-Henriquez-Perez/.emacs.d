@@ -279,89 +279,169 @@ non-readonly file buffer, save the buffer."
     (unless (equal bg (face-attribute 'cursor :background))
       (set-cursor-color bg))))
 ;;;; KEYBINDINGS
-(o-nmap "+" #'text-scale-increase)
-(o-nmap "-" #'text-scale-decrease)
-(o-nmap "H" #'evil-first-non-blank)
-(o-nmap "L" #'evil-last-non-blank)
-(o-nmap "J" #'evil-scroll-page-down)
-(o-nmap "K" #'evil-scroll-page-up)
-(o-nmap [escape] #'o-evil-dwim-escape)
+;;;;; generic
+(evil-define-key* 'normal global-map "+" #'text-scale-increase)
+(evil-define-key* 'normal global-map "-" #'text-scale-decrease)
+(evil-define-key* 'normal global-map "H" #'evil-first-non-blank)
+(evil-define-key* 'normal global-map "L" #'evil-last-non-blank)
+(evil-define-key* 'normal global-map "J" #'evil-scroll-page-down)
+(evil-define-key* 'normal global-map "K" #'evil-scroll-page-up)
+(evil-define-key* 'normal global-map [escape] #'o-evil-dwim-escape)
 ;; Finding a place for motion commands.
-;; (o-nmap "ff" #'evil-find-char)
-;; (o-nmap "fw" #'o-evilem-motion-beginning-of-word)
-;; (o-nmap "fe" #'o-evilem-motion-end-of-word)
-;; (o-nmap "fl" #'o-evilem-motion-beginning-of-line)
-;; (o-nmap "fj" #'o-evilem-motion-char)
+;; (evil-define-key* 'normal global-map "ff" #'evil-find-char)
+;; (evil-define-key* 'normal global-map "fw" #'o-evilem-motion-beginning-of-word)
+;; (evil-define-key* 'normal global-map "fe" #'o-evilem-motion-end-of-word)
+;; (evil-define-key* 'normal global-map "fl" #'o-evilem-motion-beginning-of-line)
+;; (evil-define-key* 'normal global-map "fj" #'o-evilem-motion-char)
 
 ;; Hello world!
-;; (o-nmap "sj" #'evil-open-below)
-;; (o-nmap "sk" #'evil-open-above)
+;; (evil-define-key* 'normal global-map "sj" #'evil-open-below)
+;; (evil-define-key* 'normal global-map "sk" #'evil-open-above)
 ;; Invert bindings for downcase and upcase because I am more often going from
 ;; down to up than from up to down.
-(o-nmap "gu" #'evil-upcase)
-(o-nmap "gU" #'evil-downcase)
+(evil-define-key* 'normal global-map "gu" #'evil-upcase)
+(evil-define-key* 'normal global-map "gU" #'evil-downcase)
 ;; Evil operators that are by default on the main keyboard.  Consider whether I
 ;; really need them there or can put them in "g" keybinding.
 ;; c - change
 ;; y - yank
-(o-imap "A-x" #'execute-extended-command)
-(o-imap "M-x" #'execute-extended-command)
-(o-imap "C-c h" #'grugru)
-(o-imap [escape] #'o-evil-dwim-escape)
-(o-imap "TAB" #'completion-preview-insert)
+(evil-define-key* 'insert global-map "A-x" #'execute-extended-command)
+(evil-define-key* 'insert global-map "M-x" #'execute-extended-command)
+(evil-define-key* 'insert global-map "C-c h" #'grugru)
+(evil-define-key* 'insert global-map [escape] #'o-evil-dwim-escape)
+(evil-define-key* 'insert global-map "TAB" #'completion-preview-insert)
 
 ;; Lump open line above and below into the same binding.
 
-(o-imap "C-c j" #'abbrev/inverse-add)
-(o-imap "C-c k" #'unexpand-abbrev)
+(evil-define-key* 'insert global-map "C-c j" #'abbrev/inverse-add)
+(evil-define-key* 'insert global-map "C-c k" #'unexpand-abbrev)
 
-(o-vmap "V" #'expreg-contract)
-(o-vmap "v" #'expreg-expand)
+(evil-define-key* 'visual global-map "V" #'expreg-contract)
+(evil-define-key* 'visual global-map "v" #'expreg-expand)
 ;; Ensure that ";" is always available as `execute-extended-command'.  Modes
 ;; like dired bind it themselves and would otherwise override it.
-(o-nvmap override-global-map ";" #'execute-extended-command)
+(evil-define-key* '(normal visual) global-map override-global-map ";" #'execute-extended-command)
 ;; The problem is I feel like the default evil motions are not that useful
 ;; beyond moving to one forward unit.  So I have made the controversial decision
 ;; to rebind.
 
-;; (o-nvmap "w" #'o-evilem-motion-beginning-of-word)
-;; (o-nvmap "e" #'o-evilem-motion-end-of-word)
-;; (o-nvmap "W" #'o-evilem-motion-beginning-of-WORD)
-;; (o-nvmap "E" #'o-evilem-motion-end-of-WORD)
-;; (o-nvmap "f" #'o-evilem-motion-char)
-;; (o-nvmap "H" #'o-evilem-motion-beginning-of-line)
+;; (evil-define-key* '(normal visual) global-map "w" #'o-evilem-motion-beginning-of-word)
+;; (evil-define-key* '(normal visual) global-map "e" #'o-evilem-motion-end-of-word)
+;; (evil-define-key* '(normal visual) global-map "W" #'o-evilem-motion-beginning-of-WORD)
+;; (evil-define-key* '(normal visual) global-map "E" #'o-evilem-motion-end-of-WORD)
+;; (evil-define-key* '(normal visual) global-map "f" #'o-evilem-motion-char)
+;; (evil-define-key* '(normal visual) global-map "H" #'o-evilem-motion-beginning-of-line)
 
-(o-nvmap "g b" #'o-evil-eval-print-operator)
-(o-nvmap "g p" #'o-evil-eval-print-operator)
-(o-nvmap "g c" #'evilnc-comment-operator)
+(evil-define-key* '(normal visual) global-map "g b" #'o-evil-eval-print-operator)
+(evil-define-key* '(normal visual) global-map "g p" #'o-evil-eval-print-operator)
+(evil-define-key* '(normal visual) global-map "g c" #'evilnc-comment-operator)
 (o-each '(cider-repl-mode-map clojure-mode-map clojurec-mode-map clojurescript-mode-map clojurex-mode-map clojure-ts-mode-map clojurescript-ts-mode-map clojurec-ts-mode-map common-lisp-mode-map emacs-lisp-mode-map eshell-mode-map fennel-mode-map fennel-repl-mode-map geiser-repl-mode-map gerbil-mode-map inf-clojure-mode-map inferior-emacs-lisp-mode-map inferior-lisp-mode-map inferior-scheme-mode-map lisp-interaction-mode-map lisp-mode-map monroe-mode-map racket-mode-map racket-repl-mode-map scheme-interaction-mode-map scheme-mode-map slime-repl-mode-map sly-mrepl-mode-map stumpwm-mode-map)
-  (o-bind-key it "g c" #'lispyville-comment-or-uncomment '(normal visual)))
-(o-nvmap emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
-(o-nvmap "g e" #'o-evil-eval-operator)
-(o-nvmap "g h" #'o-evil-eval-operator)
-(o-nvmap "g l" #'o-evil-eval-replace-operator)
-(o-nvmap "g r" #'o-evil-eval-replace-operator)
-(o-nvmap "g s" #'evil-exchange)
-(o-nvmap "g S" #'evil-exchange-cancel)
-(o-nvmap "g x" #'evil-exchange)
-(o-nvmap "g X" #'evil-exchange-cancel)
+  (evil-define-key* '(normal visual) it "g c" #'lispyville-comment-or-uncomment))
+(evil-define-key* '(normal visual) global-map emacs-lisp-mode-map [remap evilnc-comment-operator] #'lispyville-comment-or-uncomment)
+(evil-define-key* '(normal visual) global-map "g e" #'o-evil-eval-operator)
+(evil-define-key* '(normal visual) global-map "g h" #'o-evil-eval-operator)
+(evil-define-key* '(normal visual) global-map "g l" #'o-evil-eval-replace-operator)
+(evil-define-key* '(normal visual) global-map "g r" #'o-evil-eval-replace-operator)
+(evil-define-key* '(normal visual) global-map "g s" #'evil-exchange)
+(evil-define-key* '(normal visual) global-map "g S" #'evil-exchange-cancel)
+(evil-define-key* '(normal visual) global-map "g x" #'evil-exchange)
+(evil-define-key* '(normal visual) global-map "g X" #'evil-exchange-cancel)
+;;;;; helm
+;; This binding has a problem.  (:ie "C-i" #'helm-toggle-visible-mark-backward)
+(o-after helm
+  (evil-define-key* 'insert global-map helm-map "TAB" #'helm-next-line)
+  (evil-define-key* 'insert global-map helm-map [backtab] #'helm-previous-line)
+  (evil-define-key* 'insert global-map helm-map "C-j" #'helm-next-line)
+  (evil-define-key* 'insert global-map helm-map "C-k" #'helm-previous-line)
+  (evil-define-key* 'insert global-map helm-map "C-a" #'helm-select-action)
+  (evil-define-key* 'insert global-map helm-map "C-m" #'helm-toggle-visible-mark-forward)
+  ;; (evil-define-key* 'insert global-map helm-map "RET" #'+helm-select-nth-action)
+  (evil-define-key* 'insert global-map helm-map "S-TAB" #'helm-mark-current-line)
+  (evil-define-key* 'insert global-map helm-map "C-;" #'ace-jump-helm-line))
+;;;;; vertico
+(o-after vertico
+  (evil-define-key* 'insert vertico-map "C-n" #'vertico-scroll-up)
+  (evil-define-key* 'insert vertico-map "C-p" #'vertico-scroll-down)
+  (evil-define-key* 'insert vertico-map "TAB" #'vertico-next)
+  (evil-define-key* 'insert vertico-map "C-k" #'vertico-previous)
+  (evil-define-key* 'insert vertico-map "C-j" #'vertico-next)
+  (evil-define-key* 'insert vertico-map ";" #'vertico-quick-exit)
+  (evil-define-key* 'insert vertico-map "C-;" #'vertico-quick-exit)
+  (evil-define-key* 'insert vertico-map [backtab] #'vertico-previous)
+  (evil-define-key* 'insert vertico-map "C-o" #'embark-act))
+;;;;; dired
+(o-after dired
+  (evil-define-key* 'normal dired-mode-map "h" #'dired-up-directory)
+  (evil-define-key* 'normal dired-mode-map "l" #'dired-find-file)
+  (evil-define-key* 'normal dired-mode-map "RET" #'dired-find-file)
+  (evil-define-key* 'normal dired-mode-map "o" #'dired-omit-mode))
+;;;;; eshell
+(o-after eshell
+  (evil-define-key* 'normal eshell-mode-map "J" #'eshell-next-prompt)
+  (evil-define-key* 'normal eshell-mode-map "K" #'eshell-previous-prompt))
+;;;;; yeetube
+(o-after yeetube
+  (evil-define-key* 'normal yeetube-mode-map "p" #'yeetube-play)
+  (evil-define-key* 'normal yeetube-mode-map "a" #'o-yeetube-download-audio)
+  (evil-define-key* 'normal yeetube-mode-map "v" #'o-yeetube-download-video)
+  (evil-define-key* 'normal yeetube-mode-map "s" #'yeetube-search))
+;;;;; org
+(o-after org
+  (evil-define-key* 'normal org-mode-map "T" #'org-todo)
+  (evil-define-key* 'normal org-mode-map "t" #'+org-choose-tags)
+  (evil-define-key* 'normal org-mode-map "R" #'org-refile)
+  (evil-define-key* 'normal org-mode-map "n" #'org-add-note))
+;;;;; eww
+(o-after eww
+  (evil-define-key* 'normal eww-mode-map "R" #'eww-reload))
+;;;;; lispyville
+(o-after lispyville
+  (evil-define-key* 'insert lispyville-mode-map "SPC" #'lispy-space)
+  (evil-define-key* 'insert lispyville-mode-map ";" #'lispy-comment))
+;;;;; tempel
+(o-after tempel
+  (evil-define-key* 'insert tempel-map "C-l" #'tempel-abort)
+  (evil-define-key* 'insert tempel-map "C-j" #'tempel-next)
+  (evil-define-key* 'insert tempel-map "C-k" #'tempel-previous)
+  (evil-define-key* 'insert tempel-map "TAB" #'tempel-next)
+  (evil-define-key* 'insert tempel-map [backtab] #'tempel-previous))
+;;;;; over
+(o-after corfu
+  (evil-define-key* 'insert corfu-map "<tab>"   #'corfu-next)
+  (evil-define-key* 'insert corfu-map [backtab] #'corfu-previous)
+  (evil-define-key* 'insert corfu-map "S-TAB"   #'corfu-previous)
+  (evil-define-key* 'insert corfu-map "C-;"     #'corfu-quick-complete)
+  (evil-define-key* 'insert corfu-map "C-j"     #'corfu-next)
+  (evil-define-key* 'insert corfu-map "C-k"     #'corfu-previous)
+  (evil-define-key* 'insert corfu-map "C-p"     #'corfu-previous)
+  (evil-define-key* 'insert corfu-map ";"       #'corfu-quick-complete)
+  (evil-define-key* 'insert corfu-map "SPC"     #'corfu-insert))
 ;;;; TEXT-OBJECTS
-(o-iotmap "c" #'evilnc-inner-comment #'evilnc-outer-comment)
+(evil-define-key* evil-inner-text-objects-map "c" #'evilnc-inner-comment)
+(evil-define-key* evil-outer-text-objects-map "c" #'evilnc-outer-comment)
 ;; TODO: In "lispy" modes use lispyville-outer-comment instead.
-(o-iotmap "a" #'lispyville-inner-comment #'lispyville-outer-comment)
-(o-iotmap "h" #'evil-i-syntax #'evil-a-syntax)
-(o-iotmap "l" #'evil-inner-line #'evil-a-line)
-(o-iotmap "f" #'evil-cp-inner-form #'evil-cp-a-form)
-;; (o-iotmap "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
-(o-iotmap "b" #'o-evil-inner-buffer #'o-evil-outer-buffer)
+(evil-define-key* evil-inner-text-objects-map "a" #'lispyville-inner-comment)
+(evil-define-key* evil-outer-text-objects-map "a" #'lispyville-outer-comment)
 
-(o-nmap override-global-map o-normal-leader-key #'o-leader-map)
-(o-imap override-global-map o-insert-leader-key #'o-leader-map)
-(o-emap override-global-map o-emacs-leader-key #'o-leader-map)
-(o-emap override-global-map o-emacs-alt-leader-key #'o-leader-map)
+(evil-define-key* evil-inner-text-objects-map "h" #'evil-i-syntax)
+(evil-define-key* evil-outer-text-objects-map "h" #'evil-a-syntax)
 
-(o-nmap Info-mode-map "H" #'Info-last)
-(o-nmap Info-mode-map "L" #'Info-next)
+(evil-define-key* evil-inner-text-objects-map "l" #'evil-inner-line)
+(evil-define-key* evil-outer-text-objects-map "l" #'evil-a-line)
+
+(evil-define-key* evil-inner-text-objects-map "f" #'evil-cp-inner-form)
+(evil-define-key* evil-outer-text-objects-map "f" #'evil-cp-a-form)
+;; (evil-define-key* evil-inner-text-objects-map "b" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block)
+(evil-define-key* evil-inner-text-objects-map "b" #'o-evil-inner-buffer)
+(evil-define-key* evil-outer-text-objects-map "b" #'o-evil-outer-buffer)
+
+(evil-define-key* 'normal global-map override-global-map o-key-leader-normal #'o-leader-map)
+(evil-define-key* 'insert global-map override-global-map o-key-leader-insert #'o-leader-map)
+(evil-define-key* 'emacs override-global-map o-key-leader-emacs #'o-leader-map)
+(evil-define-key* 'emacs override-global-map o-key-leader-emacs-alt #'o-leader-map)
+
+(evil-define-key* 'normal global-map Info-mode-map "H" #'Info-last)
+(evil-define-key* 'normal global-map Info-mode-map "L" #'Info-next)
 ;;; provide
 (provide 'config-evil)
 ;;; config-evil.el ends here

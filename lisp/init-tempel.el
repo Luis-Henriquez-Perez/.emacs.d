@@ -37,12 +37,6 @@
 (autoload 'o-tempel-expand-elisp-defvar "config-tempel" nil nil 'function)
 (autoload 'o-tempel-expand-elisp-message "config-tempel" nil nil 'function)
 (autoload 'o-tempel-expand-elisp-message-var "config-tempel" nil nil 'function)
-
-(o-imap tempel-map "C-l" #'tempel-abort)
-(o-imap tempel-map "C-j" #'tempel-next)
-(o-imap tempel-map "C-k" #'tempel-previous)
-(o-imap tempel-map "TAB" #'tempel-next)
-(o-imap tempel-map [backtab] #'tempel-previous)
 ;;; provide
 (provide 'init-tempel)
 ;;; init-tempel.el ends here

@@ -41,11 +41,6 @@
 (o-opt dired-clean-confirm-killing-deleted-buffers nil)
 (o-opt dired-recursive-copies 'always)
 (o-opt dired-recursive-deletes 'always)
-
-(o-nmap dired-mode-map "h" #'dired-up-directory)
-(o-nmap dired-mode-map "l" #'dired-find-file)
-(o-nmap dired-mode-map "RET" #'dired-find-file)
-(o-nmap dired-mode-map "o" #'dired-omit-mode)
 ;;; provide
 (provide 'init-dired)
 ;;; init-dired.el ends here

@@ -28,8 +28,6 @@
 (require 'base)
 
 (o-opt eww-auto-rename-buffer t)
-
-(o-nmap eww-mode-map "R" #'eww-reload)
 ;;; provide
 (provide 'init-eww)
 ;;; init-eww.el ends here

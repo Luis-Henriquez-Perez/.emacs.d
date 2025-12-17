@@ -30,11 +30,6 @@
 (add-hook 'yeetube-mode-hook #'hl-line-mode)
 
 (o-opt yeetube-download-directory (expand-file-name "~/Videos/"))
-
-(o-nmap yeetube-mode-map "p" #'yeetube-play)
-(o-nmap yeetube-mode-map "a" #'o-yeetube-download-audio)
-(o-nmap yeetube-mode-map "v" #'o-yeetube-download-video)
-(o-nmap yeetube-mode-map "s" #'yeetube-search)
 ;;; provide
 (provide 'init-yeetube)
 ;;; init-yeetube.el ends here
