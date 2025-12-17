@@ -320,7 +320,7 @@ non-readonly file buffer, save the buffer."
 (evil-define-key* 'visual global-map "v" #'expreg-expand)
 ;; Ensure that ";" is always available as `execute-extended-command'.  Modes
 ;; like dired bind it themselves and would otherwise override it.
-(evil-define-key* '(normal visual) global-map override-global-map ";" #'execute-extended-command)
+(evil-define-key* '(normal visual) override-global-map ";" #'execute-extended-command)
 ;; The problem is I feel like the default evil motions are not that useful
 ;; beyond moving to one forward unit.  So I have made the controversial decision
 ;; to rebind.
