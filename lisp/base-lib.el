@@ -28,7 +28,6 @@
 (require 'functions-base)
 (eval-when-compile (require 'macros-base))
 (eval-when-compile (require 'macros-autolet))
-(eval-when-compile (require 'macros-keybinding))
 (require 'functions-2)
 (require 'functions-call-after)
 (eval-when-compile (require 'macros-config-helpers))
