@@ -33,7 +33,6 @@
 ;;; Code:
 (require 'macros-base)
 (require 'macros-autolet)
-(require 'macros-loop)
 (require 'functions-call-after)
 
 (defvar evil-state-properties)
@@ -61,7 +60,7 @@
 (o-defun o--set-mode-local-vars (hook)
   "Set local variables for mode corresponding to HOOK."
   (o-set failmsg "Failed to set local variable %s to value %S")
-  (o-for ((symbol . value) (alist-get hook o-local-var-alist))
+  (pcase-dolist (`(,symbol . ,value) (alist-get hook o-local-var-alist))
     (o-set bodyform `(setq-local ,symbol ,value))
     (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
     (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))

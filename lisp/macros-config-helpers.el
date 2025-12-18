@@ -31,7 +31,6 @@
 (require 'functions-2)
 (eval-when-compile (require 'macros-base))
 (eval-when-compile (require 'macros-autolet))
-(eval-when-compile (require 'macros-loop))
 
 (defmacro o-require (feature)
   "Require feature in lisp directory.
@@ -95,6 +94,8 @@ This is like `setq' but it is meant for configuring variables."
           (add-hook ',hook #',setter -50)))
 
 (defmacro o-after (feature &rest body)
+  "Evaluate BODY after FEATURE has been loaded.
+If FEATURE is already loaded, evaluate BODY immediately."
   (declare (indent 1))
   `(o-call-after-load ',feature (lambda () ,@body)))
 
@@ -109,6 +110,24 @@ This is like `setq' but it is meant for configuring variables."
               (error
                (o-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
           (o-call-after-load ',feature #',name)))
+
+(o-defmacro o-defvar-keymap (keymap &rest pairs)
+  "Wrapper around `defvar-keymap'.
+In contrast to `defvar-keymap' this macro declares to avoid byte-compilation
+warnings.  Also it auto defines a prefix with the same name as KEYMAP."
+  (declare (indent 1))
+  (o-set plist (o-stripplist pairs))
+  (o-set copy pairs)
+  (while (consp copy)
+    (pop copy)
+    (pcase (pop copy)
+      (`(function ,fn)
+       (o-pushing declareforms `(declare-function ,fn nil)))))
+  `(progn ,@(nreverse declareforms)
+          (defvar-keymap ,keymap
+            :prefix ',keymap
+            ,@plist
+            ,@pairs)))
 ;;; provide
 (provide 'macros-config-helpers)
 ;;; macros-config-helpers.el ends here
