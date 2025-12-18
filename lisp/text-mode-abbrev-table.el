@@ -3514,6 +3514,7 @@
     ("layed" "laid")
     ("lazyness" "laziness")
     ("lcoation" "location")
+    ("lded" "loaded")
     ("lding" "loading")
     ("leage" "league")
     ("leasure" "leisure")
