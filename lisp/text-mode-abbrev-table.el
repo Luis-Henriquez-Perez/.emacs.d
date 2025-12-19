@@ -1999,6 +1999,7 @@
     ("drnik" "drink")
     ("druming" "drumming")
     ("drummless" "drumless")
+    ("dscr" "description")
     ("dsl" "Domain-Specific-Language")
     ("dsn" "does not")
     ("dsnt" "does not")
