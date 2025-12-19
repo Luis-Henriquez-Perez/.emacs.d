@@ -804,6 +804,7 @@
     ("attowt" "at the time of writing this")
     ("attributred" "attributed")
     ("attrocities" "atrocities")
+    ("attvl" "at the very least")
     ("audeince" "audience")
     ("auly" "automatically")
     ("aume" "as you might expect")
