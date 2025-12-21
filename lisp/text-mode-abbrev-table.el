@@ -3979,6 +3979,7 @@
     ("nmae" "name")
     ("nn" "non-nil")
     ("nni" "non-nil if")
+    ("nnl" "non-nil")
     ("nnow" "and now")
     ("noice" "nice")
     ("noly" "not only")
