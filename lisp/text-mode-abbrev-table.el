@@ -3921,6 +3921,7 @@
     ("nd" "and")
     ("ndo" "window")
     ("neabled" "enabled")
+    ("nebled" "enabled")
     ("nec" "necessary")
     ("neccesarily" "necessarily")
     ("neccesary" "necessary")
