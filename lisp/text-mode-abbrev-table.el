@@ -1630,6 +1630,7 @@
     ("curr" "current")
     ("currenly" "currently")
     ("curriculem" "curriculum")
+    ("cusom" "sutom")
     ("custm" "custom")
     ("customizaton" "customization")
     ("customizeability" "customizability")
