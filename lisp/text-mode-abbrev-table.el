@@ -6232,6 +6232,7 @@
     ("varing" "varying")
     ("varities" "varieties")
     ("varity" "variety")
+    ("varr" "variable")
     ("vars" "variables")
     ("vasall" "vassal")
     ("vasalls" "vassals")
