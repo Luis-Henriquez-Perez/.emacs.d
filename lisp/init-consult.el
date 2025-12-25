@@ -31,15 +31,14 @@
 (o-opt consult-fontify-preserve nil)
 
 (autoload 'o-pop-to-buffer "o-commands" nil nil 'function)
+(o-remap-alt 'consult #'display-buffer   #'o-pop-to-buffer)
+(o-remap-alt 'consult #'pop-to-buffer    #'o-pop-to-buffer)
 
-(o-alt display-buffer o-pop-to-buffer consult)
-
-(o-alt imenu consult-imenu consult)
-(o-alt pop-to-buffer o-pop-to-buffer consult)
-(o-alt switch-to-buffer consult-buffer consult)
-(o-alt yank-pop consult-yank-pop consult)
-(o-alt apropos consult-apropos consult)
-(o-alt man consult-man consult)
+(o-remap-alt 'consult #'imenu            #'consult-imenu)
+(o-remap-alt 'consult #'switch-to-buffer #'consult-buffer)
+(o-remap-alt 'consult #'yank-pop         #'consult-yank-pop)
+(o-remap-alt 'consult #'apropos          #'consult-apropos)
+(o-remap-alt 'consult #'man              #'consult-man)
 
 ;; (o-opt consult-project-function #'projectile-project-root)
 (o-opt consult-project-function #'consult--default-project-function)

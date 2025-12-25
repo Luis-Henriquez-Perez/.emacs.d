@@ -39,20 +39,20 @@
 (declare-function evil-define-key* "evil")
 
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
-(defvar o-alternate-commands (make-hash-table)
-  "A hash-table mapping command symbols to a list of command symbols.")
+(defvar o-alt-cmds nil
+  "")
 
-(o-defun o-alternate-command-choose-fn (command)
+(o-defun o-get-alt-cmd (cmd)
   "Return an alternate command that should be called instead of COMMAND."
-  (or (o-each (gethash command o-alternate-commands)
-        (o-aand (funcall it)
-                (o-return it)))
-      command))
+  (pcase-dolist (`(,feature . ,alt) (alist-get cmd o-alt-cmds))
+    (if (or (featurep feature) (require feature nil t))
+        (o-return alt)))
+  cmd)
 
-(defmacro o-alt (old new feature)
-  `(progn (push (lambda (&rest _) (when (or (featurep ',feature) (require ',feature nil t)) ',new))
-                (gethash ',old o-alternate-commands))
-          (define-key global-map [remap ,old] '(menu-item "" ,old :filter o-alternate-command-choose-fn))))
+(defun o-remap-alt (feature orig new)
+  "Remap ORIG command to NEW if FEATURE is loaded."
+  (setf (alist-get feature (alist-get orig o-alt-cmds)) new)
+  (define-key global-map `[remap ,orig] `(menu-item "" ,orig :filter o-get-alt-cmd)))
 
 ;; The point of this function is to give me a uniform interface for binding keys
 ;; where I do not have to worry about whether the keymap is defined or whether

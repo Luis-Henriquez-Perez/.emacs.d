@@ -71,7 +71,7 @@
 (autoload 'org-capture|bug "config-org-capture" nil nil 'function)
 (autoload 'org-capture|choose-template "config-org-capture" nil nil 'function)
 
-(o-alt org-capture org-capture|choose-template org-capture)
+(o-remap-alt 'org-capture #'org-capture #'org-capture|choose-template)
 
 (o-call-after-load 'org-capture 'config-org-capture)
 ;;;;; ORG-REFILE
