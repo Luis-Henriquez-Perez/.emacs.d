@@ -1667,6 +1667,7 @@
     ("decieved" "deceived")
     ("decis" "decision")
     ("decison" "decision")
+    ("declrs" "declarations")
     ("decomissioned" "decommissioned")
     ("decomposit" "decompose")
     ("decomposited" "decomposed")
