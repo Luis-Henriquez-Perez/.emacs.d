@@ -35,9 +35,6 @@
 (require 'macros-autolet)
 (require 'functions-call-after)
 
-(defvar evil-state-properties)
-(declare-function evil-define-key* "evil")
-
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar o-alt-cmds nil
   "")
