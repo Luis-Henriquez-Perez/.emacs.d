@@ -49,7 +49,7 @@
 (defun o-remap-alt (feature orig new)
   "Remap ORIG command to NEW if FEATURE is loaded."
   (setf (alist-get feature (alist-get orig o-alt-cmds)) new)
-  (define-key global-map `[remap ,orig] `(menu-item "" ,orig :filter o-get-alt-cmd)))
+  (keymap-set global-map (format "<remap> <%S>" orig) `(menu-item "" ,orig :filter o-get-alt-cmd)))
 
 ;; The point of this function is to give me a uniform interface for binding keys
 ;; where I do not have to worry about whether the keymap is defined or whether
