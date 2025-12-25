@@ -237,11 +237,11 @@
   o-key-leader-normal #'o-leader-map)
 
 (defvar-keymap o-bray-state-insert-map
-  "C-f" #'scroll-down
+  "C-f" #'scroll-up
   "<escape>" #'o-bray-dwim-escape)
 
 (defvar-keymap o-bray-state-motion-map
-  "C-f" #'scroll-down
+  "C-f" #'scroll-up
   "<escape>"
   #'o-bray-dwim-escape)
 
