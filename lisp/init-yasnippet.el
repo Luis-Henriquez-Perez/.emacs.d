@@ -26,19 +26,21 @@
 ;;
 ;;; Code:
 (add-hook 'prog-mode-hook #'yas-minor-mode-on)
-:setq
-(yas-snippet-dirs . (list (concat VOID:DATA-DIR "snippets/")))
-(yas-verbosity . (if void:debug-p 3 0))
-(yas-indent-line . 'auto)
-(yas-prompt-functions . '(yas-completing-prompt yas-ido-prompt))
-(yas-use-menu . nil)
-(yas-triggers-in-field . t)
-:defer-config
-(--each yas-snippet-dirs (mkdir it t))
-(delq #'yas-dropdown-prompt yas-prompt-functions)
+
+(o-opt yas-snippet-dirs (list (concat o-data-dir "snippets/")))
+(o-opt yas-verbosity (if o-debug-p 3 0))
+(o-opt yas-indent-line 'auto)
+(o-opt yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))
+(o-opt yas-use-menu nil)
+(o-opt yas-triggers-in-field t)
+
+(o-after yasnippet
+  (o-each yas-snippet-dirs (mkdir it t))
+  (delq #'yas-dropdown-prompt yas-prompt-functions))
+
 (o-after smartparens
-        ;; tell smartparens overlays not to interfere with yasnippet keybinds
-        (advice-add #'yas-expand :before #'sp-remove-active-pair-overlay))
+  ;; tell smartparens overlays not to interfere with yasnippet keybinds
+  (advice-add #'yas-expand :before #'sp-remove-active-pair-overlay))
 ;;; provide
 (provide 'init-yasnippet)
 ;;; init-yasnippet.el ends here
