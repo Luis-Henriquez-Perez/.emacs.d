@@ -45,13 +45,10 @@ matching PRED."
          tree)))
 
 (defun o-into-pcase-pattern (match-form)
-  "Convert MATCH-FORM into a `pcase` pattern.
+  "Return a pcase-style pattern from MATCH-FORM.
 
 MATCH-FORM is a potentially nested structure containing lists, vectors, or
-symbols.  This function transforms symbols in MATCH-FORM into pcase-compatible
-patterns using backquote and comma syntax.
-
-Return a pcase-compatible pattern."
+symbols. "
   (if (symbolp match-form)
       match-form
     (cl-flet ((true-symbolp (o) (and o (symbolp o)))
