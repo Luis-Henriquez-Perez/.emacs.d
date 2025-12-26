@@ -250,10 +250,12 @@
   "U" #'upcase-region
   "a" #'meep-clipboard-only-copy
   "A" #'meep-clipboard-killring-copy
+  ;; "h" #'meep-clipboard-only-copy
+  ;; "H" #'meep-clipboard-killring-copy
   "s" #'meep-clipboard-only-cut
   "S" #'meep-clipboard-killring-cut
-  "e" #'eval-region
-  "E" #'o-eval-and-replace-region
+  ;; "e" #'eval-region
+  ;; "E" #'o-eval-and-replace-region
   "<escape>" #'o-bray-dwim-escape)
 
 (keymap-set o-bray-state-motion-map "<remap> <self-insert-command>" #'o-bray-unbound-key)
