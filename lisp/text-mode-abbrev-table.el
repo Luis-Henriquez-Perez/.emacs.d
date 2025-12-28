@@ -3916,6 +3916,7 @@
     ("nad" "and")
     ("naieve" "naive")
     ("naive" "naïve")
+    ("nameing" "naming")
     ("namingn" "naming")
     ("narrowng" "narrowing")
     ("naturaly" "naturally")
