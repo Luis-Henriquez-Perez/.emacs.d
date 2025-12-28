@@ -237,7 +237,7 @@ of FACE to the background color of the `default' face."
   "Enable server if it is not running."
   (unless (server-running-p) (server-start)))
 
-(add-hook 'o-emacs-startup-hook #'o-hook--init-server)
+(add-hook 'emacs-startup-hook #'o-hook--init-server)
 ;;;; disable old themes before enabling new ones
 ;; We end up with remants of the faces of old themes when we load a new
 ;; one.  For this reason, I make sure to disable any enabled themes before applying
