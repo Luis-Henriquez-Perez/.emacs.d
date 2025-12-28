@@ -33,9 +33,9 @@
 (o-opt recentf-save-file (expand-file-name "recentf-save.el" o-cache-dir))
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
-(advice-add #'recentf-save-list :around #'o-call-quietly-a)
-(advice-add #'recentf-cleanup   :around #'o-call-quietly-a)
-(advice-add #'recentf-mode      :around #'o-call-quietly-a)
+(advice-add #'recentf-save-list :around #'o-advice--silence-output)
+(advice-add #'recentf-cleanup   :around #'o-advice--silence-output)
+(advice-add #'recentf-mode      :around #'o-advice--silence-output)
 
 (add-to-list 'recentf-filename-handlers #'file-truename)
 (add-to-list 'recentf-filename-handlers #'abbreviate-file-name)

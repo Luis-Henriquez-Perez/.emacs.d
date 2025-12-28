@@ -162,13 +162,13 @@
 ;; (defvar-keymap meep-state-keymap-motion
 ;;   "<SPC>"  (meep-kbd "C-c"))
 
-(defun o-set-state-with-modaled-a (state)
+(defun o-advice--modaled-set-state (state)
   (modaled-set-state (symbol-name state)))
 
 (setq meep-state-insert 'insert)
-(advice-add 'bray-state-stack-push :override #'o-set-state-with-modaled-a)
-(advice-add 'bray-state-set :override #'o-set-state-with-modaled-a)
-(advice-add 'bray-state-set :override #'o-set-state-with-modaled-a)
+(advice-add 'bray-state-stack-push :override #'o-advice--modaled-set-state)
+(advice-add 'bray-state-set :override #'o-advice--modaled-set-state)
+(advice-add 'bray-state-set :override #'o-advice--modaled-set-state)
 
 (modaled-define-state "normal"
   :lighter "[NOR]"

@@ -101,7 +101,7 @@ string or comment."
 ;; it is converted into period space space.  Additionally, if I end a sentence
 ;; line with two spaces and I press ESC, the trailing two spaces are replaced
 ;; with a period.
-(o-defun o-abbrev-insert-period-maybe-a (expand-fn)
+(o-defun o-advice--abbrev-insert-period-maybe (expand-fn)
   "Add a period when necessary."
   (prog1 (funcall expand-fn)
     (when (or (member major-mode '(org-mode text-mode)) (o-in-string-or-comment-p))
@@ -114,7 +114,7 @@ string or comment."
 ;;;;; PULSE EXPANSION
 ;; You would be surprised at how much of an aesthetic improvement little things
 ;; like this can make a difference.
-(o-defun o-abbrev-pulse-expand-a (expand-fn)
+(o-defun o-advice--abbrev-pulse-expand (expand-fn)
   "Pulse around the expansion of an abbrev."
   (o-aprog1 (funcall expand-fn)
     (and it
@@ -127,7 +127,7 @@ string or comment."
 ;; captializes a word during `post-insert-hook' and a multi-word expansion will
 ;; skip calling that hook after each word except the last one.  So here I call
 ;; the hook myself at the proper places.
-(o-defun o-abbrev-ensure-post-insert-a (expand-fn)
+(o-defun o-advice--abbrev-ensure-post-insert (expand-fn)
   "Run `post-insert-hook' after each word in a multi-word expansion."
   (o-aprog1 (funcall expand-fn)
     (when (and it last-abbrev-location)
@@ -216,7 +216,7 @@ string or comment."
               (vc-git-checkin (list file) commit-msg)))
         (kill-buffer buffer)))))
 
-(defun o-abbrev-write-abbrev-file-a (&rest _)
+(defun o-advice--abbrev-write-abbrev-file (&rest _)
   "Override `write-abbrev-file' with my own function."
   (o-abbrev-update-abbrev-tables))
 ;; This is a bit crude.  It would be precise to not load the elisp abbrev table when

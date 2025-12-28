@@ -213,15 +213,15 @@
   (with-temp-file o-package-alist-cache
     (prin1 package-alist (current-buffer))))
 
-(defun o-update-package-alist-cache-a (orig-fn &rest args)
+(defun o-advice--update-package-alist-cache (orig-fn &rest args)
   "Update the package descriptor cache."
   (prog1 (apply orig-fn args)
     (with-temp-file o-package-alist-cache
       (prin1 package-alist (current-buffer)))))
 
-(advice-add 'package-install :around #'o-update-package-alist-cache-a)
+(advice-add 'package-install :around #'o-advice--update-package-alist-cache)
 ;; I am not sure whether I need to update the cache after the package deletion.
-(advice-add 'package-delete :around #'o-update-package-alist-cache-a)
+(advice-add 'package-delete :around #'o-advice--update-package-alist-cache)
 
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem for me.

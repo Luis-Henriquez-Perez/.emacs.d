@@ -211,7 +211,7 @@ non-readonly file buffer, save the buffer."
       (comment-region it (point)))))
 ;;;;; HUNGRY DELETE (EXPERIMENTAL AND IN PROGRESS)
 ;; This needs some more fine-tuning.
-(defun o-evil-consume-ws-a (orig-fn &rest args)
+(defun o-advice--evil-consume-ws (orig-fn &rest args)
   (prog1 (apply orig-fn args)
     ;; TODO: this should happen as well for lines behind.
     (cond ((looking-at (rx (>= 3 "\n")))
@@ -219,9 +219,9 @@ non-readonly file buffer, save the buffer."
           ((looking-at (rx (>= 2 "\s")))
            (just-one-space)))))
 
-(advice-add 'evil-delete :around #'o-evil-consume-ws-a)
-(advice-add 'lispyville-delete :around #'o-evil-consume-ws-a)
-(advice-add 'lispyville-delete-char-or-splice :around #'o-evil-consume-ws-a)
+(advice-add 'evil-delete :around #'o-advice--evil-consume-ws)
+(advice-add 'lispyville-delete :around #'o-advice--evil-consume-ws)
+(advice-add 'lispyville-delete-char-or-splice :around #'o-advice--evil-consume-ws)
 ;;;; TEXT-OBJECTS
 (evil-define-text-object o-evil-outer-buffer (_ &optional _ _ type)
   "Select the entire buffer as a text object."

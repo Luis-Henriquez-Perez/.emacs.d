@@ -67,7 +67,7 @@ Specifically, return the symbol `string' if point is in a string, the symbol
           ((nth 4 ppss) 'comment)
           (t nil))))
 
-(defun o-call-quietly-a (fn &rest args)
+(defun o-advice--silence-output (fn &rest args)
   "Call FN with ARGS without producing any output."
   (o-quiet (apply fn args)))
 ;;; provide

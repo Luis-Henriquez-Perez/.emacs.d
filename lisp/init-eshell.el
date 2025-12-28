@@ -45,9 +45,9 @@
 (o-popup-at-bottom "\\*eshell")
 
 (declare-function eshell-unload-all-modules "eshell")
-(advice-add #'eshell-unload-all-modules :around #'o-call-quietly-a)
+(advice-add #'eshell-unload-all-modules :around #'o-advice--silence-output)
 
-(advice-add #'eshell-mode :around #'o-call-quietly-a)
+(advice-add #'eshell-mode :around #'o-advice--silence-output)
 
 (o-require-after-load 'eshell 'config-eshell)
 ;;; provide

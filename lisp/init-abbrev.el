@@ -28,16 +28,16 @@
 (require 'base)
 
 (declare-function o-abbrev-in-text-p "lib-abbrev")
-(declare-function o-abbrev-insert-period-maybe-a "lib-abbrev")
-(declare-function o-abbrev-pulse-expand-a "lib-abbrev")
-(declare-function o-abbrev-ensure-post-insert-a "lib-abbrev")
-(declare-function o-abbrev-write-abbrev-file-a "lib-abbrev")
+(declare-function o-advice--abbrev-insert-period-maybe "lib-abbrev")
+(declare-function o-advice--abbrev-pulse-expand "lib-abbrev")
+(declare-function o-advice--abbrev-ensure-post-insert "lib-abbrev")
+(declare-function o-advice--abbrev-write-abbrev-file "lib-abbrev")
 
 (autoload 'o-abbrev-in-text-p "lib-abbrev" nil nil 'function)
-(autoload 'o-abbrev-insert-period-maybe-a "lib-abbrev" nil nil 'function)
-(autoload 'o-abbrev-pulse-expand-a "lib-abbrev" nil nil 'function)
-(autoload 'o-abbrev-ensure-post-insert-a "lib-abbrev" nil nil 'function)
-(autoload 'o-abbrev-write-abbrev-file-a "lib-abbrev" nil nil 'function)
+(autoload 'o-advice--abbrev-insert-period-maybe "lib-abbrev" nil nil 'function)
+(autoload 'o-advice--abbrev-pulse-expand "lib-abbrev" nil nil 'function)
+(autoload 'o-advice--abbrev-ensure-post-insert "lib-abbrev" nil nil 'function)
+(autoload 'o-advice--abbrev-write-abbrev-file "lib-abbrev" nil nil 'function)
 
 ;; Write abbrevs to files my way
 (setq save-abbrevs 'silently)
@@ -53,10 +53,10 @@
 
 ;; These do not need to be autoloaded because they will only ever happen when
 ;; abbrev-mode is already enabled.
-(advice-add 'abbrev--default-expand :around #'o-abbrev-insert-period-maybe-a)
-(advice-add 'abbrev--default-expand :around #'o-abbrev-pulse-expand-a)
-(advice-add 'abbrev--default-expand :around #'o-abbrev-ensure-post-insert-a)
-(advice-add 'write-abbrev-file :around #'o-abbrev-write-abbrev-file-a)
+(advice-add 'abbrev--default-expand :around #'o-advice--abbrev-insert-period-maybe)
+(advice-add 'abbrev--default-expand :around #'o-advice--abbrev-pulse-expand)
+(advice-add 'abbrev--default-expand :around #'o-advice--abbrev-ensure-post-insert)
+(advice-add 'write-abbrev-file :around #'o-advice--abbrev-write-abbrev-file)
 
 ;; Do not read the abbrev files at startup because I already load them myself.
 ;; Emacs loads abbrevs so fast.

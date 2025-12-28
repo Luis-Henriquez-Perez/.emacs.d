@@ -29,16 +29,16 @@
 
 (declare-function global-evil-fringe-mark-mode "evil-fringe-mark")
 
-(defun o-enable-evil-fringe-mark-a (orig-fn &rest args)
+(defun o-advice--enable-evil-fringe-mark (orig-fn &rest args)
   "Enable `evil-fringe-mark'."
   (prog1 (apply orig-fn args)
     (cond ((require 'evil-fringe-mark nil t)
            (global-evil-fringe-mark-mode 1)
-           (advice-remove 'evil-set-marker #'o-enable-evil-fringe-mark-a))
+           (advice-remove 'evil-set-marker #'o-advice--enable-evil-fringe-mark))
           (t
            (o-log 'warn "Could not load `evil-fringe-mark-mode'.")))))
 
-(advice-add 'evil-set-marker :around #'o-enable-evil-fringe-mark-a)
+(advice-add 'evil-set-marker :around #'o-advice--enable-evil-fringe-mark)
 ;;; provide
 (provide 'init-evil-fringe-mark)
 ;;; init-evil-fringe-mark.el ends here

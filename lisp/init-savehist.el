@@ -37,11 +37,11 @@
 
 (o-opt savehist-additional-variables (cl-adjoin 'register-alist savehist-additional-variables))
 
-(o-defun o-remove-kill-ring-properties-a (&rest _)
+(o-defun o-advice--remove-kill-ring-properties (&rest _)
   (o-flet when-fn (pred function) (lambda (x) (if (funcall pred x) (funcall function x) x)))
   (setq kill-ring (mapcar (when-fn #'stringp #'substring-no-properties) kill-ring)))
 
-(advice-add 'savehist-save :before #'o-remove-kill-ring-properties-a)
+(advice-add 'savehist-save :before #'o-advice--remove-kill-ring-properties)
 ;;; provide
 (provide 'init-savehist)
 ;;; init-savehist.el ends here

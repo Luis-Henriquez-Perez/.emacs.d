@@ -250,17 +250,17 @@ of FACE to the background color of the `default' face."
 ;; Don't know why deleting the previous theme before enabling a new
 ;; one isn't the default behavior.  When would anyone want to layer
 ;; the colors of one theme on top of an older one.
-(defun o-disable-old-themes-a (orig-fn &rest args)
+(defun o-advice--disable-old-themes (orig-fn &rest args)
   "Disable old themes before loading new ones."
   (mapc #'disable-theme custom-enabled-themes)
   (apply orig-fn args))
 
-(advice-add 'load-theme :around #'o-disable-old-themes-a)
+(advice-add 'load-theme :around #'o-advice--disable-old-themes)
 ;;;; Do not short-circuit themes with invalid box property
 ;; This comes from the fact that :box (:style unspecified ...) was silently
 ;; tolerated before, but in Emacs 30 the :style slot must be either nil,
 ;; 'released-button, or 'pressed-button.
-(o-defun o-set-face-attribute-a (orig-fn face frame &rest args)
+(o-defun o-advice--set-face-attribute (orig-fn face frame &rest args)
   "Remove :box properties from attributes."
   (condition-case nil
       (apply orig-fn face frame args)
@@ -277,7 +277,7 @@ of FACE to the background color of the `default' face."
                plist))
      (apply orig-fn face frame (sanitize-attrs args)))))
 
-(advice-add 'set-face-attribute :around #'o-set-face-attribute-a)
+(advice-add 'set-face-attribute :around #'o-advice--set-face-attribute)
 ;;;; Only consider real themes
 ;; Annoyingly some themes, such spacemacs, solarized, moe and
 ;; immaterial, have helper files for defining themes that Emacs wrongly confuses
@@ -291,11 +291,11 @@ of FACE to the background color of the `default' face."
 ;; benefit implementation-wise is it is simple, fast, and does not have
 ;; the potential performance cost of the cache solution which would need to read
 ;; all the theme files the first time its called.
-(defun o-only-real-themes-a (themes)
+(defun o-advice--use-only-real-themes (themes)
   "Do not count \"fake\" themes."
   (cl-set-difference themes '(light-blue spacemacs solarized moe immaterial)))
 
-(advice-add 'custom-available-themes :filter-return #'o-only-real-themes-a)
+(advice-add 'custom-available-themes :filter-return #'o-advice--use-only-real-themes)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 ;; "Locking" a file can mean two different things (or both of these things at
 ;; once).  It can mean that Emacs cannot be exited while there are "locked"

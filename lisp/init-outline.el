@@ -25,7 +25,7 @@
 ;; Initialize `outline'.
 ;;
 ;;; Code:
-(advice-add 'outline-cycle :around #'o-call-quietly-a)
+(advice-add 'outline-cycle :around #'o-advice--silence-output)
 ;;; provide
 (provide 'init-outline)
 ;;; init-outline.el ends here
