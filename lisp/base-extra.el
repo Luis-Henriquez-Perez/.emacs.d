@@ -437,11 +437,11 @@ file that is in a git repo, enale git-gutter-mode."
        (o-log 'failure "Failed to idle-load %s: %S -> %S" feature (car err) (cdr err))))
     (run-with-idle-timer 1 nil #'o-load-idle-features)))
 
-(defun o-hook--setup-idle-loading ()
+(defun o-hook--start-idle-loading ()
   "Setup the loading of idle features."
   (run-with-idle-timer 3 nil #'o-load-idle-features))
 
-(add-hook 'emacs-startup-hook #'o-hook--setup-idle-loading 90)
+(add-hook 'emacs-startup-hook #'o-hook--start-idle-loading 90)
 
 (add-hook 'o-first-file-hook #'global-auto-revert-mode)
 ;;; provide
