@@ -29,14 +29,14 @@
 (require 'seq)
 (require 'telephone-line)
 ;;;; basic setup
-(defun o-setup-telephone-line-h ()
+(defun o-hook--init-telephone-line ()
   "Enable telephone-line mode.
 Additionally make it so that whenever telephone-line-mode is called after this,
 the modeline is updated."
   (telephone-line-mode 1)
   (add-hook 'telephone-line-mode-hook #'o-update-modeline))
 
-(add-hook 'emacs-startup-hook #'o-setup-telephone-line-h)
+(add-hook 'emacs-startup-hook #'o-hook--init-telephone-line)
 
 ;; Add a timer to toggle the separators.
 ;; (o-opt telephone-line-height 30)

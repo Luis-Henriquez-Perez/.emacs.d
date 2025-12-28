@@ -33,11 +33,11 @@
 (defvar evil-want-keybinding)
 (setq evil-want-keybinding nil)
 
-(defun o-load-evil-h ()
+(defun o-hook--load-evil ()
   "Require `evil'."
   (require 'evil nil t))
 
-(add-hook 'after-init-hook #'o-load-evil-h -90)
+(add-hook 'after-init-hook #'o-hook--load-evil -90)
 
 (add-hook 'emacs-startup-hook #'evil-mode)
 
@@ -48,12 +48,12 @@
 ;; override an evil keymap).
 (defvar override-global-map)
 (declare-function evil-make-intercept-map "evil")
-(defun o-make-intercept-map-h ()
+(defun o-hook--make-intercept-map ()
   "Register `o-override-map' as an intercept map."
   (require 'bind-key)
   (evil-make-intercept-map override-global-map 'all t))
 
-(add-hook 'evil-mode-hook #'o-make-intercept-map-h)
+(add-hook 'evil-mode-hook #'o-hook--make-intercept-map)
 
 (o-require-after-load 'evil 'config-evil)
 ;;; provide

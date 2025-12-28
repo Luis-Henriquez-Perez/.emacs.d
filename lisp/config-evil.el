@@ -139,21 +139,21 @@
 
 ;; It is easier to make all the hooks and functions "safe" than to remember all
 ;; the hooks and remove them when evil-mode is disabled.
-(defun o-evil-save-prior-evil-state-h ()
+(defun o-hook--save-prior-evil-state ()
   "Save state before entering the minibuffer and enter insert state."
   (when (bound-and-true-p evil-mode)
     (setq o-evil-state-before-minibuffer evil-state)
     (evil-insert-state)))
 
-(defun o-evil-restore-prior-evil-state-h ()
+(defun o-hook--restore-prior-evil-state ()
   "Restore state after minibuffer."
   (when (bound-and-true-p evil-mode)
     (when o-evil-state-before-minibuffer
       (evil-change-state o-evil-state-before-minibuffer))
     (setq o-evil-state-before-minibuffer nil)))
 
-(add-hook 'minibuffer-setup-hook #'o-evil-save-prior-evil-state-h)
-(add-hook 'minibuffer-exit-hook #'o-evil-restore-prior-evil-state-h)
+(add-hook 'minibuffer-setup-hook #'o-hook--save-prior-evil-state)
+(add-hook 'minibuffer-exit-hook #'o-hook--restore-prior-evil-state)
 ;;;; THEME
 (defun o-evil-refresh-cursor-ignore-args (&rest _)
   (when (bound-and-true-p evil-mode)

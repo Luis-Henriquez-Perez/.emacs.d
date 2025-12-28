@@ -36,13 +36,13 @@
 (o-call-after-load 'denote #'denote-rename-buffer-mode)
 ;; Set denote to insert state after entering.
 (declare-function evil-insert-state "evil")
-(defun o-enter-insert-state-h ()
+(defun o-hook--enter-insert-state ()
   "Enter insert state after entering denote buffer."
   ;; (message "LOG %s : %S" (format-time-string "%X") (current-buffer))
   (when (bound-and-true-p evil-mode)
     (evil-insert-state 1)))
 
-(add-hook 'denote-after-new-note-hook #'o-enter-insert-state-h)
+(add-hook 'denote-after-new-note-hook #'o-hook--enter-insert-state)
 
 (o-opt denote-rename-confirmations nil)
 ;;; provide

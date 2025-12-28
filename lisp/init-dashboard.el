@@ -41,14 +41,14 @@
 (o-opt dashboard-startup-banner (seq-random-elt (if (display-graphic-p) '(official logo) '(1 2 3))))
 (o-opt dashboard-center-content t)
 
-(defun o-enable-dashboard-h ()
+(defun o-hook--init-dashboard ()
   (require 'dashboard)
   (add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
   (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
   (dashboard-insert-startupify-lists)
   (dashboard-initialize))
 
-(add-hook 'emacs-startup-hook #'o-enable-dashboard-h)
+(add-hook 'emacs-startup-hook #'o-hook--init-dashboard)
 ;;; provide
 (provide 'init-dashboard)
 ;;; init-dashboard.el ends here

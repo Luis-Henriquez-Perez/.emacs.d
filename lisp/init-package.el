@@ -271,7 +271,7 @@
 
 (advice-add 'package--archives-initialize :around #'o--read-archive-contents)
 
-(defun o-install-packages-h ()
+(defun o-hook--install-packages-h ()
   "Ensure all packages are installed."
   (let ((read-archive-contents-p nil))
     (dolist (package package-selected-packages)
@@ -295,7 +295,7 @@
         (garbage-collect))))
   (package-vc-install-selected-packages))
 
-(o-install-packages-h)
+(o-hook--install-packages-h)
 ;;; provide
 (provide 'init-package)
 ;;; init-package.el ends here

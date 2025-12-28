@@ -109,7 +109,7 @@
 ;;   (spaceline-compile)
 ;;   (message "set separator to %s" powerline-default-separator))
 ;;;; initialize modeline at startup
-(o-defhook o-initialize-modeline-h (after-init-hook :depth 90)
+(o-defhook o-hook--initialize-modeline (after-init-hook :depth 90)
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 ;;; provide
 (provide 'init-spaceline)

@@ -48,14 +48,14 @@
 ;; still do not like this though because it actually erases the contents of the
 ;; buffer and I do not want to do this unnecessarily.  I just want it to scroll
 ;; up.  I figured out why.
-(defun eshell|setup-scroll-to-top-h (&rest _)
+(defun o-hook--scroll-eshell-to-top (&rest _)
   "Hook that scrolls eshell to top of window."
   (recenter 0)
-  (remove-hook 'eshell-post-command-hook #'eshell|setup-scroll-to-top-h 'local))
+  (remove-hook 'eshell-post-command-hook #'o-hook--scroll-eshell-to-top 'local))
 
 (defun eshell/scroll-to-top ()
   "Scroll the Eshell to the top without clearing the buffer."
-  (add-hook 'eshell-post-command-hook #'eshell|setup-scroll-to-top-h nil 'local))
+  (add-hook 'eshell-post-command-hook #'o-hook--scroll-eshell-to-top nil 'local))
 
 ;; Replace `eshell/clear' with this function.
 ;; (defalias 'eshell/clear 'eshell/scroll-to-top)
