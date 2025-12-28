@@ -443,8 +443,9 @@ non-readonly file buffer, save the buffer."
 (evil-define-key* 'emacs override-global-map (kbd o-key-leader-emacs) #'o-leader-map)
 (evil-define-key* 'emacs override-global-map (kbd o-key-leader-emacs-alt) #'o-leader-map)
 
-(evil-define-key* 'normal Info-mode-map "H" #'Info-last)
-(evil-define-key* 'normal Info-mode-map "L" #'Info-next)
+(o-after info
+  (evil-define-key* 'normal Info-mode-map "H" #'Info-last)
+  (evil-define-key* 'normal Info-mode-map "L" #'Info-next))
 ;;; provide
 (provide 'config-evil)
 ;;; config-evil.el ends here
