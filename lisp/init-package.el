@@ -220,10 +220,6 @@
     (with-temp-file o-package-alist-cache
       (prin1 package-alist (current-buffer)))))
 
-(advice-add 'package-install :around #'o-advice--update-package-alist-cache)
-;; I am not sure whether I need to update the cache after the package deletion.
-(advice-add 'package-delete :around #'o-advice--update-package-alist-cache)
-
 ;; The function `package-install-selected-packages' does not activate the
 ;; packages which causes a problem for me.
 
@@ -294,7 +290,13 @@
         ;; installing packages will cause slowdowns, lags and freezes.  Here I need
         ;; to ensure I periodically garbage collect.
         (garbage-collect))))
-  (package-vc-install-selected-packages))
+  (package-vc-install-selected-packages)
+  ;; These advices should be done after the packages have been installed.  The
+  ;; updating the cache is only meant for interactive usage.
+  (advice-add 'package-install :around #'o-advice--update-package-alist-cache)
+  (advice-add 'package-vc-install :around #'o-advice--update-package-alist-cache)
+  ;; I am not sure whether I need to update the cache after the package deletion.
+  (advice-add 'package-delete :around #'o-advice--update-package-alist-cache))
 
 ;; This should be basically the first thing that happens after recording the
 ;; startup time.
