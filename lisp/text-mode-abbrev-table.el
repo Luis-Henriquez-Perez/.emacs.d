@@ -2048,6 +2048,7 @@
     ("eding" "editing")
     ("editi" "edit it")
     ("edting" "editing")
+    ("eeach" "each")
     ("eearly" "early")
     ("eelm" "emacs-lisp-mode")
     ("eemacs" "Emacs")
