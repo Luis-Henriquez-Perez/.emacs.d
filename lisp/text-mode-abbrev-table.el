@@ -6245,7 +6245,6 @@
     ("vars" "variables")
     ("vasall" "vassal")
     ("vasalls" "vassals")
-    ("vc" "version-control")
     ("vcc" "version control")
     ("vced" "version-controlled")
     ("vcing" "version controlling")
