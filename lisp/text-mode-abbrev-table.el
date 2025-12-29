@@ -6233,7 +6233,6 @@
     ("valueable" "valuable")
     ("vanila" "vanilla")
     ("vannilla" "vanilla")
-    ("var" "variable")
     ("varations" "variations")
     ("vari" "various")
     ("variaous" "various")
