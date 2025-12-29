@@ -3244,6 +3244,7 @@
     ("initializaiton" "initialization")
     ("initing" "initializing")
     ("initization" "initialization")
+    ("initz" "initialize")
     ("inlcuding" "including")
     ("inmigrant" "immigrant")
     ("inmigrants" "immigrants")
