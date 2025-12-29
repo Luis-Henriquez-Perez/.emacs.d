@@ -1,4 +1,4 @@
-;;; init-project.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-project.el --- Initialize project -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

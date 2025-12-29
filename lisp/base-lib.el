@@ -1,4 +1,4 @@
-;;; base-lib.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; base-lib.el --- Define base functions and macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Define base functions and macros.
 ;;
 ;;; Code:
 (require 'functions-base)

@@ -1,4 +1,4 @@
-;;; config-evil-easymotion.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-evil-easymotion.el --- Configure evil-easymotion -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Configure evil-easymotion.
 ;;
 ;;; Code:
 (require 'evil-easymotion)

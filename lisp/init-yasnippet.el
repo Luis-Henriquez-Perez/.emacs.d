@@ -1,4 +1,4 @@
-;;; init-yasnippet.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-yasnippet.el --- Initialize yasnippet -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

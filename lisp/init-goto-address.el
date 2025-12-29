@@ -1,4 +1,4 @@
-;;; init-goto-address.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-goto-address.el --- Initialize goto-address -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize goto-address.
 ;;
 ;;; Code:
 (add-hook 'text-mode-hook 'goto-address-mode)

@@ -1,4 +1,4 @@
-;;; init-evil-nerd-commenter.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-evil-nerd-commenter.el --- Initialize evil-nerd-commenter -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

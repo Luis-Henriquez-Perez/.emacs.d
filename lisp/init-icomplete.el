@@ -1,4 +1,4 @@
-;;; init-icomplete.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-icomplete.el --- Initialize icomplete -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize icomplete.
 ;;
 ;;; Code:
 (add-hook 'icomplete-mode-hook #'icomplete-vertical-mode)

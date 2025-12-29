@@ -1,4 +1,4 @@
-;;; init-type-break.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-type-break.el --- Initialize type-break -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

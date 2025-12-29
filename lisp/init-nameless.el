@@ -1,4 +1,4 @@
-;;; init-nameless.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-nameless.el --- Initialize nameless -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

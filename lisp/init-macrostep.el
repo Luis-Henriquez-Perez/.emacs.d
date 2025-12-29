@@ -1,4 +1,4 @@
-;;; init-macrostep.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-macrostep.el --- Initialize macrostep -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

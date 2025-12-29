@@ -1,4 +1,4 @@
-;;; init-ws-butler.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-ws-butler.el --- Initialize ws-butler -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

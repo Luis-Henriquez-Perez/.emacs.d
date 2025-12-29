@@ -1,4 +1,4 @@
-;;; config-tempel.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; config-tempel.el --- Configure tempel -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
