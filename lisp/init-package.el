@@ -272,7 +272,7 @@
 
 (advice-add 'package--archives-initialize :around #'o-advice--read-archive-contents)
 
-(defun o-hook--install-packages-h ()
+(defun o-hook--install-packages ()
   "Ensure all packages are installed."
   (let ((read-archive-contents-p nil))
     (dolist (package package-selected-packages)
@@ -296,7 +296,9 @@
         (garbage-collect))))
   (package-vc-install-selected-packages))
 
-(o-hook--install-packages-h)
+;; This should be basically the first thing that happens after recording the
+;; startup time.
+(add-hook 'after-init-hook 'o-hook--install-packages -95)
 ;;; provide
 (provide 'init-package)
 ;;; init-package.el ends here
