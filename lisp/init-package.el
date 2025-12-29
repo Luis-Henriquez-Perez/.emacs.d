@@ -262,14 +262,14 @@
 
 ;; Make sure I do not have to initialize package contents from scratch when
 ;; installing package.
-(defun o--read-archive-contents (orig-fn &rest args)
+(defun o-advice--read-archive-contents (orig-fn &rest args)
   ;; Reading archive contents is really expensive and you do not want to do it
   ;; on startup.
   (prog2 (package-read-all-archive-contents)
       (apply orig-fn args)
-    (advice-remove 'package-install #'o--read-archive-contents)))
+    (advice-remove 'package-install #'o-advice--read-archive-contents)))
 
-(advice-add 'package--archives-initialize :around #'o--read-archive-contents)
+(advice-add 'package--archives-initialize :around #'o-advice--read-archive-contents)
 
 (defun o-hook--install-packages-h ()
   "Ensure all packages are installed."
