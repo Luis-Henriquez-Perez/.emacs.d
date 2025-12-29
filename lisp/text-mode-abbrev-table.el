@@ -5269,6 +5269,7 @@
     ("setig" "setting")
     ("setigs" "settings")
     ("setin" "setting")
+    ("seting" "setting")
     ("setings" "settings")
     ("setins" "settings")
     ("settelement" "settlement")
