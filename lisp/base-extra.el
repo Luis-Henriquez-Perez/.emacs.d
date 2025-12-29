@@ -175,11 +175,10 @@ with a single space."
 ;;;; startup time
 (defun o-hook--record-after-init-hook-start-time ()
   "Record the start of `after-init-hook'."
-  :depth -100
   (o-log 'info "Running `after-init-hook'...")
   (set-register :after-init-start (float-time)))
 
-(add-hook 'after-init-hook #'o-hook--record-after-init-hook-start-time)
+(add-hook 'after-init-hook #'o-hook--record-after-init-hook-start-time -100)
 
 (o-defun o-hook--record-after-init-hook-end-time ()
   "Record the end of `after-init-hook'."
