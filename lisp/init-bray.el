@@ -24,8 +24,6 @@
 ;;
 ;;
 ;;; Code:
-(push "/home/luis/.config/emacs/elpaca/builds/bray" load-path)
-
 (require 'bray)
 (require 'bray-state-map)
 (require 'meep)
