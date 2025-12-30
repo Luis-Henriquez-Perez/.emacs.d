@@ -4201,7 +4201,7 @@
     ("orginally" "originally")
     ("orginize" "organise")
     ("oridinarily" "ordinarily")
-    ("orig" "original")
+    ("origg" "original")
     ("origanaly" "originally")
     ("originaly" "originally")
     ("originially" "originally")
