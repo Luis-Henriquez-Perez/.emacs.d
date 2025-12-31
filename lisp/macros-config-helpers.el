@@ -32,43 +32,6 @@
 (eval-when-compile (require 'macros-base))
 (eval-when-compile (require 'macros-autolet))
 
-(defmacro o-require (feature)
-  "Require feature in lisp directory.
-If FEATURE is a regexp, require all features in lisp directory that match
-FEATURE."
-  (pcase feature
-    ((pred stringp)
-     (let (forms filename (regexp feature))
-       (dolist (file (directory-files (expand-file-name "lisp/" user-emacs-directory) 'full ".+\\.el$"))
-         (setq filename (file-name-sans-extension (file-name-nondirectory (directory-file-name file))))
-         (when (string-match-p regexp filename)
-           (setq feature (intern filename))
-           (push `(o-require ,feature) forms)))
-       (macroexp-progn (reverse forms))))
-    ((pred symbolp)
-     (let (forms)
-       (setq forms `((require ',feature)))
-       (setq forms (let ((err (gensym "error")))
-                     `((if o-init-noerrors-p
-                           (condition-case ,err
-                               ,(macroexp-progn forms)
-                             (error
-                              (o-log 'failure "Failed to require %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
-                         ,(macroexp-progn forms)))))
-       (setq forms `((if o-init-profile-p
-                         (o-aprog1 (o-time-elapsed ,(macroexp-progn forms))
-                           (o-log 'success "Required %s in %.2f seconds" ',feature it)
-                           (push (list ',feature it) o-init-data))
-                       ,(macroexp-progn forms))))
-       ;; Ensure main forms are not evaluated more than once.
-       (setq forms `((unless (featurep ',feature)
-                       ,(macroexp-progn forms))))
-       (when (string-match-p "macros$" (symbol-name feature))
-         (setq forms `((eval-when-compile ,(macroexp-progn forms)))))
-       (macroexp-progn forms)))
-    (_
-     (signal 'wrong-type-argument `(or stringp symbolp ,feature)))))
-
 (defmacro o-opt (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
 This is like `setq' but it is meant for configuring variables."
