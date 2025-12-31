@@ -37,12 +37,10 @@
 (defvar o-custom-faces-alist nil
   "An alist that maps custom faces to built-in faces.
 
-Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  Whenever the theme
-is changed CUSTOM-FACE updates its background and foreground similar to
-BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
+Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  the alist keep track
+of faces that.  Whenever the theme is changed CUSTOM-FACE updates its background
+and foreground similar to BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
 
-;; I need to process the `command-line-args' for font here so that I can set the
-;; font before the frame is loaded.
 (defvar o-init-theme nil
   "The initial theme to be applied at startup.
 If nil, no theme is applied on startup.")
@@ -51,22 +49,18 @@ If nil, no theme is applied on startup.")
   "The initial font to be applied at startup.
 If nil, no font is applied at startup.")
 
-;; Since it is inexpensive I set this to non-nil by default.
 (defvar o-init-profile t
-  "Non-nil if Emacs configuration should be profiled at startup.")
+  "Non-nil if Emacs configuration should be profiled at startup.
+When enabled the time taken to load init and config files will be logged in the
+log buffer.")
 
-;; I set this to non-nil so that I can get a functional Emacs instance and can
-;; debug errors.  If I want to see the specific error I can restart Emacs with
-;; this enabled.
 (defvar o-init-noerrors t
-  "Non-nil if errors in init files should be ignored at startup.")
-
-(defvar o-init-data nil
-  "Initialization data.
-This includes the time that features took to load.")
+  "Non-nil if errors in init files should be suppressed at startup.
+This is useful for getting a running configuration for debugging.")
 
 (defvar o-local-var-alist nil
   "An alist of for setting local variables.
+
 Each element is of the form (HOOK . VARALIST).
 HOOK is a mode-hook.  And VARALIST is the alist of local variables and values
 that need to be mapped when HOOK's mode is enabled. an alist mapping symbols to their
