@@ -1345,6 +1345,7 @@
     ("committe" "committee")
     ("committment" "commitment")
     ("committments" "commitments")
+    ("comml" "command-line")
     ("commmemorated" "commemorated")
     ("commnt" "comment")
     ("commongly" "commonly")
