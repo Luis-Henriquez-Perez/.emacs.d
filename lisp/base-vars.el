@@ -70,7 +70,11 @@ If nil, no font is applied at startup.")
 This includes the time that features took to load.")
 
 (defvar o-local-var-alist nil
-  "An alist of (HOOK . VARIABLES-AND-VALUES).")
+  "An alist of for setting local variables.
+Each element is of the form (HOOK . VARALIST).
+HOOK is a mode-hook.  And VARALIST is the alist of local variables and values
+that need to be mapped when HOOK's mode is enabled. an alist mapping symbols to their
+corresponding values, each element looks like (VAR . VAL).")
 ;;;; LEADERS
 (defconst o-key-leader-normal "SPC"
   "The evil leader prefix key.")
