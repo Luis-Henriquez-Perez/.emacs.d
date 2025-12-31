@@ -5302,6 +5302,7 @@
     ("shamel" "shameless")
     ("shamell" "shamelessly")
     ("shb" "should be")
+    ("shceme" "scheme")
     ("shd" "should")
     ("shdnt" "should not")
     ("shdntb" "should not be")
