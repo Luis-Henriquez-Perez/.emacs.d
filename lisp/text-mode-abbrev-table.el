@@ -2969,6 +2969,7 @@
     ("idnr" "I do not remember")
     ("idnrw" "I do not remember what")
     ("idnt" "I do not think")
+    ("idntii" "I do not think it is")
     ("idntk" "I do not think")
     ("idnu" "I do not understand")
     ("idnw" "I do not want")
