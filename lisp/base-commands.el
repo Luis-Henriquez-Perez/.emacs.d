@@ -238,7 +238,7 @@ Additionally, make any duplicate spaces in line become a single space."
 
   (require 'ctable)
 
-  (pcase-dolist (`(,feature ,time) o-init-data)
+  (pcase-dolist (`(,feature ,time) (get-register :require-times))
     (o-collecting new (list feature time))
     (o-summing total time))
 
