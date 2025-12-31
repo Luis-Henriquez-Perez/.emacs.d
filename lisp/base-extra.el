@@ -205,12 +205,6 @@ with a single space."
 
 (add-hook 'emacs-startup-hook #'o-hook--record-emacs-startup-hook-end-time 100)
 
-(unless noninteractive
-  (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
-  (add-hook 'mhtml-mode-hook #'highlight-indent-guides-mode))
-
-(o-opt highlight-indent-guides-method 'character)
-
 (add-hook 'text-mode-hook #'delete-selection-mode)
 (add-hook 'prog-mode-hook #'delete-selection-mode)
 ;;;; make setting faces actually work
