@@ -118,11 +118,11 @@ file is loaded."
 
 (add-hook 'minibuffer-exit-hook #'o-hook--decrease-gc 90)
 
-(o-defun o--timer--lower-gc ()
+(o-defun o-timer--lower-gc ()
   "Lower garbage collection until it reaches default values."
   (o-flet mb (x) (/ (float x) 1024 1024))
   (if (minibuffer-window-active-p (minibuffer-window))
-      (run-with-timer 5 nil #'o--timer--lower-gc)
+      (run-with-timer 5 nil #'o-timer--lower-gc)
     (o-log 'trace "Running timer for lowering garbage collection...")
     (o-set reduction (/ (get-register :gc-cons-threshold) 10))
     (o-set gc-floor (* 8 1024 1024))
@@ -140,7 +140,7 @@ file is loaded."
     (if (and (= gc-cons-threshold gc-floor)
              (= gc-cons-percentage gcp-default))
         (o-log 'trace "Done with timer.")
-      (run-with-timer 7 nil #'o--timer--lower-gc))))
+      (run-with-timer 7 nil #'o-timer--lower-gc))))
 
 (defun o-hook--restore-startup-values ()
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
@@ -149,7 +149,7 @@ file is loaded."
   (setq gc-cons-threshold (* 40 1024 1024))
   (set-register :gc-cons-threshold gc-cons-threshold)
   (o-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
-  (run-with-timer 5 nil #'o--timer--lower-gc))
+  (run-with-timer 5 nil #'o-timer--lower-gc))
 
 (add-hook 'emacs-startup-hook #'o-hook--restore-startup-values 90)
 ;;;; trailing whitespace
