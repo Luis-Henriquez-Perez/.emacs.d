@@ -56,7 +56,7 @@ FEATURE."
                              (error
                               (o-log 'failure "Failed to require %S: %s -> %s." ',feature (car ,err) (cdr ,err))))
                          ,(macroexp-progn forms)))))
-       (setq forms `((if o-init-profile-p
+       (setq forms `((if o-init-profile
                          (o-aprog1 (o-time-elapsed ,(macroexp-progn forms))
                            (o-log 'success "Required %s in %.2f seconds" ',feature it)
                            (push (list ',feature it) (get-register :require-times)))
