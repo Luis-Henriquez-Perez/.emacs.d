@@ -80,17 +80,22 @@
 (defvar o-cache-dir)
 (defvar o-init-font)
 
-;; Populate base variables.
-(dolist (arg command-line-args)
-  (cond ((string-match "^--noerrors" arg)
-         (setq o-init-errors t))
-        ((string-match "^--profile" arg)
-         (setq o-init-profile-p t))
-        ((string-match "^--font=\\(.+\\)" arg)
-         (setq o-init-font (match-string 1 arg))
-         (push (cons 'font o-init-font) default-frame-alist))
-        ((string-match "^--theme=\\(.+\\)" arg)
-         (setq o-init-theme (intern (match-string 1 arg))))))
+(let ((filtered nil))
+  (dolist (arg command-line-args)
+    (cond ((string-match "^--noerrors" arg)
+           (setq o-init-errors t))
+          ((string-match "^--profile" arg)
+           (setq o-init-profile-p t))
+          ((string-match "^--font=\\(.+\\)" arg)
+           (setq o-init-font (match-string 1 arg))
+           (push (cons 'font o-init-font) default-frame-alist))
+          ((string-match "^--theme=\\(.+\\)" arg)
+           (setq o-init-theme (intern (match-string 1 arg))))
+          (t
+           (push arg filtered)))
+    ;; Remove the command-line-args I matched with otherwise Emacs will complain
+    ;; about unknown command-line args.
+    (setq command-line-args (nreverse filtered))))
 
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache (expand-file-name "eln-cache/" o-cache-dir)))
