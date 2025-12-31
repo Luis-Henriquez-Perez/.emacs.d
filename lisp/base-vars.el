@@ -48,10 +48,12 @@ built-in-face.  See `o--enable-theme-functions--set-state-faces-from-theme-h'.")
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
 (defvar o-init-theme nil
-  "Initial theme.")
+  "The initial theme to be applied at startup.
+If nil, no theme is applied on startup.")
 
 (defvar o-init-font nil
-  "Initial font.")
+  "The initial font to be applied at startup.
+If nil, no font is applied at startup.")
 
 ;; Since it is inexpensive I set this to non-nil by default.
 (defvar o-init-profile-p t
