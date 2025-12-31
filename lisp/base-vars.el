@@ -22,6 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
+;; Fundamental variables used during my Emacs configuration.
 ;;; Code:
 (defconst o-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory that stores configuration files.")
