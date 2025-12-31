@@ -232,34 +232,6 @@ Additionally, make any duplicate spaces in line become a single space."
   (interactive "r")
   (replace-regexp-in-region "[[:space:]]\\{2,\\}" "\s" beg end))
 
-(o-defun o-startup-time-table ()
-  "Produce a table that shows the time taken by each feature during startup."
-  (interactive)
-
-  (require 'ctable)
-
-  (pcase-dolist (`(,feature ,time) (get-register :require-times))
-    (o-collecting new (list feature time))
-    (o-summing total time))
-
-  (o-set init-time (string-to-number (emacs-init-time "%.2f")))
-
-  (o-flet percent (time total) (format "%3d%%" (* 100 (/ time total))))
-
-  (pcase-dolist (`(,feature ,time) new)
-    (o-set dtime (format "%.2f" (/ (fround (* time 100)) 100.0)))
-    (o-pushing data (list feature dtime (percent time total) (percent time init-time))))
-
-  (o-set data (sort data (-on #'> (-compose #'string-to-number #'cl-second))))
-
-  (o-set column-model (list (make-ctbl:cmodel :title "Feature" :align 'left)
-                            (make-ctbl:cmodel :title "Time (s)" :align 'center)
-                            (make-ctbl:cmodel :title "% of Total" :align 'center)
-                            (make-ctbl:cmodel :title "% of Init" :align 'center)))
-  (o-set model (make-ctbl:model :column-model column-model :data data))
-  (o-set component (ctbl:create-table-component-buffer :model model))
-  (pop-to-buffer (ctbl:cp-get-buffer component)))
-
 (o-defun oo/kill-emacs-no-errors ()
   "Ignore `kill-emacs-hook' when killing Emacs."
   (interactive)
