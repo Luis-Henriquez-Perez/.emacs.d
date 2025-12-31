@@ -23,16 +23,16 @@
 ;;; Commentary:
 ;;; Code:
 (defconst o-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
-  "Directory where configuration files go.")
+  "Directory that stores configuration files.")
 
 (defconst o-local-dir (expand-file-name ".local/" user-emacs-directory)
-  "Directory where.")
+  "Directory that stores non-configuration metadata.")
 
 (defconst o-data-dir (expand-file-name "etc/" o-local-dir)
-  "Directory where package configuration files go.")
+  "Directory that stores package configuration files.")
 
 (defconst o-cache-dir (expand-file-name "var/" o-local-dir)
-  "Directory where persistent data files go.")
+  "Directory that stores persistent data files.")
 
 (defvar o-init-theme nil
   "The initial theme to be applied at startup.
@@ -55,9 +55,9 @@ This is useful for getting a running configuration for debugging.")
   "An alist of for setting local variables.
 
 Each element is of the form (HOOK . VARALIST).
-HOOK is a mode-hook.  And VARALIST is the alist of local variables and values
-that need to be mapped when HOOK's mode is enabled. an alist mapping symbols to their
-corresponding values, each element looks like (VAR . VAL).")
+HOOK is a mode-hook.  And VARALIST is the alist of local variables
+that should be set when HOOK's mode is enabled.  An alist mapping symbols to
+their corresponding values, each element looks like (VAR . VAL).  See `'.")
 
 (defvar o-custom-faces-alist nil
   "An alist that maps custom faces to built-in faces.
