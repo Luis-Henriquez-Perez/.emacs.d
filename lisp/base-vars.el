@@ -21,6 +21,7 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
+;;
 ;;; Code:
 (defconst o-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory that stores configuration files.")
@@ -62,9 +63,9 @@ their corresponding values, each element looks like (VAR . VAL).  See `'.")
 (defvar o-custom-faces-alist nil
   "An alist that maps custom faces to built-in faces.
 
-Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  the alist keep track
-of faces that.  Whenever the theme is changed CUSTOM-FACE updates its background
-and foreground similar to BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
+Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  Whenever the
+theme is changed CUSTOM-FACE updates its background and foreground similar to
+BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
 
 (defconst o-key-leader-normal "SPC"
   "The evil leader prefix key.")
