@@ -41,7 +41,7 @@
 (add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
 (add-to-list 'recentf-filename-handlers #'substring-no-properties)
 
-(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-etc-dir)))
+(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-data-dir)))
 (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-cache-dir)))
 (add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file))))
 

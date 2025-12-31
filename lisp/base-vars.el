@@ -28,15 +28,11 @@
 (defconst o-local-dir (expand-file-name ".local/" user-emacs-directory)
   "Directory that stores subdirectories.")
 
-(defconst o-etc-dir (expand-file-name "etc/" o-local-dir)
+(defconst o-data-dir (expand-file-name "etc/" o-local-dir)
   "Directory where package configuration files go.")
 
-(defvaralias 'o-data-dir 'o-etc-dir)
-
-(defconst o-var-dir (expand-file-name "var/" o-local-dir)
+(defconst o-cache-dir (expand-file-name "var/" o-local-dir)
   "Directory where persistent data files go.")
-
-(defvaralias 'o-cache-dir 'o-var-dir)
 
 (defvar o-custom-faces-alist nil
   "An alist that maps custom faces to built-in faces.
