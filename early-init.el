@@ -83,7 +83,7 @@
 (let ((filtered nil))
   (dolist (arg command-line-args)
     (cond ((string-match "^--noerrors" arg)
-           (setq o-init-errors t))
+           (setq o-init-noerrors t))
           ((string-match "^--profile" arg)
            (setq o-init-profile-p t))
           ((string-match "^--font=\\(.+\\)" arg)

@@ -56,13 +56,13 @@ If nil, no theme is applied on startup.")
 If nil, no font is applied at startup.")
 
 ;; Since it is inexpensive I set this to non-nil by default.
-(defvar o-init-profile-p t
+(defvar o-init-profile t
   "Non-nil if Emacs configuration should be profiled at startup.")
 
 ;; I set this to non-nil so that I can get a functional Emacs instance and can
 ;; debug errors.  If I want to see the specific error I can restart Emacs with
 ;; this enabled.
-(defvar o-init-noerrors-p t
+(defvar o-init-noerrors t
   "Non-nil if errors in init files should be ignored at startup.")
 
 (defvar o-init-data nil

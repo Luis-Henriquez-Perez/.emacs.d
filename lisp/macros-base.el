@@ -50,7 +50,7 @@ FEATURE."
      (let (forms)
        (setq forms `((require ',feature)))
        (setq forms (let ((err (gensym "error")))
-                     `((if o-init-noerrors-p
+                     `((if o-init-noerrors
                            (condition-case ,err
                                ,(macroexp-progn forms)
                              (error
