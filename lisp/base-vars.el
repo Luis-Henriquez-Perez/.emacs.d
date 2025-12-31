@@ -39,11 +39,11 @@
 (defvaralias 'o-cache-dir 'o-var-dir)
 
 (defvar o-custom-faces-alist nil
-  "An alist that update the background of faces based on existing faces.
+  "An alist that maps custom faces to built-in faces.
 
-Each element is of the form (custom-face . built-in-face).  Whenever the theme
+Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  Whenever the theme
 is changed CUSTOM-FACE updates its background and foreground similar to
-built-in-face.  See `o--enable-theme-functions--set-state-faces-from-theme-h'.")
+BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
 
 ;; I need to process the `command-line-args' for font here so that I can set the
 ;; font before the frame is loaded.
