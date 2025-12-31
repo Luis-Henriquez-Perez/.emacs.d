@@ -23,23 +23,16 @@
 ;;; Commentary:
 ;;; Code:
 (defconst o-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
-  "Directory where handcrafted configuration files go.")
+  "Directory where configuration files go.")
 
 (defconst o-local-dir (expand-file-name ".local/" user-emacs-directory)
-  "Directory that stores subdirectories.")
+  "Directory where.")
 
 (defconst o-data-dir (expand-file-name "etc/" o-local-dir)
   "Directory where package configuration files go.")
 
 (defconst o-cache-dir (expand-file-name "var/" o-local-dir)
   "Directory where persistent data files go.")
-
-(defvar o-custom-faces-alist nil
-  "An alist that maps custom faces to built-in faces.
-
-Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  the alist keep track
-of faces that.  Whenever the theme is changed CUSTOM-FACE updates its background
-and foreground similar to BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
 
 (defvar o-init-theme nil
   "The initial theme to be applied at startup.
@@ -65,7 +58,14 @@ Each element is of the form (HOOK . VARALIST).
 HOOK is a mode-hook.  And VARALIST is the alist of local variables and values
 that need to be mapped when HOOK's mode is enabled. an alist mapping symbols to their
 corresponding values, each element looks like (VAR . VAL).")
-;;;; LEADERS
+
+(defvar o-custom-faces-alist nil
+  "An alist that maps custom faces to built-in faces.
+
+Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  the alist keep track
+of faces that.  Whenever the theme is changed CUSTOM-FACE updates its background
+and foreground similar to BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
+
 (defconst o-key-leader-normal "SPC"
   "The evil leader prefix key.")
 
