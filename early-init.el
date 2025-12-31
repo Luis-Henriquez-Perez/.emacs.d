@@ -110,14 +110,15 @@
 ;; `woman-topic-history' by aliasing it to `Man-topic-history' and emacs tells
 ;; you this by popping up a *Warnings* buffer whenever woman.el is loaded.  This
 ;; whole thing is probably some bug.  So I stop this whole thing from happening.
-(defun o--suppress-woman-warning (orig-fn &rest args)
+(defun o-advice--suppress-woman-warning (orig-fn &rest args)
+  "Advice for suppressing the with."
   (pcase args
     (`(woman-topic-history Man-topic-history . ,_)
-     (advice-remove 'defvaralias #'o--suppress-woman-warning))
+     (advice-remove 'defvaralias #'o-advice--suppress-woman-warning))
     (_
      (apply orig-fn args))))
 
-(advice-add 'defvaralias :around #'o--suppress-woman-warning)
+(advice-add 'defvaralias :around #'o-advice--suppress-woman-warning)
 
 ;; Essentially, I am telling all Emacs functions that prompt the user for a =yes=
 ;; or =no= to instead allow me to type =y= or =p=.  [[helpfn:yes-or-no-p][yes-or-no-p]] is defined in c
