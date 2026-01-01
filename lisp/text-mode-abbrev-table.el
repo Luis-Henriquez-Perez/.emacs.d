@@ -6450,6 +6450,7 @@
     ("wiw" "What is worse")
     ("wk" "week")
     ("wking" "working")
+    ("wlcome" "welcome")
     ("wlel" "well")
     ("wll" "well")
     ("wm" "window manager")
