@@ -5218,6 +5218,7 @@
     ("scols" "schools")
     ("scrapt" "scraped")
     ("screenwrighter" "screenwriter")
+    ("scren" "screen")
     ("scrpt" "script")
     ("scrreen" "screen")
     ("scrutinity" "scrutiny")
