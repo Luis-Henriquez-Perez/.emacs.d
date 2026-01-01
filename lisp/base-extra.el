@@ -173,13 +173,13 @@ with a single space."
 (defun o-hook--record-after-init-hook-start-time ()
   "Record the start of `after-init-hook'."
   (o-log 'info "Running `after-init-hook'...")
-  (set-register :after-init-start (float-time)))
+  (set-register :after-init-hook-start-time (float-time)))
 
 (add-hook 'after-init-hook #'o-hook--record-after-init-hook-start-time -100)
 
 (o-defun o-hook--record-after-init-hook-end-time ()
   "Record the end of `after-init-hook'."
-  (o-set start (get-register :after-init-start))
+  (o-set start (get-register :after-init-hook-start-time))
   (o-set time (o-hundredths (- (float-time) start)))
   (set-register :after-init-hook-time time)
   (o-log 'success "Finished running `after-init-hook' in %.2f seconds" time))
@@ -189,13 +189,13 @@ with a single space."
 (defun o-hook--record-emacs-startup-hook-start-time ()
   "Record the start of `emacs-startup-hook'."
   (o-log 'info "Running `emacs-startup-hook'...")
-  (set-register :emacs-startup-start (float-time)))
+  (set-register :emacs-startup-hook-start-time (float-time)))
 
 (add-hook 'emacs-startup-hook #'o-hook--record-emacs-startup-hook-start-time -100)
 
 (o-defun o-hook--record-emacs-startup-hook-end-time ()
   "Record the end of `emacs-startup-hook'."
-  (o-set start (get-register :emacs-startup-start))
+  (o-set start (get-register :emacs-startup-hook-start-time))
   (o-set time (o-hundredths (- (float-time) start)))
   (set-register :emacs-startup-hook-time time)
   (o-log 'success "Finished running `emacs-startup-hook' in %.2f seconds" time))
