@@ -53,6 +53,18 @@ log buffer.")
   "Non-nil if errors in init files should be suppressed at startup.
 This is useful for getting a running configuration for debugging.")
 
+(defvar o-gc-cons-threshold-normal (* 8 1024 1024)
+  "Normal value of `gc-cons-threshold'.")
+
+(defvar o-gc-cons-threshold-high (* 32 1024 1024)
+  "Value of `gc-cons-threshold' during times of increased computation.")
+
+(defvar o-gc-cons-percentage-normal 0.2
+  "Normal value `gc-cons-percentage'.")
+
+(defvar o-gc-cons-percentage-high 0.8
+  "Value of `gc-cons-percentage' during times of increased computation.")
+
 (defvar o-local-var-alist nil
   "An alist of for setting local variables.
 
