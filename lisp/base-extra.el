@@ -71,11 +71,11 @@ file is loaded."
 
 (add-hook 'after-init-hook #'o-hook--setup-eval-after-bound-forms 99)
 ;;;; auto-filling
-(o-setq-mode-local prog-mode normal-auto-fill-function #'o-progn-autofill-fn)
-
 (defun o-progn-autofill-fn ()
   "Fill only if in a string or comment."
   (when (o-in-string-or-comment-p) (do-auto-fill)))
+
+(o-setq-mode-local prog-mode normal-auto-fill-function #'o-progn-autofill-fn)
 ;;;; emacs-lisp-mode specific
 (defun o-hook--extend-elisp-font-lock ()
   "Add custom font-lock keywords."
