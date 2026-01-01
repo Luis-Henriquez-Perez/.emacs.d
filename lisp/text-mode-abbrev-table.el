@@ -1237,6 +1237,7 @@
     ("clasic" "classic")
     ("clasical" "classical")
     ("clasically" "classically")
+    ("cleanup" "clean up")
     ("cleareance" "clearance")
     ("cleean" "clean")
     ("cliche" "cliché")
