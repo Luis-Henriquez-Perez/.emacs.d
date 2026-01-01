@@ -193,12 +193,8 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; This improve startup time because packages enabled for emacs-lisp-mode are not
 ;; loaded immediately.
 (setq initial-major-mode 'fundamental-mode)
-;; Do not display Emacs's default startup screen.
-;; By default Emacs displays [[][this startup screen]] at startup.  No thanks!  I
-;; think these variables are all aliases for eachother.
-(setq inhibit-startup-message t)
+;; Do not display default startup screen.
 (setq inhibit-startup-screen t)
-(setq inhibit-splash-screen t)
 ;;;; UI
 ;; When you disable the scroll-bar via early-init.el powerline does not realize
 ;; the scroll-bar is dabled because the value of `scroll-bar-mode' is right.
