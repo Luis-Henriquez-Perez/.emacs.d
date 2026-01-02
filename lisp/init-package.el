@@ -56,7 +56,7 @@
 ;; but not by much--maybe 0.2 seconds.  As I mention later
 ;; `package-read-archive-contents' accounts for the bulk of package-initialize's
 ;; slowness.
-(setq package-quickstart-file (expand-file-name "package-quickstart.el" o-cache-dir))
+(setq package-quickstart-file (expand-file-name "package-quickstart.el" o-var-dir))
 (setq package-quickstart t)
 
 (setq package-archive-priorities '(("melpa" . 10) ("gnu-elpa" . 9) ("nongnu" . 8)))
@@ -206,7 +206,7 @@
                                      (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")
                                      (bray :url "https://codeberg.org/luishp/emacs-bray" :branch "add-support-for-mode-specific-bindings")))
 
-(defvar o-package-alist-cache (expand-file-name "package-alist" o-cache-dir)
+(defvar o-package-alist-cache (expand-file-name "package-alist" o-var-dir)
   "Cache for package descriptors.")
 
 (defun o-update-package-alist-cache ()

@@ -25,7 +25,7 @@
 ;; Initialize nil.
 ;;
 ;;; Code:
-(o-opt w3m-profile-directory (expand-file-name "w3m" o-cache-dir))
+(o-opt w3m-profile-directory (expand-file-name "w3m" o-var-dir))
 
 ;; Do not make new tabs.  Instead make new windows.
 (o-opt w3m-display-mode 'plain)

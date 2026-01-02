@@ -30,10 +30,10 @@
 (defconst o-local-dir (expand-file-name ".local/" user-emacs-directory)
   "Directory that stores non-configuration metadata.")
 
-(defconst o-data-dir (expand-file-name "etc/" o-local-dir)
+(defconst o-etc-dir (expand-file-name "etc/" o-local-dir)
   "Directory that stores package configuration files.")
 
-(defconst o-cache-dir (expand-file-name "var/" o-local-dir)
+(defconst o-var-dir (expand-file-name "var/" o-local-dir)
   "Directory that stores persistent data files.")
 
 (defvar o-init-theme nil

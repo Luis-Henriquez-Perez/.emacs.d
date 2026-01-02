@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'base)
 
-(eval-and-compile (defvar no-littering-etc-directory o-data-dir)
-                  (defvar no-littering-var-directory o-cache-dir))
+(eval-and-compile (defvar no-littering-etc-directory o-etc-dir)
+                  (defvar no-littering-var-directory o-var-dir))
 
 (defun o-hook--load-no-littering ()
   "Load `no-littering'."

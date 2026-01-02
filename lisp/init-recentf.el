@@ -30,7 +30,7 @@
 
 (add-hook 'emacs-startup-hook #'recentf-mode)
 
-(o-opt recentf-save-file (expand-file-name "recentf-save.el" o-cache-dir))
+(o-opt recentf-save-file (expand-file-name "recentf-save.el" o-var-dir))
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'o-advice--silence-output)
@@ -41,8 +41,8 @@
 (add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
 (add-to-list 'recentf-filename-handlers #'substring-no-properties)
 
-(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-data-dir)))
-(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-cache-dir)))
+(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-etc-dir)))
+(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-var-dir)))
 (add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file))))
 
 (defun recentf|update-recentf-list-maybe ()

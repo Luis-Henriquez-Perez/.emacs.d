@@ -100,7 +100,7 @@
 (setq org-clock-sound (expand-file-name "~/Downloads/ding-101492.wav"))
 ;;;;; ORG-ID
 (setq org-id-track-globally t)
-(setq org-id-locations-file (expand-file-name "org-id-locations" o-cache-dir))
+(setq org-id-locations-file (expand-file-name "org-id-locations" o-var-dir))
 
 ;; The way I see it, if I can have a universally unique identifier that also tells
 ;; me the date my headline was created; we hit two birds with one stone.  That way I

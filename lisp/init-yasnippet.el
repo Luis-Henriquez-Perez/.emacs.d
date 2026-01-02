@@ -27,7 +27,7 @@
 ;;; Code:
 (add-hook 'prog-mode-hook #'yas-minor-mode-on)
 
-(o-opt yas-snippet-dirs (list (concat o-data-dir "snippets/")))
+(o-opt yas-snippet-dirs (list (concat o-etc-dir "snippets/")))
 (o-opt yas-verbosity (if o-debug-p 3 0))
 (o-opt yas-indent-line 'auto)
 (o-opt yas-prompt-functions '(yas-completing-prompt yas-ido-prompt))

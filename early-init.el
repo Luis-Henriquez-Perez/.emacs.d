@@ -77,7 +77,7 @@
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.
-(defvar o-cache-dir)
+(defvar o-var-dir)
 (defvar o-init-font)
 
 (let ((filtered nil))
@@ -98,7 +98,7 @@
     (setq command-line-args (nreverse filtered))))
 
 (when (fboundp 'startup-redirect-eln-cache)
-  (startup-redirect-eln-cache (expand-file-name "eln-cache/" o-cache-dir)))
+  (startup-redirect-eln-cache (expand-file-name "eln-cache/" o-var-dir)))
 
 ;; Adding advice triggers the creation of the "eln-cache" directory.  To avoid
 ;; creating it prematurely advices should go after `startup-redirect-eln-cache'.
