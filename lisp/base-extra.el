@@ -367,28 +367,17 @@ of FACE to the background color of the `default' face."
 (add-hook 'sh-mode-hook #'aggressive-indent-mode)
 ;; (o-after smartparens (lambda () (sp-local-pair 'sh-mode "'")))
 ;;;; make certain files read-only
-
-(o-defun o-dwim-file-rules ()
+(o-defun o-hook--make-read-only-maybe ()
   "Do special things depending on what file is opened.
 If I open a file in my package directory, do it in `view-mode'.  If I open a
 file that is in a git repo, enale git-gutter-mode."
-  (o-flet in-dir-p (apply-partially #'file-in-directory-p buffer-file-name))
-  (o-flet in-any-dir-p (&rest dirs) (seq-some #'in-dir-p (mapcar #'expand-file-name dirs)))
   (when buffer-file-name
-    (when (in-any-dir-p "~/.config/emacs/elpa/" "~/Downloads/")
-      (read-only-mode 1))
-    ;; When in a git repo enable git-gutter-mode.
-    (when (vc-root-dir)
-      (git-gutter-mode 1)
-      ;; If it is in anyone of my dotfile directories, enable auto-committing.
-      ;; (when (in-any-dir-p "~/.config/awesome/" "~/.config/emacs/" "~/")
-      ;;   (o-auto-commit-mode 1))
-      )))
+    (dolist (dir (list "~/.config/emacs/elpa/" "~/Downloads/"))
+      (when (file-in-directory-p buffer-file-name dir)
+        (read-only-mode 1)
+        (o-return)))))
 
-;; Do not add this hook to `find-file-hook' immediately because anytime a file
-;; is visited it will run this function.
-;; Try to put this at the end.
-(add-hook 'emacs-startup-hook (lambda () (add-hook 'find-file-hook #'o-dwim-file-rules 90)))
+(add-hook 'find-file-hook #'o-hook--make-read-only-maybe 90)
 
 (o-defun o-hook--load-theme-maybe ()
   "Load theme."
