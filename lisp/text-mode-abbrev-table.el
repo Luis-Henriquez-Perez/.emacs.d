@@ -3993,6 +3993,7 @@
     ("nkwo" "know")
     ("nl" "newline")
     ("nls" "newlines")
+    ("nly" "only")
     ("nmae" "name")
     ("nn" "non-nil")
     ("nni" "non-nil if")
