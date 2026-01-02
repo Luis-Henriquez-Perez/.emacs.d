@@ -2934,6 +2934,7 @@
     ("icngit" "I cannot get it to")
     ("icnt" "I cannot")
     ("iconclastic" "iconoclastic")
+    ("icoons" "icons")
     ("icsw" "I can see why")
     ("id" "I would")
     ("idaeidae" "idea")
