@@ -366,14 +366,7 @@ of FACE to the background color of the `default' face."
 ;;;; sh-mode
 (add-hook 'sh-mode-hook #'aggressive-indent-mode)
 ;; (o-after smartparens (lambda () (sp-local-pair 'sh-mode "'")))
-;;;; vc
-;; Use text-mode tools when editing.
-(add-hook 'vc-git-log-edit-mode-hook #'abbrev-mode)
-
-(autoload 'captain-mode "captain" nil nil 'function)
-(add-hook 'vc-git-log-edit-mode-hook #'captain-mode)
 ;;;; make certain files read-only
-(autoload 'git-gutter-mode "git-gutter" nil nil 'function)
 
 (o-defun o-dwim-file-rules ()
   "Do special things depending on what file is opened.
