@@ -48,11 +48,11 @@ The --debug-init flag and setting the DEBUG envar will enable this at startup.")
 
 ;; Define log icons for success and failure
 (defvar o-log-icons '((success . "🟢")  ; Green Circle for success
-                       (failure . "🔴")  ; Red Circle for failure
-                       (warn    . "🟠")  ; Orange Circle for warnings
-                       (info    . "🔵")  ; Blue Circle for info
-                       (debug   . "🟣")  ; Purple Circle for debug
-                       (trace   . "⚪")) ; White Circle for trace
+                      (failure . "🔴")  ; Red Circle for failure
+                      (warn    . "🟠")  ; Orange Circle for warnings
+                      (info    . "🔵")  ; Blue Circle for info
+                      (debug   . "🟣")  ; Purple Circle for debug
+                      (trace   . "⚪")) ; White Circle for trace
   "Alist of icons to display based on the log level.")
 
 (defvar o-log-level 3
