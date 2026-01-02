@@ -298,9 +298,15 @@ of FACE to the background color of the `default' face."
 
 ;; The =*Messages*= buffer could contain important information and should never
 ;; really be killed. See [[https://www.emacswiki.org/emacs/ProtectingBuffers][ProtectingBuffers]].
-(require 'emacs-lock)
-(setq emacs-lock-default-locking-mode 'kill)
-(with-current-buffer "*Messages*" (emacs-lock-mode 1))
+(defun o-hook--lock-important-buffers ()
+  "Prevent important buffers from being killed."
+  (require 'emacs-lock)
+  (setq emacs-lock-default-locking-mode 'kill)
+  (dolist (buffer '("*Messages*" "*log*"))
+    (with-current-buffer buffer
+      (emacs-lock-mode 1))))
+
+(add-hook 'o-first-input-hook #'o-hook--lock-important-buffers)
 ;;;; autoload commands
 (autoload 'o-open-emacs-config "base-commands" nil nil 'function)
 (autoload 'o-open-emacs-init-file "base-commands" nil nil 'function)
