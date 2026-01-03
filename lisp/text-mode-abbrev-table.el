@@ -3724,7 +3724,6 @@
     ("meacs" "Emacs")
     ("meaing" "meaning")
     ("meaninng" "meaning")
-    ("meanw" "meanwhile")
     ("measore" "measure")
     ("mechandise" "merchandise")
     ("medacine" "medicine")
