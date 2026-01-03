@@ -140,15 +140,14 @@ value of `of-gc-cons-threshold-normal'."
         (o-log 'trace "Done with timer.")
       (run-with-timer 7 nil #'o-timer--gc-lower-incrementally))))
 
-(defun o-hook--restore-startup-values ()
+(defun o-hook--gc-set-normal-value ()
   "Restore the values of `file-name-handler-alist' and `gc-cons-threshold'."
   (o-log 'trace "Restore the value of `file-name-handler-alist'.")
-  (setq file-name-handler-alist (get-register :file-name-handler-alist))
   (setq gc-cons-threshold o-gc-cons-threshold-high)
   (o-log 'trace "Set the value of `gc-cons-threshold' to 40 MB.")
   (run-with-timer 5 nil #'o-timer--gc-lower-incrementally))
 
-(add-hook 'emacs-startup-hook #'o-hook--restore-startup-values 90)
+(add-hook 'emacs-startup-hook #'o-hook--gc-set-normal-value 90)
 ;;;; trailing whitespace
 (defun o-hook--delete-trailing-whitespace-at-line ()
   "Delete the trailing whitespace in the buffer except for the current line.

@@ -62,8 +62,8 @@ FEATURE."
                            (push (list ',feature it) (get-register :require-times)))
                        ,(macroexp-progn forms))))
        ;; Ensure main forms are not evaluated more than once.
-       (setq forms `((unless (featurep ',feature)
-                       ,(macroexp-progn forms))))
+       (setq forms `((let (file-name-handler-alist)
+                       ,@forms)))
        (when (string-match-p "macros$" (symbol-name feature))
          (setq forms `((eval-when-compile ,(macroexp-progn forms)))))
        (macroexp-progn forms)))
