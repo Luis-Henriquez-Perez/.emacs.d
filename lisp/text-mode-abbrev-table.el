@@ -1013,6 +1013,7 @@
     ("boookmark" "bookmark")
     ("borke" "broke")
     ("bos" "beginning of a sentence")
+    ("bott" "bottom")
     ("bottlenek" "bottleneck")
     ("bottomost" "bottommost")
     ("boudn" "bound")
