@@ -69,7 +69,8 @@ If FEATURE is already loaded, evaluate BODY immediately."
   `(progn (o-defun ,name ()
             ,@meta
             (condition-case err
-                (with-no-warnings ,@body)
+                (progn (with-no-warnings ,@body)
+                       (o-log 'success "after %s -> %s" 'feature ',name))
               (error
                (o-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
           (o-call-after-load ',feature #',name)))
