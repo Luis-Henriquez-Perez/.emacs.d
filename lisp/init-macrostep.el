@@ -35,6 +35,15 @@
 (keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m c") #'macrostep-collapse)
 (keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m C") #'macrostep-collapse-all)
 (keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m a") #'macrostep-collapse-all)
+
+(o-defafter o-after--define-macrostep-binds (evil)
+  (let ((prefixes (list o-key-localleader-normal o-key-localleader-normal-alt)))
+    (dolist (prefix prefixes)
+      (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m")) nil)
+      (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m e")) #'macrostep-expand)
+      (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m c")) #'macrostep-collapse)
+      (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m C")) #'macrostep-collapse-all)
+      (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m a")) #'macrostep-collapse-all))))
 ;;; provide
 (provide 'init-macrostep)
 ;;; init-macrostep.el ends here
