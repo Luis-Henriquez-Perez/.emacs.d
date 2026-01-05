@@ -203,7 +203,7 @@
 ;;;; UNCATEGORIZED
 (declare-function which-key-add-keymap-based-replacements "which-key")
 
-(o-defafter o-register-localleader-with-which-key (which-key)
+(o-defafter o-after--register-localleader-with-which-key (which-key)
   (which-key-add-keymap-based-replacements o-leader-map "m" "localleader"))
 
 ;; (keymap-set evil-motion-state-map "o" #'evil-forward-WORD-begin)
