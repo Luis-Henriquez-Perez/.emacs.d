@@ -25,7 +25,7 @@
 ;; This is my configuration for avy.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt avy-style 'pre)
 

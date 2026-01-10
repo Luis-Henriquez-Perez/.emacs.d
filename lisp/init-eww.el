@@ -25,7 +25,7 @@
 ;; Initialize eww.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt eww-auto-rename-buffer t)
 ;;; provide

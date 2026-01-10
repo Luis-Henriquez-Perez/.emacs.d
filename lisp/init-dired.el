@@ -25,7 +25,7 @@
 ;; Initialize dired.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'dired-mode-hook #'hl-line-mode)
 (add-hook 'dired-mode-hook #'dired-omit-mode)

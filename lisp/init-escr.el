@@ -25,7 +25,7 @@
 ;; Initialize `escr`.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt escr-screenshot-directory (expand-file-name "~/Pictures"))
 

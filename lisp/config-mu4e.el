@@ -25,7 +25,7 @@
 ;; Configure mu4e.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'mu4e)
 
 (defmacro only-once! (&rest forms)

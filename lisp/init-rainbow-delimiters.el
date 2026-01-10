@@ -25,7 +25,7 @@
 ;; Initialize rainbow-delimiters.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'reb-mode-hook #'rainbow-delimiters-mode)

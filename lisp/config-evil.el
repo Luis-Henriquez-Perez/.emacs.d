@@ -25,7 +25,7 @@
 ;; This is my configuration for evil.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'evil)
 ;;;; SETTINGS
 ;; To ensure that =o-override-mode-map= takes priority over evil states, we need

@@ -1,4 +1,4 @@
-;;; base-lib.el --- Define base functions and macros -*- lexical-binding: t; -*-
+;;; init-core-lib.el --- Define base functions and macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -32,5 +32,5 @@
 (require 'functions-call-after)
 (eval-when-compile (require 'macros-config-helpers))
 ;;; provide
-(provide 'base-lib)
-;;; base-lib.el ends here
+(provide 'init-core-lib)
+;;; init-core-lib.el ends here

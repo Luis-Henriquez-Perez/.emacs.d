@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'yeetube)
 
 (defun o-yeetube-download-audio (&optional url)

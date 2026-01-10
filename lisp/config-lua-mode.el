@@ -25,7 +25,7 @@
 ;; Configure lua-mode.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (o-opt lua-indent-level 4)
 ;;; provide
 (provide 'config-lua-mode)

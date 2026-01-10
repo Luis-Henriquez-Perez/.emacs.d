@@ -1,4 +1,4 @@
-;;; base.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-core.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -26,11 +26,11 @@
 ;; files to require all base dependencies.
 ;;
 ;;; Code:
-(require 'base-vars)
-(require 'base-log)
-(require 'base-settings)
-(require 'base-lib)
-(require 'base-extra)
+(require 'init-core-vars)
+(require 'init-core-log)
+(require 'init-core-settings)
+(require 'init-core-lib)
+(require 'init-core-extra)
 ;;; provide
-(provide 'base)
-;;; base.el ends here
+(provide 'init-core)
+;;; init-core.el ends here

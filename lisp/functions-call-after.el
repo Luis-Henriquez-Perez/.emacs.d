@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'subr-x)
 (eval-when-compile (require 'macros-base))
-(require 'base-log)
+(require 'init-core-log)
 
 (defvar o-after-bound-forms nil
   "An alist whose elements are (SYMBOL . FORMS).

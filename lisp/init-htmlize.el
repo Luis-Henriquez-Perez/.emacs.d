@@ -25,7 +25,7 @@
 ;; Initialize htmlize.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt htmlize-convert-nonascii-to-entities nil)
 (o-opt htmlize-html-charset "utf-8")

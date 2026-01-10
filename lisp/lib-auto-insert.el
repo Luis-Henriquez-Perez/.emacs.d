@@ -25,7 +25,7 @@
 ;; Configure auto-insert.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'f)
 (require 'tempel)
 

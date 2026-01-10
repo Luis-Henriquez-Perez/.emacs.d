@@ -25,7 +25,7 @@
 ;; Initialize wdired.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt wdired-confirm-overwrite nil)
 ;;; provide

@@ -25,7 +25,7 @@
 ;; Initialize `recentf'.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'recentf)
 
 (add-hook 'emacs-startup-hook #'recentf-mode)

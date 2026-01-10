@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'base)
+(require 'init-core)
 
 (o-each '(ol org-element-ast org-macs org-agenda org-refile org-src org-id org-clock org-timer org-capture org-compat calendar find-func format-spec thingatpt
              org-keys oc org-table org-fold org-cycle)

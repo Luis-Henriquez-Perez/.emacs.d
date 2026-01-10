@@ -25,7 +25,7 @@
 ;; Initialize evil-goggles.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 ;;;; register evil commands
 (declare-function evil-goggles-mode "evil-goggles")
 

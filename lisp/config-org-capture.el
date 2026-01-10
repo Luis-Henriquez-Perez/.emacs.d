@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; Requirements
-(require 'base)
+(require 'init-core)
 (require 'doct)
 (require 'org-ml)
 (require 'ts)

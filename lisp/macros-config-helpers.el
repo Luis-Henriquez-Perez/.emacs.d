@@ -25,8 +25,8 @@
 ;; Initialize macros-config-helpers.
 ;;
 ;;; Code:
-(require 'base-vars)
-(require 'base-log)
+(require 'init-core-vars)
+(require 'init-core-log)
 (require 'functions-call-after)
 (require 'functions-2)
 (eval-when-compile (require 'macros-base))

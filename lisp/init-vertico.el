@@ -25,7 +25,7 @@
 ;; Initialize vertico.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 

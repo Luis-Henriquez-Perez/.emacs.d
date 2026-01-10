@@ -25,7 +25,7 @@
 ;; Initialize helpful.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-remap-alt 'helpful #'describe-function #'helpful-callable)
 (o-remap-alt 'helpful #'describe-command  #'helpful-command)

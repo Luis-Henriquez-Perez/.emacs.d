@@ -25,7 +25,7 @@
 ;; Configure.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'org-mode-hook #'org-pretty-tags-mode)
 

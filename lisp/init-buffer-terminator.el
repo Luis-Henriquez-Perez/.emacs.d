@@ -25,7 +25,7 @@
 ;; Initialize buffer-terminator.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'o-first-input-hook #'buffer-terminator-mode)
 

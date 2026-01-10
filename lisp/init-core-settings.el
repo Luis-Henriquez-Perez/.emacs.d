@@ -1,4 +1,4 @@
-;;; base-settings.el --- core settings -*- lexical-binding: t; -*-
+;;; init-core-settings.el --- core settings -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -247,5 +247,5 @@ end-of-buffer signals; pass the rest to the default handler."
 (setq auto-save-timeout 30)
 (auto-save-mode -1)
 ;;; provide
-(provide 'base-settings)
-;;; base-settings.el ends here
+(provide 'init-core-settings)
+;;; init-core-settings.el ends here

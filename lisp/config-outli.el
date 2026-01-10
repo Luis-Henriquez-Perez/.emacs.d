@@ -25,7 +25,7 @@
 ;; Configure `outli'.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'outli)
 
 ;; Different styling for stem and leaf characters.

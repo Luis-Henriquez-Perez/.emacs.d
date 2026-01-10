@@ -25,7 +25,7 @@
 ;; Initialize orderless.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt orderless-matching-styles '(orderless-initialism orderless-regexp))
 

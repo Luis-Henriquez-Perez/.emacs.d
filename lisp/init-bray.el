@@ -28,7 +28,7 @@
 (require 'bray-state-map)
 (require 'meep)
 (require 'init-meep)
-(require 'base)
+(require 'init-core)
 
 (setq bray-state-default 'normal)
 (setq bray-state-map-enabled t)

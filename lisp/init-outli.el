@@ -25,7 +25,7 @@
 ;; Initialize outli.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'prog-mode-hook #'outli-mode)
 (add-hook 'conf-mode-hook #'outli-mode)

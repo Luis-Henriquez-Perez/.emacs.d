@@ -25,7 +25,7 @@
 ;; Configure evil-goggles.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'evil-goggles)
 ;;;; Remove advices
 (o-opt evil-goggles-duration 0.1)

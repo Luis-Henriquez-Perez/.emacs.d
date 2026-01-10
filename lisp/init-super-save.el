@@ -25,7 +25,7 @@
 ;; Initialize super-save.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (autoload 'super-save-mode "super-save" nil nil 'function)
 (add-hook 'o-first-file-hook #'super-save-mode)

@@ -25,7 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'tempel)
 
 (o-tempel-deftemplate expand-elisp-defhook

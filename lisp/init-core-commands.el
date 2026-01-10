@@ -1,4 +1,4 @@
-;;; base-commands.el --- Generic commands -*- lexical-binding: t; -*-
+;;; init-core-commands.el --- Generic commands -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,7 +28,7 @@
 ;; these functions are very specific to me and my workflow.
 ;;
 ;;; Code:
-(require 'base-lib)
+(require 'init-core-lib)
 ;; (require 'f)
 ;; (require 'ctable)
 ;;;; opening specific files
@@ -245,5 +245,5 @@ Additionally, make any duplicate spaces in line become a single space."
   (let (kill-emacs-hook)
     (kill-emacs)))
 ;;; provide
-(provide 'base-commands)
-;;; base-commands.el ends here
+(provide 'init-core-commands)
+;;; init-core-commands.el ends here

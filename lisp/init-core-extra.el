@@ -1,4 +1,4 @@
-;;; base-extra.el --- Define and set several hooks -*- lexical-binding: t; -*-
+;;; init-core-extra.el --- Define and set several hooks -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -25,7 +25,7 @@
 ;; Define and set several hooks.
 ;;
 ;;; Code:
-(require 'base-lib)
+(require 'init-core-lib)
 (require 'server)
 ;;;; setup custom hooks
 (defvar o-first-file-hook nil
@@ -96,7 +96,7 @@ file is loaded."
 
 (defun o-hook--require-base ()
   "Load base macros."
-  (require 'base)
+  (require 'init-core)
   (remove-hook 'emacs-lisp-mode-hook #'o-hook--require-base))
 
 (add-hook 'emacs-lisp-mode-hook #'o-hook--require-base)
@@ -307,25 +307,25 @@ of FACE to the background color of the `default' face."
 
 (add-hook 'o-first-input-hook #'o-hook--lock-important-buffers)
 ;;;; autoload commands
-(autoload 'o-open-emacs-config "base-commands" nil nil 'function)
-(autoload 'o-open-emacs-init-file "base-commands" nil nil 'function)
-(autoload 'o-open-emacs-lisp-dir "base-commands" nil nil 'function)
-(autoload 'o-split-window-below-and-focus "base-commands" nil nil 'function)
-(autoload 'o-split-window-right-and-focus "base-commands" nil nil 'function)
-(autoload 'o-set-font-face "base-commands" nil nil 'function)
-(autoload 'o-dwim-space "base-commands" nil nil 'function)
-(autoload 'o-dwim-narrow "base-commands" nil nil 'function)
-(autoload 'o-pop-to-buffer "base-commands" nil nil 'function)
-(autoload 'o-dwim-align "base-commands" nil nil 'function)
-(autoload 'o-kill-emacs-no-confirm "base-commands" nil nil 'function)
-(autoload 'o-new-buffer "base-commands" nil nil 'function)
-(autoload 'o-load-random-theme "base-commands" nil nil 'function)
-(autoload 'o-sort-dwim "base-commands" nil nil 'function)
-(autoload 'o-startup-time-table "base-commands" nil nil 'function)
-(autoload 'o-one-line "base-commands" nil nil 'function)
-(autoload 'o-remove-consequtive-spaces "base-commands" nil nil 'function)
-(autoload 'o-open-emacs-lisp-dir "base-commands" nil nil 'function)
-(autoload 'o-dwim-vc-action "base-commands" nil nil 'function)
+(autoload 'o-open-emacs-config "init-core-commands" nil nil 'function)
+(autoload 'o-open-emacs-init-file "init-core-commands" nil nil 'function)
+(autoload 'o-open-emacs-lisp-dir "init-core-commands" nil nil 'function)
+(autoload 'o-split-window-below-and-focus "init-core-commands" nil nil 'function)
+(autoload 'o-split-window-right-and-focus "init-core-commands" nil nil 'function)
+(autoload 'o-set-font-face "init-core-commands" nil nil 'function)
+(autoload 'o-dwim-space "init-core-commands" nil nil 'function)
+(autoload 'o-dwim-narrow "init-core-commands" nil nil 'function)
+(autoload 'o-pop-to-buffer "init-core-commands" nil nil 'function)
+(autoload 'o-dwim-align "init-core-commands" nil nil 'function)
+(autoload 'o-kill-emacs-no-confirm "init-core-commands" nil nil 'function)
+(autoload 'o-new-buffer "init-core-commands" nil nil 'function)
+(autoload 'o-load-random-theme "init-core-commands" nil nil 'function)
+(autoload 'o-sort-dwim "init-core-commands" nil nil 'function)
+(autoload 'o-startup-time-table "init-core-commands" nil nil 'function)
+(autoload 'o-one-line "init-core-commands" nil nil 'function)
+(autoload 'o-remove-consequtive-spaces "init-core-commands" nil nil 'function)
+(autoload 'o-open-emacs-lisp-dir "init-core-commands" nil nil 'function)
+(autoload 'o-dwim-vc-action "init-core-commands" nil nil 'function)
 ;;;; xref
 (o-opt xref-search-program (if (executable-find "rg") 'ripgrep xref-search-program))
 ;; Select from xref candidates in minibuffer
@@ -422,5 +422,5 @@ file that is in a git repo, enale git-gutter-mode."
 
 (add-hook 'o-first-file-hook #'global-auto-revert-mode)
 ;;; provide
-(provide 'base-extra)
-;;; base-extra.el ends here
+(provide 'init-core-extra)
+;;; init-core-extra.el ends here

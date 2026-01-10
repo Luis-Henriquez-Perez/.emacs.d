@@ -68,7 +68,7 @@
 
 (push (expand-file-name "lisp/" user-emacs-directory) load-path)
 
-(let (file-name-handler-alist) (require 'base))
+(let (file-name-handler-alist) (require 'init-core))
 
 ;; Silence byte-compilation warnings.  The compiler cannot tell that I define
 ;; these variables in the previous `require!' macro.

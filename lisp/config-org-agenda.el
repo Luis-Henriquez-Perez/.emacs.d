@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; requirements
-(require 'base)
+(require 'init-core)
 (require 'org-agenda)
 (require 'ts)
 ;;;; settings

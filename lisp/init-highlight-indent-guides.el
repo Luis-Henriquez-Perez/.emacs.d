@@ -25,7 +25,7 @@
 ;; Initialize highlight-indent-guides.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (autoload 'highlight-indent-guides-mode "highlight-indent-guides-mode" nil nil 'function)
 (add-hook 'mhtml-mode-hook #'highlight-indent-guides-mode)

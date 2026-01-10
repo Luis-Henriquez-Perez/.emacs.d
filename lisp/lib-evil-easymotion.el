@@ -83,7 +83,7 @@
 ;; sort them based on.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 (require 'rx)
 (require 'dash)
 (require 'evil)

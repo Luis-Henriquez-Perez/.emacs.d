@@ -25,7 +25,7 @@
 ;; Configure nil.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 ;;;; SETTINGS
 ;;;;; GENERAL
 (setq org-directory (expand-file-name "~/Documents/org/"))

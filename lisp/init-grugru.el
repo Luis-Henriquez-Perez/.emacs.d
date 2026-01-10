@@ -25,7 +25,7 @@
 ;; Initialize grugru.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 
 

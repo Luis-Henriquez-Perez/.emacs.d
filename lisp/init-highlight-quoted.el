@@ -25,7 +25,7 @@
 ;; Initialize highlight-quoted.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (autoload 'highlight-quoted-mode "highlight-quoted" nil nil 'function)
 (add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode)

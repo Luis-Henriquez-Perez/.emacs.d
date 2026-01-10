@@ -24,7 +24,7 @@
 ;; This is my configuration for ace window.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt aw-swap-invert t)
 ;; The character z conflicts.

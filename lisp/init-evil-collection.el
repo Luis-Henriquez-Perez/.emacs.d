@@ -25,7 +25,7 @@
 ;; Initialize `evil-collection'.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 ;; Enable `evil-collection' bindings after evil-mode.  I want to have precise
 ;; control of when evil is loaded.

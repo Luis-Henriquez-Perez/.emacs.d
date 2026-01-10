@@ -25,7 +25,7 @@
 ;; Initialize dirvish.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (declare-function dirvish-override-dired-mode "dirvish")
 (o-call-after-load 'dired #'dirvish-override-dired-mode)

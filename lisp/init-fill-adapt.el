@@ -25,7 +25,7 @@
 ;; Initialize fill-adapt.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'auto-fill-mode-hook #'filladapt-mode)
 ;;; provide

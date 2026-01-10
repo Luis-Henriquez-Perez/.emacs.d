@@ -25,7 +25,7 @@
 ;; Initialize smartparens.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (declare-function smartparens-strict-mode "smartparens")
 

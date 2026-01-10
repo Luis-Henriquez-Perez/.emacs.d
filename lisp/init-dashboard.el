@@ -25,7 +25,7 @@
 ;; Initialize dashboard.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (declare-function dashboard-insert-startupify-lists "dashboard")
 (declare-function dashboard-initialize "dashboard")

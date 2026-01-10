@@ -25,7 +25,7 @@
 ;; Initialize evil-easymotion.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (defvar evil-set-command-properties)
 

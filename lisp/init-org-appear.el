@@ -25,7 +25,7 @@
 ;; Initialize org-appear.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt org-appear-autoemphasis t)
 (o-opt org-appear-autolinks t)

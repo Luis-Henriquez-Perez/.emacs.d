@@ -1,4 +1,4 @@
-;;; base-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; init-core-vars.el --- core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -106,5 +106,5 @@ BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
 (defconst o-key-localleader-emacs "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
 ;;; provide
-(provide 'base-vars)
-;;; base-vars.el ends here
+(provide 'init-core-vars)
+;;; init-core-vars.el ends here

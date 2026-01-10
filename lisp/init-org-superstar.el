@@ -25,7 +25,7 @@
 ;; Initialize `org-superstar`.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (autoload 'org-superstar-mode "org-superstar" nil nil 'function)
 (add-hook 'org-mode-hook #'org-superstar-mode)

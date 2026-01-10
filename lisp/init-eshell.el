@@ -25,7 +25,7 @@
 ;; Initialize eshell.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-setq-mode-local eshell-mode completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 ;; Do not save aliases file.  Instead I load the aliases as elisp.

@@ -25,7 +25,7 @@
 ;; Initialize evil-textobj-line.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (declare-function evil-inner-line "evil-textobj-line")
 (declare-function evil-a-line "evil-textobj-line")

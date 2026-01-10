@@ -25,7 +25,7 @@
 ;; Initialize auto-insert.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt auto-insert-query nil)
 

@@ -25,7 +25,7 @@
 ;; Initialize notmuch.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 ;; If you do not use `setq-default' this setting will not persist across
 ;; different searches.

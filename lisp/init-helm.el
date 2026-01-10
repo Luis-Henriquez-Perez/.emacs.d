@@ -25,7 +25,7 @@
 ;; Initialize helm.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-popup-at-bottom "\\*Helm")
 (o-opt helm-candidate-number-limit 50)

@@ -30,7 +30,7 @@
 ;; Initialize `restart-emacs'.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 ;;;; bindings
 
 

@@ -25,7 +25,7 @@
 ;; Initialize which-key.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (autoload 'which-key-mode "which-key" nil nil 'function)
 (add-hook 'emacs-startup-hook #'which-key-mode)

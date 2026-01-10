@@ -25,7 +25,7 @@
 ;; Initialize keybindings.
 ;;
 ;;; Code:
-(require 'base-lib)
+(require 'init-core-lib)
 (require 'bind-key)
 ;;;; miscellaneous
 (declare-function minibuffer-keyboard-quit "delsel")

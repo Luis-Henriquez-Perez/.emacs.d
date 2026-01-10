@@ -25,7 +25,7 @@
 ;; Initialize abbrev-mode.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (declare-function o-abbrev-in-text-p "lib-abbrev")
 (declare-function o-advice--abbrev-insert-period-maybe "lib-abbrev")

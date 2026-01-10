@@ -25,7 +25,7 @@
 ;; Initialize emmet.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'mhtml-mode-hook #'emmet-mode)
 (add-hook 'html-mode-hook #'emmet-mode)

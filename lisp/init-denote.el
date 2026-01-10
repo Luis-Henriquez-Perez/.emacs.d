@@ -25,7 +25,7 @@
 ;; Initialize denote.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt denote-directory "~/Documents/notes/")
 (o-opt denote-file-type 'org)

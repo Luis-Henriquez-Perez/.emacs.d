@@ -1,4 +1,4 @@
-;;; functions-base.el -*- lexical-binding: t; -*-
+;;; functions-init-core.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -72,4 +72,4 @@ Specifically, return the symbol `string' if point is in a string, the symbol
   (o-quiet (apply fn args)))
 ;;; provide
 (provide 'functions-base)
-;;; functions-base.el ends here
+;;; functions-init-core.el ends here

@@ -25,7 +25,7 @@
 ;; Initialize evil.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 ;;;; settings
 ;; Must be set before evil is loaded.  This, therefore, cannot be deferred with
 ;; `o-opt'.  If this is not set evil with add opinionated bindings to certain

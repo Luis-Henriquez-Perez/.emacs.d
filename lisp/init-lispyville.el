@@ -25,7 +25,7 @@
 ;; Initialize lispyville.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 ;; Do not bind any keys by default.
 (add-hook 'emacs-lisp-mode-hook #'lispyville-mode)

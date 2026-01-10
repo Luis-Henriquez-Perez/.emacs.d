@@ -25,7 +25,7 @@
 ;; Initialize no-littering.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (eval-and-compile (defvar no-littering-etc-directory o-etc-dir)
                   (defvar no-littering-var-directory o-var-dir))

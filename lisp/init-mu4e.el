@@ -25,7 +25,7 @@
 ;; Initialize mu4e.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 

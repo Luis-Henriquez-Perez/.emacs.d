@@ -25,7 +25,7 @@
 ;; Initialize corfu.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (add-hook 'corfu-mode-hook #'corfu-history-mode)
 

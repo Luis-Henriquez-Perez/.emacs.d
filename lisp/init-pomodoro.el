@@ -25,7 +25,7 @@
 ;; Initialize pomodoro.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt pomodoro-sound-player "mpv")
 (o-opt pomodoro-work-start-sound (expand-file-name "~/bell.wav"))

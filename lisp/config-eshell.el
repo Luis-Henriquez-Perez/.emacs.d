@@ -28,7 +28,7 @@
 (require 'eshell-z)
 (require 'eshell-up)
 (require 'em-alias)
-(require 'base)
+(require 'init-core)
 (require 'vc-git)
 ;;;; prompt function
 (o-defun o-eshell-prompt ()

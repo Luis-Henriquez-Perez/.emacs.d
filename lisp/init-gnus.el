@@ -25,7 +25,7 @@
 ;; Initialize `gnus`.
 ;;
 ;;; Code:
-(require 'base)
+(require 'init-core)
 
 (o-opt gnus-summary-line-format "%U%R%z %-16,16&user-date; %-30,30f  %B%S\n")
 (o-opt gnus-select-method '(nnnil))
