@@ -32,11 +32,11 @@
 (autoload 'tempel-insert "tempel" nil nil 'function)
 (autoload 'tempel-expand "tempel" nil nil 'function)
 
-(autoload 'o-tempel-expand-elisp-defun "config-tempel" nil nil 'function)
-(autoload 'o-tempel-expand-elisp-defhook "config-tempel" nil nil 'function)
-(autoload 'o-tempel-expand-elisp-defvar "config-tempel" nil nil 'function)
-(autoload 'o-tempel-expand-elisp-message "config-tempel" nil nil 'function)
-(autoload 'o-tempel-expand-elisp-message-var "config-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-defun "init-after-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-defhook "init-after-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-defvar "init-after-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-message "init-after-tempel" nil nil 'function)
+(autoload 'o-tempel-expand-elisp-message-var "init-after-tempel" nil nil 'function)
 ;;; provide
 (provide 'init-pkg-tempel)
 ;;; init-pkg-tempel.el ends here

@@ -224,5 +224,5 @@ in the commentary part."
                      "# Description: " p > n))
     (add-hook 'after-save-hook #'o-make-this-file-executable nil 'local)))
 ;;; provide
-(provide 'config-auto-insert)
+(provide 'init-after-auto-insert)
 ;;; config-auto-insert.el ends here

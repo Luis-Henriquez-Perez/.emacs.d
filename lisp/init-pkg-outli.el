@@ -30,7 +30,7 @@
 (add-hook 'prog-mode-hook #'outli-mode)
 (add-hook 'conf-mode-hook #'outli-mode)
 
-(o-require-after-load 'outli 'config-outli)
+(o-require-after-load 'outli 'init-after-outli)
 ;;; provide
 (provide 'init-pkg-outli)
 ;;; init-pkg-outli.el ends here
