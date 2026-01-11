@@ -31,7 +31,6 @@
 (require 'init-core)
 (require 'captain)
 (require 'rx)
-(require 'lispy)
 ;;;; determine where I am
 ;; TODO: generalize regexp with `o-defun', `cl-defun', etc.
 (defvar o-docstring-regexp "(\\(?:def\\(?:advice!\\|hook!\\|macro\\|un!?\\)\\)[[:blank:]]\\([^[:space:]]+\\)[[:blank:]](\\(.*\\))\n[[:blank:]]*\"")
@@ -74,22 +73,23 @@
 (o-defun o-captain-prog-mode-sentence-start ()
   "Return point where sentence should be capitalized."
   (pcase (o-in-string-or-comment-p)
-    ('comment
-     ;; For now use `lispy--bounds-comment' because I do not think there is a
-     ;; built-in alternative.
-     (o-set beg (car (lispy--bounds-comment)))
-     ;; The reason I go forwared one character is that I could be at the first
-     ;; word of the sentence.  I am doubtful this method is perfect but I could
-     ;; not think of a better way yet.
-     (save-excursion (goto-char (1+ (point)))
-                     (backward-sentence)
-                     (goto-char (max (point) beg))
-                     (when (looking-at comment-start-skip)
-                       (goto-char (match-end 0)))
-                     (point)))
+    ;; TODO: find a built-in alternative to `lispy--bounds-comment'.
+    ;; ('comment
+    ;;  ;; For now use `lispy--bounds-comment' because I do not think there is a
+    ;;  ;; built-in alternative.
+    ;;  (o-set beg (car (lispy--bounds-comment)))
+    ;;  ;; The reason I go forwared one character is that I could be at the first
+    ;;  ;; word of the sentence.  I am doubtful this method is perfect but I could
+    ;;  ;; not think of a better way yet.
+    ;;  (save-excursion (goto-char (1+ (point)))
+    ;;                  (backward-sentence)
+    ;;                  (goto-char (max (point) beg))
+    ;;                  (when (looking-at comment-start-skip)
+    ;;                    (goto-char (match-end 0)))
+    ;;                  (point)))
     ('string
      (o-aand (car (o--in-elisp-docstring-p))
-    	    (max it (or (car (bounds-of-thing-at-point 'sentence)) it))))))
+    	     (max it (or (car (bounds-of-thing-at-point 'sentence)) it))))))
 ;;; provide
 (provide 'config-captain)
 ;;; config-captain.el ends here
