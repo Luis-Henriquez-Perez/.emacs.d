@@ -31,7 +31,7 @@
 (autoload 'o-hook--init-org-capfs "lib-cape" nil nil 'function)
 (autoload 'o-hook--init-prog-capfs "lib-cape" nil nil 'function)
 
-(add-hook 'org-mode-hook #'o-hook--init--org-capfs)
+(add-hook 'org-mode-hook #'o-hook--init-org-capfs)
 (add-hook 'prog-mode-hook #'o-hook--init-prog-capfs)
 ;;; provide
 (provide 'init-pkg-cape)
