@@ -1,4 +1,4 @@
-;;; config-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
+;;; init-config-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -45,5 +45,5 @@
 
 (require 'smartparens-config)
 ;;; provide
-(provide 'config-smartparens)
-;;; config-smartparens.el ends here
+(provide 'init-config-smartparens)
+;;; init-config-smartparens.el ends here

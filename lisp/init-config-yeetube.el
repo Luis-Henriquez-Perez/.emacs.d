@@ -1,4 +1,4 @@
-;;; config-yeetube.el --- Configure yeetube -*- lexical-binding: t; -*-
+;;; init-config-yeetube.el --- Configure yeetube -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -67,5 +67,5 @@ Optionally, provide custom own URL."
       (call-process-shell-command (format "download_video %s" url) nil 0)
       (message "Downloading: '%s'" yeetube-download-directory))))
 ;;; provide
-(provide 'config-yeetube)
-;;; config-yeetube.el ends here
+(provide 'init-config-yeetube)
+;;; init-config-yeetube.el ends here

@@ -1,4 +1,4 @@
-;;; config-dabbrev.el --- Configure dabbrev -*- lexical-binding: t; -*-
+;;; init-config-restart-emacs.el --- Configure restart-emacs -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,10 +22,21 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Configure restart-emacs.
 ;;
 ;;; Code:
-(setq dabbrev-check-all-buffers nil)
+(require 'restart-emacs)
+;;;; fix interactive call
+;; When using the function `restart-emacs-start-new-emacs' I find that restart
+;; Emacs does not properly work with prefix arguments because in its body it
+;; converts the prefix argument to shell arguments only if its called
+;; interactively but its not.
+(defun o--work-interactively (&optional args)
+  "Call `restart-emacs' interactively."
+  (let ((restart-emacs--inhibit-kill-p t))
+    (funcall-interactively #'restart-emacs args)))
+
+(advice-add 'restart-emacs-start-new-emacs :override #'o--work-interactively)
 ;;; provide
-(provide 'config-dabbrev)
-;;; config-dabbrev.el ends here
+(provide 'init-config-restart-emacs)
+;;; init-config-restart-emacs.el ends here

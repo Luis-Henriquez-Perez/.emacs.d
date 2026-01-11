@@ -1,4 +1,4 @@
-;;; config-grugru.el --- grugru configuration -*- lexical-binding: t; -*-
+;;; init-config-grugru.el --- grugru configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -67,5 +67,5 @@
 
 (grugru-define-on-major-mode 'c-mode 'symbol '("unsigned" "signed"))
 ;;; provide
-(provide 'config-grugru)
-;;; config-grugru.el ends here
+(provide 'init-config-grugru)
+;;; init-config-grugru.el ends here

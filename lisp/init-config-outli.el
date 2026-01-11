@@ -1,4 +1,4 @@
-;;; config-outli.el --- Configure outli -*- lexical-binding: t; -*-
+;;; init-config-outli.el --- Configure outli -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -42,5 +42,5 @@
 (setf (alist-get 'hy-mode     outli-heading-config)
       (alist-get 'emacs-lisp-mode outli-heading-config))
 ;;; provide
-(provide 'config-outli)
-;;; config-outli.el ends here
+(provide 'init-config-outli)
+;;; init-config-outli.el ends here

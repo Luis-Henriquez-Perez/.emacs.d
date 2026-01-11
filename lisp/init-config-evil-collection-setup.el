@@ -1,4 +1,4 @@
-;;; config-evil-collection-setup.el --- Configure evil-collection-setup -*- lexical-binding: t; -*-
+;;; init-config-evil-collection-setup.el --- Configure evil-collection-setup -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -623,5 +623,5 @@
 (autoload 'evil-collection-ztree-setup "evil-collection" nil nil 'function)
 (o-call-after-load 'ztree #'evil-collection-ztree-setup)
 ;;; provide
-(provide 'config-evil-collection-setup)
-;;; config-evil-collection-setup.el ends here
+(provide 'init-config-evil-collection-setup)
+;;; init-config-evil-collection-setup.el ends here

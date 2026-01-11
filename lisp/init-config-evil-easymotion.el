@@ -1,4 +1,4 @@
-;;; config-lua-mode.el --- Configure lua-mode -*- lexical-binding: t; -*-
+;;; init-config-evil-easymotion.el --- Configure evil-easymotion -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,11 +22,17 @@
 ;;
 ;;; Commentary:
 ;;
-;; Configure lua-mode.
+;; Configure evil-easymotion.
 ;;
 ;;; Code:
-(require 'init-core)
-(o-opt lua-indent-level 4)
+(require 'evil-easymotion)
+
+(setq evilem-style 'at)
+(setq evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
+
+;; Improve scope.
+;; Something similar is used in doom.
+(put 'visible 'bounds-of-thing-at-point (lambda () (cons (window-start) (window-end))))
 ;;; provide
-(provide 'config-lua-mode)
-;;; config-lua-mode.el ends here
+(provide 'init-config-evil-easymotion)
+;;; init-config-evil-easymotion.el ends here
