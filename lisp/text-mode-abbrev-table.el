@@ -1639,6 +1639,7 @@
     ("curr" "current")
     ("currenly" "currently")
     ("curriculem" "curriculum")
+    ("cuse" "use")
     ("cusom" "sutom")
     ("custm" "custom")
     ("customizaton" "customization")
