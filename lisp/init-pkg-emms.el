@@ -1,0 +1,67 @@
+;;; init-pkg-emms.el --- initialize emms -*- lexical-binding: t; -*-
+;;
+;; Copyright (c) 2024 Free Software Foundation, Inc.
+;;
+;; Author: Luis Henriquez-Perez <luis@luishp.xyz>
+;; Homepage: https://github.com/Luis-Henriquez-Perez/dotfiles/
+;;
+;; This file is not part of GNU Emacs.
+;;
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+;;
+;;; Commentary:
+;;
+;; Initialize emms.
+;;
+;;; Code:
+(require 'init-core)
+
+(o-opt emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
+(o-opt emms-directory (expand-file-name "emms/" o-var-dir))
+
+;; As of right now using VLC or MPV will have the effect of repeating the current track
+;; in the playlist indefinitely.  These parameters at least prevent this form
+;; happening with MPV.  Actually, I think the only pertinent one for this is
+;; "--no-config".
+(o-opt emms-player-mpv-parameters (list "--quiet"
+                                       "--really-quiet"
+                                       "--no-config"
+                                       "--no-audio-display"
+                                       "--force-window=no"
+                                       "--vo=null"))
+
+(o-opt emms-player-list '(emms-player-mpv emms-player-vlc))
+(autoload 'emms-player-mpv "emms-player-mpv" nil nil 'function)
+
+(o-opt emms-info-functions '(emms-info-native))
+;; Do not make this an invisible buffer.  I want to be able to switch to it normally.
+(o-opt emms-playlist-buffer "*EMMS Playlist*")
+
+(declare-function emms-add-directory "emms")
+
+(defun o-emms-playlist-mode-go ()
+  (interactive)
+  (require 'emms)
+  ;; Ah I need to figure out a better way to do this.
+  ;; (require 'emms-player-mpv)
+  (emms-add-directory emms-source-file-default-directory)
+  (call-interactively #'emms-playlist-mode-go))
+
+;; Without this I get an error that `emms-player-mpv' is not loaded.
+(o-after emms
+  (or (and (executable-find "mpv") (require 'emms-player-mpv))
+      (and (executable-find "vlc") (require 'emms-player-vlc))))
+;;; provide
+(provide 'init-pkg-emms)
+;;; init-pkg-emms.el ends here
