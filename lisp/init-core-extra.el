@@ -421,6 +421,14 @@ file that is in a git repo, enale git-gutter-mode."
 (add-hook 'emacs-startup-hook #'o-hook--start-idle-loading 90)
 
 (add-hook 'o-first-file-hook #'global-auto-revert-mode)
+
+(defun o-hook--load-required-features ()
+  "Load required features and log time each took to load."
+  (dolist (feature (reverse o-required-features))
+    (o-set time (o-time-elapsed (require feature)))
+    (o-log 'info "Required %s in %0.02f seconds" feature time)))
+
+(add-hook 'after-init-hook #'o-hook--load-required-features 90)
 ;;; provide
 (provide 'init-core-extra)
 ;;; init-core-extra.el ends here

@@ -33,11 +33,7 @@
 (defvar evil-want-keybinding)
 (setq evil-want-keybinding nil)
 
-(defun o-hook--load-evil ()
-  "Require `evil'."
-  (require 'evil nil t))
-
-(add-hook 'after-init-hook #'o-hook--load-evil -90)
+(push 'evil o-required-features)
 
 (add-hook 'emacs-startup-hook #'evil-mode)
 

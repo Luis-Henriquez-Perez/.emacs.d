@@ -26,7 +26,8 @@
 ;;
 ;;; Code:
 (require 'init-core)
-(require 'savehist)
+
+(push 'savehist o-required-features)
 
 (add-hook 'o-first-input-hook #'savehist-mode)
 

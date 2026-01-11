@@ -80,6 +80,10 @@ Each element is of the form (CUSTOM-FACE . BUILT-IN-FACE).  Whenever the
 theme is changed CUSTOM-FACE updates its background and foreground similar to
 BUILT-IN-FACE.  See `o-hook--set-faces-from-theme'.")
 
+(defvar o-required-features nil
+  "List of features that should be loaded on startup.
+The list should be loaded in reverse order.")
+
 (defconst o-key-leader-normal "SPC"
   "The evil leader prefix key.")
 

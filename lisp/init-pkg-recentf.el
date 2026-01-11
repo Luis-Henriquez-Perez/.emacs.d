@@ -26,7 +26,8 @@
 ;;
 ;;; Code:
 (require 'init-core)
-(require 'recentf)
+
+(push 'recentf o-required-features)
 
 (add-hook 'emacs-startup-hook #'recentf-mode)
 
