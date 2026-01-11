@@ -1,4 +1,4 @@
-;;; init-config-eshell.el --- configuration for eshell -*- lexical-binding: t; -*-
+;;; init-after-eshell.el --- configuration for eshell -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -175,5 +175,5 @@
 (eshell/alias "ffow" "find-file-other-window $1")
 (eshell/alias "d" "dired $1")
 ;;; provide
-(provide 'init-config-eshell)
-;;; init-config-eshell.el ends here
+(provide 'init-after-eshell)
+;;; init-after-eshell.el ends here

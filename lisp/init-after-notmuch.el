@@ -1,4 +1,4 @@
-;;; init-config-notmuch.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-after-notmuch.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -89,5 +89,5 @@
 ;; (notmuch-search "tag:inbox and path:yadiraperez2029@gmail.com/**")
 ;; (notmuch-search "tag:spam and path:yadiraperez2029@gmail.com/**")
 ;;; provide
-(provide 'init-config-notmuch)
-;;; init-config-notmuch.el ends here
+(provide 'init-after-notmuch)
+;;; init-after-notmuch.el ends here

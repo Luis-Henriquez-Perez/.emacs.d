@@ -1,4 +1,4 @@
-;;; init-config-restart-emacs.el --- Configure restart-emacs -*- lexical-binding: t; -*-
+;;; init-after-restart-emacs.el --- Configure restart-emacs -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -38,5 +38,5 @@
 
 (advice-add 'restart-emacs-start-new-emacs :override #'o--work-interactively)
 ;;; provide
-(provide 'init-config-restart-emacs)
-;;; init-config-restart-emacs.el ends here
+(provide 'init-after-restart-emacs)
+;;; init-after-restart-emacs.el ends here

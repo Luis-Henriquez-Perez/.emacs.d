@@ -1,4 +1,4 @@
-;;; init-config-lua-mode.el --- Configure lua-mode -*- lexical-binding: t; -*-
+;;; init-after-lua-mode.el --- Configure lua-mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -28,5 +28,5 @@
 (require 'init-core)
 (o-opt lua-indent-level 4)
 ;;; provide
-(provide 'init-config-lua-mode)
-;;; init-config-lua-mode.el ends here
+(provide 'init-after-lua-mode)
+;;; init-after-lua-mode.el ends here

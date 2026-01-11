@@ -1,4 +1,4 @@
-;;; init-config-mu4e.el --- Configure mu4e -*- lexical-binding: t; -*-
+;;; init-after-mu4e.el --- Configure mu4e -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -57,5 +57,5 @@
   (o-set maildir (completing-read "Maildir: " (mu4e-get-maildirs)))
   (mu4e-search (format "maildir:\"%s\"" maildir)))
 ;;; provide
-(provide 'init-config-mu4e)
-;;; init-config-mu4e.el ends here
+(provide 'init-after-mu4e)
+;;; init-after-mu4e.el ends here

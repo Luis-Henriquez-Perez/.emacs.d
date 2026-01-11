@@ -1,4 +1,4 @@
-;;; init-config-evil-easymotion.el --- Configure evil-easymotion -*- lexical-binding: t; -*-
+;;; init-after-dabbrev.el --- Configure dabbrev -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,17 +22,10 @@
 ;;
 ;;; Commentary:
 ;;
-;; Configure evil-easymotion.
+;; TODO: add commentary
 ;;
 ;;; Code:
-(require 'evil-easymotion)
-
-(setq evilem-style 'at)
-(setq evilem-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
-
-;; Improve scope.
-;; Something similar is used in doom.
-(put 'visible 'bounds-of-thing-at-point (lambda () (cons (window-start) (window-end))))
+(setq dabbrev-check-all-buffers nil)
 ;;; provide
-(provide 'init-config-evil-easymotion)
-;;; init-config-evil-easymotion.el ends here
+(provide 'init-after-dabbrev)
+;;; init-after-dabbrev.el ends here

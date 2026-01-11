@@ -1,4 +1,4 @@
-;;; init-config-tempel.el --- Configure tempel -*- lexical-binding: t; -*-
+;;; init-after-tempel.el --- Configure tempel -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -101,5 +101,5 @@
   "Expand to html bold tag"
   "<b>" r "</b>")
 ;;; provide
-(provide 'init-config-tempel)
-;;; init-config-tempel.el ends here
+(provide 'init-after-tempel)
+;;; init-after-tempel.el ends here

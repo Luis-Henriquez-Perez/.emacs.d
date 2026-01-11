@@ -1,4 +1,4 @@
-;;; init-config-org-capture.el --- Configure org-capture -*- lexical-binding: t; -*-
+;;; init-after-org-capture.el --- Configure org-capture -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -117,5 +117,5 @@
                                 :file org-default-notes-file
                                 :template #'org-capture|plain-template)))))
 ;;; provide
-(provide 'init-config-org-capture)
-;;; init-config-org-capture.el ends here
+(provide 'init-after-org-capture)
+;;; init-after-org-capture.el ends here

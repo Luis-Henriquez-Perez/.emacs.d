@@ -1,4 +1,4 @@
-;;; init-config-evil.el --- evil configuration -*- lexical-binding: t; -*-
+;;; init-after-evil.el --- evil configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -447,5 +447,5 @@ non-readonly file buffer, save the buffer."
   (evil-define-key* 'normal Info-mode-map "H" #'Info-last)
   (evil-define-key* 'normal Info-mode-map "L" #'Info-next))
 ;;; provide
-(provide 'init-config-evil)
-;;; init-config-evil.el ends here
+(provide 'init-after-evil)
+;;; init-after-evil.el ends here

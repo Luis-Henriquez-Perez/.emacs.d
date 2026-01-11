@@ -1,4 +1,4 @@
-;;; init-config-outli.el --- Configure outli -*- lexical-binding: t; -*-
+;;; init-after-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,25 +22,28 @@
 ;;
 ;;; Commentary:
 ;;
-;; Configure `outli'.
+;; This is my configuration for smartparens.
 ;;
 ;;; Code:
 (require 'init-core)
-(require 'outli)
+(require 'smartparens)
 
-;; Different styling for stem and leaf characters.
-(setf (cl-fourth (assoc 'emacs-lisp-mode outli-heading-config)) nil)
+(o-opt sp-highlight-wrap-tag-overlay nil)
 
-(setf (alist-get 'lua-mode    outli-heading-config) '("--" ?- nil t))
-(setf (alist-get 'python-mode outli-heading-config) '("#" ?# nil t))
-(setf (alist-get 'conf-mode outli-heading-config) '("#" ?# nil t))
-(setf (alist-get 'sh-mode outli-heading-config) '("#" ?# nil t))
-(setf (alist-get 'fennel-mode outli-heading-config)
-      (alist-get 'emacs-lisp-mode outli-heading-config))
-(setf (alist-get 'lisp-mode outli-heading-config)
-      (alist-get 'emacs-lisp-mode outli-heading-config))
-(setf (alist-get 'hy-mode     outli-heading-config)
-      (alist-get 'emacs-lisp-mode outli-heading-config))
+(o-opt sp-highlight-pair-overlay nil)
+
+(o-opt sp-highlight-wrap-overlay nil)
+
+(o-opt sp-show-pair-delay 0.2)
+
+(sp-local-pair sp-lisp-modes "'" nil :actions nil)
+
+(sp-local-pair sp-lisp-modes "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+
+(sp-local-pair 'minibuffer-mode "'" nil :actions nil)
+(sp-local-pair 'minibuffer-mode "`" nil :actions nil)
+
+(require 'smartparens-config)
 ;;; provide
-(provide 'init-config-outli)
-;;; init-config-outli.el ends here
+(provide 'init-after-smartparens)
+;;; init-after-smartparens.el ends here

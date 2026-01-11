@@ -1,4 +1,4 @@
-;;; init-config-telephone-line.el --- Configure telephone-line -*- lexical-binding: t; -*-
+;;; init-after-telephone-line.el --- Configure telephone-line -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -62,5 +62,5 @@
 (defun +telephone-line-read-only-segment nil
   (lambda (_) (o-modeline-component--read-only)))
 ;;; provide
-(provide 'init-config-telephone-line)
-;;; init-config-telephone-line.el ends here
+(provide 'init-after-telephone-line)
+;;; init-after-telephone-line.el ends here

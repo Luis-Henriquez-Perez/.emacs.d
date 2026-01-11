@@ -1,4 +1,4 @@
-;;; init-config-evil-goggles.el --- Configure evil-goggles -*- lexical-binding: t; -*-
+;;; init-after-evil-goggles.el --- Configure evil-goggles -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -91,5 +91,5 @@
   (cl-assert (cl-every (lambda (it) (assoc it list)) (mapcar #'car list))))
 ;;;; register lispyville commands
 ;;; provide
-(provide 'init-config-evil-goggles)
-;;; init-config-evil-goggles.el ends here
+(provide 'init-after-evil-goggles)
+;;; init-after-evil-goggles.el ends here

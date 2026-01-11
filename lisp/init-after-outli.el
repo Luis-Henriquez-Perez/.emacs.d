@@ -1,4 +1,4 @@
-;;; init-config-smartparens.el --- smartparens configuration -*- lexical-binding: t; -*-
+;;; init-after-outli.el --- Configure outli -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,28 +22,25 @@
 ;;
 ;;; Commentary:
 ;;
-;; This is my configuration for smartparens.
+;; Configure `outli'.
 ;;
 ;;; Code:
 (require 'init-core)
-(require 'smartparens)
+(require 'outli)
 
-(o-opt sp-highlight-wrap-tag-overlay nil)
+;; Different styling for stem and leaf characters.
+(setf (cl-fourth (assoc 'emacs-lisp-mode outli-heading-config)) nil)
 
-(o-opt sp-highlight-pair-overlay nil)
-
-(o-opt sp-highlight-wrap-overlay nil)
-
-(o-opt sp-show-pair-delay 0.2)
-
-(sp-local-pair sp-lisp-modes "'" nil :actions nil)
-
-(sp-local-pair sp-lisp-modes "`" "'" :when '(sp-in-string-p sp-in-comment-p))
-
-(sp-local-pair 'minibuffer-mode "'" nil :actions nil)
-(sp-local-pair 'minibuffer-mode "`" nil :actions nil)
-
-(require 'smartparens-config)
+(setf (alist-get 'lua-mode    outli-heading-config) '("--" ?- nil t))
+(setf (alist-get 'python-mode outli-heading-config) '("#" ?# nil t))
+(setf (alist-get 'conf-mode outli-heading-config) '("#" ?# nil t))
+(setf (alist-get 'sh-mode outli-heading-config) '("#" ?# nil t))
+(setf (alist-get 'fennel-mode outli-heading-config)
+      (alist-get 'emacs-lisp-mode outli-heading-config))
+(setf (alist-get 'lisp-mode outli-heading-config)
+      (alist-get 'emacs-lisp-mode outli-heading-config))
+(setf (alist-get 'hy-mode     outli-heading-config)
+      (alist-get 'emacs-lisp-mode outli-heading-config))
 ;;; provide
-(provide 'init-config-smartparens)
-;;; init-config-smartparens.el ends here
+(provide 'init-after-outli)
+;;; init-after-outli.el ends here

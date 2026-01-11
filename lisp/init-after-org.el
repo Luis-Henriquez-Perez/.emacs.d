@@ -1,4 +1,4 @@
-;;; init-config-org.el --- Configure nil -*- lexical-binding: t; -*-
+;;; init-after-org.el --- Configure nil -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -64,16 +64,16 @@
 (o-opt org-edit-src-content-indentation 0)
 (o-opt org-src-window-setup 'plain)
 ;;;;; ORG-CAPTURE
-(autoload 'org-capture|plain "init-config-org-capture" nil nil 'function)
-(autoload 'org-capture|todo "init-config-org-capture" nil nil 'function)
-(autoload 'org-capture|open "init-config-org-capture" nil nil 'function)
-(autoload 'org-capture|question "init-config-org-capture" nil nil 'function)
-(autoload 'org-capture|bug "init-config-org-capture" nil nil 'function)
-(autoload 'org-capture|choose-template "init-config-org-capture" nil nil 'function)
+(autoload 'org-capture|plain "init-after-org-capture" nil nil 'function)
+(autoload 'org-capture|todo "init-after-org-capture" nil nil 'function)
+(autoload 'org-capture|open "init-after-org-capture" nil nil 'function)
+(autoload 'org-capture|question "init-after-org-capture" nil nil 'function)
+(autoload 'org-capture|bug "init-after-org-capture" nil nil 'function)
+(autoload 'org-capture|choose-template "init-after-org-capture" nil nil 'function)
 
 (o-remap-alt 'org-capture #'org-capture #'org-capture|choose-template)
 
-(o-call-after-load 'org-capture 'init-config-org-capture)
+(o-call-after-load 'org-capture 'init-after-org-capture)
 ;;;;; ORG-REFILE
 (setq org-refile-allow-creating-parent-nodes t)
 ;; The variable =org-refile-targets= specifies the places from which information
@@ -139,5 +139,5 @@ are in alphabetical order."
 
 (advice-add 'org-capture :around #'org|suppress-window-deletion)
 ;;; provide
-(provide 'init-config-org)
-;;; init-config-org.el ends here
+(provide 'init-after-org)
+;;; init-after-org.el ends here
