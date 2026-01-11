@@ -38,7 +38,7 @@
 (o-setq-mode-local prog-mode captain-predicate #'always)
 (o-setq-mode-local prog-mode captain-sentence-start-function #'o-captain-prog-mode-sentence-start)
 
-(o-require-after-load 'captain 'config-captain)
+(o-require-after-load 'captain 'init-after-captain)
 ;;; provide
 (provide 'init-pkg-captain)
 ;;; init-pkg-captain.el ends here

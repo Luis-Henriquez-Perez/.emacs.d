@@ -25,7 +25,7 @@
 ;; Initialize dabbrev.
 ;;
 ;;; Code:
-(o-require-after-load 'dabbrev 'config-dabbrev)
+(o-require-after-load 'dabbrev 'init-after-dabbrev)
 ;;; provide
 (provide 'init-pkg-dabbrev)
 ;;; init-pkg-dabbrev.el ends here

@@ -51,7 +51,7 @@
 
 (advice-add #'eshell-mode :around #'o-advice--silence-output)
 
-(o-require-after-load 'eshell 'config-eshell)
+(o-require-after-load 'eshell 'init-after-eshell)
 ;;; provide
 (provide 'init-pkg-eshell)
 ;;; init-pkg-eshell.el ends here

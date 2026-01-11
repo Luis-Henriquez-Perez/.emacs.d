@@ -30,7 +30,7 @@
 ;; Enable `evil-collection' bindings after evil-mode.  I want to have precise
 ;; control of when evil is loaded.
 (defun o-hook--init-pkg-evil-collection ()
-  (require 'config-evil-collection-setup)
+  (require 'init-after-evil-collection-setup)
   (remove-hook 'evil-mode-hook #'o-hook--init-pkg-evil-collection))
 
 (add-hook 'evil-mode-hook #'o-hook--init-pkg-evil-collection)
