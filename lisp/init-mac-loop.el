@@ -28,7 +28,7 @@
 (require 'pcase)
 (require 'seq)
 (require 'cl-lib)
-(require 'functions-base)
+(require 'init-fn-base)
 
 (defmacro o-for (loop-struct &rest body)
   "A generic looping macro and drop-in replacement for `dolist'.

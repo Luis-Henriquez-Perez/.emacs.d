@@ -1,4 +1,4 @@
-;;; functions-call-after.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
+;;; init-fn-call-after.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -82,5 +82,5 @@ If SYMBOL is already bound FN is called immediately."
   "Load FEATURE2 at FEATURE1 has been loaded."
   (o-call-after-load feature1 (apply-partially #'o-require-config feature2)))
 ;;; provide
-(provide 'functions-call-after)
-;;; functions-call-after.el ends here
+(provide 'init-fn-call-after)
+;;; init-fn-call-after.el ends here

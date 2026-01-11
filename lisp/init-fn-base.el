@@ -1,4 +1,4 @@
-;;; functions-init-core.el -*- lexical-binding: t; -*-
+;;; init-fn-init-core.el -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -71,5 +71,5 @@ Specifically, return the symbol `string' if point is in a string, the symbol
   "Call FN with ARGS without producing any output."
   (o-quiet (apply fn args)))
 ;;; provide
-(provide 'functions-base)
-;;; functions-init-core.el ends here
+(provide 'init-fn-base)
+;;; init-fn-init-core.el ends here

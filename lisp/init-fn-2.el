@@ -1,4 +1,4 @@
-;;; functions-2.el --- external package library -*- lexical-binding: t; -*-
+;;; init-fn-2.el --- external package library -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -33,7 +33,7 @@
 ;;; Code:
 (require 'init-mac-base)
 (require 'init-mac-autolet)
-(require 'functions-call-after)
+(require 'init-fn-call-after)
 
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar o-alt-cmds nil
@@ -64,5 +64,5 @@
     (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))
   (eval (macroexp-progn (nreverse forms)) t))
 ;;; provide
-(provide 'functions-2)
-;;; functions-2.el ends here
+(provide 'init-fn-2)
+;;; init-fn-2.el ends here

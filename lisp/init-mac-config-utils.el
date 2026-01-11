@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'init-core-vars)
 (require 'init-core-log)
-(require 'functions-call-after)
-(require 'functions-2)
+(require 'init-fn-call-after)
+(require 'init-fn-2)
 (eval-when-compile (require 'init-mac-base))
 (eval-when-compile (require 'init-mac-autolet))
 

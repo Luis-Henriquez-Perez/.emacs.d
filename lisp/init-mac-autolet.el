@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'pcase)
 (require 'cl-lib)
-(require 'functions-destructure)
+(require 'init-fn-destructure)
 
 (defmacro o-set (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.

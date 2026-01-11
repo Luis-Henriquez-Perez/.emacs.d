@@ -1,4 +1,4 @@
-;;; functions-destructure.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-fn-destructure.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -182,5 +182,5 @@ Return a list of."
         (push arg symbols)))
     (nreverse symbols)))
 ;;; provide
-(provide 'functions-destructure)
-;;; functions-destructure.el ends here
+(provide 'init-fn-destructure)
+;;; init-fn-destructure.el ends here

@@ -25,11 +25,11 @@
 ;; Define base functions and macros.
 ;;
 ;;; Code:
-(require 'functions-base)
+(require 'init-fn-base)
 (eval-when-compile (require 'init-mac-base))
 (eval-when-compile (require 'init-mac-autolet))
-(require 'functions-2)
-(require 'functions-call-after)
+(require 'init-fn-2)
+(require 'init-fn-call-after)
 (eval-when-compile (require 'init-mac-config-utils))
 ;;; provide
 (provide 'init-core-lib)
