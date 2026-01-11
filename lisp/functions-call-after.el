@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (require 'subr-x)
-(eval-when-compile (require 'macros-base))
+(eval-when-compile (require 'init-mac-base))
 (require 'init-core-log)
 
 (defvar o-after-bound-forms nil

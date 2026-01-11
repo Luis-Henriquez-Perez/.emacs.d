@@ -1,4 +1,4 @@
-;;; macros-config-helpers.el --- Initialize macros-config-helpers -*- lexical-binding: t; -*-
+;;; init-mac-config-utils.el --- Initialize init-mac-config-utils -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,15 +22,15 @@
 ;;
 ;;; Commentary:
 ;;
-;; Initialize macros-config-helpers.
+;; Initialize init-mac-config-utils.
 ;;
 ;;; Code:
 (require 'init-core-vars)
 (require 'init-core-log)
 (require 'functions-call-after)
 (require 'functions-2)
-(eval-when-compile (require 'macros-base))
-(eval-when-compile (require 'macros-autolet))
+(eval-when-compile (require 'init-mac-base))
+(eval-when-compile (require 'init-mac-autolet))
 
 (defmacro o-opt (symbol value)
   "Set SYMBOL to VALUE when parent feature of SYMBOL is loaded.
@@ -93,5 +93,5 @@ warnings.  Also it auto defines a prefix with the same name as KEYMAP."
             ,@plist
             ,@pairs)))
 ;;; provide
-(provide 'macros-config-helpers)
-;;; macros-config-helpers.el ends here
+(provide 'init-mac-config-utils)
+;;; init-mac-config-utils.el ends here

@@ -29,7 +29,7 @@
 ;; should occur afterwards.
 ;;
 ;;; Code:
-(eval-when-compile (require 'macros-config-helpers))
+(eval-when-compile (require 'init-mac-config-utils))
 ;;;; UNCATEGORIZED
 (setq user-full-name "Luis Henriquez-Perez")
 (setq user-mail-address "luis@luishp.xyz")

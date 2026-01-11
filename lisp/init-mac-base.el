@@ -1,4 +1,4 @@
-;;; macros-init-core.el --- Define base macros. -*- lexical-binding: t; -*-
+;;; init-mac-base.el --- Define base macros. -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -220,5 +220,5 @@ SETTER is the same as in `o-appending'."
 (defmacro o-summing (place num)
   `(setf ,place (+ ,place ,num)))
 ;;; provide
-(provide 'macros-base)
-;;; macros-init-core.el ends here
+(provide 'init-mac-base)
+;;; init-mac-base.el ends here

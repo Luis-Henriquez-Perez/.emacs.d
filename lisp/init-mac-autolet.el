@@ -1,4 +1,4 @@
-;;; macros-autolet.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
+;;; init-mac-autolet.el --- Macros for automaticating let-binding and more -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -230,5 +230,5 @@ NAME, ARGS and BODY are the same as in `defun'.
        (o-autolet ,(o-arglist-symbols arglist)
          ,@body))))
 ;;; provide
-(provide 'macros-autolet)
-;;; macros-autolet.el ends here
+(provide 'init-mac-autolet)
+;;; init-mac-autolet.el ends here

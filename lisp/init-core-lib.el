@@ -26,11 +26,11 @@
 ;;
 ;;; Code:
 (require 'functions-base)
-(eval-when-compile (require 'macros-base))
-(eval-when-compile (require 'macros-autolet))
+(eval-when-compile (require 'init-mac-base))
+(eval-when-compile (require 'init-mac-autolet))
 (require 'functions-2)
 (require 'functions-call-after)
-(eval-when-compile (require 'macros-config-helpers))
+(eval-when-compile (require 'init-mac-config-utils))
 ;;; provide
 (provide 'init-core-lib)
 ;;; init-core-lib.el ends here

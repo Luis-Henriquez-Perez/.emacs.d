@@ -31,8 +31,8 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require 'macros-base)
-(require 'macros-autolet)
+(require 'init-mac-base)
+(require 'init-mac-autolet)
 (require 'functions-call-after)
 
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding

@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 (require 'pcase)
-(eval-when-compile (require 'macros-base))
+(eval-when-compile (require 'init-mac-base))
 
 (defsubst o-hundredths (n)
   "Return N rounded to the nearest hundredth."
