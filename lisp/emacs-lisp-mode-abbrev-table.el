@@ -27,11 +27,11 @@
 ;;; Code:
 (require 'abbrev)
 
-(declare-function o-tempel-expand-elisp-defun "config-tempel")
-(declare-function o-tempel-expand-elisp-defhook "config-tempel")
-(declare-function o-tempel-expand-elisp-defvar "config-tempel")
-(declare-function o-tempel-expand-elisp-message "config-tempel")
-(declare-function o-tempel-expand-elisp-message-var "config-tempel")
+(declare-function o-tempel-expand-elisp-defun "init-after-tempel")
+(declare-function o-tempel-expand-elisp-defhook "init-after-tempel")
+(declare-function o-tempel-expand-elisp-defvar "init-after-tempel")
+(declare-function o-tempel-expand-elisp-message "init-after-tempel")
+(declare-function o-tempel-expand-elisp-message-var "init-after-tempel")
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table
   '(("aih" "after-init-hook")
