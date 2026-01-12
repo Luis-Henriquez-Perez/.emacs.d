@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(o-declare-package 'ws-butler)
+
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (add-hook 'text-mode-hook #'ws-butler-mode)
 ;;; provide

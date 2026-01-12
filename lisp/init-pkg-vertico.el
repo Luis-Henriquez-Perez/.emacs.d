@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'vertico)
+
 (add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 
 (o-opt vertico-buffer-display-action

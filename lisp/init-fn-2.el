@@ -63,6 +63,11 @@
     (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
     (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))
   (eval (macroexp-progn (nreverse forms)) t))
+
+(defun o-declare-package (package)
+  "Indicate a package will be installed."
+  (unless (member package package-selected-packages)
+    (push package package-selected-packages)))
 ;;; provide
 (provide 'init-fn-2)
 ;;; init-fn-2.el ends here

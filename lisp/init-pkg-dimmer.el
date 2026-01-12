@@ -32,6 +32,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'dimmer)
+
 ;; TODO exclude if it is a which-key buffer.
 ;; TODO also exclude if it is the only buffer except for the minibuffer.
 (o-opt dimmer-fraction 0.5)

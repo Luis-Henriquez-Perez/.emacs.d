@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'gcmh)
+
 (add-hook 'emacs-startup-hook #'gcmh-mode 91)
 
 (o-opt gcmh-idle-delay 'auto)

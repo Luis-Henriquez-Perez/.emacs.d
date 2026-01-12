@@ -26,6 +26,9 @@
 ;;
 ;;; Code:
 (require 'init-core)
+
+(o-declare-package 'burly)
+
 ;; Do I really need a prefix to differentiate burly bookmarks?  I do not know.
 ;; I guess so.  But at least I want it to be short.
 ;; Do not differentiate.

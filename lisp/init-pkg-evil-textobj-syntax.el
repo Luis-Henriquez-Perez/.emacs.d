@@ -25,6 +25,8 @@
 ;; Initialize evil-textobj-syntax.
 ;;
 ;;; Code:
+(o-declare-package 'evil-textobj-syntax)
+
 (autoload 'evil-i-syntax "evil-textobj-syntax" nil nil 'function)
 (autoload 'evil-a-syntax "evil-textobj-syntax" nil nil 'function)
 ;;; provide

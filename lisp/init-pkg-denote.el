@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'denote)
+
 (o-opt denote-directory "~/Documents/notes/")
 (o-opt denote-file-type 'org)
 (o-opt denote-prompts nil)

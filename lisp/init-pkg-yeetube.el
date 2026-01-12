@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(o-declare-package 'yeetube)
+
 ;; It is much easier to see which item I am on when the lines are highlighted.
 ;; Also, confirmed that this hook does not work from the yeetube config file.
 (add-hook 'yeetube-mode-hook #'hl-line-mode)

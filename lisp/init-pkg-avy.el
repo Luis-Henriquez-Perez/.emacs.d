@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'avy)
+
 (o-opt avy-style 'pre)
 
 (o-opt avy-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))

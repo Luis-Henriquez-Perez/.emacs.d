@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'orderless)
+
 (o-opt orderless-matching-styles '(orderless-initialism orderless-regexp))
 
 (defun o-hook--enable-orderless ()

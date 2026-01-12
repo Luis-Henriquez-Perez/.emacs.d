@@ -25,8 +25,11 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(o-declare-package 'visible-mark)
+
 (add-hook 'prog-mode-hook #'visible-mark-mode)
 (add-hook 'text-mode-hook #'visible-mark-mode)
+
 (o-opt visible-mark-max 1)
 (o-opt visible-mark-faces `(visible-mark-face1 visible-mark-face2))
 ;;; provide

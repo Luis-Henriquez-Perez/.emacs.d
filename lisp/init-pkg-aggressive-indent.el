@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'aggressive-indent)
+
 (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 ;;; provide
 (provide 'init-pkg-aggressive-indent)

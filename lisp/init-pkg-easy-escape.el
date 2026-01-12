@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'easy-escape)
+
 (add-hook 'lisp-mode-hook #'easy-escape-minor-mode)
 (add-hook 'emacs-lisp-mode-hook #'easy-escape-minor-mode)
 ;;; provide

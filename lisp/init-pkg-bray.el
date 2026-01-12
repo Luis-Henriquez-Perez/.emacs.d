@@ -30,6 +30,8 @@
 (require 'init-pkg-meep)
 (require 'init-core)
 
+(o-declare-package 'bray)
+
 (setq bray-state-default 'normal)
 (setq bray-state-map-enabled t)
 

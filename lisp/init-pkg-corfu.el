@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'corfu)
+
 (add-hook 'corfu-mode-hook #'corfu-history-mode)
 
 (o-opt corfu-quick1 "ajskdlghty")

@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'dashboard)
+
 (declare-function dashboard-insert-startupify-lists "dashboard")
 (declare-function dashboard-initialize "dashboard")
 (declare-function dashboard-resize-on-hook "dashboard")

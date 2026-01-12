@@ -27,9 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-
-
-
+(o-declare-package 'grugru)
 ;;; provide
 (provide 'init-pkg-grugru)
 ;;; init-pkg-grugru.el ends here

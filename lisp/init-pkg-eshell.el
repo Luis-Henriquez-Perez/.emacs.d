@@ -27,6 +27,9 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'eshell-z)
+(o-declare-package 'eshell-up)
+
 (o-setq-mode-local eshell-mode completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 ;; Do not save aliases file.  Instead I load the aliases as elisp.
 (o-opt eshell-aliases-file nil)

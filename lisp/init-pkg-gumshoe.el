@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'gumshoe)
+
 (add-hook 'o-first-input-hook #'global-gumshoe-mode)
 ;;; provide
 (provide 'init-pkg-gumshoe)
