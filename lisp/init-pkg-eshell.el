@@ -27,9 +27,6 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'eshell-z)
-(o-declare-package 'eshell-up)
-
 (o-setq-mode-local eshell-mode completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 ;; Do not save aliases file.  Instead I load the aliases as elisp.
 (o-opt eshell-aliases-file nil)
@@ -37,15 +34,8 @@
 (o-each '(esh-arg esh-util esh-proc esh-io esh-cmd em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
   (push it o-idle-features))
 
-(autoload 'eshell-z "eshell-z" nil t 'function)
-(autoload 'eshell-up "eshell-up" nil t 'function)
-
 (add-hook 'eshell-mode-hook #'abbrev-mode)
-(add-hook 'eshell-mode-hook #'smartparens-mode)
-(add-hook 'eshell-mode-hook #'eat-eshell-mode)
-(add-hook 'eshell-mode-hook #'eshell-syntax-highlighting-mode)
-;; Do not let me kill the eshell buffer, at least not easily.
-;; (add-hook 'eshell-mode-hook #'emacs-lock-mode)
+(add-hook 'eshell-mode-hook #'emacs-lock-mode)
 
 (o-popup-at-bottom "\\*eshell")
 
