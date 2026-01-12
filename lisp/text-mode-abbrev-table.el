@@ -4268,6 +4268,7 @@
     ("paces" "spaces")
     ("packae" "package")
     ("packags" "packages")
+    ("packg" "package")
     ("packge" "package")
     ("pacmann" "package manager")
     ("pagkes" "packages")
