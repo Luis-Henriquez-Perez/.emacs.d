@@ -28,6 +28,9 @@
 ;;;; requirements
 (require 'init-core)
 ;;;; autoloads
+
+(o-declare-package 'tempel)
+
 (autoload 'tempel-complete "tempel" nil nil 'function)
 (autoload 'tempel-insert "tempel" nil nil 'function)
 (autoload 'tempel-expand "tempel" nil nil 'function)
