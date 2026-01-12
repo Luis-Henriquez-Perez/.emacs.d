@@ -25,9 +25,7 @@
 ;; Initialize tempel.
 ;;
 ;;; Code:
-;;;; requirements
 (require 'init-core)
-;;;; autoloads
 
 (o-declare-package 'tempel)
 
