@@ -964,6 +964,7 @@
     ("beteen" "between")
     ("beter" "better")
     ("bett" "better")
+    ("bettr" "better")
     ("betw" "between")
     ("betwen" "between")
     ("bev" "bird's-eye view")
