@@ -37,7 +37,8 @@
 ;; I want.
 (declare-function w3m-goto-url-new-session "w3m")
 (declare-function w3m-expand-file-name-as-url "w3m")
-(defun +w3m-find-file-new-session (file)
+
+(defun o-w3m-find-file-new-session (file)
   (interactive "fFilename: ")
   (w3m-goto-url-new-session (w3m-expand-file-name-as-url file)
 		                    nil coding-system-for-read
