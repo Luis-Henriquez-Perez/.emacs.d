@@ -46,7 +46,6 @@
 (o-opt dashboard-center-content t)
 
 (defun o-hook--init-dashboard ()
-  (require 'dashboard)
   (add-hook 'window-size-change-functions #'dashboard-resize-on-hook)
   (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
   (dashboard-insert-startupify-lists)
