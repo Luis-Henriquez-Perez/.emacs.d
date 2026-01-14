@@ -25,6 +25,8 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(o-declare-package 'yasnippet)
+
 (add-hook 'prog-mode-hook #'yas-minor-mode-on)
 
 (o-opt yas-snippet-dirs (list (concat o-etc-dir "snippets/")))
@@ -34,7 +36,7 @@
 (o-opt yas-use-menu nil)
 (o-opt yas-triggers-in-field t)
 
-(o-after yasnippet
+(o-defafter o-yasnippet--ensure-directories (yasnippet)
   (o-each yas-snippet-dirs (mkdir it t))
   (delq #'yas-dropdown-prompt yas-prompt-functions))
 
