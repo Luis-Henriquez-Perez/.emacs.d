@@ -4992,6 +4992,7 @@
     ("remmember" "remember")
     ("remov" "remove")
     ("remvoes" "removes")
+    ("ren" "rename")
     ("renable" "re-enable")
     ("renabling" "re-enabling")
     ("rendevous" "rendezvous")
