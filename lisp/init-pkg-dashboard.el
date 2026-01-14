@@ -29,6 +29,8 @@
 
 (o-declare-package 'dashboard)
 
+(push 'dashboard o-required-features)
+
 (declare-function dashboard-insert-startupify-lists "dashboard")
 (declare-function dashboard-initialize "dashboard")
 (declare-function dashboard-resize-on-hook "dashboard")
