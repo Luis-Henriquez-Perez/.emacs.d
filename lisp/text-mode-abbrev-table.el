@@ -4309,6 +4309,7 @@
     ("parrallell" "parallel")
     ("parrallelly" "parallelly")
     ("parrallely" "parallelly")
+    ("pars" "paragraphs")
     ("parti" "particular")
     ("partialy" "partially")
     ("particly" "particularly")
