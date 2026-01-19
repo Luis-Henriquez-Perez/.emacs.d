@@ -1,4 +1,4 @@
-;;; init-pkg-proceed.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-proceed.el --- Initialize proceed -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize proceed
 ;;
 ;;; Code:
 (setq proced-auto-update-flag 'visible) ; Emacs 30 supports more the `visible' value

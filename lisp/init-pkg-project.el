@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize project
 ;;
 ;;; Code:
 (require 'init-core)

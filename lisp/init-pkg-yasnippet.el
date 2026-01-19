@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; initialize yasnippet.
 ;;
 ;;; Code:
 (o-declare-package 'yasnippet)

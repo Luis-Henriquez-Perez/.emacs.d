@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize type-break
 ;;
 ;;; Code:
 (o-opt type-break-interval (* 0.26 60))  ;; 25 minutes in seconds

@@ -1,4 +1,4 @@
-;;; init-pkg-rainbow-mode.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-rainbow-mode.el --- Initialize rainbow-mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize rainbow-mode.
 ;;
 ;;; Code:
 (autoload 'rainbow-mode "rainbow-mode" nil nil 'function)

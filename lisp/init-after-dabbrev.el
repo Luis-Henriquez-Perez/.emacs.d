@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Configure dabbrev.
 ;;
 ;;; Code:
 (setq dabbrev-check-all-buffers nil)

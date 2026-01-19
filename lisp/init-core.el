@@ -1,4 +1,4 @@
-;;; init-core.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-core.el --- Main initialization loader -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Requires all the base files in the proper order.  This makes it easy for
+;; Requires all the core files in the proper order.  This makes it easy for
 ;; files to require all base dependencies.
 ;;
 ;;; Code:

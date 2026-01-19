@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Configure yeetube.
 ;;
 ;;; Code:
 (require 'init-core)

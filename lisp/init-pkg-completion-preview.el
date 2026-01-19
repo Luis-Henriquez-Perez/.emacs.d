@@ -1,4 +1,4 @@
-;;; init-pkg-completion-preview.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-completion-preview.el --- Initialize completion-preview -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize completion-preview.
 ;;
 ;;; Code:
 (add-hook 'prog-mode-hook #'completion-preview-mode)

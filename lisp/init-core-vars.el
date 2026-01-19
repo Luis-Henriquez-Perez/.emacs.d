@@ -1,4 +1,4 @@
-;;; init-core-vars.el --- core variables -*- lexical-binding: t; -*-
+;;; init-core-vars.el --- Core variables -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Fundamental variables used during my Emacs configuration.
+;; This contains fundamental variables used during my Emacs configuration.
 ;;; Code:
 (defconst o-lisp-dir (expand-file-name "lisp/" user-emacs-directory)
   "Directory that stores configuration files.")

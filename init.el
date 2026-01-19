@@ -26,8 +26,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; This is my personal emacs configuration.  Please refer to the
-;; README for information on how to run and modify them.
+;; Load the initialization files for packages.
 ;;
 ;;; Code:
 (o-require init-pkg-package)

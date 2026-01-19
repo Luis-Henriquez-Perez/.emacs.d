@@ -1,4 +1,4 @@
-;;; init-core-lib.el --- Define base functions and macros -*- lexical-binding: t; -*-
+;;; init-core-lib.el --- Define core functions and macros -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Define base functions and macros.
+;; Define core functions and macros.
 ;;
 ;;; Code:
 (require 'init-fn-base)

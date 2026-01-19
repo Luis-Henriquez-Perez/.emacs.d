@@ -1,4 +1,4 @@
-;;; init-pkg-visible-mark.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-visible-mark.el --- Initialize visible-mark -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize visible-mark.
 ;;
 ;;; Code:
 (o-declare-package 'visible-mark)

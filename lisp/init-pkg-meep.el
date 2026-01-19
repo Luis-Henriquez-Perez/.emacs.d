@@ -1,4 +1,4 @@
-;;; init-pkg-meep.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-meep.el --- Initialize meep -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize meep.
 ;;
 ;;; Code:
 (require 'meep)

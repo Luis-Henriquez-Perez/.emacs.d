@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize cape.
 ;;
 ;;; Code:
 (o-declare-package 'cape)

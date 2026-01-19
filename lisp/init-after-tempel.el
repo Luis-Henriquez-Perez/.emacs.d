@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Configure tempel.
 ;;
 ;;; Code:
 (require 'init-core)

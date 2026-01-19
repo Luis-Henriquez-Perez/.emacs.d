@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize ws-butler.
 ;;
 ;;; Code:
 (o-declare-package 'ws-butler)

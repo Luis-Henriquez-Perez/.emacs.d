@@ -1,4 +1,4 @@
-;;; init-fn-destructure.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-fn-destructure.el --- Destructuring utilities -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Destructuring utilities.
 ;;
 ;;; Code:
 ;; This function of course is not only for destructuring but now its what I am

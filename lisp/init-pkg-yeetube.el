@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize yeetube.
 ;;
 ;;; Code:
 (o-declare-package 'yeetube)

@@ -1,4 +1,4 @@
-;;; init-pkg-org-fancy-priorities.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-org-fancy-priorities.el --- Initialize org-fancy-priorities -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;

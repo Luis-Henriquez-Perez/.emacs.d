@@ -1,4 +1,4 @@
-;; emacs-lisp-mode-abbrev-table.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;; emacs-lisp-mode-abbrev-table.el --- Define emacs-lisp-mode-abbrev-table -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Define emacs-lisp-mode=abbrev-table.
 ;;
 ;;; Code:
 (require 'abbrev)

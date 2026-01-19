@@ -1,4 +1,4 @@
-;;; init-after-notmuch.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-after-notmuch.el --- Configure notmuch -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; Several functions to help me .
+;; Configure notmuch.
 ;;
 ;;; Code:
 (require 'notmuch)

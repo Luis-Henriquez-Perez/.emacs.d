@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize macrostep.
 ;;
 ;;; Code:
 (declare-function macrostep-expand "macrostep")
