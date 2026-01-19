@@ -203,8 +203,7 @@
                                      (escr :url "https://github.com/Luis-Henriquez-Perez/escr")
                                      (evil-easymotion :url "https://github.com/Luis-Henriquez-Perez/evil-easymotion" :branch "master")
                                      (outli :url "https://github.com/jdtsmith/outli")
-                                     (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")
-                                     (bray :url "https://codeberg.org/luishp/emacs-bray" :branch "add-support-for-mode-specific-bindings")))
+                                     (zone-matrix :url "https://github.com/ober/zone-matrix" :branch "master")))
 
 (defvar o-package-alist-cache (expand-file-name "package-alist" o-var-dir)
   "Cache for package descriptors.")
