@@ -25,17 +25,9 @@
 ;; Initialize meep.
 ;;
 ;;; Code:
-(require 'meep)
+(o-declare-package 'meep)
 
-;;;; keymaps
-(defvar-keymap meep-clipboard-register-map
-  "e" #'meep-clipboard-register-cut
-  "r" #'meep-clipboard-register-yank
-  "t" #'meep-clipboard-register-copy)
-
-;;;; mode-specific bindings
-(setq meep-state-insert 'insert)
-
+(o-opt meep-state-insert 'insert)
 ;;; provide
 (provide 'init-pkg-meep)
 ;;; init-pkg-meep.el ends here

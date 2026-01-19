@@ -45,15 +45,6 @@
       (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m c")) #'macrostep-collapse)
       (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m C")) #'macrostep-collapse-all)
       (evil-define-key* 'normal emacs-lisp-mode-map (kbd (concat prefix "\s" "m a")) #'macrostep-collapse-all))))
-
-(o-defafter o-after--bray-define-macrostep-binds (init-pkg-bray)
-  (let ((prefixes (list o-key-localleader-normal o-key-localleader-normal-alt)))
-    (dolist (prefix prefixes)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m") nil)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m e") #'macrostep-expand)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m c") #'macrostep-collapse)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m C") #'macrostep-collapse-all)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m a") #'macrostep-collapse-all))))
 ;;; provide
 (provide 'init-pkg-macrostep)
 ;;; init-pkg-macrostep.el ends here

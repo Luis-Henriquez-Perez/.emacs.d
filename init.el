@@ -56,21 +56,9 @@
 (o-require init-pkg-wdired)
 (o-require init-pkg-which-key)
 (o-require init-pkg-zone)
-;;;; EVIL
-(o-require init-pkg-evil)
-(o-require init-pkg-evil-collection)
-(o-require init-pkg-evil-easymotion)
-(o-require init-pkg-evil-fringe-mark)
-(o-require init-pkg-evil-goggles)
-(o-require init-pkg-evil-nerd-commenter)
-(o-require init-pkg-evil-surround)
-(o-require init-pkg-evil-textobj-anyblock)
-(o-require init-pkg-evil-textobj-line)
-(o-require init-pkg-evil-textobj-syntax)
-(o-require init-pkg-lispyville)
 ;;;; MEEP
-;; (o-require init-pkg-bray)
-;; (o-require init-pkg-meep)
+(o-require init-pkg-bray)
+(o-require init-pkg-meep)
 ;;;; ORG
 (o-require init-pkg-org)
 (o-require init-pkg-org-appear)
