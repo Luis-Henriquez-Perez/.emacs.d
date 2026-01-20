@@ -25,6 +25,7 @@
 ;; This is my configuration for eshell.
 ;;
 ;;; Code:
+(require 'eshell)
 (require 'eshell-z)
 (require 'eshell-up)
 (require 'em-alias)
