@@ -29,6 +29,7 @@
 ;; should occur afterwards.
 ;;
 ;;; Code:
+(require 'init-core-lib)
 (eval-when-compile (require 'init-mac-config-utils))
 ;;;; UNCATEGORIZED
 (setq user-full-name "Luis Henriquez-Perez")
