@@ -71,34 +71,6 @@
 	(view-file first)
 	(when rest
 	  (mapc #'view-file-other-window rest))))
-;;;; settings
-(o-opt eshell-banner-message "")
-(o-opt eshell-highlight-prompt nil)
-;; For now outsource to epe, but later I will make my own.  Also epe uses static
-;; faces by which I mean constant faces, not existing ones that change with
-;; themes.  So the prompt is difficult to read with certain themes, particularly
-;; light themes.
-(o-opt eshell-prompt-function 'o-eshell-prompt)
-;; This is obsolete as of Emacs 30.1.
-(o-opt eshell-prompt-regexp "^[^λ]+λ ")
-(o-opt eshell-hist-ignoredups t)
-(o-opt eshell-prefer-lisp-functions nil)
-;; Represent buffers as #<buffer-name>
-(o-opt eshell-buffer-shorthand t)
-;; boost eshell history-size
-;; Increase the history size from 128 to 1000.
-(o-opt eshell-history-size 1000)
-;; By "highlight" eshell does not just mean coloring the font with the
-;; `eshell-prompt' face.  It also makes the prompt read-only.  Strangely, the
-;; prompt is not read-only by default.  Furthermore, there is no way to override
-;; the text properties `eshell-emit-prompt' adds to the prompt without advising
-;; the it.
-(o-opt eshell-highlight-prompt t)
-(o-opt eshell-hist-ignoredups t)
-;; boost eshell history-size
-;; Increase the history size from 128 to 1000.
-(o-opt eshell-history-size 1000)
-;; Stop eshell from printing messages.
 ;;;; aliases
 (eshell/alias "home" "cd ~")
 ;;;;; git
