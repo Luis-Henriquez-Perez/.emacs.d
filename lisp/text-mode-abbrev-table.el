@@ -3353,6 +3353,7 @@
     ("intfow" "I need to figure out how")
     ("intfowt" "I need to figure out how to")
     ("inthe" "in the")
+    ("inti" "init")
     ("intial" "initial")
     ("intially" "initially")
     ("intli" "I need to look into")
