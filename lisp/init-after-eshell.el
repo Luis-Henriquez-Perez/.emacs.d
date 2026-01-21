@@ -26,7 +26,6 @@
 ;;
 ;;; Code:
 (require 'eshell)
-(require 'eshell-z)
 (require 'em-alias)
 (require 'init-core)
 (require 'vc-git)
