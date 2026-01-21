@@ -27,7 +27,6 @@
 ;;; Code:
 (require 'eshell)
 (require 'eshell-z)
-(require 'eshell-up)
 (require 'em-alias)
 (require 'init-core)
 (require 'vc-git)
@@ -139,8 +138,6 @@
 (eshell/alias "utimers" "systemctl --user list-timers")
 ;;;;; miscellaneous
 (eshell/alias "iso" "sudo dd if=$1 of=$2 bs=4M status=progress")
-(eshell/alias "up" "eshell-up $1")
-(eshell/alias "pk" "eshell-up-peek $1")
 (eshell/alias "unpack" "mv $1/* . && rmdir $1")
 (eshell/alias "clear" "eshell/clear t")
 (eshell/alias "ff" "fo $1")
