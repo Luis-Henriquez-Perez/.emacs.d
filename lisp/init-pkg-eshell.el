@@ -53,10 +53,6 @@
 ;; the it.
 (o-opt eshell-highlight-prompt t)
 (o-opt eshell-hist-ignoredups t)
-;; boost eshell history-size
-;; Increase the history size from 128 to 1000.
-(o-opt eshell-history-size 1000)
-;; Stop eshell from printing messages.
 
 (o-setq-mode-local eshell-mode completion-at-point-functions '(cape-dabbrev pcomplete-completions-at-point t))
 
