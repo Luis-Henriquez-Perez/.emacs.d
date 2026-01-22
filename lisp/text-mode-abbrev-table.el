@@ -3856,6 +3856,7 @@
     ("misterious" "mysterious")
     ("mistery" "mystery")
     ("misteryous" "mysterious")
+    ("mized" "minimized")
     ("mk" "make")
     ("mkae" "make")
     ("mkaes" "makes")
