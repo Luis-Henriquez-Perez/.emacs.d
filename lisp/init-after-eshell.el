@@ -30,15 +30,25 @@
 (require 'init-core)
 (require 'vc-git)
 
-;; TODO: determine how to see if eshell even needs saving so I do not save unnecessarily.
+;; Save eshell history periodically instead of just when killing Emacs to ensure
+;; that any data that might be lost from Emacs crashing is minimized.
 (add-hook 'kill-emacs-hook #'eshell-save-some-history)
+
+(defvar o--eshell-save-hist-timer nil
+  "Timer for saving eshell history.")
 
 (defun o-hook--save-eshell-history (prev-buff _)
   "Save eshell history during idle time if leaving eshell buffer."
   (when (with-current-buffer prev-buff (derived-mode-p 'eshell-mode))
-    (run-with-idle-timer 2 nil #'eshell-save-some-history)))
+    (unless o--eshell-save-hist-timer
+      (setq o--eshell-save-hist-timer (run-with-idle-timer 5 nil #'o-timer--eshell-save-hist)))))
 
-(add-hook 'o-switch-buffer-hook #'o-hook--save-eshell-history-maybe)
+(defun o-timer--eshell-save-hist ()
+  "Timer for saving eshell history."
+  (eshell-save-some-history)
+  (setq o--eshell-save-hist-timer nil))
+
+(add-hook 'o-switch-buffer-hook #'o-hook--save-eshell-history)
 ;;;; prompt function
 (o-defun o-eshell-prompt ()
   (o-set path (abbreviate-file-name default-directory))
