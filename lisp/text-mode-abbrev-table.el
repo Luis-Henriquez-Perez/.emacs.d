@@ -2845,6 +2845,7 @@
     ("hink" "think")
     ("hipopotamus" "hippopotamus")
     ("hismelf" "himself")
+    ("histo" "history")
     ("histocompatability" "histocompatibility")
     ("historicians" "historians")
     ("hitsingles" "hit singles")
