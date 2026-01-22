@@ -32,39 +32,29 @@
 (add-hook 'emacs-startup-hook #'recentf-mode)
 
 (o-opt recentf-save-file (expand-file-name "recentf-save.el" o-var-dir))
+(o-opt recentf-max-saved-items nil)
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'o-advice--silence-output)
 (advice-add #'recentf-cleanup   :around #'o-advice--silence-output)
 (advice-add #'recentf-mode      :around #'o-advice--silence-output)
 
-(add-to-list 'recentf-filename-handlers #'file-truename)
-(add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
-(add-to-list 'recentf-filename-handlers #'substring-no-properties)
-
-(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-etc-dir)))
-(add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-var-dir)))
-(add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file))))
-
-(defun recentf|update-recentf-list-maybe ()
+(defun o-recentf--update-recentf-list-maybe ()
   "Update the recentf list just before killing a buffer."
   (o-awhen (buffer-file-name)
     (recentf-add-file it)
     (run-with-idle-timer 5 nil #'recentf-save-list)))
 
-(add-hook 'kill-buffer-hook #'recentf|update-recentf-list-maybe)
+(o-defafter o-recentf--configure-recentf (recentf)
+  (add-to-list 'recentf-filename-handlers #'file-truename)
+  (add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
+  (add-to-list 'recentf-filename-handlers #'substring-no-properties)
 
-(setq recentf-max-saved-items nil)
-;;;; always keep important files in recentf-list
-(recentf-push (recentf-expand-file-name "~/.xinitrc"))
-(o-each (directory-files (expand-file-name "lisp/" user-emacs-directory) :full)
-  (recentf-push it))
-(recentf-push (recentf-expand-file-name "~/.bashrc"))
-(recentf-push (recentf-expand-file-name "~/.xinitrc"))
-(recentf-push (recentf-expand-file-name "~/.config/init.el"))
-(recentf-push (recentf-expand-file-name "~/.config/qtile/config.py"))
-(recentf-push (recentf-expand-file-name "~/.local/share/qtile/qtile.log"))
-(recentf-push (recentf-expand-file-name "/etc/xdg/awesome/rc.lua"))
+  (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-etc-dir)))
+  (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-var-dir)))
+  (add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file))))
+
+  (add-hook 'kill-buffer-hook #'o-recentf--update-recentf-list-maybe))
 ;;; provide
 (provide 'init-pkg-recentf)
 ;;; init-pkg-recentf.el ends here
