@@ -29,7 +29,7 @@
 (require 'em-alias)
 (require 'init-core)
 (require 'vc-git)
-
+;;;; save eshell history periodically
 ;; Save eshell history periodically instead of just when killing Emacs to ensure
 ;; that any data that might be lost from Emacs crashing is minimized.
 (add-hook 'kill-emacs-hook #'eshell-save-some-history)
