@@ -47,6 +47,27 @@
   (remove-hook 'pre-command-hook 'o-hook--run-first-input-hook))
 
 (add-hook 'pre-command-hook #'o-hook--run-first-input-hook)
+;;;; switch-buffer-hook
+;; This is taken from https://github.com/10sr/switch-buffer-functions-el.
+(defvar o--prev-buffer nil
+  "Previous buffer used for `o-switch-buffer-hook'.")
+
+(defvar o-switch-buffer-hook nil
+  "Hook run after switching buffers.")
+
+(defun o-hook--run-switch-buffers-hook ()
+  "Run `o-switch-buffer-hook' if needed.
+Check the result of `current-buffer', and run
+`o-switch-buffer-hook' when it has been changed from
+the last buffer.
+This function should be hooked to `post-command-hook'."
+  (unless (eq (current-buffer) o--prev-buffer)
+    (let ((current (current-buffer))
+          (previous o--prev-buffer))
+      (setq o--prev-buffer current)
+      (run-hook-with-args 'o-switch-buffer-hook previous current))))
+
+(add-hook 'post-command-hook #'o-hook--run-switch-buffers-hook)
 ;;;; hooks
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
