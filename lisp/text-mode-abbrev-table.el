@@ -1370,6 +1370,7 @@
     ("communiation" "communication")
     ("communites" "communities")
     ("comnt" "comment")
+    ("comout" "comment out")
     ("compability" "compatibility")
     ("comparision" "comparison")
     ("comparisions" "comparisons")
