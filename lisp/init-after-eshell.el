@@ -30,6 +30,16 @@
 (require 'em-alias)
 (require 'init-core)
 (require 'vc-git)
+
+;; TODO: determine how to see if eshell even needs saving so I do not save unnecessarily.
+(add-hook 'kill-emacs-hook #'eshell-save-some-history)
+
+(defun o-hook--save-eshell-history (prev-buff _)
+  "Save eshell history during idle time if leaving eshell buffer."
+  (when (with-current-buffer prev-buff (derived-mode-p 'eshell-mode))
+    (run-with-idle-timer 2 nil #'eshell-save-some-history)))
+
+(add-hook 'o-switch-buffer-hook #'o-hook--save-eshell-history-maybe)
 ;;;; prompt function
 (o-defun o-eshell-prompt ()
   (o-set path (abbreviate-file-name default-directory))
