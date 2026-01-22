@@ -3950,6 +3950,7 @@
     ("muscicians" "musicians")
     ("mutiliated" "mutilated")
     ("mv" "move")
+    ("mving" "moving")
     ("mvs" "moves")
     ("myraid" "myriad")
     ("mysef" "myself")
