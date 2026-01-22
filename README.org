@@ -80,6 +80,7 @@ This is my personal emacs configuration.
 - More precise measure of initialization time
 - Mode-line and evil cursor faces [[file:.local/share/screenshots/2025-04-27-160359__emacs_dynamic_faces.png][dynamically adapt]] to theme
 - Automatically kill unused buffers with [[https://github.com/jamescherti/buffer-terminator.el?tab=readme-ov-file#why-what-problem-is-this-aiming-to-solve][buffer-terminator]]
+- A rich set of custom hooks for lazy loading =o-first-input-hook=, =o-first-file-hook=
 * File Structure
 :PROPERTIES:
 :ID:       20240408T164104.628646
