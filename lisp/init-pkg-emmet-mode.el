@@ -1,4 +1,4 @@
-;;; init-pkg-emmet.el --- initialize emmet -*- lexical-binding: t; -*-
+;;; init-pkg-emmet-mode.el --- initialize emmet -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,10 +27,10 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'emmet)
+(o-declare-package 'emmet-mode)
 
 (add-hook 'mhtml-mode-hook #'emmet-mode)
 (add-hook 'html-mode-hook #'emmet-mode)
 ;;; provide
-(provide 'init-pkg-emmet)
-;;; init-pkg-emmet.el ends here
+(provide 'init-pkg-emmet-mode)
+;;; init-pkg-emmet-mode.el ends here
