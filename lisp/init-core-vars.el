@@ -109,6 +109,22 @@ The list should be loaded in reverse order.")
 
 (defconst o-key-localleader-emacs "C-c l m"
   "The localleader prefix key for major-mode specific commands.")
+
+;; I may have to put at least part of this into early-init--the font part so
+;; that setting the font is more efficient.  I do not know whether it is worth.
+(let ((filtered nil))
+  (dolist (arg command-line-args)
+    (cond ((string-match "^--noerrors" arg)
+           (setq o-init-noerrors t))
+          ((string-match "^--profile" arg)
+           (setq o-init-profile-p t))
+          ((string-match "^--theme=\\(.+\\)" arg)
+           (setq o-init-theme (intern (match-string 1 arg))))
+          (t
+           (push arg filtered)))
+    ;; Remove the command-line-args I matched with otherwise Emacs will complain
+    ;; about unknown command-line args.
+    (setq command-line-args (nreverse filtered))))
 ;;; provide
 (provide 'init-core-vars)
 ;;; init-core-vars.el ends here

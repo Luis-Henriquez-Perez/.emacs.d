@@ -31,6 +31,34 @@
 ;;; Code:
 (require 'init-core-lib)
 (eval-when-compile (require 'init-mac-config-utils))
+;;;; EARLY-INIT
+;; Adding advice triggers the creation of the "eln-cache" directory.  To avoid
+;; creating it prematurely advices should go after `startup-redirect-eln-cache'.
+(when (fboundp 'startup-redirect-eln-cache)
+  (startup-redirect-eln-cache (expand-file-name "eln-cache/" o-var-dir)))
+
+;; The built-in package `woman' overwrites the existing variable
+;; `woman-topic-history' by aliasing it to `Man-topic-history' and emacs tells
+;; you this by popping up a *Warnings* buffer whenever woman.el is loaded.  This
+;; whole thing is probably some bug.  So I stop this whole thing from happening.
+(defun o-advice--suppress-woman-warning (orig-fn &rest args)
+  "Advice for suppressing the with."
+  (pcase args
+    (`(woman-topic-history Man-topic-history . ,_)
+     (advice-remove 'defvaralias #'o-advice--suppress-woman-warning))
+    (_
+     (apply orig-fn args))))
+
+(advice-add 'defvaralias :around #'o-advice--suppress-woman-warning)
+;; They made the process of disabling this more difficult.
+(advice-add 'display-startup-echo-area-message :around #'ignore)
+
+;; Essentially, I am telling all Emacs functions that prompt the user for a =yes=
+;; or =no= to instead allow me to type =y= or =p=.  [[helpfn:yes-or-no-p][yes-or-no-p]] is defined in c
+;; source code.
+(advice-add 'yes-or-no-p :override #'y-or-n-p)
+
+(advice-add 'custom-save-all :override #'ignore)
 ;;;; UNCATEGORIZED
 (setq user-full-name "Luis Henriquez-Perez")
 (setq user-mail-address "luis@luishp.xyz")

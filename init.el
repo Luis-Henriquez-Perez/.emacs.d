@@ -29,6 +29,10 @@
 ;; Load the initialization files for packages.
 ;;
 ;;; Code:
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+(let (file-name-handler-alist) (require 'init-core))
+
 (o-require init-pkg-package)
 (o-require init-pkg-no-littering)
 (o-require init-pkg-macrostep)
