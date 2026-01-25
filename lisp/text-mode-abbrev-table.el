@@ -1272,6 +1272,7 @@
     ("cnfiged" "configured")
     ("cnfigg" "configuration")
     ("cnfused" "confused")
+    ("co" "can only")
     ("coctail" "cocktail")
     ("coe" "code")
     ("cofnigure" "configure")
