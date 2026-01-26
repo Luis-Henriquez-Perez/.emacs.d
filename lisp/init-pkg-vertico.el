@@ -28,6 +28,7 @@
 (require 'init-core)
 
 (o-declare-package 'vertico)
+(o-declare-package 'nerd-icons-completion)
 
 (add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 

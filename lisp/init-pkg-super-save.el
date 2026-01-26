@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'super-save)
+
 (autoload 'super-save-mode "super-save" nil nil 'function)
 (add-hook 'o-first-file-hook #'super-save-mode)
 ;; The default auto-saving feature in emacs saves after a certain number of
