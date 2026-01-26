@@ -96,7 +96,6 @@
 (o-require init-pkg-htmlize)
 (o-require init-pkg-w3m)
 (o-require init-pkg-yeetube)
-(o-require init-pkg-escr)
 (o-require init-pkg-emms)
 ;;;; DISABLED
 ;; (o-require init-pkg-cape)
