@@ -79,7 +79,7 @@
 (o-require init-pkg-smartparens)
 (o-require init-pkg-super-save)
 (o-require init-pkg-ws-butler)
-;; (o-require init-pkg-emmet-mode)
+(o-require init-pkg-emmet-mode)
 ;;;; UNCATEGORIZED
 (o-require init-pkg-vertico)
 (o-require init-pkg-dimmer)
