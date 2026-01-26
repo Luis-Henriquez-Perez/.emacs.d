@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'filladapt)
+
 (add-hook 'auto-fill-mode-hook #'filladapt-mode)
 ;;; provide
 (provide 'init-pkg-fill-adapt)

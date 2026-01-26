@@ -29,6 +29,8 @@
 
 (declare-function global-evil-fringe-mark-mode "evil-fringe-mark")
 
+(o-declare-package 'evil-fringe-mark)
+
 (defun o-advice--enable-evil-fringe-mark (orig-fn &rest args)
   "Enable `evil-fringe-mark'."
   (prog1 (apply orig-fn args)

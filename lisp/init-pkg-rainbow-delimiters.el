@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'rainbow-delimiters)
+
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'reb-mode-hook #'rainbow-delimiters-mode)
 ;;; provide

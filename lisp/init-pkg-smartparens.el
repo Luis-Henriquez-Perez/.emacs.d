@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'smartparens)
+
 (declare-function smartparens-strict-mode "smartparens")
 
 (autoload 'smartparens-strict-mode "smartparens" nil nil 'function)
