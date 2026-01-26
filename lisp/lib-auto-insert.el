@@ -26,7 +26,6 @@
 ;;
 ;;; Code:
 (require 'init-core)
-(require 'f)
 (require 'tempel)
 
 (defun o-copyright-license ()
@@ -142,8 +141,8 @@ in the commentary part."
 (o-defun o-auto-insert-elisp-template ()
   "Insert emacs-lisp template in file."
   (o-set path (buffer-file-name))
-  (o-set base (f-base path))
-  (when (f-descendant-of-p path user-emacs-directory)
+  (o-set base (file-name-sans-extension (file-name-nondirectory (directory-file-name path))))
+  (when (file-in-directory-p path user-emacs-directory)
     (pcase path
       ((rx "test.el" eos)
        (o-alet (format "Test `%s'." base)
@@ -194,9 +193,10 @@ in the commentary part."
                    ";; Created: " (format-time-string "%Y-%m-%d %H:%M:%S") > n
                    ";; Description: " p > n)))
 
-(defun o-auto-insert-org-file-header ()
+(o-defun o-auto-insert-org-file-header ()
   "Insert org file header."
-  (tempel-insert '("#+title:" (string-replace "_" "\s" (f-base (buffer-file-name))) > n
+  (o-set title (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))
+  (tempel-insert '("#+title:" (string-replace "_" "\s" title) > n
                    "#+author:" user-full-name > n)))
 
 (defun o-make-this-file-executable ()
