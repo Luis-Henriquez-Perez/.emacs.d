@@ -2118,6 +2118,7 @@
     ("elfeeed" "elfeed")
     ("elicided" "elicited")
     ("eligable" "eligible")
+    ("elimate" "eliminate")
     ("elimentary" "elementary")
     ("elip" "elisp")
     ("elispp" "emacs-lisp")
