@@ -168,9 +168,9 @@
   "s" #'emms-seek-to)
 ;;;;; package
 (o-defvar-keymap o-package-map
-  "l" #'list-packages
-  "i" #'package-install
-  "d" #'package-install)
+  "l" #'elpaca-log
+  "i" #'elpaca-try
+  "d" #'elpaca-delete)
 ;;;;; quick map
 (o-defvar-keymap o-quick-map
   "j" #'org-capture|todo

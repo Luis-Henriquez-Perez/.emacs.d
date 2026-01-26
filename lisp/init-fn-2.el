@@ -66,8 +66,7 @@
 
 (defun o-declare-package (package)
   "Indicate a package will be installed."
-  (unless (member package package-selected-packages)
-    (push package package-selected-packages)))
+  (eval `(elpaca ,package) t))
 ;;; provide
 (provide 'init-fn-2)
 ;;; init-fn-2.el ends here

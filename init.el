@@ -34,7 +34,7 @@
 
 (let (file-name-handler-alist) (require 'init-core))
 ;;;; SETUP
-(eval-and-compile (o-require init-pkg-package))
+(o-require init-pkg-elpaca)
 (o-require init-pkg-no-littering)
 ;;;; BUILT-IN
 (o-require init-pkg-abbrev)
