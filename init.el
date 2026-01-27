@@ -2,8 +2,8 @@
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
-;; Author: Luis Henriquez-Perez <luis@luishp.xyz>
-;; Maintainer: Luis Henriquez-Perez <luis@luishp.xyz>
+;; Author: Luis Henriquez Perez <luis@luishp.xyz>
+;; Maintainer: Luis Henriquez Perez <luis@luishp.xyz>
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "29.1"))
 ;; Homepage: https://github.com/Luis-Henriquez-Perez/dotfiles/
