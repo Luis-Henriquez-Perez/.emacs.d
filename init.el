@@ -81,6 +81,7 @@
 (o-require init-pkg-ws-butler)
 (o-require init-pkg-emmet-mode)
 ;;;; UNCATEGORIZED
+(o-require init-repeat-fu)
 (o-require init-pkg-vertico)
 (o-require init-pkg-dimmer)
 (o-require init-pkg-denote)
