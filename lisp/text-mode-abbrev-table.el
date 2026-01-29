@@ -4998,6 +4998,7 @@
     ("regiser" "register")
     ("registing" "registering")
     ("regluar" "regular")
+    ("regoin" "region")
     ("reguarly" "regularly")
     ("regulaion" "regulation")
     ("regulaotrs" "regulators")
