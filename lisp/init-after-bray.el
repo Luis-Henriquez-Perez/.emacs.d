@@ -113,6 +113,9 @@
 ;; 1. movement
 ;; 2. cut copy paste
 ;; 3. copy a line and paste it above
+(keymap-set o-bray-state-normal-map "d g" #'grugru-forward)
+(keymap-set o-bray-state-normal-map "d f" #'grugru-forward)
+(put 'grugru-forward 'repeat-map 'o-bray-state-normal-map)
 (keymap-set o-bray-state-normal-map "d j" #'meep-insert-open-below)
 (keymap-set o-bray-state-normal-map "d k" #'meep-insert-open-above)
 ;; Make this keybinding similar to cutting a line.
