@@ -53,7 +53,7 @@
 
 ;; These do not need to be autoloaded because they will only ever happen when
 ;; abbrev-mode is already enabled.
-(advice-add 'abbrev--default-expand :around #'o-advice--abbrev-insert-period-maybe)
+;; (advice-add 'abbrev--default-expand :around #'o-advice--abbrev-insert-period-maybe)
 (advice-add 'abbrev--default-expand :around #'o-advice--abbrev-pulse-expand)
 (advice-add 'abbrev--default-expand :around #'o-advice--abbrev-ensure-post-insert)
 (advice-add 'write-abbrev-file :around #'o-advice--abbrev-write-abbrev-file)
