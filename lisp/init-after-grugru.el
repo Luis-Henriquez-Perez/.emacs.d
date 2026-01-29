@@ -49,7 +49,7 @@
 
 (grugru-define-global 'symbol (grugru-metagenerator-keep-case '("inner" "outer")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("is" "was")))
+(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("is" "was" "were")))
 ;;;; emacs-lisp
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("unless" "when"))
 
