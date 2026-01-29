@@ -264,7 +264,8 @@
 (keymap-set o-bray-state-visual-map "s U" #'downcase-region)
 (keymap-set o-bray-state-visual-map "s d" #'downcase-region)
 (keymap-set o-bray-state-visual-map "s g" #'duplicate-dwim)
-(keymap-set o-bray-state-visual-map "s s" #'flyspell-region)
+(keymap-set o-bray-state-visual-map "s a" #'flyspell-region)
+(keymap-set o-bray-state-visual-map "s s" #'meep-char-surround-insert)
 
 (keymap-set o-bray-state-visual-map "m" #'comment-region)
 (keymap-set o-bray-state-visual-map "R" #'o-eval-and-replace-region)
