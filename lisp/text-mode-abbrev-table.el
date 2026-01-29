@@ -2690,6 +2690,7 @@
     ("genialia" "genitalia")
     ("gening" "generating")
     ("genl" "generally")
+    ("genor" "generator")
     ("gens" "generates")
     ("geographicial" "geographical")
     ("geometrician" "geometer")
