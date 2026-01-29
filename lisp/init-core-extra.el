@@ -445,11 +445,15 @@ file that is in a git repo, enale git-gutter-mode."
 
 (defun o-hook--load-required-features ()
   "Load required features and log time each took to load."
-  (if (not o-required-features)
-      (o-log 'info "No required features.")
-    (dolist (feature (reverse o-required-features))
-      (o-set time (o-time-elapsed (require feature)))
-      (o-log 'info "Required %s in %0.02f seconds" feature time))))
+  (let ((time nil)
+        (success nil))
+    (if (not o-required-features)
+        (o-log 'info "No required features.")
+      (dolist (feature (reverse o-required-features))
+        (setq time (o-time-elapsed (setq success (require feature nil 'noerror))))
+        (if success
+            (o-log 'info "Required %s in %0.02f seconds" feature time)
+          (o-log 'error "Failed to require %s" feature))))))
 
 (add-hook 'after-init-hook #'o-hook--load-required-features 90)
 ;;; provide
