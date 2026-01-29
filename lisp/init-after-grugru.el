@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'grugru)
 
+(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("north" "east" "west" "south")))
+
 (grugru-define-global 'symbol (grugru-metagenerator-keep-case '("big" "medium" "small")))
 
 (grugru-define-global 'symbol (grugru-metagenerator-keep-case '("word" "sentence" "paragraph")))
