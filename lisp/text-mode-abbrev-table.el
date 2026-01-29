@@ -989,6 +989,7 @@
     ("bilateraly" "bilaterally")
     ("billingualism" "bilingualism")
     ("bilt" "built")
+    ("bindi" "binding")
     ("bindins" "bindings")
     ("bindngs" "bindings")
     ("bindss" "bindings")
