@@ -260,7 +260,7 @@
 (keymap-set o-bray-state-visual-map "i" #'meep-clipboard-killring-yank)
 (keymap-set o-bray-state-visual-map "I" #'meep-clipboard-only-yank)
 ;;;;; comment
-(keymap-set o-bray-state-visual-map "a" #'meep-clipboard-killring-copy)
+(keymap-set o-bray-state-visual-map "a" #'meep-region-activate-or-reverse)
 (keymap-set o-bray-state-visual-map "A" #'meep-clipboard-killring-copy)
 (keymap-set o-bray-state-visual-map "d" #'meep-clipboard-killring-cut)
 ;;;;; surround
@@ -280,6 +280,7 @@
 (keymap-set o-bray-state-visual-map "u" #'downcase-region)
 (keymap-set o-bray-state-visual-map "U" #'upcase-region)
 (keymap-set o-bray-state-visual-map "b" #'meep-insert-change)
+(keymap-set o-bray-state-visual-map "i" #'meep-region-activate-or-reverse)
 ;;;;; swapping text
 (keymap-set o-bray-state-normal-map "g j" #'scroll-up)
 (keymap-set o-bray-state-normal-map "g k" #'scroll-down)
