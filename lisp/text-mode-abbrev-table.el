@@ -689,7 +689,7 @@
     ("aready" "already")
     ("arent" "are not")
     ("areodynamics" "aerodynamics")
-    ("arg" "argument")
+    ("argg" "argument")
     ("argss" "arguments")
     ("argubly" "arguably")
     ("arguement" "argument")
