@@ -3521,6 +3521,7 @@
     ("kbind" "keybinding")
     ("kbinding" "keybinding")
     ("kbinds" "keybindings")
+    ("kbs" "keybindings")
     ("ke" "key")
     ("kebd" "keybinding")
     ("keesp" "keeps")
