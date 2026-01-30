@@ -3735,6 +3735,7 @@
     ("marjority" "majority")
     ("markes" "marks")
     ("marketting" "marketing")
+    ("markng" "marking")
     ("marmelade" "marmalade")
     ("marrage" "marriage")
     ("marraige" "marriage")
