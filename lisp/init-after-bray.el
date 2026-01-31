@@ -25,6 +25,7 @@
 ;; TODO: add commentary
 ;;
 ;;; Code:
+(require 'init-core)
 (require 'bray)
 (require 'bray-state-map)
 (require 'meep)
@@ -174,7 +175,11 @@
 (keymap-set o-bray-state-normal-map "f f" #'meep-move-find-char-on-line-at-prev)
 (keymap-set o-bray-state-normal-map "f h" #'meep-move-find-char-on-line-at-prev)
 (keymap-set o-bray-state-normal-map "f H" #'meep-move-find-char-on-line-till-prev)
-(keymap-set o-bray-state-normal-map "f l" #'meep-move-find-char-on-line-at-next)
+(keymap-set o-bray-state-normal-map "f l" #'avy-goto-line)
+
+(keymap-set o-bray-state-normal-map "f d" #'avy-goto-char)
+
+;; (keymap-set o-bray-state-normal-map "f l" #'meep-move-find-char-on-line-at-next)
 (keymap-set o-bray-state-normal-map "f L" #'meep-move-find-char-on-line-till-next)
 
 ;; Find "repeat" are below the keys for find.
@@ -266,6 +271,7 @@
 ;;;;; surround
 (keymap-set o-bray-state-visual-map "g s" #'meep-char-surround-insert)
 ;;;;; miscellaneous utility
+(keymap-set o-bray-state-visual-map "s h" #'helpful-at-point)
 (keymap-set o-bray-state-visual-map "s r" #'o-eval-and-replace-region)
 (keymap-set o-bray-state-visual-map "s e" #'eval-region)
 (keymap-set o-bray-state-visual-map "s u" #'upcase-region)

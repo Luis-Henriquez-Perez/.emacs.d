@@ -28,6 +28,9 @@
 (o-declare-package 'meep)
 
 (o-opt meep-state-insert 'insert)
+
+;; TODO: do not count "'" as a contextual character in emacs-lisp-mode.
+(o-setq-mode-local emacs-lisp-mode meep-match-bounds-of-char-contextual (remove '("'" . "'") meep-match-bounds-of-char-contextual))
 ;;; provide
 (provide 'init-pkg-meep)
 ;;; init-pkg-meep.el ends here
