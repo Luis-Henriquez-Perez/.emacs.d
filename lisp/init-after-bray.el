@@ -136,8 +136,10 @@
 (keymap-set o-bray-state-normal-map "a s" #'meep-insert-append)
 (keymap-set o-bray-state-normal-map "a j" #'meep-insert-open-below)
 (keymap-set o-bray-state-normal-map "a k" #'meep-insert-open-above)
-(keymap-set o-bray-state-normal-map "a l" #'meep-insert-line-end)
-(keymap-set o-bray-state-normal-map "a h" #'meep-insert-line-beginning)
+(keymap-set o-bray-state-normal-map "a l" #'meep-insert-append)
+(keymap-set o-bray-state-normal-map "a h" #'meep-insert)
+(keymap-set o-bray-state-normal-map "a L" #'meep-insert-line-end)
+(keymap-set o-bray-state-normal-map "a H" #'meep-insert-line-beginning)
 ;;;;; deleting a character
 (keymap-set o-bray-state-normal-map "x" #'meep-delete-char-next)
 (keymap-set o-bray-state-normal-map "X" #'meep-insert-overwrite)
@@ -269,6 +271,8 @@
 (keymap-set o-bray-state-visual-map "A" #'meep-clipboard-killring-copy)
 (keymap-set o-bray-state-visual-map "d" #'meep-clipboard-killring-cut)
 ;;;;; surround
+;; TODO: change surround insert so that it does not create unlikely pairs.
+(keymap-set o-bray-state-visual-map "S" #'meep-char-surround-insert)
 (keymap-set o-bray-state-visual-map "g s" #'meep-char-surround-insert)
 ;;;;; miscellaneous utility
 (keymap-set o-bray-state-visual-map "s h" #'helpful-at-point)
