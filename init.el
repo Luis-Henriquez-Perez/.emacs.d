@@ -59,6 +59,7 @@
 ;;;; MEEP
 (o-require init-pkg-bray)
 (o-require init-pkg-meep)
+(o-require init-pkg-visible-mark)
 ;;;; ORG
 (o-require init-pkg-org)
 (o-require init-pkg-org-appear)
