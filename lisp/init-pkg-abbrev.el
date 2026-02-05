@@ -56,7 +56,8 @@
 ;; (advice-add 'abbrev--default-expand :around #'o-advice--abbrev-insert-period-maybe)
 (advice-add 'abbrev--default-expand :around #'o-advice--abbrev-pulse-expand)
 (advice-add 'abbrev--default-expand :around #'o-advice--abbrev-ensure-post-insert)
-(advice-add 'write-abbrev-file :around #'o-advice--abbrev-write-abbrev-file)
+;; Do not auto-write into abbrev file.  It is not working properly.
+;; (advice-add 'write-abbrev-file :around #'o-advice--abbrev-write-abbrev-file)
 
 ;; Do not read the abbrev files at startup because I already load them myself.
 ;; Emacs loads abbrevs so fast.
