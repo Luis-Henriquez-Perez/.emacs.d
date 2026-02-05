@@ -308,6 +308,8 @@
 (keymap-set o-bray-state-insert-map "C-j" #'abbrev/inverse-add)
 (keymap-set o-bray-state-insert-map "<escape>" #'o-bray-dwim-escape)
 
+;; TODO: put a list of "lispy" modes into a list and loop through them to set
+;; the same binds.
 (autoload 'lispy-comment "lispy" nil 'interactive 'function)
 (autoload 'lispy-space "lispy" nil 'interactive 'function)
 (bray-state-map-set 'insert emacs-lisp-mode-map ";" #'lispy-comment)
