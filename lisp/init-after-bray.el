@@ -239,8 +239,10 @@
 ;;;;; registers
 (keymap-set o-bray-state-normal-map "d l" #'meep-register-jump-to)
 ;;;;; miscellaneous
-(keymap-set o-bray-state-normal-map "[" #'o-bray-unbound-key)
-(keymap-set o-bray-state-normal-map "]" #'o-bray-unbound-key)
+(keymap-set o-bray-state-normal-map "*" #'meep-isearch-at-point-next)
+
+(keymap-set o-bray-state-normal-map "[" #'meep-isearch-at-point-prev)
+(keymap-set o-bray-state-normal-map "]" #'meep-isearch-at-point-next)
 
 (keymap-set o-bray-state-normal-map "<tab>" #'meep-indent-rigidly)
 (keymap-set o-bray-state-normal-map "<escape>" #'o-bray-dwim-escape)
