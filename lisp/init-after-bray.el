@@ -307,6 +307,11 @@
 ;;;; insert map
 (keymap-set o-bray-state-insert-map "C-j" #'abbrev/inverse-add)
 (keymap-set o-bray-state-insert-map "<escape>" #'o-bray-dwim-escape)
+
+(autoload 'lispy-comment "lispy" nil 'interactive 'function)
+(autoload 'lispy-space "lispy" nil 'interactive 'function)
+(bray-state-map-set 'insert emacs-lisp-mode-map ";" #'lispy-comment)
+(bray-state-map-set 'insert emacs-lisp-mode-map "SPC" #'lispy-space)
 ;;;; external packages
 (o-after vertico
   (bray-state-map-set 'insert vertico-map "<escape>" #'o-bray-dwim-escape)
