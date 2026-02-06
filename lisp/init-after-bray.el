@@ -314,19 +314,18 @@
 (autoload 'lispy-space "lispy" nil 'interactive 'function)
 (bray-state-map-set 'insert emacs-lisp-mode-map ";" #'lispy-comment)
 (bray-state-map-set 'insert emacs-lisp-mode-map "SPC" #'lispy-space)
+;; These are controversial bindings for a new mode.
+;; (bray-state-map-set 'normal emacs-lisp-mode-map "j" #'lispy-down)
+;; (bray-state-map-set 'normal emacs-lisp-mode-map "k" #'lispy-up)
+;;;; mimik folding in other packages
+;; Configure Kirigami to replace the default Evil-mode folding key bindings
+(keymap-set o-bray-state-normal-map "zo" 'kirigami-open-fold)
+(keymap-set o-bray-state-normal-map "zO" 'kirigami-open-fold-rec)
+(keymap-set o-bray-state-normal-map "zc" 'kirigami-close-fold)
+(keymap-set o-bray-state-normal-map "za" 'kirigami-toggle-fold)
+(keymap-set o-bray-state-normal-map "zr" 'kirigami-open-folds)
+(keymap-set o-bray-state-normal-map "zm" 'kirigami-close-folds)
 ;;;; external packages
-(o-after vertico
-  (bray-state-map-set 'insert vertico-map "<escape>" #'o-bray-dwim-escape)
-  (bray-state-map-set 'insert vertico-map "C-j" #'vertico-next)
-  (bray-state-map-set 'insert vertico-map "C-k" #'vertico-previous)
-  (bray-state-map-set 'insert vertico-map "C-n" #'vertico-scroll-up)
-  (bray-state-map-set 'insert vertico-map "C-p" #'vertico-scroll-down)
-  (bray-state-map-set 'insert vertico-map "TAB" #'vertico-next)
-  (bray-state-map-set 'insert vertico-map ";" #'vertico-quick-exit)
-  (bray-state-map-set 'insert vertico-map "C-;" #'vertico-quick-exit)
-  (bray-state-map-set 'insert vertico-map "<backtab>" #'vertico-previous)
-  (bray-state-map-set 'insert vertico-map "C-o" #'embark-act))
-
 (o-after helm
   (bray-state-map-set 'insert helm-map "TAB" #'helm-next-line)
   ;; (bray-state-map-set 'insert 'helm-map [backtab] #'helm-previous-line)
@@ -338,6 +337,18 @@
   ;; (bray-state-map-set 'insert 'helm-map "RET" #'+helm-select-nth-action)
   (bray-state-map-set 'insert helm-map "S-TAB" #'helm-mark-current-line)
   (bray-state-map-set 'insert helm-map "C-;" #'ace-jump-helm-line))
+
+(o-after vertico
+  (bray-state-map-set 'insert vertico-map "<escape>" #'o-bray-dwim-escape)
+  (bray-state-map-set 'insert vertico-map "C-j" #'vertico-next)
+  (bray-state-map-set 'insert vertico-map "C-k" #'vertico-previous)
+  (bray-state-map-set 'insert vertico-map "C-n" #'vertico-scroll-up)
+  (bray-state-map-set 'insert vertico-map "C-p" #'vertico-scroll-down)
+  (bray-state-map-set 'insert vertico-map "TAB" #'vertico-next)
+  (bray-state-map-set 'insert vertico-map ";" #'vertico-quick-exit)
+  (bray-state-map-set 'insert vertico-map "C-;" #'vertico-quick-exit)
+  (bray-state-map-set 'insert vertico-map "<backtab>" #'vertico-previous)
+  (bray-state-map-set 'insert vertico-map "C-o" #'embark-act))
 
 (o-after corfu
   (bray-state-map-set 'insert corfu-map "<tab>" #'corfu-next)
