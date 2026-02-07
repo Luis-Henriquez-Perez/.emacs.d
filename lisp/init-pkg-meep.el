@@ -29,6 +29,8 @@
 
 (o-opt meep-state-insert 'insert)
 
+(add-hook 'bray-mode-hook #'meep-mark-on-motion-mode 2)
+
 ;; TODO: do not count "'" as a contextual character in emacs-lisp-mode.
 (o-setq-mode-local emacs-lisp-mode meep-match-bounds-of-char-contextual (remove '("'" . "'") meep-match-bounds-of-char-contextual))
 ;;; provide

@@ -27,8 +27,9 @@
 ;;; Code:
 (o-declare-package 'visible-mark)
 
-(add-hook 'prog-mode-hook #'visible-mark-mode)
-(add-hook 'text-mode-hook #'visible-mark-mode)
+;; Ensure that the post-command-hook for visible-mark-mode goes after the one
+;; for meep-mark-on-motion-mode.
+(add-hook 'bray-mode-hook #'visible-mark-mode 1)
 
 (o-opt visible-mark-max 1)
 (o-opt visible-mark-faces `(visible-mark-face1 visible-mark-face2))
