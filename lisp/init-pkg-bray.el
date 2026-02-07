@@ -81,6 +81,8 @@ non-readonly file buffer, save the buffer."
   "Ensure bray is enabled in all buffers."
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer
+      (require 'meep-mark-on-motion-mode)
+      (meep-mark-on-motion-mode 1)
       (unless bray-mode
         (bray-mode 1)))))
 
