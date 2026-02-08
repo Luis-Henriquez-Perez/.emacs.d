@@ -1,4 +1,3 @@
-;;; init-after-bray.el --- TODO: add commentary -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -30,6 +29,7 @@
 (require 'bray-state-map)
 (require 'meep)
 (require 'meep-mark-commands)
+(require 'smartparens)
 ;;;; utilities
 (defun o-meep-dwim-swap-selection ()
   "Do what I mean."
@@ -43,18 +43,21 @@
   (interactive)
   (delete-overlay mouse-secondary-overlay))
 
-(defun o--meep-region-contextual-bounds (&optional inner prefixp)
+;; right now this is the best function to select the inner bounds.
+(defun o--meep-region-contextual-bounds (&optional inner)
   (sp-get (if (sp-point-in-string (point))
               (sp-get-string t)
             (sp-get-enclosing-sexp))
-    (cons (if (and prefixp (not (string-empty-p :prefix)))
-              (- :beg (length :prefix))
-            :beg)
-          :end)))
+    (if inner (cons (1+ :beg) (1- :end)) (cons :beg :end))))
 
 (defun o-meep-region-contextual-inner ()
   (interactive)
-  (o-awhen (o--meep-region-contextual-bounds)
+  (o-awhen (o--meep-region-contextual-bounds 'inner)
+    (meep--region-mark-bounds-to-region it nil)))
+
+(defun o-meep-region-contextual-outer ()
+  (interactive)
+  (o-awhen (o--meep-region-contextual-bounds nil)
     (meep--region-mark-bounds-to-region it nil)))
 
 (defun o-scroll-to-bottom ()
@@ -64,7 +67,6 @@
 
 (defun o-scroll-to-top ()
   "Scroll line to top of page."
-  j wo
   (interactive)
   (recenter 1))
 ;;;; normal map
@@ -190,7 +192,7 @@
 (keymap-set o-bray-state-normal-map "s n" #'meep-region-mark-sentence-outer)
 (keymap-set o-bray-state-normal-map "s g" #'meep-region-mark-defun-inner)
 (keymap-set o-bray-state-normal-map "s c" #'meep-region-mark-comment-inner)
-(keymap-set o-bray-state-normal-map "s f" #'meep-region-mark-bounds-of-char-contextual-inner)
+(keymap-set o-bray-state-normal-map "s f" #'o-meep-region-contextual-inner)
 
 (keymap-set o-bray-state-normal-map "s i w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s i m" #'meep-region-mark-symbol)
@@ -199,7 +201,7 @@
 (keymap-set o-bray-state-normal-map "s i p" #'meep-region-mark-paragraph-inner)
 (keymap-set o-bray-state-normal-map "s i s" #'meep-region-mark-sentence-inner)
 (keymap-set o-bray-state-normal-map "s i c" #'meep-region-mark-comment-inner)
-(keymap-set o-bray-state-normal-map "s i f" #'meep-region-mark-bounds-of-char-contextual-inner)
+(keymap-set o-bray-state-normal-map "s i f" #'o-meep-region-contextual-inner)
 
 (keymap-set o-bray-state-normal-map "s o w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s o m" #'meep-region-mark-symbol)
@@ -209,7 +211,7 @@
 (keymap-set o-bray-state-normal-map "s o n" #'meep-region-mark-sentence-outer)
 (keymap-set o-bray-state-normal-map "s o c" #'meep-region-mark-comment-outer)
 (keymap-set o-bray-state-normal-map "s o s" #'meep-region-mark-string-outer)
-(keymap-set o-bray-state-normal-map "s o f" #'meep-region-mark-bounds-of-char-contextual-outer)
+(keymap-set o-bray-state-normal-map "s o f" #'o-meep-region-contextual-outer)
 ;;;;; insertion
 ;; This is the list of things I need to completely replace evil with meep.
 ;; 1. movement
@@ -277,7 +279,7 @@
 (keymap-set o-bray-state-normal-map "F" #'o-bray-unbound-key)
 
 ;; Left Hand: Row 3.
-;; (keymap-unset o-bray-state-normal-map "z" #'undo-only)
+(keymap-set o-bray-state-normal-map "z" #'undo-only)
 (keymap-set o-bray-state-normal-map "Z" #'undo-redo)
 ;; (keymap-set o-bray-state-normal-map "c" #'meep-delete-char-ring-next)
 ;; (keymap-set o-bray-state-normal-map "C" #'meep-delete-char-ring-prev)
@@ -296,13 +298,13 @@
 ;; "y" #'o-bray-unbound-key
 ;; "Y" #'o-bray-unbound-key
 
-(keymap-set o-bray-state-normal-map "u" #'meep-clipboard-killring-cut)
+(keymap-set o-bray-state-normal-map "u" #'kill-region)
 (keymap-set o-bray-state-normal-map "U" #'meep-clipboard-only-cut)
 ;; "u" #'meep-exchange-point-and-mark
 ;; "U" #'o-bray-unbound-key
 
-(keymap-set o-bray-state-normal-map "o" #'meep-region-mark-bounds-of-char-contextual-inner)
-(keymap-set o-bray-state-normal-map "O" #'meep-region-mark-bounds-of-char-contextual-outer)
+(keymap-set o-bray-state-normal-map "o" #'o-meep-region-contextual-inner)
+(keymap-set o-bray-state-normal-map "O" #'o-meep-region-contextual-outer)
 
 (keymap-set o-bray-state-normal-map "p" #'meep-clipboard-killring-yank)
 (keymap-set o-bray-state-normal-map "P" #'point-to-register)
@@ -333,7 +335,7 @@
 ;;;;; comment
 (keymap-set o-bray-state-visual-map "a" #'meep-region-activate-or-reverse)
 (keymap-set o-bray-state-visual-map "A" #'copy-region-as-kill)
-(keymap-set o-bray-state-visual-map "d" #'meep-clipboard-killring-cut)
+(keymap-set o-bray-state-visual-map "d" #'kill-region)
 ;;;;; surround
 ;; TODO: change surround insert so that it does not create unlikely pairs.
 (keymap-set o-bray-state-visual-map "S" #'meep-char-surround-insert)
@@ -361,6 +363,8 @@
 (keymap-set o-bray-state-visual-map "g a" #'o-meep-dwim-swap-selection)
 ;; Use this to cancel the secondary selection.
 (keymap-set o-bray-state-visual-map "g A" #'meep-region-to-secondary-selection)
+(keymap-set o-bray-state-visual-map "V" #'er/contract-region)
+(keymap-set o-bray-state-visual-map "v" #'er/expand-region)
 ;;;; motion map
 ;; (keymap-set o-bray-state-motion-map "<remap> <self-insert-command>" #'o-bray-unbound-key)
 (keymap-set o-bray-state-motion-map "C-f" #'scroll-up)
@@ -384,9 +388,9 @@
 ;; TODO: add outline navigation.  do not know ifisb its own state or if I should
 ;; just include bindings under a prefix.
 (keymap-set o-bray-state-normal-map "m m" #'recenter)
-(keymap-set o-bray-state-normal-map "z z" #'recenter)
-(keymap-set o-bray-state-normal-map "z j" #'o-scroll-to-bottom)
-(keymap-set o-bray-state-normal-map "z k" #'o-scroll-to-top)
+;; (keymap-set o-bray-state-normal-map "z z" #'recenter)
+;; (keymap-set o-bray-state-normal-map "z j" #'o-scroll-to-bottom)
+;; (keymap-set o-bray-state-normal-map "z k" #'o-scroll-to-top)
 ;; (keymap-set o-bray-state-normal-map "z o" 'kirigami-open-fold)
 ;; (keymap-set o-bray-state-normal-map "z O" 'kirigami-open-fold-rec)
 ;; (keymap-set o-bray-state-normal-map "z c" 'kirigami-close-fold)
