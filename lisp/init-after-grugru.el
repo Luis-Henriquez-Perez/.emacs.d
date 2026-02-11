@@ -27,34 +27,42 @@
 ;;; Code:
 (require 'grugru)
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("pre" "post")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("prev" "next")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("north" "east" "west" "south")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("up" "down")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("big" "medium" "small")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("pre" "post")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("word" "sentence" "paragraph")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("north" "east" "west" "south")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("always" "never")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("big" "medium" "small")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("open" "close")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("word" "sentence" "paragraph")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("yes" "no")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("always" "never")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("up" "down")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("open" "close")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("left" "right")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("yes" "no")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("wrong" "right")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("up" "down")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("red" "orange" "yellow" "green" "blue" "indigo" "violet")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("left" "right")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("front" "back")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("wrong" "right")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("inner" "outer")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("red" "orange" "yellow" "green" "blue" "indigo" "violet")))
 
-(grugru-define-global 'symbol (grugru-metagenerator-keep-case '("is" "was" "were")))
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("front" "back")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("inner" "outer")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("is" "was" "were")))
 ;;;; emacs-lisp
+(grugru-define-on-major-mode 'emacs-lisp-mode 'word '("normal" "visual" "motion" "insert"))
+
+(grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("keymap-set" "keymap-unset"))
+
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("unless" "when"))
 
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("pop-to-buffer" "display-buffer"))
