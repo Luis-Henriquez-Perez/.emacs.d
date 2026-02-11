@@ -40,22 +40,27 @@
          (meep-region-to-secondary-selection))))
 
 (defun o-meep-cancel-secondary-selection ()
+  "Cancel secondary selection."
   (interactive)
   (delete-overlay mouse-secondary-overlay))
 
 ;; right now this is the best function to select the inner bounds.
 (defun o--meep-region-contextual-bounds (&optional inner)
+  "Get bounds of contextual string or sexp.
+This function is based on `evil-cleverparens'."
   (sp-get (if (sp-point-in-string (point))
               (sp-get-string t)
             (sp-get-enclosing-sexp))
     (if inner (cons (1+ :beg) (1- :end)) (cons :beg :end))))
 
 (defun o-meep-region-contextual-inner ()
+  ""
   (interactive)
   (o-awhen (o--meep-region-contextual-bounds 'inner)
     (meep--region-mark-bounds-to-region it nil)))
 
 (defun o-meep-region-contextual-outer ()
+  ""
   (interactive)
   (o-awhen (o--meep-region-contextual-bounds nil)
     (meep--region-mark-bounds-to-region it nil)))
