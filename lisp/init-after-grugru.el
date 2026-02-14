@@ -27,7 +27,13 @@
 ;;; Code:
 (require 'grugru)
 
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("past" "present" "future")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("prev" "next")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("word" "sentence" "paragraph")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("words" "sentences" "paragraphs")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("up" "down")))
 
