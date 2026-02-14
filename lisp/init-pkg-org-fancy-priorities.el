@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
+(o-declare-package 'org-fancy-priorities)
+
 (autoload 'org-fancy-priorities-mode "org-fancy-priorities" nil nil 'function)
 (add-hook 'org-mode-hook #'org-fancy-priorities-mode)
 
