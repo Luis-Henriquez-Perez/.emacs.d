@@ -302,7 +302,7 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "o" #'o-meep-region-contextual-inner)
 (keymap-set o-bray-state-normal-map "O" #'o-meep-region-contextual-outer)
 
-(keymap-set o-bray-state-normal-map "p" #'meep-clipboard-killring-yank)
+(keymap-set o-bray-state-normal-map "p" #'yank)
 (keymap-set o-bray-state-normal-map "P" #'point-to-register)
 
 ;; (keymap-unset o-bray-state-normal-map "m" #'o-bray-unbound-key)
@@ -326,7 +326,7 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-visual-map "Y" #'meep-clipboard-only-copy)
 (keymap-set o-bray-state-visual-map "u" #'meep-clipboard-killring-cut)
 (keymap-set o-bray-state-visual-map "U" #'meep-clipboard-only-cut)
-(keymap-set o-bray-state-visual-map "i" #'meep-clipboard-killring-yank)
+(keymap-set o-bray-state-visual-map "i" #'yank)
 (keymap-set o-bray-state-visual-map "I" #'meep-clipboard-only-yank)
 ;;;;; comment
 (keymap-set o-bray-state-visual-map "a" #'meep-region-activate-or-reverse)
