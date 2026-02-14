@@ -244,6 +244,11 @@ Additionally, make any duplicate spaces in line become a single space."
   (interactive)
   (let (kill-emacs-hook)
     (kill-emacs)))
+
+(defun o-expand-region-abbrevs-no-query (beg end)
+  "Same as `expand-region-abbrevs' but without querying."
+  (interactive "r")
+  (expand-region-abbrevs beg end t))
 ;;; provide
 (provide 'init-core-commands)
 ;;; init-core-commands.el ends here
