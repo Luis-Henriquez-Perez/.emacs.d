@@ -3706,23 +3706,23 @@
 (define-abbrev text-mode-abbrev-table "lop" "loop")
 (define-abbrev text-mode-abbrev-table "imtbua" "is meant to be used as")
 
-(defun o-lorem-insert-parag ()
+(defun o-lorem-insert-paragraph ()
   "Insert paragraphs.
 This function is meant to be used as the expansion."
   (lorem-ipsum-insert-paragraphs)
   t)
 
-(defun o-lorem-insert-sents ()
+(defun o-lorem-insert-sentence ()
   "Insert sentences.
 This function is meant to be used as the expansion."
   (lorem-ipsum-insert-sentences)
   t)
 
-(put 'o-lorem-insert-parag 'no-self-insert t)
+(put 'o-lorem-insert-paragraph 'no-self-insert t)
 
 (define-abbrev text-mode-abbrev-table "grugurs" "grugrus")
-(define-abbrev text-mode-abbrev-table "lorp" "" #'o-lorem-insert-parag)
-(define-abbrev text-mode-abbrev-table "lors" "" #'o-lorem-insert-parag)
+(define-abbrev text-mode-abbrev-table "lorp" "" #'o-lorem-insert-paragraph)
+(define-abbrev text-mode-abbrev-table "lors" "" #'o-lorem-insert-paragraph)
 (define-abbrev text-mode-abbrev-table "lossing" "losing")
 (define-abbrev text-mode-abbrev-table "lotharingen" "lothringen")
 (define-abbrev text-mode-abbrev-table "lsat" "last")
