@@ -568,6 +568,7 @@
     ("annualy" "annually")
     ("annuled" "annulled")
     ("ano" "another")
+    ("anotther" "another")
     ("anohter" "another")
     ("anomolies" "anomalies")
     ("anomolous" "anomalous")
