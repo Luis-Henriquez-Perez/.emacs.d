@@ -31,6 +31,7 @@
 (require 'meep-mark-commands)
 (require 'smartparens)
 ;;;; utilities
+;; kmacro-end-and-call-macro
 (defun o-meep-dwim-swap-selection ()
   "Do what I mean."
   (interactive "*")
