@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "aadd" "add")
 (define-abbrev text-mode-abbrev-table "declaratioin" "declaration")
 (define-abbrev text-mode-abbrev-table "kidns" "kinds")
 (define-abbrev text-mode-abbrev-table "markng" "marking")
