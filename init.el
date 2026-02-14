@@ -99,6 +99,7 @@
 (o-require init-pkg-w3m)
 (o-require init-pkg-yeetube)
 (o-require init-pkg-emms)
+(o-require init-pkg-lispy)
 ;;;; DISABLED
 ;; (o-require init-pkg-cape)
 ;; (o-require init-pkg-corfu)
