@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "kidns" "kinds")
+(define-abbrev text-mode-abbrev-table "markng" "marking")
 (define-abbrev text-mode-abbrev-table "Amercia" "America")
 (define-abbrev text-mode-abbrev-table "Bernouilli" "Bernoulli")
 (define-abbrev text-mode-abbrev-table "Blitzkreig" "Blitzkrieg")
@@ -5144,7 +5146,7 @@
 (define-abbrev text-mode-abbrev-table "reqing" "requiring")
 (define-abbrev text-mode-abbrev-table "reqm" "requirement")
 (define-abbrev text-mode-abbrev-table "reqrs" "requires")
-(define-abbrev text-mode-abbrev-table "reqs" "requires")
+(define-abbrev text-mode-abbrev-table "reqs" "requirements")
 (define-abbrev text-mode-abbrev-table "requirem" "requirement")
 (define-abbrev text-mode-abbrev-table "requirment" "requirement")
 (define-abbrev text-mode-abbrev-table "requred" "required")
