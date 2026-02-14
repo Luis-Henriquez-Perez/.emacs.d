@@ -100,6 +100,7 @@
 (o-require init-pkg-yeetube)
 (o-require init-pkg-emms)
 (o-require init-pkg-lispy)
+(o-require init-pkg-expand-region)
 ;;;; DISABLED
 ;; (o-require init-pkg-cape)
 ;; (o-require init-pkg-corfu)
