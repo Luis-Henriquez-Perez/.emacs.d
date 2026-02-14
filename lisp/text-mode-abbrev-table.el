@@ -2152,7 +2152,7 @@
 (define-abbrev text-mode-abbrev-table "elsip" "elisp")
 (define-abbrev text-mode-abbrev-table "elt" "element")
 (define-abbrev text-mode-abbrev-table "elts" "elements")
-(define-abbrev text-mode-abbrev-table "emacs" "Emacs" nil :enable-function o-abbrev-part-of-another-word-p)
+(define-abbrev text-mode-abbrev-table "emacs" "Emacs" nil :enable-function #'o-abbrev-part-of-another-word-p)
 (define-abbrev text-mode-abbrev-table "emacslisp" "emacs-lisp")
 (define-abbrev text-mode-abbrev-table "emacss" "Emacs's")
 (define-abbrev text-mode-abbrev-table "emal" "email")
@@ -2480,7 +2480,7 @@
 (define-abbrev text-mode-abbrev-table "ez" "easy")
 (define-abbrev text-mode-abbrev-table "ezer" "easier")
 (define-abbrev text-mode-abbrev-table "ezr" "easier")
-(define-abbrev text-mode-abbrev-table "f" "for" nil :enable-function o-abbrev-escape-char-p)
+(define-abbrev text-mode-abbrev-table "f" "for" nil :enable-function #'o-abbrev-escape-char-p)
 (define-abbrev text-mode-abbrev-table "facade" "façade")
 (define-abbrev text-mode-abbrev-table "faciliate" "facilitate")
 (define-abbrev text-mode-abbrev-table "faciliated" "facilitated")
@@ -3704,8 +3704,24 @@
 (define-abbrev text-mode-abbrev-table "loos" "looks")
 (define-abbrev text-mode-abbrev-table "loosing" "losing")
 (define-abbrev text-mode-abbrev-table "lop" "loop")
-(define-abbrev text-mode-abbrev-table "lorp" "" lorem-ipsum-insert-paragraphs)
-(define-abbrev text-mode-abbrev-table "lors" "" lorem-ipsum-insert-paragraphs)
+(define-abbrev text-mode-abbrev-table "imtbua" "is meant to be used as")
+
+(defun o-lorem-insert-parag ()
+  "Insert paragraphs.
+This function is meant to be used as the expansion."
+  (lorem-ipsum-insert-paragraphs)
+  t)
+
+(defun o-lorem-insert-sents ()
+  "Insert sentences.
+This function is meant to be used as the expansion."
+  (lorem-ipsum-insert-sentences)
+  t)
+
+(put 'o-lorem-insert-parag 'no-self-insert t)
+
+(define-abbrev text-mode-abbrev-table "lorp" "" #'o-lorem-insert-parag)
+(define-abbrev text-mode-abbrev-table "lors" "" #'o-lorem-insert-parag)
 (define-abbrev text-mode-abbrev-table "lossing" "losing")
 (define-abbrev text-mode-abbrev-table "lotharingen" "lothringen")
 (define-abbrev text-mode-abbrev-table "lsat" "last")
@@ -4012,7 +4028,7 @@
 (define-abbrev text-mode-abbrev-table "mysogynist" "misogynist")
 (define-abbrev text-mode-abbrev-table "mysogyny" "misogyny")
 (define-abbrev text-mode-abbrev-table "mysterous" "mysterious")
-(define-abbrev text-mode-abbrev-table "n" "and" nil :enable-function o-abbrev-escape-char-p)
+(define-abbrev text-mode-abbrev-table "n" "and" nil :enable-function #'o-abbrev-escape-char-p)
 (define-abbrev text-mode-abbrev-table "na" "an")
 (define-abbrev text-mode-abbrev-table "nad" "and")
 (define-abbrev text-mode-abbrev-table "naieve" "naive")
@@ -5870,7 +5886,7 @@
 (define-abbrev text-mode-abbrev-table "sysmatically" "systematically")
 (define-abbrev text-mode-abbrev-table "sytem" "system")
 (define-abbrev text-mode-abbrev-table "sytle" "style")
-(define-abbrev text-mode-abbrev-table "t" "the" nil :enable-function o-abbrev-escape-char-p)
+(define-abbrev text-mode-abbrev-table "t" "the" nil :enable-function #'o-abbrev-escape-char-p)
 (define-abbrev text-mode-abbrev-table "ta" "that")
 (define-abbrev text-mode-abbrev-table "tabacco" "tobacco")
 (define-abbrev text-mode-abbrev-table "taged" "tagged")
