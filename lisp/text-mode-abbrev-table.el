@@ -3720,6 +3720,7 @@ This function is meant to be used as the expansion."
 
 (put 'o-lorem-insert-parag 'no-self-insert t)
 
+(define-abbrev text-mode-abbrev-table "grugurs" "grugrus")
 (define-abbrev text-mode-abbrev-table "lorp" "" #'o-lorem-insert-parag)
 (define-abbrev text-mode-abbrev-table "lors" "" #'o-lorem-insert-parag)
 (define-abbrev text-mode-abbrev-table "lossing" "losing")
