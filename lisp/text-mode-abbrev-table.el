@@ -4692,6 +4692,7 @@
     ("prev" "previous")
     ("prevelant" "prevalent")
     ("preverse" "perverse")
+    ("previousl" "previously")
     ("previosu" "previous")
     ("previvous" "previous")
     ("prevl" "previously")
