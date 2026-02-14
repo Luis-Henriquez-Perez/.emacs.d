@@ -29,7 +29,7 @@
 
 (o-declare-package 'avy)
 
-(o-opt avy-style 'pre)
+(o-opt avy-style 'at-full)
 
 (o-opt avy-keys (eval-when-compile (string-to-list "jfkdlsaurieowncpqmxzb")))
 
