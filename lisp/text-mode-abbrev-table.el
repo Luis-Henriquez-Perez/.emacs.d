@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "elsp" "elisp")
 (define-abbrev text-mode-abbrev-table "aadd" "add")
 (define-abbrev text-mode-abbrev-table "declaratioin" "declaration")
 (define-abbrev text-mode-abbrev-table "kidns" "kinds")
@@ -2324,7 +2325,7 @@
 (define-abbrev text-mode-abbrev-table "et" "even then")
 (define-abbrev text-mode-abbrev-table "ethi" "even this")
 (define-abbrev text-mode-abbrev-table "ethnocentricm" "ethnocentrism")
-(define-abbrev text-mode-abbrev-table "eval" "evaluate")
+(define-abbrev text-mode-abbrev-table "evall" "evaluate")
 (define-abbrev text-mode-abbrev-table "evalate" "evaluate")
 (define-abbrev text-mode-abbrev-table "evaled" "evaluated")
 (define-abbrev text-mode-abbrev-table "evaling" "evaluating")
@@ -2552,6 +2553,7 @@
 (define-abbrev text-mode-abbrev-table "financialy" "financially")
 (define-abbrev text-mode-abbrev-table "fined" "finished")
 (define-abbrev text-mode-abbrev-table "finetuning" "fine-tuning")
+(define-abbrev text-mode-abbrev-table "fir" "for")
 (define-abbrev text-mode-abbrev-table "fireground" "foreground")
 (define-abbrev text-mode-abbrev-table "firends" "friends")
 (define-abbrev text-mode-abbrev-table "firt" "first")
@@ -5619,7 +5621,6 @@ This function is meant to be used as the expansion."
 (define-abbrev text-mode-abbrev-table "spst" "supposed")
 (define-abbrev text-mode-abbrev-table "sqaure" "square")
 (define-abbrev text-mode-abbrev-table "srait" "straight")
-(define-abbrev text-mode-abbrev-table "src" "source")
 (define-abbrev text-mode-abbrev-table "srcc" "source")
 (define-abbrev text-mode-abbrev-table "sring" "string")
 (define-abbrev text-mode-abbrev-table "sshot" "screenshot")
