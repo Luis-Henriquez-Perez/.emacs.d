@@ -26,69 +26,75 @@
 ;;
 ;;; Code:
 (require 'init-core)
-(require 'tempel)
 
-(o-tempel-deftemplate expand-elisp-defhook
-  "Expand to a `defun' form."
-  "(o-defhook " p " (" p ")" n> "\"" p "\"" n> r ")")
+(defvar o-tempel-global-templates nil
+  "My global templates.")
 
-(o-tempel-deftemplate expand-elisp-let*
+(defvar-local o-tempel-local-templates nil
+  "Buffer-local templates.")
+
+(add-to-list 'tempel-template-sources 'o-tempel-global-templates)
+(add-to-list 'tempel-template-sources 'o-tempel-local-templates)
+
+(defun o-tempel-elisp-expand-let* ()
   "Expand to a `let' form."
-  "(let* (" p ")" n> r ")")
+  (interactive)
+  (tempel-insert '("(let* (" p ")" n> r ")"))
+  t)
+(put 'o-tempel-elisp-expand-let* 'no-self-insert t)
 
-(o-tempel-deftemplate expand-elisp-hook-bang
-  "Expand to a `o-add-hook' form."
-  "(hook! " p " " r ")")
+(defun o-tempel-elisp-expand-defun ()
+  "Expand to a `defun' form."
+  (interactive)
+  (tempel-insert '("(defun " p " (" p ")" n> "\"" p "\"" n> r ")"))
+  t)
+(put 'o-tempel-elisp-expand-defun 'no-self-insert t)
 
-(o-tempel-deftemplate expand-elisp-cond
+(defun o-tempel-elisp-expand-cond ()
   "Expand to a `cond' form."
-  "(cond " ")")
+  (interactive)
+  (tempel-insert '("(cond " ")"))
+  t)
+(put 'o-tempel-elisp-expand-cond 'no-self-insert t)
 
-(o-tempel-deftemplate expand-elisp-defun
-  "Expand to `defun'."
-  "(defun " p " (" p ")" n> "\"" p "\"" n> r ")")
-
-(o-tempel-deftemplate expand-elisp-defun-bang
-  "Expand to `defun'."
-  "(o-defun " p " (" p ")" n> "\"" p "\"" n> r ")")
-
-(o-tempel-deftemplate expand-elisp-command
+(defun o-tempel-expand-elisp-command ()
   "Expand to command."
-  "(defun " p " (" p ")\n  \"" p "\"" n> "(interactive" p ")" n> r> ")")
+  (interactive)
+  (list "(defun " p " (" p ")\n  \"" p "\"" n> "(interactive" p ")" n> r> ")"))
 
-(o-tempel-deftemplate expand-elisp-defvar
+(defun o-tempel-elisp-expand-defvar ()
   "Expand to `defvar'."
-  "(defvar " p "\s" p "\n  \"" q "\"" ")")
+  (interactive)
+  (tempel-insert '("(defvar " p "\s" p "\n  \"" q "\"" ")")))
+(put 'o-tempel-elisp-expand-defvar 'no-self-insert t)
 
-(o-tempel-deftemplate expand-elisp-message
+(defun o-tempel-expand-elisp-message ()
   "Expand to `message'."
-  "(message \"" r  "\")")
+  (interactive)
+  (list "(message \"" r  "\")"))
+(put 'o-tempel-expand-elisp-message 'no-self-insert t)
 
-(o-tempel-deftemplate expand-elisp-message-var
-  "Expand to printing a variable value with `message'."
+(defun o-tempel-expand-elisp-message-var
+    "Expand to printing a variable value with `message'."
   "(message \"" (s var)  " -> %S\" " var ")" q)
 
-;; (o-tempel-deftemplate expand-elisp-re-search-forward
-;;   "Expand to `message'."
-;;   "(rsf \"" p  "\")")
-
-(o-tempel-deftemplate expand-elisp-with-current-buffer
-  "Expand to printing a variable value with `message'."
+(defun o-tempel-expand-elisp-with-current-buffer
+    "Expand to printing a variable value with `message'."
   "(with-current-buffer " p n> r ")")
 
-(o-tempel-deftemplate expand-elisp-setq
-  "Expand to printing a variable value with `message'."
+(defun o-tempel-expand-elisp-setq
+    "Expand to printing a variable value with `message'."
   "(setq " p "\s" r ")")
 
-(o-tempel-deftemplate expand-elisp-setq-bang
+(defun o-tempel-expand-elisp-setq-bang
   "Expand to printing a variable value with `message'."
   "(o-set " p "\s" r ")")
 
 (defun o-in-html-p ()
   (member major-mode '(mhtml-mode web-mode)))
 
-(o-tempel-deftemplate expand-html-elisp-source-block
-  "Expand to source block."
+(defun o-tempel-expand-html-elisp-source-block
+    "Expand to source block."
   > "<div class=\"org-src-container\">" n
   > "<pre>" n
   > "<code class=\"elisp\">" n
@@ -97,7 +103,7 @@
   > "</pre>" n
   > "</div>" n)
 
-(o-tempel-deftemplate expand-html-bold
+(defun o-tempel-expand-html-bold
   "Expand to html bold tag"
   "<b>" r "</b>")
 ;;; provide
