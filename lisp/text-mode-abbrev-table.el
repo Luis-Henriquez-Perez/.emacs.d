@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "encounted" "encountered")
 (define-abbrev text-mode-abbrev-table "ifisb" "if it should be")
 (define-abbrev text-mode-abbrev-table "exhcnaging" "exchanging")
 (define-abbrev text-mode-abbrev-table "mimik" "mimic")
@@ -1226,7 +1227,7 @@
 (define-abbrev text-mode-abbrev-table "challege" "challenge")
 (define-abbrev text-mode-abbrev-table "changable" "changeable")
 (define-abbrev text-mode-abbrev-table "chaning" "changing")
-(define-abbrev text-mode-abbrev-table "char" "character")
+(define-abbrev text-mode-abbrev-table "charr" "character")
 (define-abbrev text-mode-abbrev-table "chara" "character")
 (define-abbrev text-mode-abbrev-table "charachter" "character")
 (define-abbrev text-mode-abbrev-table "charachters" "characters")
@@ -6679,7 +6680,6 @@ This function is meant to be used as the expansion."
 (define-abbrev text-mode-abbrev-table "xp" "experience")
 (define-abbrev text-mode-abbrev-table "xpand" "expand")
 (define-abbrev text-mode-abbrev-table "xpansion" "expansion")
-(define-abbrev text-mode-abbrev-table "y" "by")
 (define-abbrev text-mode-abbrev-table "ya" "yeah")
 (define-abbrev text-mode-abbrev-table "yaching" "yachting")
 (define-abbrev text-mode-abbrev-table "yaer" "year")
