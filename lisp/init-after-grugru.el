@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'grugru)
 
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("forward" "backward")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("past" "present" "future")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("prev" "next")))
