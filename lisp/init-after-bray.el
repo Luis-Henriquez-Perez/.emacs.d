@@ -1,3 +1,4 @@
+;;; init-after-bray.el --- Configure bray -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -75,8 +76,42 @@ This function is based on `evil-cleverparens'."
   "Scroll line to top of page."
   (interactive)
   (recenter 1))
+
+(defun o-eval-region (beg end)
+  "Same as `eval-region'."
+  (interactive "r")
+  (unless executing-kbd-macro
+    (pulse-momentary-highlight-region beg end))
+  (eval-region beg end))
+
+;; meep's variant does not seem to save it to the system clipboard properly.
+;; I know that `kill-ring-save' does also give visual indication but in my
+;; opinion its indication is not very good (it is like a little pause and the
+;; cursor going to beg and end)
+(defun o-copy-region-as-kill (beg end)
+  "Same as `copy-region-as-kill' but give visual feedback."
+  (interactive "r")
+  (unless executing-kbd-macro
+    (pulse-momentary-highlight-region beg end))
+  (copy-region-as-kill beg end))
+
+(defun o-kmacro-start-or-end ()
+  "Start kboard macro if not started othw."
+  (interactive)
+  (cond (defining-kbd-macro
+         (kmacro-end-macro nil))
+        (t
+         (kmacro-start-macro nil))))
+
+(defun o-meep-region-mark-character ()
+  "Mark the character after point."
+  (interactive)
+  (unless (eobp)
+    (set-mark (point))
+    (forward-char 1)
+    (activate-mark)))
 ;;;; normal map
-;;;;; digit args
+;;;;; 0..9
 (keymap-set o-bray-state-normal-map "1" #'digit-argument)
 (keymap-set o-bray-state-normal-map "2" #'digit-argument)
 (keymap-set o-bray-state-normal-map "3" #'digit-argument)
@@ -100,39 +135,38 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "s 9" #'meep-digit-argument-repeat)
 (keymap-set o-bray-state-normal-map "s 0" #'meep-digit-argument-repeat)
 (keymap-set o-bray-state-normal-map "s -" #'negative-argument)
-;;;;; miscellaneous + - ; *
+;;;;; + - ; *
 (keymap-set o-bray-state-normal-map "<escape>" #'o-bray-dwim-escape)
+(keymap-set o-bray-state-normal-map "<tab>" #'outline-toggle-children)
 
 (keymap-set o-bray-state-normal-map "*" #'meep-isearch-at-point-next)
-
-;; maybe I could have this be conditional based on whether I am on an outlne
-;; heading.  for now I will just leave it as is.
-(keymap-set o-bray-state-normal-map "<tab>" #'outline-toggle-children)
 
 (keymap-set o-bray-state-normal-map "+" #'text-scale-increase)
 (keymap-set o-bray-state-normal-map "-" #'text-scale-decrease)
 (keymap-set o-bray-state-normal-map ";" #'execute-extended-command)
 (keymap-set o-bray-state-normal-map o-key-leader-normal #'o-leader-map)
+(keymap-set o-bray-state-normal-map ":" #'meep-move-matching-bracket-outer)
+(keymap-set o-bray-state-normal-map "'" #'o-bray-unbound-key)
+(keymap-set o-bray-state-normal-map "\"" #'o-bray-unbound-key)
 
 (keymap-set o-bray-state-normal-map "<remap> <self-insert-command>" #'ignore)
 
-(keymap-set o-bray-state-normal-map "q" #'meep-register-kmacro-start-or-end)
-(keymap-set o-bray-state-normal-map "Q" #'o-bray-unbound-key)
+(keymap-set o-bray-state-normal-map "[" #'meep-isearch-at-point-prev)
+(keymap-set o-bray-state-normal-map "]" #'meep-isearch-at-point-next)
+;;;;; werthjkl
+(keymap-set o-bray-state-normal-map "w" #'meep-move-word-next)
+(keymap-set o-bray-state-normal-map "W" #'meep-move-symbol-next)
+(keymap-set o-bray-state-normal-map "e" #'meep-move-word-next-end)
+(keymap-set o-bray-state-normal-map "E" #'meep-move-symbol-next-end)
+(keymap-set o-bray-state-normal-map "r" #'meep-move-word-prev)
+(keymap-set o-bray-state-normal-map "R" #'meep-move-symbol-prev-end)
+(keymap-set o-bray-state-normal-map "t" #'meep-char-replace)
+(keymap-set o-bray-state-normal-map "T" #'o-bray-unbound-key)
 
-(keymap-set o-bray-state-normal-map ":" #'meep-move-matching-bracket-outer)
-
-(keymap-set o-bray-state-normal-map "'" #'meep-move-matching-syntax-inner)
-(keymap-set o-bray-state-normal-map "\"" #'meep-move-matching-syntax-outer)
-;;;;; movement w W e E r R h k j l g
-;; It is impractical to have a key for every single movm--there is alot.  So I
-;; prioritize the most common movements that are useful in practically
-;; every situation.
 (keymap-set o-bray-state-normal-map "h" #'meep-move-char-prev)
 (keymap-set o-bray-state-normal-map "H" #'meep-move-line-non-space-beginning)
 
 (keymap-set o-bray-state-normal-map "j" #'meep-move-line-next)
-;; Scrolling up and down is more useful than going down by paragraphs because
-;; paragraphs can be of different lengths.
 (keymap-set o-bray-state-normal-map "J" #'scroll-up)
 
 (keymap-set o-bray-state-normal-map "k" #'meep-move-line-prev)
@@ -140,96 +174,62 @@ This function is based on `evil-cleverparens'."
 
 (keymap-set o-bray-state-normal-map "l" #'meep-move-char-next)
 (keymap-set o-bray-state-normal-map "L" #'meep-move-line-non-space-end)
-
-(keymap-set o-bray-state-normal-map "w" #'meep-move-word-next)
-(keymap-set o-bray-state-normal-map "W" #'meep-move-symbol-next)
-(keymap-set o-bray-state-normal-map "e" #'meep-move-word-next-end)
-(keymap-set o-bray-state-normal-map "E" #'meep-move-symbol-next-end)
-(keymap-set o-bray-state-normal-map "r" #'meep-move-word-prev)
-(keymap-set o-bray-state-normal-map "R" #'meep-move-symbol-prev-end)
-
+;;;;; q - keyboard macro
+(keymap-set o-bray-state-normal-map "q" #'o-kmacro-start-or-end)
+(keymap-set o-bray-state-normal-map "Q" #'o-bray-unbound-key)
+;;;;; g - miscellaneous
 (keymap-set o-bray-state-normal-map "g g" #'beginning-of-buffer)
 (keymap-set o-bray-state-normal-map "g h" #'beginning-of-buffer)
 (keymap-set o-bray-state-normal-map "g G" #'end-of-buffer)
-;; Fn just keep this similar to vim kbd
+(keymap-set o-bray-state-normal-map "g i" #'kmacro-insert-counter)
 (keymap-set o-bray-state-normal-map "G" #'end-of-buffer)
-;;;;; operate on region i, d
-;; with this binding I can active the inactive region and in combination with
-;; the `o-bray-state-visual-map' keybinding I can reverse the location of the
-;; active region.
-;; TODO: idle load lispy in lisp modes
-(keymap-set o-bray-state-normal-map "i" #'meep-region-activate-or-reverse)
-(keymap-set o-bray-state-normal-map "d d" #'kill-whole-line)
-(keymap-set o-bray-state-normal-map "d h" #'helpful-at-point)
-(keymap-set o-bray-state-normal-map "d r" #'o-eval-and-replace-region)
-(keymap-set o-bray-state-normal-map "d o" #'sort-lines)
-(keymap-set o-bray-state-normal-map "d e" #'eval-region)
-;; dupling  lne is so common that it is worth aving it is own keybinding.
-;; note: imnsi I am going to keep using eshell.  I might replace it with mistty.
-;; (keymap-set o-bray-state-normal-map "s w" #'duplicate-line)
-;; The logic is that most of the time I will want to make lowercase text
-;; upercase instead of the other way around, thus I want an easier binding to
-;; press.
-(keymap-set o-bray-state-normal-map "d u" #'upcase-region)
-(keymap-set o-bray-state-normal-map "d U" #'downcase-region)
-(keymap-set o-bray-state-normal-map "d l" #'duplicate-line)
-(keymap-set o-bray-state-normal-map "d a" #'flyspell-region)
-(keymap-set o-bray-state-normal-map "d s" #'meep-char-surround-insert)
-(keymap-set o-bray-state-normal-map "d w" #'widen)
-(keymap-set o-bray-state-normal-map "d n" #'narrow-to-region)
-;; Uncommon therefore I give these keybindings the harder to press keys.
-(keymap-set o-bray-state-normal-map "d R" #'rot13-region)
-(keymap-set o-bray-state-normal-map "d m" #'unmorse-region)
-(keymap-set o-bray-state-normal-map "d M" #'morse-region)
-;;;;; selection s
-;; The "s" key is reserved for marking things.  the most common things to mark
-;; are symbols and words, thus the quickest keys used for those.
+;;;;; s - select
+(keymap-set o-bray-state-normal-map "s k" #'o-meep-region-mark-character)
 (keymap-set o-bray-state-normal-map "s w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s j" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s s" #'meep-region-mark-symbol)
+(keymap-set o-bray-state-normal-map "s m" #'meep-region-mark-symbol)
 (keymap-set o-bray-state-normal-map "s l" #'meep-region-expand-to-line-bounds)
+(keymap-set o-bray-state-normal-map "s L" #'meep-region-expand-to-line-bounds)
 (keymap-set o-bray-state-normal-map "s ;" #'meep-region-mark-line-inner)
+(keymap-set o-bray-state-normal-map "s r" #'meep-region-mark-string-inner)
+(keymap-set o-bray-state-normal-map "s S" #'meep-region-mark-string-outer)
 (keymap-set o-bray-state-normal-map "s t" #'meep-region-mark-sentence-inner)
-(keymap-set o-bray-state-normal-map "s n" #'meep-region-mark-sentence-outer)
+(keymap-set o-bray-state-normal-map "s T" #'meep-region-mark-sentence-outer)
 (keymap-set o-bray-state-normal-map "s d" #'meep-region-mark-defun-inner)
+(keymap-set o-bray-state-normal-map "s D" #'meep-region-mark-defun-outer)
 (keymap-set o-bray-state-normal-map "s c" #'meep-region-mark-comment-inner)
+(keymap-set o-bray-state-normal-map "s C" #'meep-region-mark-comment-outer)
+(keymap-set o-bray-state-normal-map "s p" #'meep-region-mark-paragraph-inner)
+(keymap-set o-bray-state-normal-map "s P" #'meep-region-mark-paragraph-outer)
 (keymap-set o-bray-state-normal-map "s f" #'o-meep-region-contextual-inner)
+(keymap-set o-bray-state-normal-map "s F" #'o-meep-region-contextual-outer)
 
 (keymap-set o-bray-state-normal-map "s i w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s i m" #'meep-region-mark-symbol)
 (keymap-set o-bray-state-normal-map "s i j" #'meep-region-mark-symbol)
 (keymap-set o-bray-state-normal-map "s i l" #'meep-region-mark-line-inner)
 (keymap-set o-bray-state-normal-map "s i p" #'meep-region-mark-paragraph-inner)
-(keymap-set o-bray-state-normal-map "s i s" #'meep-region-mark-sentence-inner)
+(keymap-set o-bray-state-normal-map "s i t" #'meep-region-mark-sentence-inner)
 (keymap-set o-bray-state-normal-map "s i c" #'meep-region-mark-comment-inner)
+(keymap-set o-bray-state-normal-map "s i d" #'meep-region-mark-defun-inner)
+(keymap-set o-bray-state-normal-map "s i r" #'meep-region-mark-string-inner)
 (keymap-set o-bray-state-normal-map "s i f" #'o-meep-region-contextual-inner)
 
 (keymap-set o-bray-state-normal-map "s o w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s o m" #'meep-region-mark-symbol)
+(keymap-set o-bray-state-normal-map "s o s" #'meep-region-mark-symbol)
 (keymap-set o-bray-state-normal-map "s o j" #'meep-region-mark-symbol)
 (keymap-set o-bray-state-normal-map "s o l" #'meep-region-expand-to-line-bounds)
 (keymap-set o-bray-state-normal-map "s o p" #'meep-region-mark-paragraph-outer)
-(keymap-set o-bray-state-normal-map "s o n" #'meep-region-mark-sentence-outer)
+(keymap-set o-bray-state-normal-map "s o t" #'meep-region-mark-sentence-outer)
 (keymap-set o-bray-state-normal-map "s o c" #'meep-region-mark-comment-outer)
-(keymap-set o-bray-state-normal-map "s o s" #'meep-region-mark-string-outer)
+(keymap-set o-bray-state-normal-map "s o r" #'meep-region-mark-string-outer)
 (keymap-set o-bray-state-normal-map "s o f" #'o-meep-region-contextual-outer)
-;;;;; insertion
-;; This is the list of things I need to completely replace evil with meep.
-;; 1. movement
-;; 2. cut copy paste
-;; 3. copy a line and paste it above
-;; (keymap-set o-bray-state-normal-map "d g" #'grugru-forward)
-(keymap-set o-bray-state-normal-map "d f" #'grugru-forward)
-
-(defvar o-grugru-repeat-map
-  (let ((map (make-sparse-keymap)))
-    ;; (keymap-set map "g" #'grugru-forward)
-    (keymap-set map "f" #'grugru-forward)
-    map))
-
-(put 'grugru-forward 'repeat-map 'o-grugru-repeat-map)
-
-;; Inserting
+;;;;; I - invert point and mark
+(keymap-set o-bray-state-normal-map "i" #'meep-region-activate-or-reverse)
+(keymap-set o-bray-state-normal-map "I" #'o-bray-unbound-key)
+;;;;; a - insert
 (keymap-set o-bray-state-normal-map "A" #'meep-insert-line-end)
 (keymap-set o-bray-state-normal-map "a a" #'meep-insert)
 (keymap-set o-bray-state-normal-map "a s" #'meep-insert-append)
@@ -239,12 +239,39 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "a h" #'meep-insert)
 (keymap-set o-bray-state-normal-map "a L" #'meep-insert-line-end)
 (keymap-set o-bray-state-normal-map "a H" #'meep-insert-line-beginning)
-;;;;; dealing with individual characters
-(keymap-set o-bray-state-normal-map "x x" #'meep-delete-char-next)
-(keymap-set o-bray-state-normal-map "x j" #'meep-char-replace)
-;;;;; searching
-(keymap-set o-bray-state-normal-map "[" #'meep-isearch-at-point-prev)
-(keymap-set o-bray-state-normal-map "]" #'meep-isearch-at-point-next)
+;;;;; d - act on region
+(keymap-set o-bray-state-normal-map "d a" #'o-expand-region-abbrevs-no-query)
+;; maintain a similarity with vim's "dd"
+(keymap-set o-bray-state-normal-map "d d" #'kill-whole-line)
+(keymap-set o-bray-state-normal-map "d j" #'o-eval-region)
+(keymap-set o-bray-state-normal-map "d k" #'comment-or-uncomment-region)
+(keymap-set o-bray-state-normal-map "d l" #'duplicate-line)
+(keymap-set o-bray-state-normal-map "d r" #'o-eval-and-replace-region)
+(keymap-set o-bray-state-normal-map "d ;" #'iedit-mode)
+(keymap-set o-bray-state-normal-map "d h" #'helpful-at-point)
+(keymap-set o-bray-state-normal-map "d o" #'sort-lines)
+(keymap-set o-bray-state-normal-map "d e" #'o-eval-region)
+(keymap-set o-bray-state-normal-map "d n" #'narrow-to-region)
+(keymap-set o-bray-state-normal-map "d u" #'upcase-region)
+(keymap-set o-bray-state-normal-map "d U" #'downcase-region)
+(keymap-set o-bray-state-normal-map "d f" #'flyspell-region)
+(keymap-set o-bray-state-normal-map "d s" #'meep-char-surround-insert)
+(keymap-set o-bray-state-normal-map "d w" #'widen)
+;; Uncommon therefore I give these keybindings the harder to press keys.
+(keymap-set o-bray-state-normal-map "d R" #'rot13-region)
+(keymap-set o-bray-state-normal-map "d m" #'unmorse-region)
+(keymap-set o-bray-state-normal-map "d M" #'morse-region)
+(keymap-set o-bray-state-normal-map "d g" #'grugru-forward)
+
+(defvar o-grugru-repeat-map
+  (let ((map (make-sparse-keymap)))
+    ;; (keymap-set map "g" #'grugru-forward)
+    (keymap-set map "f" #'grugru-forward)
+    map))
+
+(put 'grugru-forward 'repeat-map 'o-grugru-repeat-map)
+;;;;; f - search
+(keymap-set o-bray-state-normal-map "f f" #'flash-jump)
 
 (keymap-set o-bray-state-normal-map "f j" #'meep-isearch-regexp-next)
 (keymap-set o-bray-state-normal-map "f k" #'meep-isearch-regexp-prev)
@@ -260,8 +287,6 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "f H" #'meep-move-find-char-on-line-till-prev)
 (keymap-set o-bray-state-normal-map "f l" #'avy-goto-line)
 
-(keymap-set o-bray-state-normal-map "f f" #'avy-goto-char)
-
 ;; (keymap-set o-bray-state-normal-map "f l" #'meep-move-find-char-on-line-at-next)
 (keymap-set o-bray-state-normal-map "f L" #'meep-move-find-char-on-line-till-next)
 
@@ -275,29 +300,34 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "f i" #'avy-goto-symbol-1-above)
 
 (keymap-set o-bray-state-normal-map "F" #'o-bray-unbound-key)
-
+;;;;; x - delete
+(keymap-set o-bray-state-normal-map "x" #'kill-region)
+(keymap-set o-bray-state-normal-map "X" #'delete-region)
+;;;;; m - page
+(keymap-set o-bray-state-normal-map "m m" #'recenter)
+(keymap-set o-bray-state-normal-map "m j" #'o-scroll-to-bottom)
+(keymap-set o-bray-state-normal-map "m k" #'o-scroll-to-top)
+;;;;; u - undo
+(keymap-set o-bray-state-normal-map "u" #'undo-only)
+(keymap-set o-bray-state-normal-map "U" #'undo-redo)
+;;;;; c - change
+(keymap-set o-bray-state-normal-map "c" #'meep-insert-change)
+(keymap-set o-bray-state-normal-map "C" #'meep-insert-change-lines)
+(keymap-set o-bray-state-normal-map "b" #'meep-insert-change)
+(keymap-set o-bray-state-normal-map "B" #'meep-insert-change-lines)
+;;;;; y
+;;;;; /
+(keymap-set o-bray-state-normal-map "/" #'isearch-forward-regexp)
+(keymap-set o-bray-state-normal-map "?" #'isearch-backward-regexp)
+;;;;; other
 (keymap-set o-bray-state-normal-map "z" #'undo-only)
 (keymap-set o-bray-state-normal-map "Z" #'undo-redo)
-;; (keymap-set o-bray-state-normal-map "c" #'meep-delete-char-ring-next)
-;; (keymap-set o-bray-state-normal-map "C" #'meep-delete-char-ring-prev)
 
 (keymap-set o-bray-state-normal-map "v" #'meep-region-toggle)
 (keymap-set o-bray-state-normal-map "V" #'meep-clipboard-killring-cut-line)
 
-(keymap-set o-bray-state-normal-map "c" #'meep-insert-change)
-(keymap-set o-bray-state-normal-map "b" #'meep-insert-change)
-(keymap-set o-bray-state-normal-map "B" #'meep-insert-change-lines)
-
-;; meep's variant does not seem to save it to the system clipboard properly.
-(keymap-set o-bray-state-normal-map "y" #'copy-region-as-kill)
+(keymap-set o-bray-state-normal-map "y" #'o-copy-region-as-kill)
 (keymap-set o-bray-state-normal-map "Y" #'meep-clipboard-only-copy)
-;; "y" #'o-bray-unbound-key
-;; "Y" #'o-bray-unbound-key
-
-(keymap-set o-bray-state-normal-map "u" #'kill-region)
-(keymap-set o-bray-state-normal-map "U" #'meep-clipboard-only-cut)
-;; "u" #'meep-exchange-point-and-mark
-;; "U" #'o-bray-unbound-key
 
 (keymap-set o-bray-state-normal-map "o" #'o-meep-region-contextual-inner)
 (keymap-set o-bray-state-normal-map "O" #'o-meep-region-contextual-outer)
@@ -314,85 +344,25 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "." #'meep-move-symbol-next)
 (keymap-set o-bray-state-normal-map ">" #'meep-move-same-syntax-and-space-next)
 
-(keymap-set o-bray-state-normal-map "/" #'meep-move-symbol-next-end)
 (keymap-set o-bray-state-normal-map "?" #'meep-move-same-syntax-and-space-next-end)
+(keymap-set o-bray-state-normal-map "C-j" #'unexpand-abbrev)
 ;;;; visual map
-;; Although optional I think that having a visual map is quite useful.
-(keymap-set o-bray-state-visual-map "<escape>" #'o-bray-dwim-escape)
-;;;;; copy, cut, paste
-(keymap-set o-bray-state-visual-map "J" #'drag-stuff-up)
-(keymap-set o-bray-state-visual-map "K" #'drag-stuff-down)
-(keymap-set o-bray-state-visual-map "y" #'copy-region-as-kill)
-(keymap-set o-bray-state-visual-map "Y" #'meep-clipboard-only-copy)
-(keymap-set o-bray-state-visual-map "u" #'meep-clipboard-killring-cut)
-(keymap-set o-bray-state-visual-map "U" #'meep-clipboard-only-cut)
-(keymap-set o-bray-state-visual-map "i" #'yank)
-(keymap-set o-bray-state-visual-map "I" #'meep-clipboard-only-yank)
-;;;;; comment
-(keymap-set o-bray-state-visual-map "a" #'meep-region-activate-or-reverse)
-(keymap-set o-bray-state-visual-map "A" #'copy-region-as-kill)
-;; (keymap-set o-bray-state-visual-map "d" #'kill-region)
-;;;;; surround
-;; TODO: change surround insert so that it does not create unlikely pairs.
-(keymap-set o-bray-state-visual-map "S" #'meep-char-surround-insert)
-(keymap-set o-bray-state-visual-map "g s" #'meep-char-surround-insert)
-;;;;; miscellaneous utility
-(keymap-set o-bray-state-normal-map "d o" #'sort-lines)
-(keymap-set o-bray-state-visual-map "d l" #'duplicate-dwim)
-(keymap-set o-bray-state-visual-map "d n" #'narrow-to-region)
-(keymap-set o-bray-state-visual-map "d h" #'helpful-at-point)
-(keymap-set o-bray-state-visual-map "d r" #'o-eval-and-replace-region)
-(keymap-set o-bray-state-visual-map "d e" #'eval-region)
-(keymap-set o-bray-state-visual-map "d u" #'upcase-region)
-(keymap-set o-bray-state-visual-map "d U" #'downcase-region)
-(keymap-set o-bray-state-visual-map "d d" #'kill-region)
-(keymap-set o-bray-state-visual-map "d a" #'flyspell-region)
-(keymap-set o-bray-state-normal-map "d b" #'delete-blank-lines)
-(keymap-set o-bray-state-visual-map "d s" #'meep-char-surround-insert)
-(keymap-set o-bray-state-visual-map "d D" #'delete-duplicate-lines)
-
-(keymap-set o-bray-state-visual-map "m" #'comment-or-uncomment-region)
-(keymap-set o-bray-state-visual-map "R" #'o-eval-and-replace-region)
-(keymap-set o-bray-state-visual-map "u" #'downcase-region)
-(keymap-set o-bray-state-visual-map "U" #'upcase-region)
-(keymap-set o-bray-state-visual-map "b" #'meep-insert-change)
-(keymap-set o-bray-state-visual-map "i" #'meep-region-activate-or-reverse)
-;;;;; swapping text
-(keymap-set o-bray-state-normal-map "g j" #'meep-delete-char-next)
-(keymap-set o-bray-state-normal-map "g k" #'meep-char-replace)
+;;;;; exchanging keys
 (keymap-set o-bray-state-visual-map "g a" #'o-meep-dwim-swap-selection)
-;; Use this to cancel the secondary selection.
 (keymap-set o-bray-state-visual-map "g A" #'meep-region-to-secondary-selection)
-(keymap-set o-bray-state-visual-map "V" #'er/contract-region)
-(keymap-set o-bray-state-visual-map "v" #'er/expand-region)
-;;;; motion map
-;; (keymap-set o-bray-state-motion-map "<remap> <self-insert-command>" #'o-bray-unbound-key)
-(keymap-set o-bray-state-motion-map "C-f" #'scroll-up)
-(keymap-set o-bray-state-motion-map "<escape>" #'o-bray-dwim-escape)
-(keymap-set o-bray-state-motion-map "/" #'isearch-forward-regexp)
+;;;;; surround
+(keymap-set o-bray-state-visual-map "S" #'meep-char-surround-insert)
 ;;;; insert map
 (keymap-set o-bray-state-normal-map "C-v" #'rectangle-mark-mode)
-(keymap-set o-bray-state-visual-map "C-v" #'rectangle-mark-mode)
 (keymap-set o-bray-state-insert-map "C-j" #'abbrev/inverse-add)
 (keymap-set o-bray-state-insert-map "<escape>" #'o-bray-dwim-escape)
 
-;; TODO: put a list of "lispy" modes into a list and loop through them to set
-;; the same binds.
-;; (dolist (mode o-lisp-modes)
-;;   ())
 (bray-state-map-set 'insert emacs-lisp-mode-map ";" #'lispy-comment)
 (bray-state-map-set 'insert emacs-lisp-mode-map "SPC" #'lispy-space)
-;; These are controversial bindings for a new mode.
-;; (bray-state-map-set 'normal emacs-lisp-mode-map "j" #'lispy-down)
-;; (bray-state-map-set 'normal emacs-lisp-mode-map "k" #'lispy-up)
-;;;; mimik folding in other packages
+;;;; mimic folding in other packages
 ;; Configure Kirigami to replace the default Evil-mode folding key bindings
-;; TODO: add outline navigation.  do not know ifisb its own state or if I should
+;; TODO: add outline navigation.  do not know if it should be its own state or if I should
 ;; just include bindings under a prefix.
-(keymap-set o-bray-state-normal-map "m m" #'recenter)
-;; (keymap-set o-bray-state-normal-map "z z" #'recenter)
-;; (keymap-set o-bray-state-normal-map "z j" #'o-scroll-to-bottom)
-;; (keymap-set o-bray-state-normal-map "z k" #'o-scroll-to-top)
 ;; (keymap-set o-bray-state-normal-map "z o" 'kirigami-open-fold)
 ;; (keymap-set o-bray-state-normal-map "z O" 'kirigami-open-fold-rec)
 ;; (keymap-set o-bray-state-normal-map "z c" 'kirigami-close-fold)
