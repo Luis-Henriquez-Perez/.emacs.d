@@ -110,6 +110,37 @@ This function is based on `evil-cleverparens'."
     (set-mark (point))
     (forward-char 1)
     (activate-mark)))
+
+;; TODO: make surround smart enough to add escaped quotes when necessary.
+(o-defun o-inverse-add-abbrev (beg end)
+  "Add the abbrev to abbrevs."
+  (interactive "r")
+  (o-set lisp-dir (expand-file-name "lisp/" user-emacs-directory))
+  (o-set abbrev-file (expand-file-name "text-mode-abbrev-table.el" lisp-dir))
+  ;; Get the abbrev at point.
+  (o-set abbrev (word-at-point))
+  ;; Get the expansion.
+  (o-set expansion (read-string "Expansion? "))
+  ;; Add the abbrev to the abbrev file.
+  (o-set newline (format "(define-abbrev text-mode-abbrev-table \"%S\" \"%S\")\n" abbrev expansion))
+  ;; If the file is modified, save it first.
+  ;; (or (get-file-buffer abbrev-file) (create-file-buffer abbrev-file))
+  ;; Find the first abbrev in the file.
+  (with-current-buffer (get-file-buffer abbrev-file)
+    (goto-char (point-min))
+    (if (re-search-forward "^(define-abbrev" nil t nil)
+        (progn (goto-char (line-beginning-position))
+               (insert newline)
+               (eval-buffer))
+      (error "No define abbrev form in file."))))
+
+;; TODO: function to add file, stage changes in file and commit them.
+;; If the files are certain files auto-add commit message.
+;; (oboe-new '(:name git-commit :major text-mode :return buffer-string))
+
+;; TODO: function that allows me to commit changes in region.
+
+;; TODO: a better way to navigate point history
 ;;;; normal map
 ;;;;; 0..9
 (keymap-set o-bray-state-normal-map "1" #'digit-argument)
@@ -153,7 +184,7 @@ This function is based on `evil-cleverparens'."
 
 (keymap-set o-bray-state-normal-map "[" #'meep-isearch-at-point-prev)
 (keymap-set o-bray-state-normal-map "]" #'meep-isearch-at-point-next)
-;;;;; werthjkl
+;;;;; werthjkl - movement
 (keymap-set o-bray-state-normal-map "w" #'meep-move-word-next)
 (keymap-set o-bray-state-normal-map "W" #'meep-move-symbol-next)
 (keymap-set o-bray-state-normal-map "e" #'meep-move-word-next-end)
@@ -226,7 +257,7 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "s o c" #'meep-region-mark-comment-outer)
 (keymap-set o-bray-state-normal-map "s o r" #'meep-region-mark-string-outer)
 (keymap-set o-bray-state-normal-map "s o f" #'o-meep-region-contextual-outer)
-;;;;; I - invert point and mark
+;;;;; i - invert point and mark
 (keymap-set o-bray-state-normal-map "i" #'meep-region-activate-or-reverse)
 (keymap-set o-bray-state-normal-map "I" #'o-bray-unbound-key)
 ;;;;; a - insert
@@ -273,31 +304,17 @@ This function is based on `evil-cleverparens'."
 ;;;;; f - search
 (keymap-set o-bray-state-normal-map "f f" #'flash-jump)
 
-(keymap-set o-bray-state-normal-map "f j" #'meep-isearch-regexp-next)
-(keymap-set o-bray-state-normal-map "f k" #'meep-isearch-regexp-prev)
-
-(keymap-set o-bray-state-normal-map "n" #'meep-isearch-repeat-next)
-(keymap-set o-bray-state-normal-map "N" #'meep-isearch-repeat-prev)
-
 (keymap-set o-bray-state-normal-map "f m" #'meep-isearch-at-point-next)
 (keymap-set o-bray-state-normal-map "f ," #'meep-isearch-at-point-prev)
 
-(keymap-set o-bray-state-normal-map "f d" #'meep-move-find-char-on-line-at-prev)
-(keymap-set o-bray-state-normal-map "f h" #'meep-move-find-char-on-line-at-prev)
-(keymap-set o-bray-state-normal-map "f H" #'meep-move-find-char-on-line-till-prev)
 (keymap-set o-bray-state-normal-map "f l" #'avy-goto-line)
 
-;; (keymap-set o-bray-state-normal-map "f l" #'meep-move-find-char-on-line-at-next)
 (keymap-set o-bray-state-normal-map "f L" #'meep-move-find-char-on-line-till-next)
 
-;; Find "repeat" are below the keys for find.
 (keymap-set o-bray-state-normal-map "f ." #'meep-move-find-char-on-line-repeat-at-next)
 (keymap-set o-bray-state-normal-map "f n" #'meep-move-find-char-on-line-repeat-at-prev)
 (keymap-set o-bray-state-normal-map "f >" #'meep-move-find-char-on-line-repeat-till-next)
 (keymap-set o-bray-state-normal-map "f N" #'meep-move-find-char-on-line-repeat-till-prev)
-
-(keymap-set o-bray-state-normal-map "f u" #'avy-goto-char)
-(keymap-set o-bray-state-normal-map "f i" #'avy-goto-symbol-1-above)
 
 (keymap-set o-bray-state-normal-map "F" #'o-bray-unbound-key)
 ;;;;; x - delete
@@ -310,30 +327,32 @@ This function is based on `evil-cleverparens'."
 ;;;;; u - undo
 (keymap-set o-bray-state-normal-map "u" #'undo-only)
 (keymap-set o-bray-state-normal-map "U" #'undo-redo)
-;;;;; c - change
+;;;;; v - visual
+(keymap-set o-bray-state-normal-map "v" #'meep-region-toggle)
+(keymap-set o-bray-state-normal-map "V" #'meep-clipboard-killring-cut-line)
+;;;;; c b - change
 (keymap-set o-bray-state-normal-map "c" #'meep-insert-change)
 (keymap-set o-bray-state-normal-map "C" #'meep-insert-change-lines)
 (keymap-set o-bray-state-normal-map "b" #'meep-insert-change)
 (keymap-set o-bray-state-normal-map "B" #'meep-insert-change-lines)
-;;;;; y
-;;;;; /
-(keymap-set o-bray-state-normal-map "/" #'isearch-forward-regexp)
-(keymap-set o-bray-state-normal-map "?" #'isearch-backward-regexp)
-;;;;; other
-(keymap-set o-bray-state-normal-map "z" #'undo-only)
-(keymap-set o-bray-state-normal-map "Z" #'undo-redo)
-
-(keymap-set o-bray-state-normal-map "v" #'meep-region-toggle)
-(keymap-set o-bray-state-normal-map "V" #'meep-clipboard-killring-cut-line)
-
+;;;;; y - copy
 (keymap-set o-bray-state-normal-map "y" #'o-copy-region-as-kill)
 (keymap-set o-bray-state-normal-map "Y" #'meep-clipboard-only-copy)
+;;;;; p - paste
+(keymap-set o-bray-state-normal-map "p" #'yank)
+(keymap-set o-bray-state-normal-map "P" #'pop-to-mark-command)
+;;;;; z - undo
+(keymap-set o-bray-state-normal-map "z" #'undo-only)
+(keymap-set o-bray-state-normal-map "Z" #'undo-redo)
+;;;;; / ? n - search
+(keymap-set o-bray-state-normal-map "/" #'meep-isearch-regexp-next)
+(keymap-set o-bray-state-normal-map "?" #'meep-isearch-regexp-prev)
 
+(keymap-set o-bray-state-normal-map "n" #'meep-isearch-repeat-next)
+(keymap-set o-bray-state-normal-map "N" #'meep-isearch-repeat-prev)
+;;;;; other
 (keymap-set o-bray-state-normal-map "o" #'o-meep-region-contextual-inner)
 (keymap-set o-bray-state-normal-map "O" #'o-meep-region-contextual-outer)
-
-(keymap-set o-bray-state-normal-map "p" #'yank)
-(keymap-set o-bray-state-normal-map "P" #'point-to-register)
 
 ;; (keymap-unset o-bray-state-normal-map "m" #'o-bray-unbound-key)
 (keymap-set o-bray-state-normal-map "M" #'o-bray-unbound-key)
@@ -341,10 +360,9 @@ This function is based on `evil-cleverparens'."
 (keymap-set o-bray-state-normal-map "," #'o-bray-unbound-key)
 (keymap-set o-bray-state-normal-map "<" #'o-bray-unbound-key)
 
-(keymap-set o-bray-state-normal-map "." #'meep-move-symbol-next)
-(keymap-set o-bray-state-normal-map ">" #'meep-move-same-syntax-and-space-next)
+(keymap-set o-bray-state-normal-map "." #'o-bray-unbound-key)
+(keymap-set o-bray-state-normal-map ">" #'o-bray-unbound-key)
 
-(keymap-set o-bray-state-normal-map "?" #'meep-move-same-syntax-and-space-next-end)
 (keymap-set o-bray-state-normal-map "C-j" #'unexpand-abbrev)
 ;;;; visual map
 ;;;;; exchanging keys
@@ -370,6 +388,7 @@ This function is based on `evil-cleverparens'."
 ;; (keymap-set o-bray-state-normal-map "z r" 'kirigami-open-folds)
 ;; (keymap-set o-bray-state-normal-map "z m" 'kirigami-close-folds)
 ;;;; external packages
+;; (o-bray-state-map-set 'normal 'eamcs-lisp-mode-map "x" #'lispy-delete)
 (o-after helm
   (bray-state-map-set 'insert helm-map "TAB" #'helm-next-line)
   ;; (bray-state-map-set 'insert 'helm-map [backtab] #'helm-previous-line)
