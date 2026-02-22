@@ -169,21 +169,21 @@ value of `of-gc-cons-threshold-normal'."
 
 (add-hook 'emacs-startup-hook #'o-hook--gc-set-normal-value 90)
 ;;;; trailing whitespace
-(defun o-hook--delete-trailing-whitespace-at-line ()
-  "Delete the trailing whitespace in the buffer except for the current line.
-Also if there is more than one trailing space in the current line, replace them
-with a single space."
-  (delete-trailing-whitespace (point-min) (line-beginning-position))
-  (save-match-data
-    (when (looking-back "^.*?\\(?1:[[:space:]]\\{2,\\}\\)$" (line-beginning-position))
-      (replace-match "\s" nil nil nil 1)))
-  (delete-trailing-whitespace (line-end-position) (point-max)))
+;; (defun o-hook--delete-trailing-whitespace-at-line ()
+;;   "Delete the trailing whitespace in the buffer except for the current line.
+;; Also if there is more than one trailing space in the current line, replace them
+;; with a single space."
+;;   (delete-trailing-whitespace (point-min) (line-beginning-position))
+;;   (save-match-data
+;;     (when (looking-back "^.*?\\(?1:[[:space:]]\\{2,\\}\\)$" (line-beginning-position))
+;;       (replace-match "\s" nil nil nil 1)))
+;;   (delete-trailing-whitespace (line-end-position) (point-max)))
 
-(defun o-hook--setup-delete-whitespace ()
-  "Show trailing whitespace and delete it before saving."
-  (setq-local show-trailing-whitespace t)
-  (add-hook 'before-save-hook #'o-hook--delete-trailing-whitespace-at-line nil 'local)
-  (add-hook 'kill-buffer-hook #'delete-trailing-whitespace nil 'local))
+;; (defun o-hook--setup-delete-whitespace ()
+;;   "Show trailing whitespace and delete it before saving."
+;;   (setq-local show-trailing-whitespace t)
+;;   (add-hook 'before-save-hook #'o-hook--delete-trailing-whitespace-at-line nil 'local)
+;;   (add-hook 'kill-buffer-hook #'delete-trailing-whitespace nil 'local))
 
 (add-hook 'conf-mode-hook #'o-hook--setup-delete-whitespace)
 (add-hook 'prog-mode-hook #'o-hook--setup-delete-whitespace)
