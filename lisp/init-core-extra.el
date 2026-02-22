@@ -185,9 +185,9 @@ value of `of-gc-cons-threshold-normal'."
 ;;   (add-hook 'before-save-hook #'o-hook--delete-trailing-whitespace-at-line nil 'local)
 ;;   (add-hook 'kill-buffer-hook #'delete-trailing-whitespace nil 'local))
 
-(add-hook 'conf-mode-hook #'o-hook--setup-delete-whitespace)
-(add-hook 'prog-mode-hook #'o-hook--setup-delete-whitespace)
-(add-hook 'text-mode-hook #'o-hook--setup-delete-whitespace)
+;; (add-hook 'conf-mode-hook #'o-hook--setup-delete-whitespace)
+;; (add-hook 'prog-mode-hook #'o-hook--setup-delete-whitespace)
+;; (add-hook 'text-mode-hook #'o-hook--setup-delete-whitespace)
 ;;;; startup time
 (defun o-hook--record-after-init-hook-start-time ()
   "Record the start of `after-init-hook'."
