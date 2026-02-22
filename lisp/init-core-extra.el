@@ -69,7 +69,6 @@ This function should be hooked to `post-command-hook'."
 
 (add-hook 'post-command-hook #'o-hook--run-switch-buffers-hook)
 ;;;; hooks
-(add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 ;; (unless noninteractive
