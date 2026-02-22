@@ -22,9 +22,9 @@
 ;;
 ;;; Commentary:
 ;;
-;; this pkg makes it so that exiting marking a thing will restore point to where
-;; it was before marking.  as things stand if you mark something and exit (with
-;; C-g) point will be.  for me this means if I ever changed my mind about
+;; This pkg makes it so that exiting marking a thing will restore point to where
+;; it was before marking.  As things stand if you mark something and exit (with
+;; C-g) point will be.  For me this means if I ever changed my mind about
 ;; marking or if I just wanted to apply some operation to a thing and then
 ;; continue with what I was doing, I was jarred by my point having moved and
 ;; inconvenienced by having to return it to where it was.
@@ -46,8 +46,6 @@
 (cl-pushnew #'meep-region-mark-comment-outer smart-mark-mark-functions)
 (cl-pushnew #'meep-region-mark-visual-line-inner smart-mark-mark-functions)
 (cl-pushnew #'meep-region-mark-visual-line-outer smart-mark-mark-functions)
-;; (cl-pushnew #'meep-region-mark-conte smart-mark-mark-functions)
-;; (cl-pushnew #'meep-region-mark-visual-line-outer smart-mark-mark-functions)
 
 (add-hook 'o-first-input-hook #'smart-mark-mode)
 ;;; provide
