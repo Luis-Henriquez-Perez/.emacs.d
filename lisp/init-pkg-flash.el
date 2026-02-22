@@ -34,9 +34,9 @@
 (autoload 'flash-jump-continue "flash" nil 'interactive 'function)
 
 (o-opt flash-labels "asdfjkl;ghqwertyuiopzxcvbnm")
-(o-opt flash-label-uppercase t)     ; double available labels (a-z + A-Z)
+(o-opt flash-label-uppercase nil)     ; double available labels (a-z + A-Z)
 (o-opt flash-multi-window t)
-(o-opt flash-autojump t)            ; auto-jump when single match
+(o-opt flash-autojump nil)            ; auto-jump when single match
 (o-opt flash-backdrop nil)          ; no dimming
 (o-opt flash-rainbow t)             ; colorful labels
 (o-opt flash-rainbow-shade 2)       ; 1-9: pastel to dark
