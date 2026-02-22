@@ -30,22 +30,23 @@
 ;; inconvenienced by having to return it to where it was.
 ;;
 ;;; Code:
-(require 'smart-mark)
+(o-declare-package 'smart-mark)
 
-(cl-pushnew #'meep-region-mark-word smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-symbol smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-paragraph-inner smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-paragraph-outer smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-sentence-inner smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-sentence-outer smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-defun-inner smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-defun-outer smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-string-inner smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-string-outer smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-comment-inner smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-comment-outer smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-visual-line-inner smart-mark-mark-functions)
-(cl-pushnew #'meep-region-mark-visual-line-outer smart-mark-mark-functions)
+;; TODO: write mark command to mark symbol with function quote included.
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-word smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-symbol smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-paragraph-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-paragraph-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-sentence-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-sentence-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-defun-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-defun-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-string-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-string-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-comment-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-comment-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-visual-line-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-visual-line-outer smart-mark-mark-functions))
 
 (add-hook 'o-first-input-hook #'smart-mark-mode)
 ;;; provide
