@@ -27,6 +27,8 @@
 ;;; Code:
 (require 'grugru)
 
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("expand" "contract")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("forward" "backward")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("past" "present" "future")))
@@ -67,6 +69,8 @@
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("is" "was" "were")))
 ;;;; emacs-lisp
+(grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("t" "nil"))
+
 (grugru-define-on-major-mode 'emacs-lisp-mode 'word '("normal" "visual" "motion" "insert"))
 
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("keymap-set" "keymap-unset"))
