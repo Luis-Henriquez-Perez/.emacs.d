@@ -249,6 +249,310 @@ Additionally, make any duplicate spaces in line become a single space."
   "Same as `expand-region-abbrevs' but without querying."
   (interactive "r")
   (expand-region-abbrevs beg end t))
-;;; provide
-(provide 'init-core-commands)
-;;; init-core-commands.el ends here
+;; kmacro-end-and-call-macro
+(defun o-meep-dwim-swap-selection ()
+  "Do what I mean."
+  (interactive "*")
+  (cond ((secondary-selection-exist-p)
+         (meep-region-swap))
+        (t
+         (meep-region-to-secondary-selection))))
+
+(defun o-meep-cancel-secondary-selection ()
+  "Cancel secondary selection."
+  (interactive)
+  (delete-overlay mouse-secondary-overlay))
+
+;; right now this is the best function to select the inner bounds.
+(defun o--meep-region-contextual-bounds (&optional inner)
+  "Get bounds of contextual string or sexp.
+This function is based on `evil-cleverparens'."
+  (sp-get (if (sp-point-in-string (point))
+              (sp-get-string t)
+            (sp-get-enclosing-sexp))
+    (if inner (cons (1+ :beg) (1- :end)) (cons :beg :end))))
+
+
+(defun o-scroll-to-bottom ()
+  "Scroll line to bottom of page."
+  (interactive)
+  (recenter -1))
+
+(defun o-scroll-to-top ()
+  "Scroll line to top of page."
+  (interactive)
+  (recenter 1))
+
+(defun o-eval-region (beg end)
+  "Same as `eval-region'."
+  (interactive "r")
+  (unless executing-kbd-macro
+    (pulse-momentary-highlight-region beg end))
+  (eval-region beg end))
+
+;; meep's variant does not seem to save it to the system clipboard properly.
+;; I know that `kill-ring-save' does also give visual indication but in my
+;; opinion its indication is not very good (it is like a little pause and the
+;; cursor going to beg and end)
+(defun o-copy-region-as-kill (beg end)
+  "Same as `copy-region-as-kill' but give visual feedback."
+  (interactive "r")
+  (unless executing-kbd-macro
+    (pulse-momentary-highlight-region beg end))
+  (copy-region-as-kill beg end))
+
+(defun o-kmacro-start-or-end ()
+  "Start kboard macro if not started othw."
+  (interactive)
+  (cond (defining-kbd-macro
+         (kmacro-end-macro nil))
+        (t
+         (kmacro-start-macro nil))))
+
+(defun o-region-mark-character ()
+  "Mark the character after point."
+  (interactive)
+  (unless (eobp)
+    (set-mark (point))
+    (forward-char 1)
+    (activate-mark)))
+
+(defun o-dwim-find-char ()
+  "Find char with `flash-jump' unless in keybinding macro."
+  (interactive)
+  (if (or defining-kbd-macro executing-kbd-macro)
+      (call-interactively #'flash-jump)
+    (call-interactively #'meep-find-char)))
+
+;; TODO: make surround smart enough to add escaped quotes when necessary.
+(o-defun o-abbrev-inverse-add (beg end)
+  "Add the abbrev to abbrevs."
+  (interactive "r")
+  (o-set lisp-dir (expand-file-name "lisp/" user-emacs-directory))
+  (o-set abbrev-file (expand-file-name "text-mode-abbrev-table.el" lisp-dir))
+  ;; Get the abbrev at point.
+  (o-set abbrev (substring-no-properties (word-at-point)))
+  ;; Get the expansion.
+  (o-set expansion (read-string (format "Expansion for %s? " abbrev)))
+  ;; Add the abbrev to the abbrev file.
+  (o-set newline (format "(define-abbrev text-mode-abbrev-table %S %S)\n" abbrev expansion))
+  ;; (message newline)
+  ;; If the file is modified, save it first.
+  (o-set buffer (or (get-file-buffer abbrev-file) (find-file-noselect abbrev-file)))
+  ;; Find the first abbrev in the file.
+  (with-current-buffer buffer
+    (goto-char (point-min))
+    (if (re-search-forward "^(define-abbrev" nil t nil)
+        (progn (goto-char (line-beginning-position))
+               (insert newline)
+               (eval-buffer))
+      (error "No define abbrev form in file.")))
+  ;; Expand the abbrev at point to new expansion.
+  ;; this needs to be called at the end of the abbrev.
+  (expand-abbrev)
+  )
+
+(defun o-auto-commit-abbrevs ()
+  "Commit abbrev file for me."
+  (interactive)
+  ;; ensure that the file is saved.
+  ()
+  ;; if there are unstaged changes then abort.
+  ;; then add and commit
+  )
+
+(defun o-region-safe-kill-line ()
+  "Kill line while keeping expressions balanced."
+  (interactive)
+  (goto-char (line-beginning-position))
+  (let ((fn (lambda () (end-of-line) (unless (eobp) (forward-char 1)))))
+    (puni-soft-delete-by-move fn 'strict-sexp 'beyond 'kill)))
+
+(defun o-region-safe-kill (beg end &optional kill)
+  "Kill region while keeping expressions balanced."
+  (interactive "r")
+  (puni-soft-delete beg end 'strict-sexp 'beyond 'kill)
+  ;; TODO: if there is a hanging parens afterwards, join it.
+  ;; The following code is AI suggested.
+  (save-excursion
+    (beginning-of-line)
+    (when (and
+           ;; Line contains only whitespace + closing parens
+           (looking-at "[ \t]*)+[ \t]*$")
+           ;; Previous line exists
+           (not (bobp))
+           ;; Previous line is NOT a comment
+           (not (save-excursion
+                  (forward-line -1)
+                  (back-to-indentation)
+                  (nth 4 (syntax-ppss)))))
+      (join-line))))
+
+(defun o-region-safe-delete (beg end)
+  "Delete region while keeping expressions balanced."
+  (o-region-safe-kill beg end nil))
+
+;; TODO: function to add file, stage changes in file and commit them.
+;; If the files are certain files auto-add commit message.
+;; (oboe-new '(:name git-commit :major text-mode :return buffer-string))
+
+;; TODO: function that allows me to commit changes in region.
+
+;; TODO: a better way to navigate point history
+(defun o-region-capitalize-sentences (beg end)
+  "Capitalize sentences in region."
+  (interactive "r")
+  (save-excursion
+    (goto-char beg)
+    (while (< (point) end)
+      ;; move to start of next sentence
+      (forward-sentence 1)
+      ;; back up to sentence start
+      (backward-sentence 1)
+      ;; capitalize the first word
+      (capitalize-word 1)
+      ;; advance past this sentence
+      (forward-sentence 1))))
+
+(defun o--outline-subtree-inner-bounds ()
+  "Return the bounds of inner subtree at point as (beg . end)."
+  (save-excursion
+    (outline-back-to-heading t)
+    (let ((beg (progn
+                 (forward-line 1)
+                 (point)))
+          (end (progn
+                 (outline-end-of-subtree)
+                 ;; `outline-end-of-subtree' does not include the last newline
+                 ;; at the end.
+                 (1+ (point)))))
+      (cons beg end))))
+
+(o-defun o-outline-mark-subtree-contents ()
+  "Mark the contents of the outline subtree at point."
+  (interactive)
+  (o-set (beg . end) (o--outline-subtree-inner-bounds))
+  (goto-char beg)
+  (set-mark end)
+  (activate-mark))
+
+(defun o-delim-wrap-round (beg end)
+  "Wrap region with parentheses."
+  (interactive "r")
+  (puni--wrap-region beg end "(" ")"))
+
+(defun o-delim-wrap-square (beg end)
+  "Wrap region with brackets."
+  (interactive "r")
+  (puni--wrap-region beg end "[" "]"))
+
+(defun o-delim-wrap-curly (beg end)
+  "Wrap region with curly braces."
+  (interactive "r")
+  (puni--wrap-region beg end "{" "}"))
+
+(defun o-delim-wrap-angle (beg end)
+  "Wrap region with angle brackets."
+  (interactive "r")
+  (puni--wrap-region beg end "<" ">"))
+
+(defun o-delim-change-surround (beg-delim end-delim)
+  "Change the delimiters of sexp around point."
+  (when-let* ((bounds-inside (puni-bounds-of-list-around-point))
+              (bounds-around (puni-bounds-of-sexp-around-point))
+              (beg1 (car bounds-around))
+              (end1 (car bounds-inside))
+              (beg2 (cdr bounds-inside))
+              (end2 (cdr bounds-around))
+              (open-delim-length (- end1 beg1))
+              (close-delim-length (- end2 beg2)))
+    (puni-delete-region beg1 end1)
+    (puni-delete-region (- beg2 open-delim-length)
+                        (- end2 open-delim-length))
+    (save-excursion
+      (goto-char (- beg2 open-delim-length))
+      (insert end-delim)
+      (goto-char beg1)
+      (insert beg-delim))
+    (setq deactivate-mark nil)))
+
+(defun o-delim-change-surround-to-angle ()
+  "Change surrounding delimiters to angle braces."
+  (interactive)
+  (o-delim-change-surround "<" ">"))
+
+(defun o-delim-change-surround-to-square ()
+  "Change surrounding delimiters to square braces."
+  (interactive)
+  (o-delim-change-surround "[" "]"))
+
+(defun o-delim-change-surround-to-round ()
+  "Change surrounding delimiters to parentheses."
+  (interactive)
+  (o-delim-change-surround "(" ")"))
+
+(defun o-delim-change-surround-to-curly ()
+  "Change surrounding delimiters to curly braces."
+  (interactive)
+  (o-delim-change-surround "{" "}"))
+
+(defun o--region-mark (bounds)
+  (goto-char (car bounds))
+  (set-mark (cdr bounds))
+  (activate-mark))
+
+(defun o--bounds-of-delim-inner ()
+  "Return the bounds of inner delimiter pair."
+  (when-let* ((bounds-inside (puni-bounds-of-list-around-point))
+              (beg (car bounds-inside))
+              (end (cdr bounds-inside)))
+    (cons beg end)))
+
+(defun o--bounds-of-delim-outer ()
+  "Return the bounds of outer delimiter pair."
+  (when-let* ((bounds-around (puni-bounds-of-sexp-around-point))
+              (beg (car bounds-around))
+              (end (cdr bounds-around)))
+    (cons beg end)))
+
+(defun o-region-mark-delim-inner ()
+  "Mark inner bounds of surrounding delimiters."
+  (interactive)
+  (o--region-mark (o--bounds-of-delim-inner)))
+
+(defun o-region-mark-delim-outer ()
+  "Mark outer bounds of surrounding delimiters."
+  (interactive)
+  (o--region-mark (o--bounds-of-delim-outer)))
+
+(defun o--expreg-bounds-of-delim-outer ()
+  "Return the bounds (beg . end) of surrounding delimiters."
+  (list (cons 'o--bounds-of-delim-outer (o--bounds-of-delim-outer))))
+
+(defun o--expreg-bounds-of-delim-inner ()
+  "Return the bounds (beg . end) of symbol at point."
+  (list (cons 'o--bounds-of-delim-inner (o--bounds-of-delim-inner))))
+
+(defun o--expreg-bounds-of-symbol ()
+  "Return the bounds (beg . end) of symbol at point."
+  (list (cons 'o--bounds-of-symbol (o--bounds-of-symbol))))
+
+(defun o--expreg-bounds-of-word ()
+  "Return the bounds (beg . end) of word at point."
+  (list (cons 'o--bounds-of-word (o--bounds-of-word))))
+
+(defun o--bounds-of-word ()
+  "Return the bounds (beg . end) of word at point."
+  (bounds-of-thing-at-point 'word))
+
+(defun o--bounds-of-symbol ()
+  "Return the bounds (beg . end) of symbol at point."
+  (bounds-of-thing-at-point 'symbol))
+
+(defun o--bounds-of-paragraph ()
+  "Return the bounds (beg . end) of paragraph at point."
+  (bounds-of-thing-at-point 'paragraph))
+
+(setq-local expreg-functions '( o--expreg-bounds-of-symbol o--expreg-bounds-of-word
+                                o--expreg-bounds-of-delim-inner o--expreg-bounds-of-delim-outer
+                                ))
