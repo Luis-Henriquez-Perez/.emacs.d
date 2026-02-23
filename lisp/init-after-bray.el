@@ -107,7 +107,7 @@
 (keymap-set o-bray-state-normal-map "g i" #'kmacro-insert-counter)
 (keymap-set o-bray-state-normal-map "G" #'end-of-buffer)
 ;;;;; s - select
-(keymap-set o-bray-state-normal-map "s k" #'o-meep-region-mark-character)
+(keymap-set o-bray-state-normal-map "s k" #'o-region-mark-character)
 (keymap-set o-bray-state-normal-map "s w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s j" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s s" #'meep-region-mark-symbol)
@@ -125,8 +125,8 @@
 (keymap-set o-bray-state-normal-map "s C" #'meep-region-mark-comment-outer)
 (keymap-set o-bray-state-normal-map "s p" #'meep-region-mark-paragraph-inner)
 (keymap-set o-bray-state-normal-map "s P" #'meep-region-mark-paragraph-outer)
-(keymap-set o-bray-state-normal-map "s f" #'o-meep-region-contextual-inner)
-(keymap-set o-bray-state-normal-map "s F" #'o-meep-region-contextual-outer)
+(keymap-set o-bray-state-normal-map "s f" #'o-region-mark-delim-inner)
+(keymap-set o-bray-state-normal-map "s F" #'o-region-mark-delim-outer)
 
 (keymap-set o-bray-state-normal-map "s i w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s i m" #'meep-region-mark-symbol)
@@ -137,7 +137,7 @@
 (keymap-set o-bray-state-normal-map "s i c" #'meep-region-mark-comment-inner)
 (keymap-set o-bray-state-normal-map "s i d" #'meep-region-mark-defun-inner)
 (keymap-set o-bray-state-normal-map "s i r" #'meep-region-mark-string-inner)
-(keymap-set o-bray-state-normal-map "s i f" #'o-meep-region-contextual-inner)
+(keymap-set o-bray-state-normal-map "s i f" #'o-region-mark-delim-inner)
 
 (keymap-set o-bray-state-normal-map "s o w" #'meep-region-mark-word)
 (keymap-set o-bray-state-normal-map "s o m" #'meep-region-mark-symbol)
@@ -148,7 +148,7 @@
 (keymap-set o-bray-state-normal-map "s o t" #'meep-region-mark-sentence-outer)
 (keymap-set o-bray-state-normal-map "s o c" #'meep-region-mark-comment-outer)
 (keymap-set o-bray-state-normal-map "s o r" #'meep-region-mark-string-outer)
-(keymap-set o-bray-state-normal-map "s o f" #'o-meep-region-contextual-outer)
+(keymap-set o-bray-state-normal-map "s o f" #'o-region-mark-delim-outer)
 ;;;;; i - invert point and mark
 (keymap-set o-bray-state-normal-map "i" #'meep-region-activate-or-reverse)
 (keymap-set o-bray-state-normal-map "I" #'o-bray-unbound-key)
@@ -166,7 +166,7 @@
 ;;;;; d - act on region
 (keymap-set o-bray-state-normal-map "d a" #'o-expand-region-abbrevs-no-query)
 ;; Maintain a similarity with vim's "dd"
-(keymap-set o-bray-state-normal-map "d d" #'kill-whole-line)
+(keymap-set o-bray-state-normal-map "d d" #'o-safe-kill-lne)
 (keymap-set o-bray-state-normal-map "d j" #'o-eval-region)
 (keymap-set o-bray-state-normal-map "d k" #'comment-or-uncomment-region)
 (keymap-set o-bray-state-normal-map "d l" #'duplicate-line)
@@ -199,8 +199,8 @@
 (keymap-set o-bray-state-normal-map "f" #'flash-jump)
 (keymap-set o-bray-state-normal-map "F" #'o-bray-unbound-key)
 ;;;;; x - delete
-(keymap-set o-bray-state-normal-map "x" #'o-kill-region)
-(keymap-set o-bray-state-normal-map "X" #'delete-region)
+(keymap-set o-bray-state-normal-map "x" #'o-region-safe-kill)
+(keymap-set o-bray-state-normal-map "X" #'o-region-safe-delete)
 ;;;;; m - page
 (keymap-set o-bray-state-normal-map "m m" #'recenter)
 (keymap-set o-bray-state-normal-map "m j" #'o-scroll-to-bottom)
@@ -211,7 +211,8 @@
 (keymap-set o-bray-state-normal-map "u" #'undo-only)
 (keymap-set o-bray-state-normal-map "U" #'undo-redo)
 ;;;;; v - visual
-(keymap-set o-bray-state-normal-map "v" #'meep-region-toggle)
+;; (keymap-set o-bray-state-normal-map "v" #'meep-region-toggle)
+(keymap-set o-bray-state-normal-map "v" #'expreg-expand)
 (keymap-set o-bray-state-normal-map "V" #'meep-clipboard-killring-cut-line)
 ;;;;; c - change
 (keymap-set o-bray-state-normal-map "c" #'meep-insert-change)
@@ -221,6 +222,10 @@
 (keymap-set o-bray-state-normal-map "Y" #'meep-clipboard-only-copy)
 ;;;;; p - paste
 (keymap-set o-bray-state-normal-map "p" #'yank)
+;; puni-splice
+;; register-to-point
+;; point-to-register
+;; ffap
 (keymap-set o-bray-state-normal-map "P" #'pop-to-mark-command)
 ;;;;; z - undo
 ;; (keymap-set o-bray-state-normal-map "z" #'undo-only)
@@ -238,14 +243,14 @@
 (keymap-set o-bray-state-normal-map "'" #'o-bray-unbound-key)
 (keymap-set o-bray-state-normal-map "\"" #'o-bray-unbound-key)
 
-(keymap-set o-bray-state-normal-map "o" #'o-meep-region-contextual-inner)
-(keymap-set o-bray-state-normal-map "O" #'o-meep-region-contextual-outer)
+(keymap-set o-bray-state-normal-map "o" #'o-region-mark-delim-inner)
+(keymap-set o-bray-state-normal-map "O" #'o-region-mark-delim-outer)
 
 ;; Do not do anything to "," because it is used for local leader.
 ;; (keymap-set o-bray-state-normal-map "," #'o-bray-unbound-key)
 (keymap-set o-bray-state-normal-map "<" #'o-bray-unbound-key)
 
-(keymap-set o-bray-state-normal-map "." #'o-bray-unbound-key)
+(keymap-set o-bray-state-normal-map "." #'kmacro-call-macro)
 (keymap-set o-bray-state-normal-map ">" #'o-bray-unbound-key)
 
 (keymap-set o-bray-state-insert-map "C-j" #'unexpand-abbrev)
@@ -257,14 +262,22 @@
 ;;;;; duplicate (different behavior)
 (keymap-set o-bray-state-visual-map "d l" #'duplicate-dwim)
 ;;;;; expand-region
-(keymap-set o-bray-state-visual-map "v" #'er/expand-region)
-(keymap-set o-bray-state-visual-map "V" #'er/contract-region)
+(keymap-set o-bray-state-visual-map "v" #'expreg-expand)
+(keymap-set o-bray-state-visual-map "V" #'expreg-contract)
 ;;;;; exchanging keys
-(keymap-set o-bray-state-visual-map "g a" #'o-meep-dwim-swap-selection)
-(keymap-set o-bray-state-visual-map "g A" #'meep-region-to-secondary-selection)
+(keymap-set o-bray-state-normal-map "g a" #'transpose-mark-region)
+(keymap-set o-bray-state-normal-map "g A" #'transpose-mark-region-abort)
 ;;;;; surround
-(keymap-set o-bray-state-normal-map "S" #'meep-char-surround-insert)
-(keymap-set o-bray-state-visual-map "S" #'meep-char-surround-insert)
+(keymap-set o-bray-state-normal-map "S r" #'o-delim-wrap-round)
+(keymap-set o-bray-state-visual-map "S c" #'o-delim-wrap-curly)
+(keymap-set o-bray-state-visual-map "S s" #'o-delim-wrap-square)
+(keymap-set o-bray-state-visual-map "S a" #'o-delim-wrap-angle)
+
+(defvar-keymap o-surround-map
+  "r" #'o-delim-wrap-round
+  "c" #'o-delim-wrap-curly
+  "s" #'o-delim-wrap-square
+  "a" #'o-delim-wrap-angle)
 ;;;; insert map
 (keymap-set o-bray-state-normal-map "C-v" #'rectangle-mark-mode)
 (keymap-set o-bray-state-insert-map "C-j" #'o-inverse-add-abbrev)
