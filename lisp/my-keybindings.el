@@ -84,6 +84,7 @@
   "j" #'org-capture|todo
   "n" #'notmuch
   "e" #'eshell
+  "m" #'mistty
   "f" #'elfeed
   "s" '("screenshot" . o-screenshot-map))
 ;;;;; toggle
@@ -91,7 +92,7 @@
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
-  "r" #'o-load-random-theme
+  "r" #'o-random-load-theme
   "t" #'load-theme
   "h" #'whitespace-mode
   "W" #'whitespace-mode
@@ -100,7 +101,7 @@
   "u" #'toggle-truncate-lines
   "n" #'o-dwim-narrow
   "e" #'eval-expression
-  "f" #'o-set-font-face
+  "f" #'o-emacs-set-font-face
   "d" #'toggle-debug-on-error
   "S" #'profiler-start
   "P" #'profiler-stop)
@@ -128,9 +129,9 @@
   "t" #'tab-switch
   ";" #'save-buffer
   "o" #'find-file
-  "E" #'o-open-emacs-config
-  "I" #'o-open-emacs-init-file
-  "L" #'o-open-emacs-lisp-dir
+  "E" #'o-emacs-open-config
+  "I" #'o-emacs-open-init-file
+  "L" #'o-emacs-open-lisp-dir
   "G" #'rgrep
   "p" #'consult-yank-pop
   "k" #'consult-bookmark
@@ -150,8 +151,8 @@
   "R" #'restart-emacs
   "E" #'restart-emacs-start-new-emacs
   "r" #'restart-emacs
-  "k" #'oo/kill-emacs-no-errors
-  "Q" #'oo/kill-emacs-no-hook
+  "k" #'o-emacs-kill-no-errors
+  "Q" #'o-emacs-kill-no-hook
   "q" #'save-buffers-kill-emacs)
 ;;;;; music
 (o-defvar-keymap o-music-map
@@ -190,10 +191,9 @@
   "h" '("help" . o-help-map)
   "j" '("quick" . o-quick-map)
   "l" #'consult-buffer
-  "y" #'o-load-random-theme
-  "s" #'o-load-random-theme
+  "y" #'o-emacs-random-load-theme
+  "s" #'o-emacs-random-load-theme
   "d" #'transwin-toggle
-  "k" #'evil-keypad-start
   "p" '("package" . o-package-map)
   "t" '("toggle" . o-toggle-map)
   "w" '("window" . o-window-map)
