@@ -74,19 +74,19 @@
   "Return point where sentence should be capitalized."
   (pcase (o-in-string-or-comment-p)
     ;; TODO: find a built-in alternative to `lispy--bounds-comment'.
-    ;; ('comment
-    ;;  ;; For now use `lispy--bounds-comment' because I do not think there is a
-    ;;  ;; built-in alternative.
-    ;;  (o-set beg (car (lispy--bounds-comment)))
-    ;;  ;; The reason I go forwared one character is that I could be at the first
-    ;;  ;; word of the sentence.  I am doubtful this method is perfect but I could
-    ;;  ;; not think of a better way yet.
-    ;;  (save-excursion (goto-char (1+ (point)))
-    ;;                  (backward-sentence)
-    ;;                  (goto-char (max (point) beg))
-    ;;                  (when (looking-at comment-start-skip)
-    ;;                    (goto-char (match-end 0)))
-    ;;                  (point)))
+    ('comment
+     ;; For now use `lispy--bounds-comment' because I do not think there is a
+     ;; built-in alternative.
+     (o-set beg (car (o--bounds-of-comment-inner)))
+     ;; The reason I go forwared one character is that I could be at the first
+     ;; word of the sentence.  I am doubtful this method is perfect but I could
+     ;; not think of a better way yet.
+     (save-excursion (goto-char (1+ (point)))
+                     (backward-sentence)
+                     (goto-char (max (point) beg))
+                     (when (looking-at comment-start-skip)
+                       (goto-char (match-end 0)))
+                     (point)))
     ('string
      (o-aand (car (o--in-elisp-docstring-p))
     	     (max it (or (car (bounds-of-thing-at-point 'sentence)) it))))))
