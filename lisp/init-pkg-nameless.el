@@ -25,7 +25,10 @@
 ;; Hide my specific namespaces to make the code look more visually appealing.
 ;;
 ;;; Code:
+(o-declare-package 'nameless)
+
 (add-hook 'emacs-lisp-mode #'nameless-mode)
+
 (o-opt nameless-prefix "")
 (o-opt nameless-global-aliases '(("" . "o")))
 ;;; provide
