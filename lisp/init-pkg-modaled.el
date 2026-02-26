@@ -138,24 +138,6 @@
   "<escape>" #'o-dwim-escape
   o-key-leader-normal #'o-leader-map)
 
-;; (defun meep-kbd (def)
-;;   "Command that converts current key."
-;;   `(lambda ()
-;;      ,(format "Execute the command which is bound to %s."
-;;               (buttonize def 'describe-key (kbd def)))
-;;      (interactive)
-;;      (cond
-;;       ((string-suffix-p "-" ,def)
-;;        (let ((ch (char-to-string(read-event ,def))))
-;;          (setq unread-command-events (listify-key-sequence (kbd (concat ,def ch))))))
-;;       (t
-;;        (setq unread-command-events (listify-key-sequence (kbd ,def)))))))
-
-;; (keymap-set global-map "C-c x" (meep-kbd "C-x"))
-                                        ;this space+x = C-c x
-;; (keymap-set global-map "C-c m" (meep-kbd "M-"))
-                                        ;this space+m = M-
-
 ;; (defvar-keymap meep-state-keymap-motion
 ;;   "<SPC>"  (meep-kbd "C-c"))
 
