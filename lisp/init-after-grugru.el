@@ -27,10 +27,6 @@
 ;;; Code:
 (require 'grugru)
 
-;; (grugru-define-global 'word (grugru-metagenerator-keep-case '("(" "<" "{" "[")))
-
-;; (grugru-define-global 'word (grugru-metagenerator-keep-case '(")" ">" "}" ">")))
-
 (grugru-define-global 'char (grugru-metagenerator-keep-case '("(" ")")))
 
 (grugru-define-global 'char (grugru-metagenerator-keep-case '("{" "}")))
