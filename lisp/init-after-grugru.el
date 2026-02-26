@@ -27,7 +27,25 @@
 ;;; Code:
 (require 'grugru)
 
+;; (grugru-define-global 'word (grugru-metagenerator-keep-case '("(" "<" "{" "[")))
+
+;; (grugru-define-global 'word (grugru-metagenerator-keep-case '(")" ">" "}" ">")))
+
+(grugru-define-global 'char (grugru-metagenerator-keep-case '("(" ")")))
+
+(grugru-define-global 'char (grugru-metagenerator-keep-case '("{" "}")))
+
+(grugru-define-global 'char (grugru-metagenerator-keep-case '("[" "]")))
+
+(grugru-define-global 'char (grugru-metagenerator-keep-case '("<" ">")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("round" "angle" "curly" "square")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("inside" "around")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("expand" "contract")))
+
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("beg" "end")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("forward" "backward")))
 
@@ -69,6 +87,10 @@
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("is" "was" "were")))
 ;;;; emacs-lisp
+(grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("dolist" "pcase-dolist"))
+
+(grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("car" "cdr"))
+
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("t" "nil"))
 
 (grugru-define-on-major-mode 'emacs-lisp-mode 'word '("normal" "visual" "motion" "insert"))
