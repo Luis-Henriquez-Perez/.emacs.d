@@ -29,7 +29,6 @@
 (require 'bray)
 (require 'bray-state-map)
 (require 'meep)
-(require 'meep-mark-commands)
 (require 'smartparens)
 (require 'init-core-commands)
 ;;;; utilities
