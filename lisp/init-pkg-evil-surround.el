@@ -32,8 +32,9 @@
 (add-hook 'text-mode-hook #'evil-surround-mode)
 (add-hook 'eshell-mode-hook #'evil-surround-mode)
 
-(o-setq-mode-local emacs-lisp-mode evil-surround-pairs-alist (cons '("`" . "'") evil-surround-pairs-alist))
-(o-setq-mode-local emacs-lisp-mode evil-surround-pairs-alist (cons '(?~ . ("`" . "'")) evil-surround-pairs-alist))
+(o-setq-mode-local emacs-lisp-mode
+    evil-surround-pairs-alist (cons '("`" . "'") evil-surround-pairs-alist)
+    evil-surround-pairs-alist (cons '(?~ . ("`" . "'")) evil-surround-pairs-alist))
 ;;; provide
 (provide 'init-pkg-evil-surround)
 ;;; init-pkg-evil-surround.el ends here
