@@ -27,9 +27,6 @@
 ;;; Code:
 (require 'modaled)
 (require 'meep)
-(require 'mark-thing-at)
-
-(mark-thing-at-make-functions)
 
 (defvar-keymap modaled-normal-state-keymap
   "+" #'text-scale-increase
