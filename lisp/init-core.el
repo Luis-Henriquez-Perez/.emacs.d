@@ -31,6 +31,7 @@
 (require 'init-core-settings)
 (require 'init-core-lib)
 (require 'init-core-extra)
+(require 'init-core-keymaps)
 ;;; provide
 (provide 'init-core)
 ;;; init-core.el ends here

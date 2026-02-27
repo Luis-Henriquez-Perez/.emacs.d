@@ -1,0 +1,349 @@
+;;; init-core-keymaps.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;
+;; Copyright (c) 2024 Free Software Foundation, Inc.
+;;
+;; Author: Luis Henriquez-Perez <luis@luishp.xyz>
+;; Homepage: https://github.com/Luis-Henriquez-Perez/dotfiles/
+;;
+;; This file is not part of GNU Emacs.
+;;
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+;;
+;;; Commentary:
+;;
+;; TODO: add commentary
+;;
+;;; Code:
+(defvar-keymap o-keymap-state-normal
+  ;; 0..9
+  "1" #'digit-argument
+  "2" #'digit-argument
+  "3" #'digit-argument
+  "4" #'digit-argument
+  "5" #'digit-argument
+  "6" #'digit-argument
+  "7" #'digit-argument
+  "8" #'digit-argument
+  "9" #'digit-argument
+  "0" #'digit-argument
+  ;; +-;*
+  "<escape>" #'o-bray-dwim-escape
+  "<tab>" #'outline-toggle-children
+  "*" #'meep-isearch-at-point-next
+  "+" #'text-scale-increase
+  "-" #'text-scale-decrease
+  ";" #'execute-extended-command
+  o-key-leader-normal #'o-leader-map
+  ":" #'meep-move-matching-bracket-outer
+  "<remap> <self-insert-command>" #'ignore
+
+  "[" #'meep-isearch-at-point-prev
+  "]" #'meep-isearch-at-point-next
+  ;; q - keyboard macro
+  "q" #'o-dwim-kmacro-start-or-end
+  "Q" #'o-bray-unbound-key
+  ;; werhjkl - movement
+  "w" #'meep-move-word-next
+  "W" #'meep-move-symbol-next
+  "e" #'meep-move-word-next-end
+  "E" #'meep-move-symbol-next-end
+  "r" #'meep-move-word-prev
+  "R" #'meep-move-symbol-prev
+
+  "h" #'meep-move-char-prev
+  "H" #'meep-move-line-non-space-beginning
+
+  "j" #'meep-move-line-next
+  "J" #'scroll-up
+
+  "k" #'meep-move-line-prev
+  "K" #'scroll-down
+
+  "l" #'meep-move-char-next
+  "L" #'meep-move-line-non-space-end
+  ;; t - next/previous jumplist
+  "t" #'better-jumper-jump-backward
+  "T" #'better-jumper-jump-forward
+  ;; g - miscellaneous
+  "g a" #'transpose-mark-region
+  "g A" #'transpose-mark-region-abort
+  "g g" #'beginning-of-buffer
+  "g h" #'beginning-of-buffer
+  "g G" #'end-of-buffer
+  "g i" #'kmacro-insert-counter
+  "G" #'end-of-buffer
+  ;; s - mark (select)
+  "s k" #'o-mark-character
+  "s w" #'o-mark-word
+  "s j" #'o-mark-word
+  "s s" #'o-mark-symbol
+  "s m" #'o-mark-symbol
+  "s l" #'meep-region-expand-to-line-bounds
+  "s L" #'meep-region-expand-to-line-bounds
+  "s ;" #'o-mark-line-inner
+  "s r" #'o-mark-string-inner
+  "s S" #'o-mark-string-outer
+  "s t" #'o-mark-sentence-inner
+  "s T" #'o-mark-sentence-outer
+  "s d" #'o-mark-defun
+  "s D" #'o-mark-defun-outer
+  "s c" #'o-mark-comment-inner
+  "s C" #'o-mark-comment-outer
+  "s p" #'o-mark-paragraph-inner
+  "s P" #'o-mark-paragraph-outer
+  "s f" #'o-mark-delim-inner
+  "s F" #'o-mark-delim-outer
+
+  "s i w" #'o-mark-word
+  "s i m" #'o-mark-symbol
+  "s i j" #'o-mark-symbol
+  "s i l" #'o-mark-line-inner
+  "s i p" #'o-mark-paragraph-inner
+  "s i t" #'o-mark-sentence-inner
+  "s i c" #'o-mark-comment-inner
+  "s i d" #'o-mark-defun-inner
+  "s i r" #'o-mark-string-inner
+  "s i f" #'o-mark-delim-inner
+
+  "s o w" #'o-mark-word
+  "s o m" #'o-mark-symbol
+  "s o s" #'o-mark-symbol
+  "s o j" #'o-mark-symbol
+  "s o l" #'meep-region-expand-to-line-bounds
+  "s o p" #'o-mark-paragraph-outer
+  "s o t" #'o-mark-sentence-outer
+  "s o c" #'o-mark-comment-outer
+  "s o r" #'o-mark-string-outer
+  "s o f" #'o-mark-delim-outer
+  ;; i - invert point and mark
+  "i" #'meep-region-activate-or-reverse
+  "I" #'o-bray-unbound-key
+  ;; o - mark contextual delimiters
+  "o" #'o-mark-delim-inner
+  "O" #'o-mark-delim-outer
+  ;; a - insert
+  "A" #'meep-insert-line-end
+  "a a" #'meep-insert
+  "a s" #'meep-insert-append
+  "a j" #'meep-insert-open-below
+  "a k" #'meep-insert-open-above
+  "a l" #'meep-insert-append
+  "a h" #'meep-insert
+  "a L" #'meep-insert-line-end
+  "a ;" #'meep-insert-line-end
+  "a H" #'meep-insert-line-beginning
+  ;; d - act on region
+  "d a" #'o-expand-region-abbrevs-no-query
+  ;; Maintain a similarity with vim's "dd"
+  "d d" #'kill-whole-line
+  "d j" #'o-region-eval
+  "d k" #'comment-or-uncomment-region
+  "d l" #'duplicate-dwim
+  "d r" #'o-eval-and-replace-region
+  "d ;" #'iedit-mode
+  "d c" #'capitalize-region
+  "d h" #'helpful-at-point
+  "d o" #'sort-lines
+  "d e" #'o-region-eval
+  "d n" #'narrow-to-region
+  "d u" #'downcase-region
+  "d U" #'upcase-region
+  "d y" #'flyspell-region
+  "d s" #'meep-char-surround-insert
+  "d w" #'widen
+  ;; Uncommon therefore I give these keybindings the harder to press keys.
+  "d R" #'rot13-region
+  "d m" #'unmorse-region
+  "d M" #'morse-region
+  "d f" #'grugru-forward
+  ;; o - mark surrounding chars
+  "o" #'o-mark-delim-inner
+  "O" #'o-mark-delim-outer
+  ;; f - search
+  "f" #'flash-jump
+  "F" #'o-bray-unbound-key
+  ;; x - delete
+  "x" #'kill-region
+  "X" #'delete-region
+  ;; m - page
+  "m m" #'recenter
+  "m j" #'o-scroll-to-bottom
+  "m k" #'o-scroll-to-top
+
+  "M" #'o-bray-unbound-key
+  ;; u - undo
+  "u" #'undo-only
+  "U" #'undo-redo
+
+  "/" #'meep-isearch-regexp-next
+  "?" #'meep-isearch-regexp-prev
+
+  "n" #'meep-isearch-repeat-next
+  "N" #'meep-isearch-repeat-prev
+
+  "b" #'meep-isearch-at-point-next
+  "B" #'meep-isearch-at-point-prev
+  "'" #'puni-splice
+
+  "\"" #'o-bray-unbound-key
+
+  ;; Do not do anything to "," because it is used for local leader.
+  ;; "," #'o-bray-unbound-key
+  "<" #'o-bray-unbound-key
+
+  "." #'kmacro-call-macro
+  ">" #'o-bray-unbound-key
+
+  "C-j" #'unexpand-abbrev
+  "C-j" #'unexpand-abbrev
+
+  "C-f" #'scroll-up
+  "C-b" #'scroll-down)
+
+(defvar-keymap o-keymap-state-visual
+  "v" #'expreg-expand
+  "V" #'expreg-contract
+  "s" #'o-surround-map-prefix-command
+  "S" #'o-surround-map-prefix-command)
+
+(defvar-keymap o-keymap-state-emacs)
+
+(defvar-keymap o-keymap-delim-surround
+  :prefix 'o-surround-map-prefix-command
+  ")" #'o-delim-wrap-round
+  "(" #'o-delim-wrap-round
+  "r" #'o-delim-wrap-round
+  "}" #'o-delim-wrap-curly
+  "{" #'o-delim-wrap-curly
+  "c" #'o-delim-wrap-curly
+  "[" #'o-delim-wrap-square
+  "]" #'o-delim-wrap-square
+  "s" #'o-delim-wrap-square
+  "<" #'o-delim-wrap-angle
+  ">" #'o-delim-wrap-angle
+  "a" #'o-delim-wrap-angle)
+
+(defvar-keymap o-keymap-state-insert
+  "C-v" #'rectangle-mark-mode
+  "C-j" #'o-abbrev-inverse-add
+  "C-j" #'o-abbrev-inverse-add
+  "<escape>" #'o-bray-dwim-escape)
+
+(defvar-keymap o-keymap-leader-window
+  "D" #'delete-other-windows
+  "M" #'maximize-window
+  "S" #'burly-bookmark-windows
+  "b" #'balance-windows
+  "d" #'delete-window
+  "h" #'split-window-vertically
+  "j" #'ace-window
+  "k" #'display-buffer
+  "o" #'ace-window
+  "s" #'ace-swap-window
+  "t" #'transpose-frame
+  "u" #'winner-undo
+  "v" #'split-window-horizontally
+  "w" #'ace-window)
+
+(defvar-keymap o-keymap-leader-git
+  "B" #'magit-branch
+  "b" #'vc-switch-branch
+  "c" #'magit-commit
+  "g" #'magit-status
+  ;; "j" #'o-dwim-vc-action
+  "l" #'vc-switch-branch
+  ;; "n" #'o-dwim-vc-action
+  "p" #'magit-push
+  "r" #'vc-register
+  "s" #'magit-status)
+
+(defvar-keymap o-keymap-leader-toggle
+  "c" #'blink-cursor-mode
+  "g" #'grugru
+  "s" #'smartparens-mode
+  "r" #'o-random-load-theme
+  "t" #'load-theme
+  "h" #'whitespace-mode
+  "W" #'whitespace-mode
+  "w" #'widen
+  "l" #'display-line-numbers-mode
+  "u" #'toggle-truncate-lines
+  "n" #'o-dwim-narrow
+  "e" #'eval-expression
+  "f" #'o-emacs-set-font-face
+  "d" #'toggle-debug-on-error
+  "S" #'profiler-start
+  "P" #'profiler-stop)
+
+(defvar-keymap o-keymap-leader-help
+  "m" #'describe-mode
+  "l" #'describe-function
+  "f" #'describe-function
+  "j" #'describe-variable
+  "v" #'describe-variable
+  "h" #'describe-variable
+  "c" #'describe-char
+  "C" #'describe-char
+  "k" #'describe-key
+  "a" #'describe-face
+  "F" #'describe-face)
+
+(defvar-keymap o-keymap-leader-find
+  "t" #'tab-switch
+  ";" #'save-buffer
+  "o" #'find-file
+  "E" #'o-emacs-open-config
+  "I" #'o-emacs-open-init-file
+  "L" #'o-emacs-open-lisp-dir
+  "G" #'rgrep
+  "p" #'consult-yank-pop
+  "k" #'consult-bookmark
+  "l" #'consult-line
+  "h" #'consult-outline
+  "g" #'consult-grep
+  "z" #'ace-link
+  "b" #'burly-open-bookmark
+  "i" #'imenu
+  ;; "j" #'o-dwim-vc-action
+  "n" #'o-new-buffer
+  "f" #'switch-to-buffer
+  "a" #'find-library
+  "d" #'pop-to-buffer)
+
+(defvar-keymap o-keymap-leader-quit
+  "R" #'restart-emacs
+  "E" #'restart-emacs-start-new-emacs
+  "r" #'restart-emacs
+  "k" #'o-emacs-kill-no-errors
+  "Q" #'o-emacs-kill-no-hook
+  "q" #'save-buffers-kill-emacs)
+
+(defvar-keymap o-keymap-leader
+  "SPC" #'execute-extended-command
+  "a" #'o-prefix-keymap-leader-app
+  "b" #'o-prefix-keymap-leader-buffer
+  "f" #'o-prefix-keymap-leader-find
+  "g" #'o-prefix-keymap-leader-git
+  "h" #'o-prefix-keymap-leader-help
+  "j" #'o-prefix-keymap-leader-emacs
+  "p" #'o-prefix-keymap-leader-package
+  "t" #'o-prefix-keymap-leader-toggle
+  "w" #'o-prefix-keymap-leader-window
+  "l" #'consult-buffer
+  "y" #'o-emacs-random-load-theme
+  "s" #'o-emacs-random-load-theme
+  "d" #'transwin-toggle)
+;;; provide
+(provide 'init-core-keymaps)
+;;; init-core-keymaps.el ends here
