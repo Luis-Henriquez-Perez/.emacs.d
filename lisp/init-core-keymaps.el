@@ -180,7 +180,7 @@
   "d f" #'grugru-forward
   ;; f - search
   "f" #'flash-jump
-  "F" #'o-bray-unbound-key
+  "F" #'meep-move-find-char-on-line-at-next
   ;; x - delete
   "x" #'kill-region
   "X" #'delete-region
