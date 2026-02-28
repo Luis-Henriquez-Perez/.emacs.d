@@ -269,7 +269,8 @@ is already narrowed."
          (narrow-to-defun))))
 
 (defun o-dwim-kmacro-start-or-end ()
-  "Start kboard macro if not started othw."
+  "Start kboard macro if not started.
+Otherwise if current defining or execing a kb."
   (interactive)
   (cond (defining-kbd-macro
          (kmacro-end-macro nil))
