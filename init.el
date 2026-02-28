@@ -114,7 +114,7 @@
 ;; (o-require init-pkg-restart-emacs)
 ;; (o-require init-pkg-tempel)
 ;;;; KEYBINDINGS
-(o-require my-keybindings)
+;; (o-require my-keybindings)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
