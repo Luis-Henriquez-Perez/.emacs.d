@@ -225,13 +225,13 @@
   "C-v" #'rectangle-mark-mode
   "v" #'expreg-expand
   "V" #'expreg-contract
-  "s" #'o-surround-map-prefix-command
-  "S" #'o-surround-map-prefix-command)
+  "s" #'o-prefix-command-delim-surround
+  "S" #'o-prefix-command-delim-surround)
 
 (defvar-keymap o-keymap-state-emacs)
 
 (defvar-keymap o-keymap-delim-surround
-  :prefix 'o-surround-map-prefix-command
+  :prefix 'o-prefix-command-delim-surround
   ")" #'o-delim-wrap-round
   "(" #'o-delim-wrap-round
   "r" #'o-delim-wrap-round
