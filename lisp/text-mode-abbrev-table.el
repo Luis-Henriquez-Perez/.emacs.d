@@ -28,6 +28,9 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "registred" "registered")
+(define-abbrev text-mode-abbrev-table "netire" "entire")
+(define-abbrev text-mode-abbrev-table "boudns" "bounds")
 (define-abbrev text-mode-abbrev-table "wtdwi" "what to do with it")
 (define-abbrev text-mode-abbrev-table "decing" "deciding")
 (define-abbrev text-mode-abbrev-table "publick" "public")
