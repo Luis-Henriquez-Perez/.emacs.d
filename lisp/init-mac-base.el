@@ -58,8 +58,7 @@ FEATURE."
                          ,(macroexp-progn forms)))))
        (setq forms `((if o-init-profile
                          (o-aprog1 (o-time-elapsed ,(macroexp-progn forms))
-                           (o-log 'success "Required %s in %.2f seconds" ',feature it)
-                           (push (list ',feature it) (get-register :require-times)))
+                           (o-log 'success "Required %s in %.2f seconds" ',feature it))
                        ,(macroexp-progn forms))))
        ;; Ensure main forms are not evaluated more than once.
        (setq forms `((let (file-name-handler-alist)
