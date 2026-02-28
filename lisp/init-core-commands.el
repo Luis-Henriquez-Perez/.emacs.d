@@ -101,42 +101,6 @@
   (interactive)
   (select-window (split-window-below)))
 ;;;; bounds
-(defun o--bounds-of-char-after ()
-  "Return the bounds of char after point."
-  (unless (eobp)
-    (cons (point) (1+ (point)))))
-
-(defun o--bounds-of-comment-inner ()
-  "Return the bounds of comment at point."
-  ;; The implementation is too involved for me to do it myself and I do not
-  ;; think there is a built-in alternative.  Maybe `comment-beginning'?
-  (meep--bounds-at-point-for-comment-inner))
-
-(defun o--bounds-of-comment-outer ()
-  "Return the bounds of comment at point."
-  (meep--bounds-at-point-for-comment-outer))
-
-(defun o--bounds-of-line-inner ()
-  "Return the bounds of line at point."
-  (cons (line-beginning-position) (line-end-position)))
-
-(defun o--bounds-of-line-outer ()
-  "Return the bounds of line at point."
-  (let ((beg (line-beginning-position))
-        (end (line-end-position)))
-    (save-excursion (goto-char end)
-                    (unless (eobp)
-                      (setq end (1+ end))))
-    (cons beg end)))
-
-(defun o--bounds-of-paragraph ()
-  "Return the bounds of paragraph at point."
-  (meep--bounds-of-paragraph 'inner))
-
-(defun o--bounds-of-sentence ()
-  "Return the bounds of paragraph at point."
-  (bounds-of-thing-at-point 'sentence))
-
 (defun o--bounds-of-delim-inner ()
   "Return the bounds of inner delimiter pair."
   (when-let* ((bounds-inside (puni-bounds-of-list-around-point))
@@ -150,18 +114,6 @@
               (beg (car bounds-around))
               (end (cdr bounds-around)))
     (cons beg end)))
-
-(defun o--bounds-of-defun ()
-  "Return bounds of defun at point."
-  (bounds-of-thing-at-point 'defun))
-
-(defun o--bounds-of-word ()
-  "Return the bounds of word at point."
-  (bounds-of-thing-at-point 'word))
-
-(defun o--bounds-of-symbol ()
-  "Return the bounds of symbol at point."
-  (bounds-of-thing-at-point 'symbol))
 ;;;; wrap
 (defun o-delim-wrap-round (beg end)
   "Wrap region with parentheses."
@@ -200,11 +152,6 @@ beginning of region."
   (set-mark (if at-end (car bounds) (cdr bounds)))
   (activate-mark))
 
-(defun o-mark-character ()
-  "Mark character after point."
-  (interactive)
-  (o--mark-region (o--bounds-of-char-after)))
-
 (defun o-mark-delim-inner ()
   "Mark inner bounds of surrounding delimiters."
   (interactive)
@@ -214,52 +161,6 @@ beginning of region."
   "Mark outer bounds of surrounding delimiters."
   (interactive)
   (o--mark-region (o--bounds-of-delim-outer) t))
-
-(defun o-mark-word ()
-  "Mark word."
-  (interactive)
-  (o--mark-region (o--bounds-of-word) t))
-
-(defun o-mark-symbol ()
-  "Mark symbol."
-  (interactive)
-  (o--mark-region (o--bounds-of-symbol) t))
-
-(defun o-mark-line-inner ()
-  "Mark line."
-  (interactive)
-  (o--mark-region (o--bounds-of-line-inner) t))
-
-(defun o-mark-line-outer ()
-  "Mark line."
-  (interactive)
-  (o--mark-region (o--bounds-of-line-outer) t))
-
-(defun o-mark-paragraph ()
-  "Mark paragraph."
-  (interactive)
-  (o--mark-region (o--bounds-of-paragraph) t))
-
-(defun o-mark-sentence ()
-  "Mark sentence."
-  (interactive)
-  (o--mark-region (o--bounds-of-sentence) t))
-
-;; Foo in foo
-(defun o-mark-comment-inner ()
-  "Mark sentence."
-  (interactive)
-  (o--mark-region (o--bounds-of-comment-inner) t))
-
-(defun o-mark-comment-outer ()
-  "Mark outer comment."
-  (interactive)
-  (o--mark-region (o--bounds-of-comment-outer) t))
-
-(defun o-mark-defun ()
-  "Mark sentence."
-  (interactive)
-  (o--mark-region (o--bounds-of-defun) t))
 
 (defun o--bounds-outline-subtree-inner ()
   "Return the bounds of inner subtree at point as (beg . end)."
