@@ -38,13 +38,13 @@
   "9" #'digit-argument
   "0" #'digit-argument
   ;; +-;*
-  "<escape>" #'o-bray-dwim-escape
+  "<escape>" #'o-dwim-escape
   "<tab>" #'outline-toggle-children
   "*" #'meep-isearch-at-point-next
   "+" #'text-scale-increase
   "-" #'text-scale-decrease
   ";" #'execute-extended-command
-  o-key-leader-normal #'o-leader-map
+  o-key-leader-normal #'o-prefix-command-leader
   ":" #'meep-move-matching-bracket-outer
   "<remap> <self-insert-command>" #'ignore
 
@@ -75,6 +75,15 @@
   ;; t - next/previous jumplist
   "t" #'better-jumper-jump-backward
   "T" #'better-jumper-jump-forward
+  ;; y - copy
+  "y" #'o-region-copy-as-kill
+  "Y" #'o-region-copy-line
+  ;; Have - visual selection
+  "v" #'meep-region-toggle
+  "V" #'expreg-expand
+  ;; p - paste
+  "p" #'yank
+  "P" #'point-to-register
   ;; g - miscellaneous
   "g a" #'transpose-mark-region
   "g A" #'transpose-mark-region-abort
@@ -84,47 +93,47 @@
   "g i" #'kmacro-insert-counter
   "G" #'end-of-buffer
   ;; s - mark (select)
-  "s k" #'o-mark-character
-  "s w" #'o-mark-word
-  "s j" #'o-mark-word
-  "s s" #'o-mark-symbol
-  "s m" #'o-mark-symbol
-  "s l" #'meep-region-expand-to-line-bounds
-  "s L" #'meep-region-expand-to-line-bounds
-  "s ;" #'o-mark-line-inner
-  "s r" #'o-mark-string-inner
-  "s S" #'o-mark-string-outer
-  "s t" #'o-mark-sentence-inner
-  "s T" #'o-mark-sentence-outer
-  "s d" #'o-mark-defun
-  "s D" #'o-mark-defun-outer
-  "s c" #'o-mark-comment-inner
-  "s C" #'o-mark-comment-outer
-  "s p" #'o-mark-paragraph-inner
-  "s P" #'o-mark-paragraph-outer
+  "s k" #'meep-region-mark-char-outer
+  "s w" #'meep-region-mark-word
+  "s j" #'meep-region-mark-word
+  "s s" #'meep-region-mark-symbol
+  "s m" #'meep-region-mark-symbol
+  "s l" #'meep-region-mark-line-outer
+  "s L" #'meep-region-mark-line-outer
+  "s ;" #'meep-region-mark-line-inner
+  "s r" #'meep-region-mark-string-inner
+  "s S" #'meep-region-mark-string-outer
+  "s t" #'meep-region-mark-sentence-inner
+  "s T" #'meep-region-mark-sentence-outer
+  "s d" #'meep-region-mark-defun-inner
+  "s D" #'meep-region-mark-defun-outer
+  "s c" #'meep-region-mark-comment-inner
+  "s C" #'meep-region-mark-comment-outer
+  "s p" #'meep-region-mark-paragraph-inner
+  "s P" #'meep-region-mark-paragraph-outer
   "s f" #'o-mark-delim-inner
   "s F" #'o-mark-delim-outer
 
-  "s i w" #'o-mark-word
-  "s i m" #'o-mark-symbol
-  "s i j" #'o-mark-symbol
-  "s i l" #'o-mark-line-inner
-  "s i p" #'o-mark-paragraph-inner
-  "s i t" #'o-mark-sentence-inner
-  "s i c" #'o-mark-comment-inner
-  "s i d" #'o-mark-defun-inner
-  "s i r" #'o-mark-string-inner
+  "s i w" #'meep-region-mark-word
+  "s i m" #'meep-region-mark-symbol
+  "s i j" #'meep-region-mark-symbol
+  "s i l" #'meep-region-mark-line-inner
+  "s i p" #'meep-region-mark-paragraph-inner
+  "s i t" #'meep-region-mark-sentence-inner
+  "s i c" #'meep-region-mark-comment-inner
+  "s i d" #'meep-region-mark-defun-inner
+  "s i r" #'meep-region-mark-string-inner
   "s i f" #'o-mark-delim-inner
 
-  "s o w" #'o-mark-word
-  "s o m" #'o-mark-symbol
-  "s o s" #'o-mark-symbol
-  "s o j" #'o-mark-symbol
-  "s o l" #'meep-region-expand-to-line-bounds
-  "s o p" #'o-mark-paragraph-outer
-  "s o t" #'o-mark-sentence-outer
-  "s o c" #'o-mark-comment-outer
-  "s o r" #'o-mark-string-outer
+  "s o w" #'meep-region-mark-word
+  "s o m" #'meep-region-mark-symbol
+  "s o s" #'meep-region-mark-symbol
+  "s o j" #'meep-region-mark-word
+  "s o l" #'meep-region-mark-line-outer
+  "s o p" #'meep-region-mark-paragraph-outer
+  "s o t" #'meep-region-mark-sentence-outer
+  "s o c" #'meep-region-mark-comment-outer
+  "s o r" #'meep-region-mark-string-outer
   "s o f" #'o-mark-delim-outer
   ;; i - invert point and mark
   "i" #'meep-region-activate-or-reverse
@@ -167,15 +176,15 @@
   "d m" #'unmorse-region
   "d M" #'morse-region
   "d f" #'grugru-forward
-  ;; o - mark surrounding chars
-  "o" #'o-mark-delim-inner
-  "O" #'o-mark-delim-outer
   ;; f - search
   "f" #'flash-jump
   "F" #'o-bray-unbound-key
   ;; x - delete
   "x" #'kill-region
   "X" #'delete-region
+  ;; c -change
+  "c" #'meep-insert-change
+  "C" #'meep-insert-change-lines
   ;; m - page
   "m m" #'recenter
   "m j" #'o-scroll-to-bottom
@@ -190,8 +199,6 @@
   "?" #'meep-isearch-regexp-prev
 
   "n" #'meep-isearch-repeat-next
-  "N" #'meep-isearch-repeat-prev
-
   "b" #'meep-isearch-at-point-next
   "B" #'meep-isearch-at-point-prev
   "'" #'puni-splice
@@ -206,12 +213,14 @@
   ">" #'o-bray-unbound-key
 
   "C-j" #'unexpand-abbrev
-  "C-j" #'unexpand-abbrev
 
   "C-f" #'scroll-up
   "C-b" #'scroll-down)
 
+(defvar-keymap o-keymap-state-motion)
+
 (defvar-keymap o-keymap-state-visual
+  "C-v" #'rectangle-mark-mode
   "v" #'expreg-expand
   "V" #'expreg-contract
   "s" #'o-surround-map-prefix-command
@@ -237,10 +246,10 @@
 (defvar-keymap o-keymap-state-insert
   "C-v" #'rectangle-mark-mode
   "C-j" #'o-abbrev-inverse-add
-  "C-j" #'o-abbrev-inverse-add
-  "<escape>" #'o-bray-dwim-escape)
+  "<escape>" #'o-dwim-escape)
 
 (defvar-keymap o-keymap-leader-window
+  :prefix 'o-prefix-command-leader-window
   "D" #'delete-other-windows
   "M" #'maximize-window
   "S" #'burly-bookmark-windows
@@ -257,6 +266,7 @@
   "w" #'ace-window)
 
 (defvar-keymap o-keymap-leader-git
+  :prefix 'o-prefix-command-leader-git
   "B" #'magit-branch
   "b" #'vc-switch-branch
   "c" #'magit-commit
@@ -269,6 +279,7 @@
   "s" #'magit-status)
 
 (defvar-keymap o-keymap-leader-toggle
+  :prefix 'o-prefix-command-leader-toggle
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
@@ -287,6 +298,7 @@
   "P" #'profiler-stop)
 
 (defvar-keymap o-keymap-leader-help
+  :prefix 'o-prefix-command-leader-help
   "m" #'describe-mode
   "l" #'describe-function
   "f" #'describe-function
@@ -299,7 +311,15 @@
   "a" #'describe-face
   "F" #'describe-face)
 
+(defvar-keymap o-keymap-leader-buffer
+  :prefix 'o-prefix-command-leader-buffer
+  "x" #'kill-current-buffer
+  "b" #'switch-to-buffer
+  "j" #'next-buffer
+  "k" #'previous-buffer)
+
 (defvar-keymap o-keymap-leader-find
+  :prefix 'o-prefix-command-leader-find
   "t" #'tab-switch
   ";" #'save-buffer
   "o" #'find-file
@@ -322,6 +342,7 @@
   "d" #'pop-to-buffer)
 
 (defvar-keymap o-keymap-leader-quit
+  :prefix 'o-prefix-command-leader-quit
   "R" #'restart-emacs
   "E" #'restart-emacs-start-new-emacs
   "r" #'restart-emacs
@@ -329,17 +350,35 @@
   "Q" #'o-emacs-kill-no-hook
   "q" #'save-buffers-kill-emacs)
 
+(defvar-keymap o-keymap-leader-package
+  :prefix 'o-prefix-command-leader-package
+  "l" #'elpaca-log
+  "i" #'elpaca-try
+  "d" #'elpaca-delete)
+
+(defvar-keymap o-keymap-leader-app
+  :prefix 'o-prefix-command-leader-app
+  "E" #'restart-emacs-start-new-emacs
+  "d" #'dired-jump
+  "j" #'org-capture|todo
+  "n" #'notmuch
+  "e" #'eshell
+  "m" #'mistty
+  "f" #'elfeed)
+
 (defvar-keymap o-keymap-leader
+  :prefix 'o-prefix-command-leader
   "SPC" #'execute-extended-command
-  "a" #'o-prefix-keymap-leader-app
-  "b" #'o-prefix-keymap-leader-buffer
-  "f" #'o-prefix-keymap-leader-find
-  "g" #'o-prefix-keymap-leader-git
-  "h" #'o-prefix-keymap-leader-help
-  "j" #'o-prefix-keymap-leader-emacs
-  "p" #'o-prefix-keymap-leader-package
-  "t" #'o-prefix-keymap-leader-toggle
-  "w" #'o-prefix-keymap-leader-window
+  "a" #'o-prefix-command-leader-app
+  "b" #'o-prefix-command-leader-buffer
+  "f" #'o-prefix-command-leader-find
+  "g" #'o-prefix-command-leader-git
+  "h" #'o-prefix-command-leader-help
+  "j" #'o-prefix-command-leader-emacs
+  "p" #'o-prefix-command-leader-package
+  "t" #'o-prefix-command-leader-toggle
+  "w" #'o-prefix-command-leader-window
+  "q" #'o-prefix-command-leader-quit
   "l" #'consult-buffer
   "y" #'o-emacs-random-load-theme
   "s" #'o-emacs-random-load-theme
