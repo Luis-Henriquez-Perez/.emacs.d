@@ -52,7 +52,7 @@
   "]" #'meep-isearch-at-point-next
   ;; q - keyboard macro
   "q" #'o-dwim-kmacro-start-or-end
-  "Q" #'o-bray-unbound-key
+  "Q" #'repeat-complex-command
   ;; werhjkl - movement
   "w" #'meep-move-word-next
   "W" #'meep-move-symbol-next
