@@ -46,6 +46,8 @@
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-string-outer smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-comment-inner smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-comment-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-line-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-line-outer smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-visual-line-inner smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-visual-line-outer smart-mark-mark-functions))
 
