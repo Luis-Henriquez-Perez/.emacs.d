@@ -85,7 +85,6 @@
 (o-require init-pkg-emmet-mode)
 (o-require init-pkg-transpose-mark)
 ;;;; UNCATEGORIZED
-(o-require init-repeat-fu)
 (o-require init-pkg-vertico)
 (o-require init-pkg-dimmer)
 (o-require init-pkg-denote)
