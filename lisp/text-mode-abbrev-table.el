@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "wtdwi" "what to do with it")
+(define-abbrev text-mode-abbrev-table "decing" "deciding")
 (define-abbrev text-mode-abbrev-table "publick" "public")
 (define-abbrev text-mode-abbrev-table "seee" "see")
 (define-abbrev text-mode-abbrev-table "thangling" "dangling")
@@ -4815,7 +4817,7 @@ This function is meant to be used as the expansion."
 (define-abbrev text-mode-abbrev-table "privl" "privilege")
 (define-abbrev text-mode-abbrev-table "privledge" "privilege")
 (define-abbrev text-mode-abbrev-table "privte" "private")
-(define-abbrev text-mode-abbrev-table "prob" "problem")
+(define-abbrev text-mode-abbrev-table "prob" "probrably")
 (define-abbrev text-mode-abbrev-table "proba" "probably")
 (define-abbrev text-mode-abbrev-table "probabilaty" "probability")
 (define-abbrev text-mode-abbrev-table "probablistic" "probabilistic")
