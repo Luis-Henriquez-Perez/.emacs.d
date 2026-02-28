@@ -83,6 +83,7 @@
 (o-require init-pkg-super-save)
 (o-require init-pkg-ws-butler)
 (o-require init-pkg-emmet-mode)
+(o-require init-pkg-transpose-mark)
 ;;;; UNCATEGORIZED
 (o-require init-repeat-fu)
 (o-require init-pkg-vertico)
