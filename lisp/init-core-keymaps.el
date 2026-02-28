@@ -85,6 +85,8 @@
   "p" #'yank
   "P" #'point-to-register
   ;; g - miscellaneous
+  "g x" #'transpose-mark-region
+  "g X" #'transpose-mark-region-abort
   "g a" #'transpose-mark-region
   "g A" #'transpose-mark-region-abort
   "g g" #'beginning-of-buffer
