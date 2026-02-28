@@ -66,6 +66,7 @@
 (o-require init-pkg-org-pretty-tags)
 (o-require init-pkg-org-superstar)
 ;;;; EDITING
+(o-require init-pkg-smart-mark)
 (o-require init-pkg-puni)
 (o-require init-pkg-flash)
 (o-require init-pkg-aggressive-indent)
