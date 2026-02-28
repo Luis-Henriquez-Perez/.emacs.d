@@ -328,9 +328,6 @@ Otherwise if current defining or execing a kb."
   ;; Expand the abbrev at point to new expansion.
   ;; this needs to be called at the end of the abbrev.
   (expand-abbrev))
-
-(defun o-region-copy-line ()
-  )
 ;;; provide
 (provide 'init-core-commands)
 ;;; init-core-commands.el ends here
