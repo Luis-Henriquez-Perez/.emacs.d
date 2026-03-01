@@ -79,6 +79,7 @@
 (o-require init-pkg-highlight-quoted)
 (o-require init-pkg-orderless)
 (o-require init-pkg-rainbow-delimiters)
+(o-require init-pkg-rainbow-mode)
 (o-require init-pkg-smartparens)
 (o-require init-pkg-super-save)
 (o-require init-pkg-ws-butler)
