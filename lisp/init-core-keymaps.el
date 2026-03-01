@@ -139,7 +139,7 @@
   "s o f" #'o-mark-delim-outer
   ;; i - invert point and mark
   "i" #'meep-region-activate-or-reverse
-  "I" #'o-bray-unbound-key
+  "I" #'iedit-mode
   ;; o - mark contextual delimiters
   "o" #'o-mark-delim-inner
   "O" #'o-mark-delim-outer
@@ -209,7 +209,7 @@
 
   ;; Do not do anything to "," because it is used for local leader.
   ;; "," #'o-bray-unbound-key
-  "<" #'o-bray-unbound-key
+  "<" #'iedit-mode
 
   "." #'kmacro-call-macro
   ">" #'o-bray-unbound-key
