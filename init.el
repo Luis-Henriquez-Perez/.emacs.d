@@ -103,6 +103,7 @@
 (o-require init-pkg-emms)
 (o-require init-pkg-lispy)
 (o-require init-pkg-expreg)
+(o-require init-pkg-magit)
 ;;;; DISABLED
 ;; (o-require init-pkg-cape)
 ;; (o-require init-pkg-corfu)
