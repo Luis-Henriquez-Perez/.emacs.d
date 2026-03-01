@@ -53,7 +53,7 @@
   (bray-state-map-set 'insert helm-map "C-;" #'ace-jump-helm-line))
 
 (o-after vertico
-  (bray-state-map-set 'insert vertico-map "<escape>" #'o-bray-dwim-escape)
+  (bray-state-map-set 'insert vertico-map "<escape>" #'o-dwim-escape)
   (bray-state-map-set 'insert vertico-map "C-j" #'vertico-next)
   (bray-state-map-set 'insert vertico-map "C-k" #'vertico-previous)
   (bray-state-map-set 'insert vertico-map "C-n" #'vertico-scroll-up)
