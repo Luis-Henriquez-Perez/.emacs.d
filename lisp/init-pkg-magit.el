@@ -27,8 +27,10 @@
 ;;; Code:
 ;;;; requirements
 (require 'init-core)
-;; Loading these idle features trigger the annoying auto-rever-mode.
-;; (o-appending o-idle-features '(magit-log magit-blame magit-commit magit-pull magit-push))
+
+(o-declare-package 'transient)
+(o-declare-package 'magit)
+
 (o-popup-at-bottom "\\`magit")
 ;;; provide
 (provide 'init-pkg-magit)
