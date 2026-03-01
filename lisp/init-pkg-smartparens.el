@@ -35,10 +35,10 @@
 (autoload 'smartparens-mode "smartparens" nil nil 'function)
 (autoload 'turn-on-show-smartparens-mode "smartparens" nil nil 'function)
 
-(add-hook 'text-mode-hook #'turn-on-show-smartparens-mode)
+;; (add-hook 'text-mode-hook #'turn-on-show-smartparens-mode)
 (add-hook 'text-mode-hook #'smartparens-mode)
 (add-hook 'prog-mode-hook #'smartparens-mode)
-(add-hook 'prog-mode-hook #'turn-on-show-smartparens-mode)
+;; (add-hook 'prog-mode-hook #'turn-on-show-smartparens-mode)
 (add-hook 'eshell-mode-hook #'smartparens-mode)
 
 ;; This allows me to have parens completion when I invoke the command `eval-expression'.
