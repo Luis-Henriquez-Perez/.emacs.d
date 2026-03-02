@@ -45,11 +45,11 @@
 
 (defvar-keymap o-bray-state-motion-map)
 
-(defvar-keymap o-bray-state-insert-map)
+(defvar o-bray-state-motion-map o-keymap-state-motion)
 
-(defvar-keymap o-bray-state-normal-map)
+(defvar o-bray-state-insert-map o-keymap-state-insert)
 
-(defvar-keymap o-bray-state-visual-map)
+(defvar o-bray-state-normal-map o-keymap-state-normal)
 
 (defun o-bray-unbound-key ()
   "Indicate that current key is unbound."
@@ -76,6 +76,8 @@ non-readonly file buffer, save the buffer."
     (when (and (not buffer-read-only) (buffer-file-name) (buffer-modified-p))
       (save-buffer))
     (keyboard-quit))))
+(defvar o-bray-state-visual-map o-keymap-state-visual)
+
 
 (defun o-bray-ensure ()
   "Ensure bray is enabled in all buffers."
