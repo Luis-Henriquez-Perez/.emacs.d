@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "fom" "from")
+(define-abbrev text-mode-abbrev-table "Prevetn" "prevent")
 (define-abbrev text-mode-abbrev-table "seled" "selected")
 (define-abbrev text-mode-abbrev-table "secons" "seconds")
 (define-abbrev text-mode-abbrev-table "finishe" "finished")
