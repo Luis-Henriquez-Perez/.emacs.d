@@ -43,13 +43,13 @@ string or comment."
 		(string
 		 (o-set string-beg (car (bounds-of-thing-at-point 'string)))
 		 (o-set word-beg (save-excursion (backward-word) (point)))
-		 (> word-beg string-beg))
+		 (and string-beg word-beg (> word-beg string-beg)))
 		(comment
 		 (o-set comment-beg (save-excursion (comment-beginning) (point)))
 		 (o-set word-beg (save-excursion (backward-word) (point)))
          ;; The first word of a comment actually starts at `comment-beg' but
          ;; this never happens for a string.
-         (>= word-beg comment-beg)))))
+         (and comment-beg word-beg (>= word-beg comment-beg))))))
 
 (defun o-abbrev-in-org-p ()
   "Return non-nil if the current buffer is in org-mode."
