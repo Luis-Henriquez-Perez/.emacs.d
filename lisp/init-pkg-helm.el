@@ -30,7 +30,7 @@
 (o-popup-at-bottom "\\*Helm")
 (o-opt helm-candidate-number-limit 50)
 
-(add-hook 'emacs-startup-hook #'helm-mode)
+(add-hook 'after-init-hook #'helm-mode)
 ;;; provide
 (provide 'init-pkg-helm)
 ;;; init-pkg-helm.el ends here

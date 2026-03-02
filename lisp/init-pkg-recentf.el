@@ -29,7 +29,7 @@
 
 (push 'recentf o-required-features)
 
-(add-hook 'emacs-startup-hook #'recentf-mode)
+(add-hook 'after-init-hook #'recentf-mode)
 
 (o-opt recentf-save-file (expand-file-name "recentf-save.el" o-var-dir))
 (o-opt recentf-max-saved-items nil)

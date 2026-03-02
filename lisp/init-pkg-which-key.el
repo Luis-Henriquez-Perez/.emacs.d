@@ -28,7 +28,7 @@
 (require 'init-core)
 
 (autoload 'which-key-mode "which-key" nil nil 'function)
-(add-hook 'emacs-startup-hook #'which-key-mode)
+(add-hook 'after-init-hook #'which-key-mode)
 
 (o-opt which-key-sort-uppercase-first nil)
 (o-opt which-key-max-display-columns nil)

@@ -29,7 +29,7 @@
 
 (o-declare-package 'gcmh)
 
-(add-hook 'emacs-startup-hook #'gcmh-mode 91)
+(add-hook 'after-init-hook #'gcmh-mode 91)
 
 (o-opt gcmh-idle-delay 'auto)
 (o-opt gcmh-high-cons-threshold (* 8 1024 1024))
