@@ -57,25 +57,6 @@
   (let ((keys (this-command-keys-vector)))
     (message "Unbound Key: %s" (format-kbd-macro keys))))
 
-(defun o-bray-dwim-escape ()
-  "Exit out of whatever is happening after escape.
-Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
-non-readonly file buffer, save the buffer."
-  (interactive)
-  (when (bound-and-true-p evil-mode)
-    (evil-normal-state 1))
-  (bray-state-stack-pop)
-  (cond
-   ((minibuffer-window-active-p (minibuffer-window))
-    (if (or defining-kbd-macro executing-kbd-macro)
-        (minibuffer-keyboard-quit)
-      (abort-recursive-edit)))
-   ((or defining-kbd-macro executing-kbd-macro)
-    nil)
-   (t
-    (when (and (not buffer-read-only) (buffer-file-name) (buffer-modified-p))
-      (save-buffer))
-    (keyboard-quit))))
 (defvar o-bray-state-visual-map o-keymap-state-visual)
 
 

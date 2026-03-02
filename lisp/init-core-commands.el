@@ -283,6 +283,27 @@ Otherwise if current defining or execing a kb."
   (if (or defining-kbd-macro executing-kbd-macro)
       (call-interactively #'flash-jump)
     (call-interactively #'meep-find-char)))
+
+(defvar o-escape-hook nil
+  "Hook run for `o-dwim-escape'.")
+
+(defun o-dwim-escape ()
+  "Exit out of whatever is happening after escape.
+Enter normal state.  If in minibuffer, exit the minibuffer.  When in a
+non-readonly file buffer, save the buffer."
+  (interactive)
+  (run-hooks 'o-escape-hook)
+  (cond
+   ((minibuffer-window-active-p (minibuffer-window))
+    (if (or defining-kbd-macro executing-kbd-macro)
+        (minibuffer-keyboard-quit)
+      (abort-recursive-edit)))
+   ((or defining-kbd-macro executing-kbd-macro)
+    nil)
+   (t
+    (when (and (not buffer-read-only) (buffer-file-name) (buffer-modified-p))
+      (save-buffer))
+    (keyboard-quit))))
 ;;;; scroll
 (defun o-scroll-to-bottom ()
   "Scroll line to bottom of page."
