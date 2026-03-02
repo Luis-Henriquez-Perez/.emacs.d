@@ -71,14 +71,7 @@ This function should be hooked to `post-command-hook'."
 ;;;; hooks
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
-;; (unless noninteractive
-;;   ;; Do not use this hook until I fix the flyspell dict message that is
-;;   ;; displayed.  Also flyspell is slow to start.
-;;   ;; (add-hook 'prog-mode-hook #'flyspell-prog-mode)
-;;   )
 (add-hook 'text-mode-hook #'visual-line-mode)
-;; (unless noninteractive
-;;   (add-hook 'text-mode-hook #'flyspell-mode))
 (add-hook 'after-init-hook #'window-divider-mode 12)
 (add-hook 'o-first-input-hook #'minibuffer-depth-indicate-mode)
 
