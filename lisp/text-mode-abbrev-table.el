@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "wok" "work")
 (define-abbrev text-mode-abbrev-table "singl" "single")
 (define-abbrev text-mode-abbrev-table "fom" "from")
 (define-abbrev text-mode-abbrev-table "Prevetn" "prevent")
