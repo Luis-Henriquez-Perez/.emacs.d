@@ -209,10 +209,10 @@
 
   ;; Do not do anything to "," because it is used for local leader.
   ;; "," #'o-bray-unbound-key
-  "<" #'iedit-mode
+  "<" #'join-line
 
   "." #'kmacro-call-macro
-  ">" #'o-bray-unbound-key
+  ">" #'split-line
 
   "C-j" #'unexpand-abbrev
 
