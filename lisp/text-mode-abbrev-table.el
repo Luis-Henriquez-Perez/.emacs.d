@@ -28,6 +28,11 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "seled" "selected")
+(define-abbrev text-mode-abbrev-table "secons" "seconds")
+(define-abbrev text-mode-abbrev-table "finishe" "finished")
+(define-abbrev text-mode-abbrev-table "replacemnt" "replacement")
+(define-abbrev text-mode-abbrev-table "Replacemnt" "replacement")
 (define-abbrev text-mode-abbrev-table "registred" "registered")
 (define-abbrev text-mode-abbrev-table "netire" "entire")
 (define-abbrev text-mode-abbrev-table "boudns" "bounds")
