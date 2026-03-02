@@ -234,6 +234,7 @@
   :prefix 'o-prefix-command-delim-surround
   ")" #'o-delim-wrap-round
   "(" #'o-delim-wrap-round
+  "f" #'o-delim-wrap-round
   "r" #'o-delim-wrap-round
   "}" #'o-delim-wrap-curly
   "{" #'o-delim-wrap-curly
