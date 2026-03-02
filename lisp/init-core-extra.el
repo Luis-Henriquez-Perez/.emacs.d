@@ -69,9 +69,11 @@ This function should be hooked to `post-command-hook'."
 
 (add-hook 'post-command-hook #'o-hook--run-switch-buffers-hook)
 ;;;; hooks
-(add-hook 'prog-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'hs-minor-mode)
+
 (add-hook 'text-mode-hook #'visual-line-mode)
+(add-hook 'prog-mode-hook #'visual-line-mode)
+
 (add-hook 'after-init-hook #'window-divider-mode 12)
 (add-hook 'o-first-input-hook #'minibuffer-depth-indicate-mode)
 
@@ -82,13 +84,6 @@ file is loaded."
   (o-eval-after-bound-forms)
   (add-hook 'after-load-functions #'o-eval-after-bound-forms))
 
-(add-hook 'after-init-hook #'o-hook--setup-eval-after-bound-forms 99)
-;;;; auto-filling
-(defun o-progn-autofill-fn ()
-  "Fill only if in a string or comment."
-  (when (o-in-string-or-comment-p) (do-auto-fill)))
-
-(o-setq-mode-local prog-mode normal-auto-fill-function #'o-progn-autofill-fn)
 ;;;; emacs-lisp-mode specific
 (defun o-hook--extend-elisp-font-lock ()
   "Add custom font-lock keywords."
