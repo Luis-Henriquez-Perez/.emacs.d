@@ -182,38 +182,6 @@ value of `of-gc-cons-threshold-normal'."
 ;; (add-hook 'prog-mode-hook #'o-hook--setup-delete-whitespace)
 ;; (add-hook 'text-mode-hook #'o-hook--setup-delete-whitespace)
 ;;;; startup time
-(defun o-hook--record-after-init-hook-start-time ()
-  "Record the start of `after-init-hook'."
-  (o-log 'info "Running `after-init-hook'...")
-  (set-register :after-init-hook-start-time (float-time)))
-
-(add-hook 'after-init-hook #'o-hook--record-after-init-hook-start-time -100)
-
-(o-defun o-hook--record-after-init-hook-end-time ()
-  "Record the end of `after-init-hook'."
-  (o-set start (get-register :after-init-hook-start-time))
-  (o-set time (o-hundredths (- (float-time) start)))
-  (set-register :after-init-hook-time time)
-  (o-log 'success "Finished running `after-init-hook' in %.2f seconds" time))
-
-(add-hook 'after-init-hook #'o-hook--record-after-init-hook-end-time 100)
-
-(defun o-hook--record-emacs-startup-hook-start-time ()
-  "Record the start of `emacs-startup-hook'."
-  (o-log 'info "Running `emacs-startup-hook'...")
-  (set-register :emacs-startup-hook-start-time (float-time)))
-
-(add-hook 'emacs-startup-hook #'o-hook--record-emacs-startup-hook-start-time -100)
-
-(o-defun o-hook--record-emacs-startup-hook-end-time ()
-  "Record the end of `emacs-startup-hook'."
-  (o-set start (get-register :emacs-startup-hook-start-time))
-  (o-set time (o-hundredths (- (float-time) start)))
-  (set-register :emacs-startup-hook-time time)
-  (o-log 'success "Finished running `emacs-startup-hook' in %.2f seconds" time))
-
-(add-hook 'emacs-startup-hook #'o-hook--record-emacs-startup-hook-end-time 100)
-
 (add-hook 'text-mode-hook #'delete-selection-mode)
 (add-hook 'prog-mode-hook #'delete-selection-mode)
 ;;;; make setting faces actually work
