@@ -248,6 +248,7 @@
 (defvar-keymap o-keymap-state-insert
   "C-v" #'rectangle-mark-mode
   "C-j" #'o-abbrev-inverse-add
+  "C-k" #'unexpand-abbrev
   "<escape>" #'o-dwim-escape)
 
 (defvar-keymap o-keymap-leader-window
