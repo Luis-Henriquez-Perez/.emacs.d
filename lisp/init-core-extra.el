@@ -114,12 +114,12 @@ file is loaded."
 ;; this in startup hook, it is not performance intensive.
 (add-hook 'emacs-startup-hook #'o-hook--extend-elisp-font-lock)
 
-(defun o-hook--require-base ()
-  "Load base macros."
+(defun o-hook--require-core ()
+  "Load core macros."
   (require 'init-core)
-  (remove-hook 'emacs-lisp-mode-hook #'o-hook--require-base))
+  (remove-hook 'emacs-lisp-mode-hook #'o-hook--require-core))
 
-(add-hook 'emacs-lisp-mode-hook #'o-hook--require-base)
+(add-hook 'emacs-lisp-mode-hook #'o-hook--require-core)
 ;;;; garbage collection
 ;; https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
 (defun o-hook--gc-increase ()
