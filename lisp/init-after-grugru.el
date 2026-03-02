@@ -83,6 +83,8 @@
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("is" "was" "were")))
 ;;;; emacs-lisp
+(grugru-define-on-major-mode 'emacs-lisp-mode 'char (grugru-metagenerator-keep-case '("'" "#'")))
+
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("setq" "defvar"))
 
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("dolist" "pcase-dolist"))
