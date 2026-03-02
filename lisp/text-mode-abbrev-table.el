@@ -4985,7 +4985,6 @@ This function is meant to be used as the expansion."
 (define-abbrev text-mode-abbrev-table "quizes" "quizzes")
 (define-abbrev text-mode-abbrev-table "qute" "quote")
 (define-abbrev text-mode-abbrev-table "qwerty" "QWERTY")
-(define-abbrev text-mode-abbrev-table "r" "are")
 (define-abbrev text-mode-abbrev-table "rabinnical" "rabbinical")
 (define-abbrev text-mode-abbrev-table "racaus" "raucous")
 (define-abbrev text-mode-abbrev-table "radiactive" "radioactive")
