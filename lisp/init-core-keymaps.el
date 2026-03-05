@@ -201,6 +201,8 @@
   "?" #'meep-isearch-regexp-prev
 
   "n" #'meep-isearch-repeat-next
+  "N" #'meep-isearch-repeat-prev
+
   "b" #'meep-isearch-at-point-next
   "B" #'meep-isearch-at-point-prev
   "'" #'puni-splice
