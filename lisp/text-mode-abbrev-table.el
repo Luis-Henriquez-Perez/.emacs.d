@@ -5969,7 +5969,6 @@ This function is meant to be used as the expansion."
 (define-abbrev text-mode-abbrev-table "sysmatically" "systematically")
 (define-abbrev text-mode-abbrev-table "sytem" "system")
 (define-abbrev text-mode-abbrev-table "sytle" "style")
-(define-abbrev text-mode-abbrev-table "t" "the" nil :enable-function #'o-abbrev-escape-char-p)
 (define-abbrev text-mode-abbrev-table "ta" "that")
 (define-abbrev text-mode-abbrev-table "tabacco" "tobacco")
 (define-abbrev text-mode-abbrev-table "taged" "tagged")
