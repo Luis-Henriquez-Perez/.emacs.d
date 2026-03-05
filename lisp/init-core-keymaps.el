@@ -142,8 +142,8 @@
   "i" #'meep-region-activate-or-reverse
   "I" #'iedit-mode
   ;; o - mark contextual delimiters
-  "o" #'meep-region-mark-bounds-of-char-contextual-outer
-  "O" #'o-mark-delim-outer
+  "o" #'meep-region-mark-bounds-of-char-contextual-inner
+  "O" #'meep-region-mark-bounds-of-char-contextual-outer
   ;; a - insert
   "A" #'meep-insert-line-end
   "a a" #'meep-insert
