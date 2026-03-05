@@ -225,6 +225,7 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; Do not display default startup screen.
 (setq inhibit-startup-screen t)
 ;;;; UI
+(setq-default cursor-type 'box)
 ;; When you disable the scroll-bar via early-init.el powerline does not realize
 ;; the scroll-bar is dabled because the value of `scroll-bar-mode' is right.
 (setq scroll-bar-mode nil)
