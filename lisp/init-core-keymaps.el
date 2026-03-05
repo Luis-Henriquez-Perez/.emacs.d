@@ -180,6 +180,7 @@
   "d M" #'morse-region
   "d f" #'grugru-forward
   "d g" #'grugru-forward
+  "D" #'kill-whole-line
   ;; f - search
   "f" #'flash-jump
   "F" #'meep-move-find-char-on-line-at-next
