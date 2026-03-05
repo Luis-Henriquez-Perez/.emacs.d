@@ -34,8 +34,8 @@
 
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-word smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-symbol smart-mark-mark-functions))
-(o-opt smart-mark-mark-functions (cl-adjoin #'o-mark-delim-inner smart-mark-mark-functions))
-(o-opt smart-mark-mark-functions (cl-adjoin #'o-mark-delim-outer smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-bounds-of-char-contextual-inner smart-mark-mark-functions))
+(o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-bounds-of-char-contextual-outer smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-paragraph-inner smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-paragraph-outer smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-sentence-inner smart-mark-mark-functions))
