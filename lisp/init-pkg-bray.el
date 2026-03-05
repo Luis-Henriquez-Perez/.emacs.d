@@ -28,11 +28,10 @@
 
 (push 'bray o-required-features)
 
-(o-opt bray-state-default 'normal)
-(o-opt bray-state-map-enabled t)
-
-(defvar o-bray-state-motion-enter-hook nil)
-(defvar o-bray-state-motion-exit-hook nil)
+(defvar bray-state-default)
+(setq bray-state-default 'normal)
+(defvar bray-state-map-enabled)
+(setq bray-state-map-enabled t)
 
 (defvar o-bray-state-normal-enter-hook nil)
 (defvar o-bray-state-normal-exit-hook nil)
@@ -51,48 +50,40 @@
 
 (defvar o-bray-state-normal-map o-keymap-state-normal)
 
-(defun o-bray-unbound-key ()
-  "Indicate that current key is unbound."
-  (interactive)
-  (let ((keys (this-command-keys-vector)))
-    (message "Unbound Key: %s" (format-kbd-macro keys))))
-
 (defvar o-bray-state-visual-map o-keymap-state-visual)
 
+(defun o-bray-dwim ()
+  (bray-mode 1)
+  ;; (let ((special-modes '(special-mode gud-mode term-mode inferior-emacs-lisp-mode dired-mode)))
+  ;;   (unless (derived-mode-p special-modes)
+  ;;     (bray-mode 1)))
+  )
 
-(defun o-bray-ensure ()
-  "Ensure bray is enabled in all buffers."
+(defun o-bray-enable ()
+  (interactive)
+  (add-hook 'post-command-hook #'o-bray-update-cursor-color)
+  (add-hook 'after-change-major-mode-hook #'o-bray-dwim)
+  (add-hook 'activate-mark-hook #'o-bray-mark-hook-activate)
+  (add-hook 'deactivate-mark-hook #'o-bray-mark-hook-deactivate)
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer
-      (unless bray-mode
-        (bray-mode 1)))))
+      (o-bray-dwim))))
 
-(defun o-bray-init ()
-  (cond
-   (bray-mode
-    (add-hook 'post-command-hook #'o-bray-update-cursor-color)
-    (add-hook 'buffer-list-update-hook #'o-bray-ensure)
-    (add-hook 'after-change-major-mode-hook #'o-bray-dwim)
-    (add-hook 'activate-mark-hook #'o-bray-mark-hook-activate)
-    (add-hook 'deactivate-mark-hook #'o-bray-mark-hook-deactivate)
-    ;; (add-hook 'bray-mode-hook #'o-bray-init-visual-state)
-    )
-   (t
-    (remove-hook 'post-command-hook #'o-bray-update-cursor-color)
-    (remove-hook 'buffer-list-update-hook #'o-bray-ensure)
-    (remove-hook 'after-change-major-mode-hook #'o-bray-dwim)
-    (remove-hook 'activate-mark-hook #'o-bray-mark-hook-activate)
-    (remove-hook 'deactivate-mark-hook #'o-bray-mark-hook-deactivate))))
+(defun o-bray-disable ()
+  (interactive)
+  (remove-hook 'post-command-hook #'o-bray-update-cursor-color)
+  (remove-hook 'after-change-major-mode-hook #'o-bray-dwim)
+  (remove-hook 'activate-mark-hook #'o-bray-mark-hook-activate)
+  (remove-hook 'deactivate-mark-hook #'o-bray-mark-hook-deactivate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (bray-mode -1))))
 
 (defun o-bray-enter-insert-state ()
   (bray-state-set 'insert))
 
+(add-hook 'o-escape-hook #'bray-state-stack-pop)
 (add-hook 'minibuffer-setup-hook #'o-bray-enter-insert-state)
-
-(defun o-bray-dwim ()
-  (when (not (derived-mode-p 'special-mode))
-    (unless bray-mode
-      (bray-mode 1))))
 
 (defun o-bray-update-cursor-color ()
   "Update the cursor color based on the current state."
@@ -117,44 +108,27 @@
             fg
           "#8b2252"))))))
 
-(o-opt bray-state-definitions
-       (list
-        (list
-         :id 'motion
-         :cursor-type 'box
-         :lighter "<M>"
-         :keymaps (list (cons t 'o-bray-state-motion-map))
-         :enter-hook 'o-bray-state-motion-enter-hook
-         :exit-hook 'o-bray-state-motion-exit-hook)
-        (list
-         :id 'normal
-         ;; Define.
-         :cursor-type 'box
-         :lighter "<N>"
-         :keymaps (list (cons t 'o-bray-state-motion-map)
-                        (cons t 'o-bray-state-normal-map))
-         :enter-hook 'o-bray-state-normal-enter-hook
-         :exit-hook 'o-bray-state-normal-exit-hook)
-        (list
-         :id 'visual
-         :cursor-type 'box
-         :lighter "<V>"
-         :keymaps
-         (list (cons t 'o-bray-state-normal-map) (cons t 'o-bray-state-visual-map))
-
-         :enter-hook 'o-bray-state-visual-enter-hook
-         :exit-hook 'o-bray-state-visual-exit-hook)
-        (list
-         :id 'insert
-         :cursor-type 'bar
-         :lighter "<I>"
-         :keymaps (list (cons t 'o-bray-state-insert-map))
-
-         :enter-hook 'o-bray-state-insert-enter-hook
-         :exit-hook 'o-bray-state-insert-exit-hook
-
-         ;; Optional.
-         :is-input t)))
+(defvar bray-state-definitions)
+(setq bray-state-definitions
+      '(( :id normal
+          :cursor-type box
+          :lighter "<N>"
+          :keymaps ((t . o-bray-state-motion-map) (t . o-bray-state-normal-map))
+          :enter-hook o-bray-state-normal-enter-hook
+          :exit-hook o-bray-state-normal-exit-hook)
+        ( :id visual
+          :cursor-type box
+          :lighter "<V>"
+          :keymaps ((t . o-bray-state-normal-map) (t . o-bray-state-visual-map))
+          :enter-hook o-bray-state-visual-enter-hook
+          :exit-hook o-bray-state-visual-exit-hook)
+        ( :id insert
+          :cursor-type bar
+          :lighter "<I>"
+          :keymaps ((t . o-bray-state-insert-map))
+          :enter-hook o-bray-state-insert-enter-hook
+          :exit-hook o-bray-state-insert-exit-hook
+          :is-input t)))
 
 (defun o-bray-mark-hook-activate ()
   "Activate visual state."
@@ -162,12 +136,11 @@
     (bray-state-stack-push 'visual)))
 
 (defun o-bray-mark-hook-deactivate ()
-  "Activate visual state."
+  "Deactivate visual state."
   (when (bray-state-derived-p 'visual)
     (bray-state-stack-pop)))
 
-(add-hook 'bray-mode-hook #'o-bray-init)
-(add-hook 'emacs-startup-hook #'o-bray-ensure 80)
+(add-hook 'after-init-hook #'o-bray-enable)
 
 (o-require-after-load 'bray 'init-after-bray)
 ;;; provide
