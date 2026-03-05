@@ -37,6 +37,8 @@
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("pop" "push")))
 
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("bottom" "top")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("activate" "deactivate")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("round" "angle" "curly" "square")))
