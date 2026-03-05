@@ -230,8 +230,6 @@
   "s" #'o-prefix-command-delim-surround
   "S" #'o-prefix-command-delim-surround)
 
-(defvar-keymap o-keymap-state-emacs)
-
 (defvar-keymap o-keymap-delim-surround
   :prefix 'o-prefix-command-delim-surround
   ")" #'o-delim-wrap-round
