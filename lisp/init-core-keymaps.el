@@ -114,8 +114,8 @@
   "s C" #'meep-region-mark-comment-outer
   "s p" #'meep-region-mark-paragraph-inner
   "s P" #'meep-region-mark-paragraph-outer
-  "s f" #'o-mark-delim-inner
-  "s F" #'o-mark-delim-outer
+  "s f" #'meep-region-mark-bounds-of-char-contextual-inner
+  "s F" #'meep-region-mark-bounds-of-char-contextual-outer
 
   "s i w" #'meep-region-mark-word
   "s i m" #'meep-region-mark-symbol
@@ -126,7 +126,7 @@
   "s i c" #'meep-region-mark-comment-inner
   "s i d" #'meep-region-mark-defun-inner
   "s i r" #'meep-region-mark-string-inner
-  "s i f" #'o-mark-delim-inner
+  "s i f" #'meep-region-mark-bounds-of-char-contextual-inner
 
   "s o w" #'meep-region-mark-word
   "s o m" #'meep-region-mark-symbol
@@ -137,12 +137,12 @@
   "s o t" #'meep-region-mark-sentence-outer
   "s o c" #'meep-region-mark-comment-outer
   "s o r" #'meep-region-mark-string-outer
-  "s o f" #'o-mark-delim-outer
+  "s o f" #'meep-region-mark-bounds-of-char-contextual-outer
   ;; i - invert point and mark
   "i" #'meep-region-activate-or-reverse
   "I" #'iedit-mode
   ;; o - mark contextual delimiters
-  "o" #'o-mark-delim-inner
+  "o" #'meep-region-mark-bounds-of-char-contextual-outer
   "O" #'o-mark-delim-outer
   ;; a - insert
   "A" #'meep-insert-line-end
