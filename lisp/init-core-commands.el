@@ -169,7 +169,7 @@ beginning of region."
 (defun o-advice-pulse-region-maybe (fn beg end &rest args)
   (unless executing-kbd-macro
     (pulse-momentary-highlight-region beg end))
-  (apply fn beg end))
+  (apply fn beg end args))
 
 (advice-add 'eval-region :around #'o-advice-pulse-region-maybe)
 (advice-add 'copy-region-as-kill :around #'o-advice-pulse-region-maybe)
