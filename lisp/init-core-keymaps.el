@@ -339,7 +339,6 @@
   "z" #'ace-link
   "b" #'burly-open-bookmark
   "i" #'imenu
-  ;; "j" #'o-dwim-vc-action
   "n" #'o-new-buffer
   "f" #'switch-to-buffer
   "a" #'find-library
