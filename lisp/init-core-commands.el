@@ -164,7 +164,7 @@ beginning of region."
 ;;;; pulse
 (defun o-pulse-toggle ()
   (interactive)
-  (setq pulse-flag (if pulse-flag 'never t)))
+  (setq pulse-flag (if (equal pulse-flag 'never) t 'never)))
 
 (defun o-advice-pulse-region-maybe (fn beg end &rest args)
   (unless executing-kbd-macro
