@@ -387,6 +387,8 @@
   "y" #'o-emacs-random-load-theme
   "s" #'o-emacs-random-load-theme
   "d" #'transwin-toggle)
+
+(keymap-set emacs-lisp-mode-map "<remap> <kill-region>" #'o-region-kill-safe)
 ;;; provide
 (provide 'init-core-keymaps)
 ;;; init-core-keymaps.el ends here
