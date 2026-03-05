@@ -158,7 +158,7 @@
   "d a" #'o-expand-region-abbrevs-no-query
   ;; Maintain a similarity with vim's "dd"
   "d d" #'kill-whole-line
-  "d j" #'o-region-eval
+  "d j" #'eval-region
   "d k" #'comment-or-uncomment-region
   "d l" #'duplicate-dwim
   "d r" #'o-eval-and-replace-region
@@ -166,7 +166,7 @@
   "d c" #'capitalize-region
   "d h" #'helpful-at-point
   "d o" #'sort-lines
-  "d e" #'o-region-eval
+  "d e" #'eval-region
   "d n" #'narrow-to-region
   "d u" #'downcase-region
   "d U" #'upcase-region
