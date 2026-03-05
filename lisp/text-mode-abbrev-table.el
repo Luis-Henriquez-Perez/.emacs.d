@@ -2239,7 +2239,7 @@
 (define-abbrev text-mode-abbrev-table "elsip" "elisp")
 (define-abbrev text-mode-abbrev-table "elt" "element")
 (define-abbrev text-mode-abbrev-table "elts" "elements")
-(define-abbrev text-mode-abbrev-table "emacs" "Emacs" nil :enable-function #'o-abbrev-part-of-another-word-p)
+;; (define-abbrev text-mode-abbrev-table "emacs" "Emacs" nil :enable-function #'o-abbrev-part-of-another-word-p)
 (define-abbrev text-mode-abbrev-table "emacslisp" "emacs-lisp")
 (define-abbrev text-mode-abbrev-table "emacss" "Emacs's")
 (define-abbrev text-mode-abbrev-table "emal" "email")
