@@ -161,51 +161,18 @@ beginning of region."
   "Mark outer bounds of surrounding delimiters."
   (interactive)
   (o--mark-region (o--bounds-of-delim-outer) t))
-
-(defun o--bounds-outline-subtree-inner ()
-  "Return the bounds of inner subtree at point as (beg . end)."
-  (save-excursion
-    (outline-back-to-heading t)
-    (let ((beg (progn
-                 (forward-line 1)
-                 (point)))
-          (end (progn
-                 (outline-end-of-subtree)
-                 ;; `outline-end-of-subtree' does not include the last newline
-                 ;; at the end.
-                 (1+ (point)))))
-      (cons beg end))))
-
-(o-defun o-outline-mark-subtree-contents ()
-  "Mark the contents of the outline subtree at point."
+;;;; pulse
+(defun o-pulse-toggle ()
   (interactive)
-  (o-set (beg . end) (o--bounds-outline-subtree-inner))
-  (goto-char beg)
-  (set-mark end)
-  (activate-mark))
-;;;; region
-(defun o-region-expand-abbrevs-no-query (beg end)
-  "Same as `expand-region-abbrevs' but without querying."
-  (interactive "r")
-  (expand-region-abbrevs beg end t))
+  (setq pulse-flag (if pulse-flag 'never t)))
 
-(defun o-region-eval (beg end)
-  "Same as `eval-region'."
-  (interactive "r")
+(defun o-advice-pulse-region-maybe (fn beg end &rest args)
   (unless executing-kbd-macro
     (pulse-momentary-highlight-region beg end))
-  (eval-region beg end))
+  (apply fn beg end))
 
-;; meep's variant does not seem to save it to the system clipboard properly.
-;; I know that `kill-ring-save' does also give visual indication but in my
-;; opinion its indication is not very good (it is like a little pause and the
-;; cursor going to beg and end)
-(defun o-region-copy-as-kill (beg end)
-  "Same as `copy-region-as-kill' but give visual feedback."
-  (interactive "r")
-  (unless executing-kbd-macro
-    (pulse-momentary-highlight-region beg end))
-  (copy-region-as-kill beg end))
+(advice-add 'eval-region :around #'o-advice-pulse-region-maybe)
+(advice-add 'copy-region-as-kill :around #'o-advice-pulse-region-maybe)
 ;;;; delimiters
 (defun o-delim-change-surround (beg-delim end-delim)
   "Change the delimiters of sexp around point."
@@ -349,6 +316,12 @@ non-readonly file buffer, save the buffer."
   ;; Expand the abbrev at point to new expansion.
   ;; this needs to be called at the end of the abbrev.
   (expand-abbrev))
+
+(defun o-advice--expand-abbrevs-no-query (fn start end &optional _)
+  "Same as `expand-region-abbrevs' but without querying."
+  (funcall fn start end 'noquery))
+
+(advice-add 'expand-region-abbrevs :around #'o-advice--expand-region-abbrevs-no-query)
 ;;; provide
 (provide 'init-core-commands)
 ;;; init-core-commands.el ends here
