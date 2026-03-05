@@ -76,8 +76,9 @@
   "t" #'better-jumper-jump-backward
   "T" #'better-jumper-jump-forward
   ;; y - copy
-  "y" #'o-region-copy-as-kill
-  "Y" #'o-region-copy-line
+  "y" #'copy-region-as-kill
+  ;; I want a line variant here.
+  "Y" #'o-bray-unbound-key
   ;; Have - visual selection
   "v" #'meep-region-toggle
   "V" #'expreg-expand
