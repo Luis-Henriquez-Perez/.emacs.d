@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "inset" "insert")
 (define-abbrev text-mode-abbrev-table "ggrugru" "grugru")
 (define-abbrev text-mode-abbrev-table "regon" "region")
 (define-abbrev text-mode-abbrev-table "wok" "work")
