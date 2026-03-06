@@ -100,20 +100,6 @@
   "Split window below and select the window created with the split."
   (interactive)
   (select-window (split-window-below)))
-;;;; bounds
-(defun o--bounds-of-delim-inner ()
-  "Return the bounds of inner delimiter pair."
-  (when-let* ((bounds-inside (puni-bounds-of-list-around-point))
-              (beg (car bounds-inside))
-              (end (cdr bounds-inside)))
-    (cons beg end)))
-
-(defun o--bounds-of-delim-outer ()
-  "Return the bounds of outer delimiter pair."
-  (when-let* ((bounds-around (puni-bounds-of-sexp-around-point))
-              (beg (car bounds-around))
-              (end (cdr bounds-around)))
-    (cons beg end)))
 ;;;; wrap
 (defun o-delim-wrap-round (beg end)
   "Wrap region with parentheses."
@@ -151,16 +137,6 @@ beginning of region."
   (goto-char (if at-end (cdr bounds) (car bounds)))
   (set-mark (if at-end (car bounds) (cdr bounds)))
   (activate-mark))
-
-(defun o-mark-delim-inner ()
-  "Mark inner bounds of surrounding delimiters."
-  (interactive)
-  (o--mark-region (o--bounds-of-delim-inner) t))
-
-(defun o-mark-delim-outer ()
-  "Mark outer bounds of surrounding delimiters."
-  (interactive)
-  (o--mark-region (o--bounds-of-delim-outer) t))
 ;;;; pulse
 (defun o-pulse-toggle ()
   (interactive)
