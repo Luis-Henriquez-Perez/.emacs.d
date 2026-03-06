@@ -193,6 +193,7 @@
   ;; m - page
   "m m" #'recenter
   "m j" #'o-scroll-to-bottom
+  "m t" #'o-scroll-to-bottom
   "m k" #'o-scroll-to-top
 
   "M" #'o-bray-unbound-key
