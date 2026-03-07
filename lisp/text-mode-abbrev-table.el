@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "prosed" "processed")
+(define-abbrev text-mode-abbrev-table "Ensre" "ensure")
 (define-abbrev text-mode-abbrev-table "inster" "insert")
 (define-abbrev text-mode-abbrev-table "fnss" "functions")
 (define-abbrev text-mode-abbrev-table "ddocumentation" "documentation")
