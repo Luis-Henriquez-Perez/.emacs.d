@@ -34,7 +34,7 @@
 (o-opt savehist-file (expand-file-name "savehist.el" o-var-dir))
 (o-opt savehist-save-minibuffer-history t)
 (o-opt savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(o-opt savehist-autosave-interval (* 60 5))
+(o-opt savehist-autosave-interval (eval-when-compile (* 60 5)))
 
 (o-opt savehist-additional-variables (cl-adjoin 'register-alist savehist-additional-variables))
 
