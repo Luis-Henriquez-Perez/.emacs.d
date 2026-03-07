@@ -1,4 +1,4 @@
-;;; init-pkg-better-jumper.el --- TODO: add commentary -*- lexical-binding: t; -*-
+;;; init-pkg-better-jumper.el --- Initialize better-jumper -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO: add commentary
+;; Initialize `better-jumper'.
 ;;
 ;;; Code:
 (o-declare-package 'better-jumper)
