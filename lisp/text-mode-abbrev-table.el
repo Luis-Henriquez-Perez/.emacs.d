@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "effcy" "efficiency")
 (define-abbrev text-mode-abbrev-table "accing" "accessing")
 (define-abbrev text-mode-abbrev-table "prosed" "processed")
 (define-abbrev text-mode-abbrev-table "Ensre" "ensure")
