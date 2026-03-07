@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "fnss" "functions")
 (define-abbrev text-mode-abbrev-table "ddocumentation" "documentation")
 (define-abbrev text-mode-abbrev-table "execing" "executing")
 (define-abbrev text-mode-abbrev-table "inset" "insert")
