@@ -42,15 +42,16 @@
 (defvar o-bray-state-visual-enter-hook nil)
 (defvar o-bray-state-visual-exit-hook nil)
 
-(defvar-keymap o-bray-state-motion-map)
-
-(defvar o-bray-state-motion-map o-keymap-state-motion)
+;; (defvar o-bray-state-emacs-enter-hook nil)
+;; (defvar o-bray-state-emacs-exit-hook nil)
 
 (defvar o-bray-state-insert-map o-keymap-state-insert)
 
 (defvar o-bray-state-normal-map o-keymap-state-normal)
 
 (defvar o-bray-state-visual-map o-keymap-state-visual)
+
+;; (defvar o-bray-state-emacs-map o-keymap-state-emacs)
 
 (defun o-bray-dwim ()
   (bray-mode 1)
@@ -63,8 +64,8 @@
   (interactive)
   (add-hook 'post-command-hook #'o-bray-update-cursor-color)
   (add-hook 'after-change-major-mode-hook #'o-bray-dwim)
-  (add-hook 'activate-mark-hook #'o-bray-mark-hook-activate)
-  (add-hook 'deactivate-mark-hook #'o-bray-mark-hook-deactivate)
+  (add-hook 'activate-mark-hook #'o-hook--bray-enable-visual-state)
+  (add-hook 'deactivate-mark-hook #'o-hook--bray-disable-visual-state)
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer
       (o-bray-dwim))))
@@ -73,17 +74,15 @@
   (interactive)
   (remove-hook 'post-command-hook #'o-bray-update-cursor-color)
   (remove-hook 'after-change-major-mode-hook #'o-bray-dwim)
-  (remove-hook 'activate-mark-hook #'o-bray-mark-hook-activate)
-  (remove-hook 'deactivate-mark-hook #'o-bray-mark-hook-deactivate)
+  (remove-hook 'activate-mark-hook #'o-hook--bray-enable-visual-state)
+  (remove-hook 'deactivate-mark-hook #'o-hook--bray-disable-visual-state)
   (dolist (buffer (buffer-list))
     (with-current-buffer buffer
       (bray-mode -1))))
 
-(defun o-bray-enter-insert-state ()
-  (bray-state-set 'insert))
-
 (add-hook 'o-escape-hook #'bray-state-stack-pop)
-(add-hook 'minibuffer-setup-hook #'o-bray-enter-insert-state)
+
+(o-setq-mode-local minibuffer-mode bray-state-init 'insert)
 
 (defun o-bray-update-cursor-color ()
   "Update the cursor color based on the current state."
@@ -106,20 +105,25 @@
        (set-cursor-color
         (if (stringp fg)
             fg
-          "#8b2252"))))))
+          "#8b2252")))
+      ;; ('emacs
+      ;;  ;; (setq fg (face-attribute font-lock-string-face :foreground))
+      ;;  (set-cursor-color "blue"))
+      )))
 
 (defvar bray-state-definitions)
 (setq bray-state-definitions
       '(( :id normal
           :cursor-type box
           :lighter "<N>"
-          :keymaps ((t . o-bray-state-motion-map) (t . o-bray-state-normal-map))
+          :keymaps ((t . o-bray-state-normal-map))
           :enter-hook o-bray-state-normal-enter-hook
           :exit-hook o-bray-state-normal-exit-hook)
         ( :id visual
           :cursor-type box
           :lighter "<V>"
-          :keymaps ((t . o-bray-state-normal-map) (t . o-bray-state-visual-map))
+          :keymaps ((t . o-bray-state-normal-map)
+                    (t . o-bray-state-visual-map))
           :enter-hook o-bray-state-visual-enter-hook
           :exit-hook o-bray-state-visual-exit-hook)
         ( :id insert
@@ -128,15 +132,23 @@
           :keymaps ((t . o-bray-state-insert-map))
           :enter-hook o-bray-state-insert-enter-hook
           :exit-hook o-bray-state-insert-exit-hook
-          :is-input t)))
+          :is-input t)
+        ;; ( :id emacs
+        ;;   :cursor-type bar
+        ;;   :lighter "<E>"
+        ;;   :keymaps ((t . o-bray-state-emacs-map))
+        ;;   :enter-hook o-bray-state-emacs-enter-hook
+        ;;   :exit-hook o-bray-state-emacs-exit-hook
+        ;;   :is-input t)
+        ))
 
-(defun o-bray-mark-hook-activate ()
-  "Activate visual state."
+(defun o-hook--bray-enable-visual-state ()
+  "Enable visual state."
   (when (bray-state-derived-p 'normal)
     (bray-state-stack-push 'visual)))
 
-(defun o-bray-mark-hook-deactivate ()
-  "Deactivate visual state."
+(defun o-hook--bray-disable-visual-state ()
+  "Disable visual state."
   (when (bray-state-derived-p 'visual)
     (bray-state-stack-pop)))
 
