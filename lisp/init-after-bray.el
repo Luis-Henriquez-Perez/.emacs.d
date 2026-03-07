@@ -53,16 +53,15 @@
   (bray-state-map-set 'insert helm-map "C-;" #'ace-jump-helm-line))
 
 (o-after vertico
-  (bray-state-map-set 'insert vertico-map "<escape>" #'o-dwim-escape)
-  (bray-state-map-set 'insert vertico-map "C-j" #'vertico-next)
-  (bray-state-map-set 'insert vertico-map "C-k" #'vertico-previous)
-  (bray-state-map-set 'insert vertico-map "C-n" #'vertico-scroll-up)
-  (bray-state-map-set 'insert vertico-map "C-p" #'vertico-scroll-down)
-  (bray-state-map-set 'insert vertico-map "TAB" #'vertico-next)
-  (bray-state-map-set 'insert vertico-map ";" #'vertico-quick-exit)
-  (bray-state-map-set 'insert vertico-map "C-;" #'vertico-quick-exit)
-  (bray-state-map-set 'insert vertico-map "<backtab>" #'vertico-previous)
-  (bray-state-map-set 'insert vertico-map "C-o" #'embark-act))
+  (bray-state-map-set 'insert minibuffer-mode-map "<escape>" #'o-dwim-escape)
+  (bray-state-map-set 'insert minibuffer-mode-map "C-j" #'vertico-next)
+  (bray-state-map-set 'insert minibuffer-mode-map "C-k" #'vertico-previous)
+  (bray-state-map-set 'insert minibuffer-mode-map "C-n" #'vertico-scroll-up)
+  (bray-state-map-set 'insert minibuffer-mode-map "C-p" #'vertico-scroll-down)
+  (bray-state-map-set 'insert minibuffer-mode-map "TAB" #'vertico-next)
+  (bray-state-map-set 'insert minibuffer-mode-map ";" #'vertico-quick-exit)
+  (bray-state-map-set 'insert minibuffer-mode-map "C-;" #'vertico-quick-exit)
+  (bray-state-map-set 'insert minibuffer-mode-map "<backtab>" #'vertico-previous))
 
 (o-after corfu
   (bray-state-map-set 'insert corfu-map "<tab>" #'corfu-next)
