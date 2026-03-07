@@ -172,7 +172,7 @@
   "d u" #'downcase-region
   "d U" #'upcase-region
   "d y" #'flyspell-region
-  "d s" #'meep-char-surround-insert
+  "d t" #'transpose-sexps
   "d w" #'widen
   ;; Uncommon therefore I give these keybindings the harder to press keys.
   "d R" #'rot13-region
@@ -196,7 +196,7 @@
   "m t" #'o-scroll-to-bottom
   "m k" #'o-scroll-to-top
 
-  "M" #'undefined
+  "M" #'transpose-sexps
   ;; u - undo
   "u" #'undo-only
   "U" #'undo-redo

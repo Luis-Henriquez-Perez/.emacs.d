@@ -32,6 +32,8 @@
 (o-declare-package 'magit)
 
 (o-setq-mode-local git-commit-mode bray-state-init 'insert)
+;; This only works for.
+;; (add-hook 'git-commit-mode-hook (apply-partially #'bray-state-set 'insert))
 
 (o-popup-at-bottom "\\`magit")
 ;;; provide
