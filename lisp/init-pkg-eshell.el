@@ -58,7 +58,9 @@
     bray-state-init 'insert
     completion-at-point-functions '(pcomplete-completions-at-point t))
 
-(o-each '(esh-arg esh-util esh-proc esh-io esh-cmd em-dirs em-hist em-prompt em-term em-ls em-glob em-basic em-script em-cmpl em-smart)
+(o-each '( esh-arg esh-util esh-proc esh-io esh-cmd em-dirs
+           em-hist em-prompt em-term em-ls em-glob em-basic
+           em-script em-cmpl em-smart )
   (push it o-idle-features))
 
 (add-hook 'eshell-mode-hook #'abbrev-mode)
