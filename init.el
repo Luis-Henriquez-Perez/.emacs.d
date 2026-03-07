@@ -109,15 +109,8 @@
 ;;;; DISABLED
 ;; (o-require init-pkg-cape)
 ;; (o-require init-pkg-corfu)
-;; (o-require init-pkg-hungry-delete)
-;; (o-require init-pkg-hy-mode)
-;; (o-require init-pkg-magit)
 ;; (o-require init-pkg-marginalia)
 ;; (o-require init-pkg-mu4e)
-;; (o-require init-pkg-pomodoro)
-;; (o-require init-pkg-restart-emacs)
-;;;; KEYBINDINGS
-;; (o-require my-keybindings)
 ;;; provide init
 (provide 'init)
 ;;; init.el ends here
