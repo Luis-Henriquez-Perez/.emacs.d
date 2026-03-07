@@ -158,23 +158,23 @@
   ;; d - act on region
   "d a" #'o-expand-region-abbrevs-no-query
   ;; Maintain a similarity with vim's "dd"
+  "d ;" #'iedit-mode
+  "d S" #'sort-lines
+  "d U" #'upcase-region
+  "d c" #'capitalize-region
   "d d" #'kill-whole-line
+  "d e" #'eval-region
+  "d h" #'helpful-at-point
   "d j" #'eval-region
   "d k" #'comment-or-uncomment-region
   "d l" #'duplicate-dwim
-  "d r" #'o-eval-and-replace-region
-  "d ;" #'iedit-mode
-  "d c" #'capitalize-region
-  "d h" #'helpful-at-point
-  "d o" #'open-line
-  "d S" #'sort-lines
-  "d e" #'eval-region
   "d n" #'narrow-to-region
-  "d u" #'downcase-region
-  "d U" #'upcase-region
-  "d y" #'flyspell-region
+  "d o" #'open-line
+  "d r" #'o-eval-and-replace-region
   "d t" #'transpose-sexps
-  "d e" #'eval-defun
+  "d u" #'downcase-region
+  "d y" #'flyspell-region
+  "d i" #'eval-defun
   "d w" #'widen
   ;; Uncommon therefore I give these keybindings the harder to press keys.
   "d R" #'rot13-region
