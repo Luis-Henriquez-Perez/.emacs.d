@@ -193,7 +193,7 @@
   ;; m - page
   "m m" #'recenter
   "m j" #'o-scroll-to-bottom
-  "m t" #'o-scroll-to-bottom
+  "m t" #'o-scroll-to-top
   "m k" #'o-scroll-to-top
 
   "M" #'transpose-sexps
