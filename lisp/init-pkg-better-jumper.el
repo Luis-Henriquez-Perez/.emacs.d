@@ -35,7 +35,7 @@
 (autoload 'better-jumper-jump-forward "better-jumper" nil t 'function)
 (autoload 'better-jumper-set-jump "better-jumper" nil t 'function)
 
-(o-setq better-jumper-max-length 200)
+(o-setq better-jumper-max-length 500)
 
 (advice-add 'meep--mark-on-motion-set :around #'o-hook--register-jump)
 
