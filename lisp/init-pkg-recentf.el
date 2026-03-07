@@ -31,13 +31,27 @@
 
 (add-hook 'after-init-hook #'recentf-mode)
 
-(o-opt recentf-save-file (expand-file-name "recentf-save.el" o-var-dir))
-(o-opt recentf-max-saved-items nil)
+(defvar recentf-save-file)
+(defvar recentf-max-saved-items)
+(defvar recentf-filename-handlers)
+(defvar recentf-exclude)
+
+(setq recentf-save-file (expand-file-name "recentf-save.el" o-var-dir))
+(setq recentf-max-saved-items nil)
 
 (advice-add #'recentf-save-list :before #'recentf-cleanup)
 (advice-add #'recentf-save-list :around #'o-advice--silence-output)
 (advice-add #'recentf-cleanup   :around #'o-advice--silence-output)
 (advice-add #'recentf-mode      :around #'o-advice--silence-output)
+
+(o-after recentf
+  (add-to-list 'recentf-filename-handlers #'file-truename)
+  (add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
+  (add-to-list 'recentf-filename-handlers #'substring-no-properties)
+
+  (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-etc-dir)))
+  (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-var-dir)))
+  (add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file)))))
 
 (defun o-recentf--update-recentf-list-maybe ()
   "Update the recentf list just before killing a buffer."
@@ -45,16 +59,7 @@
     (recentf-add-file it)
     (run-with-idle-timer 5 nil #'recentf-save-list)))
 
-(o-defafter o-recentf--configure-recentf (recentf)
-  (add-to-list 'recentf-filename-handlers #'file-truename)
-  (add-to-list 'recentf-filename-handlers #'abbreviate-file-name)
-  (add-to-list 'recentf-filename-handlers #'substring-no-properties)
-
-  (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-etc-dir)))
-  (add-to-list 'recentf-exclude (regexp-quote (recentf-expand-file-name o-var-dir)))
-  (add-to-list 'recentf-exclude (lambda (file) (not (file-exists-p file))))
-
-  (add-hook 'kill-buffer-hook #'o-recentf--update-recentf-list-maybe))
+(add-hook 'kill-buffer-hook #'o-recentf--update-recentf-list-maybe)
 ;;; provide
 (provide 'init-pkg-recentf)
 ;;; init-pkg-recentf.el ends here
