@@ -138,11 +138,18 @@ beginning of region."
   (set-mark (if at-end (car bounds) (cdr bounds)))
   (activate-mark))
 ;;;; pulse
+(defun o-region-kill-safe (beg end)
+  "Kill region while preserving delimiters."
+  (interactive "r")
+  (puni-soft-delete beg end 'strict-sexp 'beyond 'kill))
+
 (defun o-pulse-toggle ()
+  "Toggle `pulse-flag' between t and never."
   (interactive)
   (setq pulse-flag (if (equal pulse-flag 'never) t 'never)))
 
 (defun o-advice-pulse-region-maybe (fn beg end &rest args)
+  "Advice that causes."
   (unless executing-kbd-macro
     (pulse-momentary-highlight-region beg end))
   (apply fn beg end args))
@@ -213,7 +220,7 @@ is already narrowed."
 
 (defun o-dwim-kmacro-start-or-end ()
   "Start kboard macro if not started.
-Otherwise if current defining or execing a kb."
+Otherwise if current defining or executing a keyboard macro, end it."
   (interactive)
   (cond (defining-kbd-macro
          (kmacro-end-macro nil))

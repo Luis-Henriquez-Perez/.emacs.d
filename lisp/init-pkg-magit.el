@@ -31,6 +31,8 @@
 (o-declare-package 'transient)
 (o-declare-package 'magit)
 
+(o-setq-mode-local git-commit-mode bray-state-init 'insert)
+
 (o-popup-at-bottom "\\`magit")
 ;;; provide
 (provide 'init-pkg-magit)
