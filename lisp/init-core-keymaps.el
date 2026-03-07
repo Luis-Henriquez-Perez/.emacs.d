@@ -330,7 +330,7 @@
   :prefix 'o-prefix-command-leader-find
   "t" #'tab-switch
   ";" #'save-buffer
-  "o" #'find-file
+  "f" #'find-file
   "E" #'o-emacs-open-config
   "I" #'o-emacs-open-init-file
   "L" #'o-emacs-open-lisp-dir
@@ -344,7 +344,8 @@
   "b" #'burly-open-bookmark
   "i" #'imenu
   "n" #'o-new-buffer
-  "f" #'switch-to-buffer
+  "w" #'switch-to-buffer
+  "o" #'occur
   "a" #'find-library
   "d" #'pop-to-buffer)
 
