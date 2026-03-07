@@ -166,7 +166,8 @@
   "d ;" #'iedit-mode
   "d c" #'capitalize-region
   "d h" #'helpful-at-point
-  "d o" #'sort-lines
+  "d o" #'open-line
+  "d S" #'sort-lines
   "d e" #'eval-region
   "d n" #'narrow-to-region
   "d u" #'downcase-region
@@ -182,8 +183,8 @@
   "d g" #'grugru-forward
   "D" #'kill-whole-line
   ;; f - search
-  "f" #'flash-jump
-  "F" #'meep-move-find-char-on-line-at-next
+  "f" #'meep-move-find-char-on-line-at-next
+  "F" #'meep-move-find-char-on-line-at-prev
   ;; x - delete
   "x" #'kill-region
   "X" #'delete-region
@@ -224,8 +225,6 @@
 
   "C-f" #'scroll-up
   "C-b" #'scroll-down)
-
-(defvar-keymap o-keymap-state-motion)
 
 (defvar-keymap o-keymap-state-visual
   "C-v" #'rectangle-mark-mode
