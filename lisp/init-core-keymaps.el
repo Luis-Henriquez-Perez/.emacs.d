@@ -340,6 +340,7 @@
   "l" #'consult-line
   "h" #'consult-outline
   "g" #'consult-grep
+  "r" #'consult-register
   "z" #'ace-link
   "b" #'burly-open-bookmark
   "i" #'imenu
