@@ -62,7 +62,7 @@
     (require 'elpaca)
     (elpaca-generate-autoloads "elpaca" repo)
     (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
-(add-hook 'after-init-hook #'elpaca-process-queues)
+(add-hook 'after-init-hook #'elpaca-process-queues -90)
 (elpaca `(,@elpaca-order))
 ;;; provide
 (provide 'init-pkg-elpaca)
