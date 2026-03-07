@@ -91,6 +91,8 @@
 ;;;; emacs-lisp
 (grugru-define-on-major-mode 'emacs-lisp-mode 'char (grugru-metagenerator-keep-case '("'" "#'")))
 
+(grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("when-let" "when-let*"))
+
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("funcall" "apply"))
 
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("after-init-hook" "emacs-startup-hook"))
