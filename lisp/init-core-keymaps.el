@@ -174,6 +174,7 @@
   "d U" #'upcase-region
   "d y" #'flyspell-region
   "d t" #'transpose-sexps
+  "d e" #'eval-defun
   "d w" #'widen
   ;; Uncommon therefore I give these keybindings the harder to press keys.
   "d R" #'rot13-region
