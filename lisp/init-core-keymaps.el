@@ -78,7 +78,7 @@
   ;; y - copy
   "y" #'copy-region-as-kill
   ;; I want a line variant here.
-  "Y" #'o-bray-unbound-key
+  "Y" #'undefined
   ;; Have - visual selection
   "v" #'meep-region-toggle
   "V" #'expreg-expand
@@ -196,7 +196,7 @@
   "m t" #'o-scroll-to-bottom
   "m k" #'o-scroll-to-top
 
-  "M" #'o-bray-unbound-key
+  "M" #'undefined
   ;; u - undo
   "u" #'undo-only
   "U" #'undo-redo
@@ -211,10 +211,10 @@
   "B" #'meep-isearch-at-point-prev
   "'" #'puni-splice
 
-  "\"" #'o-bray-unbound-key
+  "\"" #'undefined
 
   ;; Do not do anything to "," because it is used for local leader.
-  ;; "," #'o-bray-unbound-key
+  ;; "," #'undefined
   "<" #'join-line
 
   "." #'kmacro-call-macro
