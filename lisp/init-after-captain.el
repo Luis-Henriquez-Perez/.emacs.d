@@ -31,6 +31,7 @@
 (require 'init-core)
 (require 'captain)
 (require 'rx)
+(require 'meep)
 ;;;; determine where I am
 ;; TODO: generalize regexp with `o-defun', `cl-defun', etc.
 (defvar o-docstring-regexp "(\\(?:def\\(?:advice!\\|hook!\\|macro\\|un!?\\)\\)[[:blank:]]\\([^[:space:]]+\\)[[:blank:]](\\(.*\\))\n[[:blank:]]*\"")
@@ -77,7 +78,7 @@
     ('comment
      ;; For now use `lispy--bounds-comment' because I do not think there is a
      ;; built-in alternative.
-     (o-set beg (car (o--bounds-of-comment-inner)))
+     (o-set beg (car (meep--bounds-at-point-for-comment-inner)))
      ;; The reason I go forwared one character is that I could be at the first
      ;; word of the sentence.  I am doubtful this method is perfect but I could
      ;; not think of a better way yet.
