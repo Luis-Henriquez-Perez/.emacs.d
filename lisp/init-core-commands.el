@@ -125,6 +125,16 @@
   "Wrap region with spike brackets."
   (interactive "r")
   (puni--wrap-region beg end "`" "'"))
+
+(defun o-delim-wrap-single-quote (beg end)
+  "Wrap region with single quotes."
+  (interactive "r")
+  (puni--wrap-region beg end "'" "'"))
+
+(defun o-delim-wrap-double-quote (beg end)
+  "Wrap region with double quotes."
+  (interactive "r")
+  (puni--wrap-region beg end "\"" "\""))
 ;;;; mark
 ;; For now I am placing the point at the end of region on every command for
 ;; consistency.  I think in general the end is more useful because you can
