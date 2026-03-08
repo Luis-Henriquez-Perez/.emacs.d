@@ -86,6 +86,7 @@
 (o-require init-pkg-ws-butler)
 (o-require init-pkg-emmet-mode)
 (o-require init-pkg-transpose-mark)
+(o-require init-pkg-better-jumper)
 ;;;; UNCATEGORIZED
 (o-require init-pkg-vertico)
 (o-require init-pkg-dimmer)
