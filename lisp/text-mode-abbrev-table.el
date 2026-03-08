@@ -28,6 +28,10 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "Retun" "return")
+(define-abbrev text-mode-abbrev-table "Registe" "register")
+(define-abbrev text-mode-abbrev-table "forw" "forward")
+(define-abbrev text-mode-abbrev-table "Sepaate" "separate")
 (define-abbrev text-mode-abbrev-table "bette" "better")
 (define-abbrev text-mode-abbrev-table "caped" "capitalized")
 (define-abbrev text-mode-abbrev-table "effcy" "efficiency")
