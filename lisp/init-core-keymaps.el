@@ -249,8 +249,9 @@
   "<" #'o-delim-wrap-angle
   ">" #'o-delim-wrap-angle
   "a" #'o-delim-wrap-angle
-  "\"" #'o-delim-wrap-single-quote
-  "q" #'o-delim-wrap-single-quote)
+  "'" #'o-delim-wrap-single-quote
+  "\"" #'o-delim-wrap-double-quote
+  "d" #'o-delim-wrap-double-quote)
 
 (defvar-keymap o-keymap-state-insert
   "C-v" #'rectangle-mark-mode
