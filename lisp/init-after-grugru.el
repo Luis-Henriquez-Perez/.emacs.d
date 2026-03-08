@@ -35,6 +35,8 @@
 
 (grugru-define-global 'char (grugru-metagenerator-keep-case '("<" ">")))
 
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("a" "an" "the")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("pop" "push")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("bottom" "top")))
@@ -90,6 +92,8 @@
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("is" "was" "were")))
 ;;;; emacs-lisp
 (grugru-define-on-major-mode 'emacs-lisp-mode 'char (grugru-metagenerator-keep-case '("'" "#'")))
+
+(grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("defun" "defmacro"))
 
 (grugru-define-on-major-mode 'emacs-lisp-mode 'symbol '("when-let" "when-let*"))
 
