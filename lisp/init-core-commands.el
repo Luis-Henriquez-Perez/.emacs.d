@@ -280,7 +280,7 @@ non-readonly file buffer, save the buffer."
   (o-set lisp-dir (expand-file-name "lisp/" user-emacs-directory))
   (o-set abbrev-file (expand-file-name "text-mode-abbrev-table.el" lisp-dir))
   ;; Get the abbrev at point.
-  (o-set abbrev (substring-no-properties (word-at-point)))
+  (o-set abbrev (downcase (substring-no-properties (word-at-point))))
   ;; Get the expansion.
   (o-set expansion (read-string (format "Expansion for %s? " abbrev)))
   ;; Add the abbrev to the abbrev file.
