@@ -28,6 +28,9 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "geneic" "generic")
+(define-abbrev text-mode-abbrev-table "dets" "determines")
+(define-abbrev text-mode-abbrev-table "rets" "returns")
 (define-abbrev text-mode-abbrev-table "Retun" "return")
 (define-abbrev text-mode-abbrev-table "Registe" "register")
 (define-abbrev text-mode-abbrev-table "forw" "forward")
