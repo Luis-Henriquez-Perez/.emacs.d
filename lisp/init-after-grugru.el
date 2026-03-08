@@ -35,6 +35,8 @@
 
 (grugru-define-global 'char (grugru-metagenerator-keep-case '("<" ">")))
 
+(grugru-define-global 'word (grugru-metagenerator-keep-case '("single" "double" "triple")))
+
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("a" "an" "the")))
 
 (grugru-define-global 'word (grugru-metagenerator-keep-case '("pop" "push")))
