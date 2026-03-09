@@ -237,13 +237,6 @@ Otherwise if current defining or executing a keyboard macro, end it."
         (t
          (kmacro-start-macro nil))))
 
-(defun o-dwim-find-char ()
-  "Find char with `flash-jump' unless in keybinding macro."
-  (interactive)
-  (if (or defining-kbd-macro executing-kbd-macro)
-      (call-interactively #'flash-jump)
-    (call-interactively #'meep-find-char)))
-
 (defvar o-escape-hook nil
   "Hook run for `o-dwim-escape'.")
 
