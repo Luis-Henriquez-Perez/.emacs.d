@@ -264,13 +264,11 @@ of FACE to the background color of the `default' face."
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
 (defun o-hook--lock-important-buffers ()
   "Prevent important buffers from being killed."
-  (require 'emacs-lock)
-  (setq emacs-lock-default-locking-mode 'kill)
   (dolist (buffer '("*Messages*" "*log*"))
     (with-current-buffer buffer
       (emacs-lock-mode 1))))
 
-(add-hook 'o-first-input-hook #'o-hook--lock-important-buffers)
+(add-hook 'emacs-startup-hook #'o-hook--lock-important-buffers)
 ;;;; autoload commands
 (autoload 'o-emacs-open-config "init-core-commands" nil nil 'function)
 (autoload 'o-emacs-open-init-file "init-core-commands" nil nil 'function)

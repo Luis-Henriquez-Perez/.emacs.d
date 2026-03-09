@@ -276,6 +276,8 @@ end-of-buffer signals; pass the rest to the default handler."
 ;; Seconds before Emacs saves visited files.
 (setq auto-save-timeout 30)
 (auto-save-mode -1)
+;;;; lock
+(setq emacs-lock-default-locking-mode 'kill)
 ;;; provide
 (provide 'init-core-settings)
 ;;; init-core-settings.el ends here
