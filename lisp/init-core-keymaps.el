@@ -168,7 +168,7 @@
   "d j" #'eval-region
   "d k" #'comment-or-uncomment-region
   "d l" #'duplicate-dwim
-  "d n" #'narrow-to-region
+  "d n" #'o-dwim-narrow-or-widen
   "d o" #'open-line
   "d r" #'o-eval-and-replace-region
   "d t" #'transpose-sexps
