@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "anyw" "anyway")
 (define-abbrev text-mode-abbrev-table "repitition" "repetition")
 (define-abbrev text-mode-abbrev-table "geneic" "generic")
 (define-abbrev text-mode-abbrev-table "dets" "determines")
