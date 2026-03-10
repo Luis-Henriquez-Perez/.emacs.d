@@ -324,7 +324,9 @@
 
 (defvar-keymap o-keymap-leader-buffer
   :prefix 'o-prefix-command-leader-buffer
-  "x" #'kill-current-buffer
+  "X" #'kill-current-buffer
+  "K" #'kill-current-buffer
+  "x" #'bury-buffer
   "b" #'switch-to-buffer
   "j" #'next-buffer
   "k" #'previous-buffer)
