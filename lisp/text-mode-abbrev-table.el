@@ -28,6 +28,9 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "dirss" "directories")
+(define-abbrev text-mode-abbrev-table "fles" "files")
+(define-abbrev text-mode-abbrev-table "enale" "enable")
 (define-abbrev text-mode-abbrev-table "anot" "another")
 (define-abbrev text-mode-abbrev-table "anyw" "anyway")
 (define-abbrev text-mode-abbrev-table "repitition" "repetition")
