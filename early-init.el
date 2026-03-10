@@ -40,7 +40,6 @@
 
 (advice-add 'x-apply-session-resources :override #'ignore)
 
-(set-register :mode-line-format mode-line-format)
 (setq-default mode-line-format nil)
 
 (setq package-enable-at-startup nil)
