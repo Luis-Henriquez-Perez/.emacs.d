@@ -262,13 +262,13 @@ of FACE to the background color of the `default' face."
 
 (advice-add 'custom-available-themes :filter-return #'o-advice--use-only-real-themes)
 ;;;; Prevent *Messages* and *scratch* buffers from being killed
-(defun o-hook--lock-important-buffers ()
+(defun o-hook--lock-buffers ()
   "Prevent important buffers from being killed."
   (dolist (buffer '("*Messages*" "*log*"))
     (with-current-buffer buffer
       (emacs-lock-mode 1))))
 
-(add-hook 'emacs-startup-hook #'o-hook--lock-important-buffers)
+(add-hook 'emacs-startup-hook #'o-hook--lock-buffers)
 ;;;; autoload commands
 (autoload 'o-emacs-open-config "init-core-commands" nil nil 'function)
 (autoload 'o-emacs-open-init-file "init-core-commands" nil nil 'function)
