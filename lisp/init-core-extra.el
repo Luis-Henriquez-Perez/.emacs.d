@@ -321,11 +321,9 @@ of FACE to the background color of the `default' face."
 ;; (o-after smartparens (lambda () (sp-local-pair 'sh-mode "'")))
 ;;;; make certain files read-only
 (o-defun o-hook--make-read-only-maybe ()
-  "Do special things depending on what file is opened.
-If I open a file in my package directory, do it in `view-mode'.  If I open a
-file that is in a git repo, enale git-gutter-mode."
+  "Make files in certain directories read-only."
   (when buffer-file-name
-    (dolist (dir (list "~/.config/emacs/elpa/" "~/.config/emacs/elpaca/" "~/Downloads/"))
+    (dolist (dir (list "~/.config/emacs/elpa/" "~/Downloads/"))
       (when (file-in-directory-p buffer-file-name dir)
         (read-only-mode 1)
         (o-return)))))
