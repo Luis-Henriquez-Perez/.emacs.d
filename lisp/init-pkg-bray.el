@@ -60,7 +60,7 @@
   ;;     (bray-mode 1)))
   )
 
-(defun o-bray-enable ()
+(defun o-hook--enable-bray ()
   (interactive)
   (add-hook 'post-command-hook #'o-bray-update-cursor-color)
   (add-hook 'after-change-major-mode-hook #'o-bray-dwim)
@@ -152,7 +152,7 @@
   (when (bray-state-derived-p 'visual)
     (bray-state-stack-pop)))
 
-(add-hook 'after-init-hook #'o-bray-enable)
+(add-hook 'after-init-hook #'o-hook--enable-bray)
 
 (o-require-after-load 'bray 'init-after-bray)
 ;;; provide
