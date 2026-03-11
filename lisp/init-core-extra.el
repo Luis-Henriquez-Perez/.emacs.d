@@ -341,7 +341,7 @@ of FACE to the background color of the `default' face."
         (t
          (o-log 'info "Theme %s not found." theme))))
 
-(add-hook 'after-init-hook #'o-hook--load-theme-maybe 90)
+(add-hook 'after-init-hook #'o-hook--load-theme-maybe 11)
 
 ;; This makes opening sh files way too slow.  These are simple files, it should
 ;; not be slow.
@@ -386,7 +386,7 @@ of FACE to the background color of the `default' face."
             (o-log 'info "Required %s in %0.02f seconds" feature time)
           (o-log 'error "Failed to require %s" feature))))))
 
-(add-hook 'after-init-hook #'o-hook--load-required-features 90)
+(add-hook 'after-init-hook #'o-hook--load-required-features -10)
 ;;; provide
 (provide 'init-core-extra)
 ;;; init-core-extra.el ends here
