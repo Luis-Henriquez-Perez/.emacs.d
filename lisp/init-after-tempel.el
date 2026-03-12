@@ -63,6 +63,13 @@
   (tempel-insert '("(defun " p " (" p ")\n  \"" p "\"" n> "(interactive" p ")" n> r> ")"))
   t)
 
+(defun o-tempel-elisp-expand-defvar-no-docstring ()
+  "Expand to `defvar' with no docstring."
+  (interactive)
+  (tempel-insert '("(defvar " p "\s" p "\n  \"" q")"))
+  t)
+(put 'o-tempel-elisp-expand-defvar-no-docstring 'no-self-insert t)
+
 (defun o-tempel-elisp-expand-defvar ()
   "Expand to `defvar'."
   (interactive)
