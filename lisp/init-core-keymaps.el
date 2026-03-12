@@ -294,7 +294,7 @@
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
-  "r" #'o-random-load-theme
+  "r" #'o-emacs-random-load-theme
   "t" #'load-theme
   "h" #'whitespace-mode
   "W" #'whitespace-mode
