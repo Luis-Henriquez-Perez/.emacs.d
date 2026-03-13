@@ -36,6 +36,18 @@
 (add-to-list 'tempel-template-sources 'o-tempel-global-templates)
 (add-to-list 'tempel-template-sources 'o-tempel-local-templates)
 
+;; Setting keybindings with `bray-state-map-set' will not work here because
+;; `bray--mode-map-alist' is only updated only during state change but
+;; `tempel-map' becomes active during insert state.  They will work if you
+;; change state, but obviously having to do this in the middle of filling out
+;; template placeholders is inconvenient. This manually enables the tempel
+;; bindings.
+(defun o-hook--register-tempel-map ()
+  "Register `tempel-map' with `bray--mode-map-alist'."
+  (push (cons 'tempel--active (bray-state-map-for-keymap-get 'insert tempel-map)) bray--mode-map-alist))
+
+(add-hook 'o-bray-state-insert-enter-hook #'o-hook--register-tempel-map)
+
 (defun o-tempel-elisp-expand-let-bang ()
   "Expand to a `let' form."
   (interactive)
