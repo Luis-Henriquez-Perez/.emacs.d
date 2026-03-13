@@ -28,6 +28,11 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "bt" "but")
+(define-abbrev text-mode-abbrev-table "ghub" "github")
+(define-abbrev text-mode-abbrev-table "considing" "considering")
+(define-abbrev text-mode-abbrev-table "ototh" "on the other hand")
+(define-abbrev text-mode-abbrev-table "considred" "considered")
 (define-abbrev text-mode-abbrev-table "defiition" "definition")
 (define-abbrev text-mode-abbrev-table "midd" "middle")
 (define-abbrev text-mode-abbrev-table "uped" "updated")
