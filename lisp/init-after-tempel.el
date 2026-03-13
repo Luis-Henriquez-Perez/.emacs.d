@@ -26,6 +26,7 @@
 ;;
 ;;; Code:
 (require 'init-core)
+(require 'tempel)
 
 (defvar o-tempel-global-templates nil
   "My global templates.")
