@@ -38,8 +38,11 @@
 ;; `ffap'
 ;; `split-line' - the opposite of `join-line' though does not handle extra whitespace.
 ;; Change surrounding delimiters
+(o-setq-mode-local elpaca-manager-mode bray-state-init 'motion)
 
 ;; (o-bray-state-map-set 'normal 'eamcs-lisp-mode-map "x" #'lispy-delete)
+(add-hook 'org-capture-mode-hook #'o-hook--enable-bray-insert-state)
+
 (o-after helm
   (bray-state-map-set 'insert helm-map "TAB" #'helm-next-line)
   ;; (bray-state-map-set 'insert 'helm-map [backtab] #'helm-previous-line)
