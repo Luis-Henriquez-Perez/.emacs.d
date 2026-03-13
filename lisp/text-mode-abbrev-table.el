@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "defiition" "definition")
 (define-abbrev text-mode-abbrev-table "midd" "middle")
 (define-abbrev text-mode-abbrev-table "uped" "updated")
 (define-abbrev text-mode-abbrev-table "imncsw" "I am not completely sure why")
