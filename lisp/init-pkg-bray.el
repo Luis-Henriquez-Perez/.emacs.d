@@ -42,8 +42,8 @@
 (defvar o-bray-state-visual-enter-hook nil)
 (defvar o-bray-state-visual-exit-hook nil)
 
-;; (defvar o-bray-state-emacs-enter-hook nil)
-;; (defvar o-bray-state-emacs-exit-hook nil)
+(defvar o-bray-state-motion-enter-hook nil)
+(defvar o-bray-state-motion-exit-hook nil)
 
 (defvar o-bray-state-insert-map o-keymap-state-insert)
 
@@ -51,7 +51,7 @@
 
 (defvar o-bray-state-visual-map o-keymap-state-visual)
 
-;; (defvar o-bray-state-emacs-map o-keymap-state-emacs)
+(defvar o-bray-state-motion-map o-keymap-state-motion)
 
 (defun o-bray-dwim ()
   (bray-mode 1)
@@ -106,9 +106,9 @@
         (if (stringp fg)
             fg
           "#8b2252")))
-      ;; ('emacs
-      ;;  ;; (setq fg (face-attribute font-lock-string-face :foreground))
-      ;;  (set-cursor-color "blue"))
+      ('motion
+       ;; (setq fg (face-attribute font-lock-string-face :foreground))
+       (set-cursor-color "blue"))
       )))
 
 (defvar bray-state-definitions)
@@ -133,13 +133,13 @@
           :enter-hook o-bray-state-insert-enter-hook
           :exit-hook o-bray-state-insert-exit-hook
           :is-input t)
-        ;; ( :id emacs
-        ;;   :cursor-type bar
-        ;;   :lighter "<E>"
-        ;;   :keymaps ((t . o-bray-state-emacs-map))
-        ;;   :enter-hook o-bray-state-emacs-enter-hook
-        ;;   :exit-hook o-bray-state-emacs-exit-hook
-        ;;   :is-input t)
+        ( :id motion
+          :cursor-type box
+          :lighter "<M>"
+          :keymaps ((t . o-bray-state-motion-map))
+          :enter-hook o-bray-state-motion-enter-hook
+          :exit-hook o-bray-state-motion-exit-hook
+          :is-input t)
         ))
 
 (defun o-hook--bray-enable-visual-state ()
