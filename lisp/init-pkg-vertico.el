@@ -47,10 +47,10 @@
 
 ;; (o-pushing vertico-multiform-commands '(Info-menu (vertico-sort-function . nil)))
 (o-opt vertico-multiform-commands
-      '((Info-menu (vertico-sort-function . nil))
-        ;; (execute-extended-command (vertico-sort-function . vertico-sort-history-alpha))
-        ;; (t (vertico-sort-function . vertico-sort-history-length-alpha))
-        ))
+       '((Info-menu (vertico-sort-function . nil))
+         ;; (execute-extended-command (vertico-sort-function . vertico-sort-history-alpha))
+         ;; (t (vertico-sort-function . vertico-sort-history-length-alpha))
+         ))
 
 (o-opt vertico-quick1 "asdfgh")
 (o-opt vertico-quick2 "jkluionm")
