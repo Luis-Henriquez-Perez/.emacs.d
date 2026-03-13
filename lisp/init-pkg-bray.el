@@ -142,6 +142,10 @@
           :is-input t)
         ))
 
+(defun o-hook--enable-bray-insert-state ()
+  "Enable insert state."
+  (bray-state-set 'insert))
+
 (defun o-hook--bray-enable-visual-state ()
   "Enable visual state."
   (when (bray-state-derived-p 'normal)
