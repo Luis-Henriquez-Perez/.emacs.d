@@ -28,6 +28,11 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "midd" "middle")
+(define-abbrev text-mode-abbrev-table "uped" "updated")
+(define-abbrev text-mode-abbrev-table "imncsw" "I am not completely sure why")
+(define-abbrev text-mode-abbrev-table "compl" "complete")
+(define-abbrev text-mode-abbrev-table "therb" "thereby")
 (define-abbrev text-mode-abbrev-table "dirss" "directories")
 (define-abbrev text-mode-abbrev-table "fles" "files")
 (define-abbrev text-mode-abbrev-table "enale" "enable")
