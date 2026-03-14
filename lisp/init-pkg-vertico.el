@@ -45,6 +45,17 @@
 
 (add-hook 'vertico-mode-hook #'vertico-multiform-mode)
 
+;; The keybindings I set with `bray-state-map-set' on `vertico-map' are not
+;; taking effect.  I am not completely sure why but here I enable my insert
+;; state keybindings manually.
+(defun o-hook--register-vertico-map ()
+  "Ensure that `vertico-map' is in effect."
+  (when (minibufferp)
+    (unless (assoc 'vertico-mode bray--mode-map-alist)
+      (push (cons 'vertico-mode (bray-state-map-for-keymap-get 'insert vertico-map)) bray--mode-map-alist))))
+
+(add-hook 'o-bray-state-insert-enter-hook #'o-hook--register-vertico-map)
+
 ;; (o-pushing vertico-multiform-commands '(Info-menu (vertico-sort-function . nil)))
 (o-opt vertico-multiform-commands
        '((Info-menu (vertico-sort-function . nil))
