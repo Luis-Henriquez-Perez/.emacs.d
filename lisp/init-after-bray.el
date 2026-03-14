@@ -87,15 +87,12 @@
   (bray-state-map-set 'normal dired-mode-map "l" #'dired-find-file)
   (bray-state-map-set 'normal dired-mode-map "RET" #'dired-find-file)
   (bray-state-map-set 'normal dired-mode-map "o" #'dired-omit-mode))
-;;;; macrostep
-;; (o-defafter o-after--bray-define-macrostep-binds (macrostep)
-;;   (let ((prefixes (list o-key-localleader-normal o-key-localleader-normal-alt)))
-;;     (dolist (prefix prefixes)
-;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m") nil)
-;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m e") #'macrostep-expand)
-;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m c") #'macrostep-collapse)
-;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m C") #'macrostep-collapse-all)
-;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m a") #'macrostep-collapse-all))))
+;;;; emacs-lisp-mode lleader
+(bray-state-map-set 'normal emacs-lisp-mode-map o-key-localleader-normal #'o-prefix-command-localleader-emacs-lisp)
+(bray-state-map-set 'normal emacs-lisp-mode-map o-key-localleader-normal-alt #'o-prefix-command-localleader-emacs-lisp)
+(bray-state-map-set 'insert emacs-lisp-mode-map o-key-localleader-emacs #'o-prefix-command-localleader-emacs-lisp)
+(bray-state-map-set 'insert emacs-lisp-mode-map o-key-localleader-insert #'o-prefix-command-localleader-emacs-lisp)
+(bray-state-map-set 'insert emacs-lisp-mode-map o-key-localleader-insert-alt #'o-prefix-command-localleader-emacs-lisp)
 ;;; provide
 (provide 'init-after-bray)
 ;;; init-after-bray.el ends here
