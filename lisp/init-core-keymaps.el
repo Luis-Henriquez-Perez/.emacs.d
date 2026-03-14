@@ -227,6 +227,14 @@
   "C-f" #'scroll-up
   "C-b" #'scroll-down)
 
+(defvar-keymap o-keymap-state-motion
+  "j" "C-n"
+  "k" "C-p"
+  "C-c j" "j"
+  "C-c k" "k"
+  "<escape>" #'o-dwim-escape
+  o-key-leader-normal #'o-prefix-command-leader)
+
 (defvar-keymap o-keymap-state-visual
   "C-v" #'rectangle-mark-mode
   "v" #'expreg-expand
