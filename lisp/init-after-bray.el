@@ -38,15 +38,17 @@
 ;; `ffap'
 ;; `split-line' - the opposite of `join-line' though does not handle extra whitespace.
 ;; Change surrounding delimiters
+;;;; magit
 (o-setq-mode-local magit-mode bray-state-init 'motion)
 ;; Unfortunately I cannot use `bray-state-init' here because `git-commit-mode'
 ;; is not a major mode.
 (add-hook 'git-commit-mode-hook #'o-hook--enable-bray-insert-state)
+;;;; elpaca
 (o-setq-mode-local elpaca-manager-mode bray-state-init 'motion)
-
+;;;; org-capture
 ;; (o-bray-state-map-set 'normal 'eamcs-lisp-mode-map "x" #'lispy-delete)
 (add-hook 'org-capture-mode-hook #'o-hook--enable-bray-insert-state)
-
+;;;; helm
 (o-after helm
   (bray-state-map-set 'insert helm-map "TAB" #'helm-next-line)
   ;; (bray-state-map-set 'insert 'helm-map [backtab] #'helm-previous-line)
@@ -58,18 +60,18 @@
   ;; (bray-state-map-set 'insert 'helm-map "RET" #'+helm-select-nth-action)
   (bray-state-map-set 'insert helm-map "S-TAB" #'helm-mark-current-line)
   (bray-state-map-set 'insert helm-map "C-;" #'ace-jump-helm-line))
-
+;;;; vertico
 (o-after vertico
-  (bray-state-map-set 'insert minibuffer-mode-map "<escape>" #'o-dwim-escape)
-  (bray-state-map-set 'insert minibuffer-mode-map "C-j" #'vertico-next)
-  (bray-state-map-set 'insert minibuffer-mode-map "C-k" #'vertico-previous)
-  (bray-state-map-set 'insert minibuffer-mode-map "C-n" #'vertico-scroll-up)
-  (bray-state-map-set 'insert minibuffer-mode-map "C-p" #'vertico-scroll-down)
-  (bray-state-map-set 'insert minibuffer-mode-map "TAB" #'vertico-next)
-  (bray-state-map-set 'insert minibuffer-mode-map ";" #'vertico-quick-exit)
-  (bray-state-map-set 'insert minibuffer-mode-map "C-;" #'vertico-quick-exit)
-  (bray-state-map-set 'insert minibuffer-mode-map "<backtab>" #'vertico-previous))
-
+  (bray-state-map-set 'insert vertico-map "<escape>" #'o-dwim-escape)
+  (bray-state-map-set 'insert vertico-map "C-j" #'vertico-next)
+  (bray-state-map-set 'insert vertico-map "C-k" #'vertico-previous)
+  (bray-state-map-set 'insert vertico-map "C-n" #'vertico-scroll-up)
+  (bray-state-map-set 'insert vertico-map "C-p" #'vertico-scroll-down)
+  (bray-state-map-set 'insert vertico-map "TAB" #'vertico-next)
+  (bray-state-map-set 'insert vertico-map ";" #'vertico-quick-exit)
+  (bray-state-map-set 'insert vertico-map "C-;" #'vertico-quick-exit)
+  (bray-state-map-set 'insert vertico-map "<backtab>" #'vertico-previous))
+;;;; corfu
 (o-after corfu
   (bray-state-map-set 'insert corfu-map "<tab>" #'corfu-next)
   ;; (bray-state-map-set 'insert 'corfu-map [backtab] #'corfu-previous)
@@ -80,28 +82,29 @@
   (bray-state-map-set 'insert corfu-map "C-p" #'corfu-previous)
   (bray-state-map-set 'insert corfu-map ";" #'corfu-quick-complete)
   (bray-state-map-set 'insert corfu-map "SPC" #'corfu-insert))
-
+;;;; tempel
 (o-after tempel
   (bray-state-map-set 'insert tempel-map "C-l" #'tempel-abort)
   (bray-state-map-set 'insert tempel-map "C-j" #'tempel-next)
   (bray-state-map-set 'insert tempel-map "C-k" #'tempel-previous)
+  ;; (keymap-set tempel-map "TAB" #'tempel-next)
   (bray-state-map-set 'insert tempel-map "TAB" #'tempel-next)
   (bray-state-map-set 'insert tempel-map [backtab] #'tempel-previous))
-
+;;;; dired
 (o-after dired
   (bray-state-map-set 'normal dired-mode-map "h" #'dired-up-directory)
   (bray-state-map-set 'normal dired-mode-map "l" #'dired-find-file)
   (bray-state-map-set 'normal dired-mode-map "RET" #'dired-find-file)
   (bray-state-map-set 'normal dired-mode-map "o" #'dired-omit-mode))
-
-(o-defafter o-after--bray-define-macrostep-binds (macrostep)
-  (let ((prefixes (list o-key-localleader-normal o-key-localleader-normal-alt)))
-    (dolist (prefix prefixes)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m") nil)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m e") #'macrostep-expand)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m c") #'macrostep-collapse)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m C") #'macrostep-collapse-all)
-      (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m a") #'macrostep-collapse-all))))
+;;;; macrostep
+;; (o-defafter o-after--bray-define-macrostep-binds (macrostep)
+;;   (let ((prefixes (list o-key-localleader-normal o-key-localleader-normal-alt)))
+;;     (dolist (prefix prefixes)
+;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m") nil)
+;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m e") #'macrostep-expand)
+;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m c") #'macrostep-collapse)
+;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m C") #'macrostep-collapse-all)
+;;       (bray-state-map-set 'normal emacs-lisp-mode-map (concat prefix "\s" "m a") #'macrostep-collapse-all))))
 ;;; provide
 (provide 'init-after-bray)
 ;;; init-after-bray.el ends here
