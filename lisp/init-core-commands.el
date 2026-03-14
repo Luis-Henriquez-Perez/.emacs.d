@@ -277,9 +277,9 @@ non-readonly file buffer, save the buffer."
   (call-interactively #'consult-buffer))
 
 ;; TODO: make surround smart enough to add escaped quotes when necessary.
-(o-defun o-abbrev-inverse-add (beg end)
+(o-defun o-abbrev-inverse-add ()
   "Add the abbrev to abbrevs."
-  (interactive "r")
+  (interactive)
   (o-set lisp-dir (expand-file-name "lisp/" user-emacs-directory))
   (o-set abbrev-file (expand-file-name "text-mode-abbrev-table.el" lisp-dir))
   ;; Get the abbrev at point.
