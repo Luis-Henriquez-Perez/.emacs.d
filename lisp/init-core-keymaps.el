@@ -302,7 +302,7 @@
   "c" #'blink-cursor-mode
   "g" #'grugru
   "s" #'smartparens-mode
-  "r" #'o-emacs-random-load-theme
+  "r" #'o-emacs-load-random-theme
   "t" #'load-theme
   "h" #'whitespace-mode
   "W" #'whitespace-mode
