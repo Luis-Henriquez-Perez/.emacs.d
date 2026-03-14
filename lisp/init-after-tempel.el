@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 (require 'tempel)
-
+;;;; setup template sources
 (defvar o-tempel-global-templates nil
   "My global templates.")
 
@@ -36,7 +36,7 @@
 
 (add-to-list 'tempel-template-sources 'o-tempel-global-templates)
 (add-to-list 'tempel-template-sources 'o-tempel-local-templates)
-
+;;;; register tempel map
 ;; Setting keybindings with `bray-state-map-set' will not work here because
 ;; `bray--mode-map-alist' is only updated only during state change but
 ;; `tempel-map' becomes active during insert state.  They will work if you
@@ -48,27 +48,28 @@
   (push (cons 'tempel--active (bray-state-map-for-keymap-get 'insert tempel-map)) bray--mode-map-alist))
 
 (add-hook 'o-bray-state-insert-enter-hook #'o-hook--register-tempel-map)
-
-(defun o-tempel-elisp-expand-let-bang ()
+;;;; snippets
+;;;;; elisp
+(defun o-tempel-expand-elisp-let-bang ()
   "Expand to a `let' form."
   (interactive)
   (tempel-insert '("(let* (" p ")" n> r ")"))
   t)
-(put 'o-tempel-elisp-expand-let-bang 'no-self-insert t)
+(put 'o-tempel-expand-elisp-let-bang 'no-self-insert t)
 
-(defun o-tempel-elisp-expand-defun ()
+(defun o-tempel-expand-elisp-defun ()
   "Expand to a `defun' form."
   (interactive)
   (tempel-insert '("(defun " p " (" p ")" n> "\"" p "\"" n> r ")"))
   t)
-(put 'o-tempel-elisp-expand-defun 'no-self-insert t)
+(put 'o-tempel-expand-elisp-defun 'no-self-insert t)
 
-(defun o-tempel-elisp-expand-cond ()
+(defun o-tempel-expand-elisp-cond ()
   "Expand to a `cond' form."
   (interactive)
   (tempel-insert '("(cond " ")"))
   t)
-(put 'o-tempel-elisp-expand-cond 'no-self-insert t)
+(put 'o-tempel-expand-elisp-cond 'no-self-insert t)
 
 (defun o-tempel-expand-elisp-command ()
   "Expand to interactive command."
@@ -76,19 +77,19 @@
   (tempel-insert '("(defun " p " (" p ")\n  \"" p "\"" n> "(interactive" p ")" n> r> ")"))
   t)
 
-(defun o-tempel-elisp-expand-defvar-no-docstring ()
+(defun o-tempel-expand-elisp-defvar-no-docstring ()
   "Expand to `defvar' with no docstring."
   (interactive)
   (tempel-insert '("(defvar " p "\s" p "\n  \"" q")"))
   t)
-(put 'o-tempel-elisp-expand-defvar-no-docstring 'no-self-insert t)
+(put 'o-tempel-expand-elisp-defvar-no-docstring 'no-self-insert t)
 
-(defun o-tempel-elisp-expand-defvar ()
+(defun o-tempel-expand-elisp-defvar ()
   "Expand to `defvar'."
   (interactive)
   (tempel-insert '("(defvar " p "\s" p "\n  \"" q "\"" ")"))
   t)
-(put 'o-tempel-elisp-expand-defvar 'no-self-insert t)
+(put 'o-tempel-expand-elisp-defvar 'no-self-insert t)
 
 (defun o-tempel-expand-elisp-message ()
   "Expand to `message'."
