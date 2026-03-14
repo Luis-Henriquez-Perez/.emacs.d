@@ -29,15 +29,6 @@
 (require 'bray)
 (require 'bray-state-map)
 (require 'meep)
-;; TODO: functions to bind
-;; `join-line' - it is something that I do all the time, I did not know there was
-;; a specific fn for it.
-;; I want some way to.
-;; `register-to-point'
-;; `point-to-register'
-;; `ffap'
-;; `split-line' - the opposite of `join-line' though does not handle extra whitespace.
-;; Change surrounding delimiters
 ;;;; magit
 (o-setq-mode-local magit-mode bray-state-init 'motion)
 ;; Unfortunately I cannot use `bray-state-init' here because `git-commit-mode'
