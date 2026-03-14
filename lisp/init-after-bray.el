@@ -38,6 +38,10 @@
 ;; `ffap'
 ;; `split-line' - the opposite of `join-line' though does not handle extra whitespace.
 ;; Change surrounding delimiters
+(o-setq-mode-local magit-mode bray-state-init 'motion)
+;; Unfortunately I cannot use `bray-state-init' here because `git-commit-mode'
+;; is not a major mode.
+(add-hook 'git-commit-mode-hook #'o-hook--enable-bray-insert-state)
 (o-setq-mode-local elpaca-manager-mode bray-state-init 'motion)
 
 ;; (o-bray-state-map-set 'normal 'eamcs-lisp-mode-map "x" #'lispy-delete)

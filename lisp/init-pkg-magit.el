@@ -31,12 +31,6 @@
 (o-declare-package 'transient)
 (o-declare-package 'magit)
 
-(o-setq-mode-local git-commit-mode bray-state-init 'insert)
-(o-setq-mode-local magit-mode bray-state-init 'motion)
-;; Unfortunately I cannot use `bray-state-init' here because `git-commit-mode'
-;; is not a major mode.
-(add-hook 'git-commit-mode-hook #'o-hook--enable-bray-insert-state)
-
 (o-popup-at-bottom "\\`magit")
 ;;; provide
 (provide 'init-pkg-magit)
