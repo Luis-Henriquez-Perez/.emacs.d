@@ -167,7 +167,6 @@
   "d e" #'eval-region
   "d f" #'grugru-forward
   "d g" #'transpose-words
-  "d w" #'transpose-words
   "d h" #'helpful-at-point
   "d i" #'eval-defun
   "d j" #'eval-region
