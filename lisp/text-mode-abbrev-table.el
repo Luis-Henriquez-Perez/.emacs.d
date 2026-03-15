@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "abbevs" "abbrevs.")
 (define-abbrev text-mode-abbrev-table "locall" "localleader")
 (define-abbrev text-mode-abbrev-table "kwds" "keywords")
 (define-abbrev text-mode-abbrev-table "consstent" "consistent")
