@@ -80,7 +80,12 @@
     (with-current-buffer buffer
       (bray-mode -1))))
 
-(add-hook 'o-escape-hook #'bray-state-stack-pop)
+(defun o-hook--reset-bray-state ()
+  "Reset state.
+Set state to either the initial state, `bray-state-init' or if that is nil, `bray-state-default'."
+  (bray-state-set (or bray-state-init bray-state-default)))
+
+(add-hook 'o-escape-hook #'o-hook--reset-bray-state)
 
 (o-setq-mode-local minibuffer-mode bray-state-init 'insert)
 
