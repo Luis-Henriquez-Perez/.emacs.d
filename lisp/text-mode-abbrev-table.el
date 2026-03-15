@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "reqs" "requires")
+(define-abbrev text-mode-abbrev-table "initia" "initialize")
 (define-abbrev text-mode-abbrev-table "appropriatel" "appropriately")
 (define-abbrev text-mode-abbrev-table "abbevs" "abbrevs.")
 (define-abbrev text-mode-abbrev-table "locall" "localleader")
@@ -5287,7 +5289,7 @@ This function is meant to be used as the expansion."
 (define-abbrev text-mode-abbrev-table "reqing" "requiring")
 (define-abbrev text-mode-abbrev-table "reqm" "requirement")
 (define-abbrev text-mode-abbrev-table "reqrs" "requires")
-(define-abbrev text-mode-abbrev-table "reqs" "requirements")
+(define-abbrev text-mode-abbrev-table "reqms" "requirements")
 (define-abbrev text-mode-abbrev-table "requirem" "requirement")
 (define-abbrev text-mode-abbrev-table "requirment" "requirement")
 (define-abbrev text-mode-abbrev-table "requred" "required")
