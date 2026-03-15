@@ -408,6 +408,13 @@
   "y" #'o-emacs-random-load-theme
   "s" #'o-emacs-random-load-theme
   "d" #'transwin-toggle)
+
+(defvar-keymap o-keymap-localleader-emacs-lisp
+  :prefix 'o-prefix-command-localleader-emacs-lisp
+  "d" #'eval-defun
+  "m e" #'macrostep-expand
+  "m c" #'macrostep-collapse
+  "m C" #'macrostep-collapse-all)
 ;;; provide
 (provide 'init-core-keymaps)
 ;;; init-core-keymaps.el ends here
