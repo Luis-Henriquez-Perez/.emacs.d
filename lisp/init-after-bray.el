@@ -29,6 +29,8 @@
 (require 'bray)
 (require 'bray-state-map)
 (require 'meep)
+;;;; info
+(o-setq-mode-local Info-mode bray-state-init 'motion)
 ;;;; magit
 (o-setq-mode-local magit-mode bray-state-init 'motion)
 ;; Unfortunately I cannot use `bray-state-init' here because `git-commit-mode'
