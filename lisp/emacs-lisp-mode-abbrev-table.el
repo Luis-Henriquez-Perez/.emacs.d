@@ -27,24 +27,20 @@
 ;;; Code:
 (require 'abbrev)
 
-(declare-function #'o-tempel-elisp-expand-defun "init-after-tempel")
-(declare-function #'o-tempel-elisp-expand-defhook "init-after-tempel")
-(declare-function #'o-tempel-elisp-expand-defvar "init-after-tempel")
-(declare-function #'o-tempel-elisp-expand-message "init-after-tempel")
-(declare-function #'o-tempel-elisp-expand-message-var "init-after-tempel")
-
-;; (defun o-elisp-abbrev (abbrev def hook)
-;;   "Shorthand for defining an elisp abbrev."
-;;   (define-abbrev emacs-lisp-mode-abbrev-table abbrev def hook :enable-function ))
+(declare-function #'o-tempel-expand-elisp-defun       "init-after-tempel")
+(declare-function #'o-tempel-expand-elisp-defhook     "init-after-tempel")
+(declare-function #'o-tempel-expand-elisp-defvar      "init-after-tempel")
+(declare-function #'o-tempel-expand-elisp-message     "init-after-tempel")
+(declare-function #'o-tempel-expand-elisp-message-var "init-after-tempel")
 
 (define-abbrev emacs-lisp-mode-abbrev-table "aih" "after-init-hook")
 (define-abbrev emacs-lisp-mode-abbrev-table "esh" "emacs-startup-hook")
-(define-abbrev emacs-lisp-mode-abbrev-table "dfn" "" #'o-tempel-elisp-expand-defun :enable-function #'o-abbrev-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "dhk" "" #'o-tempel-elisp-expand-defhook :enable-function #'o-abbrev-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "dvar" "" #'o-tempel-elisp-expand-defvar :enable-function #'o-abbrev-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "funn" "" #'o-tempel-elisp-expand-defun :enable-function #'o-abbrev-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "msg" "" #'o-tempel-elisp-expand-message :enable-function #'o-abbrev-in-elisp-code-p)
-(define-abbrev emacs-lisp-mode-abbrev-table "msgv" "" #'o-tempel-elisp-expand-message-var :enable-function #'o-abbrev-in-elisp-code-p)
+(define-abbrev emacs-lisp-mode-abbrev-table "dfn"  "" #'o-tempel-expand-elisp-defun :enable-function #'o-abbrev-in-elisp-code-p)
+(define-abbrev emacs-lisp-mode-abbrev-table "dhk"  "" #'o-tempel-expand-elisp-defhook :enable-function #'o-abbrev-in-elisp-code-p)
+(define-abbrev emacs-lisp-mode-abbrev-table "dvar" "" #'o-tempel-expand-elisp-defvar :enable-function #'o-abbrev-in-elisp-code-p)
+(define-abbrev emacs-lisp-mode-abbrev-table "funn" "" #'o-tempel-expand-elisp-defun :enable-function #'o-abbrev-in-elisp-code-p)
+(define-abbrev emacs-lisp-mode-abbrev-table "msg"  "" #'o-tempel-expand-elisp-message :enable-function #'o-abbrev-in-elisp-code-p)
+(define-abbrev emacs-lisp-mode-abbrev-table "msgv" "" #'o-tempel-expand-elisp-message-var :enable-function #'o-abbrev-in-elisp-code-p)
 ;;; provide
 (provide 'emacs-lisp-mode-abbrev-table)
 ;;; emacs-lisp-mode-abbrev-table.el ends here
