@@ -84,6 +84,8 @@ file is loaded."
   (o-eval-after-bound-forms)
   (add-hook 'after-load-functions #'o-eval-after-bound-forms))
 
+;; This should be done after everything.
+(add-hook 'emacs-startup-hook #'o-hook--setup-eval-after-bound-forms 90)
 ;;;; emacs-lisp-mode specific
 (defun o-hook--extend-elisp-font-lock ()
   "Add custom font lock keywords for emacs-lisp."
