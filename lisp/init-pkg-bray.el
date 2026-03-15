@@ -82,8 +82,12 @@
 
 (defun o-hook--reset-bray-state ()
   "Reset state.
-Set state to either the initial state, `bray-state-init' or if that is nil, `bray-state-default'."
-  (bray-state-set (or bray-state-init bray-state-default)))
+Set state to either the initial state, `bray-state-init' or if that is nil,
+`bray-state-default'.  Never reset to insert state."
+  (cond ((member bray-state-init '(nil insert))
+         (bray-state-set bray-state-default))
+        (t
+         (bray-state-set bray-state-init))))
 
 (add-hook 'o-escape-hook #'o-hook--reset-bray-state)
 
