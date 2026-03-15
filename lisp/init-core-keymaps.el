@@ -156,32 +156,35 @@
   "a ;" #'meep-insert-line-end
   "a H" #'meep-insert-line-beginning
   ;; d - act on region
-  "d a" #'o-expand-region-abbrevs-no-query
-  ;; Maintain a similarity with vim's "dd"
   "d ;" #'iedit-mode
+  "d M" #'morse-region
+  "d R" #'o-eval-and-replace-region
   "d S" #'sort-lines
   "d U" #'upcase-region
+  "d Z" #'o-expand-region-abbrevs-no-query
   "d c" #'capitalize-region
   "d d" #'kill-whole-line
   "d e" #'eval-region
+  "d f" #'grugru-forward
+  "d g" #'transpose-words
+  "d w" #'transpose-words
   "d h" #'helpful-at-point
+  "d i" #'eval-defun
   "d j" #'eval-region
   "d k" #'comment-or-uncomment-region
   "d l" #'duplicate-dwim
+  "d m" #'unmorse-region
   "d n" #'o-dwim-narrow-or-widen
   "d o" #'open-line
-  "d r" #'o-eval-and-replace-region
-  "d t" #'transpose-sexps
-  "d u" #'downcase-region
-  "d y" #'flyspell-region
-  "d i" #'eval-defun
+  "d r" #'replace-regexp
+  "d t" #'transpose-words
+  "d s" #'transpose-sexps
   "d w" #'widen
+  "d y" #'flyspell-region
+  "d Q" #'rot13-region
+  "d a" #'align-regexp
+  ;; Maintain a similarity with vim's "dd"
   ;; Uncommon therefore I give these keybindings the harder to press keys.
-  "d R" #'rot13-region
-  "d m" #'unmorse-region
-  "d M" #'morse-region
-  "d f" #'grugru-forward
-  "d g" #'grugru-forward
   "D" #'kill-whole-line
   ;; f - search
   "f" #'meep-move-find-char-on-line-at-next
