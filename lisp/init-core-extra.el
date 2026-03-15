@@ -86,7 +86,7 @@ file is loaded."
 
 ;;;; emacs-lisp-mode specific
 (defun o-hook--extend-elisp-font-lock ()
-  "Add custom font-lock keywords."
+  "Add custom font lock keywords for emacs-lisp."
   (font-lock-add-keywords
    'emacs-lisp-mode
    '(("(\\(o-def\\(?:macro\\|un\\)\\)\\_>\\s-*\\(\\(?:\\w\\|\\s_\\)+\\)?"
