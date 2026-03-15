@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "kwds" "keywords")
+(define-abbrev text-mode-abbrev-table "consstent" "consistent")
 (define-abbrev text-mode-abbrev-table "bt" "but")
 (define-abbrev text-mode-abbrev-table "ghub" "github")
 (define-abbrev text-mode-abbrev-table "considing" "considering")
