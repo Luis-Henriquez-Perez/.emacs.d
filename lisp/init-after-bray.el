@@ -29,6 +29,8 @@
 (require 'bray)
 (require 'bray-state-map)
 (require 'meep)
+;;;; dired
+(o-setq-mode-local dired-mode bray-state-init 'motion)
 ;;;; info
 (o-setq-mode-local Info-mode bray-state-init 'motion)
 ;;;; magit
