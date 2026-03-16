@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "stape" "staple")
 (define-abbrev text-mode-abbrev-table "reqs" "requires")
 (define-abbrev text-mode-abbrev-table "initia" "initialize")
 (define-abbrev text-mode-abbrev-table "appropriatel" "appropriately")
