@@ -54,9 +54,8 @@
 (advice-add 'display-startup-echo-area-message :around #'ignore)
 
 ;; Essentially, I am telling all Emacs functions that prompt the user for a =yes=
-;; or =no= to instead allow me to type =y= or =p=.  [[helpfn:yes-or-no-p][yes-or-no-p]] is defined in c
-;; source code.
-(advice-add 'yes-or-no-p :override #'y-or-n-p)
+;; or =no= to instead allow me to type =y= or =p=.
+(setq use-short-answers t)
 
 (advice-add 'custom-save-all :override #'ignore)
 ;;;; UNCATEGORIZED
