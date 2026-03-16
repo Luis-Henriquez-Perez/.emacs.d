@@ -234,6 +234,7 @@
   "k" "C-p"
   "C-c j" "j"
   "C-c k" "k"
+  ";" #'execute-extended-command
   "<escape>" #'o-dwim-escape
   o-key-leader-normal #'o-prefix-command-leader)
 
