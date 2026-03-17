@@ -405,8 +405,8 @@
   "w" #'o-prefix-command-leader-window
   "q" #'o-prefix-command-leader-quit
   "l" #'consult-buffer
-  "y" #'o-emacs-random-load-theme
-  "s" #'o-emacs-random-load-theme
+  "y" #'o-emacs-load-random-theme
+  "s" #'o-emacs-load-random-theme
   "d" #'transwin-toggle)
 
 (defvar-keymap o-keymap-localleader-emacs-lisp
