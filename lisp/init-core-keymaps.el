@@ -312,7 +312,7 @@
   "w" #'widen
   "l" #'display-line-numbers-mode
   "u" #'toggle-truncate-lines
-  "n" #'o-dwim-narrow
+  "n" #'o-dwim-narrow-or-widen
   "e" #'eval-expression
   "f" #'o-emacs-set-font-face
   "d" #'toggle-debug-on-error
