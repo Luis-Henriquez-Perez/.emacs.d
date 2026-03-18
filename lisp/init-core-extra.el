@@ -281,6 +281,7 @@ of FACE to the background color of the `default' face."
 (autoload 'o-window-split-right-and-focus "init-core-commands" nil nil 'function)
 (autoload 'o-emacs-set-font-face "init-core-commands" nil nil 'function)
 (autoload 'o-dwim-narrow-or-widen "init-core-commands" nil nil 'function)
+(autoload 'o-dwim-escape "init-core-commands" nil nil 'function)
 (autoload 'o-emacs-kill-no-confirm "init-core-commands" nil nil 'function)
 (autoload 'o-emacs-load-random-theme "init-core-commands" nil nil 'function)
 (autoload 'o-open-emacs-lisp-dir "init-core-commands" nil nil 'function)
