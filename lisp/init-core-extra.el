@@ -384,7 +384,7 @@ of FACE to the background color of the `default' face."
   (let ((time nil)
         (success nil))
     (if (not o-required-features)
-        (o-log 'info "No required features.")
+        (o-log 'info "No required features to load.")
       (dolist (feature (reverse o-required-features))
         (setq time (o-time-elapsed (setq success (require feature nil 'noerror))))
         (if success
