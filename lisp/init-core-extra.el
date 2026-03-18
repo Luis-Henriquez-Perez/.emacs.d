@@ -389,7 +389,9 @@ of FACE to the background color of the `default' face."
         (setq time (o-time-elapsed (setq success (require feature nil 'noerror))))
         (if success
             (o-log 'info "Required %s in %0.02f seconds" feature time)
-          (o-log 'error "Failed to require %s" feature))))))
+          (o-log 'error "Failed to require %s" feature)))
+      ;; Ensure to eval any `o-opt' forms for these packages.
+      (o-eval-after-bound-forms))))
 
 (add-hook 'after-init-hook #'o-hook--load-required-features -10)
 ;;; provide
