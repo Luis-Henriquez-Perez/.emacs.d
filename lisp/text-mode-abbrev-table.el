@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "secss" "seconds")
+(define-abbrev text-mode-abbrev-table "bbut" "but")
 (define-abbrev text-mode-abbrev-table "expainson" "expansion")
 (define-abbrev text-mode-abbrev-table "liines" "lines")
 (define-abbrev text-mode-abbrev-table "onec" "once")
