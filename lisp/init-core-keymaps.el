@@ -156,10 +156,11 @@
   "a ;" #'meep-insert-line-end
   "a H" #'meep-insert-line-beginning
   ;; d - act on region
-  "d ;" #'iedit-mode
   "d M" #'morse-region
   "d R" #'o-eval-and-replace-region
   "d S" #'sort-lines
+  "d u" #'downcase-region
+  "d ;" #'upcase-region
   "d U" #'upcase-region
   "d Z" #'o-expand-region-abbrevs-no-query
   "d c" #'capitalize-region
