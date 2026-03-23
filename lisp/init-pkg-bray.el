@@ -91,7 +91,7 @@ Set state to either the initial state, `bray-state-init' or if that is nil,
 
 (add-hook 'o-escape-hook #'o-hook--reset-bray-state)
 
-(o-setq-mode-local minibuffer-mode bray-state-init 'insert)
+(o-local-mode-setq minibuffer-mode bray-state-init 'insert)
 
 (defun o-bray-update-cursor-color ()
   "Update the cursor color based on the current state."

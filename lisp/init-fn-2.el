@@ -50,19 +50,45 @@
   "Remap ORIG command to NEW if FEATURE is loaded."
   (setf (alist-get feature (alist-get orig o-alt-cmds)) new)
   (keymap-set global-map (format "<remap> <%S>" orig) `(menu-item "" ,orig :filter o-get-alt-cmd)))
+(defun o--local-set-var-form (var value)
+  "Generate form that sets local VAR to VALUE."
+  (let ((temp (gensym "temp"))
+        (msg "Failed to set local variable %S to %S because of %S"))
+    `(let ((,temp nil))
+       (condition-case err
+           (progn (setq ,temp ,value)
+                  (setq-local ,var ,temp))
+         (error
+          (o-log 'failure ,msg ',var ',value (car err)))))))
+
+(defun o--local-gen-settings-fn (hook)
+  "Generate a function that sets settings for HOOK when called."
+  (let (body)
+    (dolist (elt (alist-get hook o-local-settings-alist))
+      (pcase elt
+        (`(,var ,value)
+         (push (o--local-set-var-form var value) body))
+        (`(,hook ,fn ,depth)
+         (push `(add-hook ',hook #',fn ,depth 'local) body))))
+    `(lambda (&rest _)
+       ,(format "Set local variable for `%s'." hook)
+       ,@(nreverse body))))
 
 ;; The point of this function is to give me a uniform interface for binding keys
 ;; where I do not have to worry about whether the keymap is defined or whether
 ;; evil is loaded.  Furthermore by having a function I can apply a change from
 ;; one to all bindings.
-(o-defun o--set-mode-local-vars (hook)
+(defun o-local-set-settings (hook)
   "Set local variables for mode corresponding to HOOK."
-  (o-set failmsg "Failed to set local variable %s to value %S")
-  (pcase-dolist (`(,symbol . ,value) (alist-get hook o-local-var-alist))
-    (o-set bodyform `(setq-local ,symbol ,value))
-    (o-set handlerbody `(o-log 'failure ,failmsg ',symbol (car err) (cdr err)))
-    (o-pushing forms `(condition-case err ,bodyform (error ,handlerbody))))
-  (eval (macroexp-progn (nreverse forms)) t))
+  (funcall (o--local-gen-settings-fn hook)))
+
+(defun o-local-gen-setter (mode)
+  "Generate a setter function for MODE."
+  (let ((name (intern (format "o-hook--local-set-settings--%s" mode)))
+        (hook (intern (format "%s-hook" mode))))
+    (unless (fboundp name)
+      (fset name (apply-partially #'o-local-set-settings hook)))
+    name))
 
 (defun o-declare-package (package)
   "Indicate a package will be installed."

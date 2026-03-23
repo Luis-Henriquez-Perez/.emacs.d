@@ -54,9 +54,8 @@
 (o-opt eshell-highlight-prompt t)
 (o-opt eshell-hist-ignoredups t)
 
-(o-setq-mode-local eshell-mode
-    bray-state-init 'insert
-    completion-at-point-functions '(pcomplete-completions-at-point t))
+(o-local-mode-setq eshell-mode
+    bray-state-init 'insert)
 
 (o-each '( esh-arg esh-util esh-proc esh-io esh-cmd em-dirs
            em-hist em-prompt em-term em-ls em-glob em-basic

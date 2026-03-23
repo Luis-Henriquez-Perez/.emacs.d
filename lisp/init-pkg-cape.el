@@ -30,11 +30,11 @@
 (autoload 'cape-dabbrev "cape" nil nil 'function)
 (autoload 'cape-file "cape" nil nil 'function)
 
-(autoload 'o-hook--init-org-capfs "lib-cape" nil nil 'function)
-(autoload 'o-hook--init-prog-capfs "lib-cape" nil nil 'function)
+(o-local-add-hook org-mode completion-at-point-functions #'cape-dabbrev)
+(o-local-add-hook org-mode completion-at-point-functions #'cape-file)
 
-(add-hook 'org-mode-hook #'o-hook--init-org-capfs)
-(add-hook 'prog-mode-hook #'o-hook--init-prog-capfs)
+(o-local-add-hook prog-mode completion-at-point-functions #'cape-dabbrev)
+(o-local-add-hook prog-mode completion-at-point-functions #'cape-file)
 ;;; provide
 (provide 'init-pkg-cape)
 ;;; init-pkg-cape.el ends here

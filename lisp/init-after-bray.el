@@ -30,16 +30,16 @@
 (require 'bray-state-map)
 (require 'meep)
 ;;;; dired
-(o-setq-mode-local dired-mode bray-state-init 'motion)
+(o-local-mode-setq dired-mode bray-state-init 'motion)
 ;;;; info
-(o-setq-mode-local Info-mode bray-state-init 'motion)
+(o-local-mode-setq Info-mode bray-state-init 'motion)
 ;;;; magit
-(o-setq-mode-local magit-mode bray-state-init 'motion)
+(o-local-mode-setq magit-mode bray-state-init 'motion)
 ;; Unfortunately I cannot use `bray-state-init' here because `git-commit-mode'
 ;; is not a major mode.
 (add-hook 'git-commit-mode-hook #'o-hook--enable-bray-insert-state)
 ;;;; elpaca
-(o-setq-mode-local elpaca-manager-mode bray-state-init 'motion)
+(o-local-mode-setq elpaca-manager-mode bray-state-init 'motion)
 ;;;; org-capture
 ;; (o-bray-state-map-set 'normal 'eamcs-lisp-mode-map "x" #'lispy-delete)
 (add-hook 'org-capture-mode-hook #'o-hook--enable-bray-insert-state)

@@ -65,13 +65,13 @@ This is useful for getting a running configuration for debugging.")
 (defvar o-gc-cons-percentage-high 0.8
   "Value of `gc-cons-percentage' during times of increased computation.")
 
-(defvar o-local-var-alist nil
+(defvar o-local-settings-alist nil
   "An alist of for setting local variables.
 
 Each element is of the form (HOOK . VARALIST).
-HOOK is a mode-hook.  And VARALIST is the alist of local variables
-that should be set when HOOK's mode is enabled.  An alist mapping symbols to
-their corresponding values, each element looks like (VAR . VAL).  See `'.")
+HOOK is a mode-hook.  VARALIST is the alist of local variables
+that should be set when HOOK's mode is enabled.  Each element looks like (VAR
+VAL) or (HOOK FN DEPTH).")
 
 (defvar o-custom-faces-alist nil
   "An alist that maps custom faces to built-in faces.

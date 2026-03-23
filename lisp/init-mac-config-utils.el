@@ -45,22 +45,34 @@ This is like `setq' but it is meant for configuring variables."
                 (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
      (o-call-after-bound ',symbol it)))
 
-(o-defmacro o-setq-mode-local (mode &rest pairs)
-  "Add function to hook that sets the local value of SYMBOL to VALUE.
+(defun o--local-register-var-form (hook symbol value)
+  "Return the form to store the SYMBOL and VALUE for HOOK."
+  (let ((temp (gensym "temp")))
+    `(let ((,temp '(,symbol ,value)))
+       (unless (member ,temp (alist-get ',hook o-local-settings-alist))
+         (push ,temp (alist-get ',hook o-local-settings-alist))))))
+
+(defmacro o-local-mode-setq (mode &rest pairs)
+  "Locally set each symbol to its corresponding value when mode is enabled.
 \n(FN MODE [SYMBOL VALUE]...)"
   (declare (indent 2))
-  (o-set hook (intern (format "%s-hook" mode)))
-  (o-set setter (intern (format "o--%s--set-local-variables-h" hook)))
-  (o-set docstring (format "Set local variable for `%s'." hook))
-  (while pairs
-    (o-set symbol (pop pairs))
-    (o-set value (pop pairs))
-    (o-collecting body `(setf (alist-get ',symbol (alist-get ',hook o-local-var-alist)) ',value)))
-  `(progn (defun ,setter (&rest _)
-            ,docstring
-            (o--set-mode-local-vars ',hook))
-          (add-hook ',hook #',setter -50)
-          ,@body))
+  (let ((hook (intern (format "%s-hook" mode)))
+        (body nil))
+    (while pairs
+      (setq symbol (pop pairs))
+      (cl-assert (symbolp symbol))
+      (unless pairs
+        (error "Unmatched symbol %s" symbol))
+      (setq value (pop pairs))
+      (push (o--local-register-var-form hook symbol value) body))
+    `(progn (add-hook ',hook (o-local-gen-setter ',mode) -50)
+            ,@body)))
+
+(defmacro o-local-add-hook (mode hook fn &optional depth)
+  "Locally add FN to HOOK at DEPTH when MODE is enabled."
+  (let ((mode-hook (intern (format "%s-hook" mode))))
+    `(progn (push '(,hook ,fn ,depth) (alist-get ',mode-hook o-local-settings-alist))
+            (add-hook ',hook (o-local-gen-setter ',hook) -50))))
 
 (defmacro o-after (feature &rest body)
   "Evaluate BODY after FEATURE has been loaded.

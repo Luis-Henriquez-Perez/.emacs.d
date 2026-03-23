@@ -32,7 +32,7 @@
 (require 'ts)
 (require 'org-capture)
 ;;;; disable header-line
-(o-setq-mode-local org-capture-mode header-line-format nil)
+(o-local-mode-setq org-capture-mode header-line-format nil)
 ;;;; use completing-read for org-capture
 (o-defun org-capture|choose-template ()
   "Choose capture template to open."

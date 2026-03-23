@@ -32,7 +32,7 @@
 (add-hook 'prog-mode-hook #'captain-mode)
 (add-hook 'text-mode-hook #'captain-mode)
 
-(o-setq-mode-local text-mode
+(o-local-mode-setq text-mode
     captain-predicate #'always
     captain-sentence-start-function #'captain--default-sentence-start)
 
@@ -40,9 +40,9 @@
 
 (declare-function o-captain-prog-mode-sentence-start "config-captain")
 
-(o-setq-mode-local prog-mode
-    captain-predicate #'always
-    captain-sentence-start-function #'o-captain-prog-mode-sentence-start)
+(o-local-mode-setq prog-mode
+                   captain-predicate #'always
+                   captain-sentence-start-function #'o-captain-prog-mode-sentence-start)
 
 (o-require-after-load 'captain 'init-after-captain)
 ;;; provide
