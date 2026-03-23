@@ -187,7 +187,9 @@
   ;; Uncommon therefore I give these keybindings the harder to press keys.
   "D" #'kill-whole-line
   ;; f - search
-  "f" #'meep-move-find-char-on-line-at-next
+  "f f" #'meep-move-find-char-on-line-at-next
+  "f j" #'meep-move-find-char-on-line-at-prev
+  "f ;" #'flash-jump
   "F" #'meep-move-find-char-on-line-at-prev
   ;; x - delete
   "x" #'kill-region
