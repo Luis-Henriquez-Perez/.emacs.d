@@ -43,7 +43,7 @@ This is like `setq' but it is meant for configuring variables."
                      (setq ,symbol value)))
                (error
                 (o-log 'failure "Failed to set %s: %S -> %S" ',symbol (car err) (cdr err)))))
-     (o-call-after-bound ',symbol it)))
+     (o-defer-bound-after ',symbol it)))
 
 (defun o--local-register-var-form (hook symbol value)
   "Return the form to store the SYMBOL and VALUE for HOOK."
@@ -78,7 +78,7 @@ This is like `setq' but it is meant for configuring variables."
   "Evaluate BODY after FEATURE has been loaded.
 If FEATURE is already loaded, evaluate BODY immediately."
   (declare (indent 1))
-  `(o-call-after-load ',feature (lambda () ,@body)))
+  `(o-defer-load-after ',feature (lambda () ,@body)))
 
 (o-defmacro o-defafter (&rest args)
   "Evaluate BODY after FEATURE is loaded."
@@ -91,7 +91,7 @@ If FEATURE is already loaded, evaluate BODY immediately."
                        (o-log 'success "after %s -> %s" ',feature ',name))
               (error
                (o-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
-          (o-call-after-load ',feature #',name)))
+          (o-defer-load-after ',feature #',name)))
 ;;; provide
 (provide 'init-mac-config-utils)
 ;;; init-mac-config-utils.el ends here

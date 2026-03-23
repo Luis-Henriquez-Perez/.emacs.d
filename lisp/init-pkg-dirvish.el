@@ -30,8 +30,8 @@
 (o-declare-package 'dirvish)
 
 (declare-function dirvish-override-dired-mode "dirvish")
-(o-call-after-load 'dired #'dirvish-override-dired-mode)
-(o-call-after-load 'dired (apply-partially #'require 'nerd-icons))
+(o-defer-load-after 'dired #'dirvish-override-dired-mode)
+(o-defer-load-after 'dired (apply-partially #'require 'nerd-icons))
 ;; Do not touch the mode-line.
 (advice-add 'dirvish--setup-mode-line :override #'ignore)
 ;; (setq nerd-icons-scale-factor 1.0)

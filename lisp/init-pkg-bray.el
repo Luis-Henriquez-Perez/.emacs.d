@@ -167,7 +167,7 @@ Set state to either the initial state, `bray-state-init' or if that is nil,
 
 (add-hook 'after-init-hook #'o-hook--enable-bray)
 
-(o-require-after-load 'bray 'init-after-bray)
+(o-defer-load-require 'bray 'init-after-bray)
 ;;; provide
 (provide 'init-pkg-bray)
 ;;; init-pkg-bray.el ends here

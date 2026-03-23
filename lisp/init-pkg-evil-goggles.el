@@ -82,7 +82,7 @@
 (advice-add 'o-evil-eval-replace-operator				:around #'o-advice--load-evil-goggles)
 (advice-add 'o-evil-eval-print-operator                  :around #'o-advice--load-evil-goggles)
 
-(o-require-after-load 'evil-goggles 'init-after-evil-goggles)
+(o-defer-load-require 'evil-goggles 'init-after-evil-goggles)
 ;;; provide
 (provide 'init-pkg-evil-goggles)
 ;;; init-pkg-evil-goggles.el ends here

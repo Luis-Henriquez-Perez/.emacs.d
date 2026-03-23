@@ -29,58 +29,70 @@
 (eval-when-compile (require 'init-mac-base))
 (require 'init-core-log)
 
-(defvar o-after-bound-forms nil
-  "An alist whose elements are (SYMBOL . FORMS).
-SYMBOL is a variable symbol.  FORMS are a list of lisp forms that should be
-evaluated when symbol is bound.")
+(defvar o-defer-bound-after-fns nil
+  "An alist whose elements are (SYMBOL . FNS).
+SYMBOL is a variable symbol.  FNS are a list of functions that should be
+called in reverse order when symbol is bound.")
 
-(defvar o-after-load-forms (make-hash-table :size 100)
-  "A hash table whose elements are (FEATURE . FORMS).
-FEATURE is a feature symbol.  FORMS are alist of lisp forms to be evaluated
+(defvar o-defer-load-after-fns (make-hash-table :size 100)
+  "A hash table whose elements are (FEATURE . FNS).
+FEATURE is a feature symbol.  FNS are a list of functions to be called
 after FEATURE is loaded.")
 
-(defun o-eval-after-bound-forms (&rest _)
-  "Evaluate forms of any bound symbols in `o-after-bound-forms'."
-  (let (updated symbol forms)
-    (dolist (elt (reverse o-after-bound-forms))
+(defun o-defer-bound-call-fns (&rest _)
+  "Call functions of any bound symbols in `o-defer-bound-after-fns'."
+  (let (updated symbol fns)
+    (dolist (elt (reverse o-defer-bound-after-fns))
       (setq symbol (car elt))
-      (setq forms (cdr elt))
+      (setq fns (cdr elt))
       (if (boundp symbol)
-          (eval `(progn ,@(nreverse forms)) 'lexical)
+          (dolist (fn (nreverse fns))
+            (funcall fn))
         (push elt updated)))
-    (setq o-after-bound-forms updated)))
+    (setq o-defer-bound-after-fns updated)))
 
-(defun o-call-after-bound (symbol fn)
+(defun o-defer-bound-after (symbol fn)
   "Call FN after SYMBOL is bound.
 If SYMBOL is already bound FN is called immediately."
   (if (boundp symbol)
       (funcall fn)
-    (push `(ignore-errors (funcall ',fn)) (alist-get symbol o-after-bound-forms))))
+    (push fn (alist-get symbol o-defer-bound-after-fns))))
 
-(defun o-call-after-load (feature fn)
+(defun o-defer-load-call-fns (feature)
+  "Call each load function for FEATURE."
+  (when-let (fns (gethash feature o-defer-load-after-fns))
+    (dolist (fn (nreverse fns))
+      (funcall fn))
+    (remhash feature o-defer-load-after-fns)))
+
+(defun o-defer-load-after (feature fn)
   "Call FN after FEATURE is loaded."
   (if (featurep feature)
       (funcall fn)
-    (push `(ignore-errors (funcall ',fn)) (gethash feature o-after-load-forms))
-    (eval-after-load feature
-      ;; Cannot use my macros here because when compiled Emacs will not know how
-      ;; to macroexpand them.
-      `(let ((it (gethash ',feature o-after-load-forms)))
-         (when it
-           (eval (macroexp-progn (nreverse it)) 'lexical)
-           (remhash ',feature o-after-load-forms))))))
+    ;; Do not add this to the `after-load-alist' more than once.
+    (unless (gethash feature o-defer-load-after-fns)
+      (eval-after-load feature (apply-partially #'o-defer-load-call-fns feature)))
+    (push fn (gethash feature o-defer-load-after-fns))))
 
 (defun o-require-config (feature)
   "Load and log the loading of FEATURE."
   (condition-case err
       (o-aprog1 (o-time-elapsed (require feature))
-        (o-log 'success "Applied %s in %0.2f seconds" feature it))
+        (o-log 'success "Loaded %s in %0.2f seconds" feature it))
     (error
-     (o-log 'failure "Failed to apply %s : %S -> %S" feature (car err) (cdr err)))))
+     (o-log 'failure "Failed to load %s : %S -> %S" feature (car err) (cdr err)))))
 
-(defun o-require-after-load (feature1 feature2)
-  "Load FEATURE2 at FEATURE1 has been loaded."
-  (o-call-after-load feature1 (apply-partially #'o-require-config feature2)))
+(defun o-gen-load-fn (feature)
+  "Generate a function that will load feature."
+  (let ((name (intern (format "o--load-%s" feature))))
+    (unless (fboundp name)
+      (defalias name (apply-partially #'o--gen-load-fn feature)
+        (format "Load %s." feature)))
+    name))
+
+(defun o-defer-load-require (feature1 feature2)
+  "Load FEATURE2 after FEATURE1 has been loaded."
+  (o-defer-load-after feature1 (o-gen-load-fn feature2)))
 ;;; provide
 (provide 'init-fn-call-after)
 ;;; init-fn-call-after.el ends here

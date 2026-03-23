@@ -44,7 +44,7 @@
                    captain-predicate #'always
                    captain-sentence-start-function #'o-captain-prog-mode-sentence-start)
 
-(o-require-after-load 'captain 'init-after-captain)
+(o-defer-load-require 'captain 'init-after-captain)
 ;;; provide
 (provide 'init-pkg-captain)
 ;;; init-pkg-captain.el ends here

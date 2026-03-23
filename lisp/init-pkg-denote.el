@@ -35,7 +35,7 @@
 (o-opt denote-org-front-matter "#+title: %1$s\n#+filetags: %3$s\n#+identifier: %4$s\n")
 (o-opt denote-save-buffers t)
 (declare-function denote-rename-buffer-mode "denote")
-(o-call-after-load 'denote #'denote-rename-buffer-mode)
+(o-defer-load-after 'denote #'denote-rename-buffer-mode)
 ;; Set denote to insert state after entering.
 (declare-function evil-insert-state "evil")
 (defun o-hook--enter-insert-state ()

@@ -36,7 +36,7 @@
 
 (autoload 'o-org-agenda-day-view "init-after-org-agenda" nil nil 'function)
 
-(o-require-after-load 'org 'init-after-org)
+(o-defer-load-require 'org 'init-after-org)
 ;;; provide
 (provide 'init-pkg-org)
 ;;; init-pkg-org.el ends here

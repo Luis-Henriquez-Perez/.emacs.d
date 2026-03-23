@@ -29,7 +29,7 @@
 
 (o-declare-package 'grugru)
 
-(o-require-after-load 'grugru 'init-after-grugru)
+(o-defer-load-require 'grugru 'init-after-grugru)
 ;;; provide
 (provide 'init-pkg-grugru)
 ;;; init-pkg-grugru.el ends here

@@ -80,11 +80,11 @@ This function should be hooked to `post-command-hook'."
 (add-hook 'o-first-input-hook #'minibuffer-depth-indicate-mode)
 
 (defun o-hook--setup-eval-after-bound-forms ()
-  "Call `o-call-after-load-functions' once.
+  "Call `o-defer-load-after-functions' once.
 Also add it as a hook to `after-load-functions' so that it is invoked whenever a
 file is loaded."
-  (o-eval-after-bound-forms)
-  (add-hook 'after-load-functions #'o-eval-after-bound-forms))
+  (o-defer-bound-call-fns)
+  (add-hook 'after-load-functions #'o-defer-bound-call-fns))
 
 ;; This should be done after everything.
 (add-hook 'emacs-startup-hook #'o-hook--setup-eval-after-bound-forms 90)
@@ -391,7 +391,7 @@ of FACE to the background color of the `default' face."
             (o-log 'info "Required %s in %0.02f seconds" feature time)
           (o-log 'error "Failed to require %s" feature)))
       ;; Ensure to eval any `o-opt' forms for these packages.
-      (o-eval-after-bound-forms))))
+      (o-defer-bound-call-fns))))
 
 (add-hook 'after-init-hook #'o-hook--load-required-features -10)
 ;;; provide

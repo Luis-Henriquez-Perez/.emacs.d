@@ -73,7 +73,7 @@
 
 (o-remap-alt 'org-capture #'org-capture #'org-capture|choose-template)
 
-(o-call-after-load 'org-capture 'init-after-org-capture)
+(o-defer-load-after 'org-capture 'init-after-org-capture)
 ;;;;; ORG-REFILE
 (setq org-refile-allow-creating-parent-nodes t)
 ;; The variable =org-refile-targets= specifies the places from which information
