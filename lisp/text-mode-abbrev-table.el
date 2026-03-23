@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "expainson" "expansion")
 (define-abbrev text-mode-abbrev-table "liines" "lines")
 (define-abbrev text-mode-abbrev-table "onec" "once")
 (define-abbrev text-mode-abbrev-table "fnss" "functions")
