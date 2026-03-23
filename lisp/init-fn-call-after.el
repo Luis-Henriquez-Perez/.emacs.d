@@ -65,7 +65,7 @@ If SYMBOL is already bound FN is called immediately."
       (funcall fn))
     (remhash feature o-defer-load-after-fns)))
 
-(defun o-defer-load-after (feature fn)
+(defun o--defer-load-after (feature fn)
   "Call FN after FEATURE is loaded."
   (if (featurep feature)
       (funcall fn)
@@ -74,25 +74,32 @@ If SYMBOL is already bound FN is called immediately."
       (eval-after-load feature (apply-partially #'o-defer-load-call-fns feature)))
     (push fn (gethash feature o-defer-load-after-fns))))
 
-(defun o-require-config (feature)
-  "Load and log the loading of FEATURE."
+(defun o-defer-load-after (feature fn)
+  "Same as `o-defer-load-after' but"
+  (o-defer-load-after feature (apply-partially #'o--defer-call-fn fn)))
+
+(defun o--defer-call-fn (fn)
+  "Call FN and log time elapsed during call.
+Suppress any error raised by FN, instead logging its occurrence."
+  (condition-case e
+      (let ((seconds (o-time-elapsed (funcall fn))))
+        (o-log 'success "Called %s in %0.2f seconds" fn seconds))
+    (error
+     (o-log 'failure "Failed to call %S %s %s" fn (car e) (cdr e)))))
+
+(defun o--defer-load-feature (feature)
+  "Load FEATURE and log the time elapsed in loading.
+Suppress any error raised while loading, instead logging its occurrence."
   (condition-case err
-      (o-aprog1 (o-time-elapsed (require feature))
-        (o-log 'success "Loaded %s in %0.2f seconds" feature it))
+      (let ((seconds (o-time-elapsed (require feature))))
+        (o-log 'success "Loaded %s in %0.2f seconds" feature seconds))
     (error
      (o-log 'failure "Failed to load %s : %S -> %S" feature (car err) (cdr err)))))
 
-(defun o-gen-load-fn (feature)
-  "Generate a function that will load feature."
-  (let ((name (intern (format "o--load-%s" feature))))
-    (unless (fboundp name)
-      (defalias name (apply-partially #'o--gen-load-fn feature)
-        (format "Load %s." feature)))
-    name))
-
-(defun o-defer-load-require (feature1 feature2)
+(defun o--defer-load-feature (feature1 feature2)
   "Load FEATURE2 after FEATURE1 has been loaded."
-  (o-defer-load-after feature1 (o-gen-load-fn feature2)))
+  (o--defer-load-after feature1
+                       (apply-partially #'o--defer-load-feature feature2)))
 ;;; provide
 (provide 'init-fn-call-after)
 ;;; init-fn-call-after.el ends here
