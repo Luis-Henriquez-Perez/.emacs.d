@@ -35,6 +35,7 @@
 
 (define-abbrev emacs-lisp-mode-abbrev-table "aih" "after-init-hook")
 (define-abbrev emacs-lisp-mode-abbrev-table "esh" "emacs-startup-hook")
+(define-abbrev emacs-lisp-mode-abbrev-table "dfm"  "" #'o-tempel-expand-elisp-defmacro :enable-function #'o-abbrev-in-elisp-code-p)
 (define-abbrev emacs-lisp-mode-abbrev-table "dfn"  "" #'o-tempel-expand-elisp-defun :enable-function #'o-abbrev-in-elisp-code-p)
 (define-abbrev emacs-lisp-mode-abbrev-table "dhk"  "" #'o-tempel-expand-elisp-defhook :enable-function #'o-abbrev-in-elisp-code-p)
 (define-abbrev emacs-lisp-mode-abbrev-table "dvar" "" #'o-tempel-expand-elisp-defvar :enable-function #'o-abbrev-in-elisp-code-p)

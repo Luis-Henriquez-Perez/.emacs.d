@@ -64,6 +64,13 @@
   t)
 (put 'o-tempel-expand-elisp-defun 'no-self-insert t)
 
+(defun o-tempel-expand-elisp-defmacro ()
+  "Expand to a `defmacro' form."
+  (interactive)
+  (tempel-insert '("(defmacro " p " (" p ")" n> "\"" p "\"" n> r ")"))
+  t)
+(put 'o-tempel-expand-elisp-defmacro 'no-self-insert t)
+
 (defun o-tempel-expand-elisp-cond ()
   "Expand to a `cond' form."
   (interactive)
