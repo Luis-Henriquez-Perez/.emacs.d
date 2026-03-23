@@ -74,10 +74,6 @@ If SYMBOL is already bound FN is called immediately."
       (eval-after-load feature (apply-partially #'o-defer-load-call-fns feature)))
     (push fn (gethash feature o-defer-load-after-fns))))
 
-(defun o-defer-load-after (feature fn)
-  "Same as `o-defer-load-after' but"
-  (o-defer-load-after feature (apply-partially #'o--defer-call-fn fn)))
-
 (defun o--defer-call-fn (fn)
   "Call FN and log time elapsed during call.
 Suppress any error raised by FN, instead logging its occurrence."
@@ -86,6 +82,10 @@ Suppress any error raised by FN, instead logging its occurrence."
         (o-log 'success "Called %s in %0.2f seconds" fn seconds))
     (error
      (o-log 'failure "Failed to call %S %s %s" fn (car e) (cdr e)))))
+
+(defun o-defer-load-after (feature fn)
+  "Same as `o-defer-load-after' but"
+  (o-defer-load-after feature (apply-partially #'o--defer-call-fn fn)))
 
 (defun o--defer-load-feature (feature)
   "Load FEATURE and log the time elapsed in loading.
@@ -96,7 +96,7 @@ Suppress any error raised while loading, instead logging its occurrence."
     (error
      (o-log 'failure "Failed to load %s : %S -> %S" feature (car err) (cdr err)))))
 
-(defun o--defer-load-feature (feature1 feature2)
+(defun o-defer-load-require (feature1 feature2)
   "Load FEATURE2 after FEATURE1 has been loaded."
   (o--defer-load-after feature1
                        (apply-partially #'o--defer-load-feature feature2)))
