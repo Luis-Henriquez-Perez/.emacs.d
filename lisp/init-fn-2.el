@@ -49,7 +49,10 @@
 (defun o-remap-alt (feature orig new)
   "Remap ORIG command to NEW if FEATURE is loaded."
   (setf (alist-get feature (alist-get orig o-alt-cmds)) new)
-  (keymap-set global-map (format "<remap> <%S>" orig) `(menu-item "" ,orig :filter o-get-alt-cmd)))
+  (keymap-set global-map
+              (format "<remap> <%S>" orig)
+              `(menu-item "" ,orig :filter o-get-alt-cmd)))
+
 (defun o--local-set-var-form (var value)
   "Generate form that sets local VAR to VALUE."
   (let ((temp (gensym "temp"))
