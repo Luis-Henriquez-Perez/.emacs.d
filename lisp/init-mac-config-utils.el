@@ -92,24 +92,6 @@ If FEATURE is already loaded, evaluate BODY immediately."
               (error
                (o-log 'failure "Failed to call `%s': %S -> %S" ',name (car err) (cdr err)))))
           (o-call-after-load ',feature #',name)))
-
-(o-defmacro o-defvar-keymap (keymap &rest pairs)
-  "Wrapper around `defvar-keymap'.
-In contrast to `defvar-keymap' this macro declares to avoid byte-compilation
-warnings.  Also it auto defines a prefix with the same name as KEYMAP."
-  (declare (indent 1))
-  (o-set plist (o-stripplist pairs))
-  (o-set copy pairs)
-  (while (consp copy)
-    (pop copy)
-    (pcase (pop copy)
-      (`(function ,fn)
-       (o-pushing declareforms `(declare-function ,fn nil)))))
-  `(progn ,@(nreverse declareforms)
-          (defvar-keymap ,keymap
-            :prefix ',keymap
-            ,@plist
-            ,@pairs)))
 ;;; provide
 (provide 'init-mac-config-utils)
 ;;; init-mac-config-utils.el ends here
