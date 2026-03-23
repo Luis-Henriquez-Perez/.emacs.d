@@ -85,7 +85,7 @@ Suppress any error raised by FN, instead logging its occurrence."
 
 (defun o-defer-load-after (feature fn)
   "Same as `o-defer-load-after' but"
-  (o-defer-load-after feature (apply-partially #'o--defer-call-fn fn)))
+  (o--defer-load-after feature (apply-partially #'o--defer-call-fn fn)))
 
 (defun o--defer-load-feature (feature)
   "Load FEATURE and log the time elapsed in loading.
