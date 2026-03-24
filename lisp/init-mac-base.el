@@ -27,7 +27,7 @@
 ;;; Code:
 ;;;; generic
 (defmacro o-time-elapsed (&rest forms)
-  "Eval forms and return the time elapsed."
+  "Eval FORMS and return the time elapsed."
   (let ((start (make-symbol "start")))
     `(let ((,start (float-time)))
        ,(macroexp-progn forms)
