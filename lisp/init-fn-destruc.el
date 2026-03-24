@@ -140,7 +140,8 @@ Return a list of bindings compatible with `pcase`."
           (o-destruc-inject-special-let-bindings match-form value)))
 
 (defun o-destruc-match-form-symbols (match-form)
-  "Start refactoring."
+  "Return the list of symbols in MATCH-FORM.
+This excludes the backquote and comma symbols."
   (let ((stack (list (if (vectorp match-form) (append match-form nil) match-form)))
         (symbols nil)
         (node nil))
