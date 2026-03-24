@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "reording" "reordering")
 (define-abbrev text-mode-abbrev-table "depss" "dependencies")
 (define-abbrev text-mode-abbrev-table "elaped" "elapsed")
 (define-abbrev text-mode-abbrev-table "featu" "feature")
