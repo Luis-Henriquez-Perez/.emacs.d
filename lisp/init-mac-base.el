@@ -189,35 +189,6 @@ Each element of LIST is bound to `it'."
            (push it ,grest)
            (setq ,glist (cdr ,glist))))
        ,gpred)))
-;;;; place macros
-(defmacro o-appending (place list)
-  "Append LIST to the end of PLACE.
-SETTER is the symbol of the macro or function used to do the setting."
-  `(setf ,place (append ,place ,list)))
-
-;; Important to note that this macro is not as efficient as pushing because it's
-;; adding to the end of the list.  So this macro should be used only in
-;; non-performance-intensive code.  In performance-intensive code we need the
-;; =push-nreverse= idiom.
-(defmacro o-collecting (place item)
-  "Affix ITEM to the end of PLACE.
-SETTER is the same as in `o-appending'."
-  `(setf ,place (append ,place (list ,item))))
-
-(defmacro o-prepending (place list)
-  "Prepend LIST to beginning of PLACE.
-SETTER is the same as in `o-appending'."
-  `(setf ,place (append ,list ,place)))
-
-;; I know =push= already exists.  But I want a variant of push that can be used
-;; with the =o-autolet= macro.
-(defmacro o-pushing (place item)
-  "Cons ITEM to PLACE.
-SETTER is the same as in `o-appending'."
-  `(setf ,place (cons ,item ,place)))
-
-(defmacro o-summing (place num)
-  `(setf ,place (+ ,place ,num)))
 ;;; provide
 (provide 'init-mac-base)
 ;;; init-mac-base.el ends here

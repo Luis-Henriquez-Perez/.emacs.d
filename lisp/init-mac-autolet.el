@@ -49,7 +49,7 @@ evaluation of the `o-autolet' form and return VALUE."
   `(throw 'o-return ,value))
 
 (defmacro o-done ()
-  "This is a shorthand for `(o-return nil)'.
+  "Exit the current `o-autolet' form and return nil.
 See `o-return'."
   `(o-return nil))
 
@@ -64,16 +64,40 @@ Inside an `o-autolet' form, throw a `o-continue' signal to end the current
 iteration and move to the next."
   `(throw 'o-continue nil))
 
-(defmacro stub! (name args &rest body)
-  "Indicator for defining local functions via `cl-flet' in `o-autolet' forms."
+(defmacro o-stub (name args &rest body)
+  "Define local functions via `cl-flet' in `o-autolet' forms.
+See `o-autolet'."
   (declare (indent defun))
   (ignore name args body))
 
-(defalias 'macrolet! 'stub! "Indicator for defining local macros via `cl-macrolet' in `o-autolet' forms.")
-(defalias 'mlet! 'macrolet!)
-(defalias 'o-flet 'stub! "Same as `stub!'.")
-(defalias 'noflet! 'stub! "Indicator for temporary overriding function definitions via `o-lef'.")
-(defalias 'nflet! 'stub! "Same as `noflet!'")
+(defalias 'o-macrolet 'o-stub "Indicator for defining local macros via `cl-macrolet' in `o-autolet' forms.")
+(defalias 'o-mlet 'o-macrolet)
+(defalias 'o-flet 'o-stub "Same as `o-stub'.")
+(defalias 'o-noflet 'o-stub "Indicator for temporary overriding function definitions via `o-lef'.")
+(defalias 'o-nflet 'o-stub "Same as `o-noflet'")
+
+(defmacro o-appending (place list)
+  "Append LIST to the end of PLACE.
+SETTER is the symbol of the macro or function used to do the setting."
+  `(setf ,place (append ,place ,list)))
+
+(defmacro o-collecting (place item)
+  "Affix ITEM to the end of PLACE.
+SETTER is the same as in `o-appending'."
+  `(setf ,place (append ,place (list ,item))))
+
+(defmacro o-prepending (place list)
+  "Prepend LIST to beginning of PLACE.
+SETTER is the same as in `o-appending'."
+  `(setf ,place (append ,list ,place)))
+
+(defmacro o-pushing (place item)
+  "Cons ITEM to PLACE.
+SETTER is the same as in `o-appending'."
+  `(setf ,place (cons ,item ,place)))
+
+(defmacro o-summing (place num)
+  `(setf ,place (+ ,place ,num)))
 
 (defun o-autolet-process-body (body)
   "Return a list of (LETB FORM).
@@ -142,12 +166,12 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (push `(nil . (progn ,(caddr frame))) stack))
             ;; Shortcuts
             ((and (listp (cadr frame))
-                  (memq (caadr frame) '(nflet! noflet!))
+                  (memq (caadr frame) '(o-nflet o-noflet))
                   (nthcdr 1 (cadr frame)))
              (push `(:shortcut o-lef ,(cdadr frame)) stack)
              (push `(nil . (progn ,@(cddr frame))) stack))
             ((and (listp (cadr frame))
-                  (memq (caadr frame) '(o-flet stub!))
+                  (memq (caadr frame) '(o-flet o-stub))
                   (nthcdr 1 (cadr frame)))
              (push `(:shortcut cl-flet ,(cdadr frame)) stack)
              (push `(nil . (progn ,@(cddr frame))) stack))
@@ -157,7 +181,7 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (push `(:shortcut cl-labels ,(cdadr frame)) stack)
              (push `(nil . (progn ,@(cddr frame))) stack))
             ((and (listp (cadr frame))
-                  (memq (caadr frame) '(macrolet! mlet!))
+                  (memq (caadr frame) '(o-macrolet o-mlet))
                   (nthcdr 1 (cadr frame)))
              (push `(:shortcut cl-macrolet ,(cdadr frame)) stack)
              (push `(nil . (progn ,@(cddr frame))) stack))
@@ -192,11 +216,10 @@ Dynamic let-binding:
 (...ing! SYM VAL) Let bind SYM to nil.
 
 Wrapping forms:
-(mlet!|macrolet! NAME ARGS . BODY) Wrap subsequent forms with
+(o-mlet|o-macrolet NAME ARGS . BODY) Wrap subsequent forms with
 `(cl-macrolet ((NAME ARGS . BODY)))'.
-(stub!|flet! NAME ARGS . BODY)     Same as macrolet but use `cl-letf'.
-(nflet!|noflet! NAME ARGS . BODY)  Same as `stub!' but use `o-lef'.
-(label!|labels! NAME ARGS . BODY)  Same as `stub!' but use `cl-labels'.
+(o-stub|flet! NAME ARGS . BODY)     Same as macrolet but use `cl-letf'.
+(o-nflet|o-noflet NAME ARGS . BODY)  Same as `o-stub' but use `o-lef'..
 
 Enhanced looping control flow:
 (while|dotimes|dolist CONDITION . BODY) Replace with
