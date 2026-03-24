@@ -71,7 +71,8 @@ If SYMBOL is already bound FN is called immediately."
       (funcall fn)
     ;; Do not add this to the `after-load-alist' more than once.
     (unless (gethash feature o-defer-load-after-fns)
-      (eval-after-load feature (apply-partially #'o-defer-load-call-fns feature)))
+      (eval-after-load feature
+        (apply-partially #'o-defer-load-call-fns feature)))
     (push fn (gethash feature o-defer-load-after-fns))))
 
 (defun o--defer-call-fn (fn)
@@ -90,11 +91,11 @@ Suppress any error raised by FN, instead logging its occurrence."
 (defun o--defer-load-feature (feature)
   "Load FEATURE and log the time elapsed in loading.
 Suppress any error raised while loading, instead logging its occurrence."
-  (condition-case err
+  (condition-case e
       (let ((seconds (o-time-elapsed (require feature))))
         (o-log 'success "Loaded %s in %0.2f seconds" feature seconds))
     (error
-     (o-log 'failure "Failed to load %s : %S -> %S" feature (car err) (cdr err)))))
+     (o-log 'failure "Failed to load %s : %S -> %S" feature (car e) (cdr e)))))
 
 (defun o-defer-load-require (feature1 feature2)
   "Load FEATURE2 after FEATURE1 has been loaded."
