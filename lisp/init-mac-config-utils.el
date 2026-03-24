@@ -83,7 +83,7 @@ If FEATURE is already loaded, evaluate BODY immediately."
 (o-defmacro o-defafter (&rest args)
   "Evaluate BODY after FEATURE is loaded."
   (declare (indent defun))
-  (o-set (name (feature) meta body) (o-destructure-defun-args args))
+  (o-set (name (feature) meta body) (o-destruc-defun-args args))
   `(progn (o-defun ,name ()
             ,@meta
             (condition-case err

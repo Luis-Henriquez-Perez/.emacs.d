@@ -235,7 +235,7 @@ NAME, ARGLIST and BODY are the same as `o-defmacro'.
 
 \(fn NAME ARGLIST [DOCSTRING] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destructure-defun-args args)))
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destruc-defun-args args)))
     `(defmacro ,name ,arglist
        ,@metadata
        (o-autolet ,(o-arglist-symbols arglist)
@@ -247,7 +247,7 @@ NAME, ARGS and BODY are the same as in `defun'.
 
 \(fn NAME ARGLIST [DOCSTRING] [DECL] [INTERACTIVE] BODY...)"
   (declare (indent defun) (doc-string 3))
-  (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destructure-defun-args args)))
+  (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destruc-defun-args args)))
     `(defun ,name ,arglist
        ,@metadata
        (o-autolet ,(o-arglist-symbols arglist)
