@@ -32,19 +32,23 @@
 ;;
 ;;; Code:
 (require 'init-mac-base)
-(require 'init-mac-autolet)
 (require 'init-fn-call-after)
 
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar o-alt-cmds nil
   "")
 
-(o-defun o-get-alt-cmd (cmd)
+(defun o-get-alt-cmd (cmd)
   "Return an alternate command that should be called instead of COMMAND."
-  (pcase-dolist (`(,feature . ,alt) (alist-get cmd o-alt-cmds))
-    (if (or (featurep feature) (require feature nil t))
-        (o-return alt)))
-  cmd)
+  (let ((alt-cmds (alist-get cmd o-alt-cmds))
+        (keep-going t)
+        (return-value cmd))
+    (while (and alt-cmds keep-going)
+      (pcase-let ((`(,feature . ,alt) (pop alt-cmds)))
+        (when (or (featurep feature) (require feature nil t))
+          (setq return-value alt)
+          (setq keep-going nil))))
+    return-value))
 
 (defun o-remap-alt (feature orig new)
   "Remap ORIG command to NEW if FEATURE is loaded."
