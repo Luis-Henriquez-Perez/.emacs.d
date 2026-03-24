@@ -163,7 +163,7 @@ This excludes the backquote and comma symbols."
     (nreverse (delete-dups symbols))))
 
 (defun o-destruc-defun-args (args)
-  "Destructure the arguments of a \"defun-like\" thing.
+  "Return the arguments of a defun as a list.
 Return a list of (name arglist (documentation declaration) body)."
   (let ((name (pop args))
         (arglist (pop args))
