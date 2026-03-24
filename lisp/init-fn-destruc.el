@@ -1,4 +1,4 @@
-;;; init-fn-destructure.el --- Destructuring utilities -*- lexical-binding: t; -*-
+;;; init-fn-destruc.el --- Destructuring utilities -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -27,7 +27,7 @@
 ;;; Code:
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
-(defun o-destruct--map-nodes (pred fn tree)
+(defun o-destruc--map-nodes (pred fn tree)
   "Recursively map FN over tree nodes satisfying PRED.
 
 PRED is a predicate function applied to each node in TREE.  TREE can be a nested
@@ -109,7 +109,7 @@ If MATCH-FORM is not a special form, return nil."
     (_
      nil)))
 
-(defun o-destruc-inject-special-match-form-let-bindings (match-form value)
+(defun o-destruc-inject-special-let-bindings (match-form value)
   "Generate bindings for special forms in MATCH-FORM relative to VALUE.
 
 Process MATCH-FORM to identify and replace any special forms, returning a list
@@ -120,17 +120,16 @@ forms.
 MATCH-FORM is a destructuring pattern that may include special forms (see
 `o-destruc--get-special-match-form-let-bindings').  VALUE is the value to be matched and
 destructured."
-  (let (special-let-binds mf-value)
-    (setq mf-value (make-symbol "--DESTRUC-MF-VALUE--"))
+  (let ((special-let-binds nil)
+        (mf-value (make-symbol "--DESTRUC-MF-VALUE--")))
     (cl-flet ((is-special-mf (mf)
                 (when-let ((binds (o-destruc--get-special-match-form-let-bindings mf mf-value)))
-                  (setq special-let-binds (append special-let-binds binds))
-                  binds))
+                  (setq special-let-binds (append special-let-binds binds))))
               (replace-with-value (lambda (_) mf-value)))
       `((,(o-destruct--map-nodes #'is-special-mf #'replace-with-value match-form) ,value)
         ,@special-let-binds))))
 
-(defun o-pcase-bindings (match-form value)
+(defun o-destruc-pcase-bindings (match-form value)
   "Generate pcase-compatible bindings from MATCH-FORM and VALUE.
 
 MATCH-FORM is the destructuring pattern that specifies how VALUE should be
@@ -138,7 +137,7 @@ decomposed.  VALUE is the data to be matched and destructured.
 
 Return a list of bindings compatible with `pcase`."
   (mapcar (pcase-lambda (`(,mf ,val)) (list (o-destruc--convert-to-pcase mf) val))
-          (o-destruc-inject-special-match-form-let-bindings match-form value)))
+          (o-destruc-inject-special-let-bindings match-form value)))
 
 (defun o-flatten-pcase-match-form (match-form)
   "Flatten MATCH-FORM into a list of components.
@@ -189,5 +188,5 @@ Return a list of."
         (push arg symbols)))
     (nreverse symbols)))
 ;;; provide
-(provide 'init-fn-destructure)
-;;; init-fn-destructure.el ends here
+(provide 'init-fn-destruc)
+;;; init-fn-destruc.el ends here
