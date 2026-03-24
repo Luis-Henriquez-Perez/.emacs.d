@@ -55,7 +55,7 @@ See `o-return'."
 
 (defmacro o-break (&optional value)
   "Exit the current loop and return VALUE.
-Inside an `o-autolet' form, exit the current loop and return VALUE."
+See `o-autolet'."
   `(throw 'break ,value))
 
 (defmacro o-continue ()
