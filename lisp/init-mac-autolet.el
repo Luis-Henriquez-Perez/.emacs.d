@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'pcase)
 (require 'cl-lib)
-(require 'init-fn-destructure)
+(require 'init-fn-destruc)
 
 (defmacro o-set (match-form value)
   "Bind symbols in PATTERN to corresponding VALUE.
@@ -35,7 +35,7 @@ If MATCH-FORM is a symbol act as `setq'."
   (if (symbolp match-form)
       `(setq ,match-form ,value)
     (cl-flet ((list-marker-p (it) (and (symbolp it) (equal ?& (aref (symbol-name it) 0)))))
-      (let* ((binds (o-pcase-bindings match-form value))
+      (let* ((binds (o-destruc-pcase-bindings match-form value))
              (non-gensyms (cl-remove-if #'list-marker-p (o-flatten-pcase-match-form match-form)))
              (all (o-flatten-pcase-match-form (mapcar #'car binds)))
              (gensyms (cl-set-difference all non-gensyms)))
