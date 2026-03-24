@@ -31,8 +31,6 @@
 ;; packages and features.
 ;;
 ;;; Code:
-(require 'init-mac-base)
-(require 'init-fn-defer)
 
 ;; https://stackoverflow.com/questions/1609oo17/elisp-conditionally-change-keybinding
 (defvar o-alt-cmds nil
