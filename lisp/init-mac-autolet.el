@@ -238,7 +238,7 @@ NAME, ARGLIST and BODY are the same as `o-defmacro'.
   (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destruc-defun-args args)))
     `(defmacro ,name ,arglist
        ,@metadata
-       (o-autolet ,(o-arglist-symbols arglist)
+       (o-autolet ,(o-destruc-arglist-symbols arglist)
          ,@body))))
 
 (defmacro o-defun (&rest args)
@@ -250,7 +250,7 @@ NAME, ARGS and BODY are the same as in `defun'.
   (pcase-let ((`(,name ,arglist ,metadata ,body) (o-destruc-defun-args args)))
     `(defun ,name ,arglist
        ,@metadata
-       (o-autolet ,(o-arglist-symbols arglist)
+       (o-autolet ,(o-destruc-arglist-symbols arglist)
          ,@body))))
 ;;; provide
 (provide 'init-mac-autolet)

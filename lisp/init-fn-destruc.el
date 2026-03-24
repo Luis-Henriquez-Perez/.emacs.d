@@ -172,7 +172,7 @@ Return a list of (name arglist (documentation declaration) body)."
         (inte (and (equal 'interactive (car-safe (car args))) (pop args))))
     (list name arglist (remove nil (list doc decl inte)) args)))
 
-(defun o-arglist-symbols (arglist)
+(defun o-destruc-arglist-symbols (arglist)
   "Return a list of argument symbols."
   (let (symbols)
     (dolist (arg (flatten-list arglist))
