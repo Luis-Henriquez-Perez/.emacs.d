@@ -27,7 +27,7 @@
 ;;; Code:
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
-(defun o-destruc--map-nodes (pred fn tree)
+(defun o--destruc-map-nodes (pred fn tree)
   "Recursively map FN over tree nodes satisfying PRED.
 
 PRED is a predicate function applied to each node in TREE.  TREE can be a nested
@@ -44,7 +44,7 @@ matching PRED."
         (t
          tree)))
 
-(defun o-destruc--convert-to-pcase (match-form)
+(defun o--destruc-convert-to-pcase (match-form)
   "Return a pcase-style pattern from MATCH-FORM.
 
 MATCH-FORM is a potentially nested structure containing lists, vectors, and/or
@@ -55,7 +55,7 @@ symbols."
               (add-comma (o) (list '\, o)))
       (list '\` (o-destruct--map-nodes #'true-symbolp #'add-comma match-form)))))
 
-(defun o-destruc--get-special-match-form-let-bindings (match-form value)
+(defun o--destruc-get-special-match-form-let-bindings (match-form value)
   "Return a list of `let*` bindings for.
 
 MATCH-FORM is a destructuring pattern to be matched.  A MATCH-FORM
@@ -118,12 +118,12 @@ and subsequent elements are additional bindings required to handle the special
 forms.
 
 MATCH-FORM is a destructuring pattern that may include special forms (see
-`o-destruc--get-special-match-form-let-bindings').  VALUE is the value to be matched and
+`o--destruc-get-special-match-form-let-bindings').  VALUE is the value to be matched and
 destructured."
   (let ((special-let-binds nil)
         (mf-value (make-symbol "--DESTRUC-MF-VALUE--")))
     (cl-flet ((is-special-mf (mf)
-                (when-let ((binds (o-destruc--get-special-match-form-let-bindings mf mf-value)))
+                (when-let ((binds (o--destruc-get-special-match-form-let-bindings mf mf-value)))
                   (setq special-let-binds (append special-let-binds binds))))
               (replace-with-value (lambda (_) mf-value)))
       `((,(o-destruct--map-nodes #'is-special-mf #'replace-with-value match-form) ,value)
@@ -136,8 +136,28 @@ MATCH-FORM is the destructuring pattern that specifies how VALUE should be
 decomposed.  VALUE is the data to be matched and destructured.
 
 Return a list of bindings compatible with `pcase`."
-  (mapcar (pcase-lambda (`(,mf ,val)) (list (o-destruc--convert-to-pcase mf) val))
+  (mapcar (pcase-lambda (`(,mf ,val)) (list (o--destruc-convert-to-pcase mf) val))
           (o-destruc-inject-special-let-bindings match-form value)))
+
+(defun o--destruc-flatten-match-form (match-form)
+  "Start refactoring."
+  (let ((stack (list (if (vectorp match-form) (append match-form nil) match-form)))
+        (symbols nil)
+        (node nil))
+    (while stack
+      (cond ((null (car stack))
+             (pop stack))
+            ((listp (car stack))
+             (push (pop (car stack)) stack))
+            ((vectorp (car stack))
+             (push (append (pop stack) nil) stack))
+            ((nlistp (cdr-safe (car stack)))
+             (push (list (caar stack) (cdaar stack)) stack))
+            ((symbolp (car stack))
+             (push (pop stack) symbols))
+            (t
+             (pop stack))))
+    (nreverse (delete-dups symbols))))
 
 (defun o-flatten-pcase-match-form (match-form)
   "Flatten MATCH-FORM into a list of components.
@@ -146,27 +166,7 @@ MATCH-FORM can contain nested lists or vectors. This function extracts all
 symbols and other components, ensuring no duplicates.
 
 Return a flat list of unique components in MATCH-FORM."
-  (cl-flet ((flatten-pattern (match-form)
-              (let ((stack (list (if (vectorp match-form) (append match-form nil) match-form)))
-                    (symbols nil)
-                    (node nil))
-                (while stack
-                  (cond ((null (car stack))
-                         (pop stack))
-                        ((listp (car stack))
-                         (setq node (pop (car stack)))
-                         (cond ((symbolp node)
-                                (cl-pushnew node symbols))
-                               ((nlistp (cdr-safe node))
-                                (push (list (car node) (cdr node)) stack))
-                               ((listp node)
-                                (push node stack))
-                               ((vectorp node)
-                                (push (append node nil) stack))))
-                        (t
-                         (cl-pushnew (pop stack) symbols))))
-                symbols)))
-    (cl-set-difference (flatten-pattern match-form) '(\, \`))))
+  (cl-set-difference (flatten-pattern match-form) '(\, \`)))
 
 (defun o-destructure-defun-args (args)
   "Destructure the arguments of a \"defun-like\" thing.
