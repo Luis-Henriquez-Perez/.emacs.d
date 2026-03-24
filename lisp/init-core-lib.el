@@ -25,8 +25,8 @@
 ;; Define core functions and macros.
 ;;
 ;;; Code:
-(require 'init-fn-base)
 (eval-when-compile (require 'init-mac-base))
+(require 'init-fn-base)
 (eval-when-compile (require 'init-mac-autolet))
 (require 'init-fn-2)
 (require 'init-fn-defer)
