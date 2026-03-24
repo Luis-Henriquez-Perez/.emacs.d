@@ -123,10 +123,9 @@ destructured."
   (let (special-let-binds mf-value)
     (setq mf-value (make-symbol "--DESTRUC-MF-VALUE--"))
     (cl-flet ((is-special-mf (mf)
-                (let ((it (o-destruc--get-special-match-form-let-bindings mf mf-value)))
-                  (when it
-                    (setq special-let-binds (append bindings it)))
-                  it))
+                (when-let ((binds (o-destruc--get-special-match-form-let-bindings mf mf-value)))
+                  (setq special-let-binds (append special-let-binds binds))
+                  binds))
               (replace-with-value (lambda (_) mf-value)))
       `((,(o-destruct--map-nodes #'is-special-mf #'replace-with-value match-form) ,value)
         ,@special-let-binds))))
