@@ -139,7 +139,7 @@ Return a list of bindings compatible with `pcase`."
   (mapcar (pcase-lambda (`(,mf ,val)) (list (o--destruc-convert-to-pcase mf) val))
           (o-destruc-inject-special-let-bindings match-form value)))
 
-(defun o--destruc-flatten-match-form (match-form)
+(defun o-destruc-match-form-symbols (match-form)
   "Start refactoring."
   (let ((stack (list (if (vectorp match-form) (append match-form nil) match-form)))
         (symbols nil)
@@ -153,20 +153,13 @@ Return a list of bindings compatible with `pcase`."
              (push (append (pop stack) nil) stack))
             ((nlistp (cdr-safe (car stack)))
              (push (list (caar stack) (cdaar stack)) stack))
+            ((member (car stack) '(\, \`))
+             (pop stack))
             ((symbolp (car stack))
              (push (pop stack) symbols))
             (t
              (pop stack))))
     (nreverse (delete-dups symbols))))
-
-(defun o-flatten-pcase-match-form (match-form)
-  "Flatten MATCH-FORM into a list of components.
-
-MATCH-FORM can contain nested lists or vectors. This function extracts all
-symbols and other components, ensuring no duplicates.
-
-Return a flat list of unique components in MATCH-FORM."
-  (cl-set-difference (flatten-pattern match-form) '(\, \`)))
 
 (defun o-destructure-defun-args (args)
   "Destructure the arguments of a \"defun-like\" thing.
