@@ -27,7 +27,7 @@
 ;;; Code:
 ;; This function of course is not only for destructuring but now its what I am
 ;; using it for.
-(defun o-tree-map-nodes (pred fn tree)
+(defun o-destruct--map-nodes (pred fn tree)
   "Recursively map FN over tree nodes satisfying PRED.
 
 PRED is a predicate function applied to each node in TREE.  TREE can be a nested
@@ -36,55 +36,63 @@ matching PRED."
   (cond ((funcall pred tree)
          (funcall fn tree))
         ((consp tree)
-         (cons (o-tree-map-nodes pred fn (car tree))
-               (o-tree-map-nodes pred fn (cdr tree))))
+         (cons (o-destruct--map-nodes pred fn (car tree))
+               (o-destruct--map-nodes pred fn (cdr tree))))
         ((vectorp tree)
-         `[,@(mapcar (apply-partially #'o-tree-map-nodes pred fn)
+         `[,@(mapcar (apply-partially #'o-destruct--map-nodes pred fn)
                      (append tree nil))])
         (t
          tree)))
 
-(defun o-into-pcase-pattern (match-form)
+(defun o-destruc--convert-to-pcase (match-form)
   "Return a pcase-style pattern from MATCH-FORM.
 
-MATCH-FORM is a potentially nested structure containing lists, vectors, or
-symbols. "
+MATCH-FORM is a potentially nested structure containing lists, vectors, and/or
+symbols."
   (if (symbolp match-form)
       match-form
     (cl-flet ((true-symbolp (o) (and o (symbolp o)))
               (add-comma (o) (list '\, o)))
-      (list '\` (o-tree-map-nodes #'true-symbolp #'add-comma match-form)))))
+      (list '\` (o-destruct--map-nodes #'true-symbolp #'add-comma match-form)))))
 
-(defun o-destructure-special-match-form (match-form value)
-  "Generate `let*` bindings for handling special match forms.
+(defun o-destruc--special-match-form-let-bindings (match-form value)
+  "Return a list of `let*` bindings for.
 
-MATCH-FORM is a destructuring pattern to be matched.  A special match-form
-constitutes one of the following structures.
+MATCH-FORM is a destructuring pattern to be matched.  A MATCH-FORM
+constitutes one of the following structures:
 
-(&butlast ALLBUTLAST LAST) Bind the value of current expression to WHOLE.
+(&butlast ALLBUTLAST LAST)
 
-(&as WHOLE PARTS) Bind the value of current expression to WHOLE.
+This binds the value of current expression to WHOLE.
 
-(&key KEY . KEYS) Bind each symbol in KEYS to (plist-get MATCH-FORM KEY)
+(&as WHOLE PARTS)
 
-(&map KEY . KEYS) Bind each symbol in key to (map-elt MATCH-FORM . KEY).
+Bind the value of current expression to WHOLE.
+
+(&key KEY . KEYS)
+
+Bind each symbol in KEYS to (plist-get MATCH-FORM KEY)
+
+(&map KEY . KEYS)
+
+Bind each symbol in key to (map-elt MATCH-FORM . KEY).
 
 VALUE is the value being destructured.
 
 If MATCH-FORM is not a special form, return nil."
   (pcase match-form
     (`(&butlast ,(and butlast (pred symbolp)) ,(and last (pred symbolp)))
-     (let ((it (make-symbol "--butlast--")))
+     (let ((it (make-symbol "--O-DESTRUC-VALUE--BUTLAST--")))
        `((,it ,value)
          (,butlast (cl-loop while (nthcdr 1 ,it) collect (pop ,it)))
          (,last (car ,it)))))
     (`(,(or '&as '&whole) ,(and whole (pred symbolp)) ,parts)
-     (let ((it (make-symbol "--asmf--")))
+     (let ((it (make-symbol "--O-DESTRUC-VALUE--AS--")))
        `((,it ,value)
          (,whole ,it)
          (,parts ,it))))
     (`(&key ,(and symbol (pred symbolp)) . ,(and symbols (guard t)))
-     (let ((plist (make-symbol "--keymf--"))
+     (let ((plist (make-symbol "--O-DESTRUC-VALUE--KEY--"))
            (bindings nil)
            (key nil))
        (dolist (sym (cons symbol symbols))
@@ -92,7 +100,7 @@ If MATCH-FORM is not a special form, return nil."
          (push `(,sym (plist-get ,plist ,key)) bindings))
        (cons `(,plist ,value) (nreverse bindings))))
     (`(&map ,(and symbol (pred symbolp)) . ,(and symbols (guard t)))
-     (let ((it (make-symbol "--mapmf--"))
+     (let ((it (make-symbol "--O-DESTRUC-VALUE--MAP--"))
            (bindings nil))
        (dolist (s (cons symbol symbols))
          (push `(,s (map-elt ,it ,(intern (concat ":" (symbol-name s))))) bindings))
@@ -110,17 +118,17 @@ and subsequent elements are additional bindings required to handle the special
 forms.
 
 MATCH-FORM is a destructuring pattern that may include special forms (see
-`o-destructure-special-match-form').  VALUE is the value to be matched and
+`o-destruc--special-match-form-let-bindings').  VALUE is the value to be matched and
 destructured."
   (let (bindings match-form-value)
-    (setq match-form-value (gensym "mfvalue-"))
+    (setq match-form-value (make-symbol "--DESTRUC-MATCH-FORM-VALUE--"))
     (cl-flet ((special-mf-p (mf)
-                (let ((it (o-destructure-special-match-form mf match-form-value)))
+                (let ((it (o-destruc--special-match-form-let-bindings mf match-form-value)))
                   (when it
                     (setq bindings (append bindings it)))
                   it))
               (replace-with-value (lambda (_) match-form-value)))
-      `((,(o-tree-map-nodes #'special-mf-p #'replace-with-value match-form) ,value)
+      `((,(o-destruct--map-nodes #'special-mf-p #'replace-with-value match-form) ,value)
         ,@bindings))))
 
 (defun o-pcase-bindings (match-form value)
@@ -130,7 +138,7 @@ MATCH-FORM is the destructuring pattern that specifies how VALUE should be
 decomposed.  VALUE is the data to be matched and destructured.
 
 Return a list of bindings compatible with `pcase`."
-  (mapcar (pcase-lambda (`(,mf ,val)) (list (o-into-pcase-pattern mf) val))
+  (mapcar (pcase-lambda (`(,mf ,val)) (list (o-destruc--convert-to-pcase mf) val))
           (o-generate-special-match-form-bindings match-form value)))
 
 (defun o-flatten-pcase-match-form (match-form)
