@@ -29,7 +29,7 @@
 (eval-when-compile (require 'init-mac-base))
 (eval-when-compile (require 'init-mac-autolet))
 (require 'init-fn-2)
-(require 'init-fn-call-after)
+(require 'init-fn-defer)
 (eval-when-compile (require 'init-mac-config-utils))
 ;;; provide
 (provide 'init-core-lib)

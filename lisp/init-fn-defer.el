@@ -1,4 +1,4 @@
-;;; init-fn-call-after.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
+;;; init-fn-defer.el --- Define functions for deferred loading -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2024 Free Software Foundation, Inc.
 ;;
@@ -106,5 +106,5 @@ Suppress any error raised while loading, instead logging its occurrence."
   (o--defer-load-after feature1
                        (apply-partially #'o--defer-load-feature feature2)))
 ;;; provide
-(provide 'init-fn-call-after)
-;;; init-fn-call-after.el ends here
+(provide 'init-fn-defer)
+;;; init-fn-defer.el ends here
