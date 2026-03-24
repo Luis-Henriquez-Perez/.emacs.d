@@ -25,7 +25,7 @@
 ;; Initialize mistty.
 ;;
 ;;; Code:
-(o-declare-package 'mistty)
+(o-package-declare 'mistty)
 
 (o-popup-at-bottom "\\*mistty.*")
 ;;; provide

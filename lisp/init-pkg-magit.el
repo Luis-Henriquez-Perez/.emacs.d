@@ -28,8 +28,8 @@
 ;;;; requirements
 (require 'init-core)
 
-(o-declare-package 'transient)
-(o-declare-package 'magit)
+(o-package-declare 'transient)
+(o-package-declare 'magit)
 
 (o-popup-at-bottom "\\`magit")
 ;;; provide

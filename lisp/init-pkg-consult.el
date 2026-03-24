@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'consult)
+(o-package-declare 'consult)
 
 (o-opt consult-preview-key nil)
 (o-opt consult-fontify-preserve nil)

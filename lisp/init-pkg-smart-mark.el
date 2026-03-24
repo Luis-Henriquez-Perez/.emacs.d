@@ -30,7 +30,7 @@
 ;; inconvenienced by having to return it to where it was.
 ;;
 ;;; Code:
-(o-declare-package 'smart-mark)
+(o-package-declare 'smart-mark)
 
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-word smart-mark-mark-functions))
 (o-opt smart-mark-mark-functions (cl-adjoin #'meep-region-mark-symbol smart-mark-mark-functions))

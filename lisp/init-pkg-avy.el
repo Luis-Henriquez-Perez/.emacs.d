@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'avy)
+(o-package-declare 'avy)
 
 (o-opt avy-style 'at-full)
 

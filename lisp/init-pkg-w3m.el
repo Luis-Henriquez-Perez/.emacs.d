@@ -25,7 +25,7 @@
 ;; Initialize nil.
 ;;
 ;;; Code:
-(o-declare-package 'w3m)
+(o-package-declare 'w3m)
 
 (o-opt w3m-profile-directory (expand-file-name "w3m" o-var-dir))
 

@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'emmet-mode)
+(o-package-declare 'emmet-mode)
 
 (add-hook 'mhtml-mode-hook #'emmet-mode)
 (add-hook 'html-mode-hook #'emmet-mode)

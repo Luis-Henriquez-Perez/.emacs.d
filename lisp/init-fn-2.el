@@ -95,7 +95,7 @@
       (fset name (apply-partially #'o-local-set-settings hook)))
     name))
 
-(defun o-declare-package (package)
+(defun o-package-declare (package)
   "Indicate a package will be installed."
   (eval `(elpaca ,package) t))
 ;;; provide

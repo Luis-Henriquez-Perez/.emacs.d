@@ -25,7 +25,7 @@
 ;; Initialize evil-lispy.
 ;;
 ;;; Code:
-(o-declare-package 'evil-lispy)
+(o-package-declare 'evil-lispy)
 
 (add-hook 'emacs-lisp-mode-hook #'evil-lispy-mode)
 (add-hook 'clojure-mode-hook #'evil-lispy-mode)

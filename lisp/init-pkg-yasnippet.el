@@ -25,7 +25,7 @@
 ;; initialize yasnippet.
 ;;
 ;;; Code:
-(o-declare-package 'yasnippet)
+(o-package-declare 'yasnippet)
 
 (add-hook 'prog-mode-hook #'yas-minor-mode-on)
 

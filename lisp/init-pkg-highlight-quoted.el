@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'highlight-quoted)
+(o-package-declare 'highlight-quoted)
 
 (autoload 'highlight-quoted-mode "highlight-quoted" nil nil 'function)
 (add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode)

@@ -36,7 +36,7 @@
 (declare-function o-evilem-motion-char              "lib-evil-easymotion")
 (declare-function o-evilem-motion-beginning-of-line "lib-evil-easymotion")
 
-(o-declare-package 'evil-easymotion)
+(o-package-declare 'evil-easymotion)
 
 (autoload #'o-evilem-motion-beginning-of-word "lib-evil-easymotion" nil t 'function)
 (autoload #'o-evilem-motion-beginning-of-WORD "lib-evil-easymotion" nil t 'function)

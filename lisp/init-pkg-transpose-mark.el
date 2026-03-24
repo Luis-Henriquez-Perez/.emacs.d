@@ -26,7 +26,7 @@
 ;; specifically I use the function `transpose-mark-region'.
 ;;
 ;;; Code:
-(o-declare-package 'transpose-mark)
+(o-package-declare 'transpose-mark)
 ;;; provide
 (provide 'init-pkg-transpose-mark)
 ;;; init-pkg-transpose-mark.el ends here

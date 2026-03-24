@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'outli)
+(o-package-declare 'outli)
 
 (add-hook 'prog-mode-hook #'outli-mode)
 (add-hook 'conf-mode-hook #'outli-mode)

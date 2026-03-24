@@ -27,8 +27,8 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'vertico)
-(o-declare-package 'nerd-icons-completion)
+(o-package-declare 'vertico)
+(o-package-declare 'nerd-icons-completion)
 
 (add-hook 'vertico-mode-hook #'vertico-buffer-mode)
 

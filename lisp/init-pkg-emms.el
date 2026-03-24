@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'emms)
+(o-package-declare 'emms)
 
 (o-opt emms-source-file-default-directory (expand-file-name "~/Audio/Music"))
 (o-opt emms-directory (expand-file-name "emms/" o-var-dir))

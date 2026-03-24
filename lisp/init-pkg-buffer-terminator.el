@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'buffer-terminator)
+(o-package-declare 'buffer-terminator)
 
 (add-hook 'o-first-input-hook #'buffer-terminator-mode)
 

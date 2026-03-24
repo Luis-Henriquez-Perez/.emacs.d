@@ -25,7 +25,7 @@
 ;; Initialize meep.
 ;;
 ;;; Code:
-(o-declare-package 'meep)
+(o-package-declare 'meep)
 
 (o-opt meep-state-insert 'insert)
 

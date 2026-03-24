@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'grugru)
+(o-package-declare 'grugru)
 
 (o-defer-load-require 'grugru 'init-after-grugru)
 ;;; provide

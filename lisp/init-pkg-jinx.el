@@ -23,14 +23,10 @@
 ;;; Commentary:
 ;;
 ;; Initialize jinx.  This spell-checker is purportedly much faster than
-;; flyspell.  It requirements
+;; flyspell.
 ;;
 ;;; Code:
-(o-declare-package 'jinx)
-
-;; This requires enchant package and pkgconf on archlinux.
-
-;; (unless (executable-find "pkgconf"))
+(o-package-declare 'jinx)
 
 (setq-default jinx-languages "en_US")
 

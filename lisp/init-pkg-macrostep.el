@@ -29,7 +29,7 @@
 (declare-function macrostep-collapse-all "macrostep")
 (declare-function macrostep-collapse "macrostep")
 
-(o-declare-package 'macrostep)
+(o-package-declare 'macrostep)
 
 (keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m") nil)
 (keymap-set emacs-lisp-mode-map (concat o-key-localleader-emacs "\s" "m e") #'macrostep-expand)

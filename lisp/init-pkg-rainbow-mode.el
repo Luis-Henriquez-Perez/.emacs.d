@@ -25,7 +25,7 @@
 ;; Initialize rainbow-mode.
 ;;
 ;;; Code:
-(o-declare-package 'rainbow-mode)
+(o-package-declare 'rainbow-mode)
 
 (autoload 'rainbow-mode "rainbow-mode" nil nil 'function)
 (add-hook 'prog-mode-hook #'rainbow-mode)

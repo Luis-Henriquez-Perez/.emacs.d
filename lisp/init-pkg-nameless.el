@@ -25,7 +25,7 @@
 ;; Hide my specific namespaces to make the code look more visually appealing.
 ;;
 ;;; Code:
-(o-declare-package 'nameless)
+(o-package-declare 'nameless)
 
 (add-hook 'emacs-lisp-mode #'nameless-mode)
 

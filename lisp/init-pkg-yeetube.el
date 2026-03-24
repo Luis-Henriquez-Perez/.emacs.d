@@ -25,7 +25,7 @@
 ;; Initialize yeetube.
 ;;
 ;;; Code:
-(o-declare-package 'yeetube)
+(o-package-declare 'yeetube)
 
 ;; It is much easier to see which item I am on when the lines are highlighted.
 ;; Also, confirmed that this hook does not work from the yeetube config file.

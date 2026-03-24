@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'captain)
+(o-package-declare 'captain)
 
 (add-hook 'prog-mode-hook #'captain-mode)
 (add-hook 'text-mode-hook #'captain-mode)

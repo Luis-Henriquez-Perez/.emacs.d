@@ -24,7 +24,7 @@
 ;;
 ;;
 ;;; Code:
-(o-declare-package 'bray)
+(o-package-declare 'bray)
 
 (push 'bray o-required-features)
 

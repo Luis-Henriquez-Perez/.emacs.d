@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'smartparens)
+(o-package-declare 'smartparens)
 
 (declare-function smartparens-strict-mode "smartparens")
 

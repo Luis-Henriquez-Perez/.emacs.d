@@ -25,7 +25,7 @@
 ;; Initialize beacon.
 ;;
 ;;; Code:
-(o-declare-package 'beacon)
+(o-package-declare 'beacon)
 
 (add-hook 'o-first-input-hook #'beacon-mode)
 ;;; provide

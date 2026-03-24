@@ -29,7 +29,7 @@
 ;;;; register evil commands
 (declare-function evil-goggles-mode "evil-goggles")
 
-(o-declare-package 'evil-goggles)
+(o-package-declare 'evil-goggles)
 
 ;; Note that when `evil-goggles' is loaded in an advice and itself adds an
 ;; advice to the advised function.  Advising within an advice does not work at

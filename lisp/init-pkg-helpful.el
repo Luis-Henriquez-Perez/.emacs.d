@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'helpful)
+(o-package-declare 'helpful)
 
 (o-remap-alt 'helpful #'describe-function #'helpful-callable)
 (o-remap-alt 'helpful #'describe-command  #'helpful-command)

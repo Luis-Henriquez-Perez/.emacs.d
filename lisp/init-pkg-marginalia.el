@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'marginalia)
+(o-package-declare 'marginalia)
 
 (autoload 'marginalia-mode "marginalia" nil nil 'function)
 (add-hook 'vertico-mode-hook #'marginalia-mode)

@@ -25,7 +25,7 @@
 ;; Initialize lispy.
 ;;
 ;;; Code:
-(o-declare-package 'lispy)
+(o-package-declare 'lispy)
 
 ;; do not delete unmached delimiters with.
 ;; right now the only problem is.

@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'dashboard)
+(o-package-declare 'dashboard)
 
 (push 'dashboard o-required-features)
 

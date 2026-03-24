@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'dirvish)
+(o-package-declare 'dirvish)
 
 (declare-function dirvish-override-dired-mode "dirvish")
 (o-defer-load-after 'dired #'dirvish-override-dired-mode)

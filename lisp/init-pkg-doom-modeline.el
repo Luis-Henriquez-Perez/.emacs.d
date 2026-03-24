@@ -28,7 +28,7 @@
 (require 'init-core)
 (require 'doom-modeline)
 
-(o-declare-package 'doom-modeline)
+(o-package-declare 'doom-modeline)
 
 (add-hook 'after-init-hook #'doom-modeline-mode)
 ;;; provide

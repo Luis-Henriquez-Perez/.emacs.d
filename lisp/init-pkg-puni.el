@@ -26,7 +26,7 @@
 ;; has no external dependencies.  The main reason I use it is because it provies
 ;;
 ;;; Code:
-(o-declare-package 'puni)
+(o-package-declare 'puni)
 
 (autoload 'puni-soft-delete "puni" nil nil 'function)
 (autoload 'puni-bounds-of-sexp-around-point "puni" nil nil 'function)

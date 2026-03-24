@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'filladapt)
+(o-package-declare 'filladapt)
 
 (add-hook 'auto-fill-mode-hook #'filladapt-mode)
 ;;; provide

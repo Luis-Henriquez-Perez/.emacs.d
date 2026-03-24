@@ -25,7 +25,7 @@
 ;; Initialize ws-butler.
 ;;
 ;;; Code:
-(o-declare-package 'ws-butler)
+(o-package-declare 'ws-butler)
 
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (add-hook 'text-mode-hook #'ws-butler-mode)

@@ -25,7 +25,7 @@
 ;; Initialize company.
 ;;
 ;;; Code:
-(o-declare-package 'company)
+(o-package-declare 'company)
 
 (o-opt company-minimum-prefix-length 1)
 (o-opt company-dabbrev-minimum-length 1)

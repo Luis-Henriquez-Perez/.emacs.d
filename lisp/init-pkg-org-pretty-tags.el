@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'org-pretty-tags)
+(o-package-declare 'org-pretty-tags)
 
 (add-hook 'org-mode-hook #'org-pretty-tags-mode)
 

@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'lispyville)
+(o-package-declare 'lispyville)
 
 ;; Do not bind any keys by default.
 (add-hook 'emacs-lisp-mode-hook #'lispyville-mode)

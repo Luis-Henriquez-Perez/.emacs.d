@@ -25,7 +25,7 @@
 ;; Setup evil nerd commenter for lazy loading.
 ;;
 ;;; Code:
-(o-declare-package 'evil-nerd-commenter)
+(o-package-declare 'evil-nerd-commenter)
 
 (autoload 'evilnc-comment-operator "evil-nerd-commenter" nil nil 'function)
 (autoload 'evilnc-inner-comment "evil-nerd-commenter" nil nil 'function)

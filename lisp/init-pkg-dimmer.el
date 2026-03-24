@@ -32,7 +32,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'dimmer)
+(o-package-declare 'dimmer)
 
 ;; TODO exclude if it is a which-key buffer.
 ;; TODO also exclude if it is the only buffer except for the minibuffer.

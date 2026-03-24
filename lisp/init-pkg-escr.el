@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'escr)
+(o-package-declare 'escr)
 
 (o-opt escr-screenshot-directory (expand-file-name "~/Pictures"))
 

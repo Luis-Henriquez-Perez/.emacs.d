@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'evil-collection)
+(o-package-declare 'evil-collection)
 
 ;; Enable `evil-collection' bindings after evil-mode.  I want to have precise
 ;; control of when evil is loaded.

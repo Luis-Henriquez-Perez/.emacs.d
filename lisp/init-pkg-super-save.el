@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'super-save)
+(o-package-declare 'super-save)
 
 (autoload 'super-save-mode "super-save" nil nil 'function)
 (add-hook 'o-first-file-hook #'super-save-mode)

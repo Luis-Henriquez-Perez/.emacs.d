@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'org-appear)
+(o-package-declare 'org-appear)
 
 (o-opt org-appear-autoemphasis t)
 (o-opt org-appear-autolinks t)

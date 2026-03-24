@@ -30,7 +30,7 @@
 (declare-function evil-inner-line "evil-textobj-line")
 (declare-function evil-a-line "evil-textobj-line")
 
-(o-declare-package 'evil-textobj-line)
+(o-package-declare 'evil-textobj-line)
 
 (autoload #'evil-inner-line "evil-textobj-line" nil t 'function)
 (autoload #'evil-a-line "evil-textobj-line" nil t 'function)

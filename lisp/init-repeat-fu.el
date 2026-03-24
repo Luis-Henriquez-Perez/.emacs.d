@@ -25,7 +25,7 @@
 ;; Initialize repeat-fu.
 ;;
 ;;; Code:
-(o-declare-package 'repeat-fu)
+(o-package-declare 'repeat-fu)
 
 (o-opt repeat-fu-preset 'meep)
 ;;; provide

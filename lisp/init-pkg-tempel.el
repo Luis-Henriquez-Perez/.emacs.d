@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'tempel)
+(o-package-declare 'tempel)
 
 (autoload 'tempel-complete "tempel" nil nil 'function)
 (autoload 'tempel-insert "tempel" nil nil 'function)

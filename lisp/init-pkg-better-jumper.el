@@ -25,7 +25,7 @@
 ;; Initialize `better-jumper'.
 ;;
 ;;; Code:
-(o-declare-package 'better-jumper)
+(o-package-declare 'better-jumper)
 
 (declare-function better-jumper-set-jump "better-jumper")
 (declare-function better-jumper-jump-forward "better-jumper")

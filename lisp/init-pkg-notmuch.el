@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'notmuch)
+(o-package-declare 'notmuch)
 
 ;; If you do not use `setq-default' this setting will not persist across
 ;; different searches.

@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'elfeed)
+(o-package-declare 'elfeed)
 
 (o-opt elfeed-feeds
       '("http://nullprogram.com/feed/"

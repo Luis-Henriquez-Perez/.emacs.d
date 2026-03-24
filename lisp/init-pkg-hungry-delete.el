@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'hungry-delete)
+(o-package-declare 'hungry-delete)
 
 ;; Leave one space in between instead of deleting everything.
 (o-opt hungry-delete-join-reluctantly t)

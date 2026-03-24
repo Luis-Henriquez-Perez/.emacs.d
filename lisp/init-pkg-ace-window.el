@@ -26,7 +26,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'ace-window)
+(o-package-declare 'ace-window)
 
 (o-opt aw-swap-invert t)
 ;; The character z conflicts.

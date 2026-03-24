@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'gcmh)
+(o-package-declare 'gcmh)
 
 (add-hook 'after-init-hook #'gcmh-mode 91)
 

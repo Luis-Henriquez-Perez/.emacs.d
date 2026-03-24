@@ -25,7 +25,7 @@
 ;; Initialize visible-mark.
 ;;
 ;;; Code:
-(o-declare-package 'visible-mark)
+(o-package-declare 'visible-mark)
 
 (add-hook 'text-mode-hook #'visible-mark-mode)
 (add-hook 'prog-mode-hook #'visible-mark-mode)

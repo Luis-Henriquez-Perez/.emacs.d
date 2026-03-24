@@ -28,7 +28,7 @@
 ;; the search.  Also it looks much nicer with the rainbow display.
 ;;
 ;;; Code:
-(o-declare-package 'flash)
+(o-package-declare 'flash)
 
 (autoload 'flash-jump "flash" nil 'interactive 'function)
 (autoload 'flash-jump-continue "flash" nil 'interactive 'function)

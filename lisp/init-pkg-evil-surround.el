@@ -26,7 +26,7 @@
 ;;
 ;;; Code:
 ;;;; hooks
-(o-declare-package 'evil-surround)
+(o-package-declare 'evil-surround)
 
 (add-hook 'prog-mode-hook #'evil-surround-mode)
 (add-hook 'text-mode-hook #'evil-surround-mode)

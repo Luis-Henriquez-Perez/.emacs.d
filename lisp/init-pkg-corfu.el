@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'corfu)
+(o-package-declare 'corfu)
 
 (add-hook 'corfu-mode-hook #'corfu-history-mode)
 

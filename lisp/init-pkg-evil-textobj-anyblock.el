@@ -27,7 +27,7 @@
 ;;; Code:
 (require 'init-core)
 
-(o-declare-package 'evil-textobj-anyblock)
+(o-package-declare 'evil-textobj-anyblock)
 ;;; provide
 (provide 'init-pkg-evil-textobj-anyblock)
 ;;; init-pkg-evil-textobj-anyblock.el ends here
