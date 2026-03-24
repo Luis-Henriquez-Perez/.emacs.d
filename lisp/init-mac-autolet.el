@@ -92,7 +92,7 @@ LETB is a list of let-bindings.  FORM is a possibly modified version of BODY."
              (let ((loop-type (cadr frame))
                    (body (cdr (pop result)))
                    (pred (cadr (pop result))))
-               (push `(catch 'break! (,loop-type ,pred (catch 'o-continue ,@body))) result)))
+               (push `(catch 'o-break (,loop-type ,pred (catch 'o-continue ,@body))) result)))
             ((equal (car frame) :shortcut)
              (let ((type (cadr frame))
                    (args (caddr frame)))
