@@ -43,20 +43,6 @@
           (window-parameters ((no-other-window t))))
         display-buffer-alist))
 
-(defun o-eval-and-replace-region (beg end)
-  "Evaluate the region between BEG and END as Elisp, and replace it with the result.
-If there's an error during evaluation, restore the original region and display the error message."
-  (interactive "r")
-  (let* ((text (buffer-substring-no-properties beg end))
-         (result (condition-case err
-                     (eval (read text))
-                   (error (progn
-                            (message "Eval error: %s" (error-message-string err))
-                            nil)))))
-    (when result
-      (delete-region beg end)
-      (prin1 result (current-buffer)))))
-
 (defun o-in-string-or-comment-p ()
   "Return non-nil if point is in a string or comment.
 Specifically, return the symbol `string' if point is in a string, the symbol
