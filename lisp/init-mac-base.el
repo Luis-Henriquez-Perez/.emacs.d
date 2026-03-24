@@ -170,7 +170,7 @@ Each element of LIST is bound to `it'."
 
 (defmacro o-aremf (list pred)
   "Remove the first element that satisfies PRED and return PRED.
--PRED should be a form that evaluates with `it` bound to each element."
+PRED should be a form that evaluates with `it` bound to each element."
   (declare (indent 1))
   (let ((glist (gensym "list"))
         (gpred (gensym "pred"))
