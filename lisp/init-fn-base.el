@@ -28,10 +28,6 @@
 (require 'pcase)
 (eval-when-compile (require 'init-mac-base))
 
-(defsubst o-hundredths (n)
-  "Return N rounded to the nearest hundredth."
-  (/ (fround (* n 100)) 100.0))
-
 ;; I don't yet know where to put this function.  So for now, here it goes.
 (defun o-popup-at-bottom (regexp)
   "Open buffers at bottom that match regexp."
