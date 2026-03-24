@@ -36,10 +36,10 @@ matching PRED."
   (cond ((funcall pred tree)
          (funcall fn tree))
         ((consp tree)
-         (cons (o-destruct--map-nodes pred fn (car tree))
-               (o-destruct--map-nodes pred fn (cdr tree))))
+         (cons (o--destruc-map-nodes pred fn (car tree))
+               (o--destruc-map-nodes pred fn (cdr tree))))
         ((vectorp tree)
-         `[,@(mapcar (apply-partially #'o-destruct--map-nodes pred fn)
+         `[,@(mapcar (apply-partially #'o--destruc-map-nodes pred fn)
                      (append tree nil))])
         (t
          tree)))
@@ -53,7 +53,7 @@ symbols."
       match-form
     (cl-flet ((true-symbolp (o) (and o (symbolp o)))
               (add-comma (o) (list '\, o)))
-      (list '\` (o-destruct--map-nodes #'true-symbolp #'add-comma match-form)))))
+      (list '\` (o--destruc-map-nodes #'true-symbolp #'add-comma match-form)))))
 
 (defun o--destruc-get-special-match-form-let-bindings (match-form value)
   "Return a list of `let*` bindings for.
@@ -126,7 +126,7 @@ destructured."
                 (when-let ((binds (o--destruc-get-special-match-form-let-bindings mf mf-value)))
                   (setq special-let-binds (append special-let-binds binds))))
               (replace-with-value (lambda (_) mf-value)))
-      `((,(o-destruct--map-nodes #'is-special-mf #'replace-with-value match-form) ,value)
+      `((,(o--destruc-map-nodes #'is-special-mf #'replace-with-value match-form) ,value)
         ,@special-let-binds))))
 
 (defun o-destruc-pcase-bindings (match-form value)
