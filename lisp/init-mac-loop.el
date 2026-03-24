@@ -73,14 +73,6 @@ take the following forms:
                (dotimes (,elt ,list) ,@body))
               (t
                (error "Unknown list predicate: %S" ',loop-struct)))))))
-
-(defmacro o-collect (loop-struct &rest body)
-  (declare (indent 1))
-  (let ((collection (make-symbol "--collection--")))
-    `(let (,collection)
-       (o-for ,loop-struct
-         (push (progn ,@body) ,collection))
-       (nreverse ,collection))))
 ;;; provide
 (provide 'init-mac-loop)
 ;;; init-mac-loop.el ends here
