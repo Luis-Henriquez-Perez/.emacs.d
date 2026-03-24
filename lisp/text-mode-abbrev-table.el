@@ -28,6 +28,8 @@
 ;;; Code:
 (require 'abbrev)
 
+(define-abbrev text-mode-abbrev-table "elaped" "elapsed")
+(define-abbrev text-mode-abbrev-table "featu" "feature")
 (define-abbrev text-mode-abbrev-table "aand" "and")
 (define-abbrev text-mode-abbrev-table "secss" "seconds")
 (define-abbrev text-mode-abbrev-table "bbut" "but")
