@@ -85,7 +85,11 @@ Suppress any error raised by FN, instead logging its occurrence."
      (o-log 'failure "Failed to call %S %s %s" fn (car e) (cdr e)))))
 
 (defun o-defer-load-after (feature fn)
-  "Same as `o-defer-load-after' but"
+  "Call FN after FEATURE is loaded.
+If feature is already loaded, call FN immediately.  If FN is called without
+raising an error, log the time elapsed.  Otherwise, suppress any error raised by
+calling FN, logging it.  FN is at most called one time even if FEATURE is loaded
+again."
   (o--defer-load-after feature (apply-partially #'o--defer-call-fn fn)))
 
 (defun o--defer-load-feature (feature)
